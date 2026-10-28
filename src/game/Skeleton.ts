@@ -13,6 +13,7 @@ import { effectiveLimits } from "./PartHierarchy.ts";
 import type { JointId } from "./BodyGraph.ts";
 import { boundsFor, raceScaled } from "./AxisEnvelope.ts";
 import { RACE_SILHOUETTE } from "./BodyProfile.ts";
+import { JOINT_ORDER } from "./anim/Rig.ts"; // Rig imports only TYPES from here: no runtime cycle
 
 /**
  * Which side-independent constraint joint each bone answers to. Left and right share one
@@ -55,6 +56,24 @@ export class Skeleton {
   #base: Map<JointName, { min: number; max: number; rest: number }>;
   #poses: Record<PoseName, Pose>;
   pose: PoseName = "idle";
+  /** Animator output (JOINT_ORDER) taken as-is each update; null = classic pose easing. */
+  #driven: Float64Array | null = null;
+  /** Hip abduction / ankle counter-roll per leg [L, R], rad — written by drive(), read by the rig. */
+  readonly legRoll = { hip: new Float64Array(2), ankle: new Float64Array(2) };
+  /**
+   * Drive the joints from the procedural Animator (src/game/anim). The Animator already
+   * smoothed and clamped everything, so the Skeleton's own 14/s easing must not run on
+   * top: its ~70 ms lag would slide a planted foot ~18 cm at walking speed. The skill
+   * clock (hit timing), kick spring, balance, grip, face and stance transitions keep
+   * working. Pass null to return to pose easing.
+   */
+  drive(angles: Float64Array | null, hipRoll?: ArrayLike<number>, ankleRoll?: ArrayLike<number>): void {
+    this.#driven = angles;
+    if (hipRoll) { this.legRoll.hip[0] = hipRoll[0]; this.legRoll.hip[1] = hipRoll[1]; }
+    if (ankleRoll) { this.legRoll.ankle[0] = ankleRoll[0]; this.legRoll.ankle[1] = ankleRoll[1]; }
+  }
+  /** True while the Animator owns the joints. */
+  isDriven(): boolean { return this.#driven !== null; }
   /** Active skill animation, if any: normalised progress runs 0 -> 1. */
   #skill: { anim: SkillAnimation; t: number; fired: boolean; holdAt: number | null } | null = null;
   /** Physics offset per joint (rad), its rate, and how much it moved this frame. */
@@ -180,6 +199,13 @@ export class Skeleton {
     this.balance.update(dt);
     this.grip.update(dt);
     this.face.update(dt);
+    if (this.#driven) {
+      for (let i = 0; i < JOINT_ORDER.length; i++) {
+        const name = JOINT_ORDER[i], j = this.#joints.get(name)!, b = this.#base.get(name)!;
+        j.target = this.#driven[i];
+        j.angle = clamp(j.target + (this.#kick.get(name)?.off ?? 0), b.min, b.max);
+      }
+    }
     // Balance plates -> stance: when the composite tips past a threshold the body
     // changes stance, and a choreographed transition plays it there coherently.
     {
@@ -202,6 +228,13 @@ export class Skeleton {
       }
     }
     if (this.#skill) {
+      if (this.#driven) {
+        // The Animator blends the skill curve itself; keep only the clock here
+        // (consumeSkillHit and skillProgress read it).
+        if (this.#skill.holdAt === null) this.#skill.t += dt / this.#skill.anim.duration;
+        if (this.#skill.t >= 1) { this.#skill = null; this.pose = "idle"; }
+        return;
+      }
       const { anim } = this.#skill;
       if (this.#skill.holdAt === null) this.#skill.t += dt / anim.duration;
       const t = Math.min(1, this.#skill.t);
@@ -215,6 +248,7 @@ export class Skeleton {
       if (t >= 1) { this.#skill = null; this.pose = "idle"; }
       return;
     }
+    if (this.#driven) return;
     const k = 1 - Math.exp(-14 * dt);
     for (const joint of this.#joints.values()) {
       joint.angle += (joint.target - joint.angle) * k;
