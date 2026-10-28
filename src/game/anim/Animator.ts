@@ -11,22 +11,24 @@
 //   3. Trunk     blend spine + abdomen first: they move the hips, so the IK must see them.
 //   4. Pelvis    ride height + bob; lower it by the largest pelvis drop a planted foot needs.
 //   5. Legs      two-bone IK per leg (FootIK.solveLeg): soles parallel to the ground.
-//   6. Upper     arms counter-swing with the opposite thigh; neck/head cancel the trunk pitch.
+//   6. Upper     arms counter-swing with the opposite thigh; neck/head cancel the CHEST pitch.
 //   7. Blend     every other joint through the layers, clamp to limits, pop-guard spring.
+//   8. Root      gait-owned legs: IK ride height; skill/KO/air-owned legs: lowest sole on the floor.
+//   9. Guard     lift the root if any heel / ball / toe tip of the final pose is below the ground.
 
 import { clamp, damp, lerp, smoothstep } from "../../core/MathCore.ts";
 import { trackOffset } from "../AnimationCurve.ts";
 import type { SkillAnimation } from "../Skills.ts";
 import {
-  ankleFromBall, type GroundHeightFn, type GroundSample, newLegSolution, pelvisDropFor, sampleGround,
+  ankleFromBall, type GroundHeightFn, type GroundSample, type LegJointLimits, newLegSolution, pelvisDropFor, sampleGround,
   smoothMax, smoothMin, solveLegInPelvis, type TwoBoneChain,
 } from "./FootIK.ts";
 import { Gait, type GaitParams } from "./Gait.ts";
 import { makeMask, MASK_FULL, MASK_LOWER, MASK_UPPER, PoseBlender } from "./PoseBlend.ts";
 import { AIR_POSE, ATTACK_POSE, BREATH_UNIT, GUARD_POSE, HIT_OFFSETS, KO_POSE, poseArray } from "./Poses.ts";
 import {
-  ARM_JOINTS, hipPivot, JOINT_COUNT, JOINT_INDEX, type JointLimitTable, LEG_JOINTS, type LegGeometry, legLength,
-  standingSoleDepth, worldToLocal,
+  ARM_JOINTS, hipPivot, hipRestRollOf, JOINT_COUNT, JOINT_INDEX, type JointLimitTable, LEG_JOINTS, legFK3, type LegGeometry,
+  legLength, localToWorld, newLegFK3, type Side, standingSoleDepth, worldToLocal,
 } from "./Rig.ts";
 
 /** Named base parameters of the animator (ratios are of the leg length L unless stated). */
@@ -55,11 +57,22 @@ export interface AnimatorParams {
   /** Most the pelvis may drop to keep a foot reachable, / L (beyond it the foot lets go instead). */
   maxPelvisDrop: number;
   /**
-   * Largest pelvis pitch (spine + abdomen, rad) the legs accept while the gait owns them. The
-   * legacy rig hangs the hips off spine -> abdomen, so a trunk lean tilts the pelvis and eats the
-   * hip's flexion range; past this the abdomen counter-rotates (the chest keeps its lean).
+   * Largest pelvis pitch (spine + abdomen, rad) the legs accept while the gait owns them. The hips
+   * hang off spine -> abdomen, so a pelvis pitch R adds R to every hip flexion the legs need; with
+   * the Skeleton's hip window [-1.2, 1.2] a running swing (thigh ~0.9-1.0 rad forward at touchdown)
+   * leaves ~0.2 rad. Past this the abdomen counter-rotates (the chest keeps its lean).
    */
   pelvisTiltMax: number;
+  /**
+   * Share of a trunk lean the PELVIS takes (anterior tilt); the chest (spine) takes all of it:
+   *   spine = lean,  abdomen = -(1 - pelvisLeanShare)·lean   =>  pelvis pitch = pelvisLeanShare·lean.
+   * The spine pivot is the chest and the neck hangs off it, so `spine` IS the chest's world pitch.
+   */
+  pelvisLeanShare: number;
+  /** Largest forward chest lean (rad) from locomotion + acceleration together (15°: a running lean). */
+  leanMax: number;
+  /** Largest backward chest lean (rad) from braking / accelerating backward. */
+  leanBackMax: number;
   /**
    * Base rate (m/s) the reach drop may change at when standing. Moving, a stance leg vaults the
    * hip like an inverted pendulum, whose height changes at up to v·tan(θmax), so the limit is
@@ -90,6 +103,8 @@ export interface AnimatorParams {
   breathAmplitude: number;
   /** Pop-guard smooth time (s) for joints the IK does not own. */
   popSmoothTime: number;
+  /** Least share (0..1) of a SWINGING leg's IK angles that bypasses the pop guard. */
+  swingPassThrough: number;
   /** Weight-spring smooth times (s) per layer. */
   smoothAir: number;
   smoothGuard: number;
@@ -127,7 +142,10 @@ export const DEFAULT_ANIMATOR: AnimatorParams = {
   adductionMax: 0.3,
   swingRadiusSoftness: 0.05,
   maxPelvisDrop: 0.2,
-  pelvisTiltMax: 0.4,
+  pelvisTiltMax: 0.2,
+  pelvisLeanShare: 0.3,
+  leanMax: 0.26,
+  leanBackMax: 0.1,
   maxDropRate: 1.0,
   guardStagger: 0.3,
   guardIdleWeight: 0.55,
@@ -143,6 +161,7 @@ export const DEFAULT_ANIMATOR: AnimatorParams = {
   breathRate: 0.25,
   breathAmplitude: 0.025,
   popSmoothTime: 0.05,
+  swingPassThrough: 0.7,
   smoothAir: 0.08,
   smoothGuard: 0.15,
   smoothAttack: 0.08,
@@ -225,9 +244,14 @@ const TRUNK = makeMask(["spine", "abdomen"]);
 const HIP2 = new Float64Array(2);
 /** Keep the solved ankle this far (rad) inside its limits so the final clamp never bites. */
 const ANKLE_MARGIN = 0.02;
+/** Same margin for the hip and knee windows handed to the IK. */
+const LEG_MARGIN = 0.02;
+/** Leg-authority band (1 - a) over which the handover sole guard fades out (see step 8). */
+const HANDOVER_BAND = 0.1;
 const P2 = new Float64Array(2);
 const ANK = new Float64Array(2);
 const D3 = new Float64Array(3);
+const FK3 = newLegFK3();
 const GS_LAND: GroundSample = { height: 0, slopePitch: 0 };
 const GS_BODY: GroundSample = { height: 0, slopePitch: 0 };
 
@@ -246,6 +270,10 @@ export class Animator {
   readonly #soleDepth: number;
   readonly #chain: TwoBoneChain;
   readonly #legChain: [TwoBoneChain, TwoBoneChain];
+  readonly #legLimits: LegJointLimits[];
+  /** Forward shift (m) of the hip pivots from their bind position, last frame (trunk lean). */
+  #hipShift = 0;
+  readonly #hipRestZ: number;
   readonly #plantWeight = new Float64Array(2);
   readonly #legs = [newLegSolution(), newLegSolution()];
   readonly #ground: [GroundSample, GroundSample] = [{ height: 0, slopePitch: 0 }, { height: 0, slopePitch: 0 }];
@@ -278,7 +306,15 @@ export class Animator {
     this.#soleDepth = standingSoleDepth(geometry);
     this.#chain = { upper: geometry.thigh, lower: geometry.shin, reachMargin: p.reachMargin * this.#L, softness: p.softness * this.#L };
     this.#legChain = [{ ...this.#chain }, { ...this.#chain }];
+    // Hip / knee windows the IK must respect (Skeleton hip = ψ_thigh because RIG_ROTATION_SIGN.hip
+    // = -1, knee = ψ_shin - ψ_thigh), kept LEG_MARGIN inside so the final clamp never bends them.
+    this.#legLimits = LEG_JOINTS.map((lj) => ({
+      hipMin: limits.min[lj.hip] + LEG_MARGIN, hipMax: limits.max[lj.hip] - LEG_MARGIN,
+      kneeMin: limits.min[lj.knee] + LEG_MARGIN, kneeMax: limits.max[lj.knee],
+    }));
     this.gait = new Gait(geometry, p.gait);
+    hipPivot(geometry, 0, 0, HIP2);
+    this.#hipRestZ = HIP2[1];
     const B = this.blender = new PoseBlender(limits, p.popSmoothTime);
     B.addLayer({ name: "locomotion", mode: "override", mask: MASK_FULL, smoothTime: 0 });
     B.addLayer({ name: "air", mode: "override", mask: MASK_LOWER, smoothTime: p.smoothAir });
@@ -338,8 +374,10 @@ export class Animator {
     sampleGround(inp.groundHeight, inp.x, inp.z, Math.sin(md), Math.cos(md), 0.5 * L, GS_BODY);
     this.gait.update(h, {
       x: inp.x, z: inp.z, yaw: inp.yaw, speed: inp.speed, moveDirLocal: inp.moveDirLocal,
-      grounded: inp.grounded, stagger: p.guardStagger * L * this.#stance, turnRate: inp.turnRate,
-      slopePitch: GS_BODY.slopePitch,
+      // The guard stagger fades out as the gait gets moving: a staggered stance is for standing
+      // and shuffling; running with one foot's stance centred 0.15 L ahead demands extra reach.
+      grounded: inp.grounded, stagger: p.guardStagger * L * this.#stance * (1 - this.gait.moving), turnRate: inp.turnRate,
+      slopePitch: GS_BODY.slopePitch, hipShift: this.#hipShift,
     });
     const sh = this.gait.shape, m = this.gait.moving, run = sh.runBlend;
     const ahead = Math.cos(inp.moveDirLocal);
@@ -362,15 +400,22 @@ export class Animator {
       for (let j = 0; j < JOINT_COUNT; j++) B.trusted[j] = ws * sm[j];
     }
 
-    // 3. Trunk (locomotion lean + acceleration lean + breathing), evaluated first.
+    // 3. Trunk (locomotion lean + acceleration lean + breathing), evaluated first. The CHEST
+    //    (spine) leans into the travel; the pelvis keeps pelvisLeanShare of it (abdomen counters
+    //    the rest) so the hips keep their flexion range. Walking backward stays upright; only the
+    //    acceleration may lean the chest back, by at most leanBackMax.
     const loco = B.values(LAYER.loco), rest = lim.rest, angles = out.angles;
-    const lean = lerp(p.leanWalk, p.leanRun, run) * m * ahead;
-    loco[SPINE] = rest[SPINE] + 0.6 * lean;
-    loco[ABD] = rest[ABD] + 0.4 * lean;
-    const accLean = p.accelLeanGain * Math.atan(this.#accel * ahead / this.gait.params.gravity);
+    const lean = lerp(p.leanWalk, p.leanRun, run) * m * Math.max(0, ahead);
+    const counter = -(1 - p.pelvisLeanShare);
+    loco[SPINE] = rest[SPINE] + lean;
+    loco[ABD] = rest[ABD] + counter * lean;
+    const accLean = clamp(
+      p.accelLeanGain * Math.atan(this.#accel * ahead / this.gait.params.gravity),
+      -p.leanBackMax, Math.max(0, p.leanMax - lean),
+    );
     const bal = B.values(LAYER.balance);
-    bal[SPINE] = 0.6 * accLean;
-    bal[ABD] = 0.4 * accLean;
+    bal[SPINE] = accLean;
+    bal[ABD] = counter * accLean;
     const breath = p.breathAmplitude * Math.sin(2 * Math.PI * p.breathRate * this.#time);
     const br = B.values(LAYER.breath);
     for (let j = 0; j < JOINT_COUNT; j++) br[j] = this.#breathUnit[j] * breath;
@@ -388,6 +433,8 @@ export class Animator {
 
     // 4. Pelvis height: ride + bob, lowered so every (nearly) planted foot is reachable.
     const pelvisR = hipPivot(g, angles[SPINE], angles[ABD], HIP2);
+    // The feet step under the hips where the trunk lean actually put them (next frame's rest spots).
+    this.#hipShift = HIP2[1] - this.#hipRestZ;
     const groundBody = inp.groundHeight(inp.x, inp.z);
     const baseRootY = inp.rootY ?? groundBody + this.#soleDepth;
     const exactRatio = 1 - p.reachMargin - p.softness;
@@ -435,16 +482,22 @@ export class Animator {
       drop = Math.max(drop, early * pelvisDropFor(0, 0, D3[1], Math.hypot(D3[0], D3[2]), exactLimit));
       if (late > 0) {
         sampleGround(inp.groundHeight, f.landX, f.landZ, fx, fz, 0.5 * (g.ballForward + g.heelBack), GS_LAND);
-        worldToLocal(inp.x, inp.z, inp.yaw, f.landX, f.landZ, P2);
+        // Where the landing spot will sit relative to the body AT TOUCHDOWN: the body still
+        // travels toGo before the foot lands, so anticipate (land - toGo), not the spot as seen
+        // from here (at 6.5 m/s that is ~0.65 m farther and would demand the full drop cap).
+        worldToLocal(inp.x, inp.z, inp.yaw, f.landX - f.toGoX, f.landZ - f.toGoZ, P2);
         this.#ankleTarget(i, P2[0], GS_LAND.height, P2[1], -GS_LAND.slopePitch, g.ballForward, rootY);
         drop = Math.max(drop, late * pelvisDropFor(0, 0, D3[1], Math.hypot(D3[0], D3[2]), exactLimit));
       }
-      const pass = this.#plantWeight[i];
+      // Pass-through share of this leg: the plant weight, but at least swingPassThrough in the air
+      // — a lagging swing leg hangs from a pelvis that has already moved (and dropped) on, so the
+      // foot dips (measured -1.6 cm at a 0 -> 6.5 m/s start with full pop-guard lag).
+      const pass = Math.max(this.#plantWeight[i], p.swingPassThrough);
       const lj = LEG_JOINTS[i];
-      // Toes are never passed through: they only lie flat (toe = -slope - Θ) and would echo every
-      // quick roll of the foot; the pop guard smooths them without touching the sole contact.
-      B.passThrough[lj.hip] = B.passThrough[lj.knee] = B.passThrough[lj.ankle] = pass;
-      B.passThrough[lj.toe] = 0;
+      // The toe passes through with the rest of the leg: it carries the push-off roll
+      // (toe = -slope - Θ keeps the toes flat while the heel lifts), and any pop-guard lag there
+      // pushes the toe tip into the floor (measured: -2.3 cm at a 0.46 rad roll on lane A's rig).
+      B.passThrough[lj.hip] = B.passThrough[lj.knee] = B.passThrough[lj.ankle] = B.passThrough[lj.toe] = pass;
     }
     const cap = p.maxPelvisDrop * L;
     this.gait.urgency = clamp((drop - 0.6 * cap) / (0.4 * cap), 0, 1);
@@ -471,7 +524,8 @@ export class Animator {
       const cX = this.#ballX[i];
       let cY = this.#ballY[i], cZ = this.#ballZ[i], pitch = this.#pitch[i], onBall = true;
       this.#ankleTarget(i, cX, cY, cZ, pitch, g.ballForward, rootY);
-      solveLegInPelvis(D3[0], D3[1], D3[2], pelvisR, pitch, slope, chain, rollMin, rollMax, leg);
+      const legLim = this.#legLimits[i], restRoll = hipRestRollOf(g, i as Side);
+      solveLegInPelvis(D3[0], D3[1], D3[2], pelvisR, pitch, slope, chain, rollMin, rollMax, leg, undefined, legLim, restRoll);
       const lo = lim.min[lj.ankle] + ANKLE_MARGIN, hi = lim.max[lj.ankle] - ANKLE_MARGIN;
       // Switching pivots goes through the sole at the CURRENT pitch, so the ankle path is continuous.
       const span = g.ballForward + g.heelBack;
@@ -484,7 +538,7 @@ export class Animator {
           pitch -= leg.ankle - hi;
         }
         this.#ankleTarget(i, cX, cY, cZ, pitch, onBall ? g.ballForward : -g.heelBack, rootY);
-        solveLegInPelvis(D3[0], D3[1], D3[2], pelvisR, pitch, slope, chain, rollMin, rollMax, leg);
+        solveLegInPelvis(D3[0], D3[1], D3[2], pelvisR, pitch, slope, chain, rollMin, rollMax, leg, undefined, legLim, restRoll);
       }
       loco[lj.hip] = leg.hip;
       loco[lj.knee] = leg.knee;
@@ -504,22 +558,46 @@ export class Animator {
       loco[aj.shoulder] = rest[aj.shoulder] - armGain * swing;
       loco[aj.elbow] = rest[aj.elbow] - elbowBend - 0.25 * armGain * Math.abs(swing);
     }
-    const trunkPitch = angles[SPINE] + angles[ABD];
-    loco[NECK] = rest[NECK] - 0.5 * p.headStabilise * trunkPitch;
-    loco[HEAD] = rest[HEAD] - 0.5 * p.headStabilise * trunkPitch;
+    // Gaze stabilisation: the neck hangs off the SPINE pivot (Humanoid's tree and lane A's), so
+    // the head's world pitch is spine + neck + head; cancel headStabilise of the chest (spine)
+    // pitch only — the abdomen turns the pelvis, not the head.
+    const chestPitch = angles[SPINE];
+    loco[NECK] = rest[NECK] - 0.5 * p.headStabilise * chestPitch;
+    loco[HEAD] = rest[HEAD] - 0.5 * p.headStabilise * chestPitch;
 
     // 7. Everything else through the layers.
     B.evaluate(h, angles, TRUNK);
 
-    out.rootOffsetY = auth * (rootY - baseRootY);
-    out.rootRoll = roll;
-    out.rootOffsetLateral = this.#lateral;
     for (let i = 0; i < 2; i++) {
       // The rolls belong to the locomotion layer: they fade with its authority over the leg.
       const a = B.baseAuthority(LEG_JOINTS[i].hip);
       out.hipRoll[i] = a * this.#legRoll[i];
       out.ankleRoll[i] = -out.hipRoll[i];
     }
+    // 8. Root height. While the gait owns the legs the IK ride height holds (planted soles on the
+    //    ground). Legs it does NOT own (skill curve, KO, air) follow lane A's rule instead: the
+    //    lowest sole point of the FINAL pose sits on the body's floor (baseRootY - soleDepth: the
+    //    floor itself for a sole-origin rig, one body radius under the centre for the legacy one),
+    //    so an authored lunge neither floats (lowest sole 15.6 cm up mid-dash with the old 0 offset) nor sinks:
+    //      G = -soleDepth - lowest,   rootOffsetY = a·(ride root - baseRootY) + (1 - a)·G.
+    //    During a handover (0 < a < 1) the two poses and the two root rules are mixed, and a convex
+    //    mix of root heights does not keep the mixed pose's soles up (measured -4.8 cm at a = 0.5
+    //    after a dash), so the root is also lifted until the lowest sole is on the floor, with a
+    //    weight that is 1 below a = 1 - HANDOVER_BAND and fades to 0 at a = 1 (no pop).
+    if (auth < 1) {
+      const grounded = -this.#soleDepth - this.#lowestSole(angles, out.hipRoll, out.ankleRoll);
+      const mixed = auth * (rootY - baseRootY) + (1 - auth) * grounded;
+      out.rootOffsetY = mixed + Math.min(1, (1 - auth) / HANDOVER_BAND) * Math.max(0, grounded - mixed);
+    } else {
+      out.rootOffsetY = rootY - baseRootY;
+    }
+    // 9. Sole guard (last line, lift only): no heel, ball or toe tip of the FINAL pose may sit
+    //    below the ground under it. Transients the IK cannot follow (a 0 -> 6.5 m/s keyboard start,
+    //    the speed limiter, a clamp) then hover a foot for a frame instead of sinking it.
+    const clearance = this.#soleClearance(inp, baseRootY + out.rootOffsetY, angles, out.hipRoll, out.ankleRoll);
+    if (clearance < 0) out.rootOffsetY -= clearance;
+    out.rootRoll = roll;
+    out.rootOffsetLateral = this.#lateral;
     out.pelvisDrop = drop;
     out.phase = this.gait.phase;
     for (let i = 0; i < 2; i++) {
@@ -530,11 +608,45 @@ export class Animator {
       const lj = LEG_JOINTS[i], loco = B.values(LAYER.loco), a = out.angles;
       const unclamped = Math.abs(a[lj.hip] - loco[lj.hip]) < 0.01 && Math.abs(a[lj.knee] - loco[lj.knee]) < 0.01 &&
         Math.abs(a[lj.ankle] - loco[lj.ankle]) < 0.01;
-      o.planted = inp.grounded && f.planted && B.baseAuthority(lj.hip) > 0.98 && this.#legs[i].residual < 0.01 && unclamped;
+      o.planted = inp.grounded && f.planted && B.baseAuthority(lj.hip) > 0.98 && this.#legs[i].residual < 0.01 && unclamped &&
+        !this.#legs[i].limited;
     }
     out.footPlant.left = out.feet[0].planted;
     out.footPlant.right = out.feet[1].planted;
     return out;
+  }
+
+  /**
+   * Height (m, rig-local, relative to the rig origin) of the lowest sole point — heel, ball or
+   * toe tip of either foot — for the given final angles and rolls (Rig.legFK3).
+   */
+  #lowestSole(angles: Float64Array, hipRoll: Float64Array, ankleRoll: Float64Array): number {
+    let lo = Infinity;
+    for (let i = 0; i < 2; i++) {
+      legFK3(this.geometry, angles, i as Side, hipRoll[i], ankleRoll[i], FK3);
+      lo = Math.min(lo, FK3.ball[1], FK3.heel[1], FK3.toe[1]);
+    }
+    return lo;
+  }
+
+  /**
+   * Smallest height (m) of any sole point (heel, ball, toe tip of both feet) above the ground
+   * under it, for the rig origin at world height `rootWorldY` with this frame's roll and lateral
+   * shift: world y = rootWorldY + x·sin ρ + y·cos ρ (the rig rolls about its local z).
+   */
+  #soleClearance(inp: AnimatorInput, rootWorldY: number, angles: Float64Array, hipRoll: Float64Array, ankleRoll: Float64Array): number {
+    let worst = Infinity;
+    const ox = inp.x + this.#lateral * Math.cos(inp.yaw), oz = inp.z - this.#lateral * Math.sin(inp.yaw);
+    for (let i = 0; i < 2; i++) {
+      legFK3(this.geometry, angles, i as Side, hipRoll[i], ankleRoll[i], FK3);
+      for (let k = 0; k < 3; k++) {
+        const pt = k === 0 ? FK3.ball : k === 1 ? FK3.heel : FK3.toe;
+        const y = rootWorldY + pt[0] * this.#sinR + pt[1] * this.#cosR;
+        localToWorld(ox, oz, inp.yaw, pt[0] * this.#cosR - pt[1] * this.#sinR, pt[2], P2);
+        worst = Math.min(worst, y - inp.groundHeight(P2[0], P2[1]));
+      }
+    }
+    return worst;
   }
 
   /** Cache the root roll and the lateral shift that makes it pivot at the ground (m). */

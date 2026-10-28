@@ -45,6 +45,21 @@ export interface GaitParams {
   dutyRun: number;
   /** θmax: half-angle (rad) the stance leg may sweep about the hip; caps the stance length. */
   maxStanceAngle: number;
+  /**
+   * θmax for SIDEWAYS travel (rad): the stance sweeps across the hip in the frontal plane, where
+   * the trailing foot is pulled under the body by hip ADDUCTION (the animator allows 0.3 rad);
+   * 0.8 × 0.3 keeps a margin. The angle for any direction lies on the ellipse
+   *   1/θ(φ)² = cos²φ/θmax² + sin²φ/θlat²,   φ = travel direction relative to the facing,
+   * and the stride shrinks with it, λ ×= sin θ(φ) / sin θmax: a side shuffle takes short quick
+   * steps instead of a forward stride the hips cannot sweep sideways.
+   */
+  maxStanceAngleLateral: number;
+  /**
+   * θmax for BACKWARD travel (rad): a backpedal lands each foot behind the hip, so the touchdown
+   * is limited by hip EXTENSION (~0.3 rad in human gait), not flexion. Enters the ellipse with
+   * the backward share of the direction: 1/θ² = fwd²/θmax² + back²/θback² + side²/θlat².
+   */
+  maxStanceAngleBack: number;
   /** Swing apex / L = apexBase + apexGain ŝ + apexRun · run, capped at apexMax (heel recovery when running). */
   apexBase: number;
   apexGain: number;
@@ -57,6 +72,19 @@ export interface GaitParams {
    * (a sprinter's swing is ~0.3 s; 0.2 s leaves headroom). Bounds du/dt <= 1 / minSwingTime.
    */
   minSwingTime: number;
+  /**
+   * Shortest ground contact, s. A foot that lands late (overdue) with the phase already past its
+   * duty would otherwise lift again on the very next frame: a one-frame stance, the pelvis drops
+   * for the new swing in one step and the leg cannot follow. 0.05 s = 3 frames at 60 Hz, under
+   * the shortest DERIVED stance (β·λ/v ≈ 0.06 s sideways at 6.5 m/s) so it never stretches a
+   * regular stride, only the overdue ones.
+   */
+  minStanceTime: number;
+  /**
+   * Safety factor (≥ 1) on minSwingTime when the stride is floored so a swing always fits its
+   * window (gaitShape): 1.15 absorbs the one-frame lag of lift-off detection at 60 Hz.
+   */
+  swingTimeMargin: number;
   /** k: share of the compass-gait vertical excursion the knee absorbs (0 = stiff legs). */
   kneeCompliance: number;
   /** Peak push-off roll onto the ball (rad, toe-down) walking / running. */
@@ -92,12 +120,16 @@ export const DEFAULT_GAIT: GaitParams = {
   dutyWalk: 0.62,
   dutyRun: 0.38,
   maxStanceAngle: 0.45,
+  maxStanceAngleLateral: 0.24,
+  maxStanceAngleBack: 0.3,
   apexBase: 0.05,
   apexGain: 0.07,
   apexRun: 0.2,
   apexMax: 0.4,
   landLambda: 15,
   minSwingTime: 0.2,
+  minStanceTime: 0.05,
+  swingTimeMargin: 1.15,
   kneeCompliance: 0.5,
   toeOffWalk: 0.3,
   toeOffRun: 0.5,
@@ -148,11 +180,23 @@ export function newGaitShape(): GaitShape {
 }
 
 /**
+ * Half-angle θ(φ) (rad) the stance leg may sweep for a travel direction with sideways share
+ * `lateral` = |sin φ| and backward share `back` = max(0, -cos φ) (forward share = what is left):
+ *   1/θ² = fwd²/θmax² + back²/θback² + lateral²/θlat²,  fwd² = max(0, 1 - lateral² - back²).
+ */
+export function stanceAngleFor(p: GaitParams, lateral: number, back = 0): number {
+  const s2 = clamp01(lateral) ** 2, b2 = clamp01(back) ** 2, f2 = Math.max(0, 1 - s2 - b2);
+  return 1 / Math.sqrt(f2 / (p.maxStanceAngle ** 2) + b2 / (p.maxStanceAngleBack ** 2) + s2 / (p.maxStanceAngleLateral ** 2));
+}
+
+/**
  * Evaluate the gait shape at `speed` (m/s) for a leg of length `leg` (m) on ground pitched by
- * `slopePitch` (rad, along the motion; either sign shortens). Writes `out`.
+ * `slopePitch` (rad, along the motion; either sign shortens), travelling at `lateral` = |sin φ|
+ * and `back` = max(0, -cos φ) of the facing (sideways / backward: shorter, quicker steps). Writes `out`.
  */
 export function gaitShape(
-  speed: number, leg: number, p: GaitParams = DEFAULT_GAIT, out: GaitShape = newGaitShape(), slopePitch = 0,
+  speed: number, leg: number, p: GaitParams = DEFAULT_GAIT, out: GaitShape = newGaitShape(), slopePitch = 0, lateral = 0,
+  back = 0,
 ): GaitShape {
   const v = Math.max(0, speed);
   const L = Math.max(1e-3, leg);
@@ -160,9 +204,18 @@ export function gaitShape(
   const fr = sNorm * sNorm;
   const run = smoothstep(p.walkRunFroude[0], p.walkRunFroude[1], fr);
   const hill = clamp(1 - p.strideSlopeLoss * Math.abs(slopePitch), 0.5, 1);
-  const stride = L * (p.strideAtRest + p.strideGain * sNorm) * hill;
-  const maxStance = 2 * L * Math.sin(p.maxStanceAngle) * hill;
-  const duty = Math.min(lerp(p.dutyWalk, p.dutyRun, run), maxStance / stride);
+  const theta = stanceAngleFor(p, lateral, back);
+  const side = Math.sin(theta) / Math.sin(p.maxStanceAngle);
+  const maxStance = 2 * L * Math.sin(theta) * hill;
+  const duty0 = lerp(p.dutyWalk, p.dutyRun, run);
+  // Swing-time floor: a swing lasts (1 - β)·λ / v and may not be shorter than T = minSwingTime ×
+  // swingTimeMargin (the integrator caps it there; a shorter window makes EVERY step overdue).
+  // With β = min(β0, S/λ), (1 - β)·λ = max((1 - β0)·λ, λ - S), so the smallest stride is
+  //   λmin = min( v·T / (1 - β0),  S + v·T ).   Binds for short legs moving sideways fast.
+  const swingT = p.minSwingTime * p.swingTimeMargin;
+  const minStride = Math.min(v * swingT / Math.max(1e-6, 1 - duty0), maxStance + v * swingT);
+  const stride = Math.max(L * (p.strideAtRest + p.strideGain * sNorm) * hill * side, minStride);
+  const duty = Math.min(duty0, maxStance / stride);
   const cadence = v / stride;
   const stance = duty * stride;
   const halfAngle = Math.asin(clamp(stance / (2 * L), 0, 1));
@@ -206,12 +259,27 @@ export interface FootState {
   /** Rest spot of this foot this frame (world x/z): under the hip, plus the guard stagger. */
   restX: number;
   restZ: number;
+  /**
+   * True once the phase wrapped while this foot was still in the air (its landing window passed):
+   * it then finishes at the capped swing rate. Without the latch, a duty factor that shrinks
+   * while the body speeds up moves φ back into the SWING window and the foot hovers a whole cycle.
+   */
+  overdue: boolean;
+  /**
+   * World x/z distance the body still travels before this swing lands (m): actual speed × time
+   * left, along the travel direction (0 while planted). The landing spot MINUS this vector is
+   * where the foot will sit relative to the body at touchdown — what the pelvis must anticipate.
+   */
+  toGoX: number;
+  toGoZ: number;
+  /** Seconds since this foot last touched down (grows while planted). */
+  stanceTime: number;
 }
 
 function newFoot(): FootState {
   return {
     planted: true, x: 0, z: 0, lift: 0, pitch: 0, swing: 1, liftX: 0, liftZ: 0, liftPitch: 0, landX: 0, landZ: 0,
-    restX: 0, restZ: 0,
+    restX: 0, restZ: 0, overdue: false, toGoX: 0, toGoZ: 0, stanceTime: 1,
   };
 }
 
@@ -233,6 +301,12 @@ export interface GaitInput {
   turnRate: number;
   /** Ground pitch along the direction of travel, rad (shortens the stride). Default 0. */
   slopePitch?: number;
+  /**
+   * Forward shift (m, rig-local) of the hip pivots from their bind position — a trunk lean on a
+   * chest-rooted tree moves the pelvis back. The rest spots follow it so mid-stance stays under
+   * the hips, not under the chest. Default 0.
+   */
+  hipShift?: number;
 }
 
 const LEG_PHASE_OFFSET: readonly [number, number] = [0, 0.5];
@@ -266,6 +340,9 @@ export class Gait {
   #ready = false;
   #lastX = 0;
   #lastZ = 0;
+  #hipShift = 0;
+  #lateral = 0;
+  #back = 0;
 
   constructor(geom: LegGeometry, params: Partial<GaitParams> = {}) {
     this.params = { ...DEFAULT_GAIT, ...params };
@@ -287,7 +364,7 @@ export class Gait {
     for (let i = 0 as Side; i < 2; i = (i + 1) as Side) {
       const f = this.feet[i];
       this.#restSpot(i, x, z, yaw, stagger);
-      f.planted = true; f.x = f.restX; f.z = f.restZ; f.lift = 0; f.pitch = 0; f.swing = 1;
+      f.planted = true; f.x = f.restX; f.z = f.restZ; f.lift = 0; f.pitch = 0; f.swing = 1; f.overdue = false;
     }
     this.phase = 0.5 + 0.5 * (this.params.dutyWalk - 0.5);
     this.speed = 0;
@@ -298,7 +375,7 @@ export class Gait {
 
   #restSpot(i: Side, x: number, z: number, yaw: number, stagger: number): void {
     const f = this.feet[i];
-    const lz = this.#hipRestZ + this.#geom.ballForward + (i === 0 ? 0.5 : -0.5) * stagger;
+    const lz = this.#hipRestZ + this.#hipShift + this.#geom.ballForward + (i === 0 ? 0.5 : -0.5) * stagger;
     localToWorld(x, z, yaw, this.#geom.hipLateral[i], lz, P2);
     f.restX = P2[0];
     f.restZ = P2[1];
@@ -308,8 +385,12 @@ export class Gait {
   update(dt: number, inp: GaitInput): void {
     if (!this.#ready) this.reset(inp.x, inp.z, inp.yaw, inp.stagger);
     const p = this.params, L = this.#leg, h = Math.max(0, dt);
+    this.#hipShift = inp.hipShift ?? 0;
     this.speed = damp(this.speed, Math.max(0, inp.speed), p.speedLambda, h);
-    const sh = gaitShape(this.speed, L, p, this.shape, inp.slopePitch ?? 0);
+    // Sideways share of the travel, filtered like the speed (a direction flip eases the stride).
+    this.#lateral = damp(this.#lateral, Math.abs(Math.sin(inp.moveDirLocal)), p.speedLambda, h);
+    this.#back = damp(this.#back, Math.max(0, -Math.cos(inp.moveDirLocal)), p.speedLambda, h);
+    const sh = gaitShape(this.speed, L, p, this.shape, inp.slopePitch ?? 0, this.#lateral, this.#back);
     this.moving = smoothstep(p.stillSpeed, p.movingSpeed, this.speed);
     for (let i = 0 as Side; i < 2; i = (i + 1) as Side) this.#restSpot(i, inp.x, inp.z, inp.yaw, inp.stagger);
 
@@ -322,7 +403,9 @@ export class Gait {
 
     if (!inp.grounded) {
       // Airborne: nothing planted; feet hang at their rest spots. On landing they latch there.
-      for (const f of this.feet) { f.planted = true; f.x = f.restX; f.z = f.restZ; f.lift = 0; f.pitch = 0; f.swing = 1; }
+      for (const f of this.feet) {
+        f.planted = true; f.x = f.restX; f.z = f.restZ; f.lift = 0; f.pitch = 0; f.swing = 1; f.overdue = false;
+      }
       this.cycleRate = 0;
       this.bob = 0;
       this.roll = 0;
@@ -359,19 +442,22 @@ export class Gait {
     // Distance the body covers per unit of phase at the current rate (m): v / rate.
     const travelPerPhase = rate > 1e-6 ? actualSpeed / rate : 0;
 
-    // Comfortable reach ahead of the hip at touchdown, m: L·sin(θmax).
-    const maxAhead = L * Math.sin(p.maxStanceAngle);
+    let resync = 0; // phase a late touchdown takes back (see the touchdown branch)
+    // Comfortable reach ahead of the hip at touchdown, m: L·sin(θ(φ)) for this travel direction.
+    const maxAhead = L * Math.sin(stanceAngleFor(p, this.#lateral, this.#back));
     for (let i = 0 as Side; i < 2; i = (i + 1) as Side) {
       const f = this.feet[i];
       const old = frac(this.phase + LEG_PHASE_OFFSET[i]);
       const next = old + dPhase; // may exceed 1 (wrap)
       let late = false; // swinging although φ is back in the stance window (touchdown overdue)
       if (f.planted) {
-        if (next >= duty && next < 1) {
+        f.stanceTime += h;
+        if (next >= duty && next < 1 && f.stanceTime >= p.minStanceTime) {
           // Lift-off. On a genuine crossing the swing has already run (next - duty) of phase
           // this frame; a foot found planted inside its swing window (after a landing, or when
           // speeding up shrank β past it) starts its swing from 0.
           f.planted = false;
+          f.overdue = false;
           f.liftX = f.x; f.liftZ = f.z; f.liftPitch = f.pitch;
           f.landX = Number.NaN;
           f.swing = old < duty ? clamp01((next - duty) / Math.max(1e-6, 1 - duty)) : 0;
@@ -384,10 +470,11 @@ export class Gait {
         // than 1 / minSwingTime. A swing still airborne after the wrap (φ back in the stance
         // window) finishes at that cap; its stance is simply shorter.
         const cap = h / p.minSwingTime;
-        late = old < duty && f.swing > 0;
+        late = f.overdue || (old < duty && f.swing > 0);
         const remaining = Math.max(1e-6, 1 - old);
         const du = late ? cap : Math.min(cap, dPhase >= remaining ? 1 - f.swing : (1 - f.swing) * dPhase / remaining);
         f.swing = Math.min(1, f.swing + du);
+        if (!late && dPhase >= remaining && f.swing < 1) f.overdue = late = true; // missed its landing window
       }
       if (!f.planted) {
         // Landing spot: the rest spot carried forward by the travel still to come before
@@ -399,6 +486,8 @@ export class Gait {
         const overshoot = f.swing >= 1 && !late ? Math.max(0, next - 1) * travelPerPhase : 0;
         const ahead = actualSpeed * timeLeft + Math.min(maxAhead, 0.5 * duty * travelPerPhase) - overshoot;
         const predX = f.restX + mdx * ahead, predZ = f.restZ + mdz * ahead;
+        f.toGoX = mdx * actualSpeed * timeLeft;
+        f.toGoZ = mdz * actualSpeed * timeLeft;
         if (Number.isNaN(f.landX)) { f.landX = predX; f.landZ = predZ; }
         // Damped toward the prediction, and never faster than a leg can sweep: L / minSwingTime.
         let mx = damp(f.landX, predX, p.landLambda, h) - f.landX;
@@ -422,10 +511,20 @@ export class Gait {
         const bump = Math.sin(Math.PI * Math.pow(u, lerp(1, 0.7, sh.runBlend))) ** 2;
         f.lift = sh.swingApex * bump;
         f.pitch = f.liftPitch * (1 - smootherstep(0, 0.5, u)) - p.swingDorsiflex * rollOff * bump;
-        if (u >= 1) { f.planted = true; f.lift = 0; f.pitch = 0; }
+        if (u >= 1) {
+          f.planted = true; f.lift = 0; f.pitch = 0; f.overdue = false; f.toGoX = 0; f.toGoZ = 0; f.stanceTime = 0;
+          // Touchdown should happen at φ = 0 (the wrap). A late (overdue) landing at φ = x < 0.5
+          // re-synchronises the body phase by -x: otherwise the foot gets only the minimum
+          // stance, lifts with too little phase left, is late again, and the gait locks into a
+          // permanently late cycle (measured: every strafe step overdue on the dwarf rig).
+          // Only a LATE landing counts (overdue, or φ already back in the stance window when the
+          // frame began): an on-time landing in the wrap frame overshoots by < dφ by construction.
+          const phi = frac(next);
+          if (late && phi < 0.5) resync = Math.max(resync, phi);
+        }
       }
     }
-    this.phase = frac(this.phase + dPhase);
+    this.phase = frac(this.phase + dPhase - resync);
 
     // Pelvis bob (2 per cycle) and sway (1 per cycle), locked to the "L" leg's mid-stance.
     const phiL = frac(this.phase + LEG_PHASE_OFFSET[0]);

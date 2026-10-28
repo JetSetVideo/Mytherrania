@@ -1,5 +1,5 @@
 // Lane C (R04): the phase-driven gait — derived stride, planted feet, swing arc, bob and sway.
-import { DEFAULT_GAIT, frac, Gait, gaitShape } from "../src/game/anim/Gait.ts";
+import { DEFAULT_GAIT, frac, Gait, gaitShape, stanceAngleFor } from "../src/game/anim/Gait.ts";
 import { legacyLegGeometryFor } from "../src/game/anim/LegacyGeometry.ts";
 import { legLength } from "../src/game/anim/Rig.ts";
 
@@ -106,4 +106,54 @@ Deno.test("standing still settles: the phase stops with both feet planted; turni
     wasPlanted = g.feet[0].planted;
   }
   assert(steps >= 1, "turning in place makes the feet step");
+});
+
+// ---- lane C2 -------------------------------------------------------------------------------------
+
+Deno.test("sideways and backward travel take shorter steps (stance-angle ellipse), and every swing fits minSwingTime", () => {
+  const p = DEFAULT_GAIT;
+  near(stanceAngleFor(p, 0, 0), p.maxStanceAngle, 1e-12, "forward");
+  near(stanceAngleFor(p, 1, 0), p.maxStanceAngleLateral, 1e-12, "sideways");
+  near(stanceAngleFor(p, 0, 1), p.maxStanceAngleBack, 1e-12, "backward");
+  const fwd = gaitShape(6.5, L), side = gaitShape(6.5, L, p, undefined, 0, 1), back = gaitShape(6.5, L, p, undefined, 0, 0, 1);
+  assert(side.stride < fwd.stride && back.stride < fwd.stride, "shorter strides off the sagittal line");
+  for (const leg of [L, 0.6]) {
+    for (const v of [0.5, 2.1, 4.2, 6.5]) {
+      for (const lat of [0, 0.5, 1]) {
+        const s = gaitShape(v, leg, p, undefined, 0, lat);
+        const swing = (1 - s.duty) * s.stride / v;
+        assert(swing >= p.minSwingTime * p.swingTimeMargin - 1e-9, `L=${leg} v=${v} lateral=${lat}: swing ${swing.toFixed(3)} s`);
+      }
+    }
+  }
+});
+
+Deno.test("a keyboard start (0 -> 6.5 m/s in 0.12 s) never leaves a swing hovering, and late landings re-sync the phase", () => {
+  const g = new Gait(GEOM);
+  g.reset(0, 0, 0);
+  const dt = 1 / 60, accel = 6.5 / 0.12;
+  let z = 0, v = 0, longest = 0, overdueLandings = 0;
+  const run = [0, 0], wasOverdue = [false, false];
+  for (let k = 0; k < 180; k++) {
+    v = Math.min(6.5, v + accel * dt);
+    z += v * dt;
+    g.update(dt, { x: 0, z, yaw: 0, speed: v, moveDirLocal: 0, grounded: true, stagger: 0, turnRate: 0 });
+    for (let i = 0; i < 2; i++) {
+      const f = g.feet[i];
+      // Consecutive frames skimming the floor without landing (a landing takes 2-3 such frames).
+      run[i] = !f.planted && f.swing > 0.9 && f.lift < 0.01 ? run[i] + 1 : 0;
+      longest = Math.max(longest, run[i]);
+      if (wasOverdue[i] && f.planted) overdueLandings++;
+      wasOverdue[i] = !f.planted && f.overdue;
+    }
+  }
+  assert(longest <= 4, `a swing skimmed the ground for ${longest} consecutive frames before landing`);
+  // After the transient the feet are back in phase: the last second has no overdue swing.
+  let late = 0;
+  for (let k = 0; k < 60; k++) {
+    z += 6.5 * dt;
+    g.update(dt, { x: 0, z, yaw: 0, speed: 6.5, moveDirLocal: 0, grounded: true, stagger: 0, turnRate: 0 });
+    for (const f of g.feet) if (!f.planted && f.overdue) late++;
+  }
+  assert(late === 0, `${late} overdue swing-frames in steady running (phase not re-synchronised; ${overdueLandings} late landings)`);
 });

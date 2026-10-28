@@ -239,7 +239,9 @@ export function stackFor(subject: PaintSubject): PaintStack {
     if (t.warpaint >= 0.5) {
       layers.push(layer("sign-warpaint", "warpaint", signInk, 0.55 + 0.35 * t.warpaint, size("warpaint"), s(), {
         colour2: shiftHsl(signInk, 0.03, 1, 0.08),
-        regions: race === "ork" ? ["face", "upperArm", "foreArm"] : ["face"],
+        // Ork arm warpaint starts at the forearm: dark bands on the upper arm sit on the
+        // arm–torso junction and read as a cut there (browser QA, front view).
+        regions: race === "ork" ? ["face", "foreArm"] : ["face"],
         params: { motif: WARPAINT_MOTIFS.indexOf(sign.motif), bands: 2 + Math.floor(rnd() * 2), width: 0.35 + 0.2 * rnd() },
       }));
     } else {
@@ -266,6 +268,9 @@ export function stackFor(subject: PaintSubject): PaintStack {
   }
 
   // 13. Garment (optional): the palette colour as a tunic and breeches, woven by a faint noise.
+  // Sleeveless on purpose: browser QA tried short sleeves (cover + upperArm) and the front view
+  // scored WORSE — the upperArm region is mostly the deltoid cap, so the hem landed just below
+  // the shoulder and read as a second line there (ork front 6/10 -> 3/10).
   if (subject.garment) {
     const cloth = boundColour(subject.garment, INK_BOUNDS);
     const cover: Region[] = ["torso", "pelvis", "thigh"];

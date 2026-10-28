@@ -1,7 +1,7 @@
 // Lane C (R04): two-bone foot IK — reach, pelvis drop, sole parallel to the ground, abduction.
 import {
-  ankleFromBall, newLegSolution, newTwoBoneResult, pelvisDropFor, sampleGround, smoothMax, smoothMin, solveLeg,
-  solveLegInPelvis, solveTwoBone, type TwoBoneChain,
+  ankleFromBall, newLegSolution, newTwoBoneResult, pelvisDropFor, respectHipLimit, sampleGround, smoothMax, smoothMin,
+  solveLeg, solveLegInPelvis, solveTwoBone, type TwoBoneChain,
 } from "../src/game/anim/FootIK.ts";
 import { JOINT_COUNT, JOINT_INDEX, legFK, legFK3, newLegFK, newLegFK3 } from "../src/game/anim/Rig.ts";
 import { legacyLegGeometryFor } from "../src/game/anim/LegacyGeometry.ts";
@@ -109,4 +109,43 @@ Deno.test("sampleGround measures a 15° plane's pitch along the probe direction"
   near(g.slopePitch, 15 * Math.PI / 180, 1e-9); near(g.height, 2 * t, 1e-12);
   sampleGround((_x, z) => t * z, 1, 2, 1, 0, 0.1, g); // across the fall line: level
   near(g.slopePitch, 0, 1e-12);
+});
+
+// ---- lane C2 -------------------------------------------------------------------------------------
+
+Deno.test("respectHipLimit: a clamped hip keeps the ankle at the target height (never below it)", () => {
+  const ik = newTwoBoneResult();
+  const lim = { hipMin: -1.2, hipMax: 0.5, kneeMin: -2.4, kneeMax: 0 };
+  // Targets that need more than 0.5 rad of thigh flexion: far ahead, and close in front of the hip.
+  for (const [ty, tz] of [[-0.55, 0.55], [-0.35, 0.3], [-0.7, 0.35]]) {
+    solveTwoBone(0, 0, ty, tz, CHAIN, ik);
+    assert(ik.upperPitch > lim.hipMax, `target (${ty}, ${tz}) needs the limit`);
+    assert(respectHipLimit(ty, tz, CHAIN, lim, ik), "limit reported");
+    near(ik.upperPitch, lim.hipMax, 1e-12, "thigh clamped");
+    assert(ik.endY >= ty - MM, `ankle ${ik.endY.toFixed(4)} below target ${ty}`);
+    assert(ik.kneeFlex <= 0 && ik.kneeFlex >= lim.kneeMin, "knee inside its window");
+    // FK of the returned pitches lands where the result says.
+    near(ik.endY, -CHAIN.upper * Math.cos(ik.upperPitch) - CHAIN.lower * Math.cos(ik.lowerPitch), 1e-12, "FK y");
+  }
+  // Inside the window nothing changes.
+  solveTwoBone(0, 0, -0.8, 0.1, CHAIN, ik);
+  const before = ik.upperPitch;
+  assert(!respectHipLimit(-0.8, 0.1, CHAIN, lim, ik) && ik.upperPitch === before, "untouched inside the window");
+});
+
+Deno.test("solveLegInPelvis: a clamped abduction keeps the ankle at the target HEIGHT; the miss is lateral", () => {
+  const g = legacyLegGeometryFor("human", null, 1.75, 75);
+  const chain: TwoBoneChain = { upper: g.thigh, lower: g.shin, reachMargin: 1e-4, softness: 0 };
+  const sol = newLegSolution(), fk = newLegFK3(), angles = new Float64Array(JOINT_COUNT);
+  const hipY = g.trunk[0].y + g.trunk[1].y + g.hipOffset.y;
+  const dx = 0.4, dy = -0.6, dz = 0.05; // needs atan(0.4/0.6) = 0.59 rad, allowed 0.3
+  solveLegInPelvis(dx, dy, dz, 0, 0, 0, chain, -0.3, 0.3, sol);
+  near(sol.roll, 0.3, 1e-12, "roll clamped");
+  angles[JOINT_INDEX.hipR] = sol.hip; angles[JOINT_INDEX.kneeR] = sol.knee; angles[JOINT_INDEX.ankleR] = sol.ankle;
+  legFK3(g, angles, 1, sol.roll, -sol.roll, fk);
+  near(fk.ankle[1] - hipY, dy, MM, "height kept");
+  near(sol.residual, Math.abs(dx + dy * Math.tan(0.3)), MM, "residual = lateral miss");
+  // A bind-pose abduction (rest roll) is added under the solved roll: the rig receives roll - rest.
+  solveLegInPelvis(0.1, -0.6, 0, 0, 0, 0, chain, -0.6, 0.6, sol, undefined, undefined, 0.1);
+  near(sol.roll, Math.atan2(0.1, 0.6) - 0.1, 1e-12, "roll relative to the bind abduction");
 });

@@ -163,7 +163,9 @@ function strokesFor(P: BodyProportions, t: ReturnType<typeof torsoNode>, face: F
   for (const [i, arm] of arms.entries()) {
     const side = i === 0 ? "left" : "right";
     const mid: Vec3 = [(arm.elbow[0] + arm.wrist[0]) / 2, (arm.elbow[1] + arm.wrist[1]) / 2, (arm.elbow[2] + arm.wrist[2]) / 2];
-    out.push({ kind: "twist", centre: mid, axis: arm.frame.d, radius: 0.5 * P.foreArm, strength: 0.06 * h, purpose: `${side} forearm pronation (radius over ulna)` });
+    // Mirror symmetry: a twist about the mirrored axis must turn the opposite way (σ·strength).
+    const sigma = Math.sign(arm.shoulder[0]);
+    out.push({ kind: "twist", centre: mid, axis: arm.frame.d, radius: 0.5 * P.foreArm, strength: sigma * 0.06 * h, purpose: `${side} forearm pronation (radius over ulna)` });
     const pit: Vec3 = [Math.sign(arm.shoulder[0]) * P.halfWidth.chest * 0.95, y.shoulder - 0.45 * h, -0.05 * h];
     out.push({ kind: "smooth", centre: pit, radius: 0.4 * h, strength: 0.08 * h, purpose: `${side} armpit (axilla) relax` });
   }
@@ -221,9 +223,12 @@ function buildPlan(P: BodyProportions, seed: number): DetailedAnatomy {
   const strokes = strokesFor(P, torso, head.face, arms.map((a) => a.anchors), legs.map((l) => l.anchors));
   const pad = BOUNDS_PAD_CELLS * c + brushReach(strokes);
   // Grid rows straddle y = 0 at ±c/2, so the sole plane falls mid-edge, never on a corner.
+  // Columns are mirror-symmetric about x = 0 (corners at ±(i + ½)·c, an odd cell count), so
+  // the left and right limbs sample the same field values and polygonise as mirror images.
+  const halfCells = Math.ceil(Math.max(-raw.min[0], raw.max[0]) / c + pad / c);
   const bounds: Bounds = {
-    min: [raw.min[0] - pad, -(BOUNDS_PAD_CELLS + 0.5) * c, raw.min[2] - pad],
-    max: [raw.max[0] + pad, Math.min(raw.max[1], P.y.crown + h) + pad, raw.max[2] + pad],
+    min: [-(halfCells + 0.5) * c, -(BOUNDS_PAD_CELLS + 0.5) * c, raw.min[2] - pad],
+    max: [(halfCells + 0.5) * c - 1e-9, Math.min(raw.max[1], P.y.crown + h) + pad, raw.max[2] + pad],
   };
   const bones = bonesFor(P, head.face, arms.map((a) => a.anchors), legs.map((l) => l.anchors), torso.backZ);
   return {

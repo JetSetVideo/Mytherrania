@@ -178,11 +178,13 @@ export interface LegSolution {
   roll: number;
   /** Distance (m) between the ankle the solution reaches and the target (0 = hit). */
   residual: number;
+  /** True when the hip limit forced a re-solve (solveLegInPelvis with limits). */
+  limited: boolean;
 }
 
 /** A zeroed LegSolution to reuse. */
 export function newLegSolution(): LegSolution {
-  return { hip: 0, knee: 0, ankle: 0, toe: 0, pelvisDrop: 0, reachable: true, roll: 0, residual: 0 };
+  return { hip: 0, knee: 0, ankle: 0, toe: 0, pelvisDrop: 0, reachable: true, roll: 0, residual: 0, limited: false };
 }
 
 const ANKLE = new Float64Array(2);
@@ -216,6 +218,7 @@ export function solveLeg(
   out.pelvisDrop = ik.pelvisDrop;
   out.reachable = ik.reachable;
   out.roll = 0;
+  out.limited = false;
   out.residual = Math.hypot(ik.endY - ANKLE[0], ik.endZ - ANKLE[1]);
   return out;
 }
@@ -228,8 +231,9 @@ export function solveLeg(
  * dy up, dz forward) in the rig's local frame, the pelvis rig rotation R_pelvis, the foot's
  * toe-down pitch Θ and ground pitch, and the abduction window [rollMin, rollMax] (rad).
  *   pelvis frame:  (x, y, z)_p = (dx, dy cosR + dz sinR, -dy sinR + dz cosR)
- *   roll          = clamp(atan2(x_p, -y_p), rollMin, rollMax)
- *   in-plane down = -x_p sin(roll) + y_p cos(roll)   (= -hypot(x_p, y_p) when unclamped)
+ *   roll          = clamp(atan2(x_p, -y_p), rollMin, rollMax)   (TOTAL plane roll)
+ *   in-plane down = y_p / cos(roll)   (= -hypot(x_p, y_p) when unclamped; height-first when clamped)
+ *   out.roll      = roll - restRoll   (what the rig adds on top of the bind abduction)
  *   hip = ψ_thigh (pelvis frame),  knee = ψ_shin - ψ_thigh,  ankle = Θ - R_pelvis + ψ_shin,
  *   toe = -groundPitch - Θ.  The rig counter-rolls the ankle by -roll so the sole stays level.
  * `pelvisDrop` is left to the caller (it needs the world vertical).
@@ -237,20 +241,76 @@ export function solveLeg(
 export function solveLegInPelvis(
   dx: number, dy: number, dz: number, pelvisR: number, footPitch: number, groundPitch: number,
   chain: TwoBoneChain, rollMin: number, rollMax: number, out: LegSolution, ik: TwoBoneResult = IK,
+  limits?: LegJointLimits, restRoll = 0,
 ): LegSolution {
   const c = Math.cos(pelvisR), s = Math.sin(pelvisR);
   const xp = dx, yp = dy * c + dz * s, zp = -dy * s + dz * c;
+  // Total plane roll (bind abduction included), clamped to the anatomical window.
   const roll = clamp(Math.atan2(xp, -yp), rollMin, rollMax);
-  const down = -xp * Math.sin(roll) + yp * Math.cos(roll);
+  // In-plane depth that puts the ankle at the target's HEIGHT: the plane's down axis is
+  // (sin ρ, -cos ρ), so depth p = -y_p / cos ρ. Unclamped this is exactly |(x_p, y_p)|; with a
+  // clamped roll the closest-point projection would sink the ankle by sin ρ_c·ρ·sin(ρ - ρ_c),
+  // so height wins and the miss is purely lateral.
+  const down = yp / Math.cos(roll);
   solveTwoBone(0, 0, down, zp, chain, ik);
+  out.limited = limits ? respectHipLimit(down, zp, chain, limits, ik) : false;
   out.hip = RIG_ROTATION_SIGN.hipL * ik.upperPitch * -1;
   out.knee = RIG_ROTATION_SIGN.kneeL * (ik.upperPitch - ik.lowerPitch);
   out.ankle = footPitch - pelvisR + ik.lowerPitch;
   out.toe = -groundPitch - footPitch;
-  out.roll = roll;
+  out.roll = roll - restRoll;
   out.reachable = ik.reachable;
   out.pelvisDrop = ik.pelvisDrop;
-  // In-plane miss plus the out-of-plane miss left by a clamped abduction.
-  out.residual = Math.hypot(ik.endY - down, ik.endZ - zp, xp * Math.cos(roll) + yp * Math.sin(roll));
+  // In-plane miss plus the lateral miss left by a clamped abduction (|x_p - p·sin ρ|).
+  out.residual = Math.hypot(ik.endY - down, ik.endZ - zp, xp + yp * Math.tan(roll));
   return out;
+}
+
+/**
+ * Joint windows of one leg in the Skeleton convention (rad): hip = forward pitch of the thigh in
+ * the pelvis frame, knee = ψ_shin − ψ_thigh (≤ 0). The rig clamps to these AFTER the IK, so a
+ * solution that ignores them is bent by the clamp — a clamped hip flexion rotates the whole
+ * shin + foot down and back, i.e. INTO the floor. respectHipLimit re-solves instead.
+ */
+export interface LegJointLimits {
+  hipMin: number;
+  hipMax: number;
+  kneeMin: number;
+  kneeMax: number;
+}
+
+/**
+ * Re-solve a planar two-bone result in place so the thigh stays inside [hipMin, hipMax] while the
+ * ankle keeps the target's HEIGHT whenever it can (height first, reach second: a foot short of
+ * its landing spot reads as a short step, a foot below it reads as sinking).
+ *   ψ_thigh clamped into [hipMin, hipMax];  knee K = t·(sin ψ, −cos ψ). Shin candidates:
+ *     aim     ψ = atan2(T_z − K_z, K_y − T_y)            (ankle on the line K→T)
+ *     level±  cos ψ = (K_y − T_y)/s, ψ = ±acos(·)          (ankle exactly at the target height)
+ *     limits  ψ = ψ_thigh + kneeMin, ψ_thigh + kneeMax      (fully folded / straight)
+ *   each with its knee flexion ψ − ψ_thigh clamped into [kneeMin, kneeMax]; the winner minimises
+ *     cost = |end − T| + 10·max(0, T_y − end_y)            (a sunk ankle costs 10× a short one).
+ * Returns true when the hip limit was active (the result is then not exact).
+ */
+export function respectHipLimit(targetY: number, targetZ: number, chain: TwoBoneChain, lim: LegJointLimits, ik: TwoBoneResult): boolean {
+  const upper = ik.upperPitch;
+  if (upper >= lim.hipMin && upper <= lim.hipMax) return false;
+  const t = chain.upper, s = chain.lower;
+  const u = clamp(upper, lim.hipMin, lim.hipMax);
+  const kz = t * Math.sin(u), ky = -t * Math.cos(u);
+  const ez = targetZ - kz, ey = targetY - ky;
+  const level = Math.acos(clamp(-ey / s, -1, 1)); // cos ψ_shin = (K_y − T_y) / s
+  let best = Infinity, bestLower = u;
+  for (let k = 0; k < 5; k++) {
+    const raw = k === 0 ? Math.atan2(ez, -ey) : k === 1 ? level : k === 2 ? -level : k === 3 ? u + lim.kneeMin : u + lim.kneeMax;
+    const lower = u + clamp(raw - u, lim.kneeMin, lim.kneeMax);
+    const ey2 = ky - s * Math.cos(lower), ez2 = kz + s * Math.sin(lower);
+    const cost = Math.hypot(ez2 - targetZ, ey2 - targetY) + 10 * Math.max(0, targetY - ey2);
+    if (cost < best) { best = cost; bestLower = lower; }
+  }
+  ik.upperPitch = u;
+  ik.lowerPitch = bestLower;
+  ik.kneeFlex = bestLower - u;
+  ik.endZ = kz + s * Math.sin(bestLower);
+  ik.endY = ky - s * Math.cos(bestLower);
+  return true;
 }

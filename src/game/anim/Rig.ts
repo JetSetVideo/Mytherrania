@@ -141,6 +141,33 @@ export interface LegGeometry {
   soleOffset: number;
   ballForward: number;
   heelBack: number;
+  /**
+   * Bind-pose abduction of each leg [L, R], rad, about the pelvis's forward axis (+ toward local
+   * +x): the angle of hip -> knee from straight down in the frontal plane. Lane A's skinned body
+   * binds its legs slightly apart (Anatomy legAbduction 0.03-0.18 rad) and the rig applies the
+   * animator's hipRoll ON TOP of it, so the leg plane's true roll is hipRestRoll + hipRoll.
+   * Ignoring it misplaces the ankle by ρ(cos r - cos(r + r0)) vertically (1.4 cm at r = 0.3).
+   * Absent = [0, 0] (the legacy pivot rig hangs its legs straight).
+   */
+  hipRestRoll?: readonly [number, number];
+  /** Ball -> toe tip along the sole, m (the toe bone's length). Absent = 0.6·ballForward. */
+  toeForward?: number;
+  /**
+   * Height of the toe joint (the ball pivot) above the sole plane, m. The ball CONTACT sits right
+   * under it; when the toes curl up on a steep foot, the pivot offset turns the tip by r·(1 - cos)
+   * along the sole, which reads as up to 2 cm of height (ork, toe -0.68 rad). Absent = 0.
+   */
+  toePivotHeight?: number;
+}
+
+/** Bind-pose abduction (rad) of leg `side`: hipRestRoll or 0. */
+export function hipRestRollOf(g: LegGeometry, side: Side): number {
+  return g.hipRestRoll ? g.hipRestRoll[side] : 0;
+}
+
+/** Ball -> toe tip distance (m): toeForward or 0.6·ballForward. */
+export function toeForwardOf(g: LegGeometry): number {
+  return g.toeForward ?? 0.6 * g.ballForward;
 }
 
 /** Leg length L = thigh + shin (metres): the base length every gait quantity is derived from. */
@@ -151,13 +178,14 @@ export function legLength(g: LegGeometry): number {
 /**
  * Depth of the sole plane below the rig origin in the bind pose (metres, > 0 when the origin
  * is above the feet). Derived, not stored:
- *   soleDepth = -( Σ trunk.y + hipOffset.y - thigh - shin - soleOffset )
- * Legacy rig: 0.6 (the body centre, BODY_RADIUS). A rig whose origin is at the soles: 0.
+ *   soleDepth = -( Σ trunk.y + hipOffset.y - (thigh + shin)·cos(hipRestRoll) - soleOffset )
+ * (a leg bound abducted by r0 reaches only L·cos r0 below its hip). Legacy rig: 0.6 (the body
+ * centre, BODY_RADIUS). A rig whose origin is at the soles (lane A's skinned body): 0.
  */
 export function standingSoleDepth(g: LegGeometry): number {
   let y = 0;
   for (const l of g.trunk) y += l.y;
-  return -(y + g.hipOffset.y - g.thigh - g.shin - g.soleOffset);
+  return -(y + g.hipOffset.y - (g.thigh + g.shin) * Math.cos(hipRestRollOf(g, 0)) - g.soleOffset);
 }
 
 /**
@@ -199,6 +227,7 @@ export function legGeometryFromBones(bones: readonly BoneSegment[], soleOffset: 
     return b;
   };
   const hipL = need("hipL"), hipR = need("hipR"), kneeL = need("kneeL"), ankleL = need("ankleL"), toeL = need("toeL");
+  const kneeR = by.get("kneeR") ?? null;
   const s = modelScale;
   // Walk up from the hip collecting trunk joints, then emit them root-first.
   const chain: BoneSegment[] = [];
@@ -214,6 +243,14 @@ export function legGeometryFromBones(bones: readonly BoneSegment[], soleOffset: 
     prev = [b.head[1], b.head[2]];
   }
   const dist = (a: readonly number[], b: readonly number[]) => Math.hypot(a[0] - b[0], a[1] - b[1], a[2] - b[2]);
+  // Frontal-plane angle of hip -> knee from straight down: atan2(knee.x - hip.x, hip.y - knee.y).
+  const restRoll = (hip: BoneSegment, knee: BoneSegment) => Math.atan2(knee.head[0] - hip.head[0], hip.head[1] - knee.head[1]);
+  const rollL = restRoll(hipL, kneeL);
+  const ballForward = Math.max(0.05 * s, (toeL.head[2] - ankleL.head[2]) * s);
+  // Lane A's foot (AnatomyParts.legNode): heel back 0.25·foot behind the ankle, toe tip 0.75·foot
+  // ahead, and its heel SOLE point inset 0.09·foot from the heel's back: 0.16·foot behind the ankle
+  //   heelBack = (0.16 / 0.75)·(toe tip z - ankle z)   (the toe bone's TAIL is the toe tip).
+  const tipForward = (toeL.tail[2] - ankleL.head[2]) * s;
   return {
     trunk,
     hipOffset: { y: (hipL.head[1] - prev[0]) * s, z: (hipL.head[2] - prev[1]) * s },
@@ -221,8 +258,12 @@ export function legGeometryFromBones(bones: readonly BoneSegment[], soleOffset: 
     thigh: dist(hipL.head, kneeL.head) * s,
     shin: dist(kneeL.head, ankleL.head) * s,
     soleOffset: soleOffset * s,
-    ballForward: Math.max(0.05 * s, (toeL.head[2] - ankleL.head[2]) * s),
-    heelBack: 0.3 * Math.max(0.05 * s, (toeL.head[2] - ankleL.head[2]) * s),
+    ballForward,
+    heelBack: tipForward > ballForward ? (0.16 / 0.75) * tipForward : 0.3 * ballForward,
+    hipRestRoll: [rollL, kneeR ? restRoll(hipR, kneeR) : -rollL],
+    // Toe sole point: the tip inset by 0.04·foot = (0.04 / 0.75)·tipForward (lane A's sole point).
+    toeForward: Math.max(0, (toeL.tail[2] - toeL.head[2]) * s - (0.04 / 0.75) * tipForward),
+    toePivotHeight: Math.max(0, (toeL.head[1] - ankleL.head[1]) * s + soleOffset * s),
   };
 }
 
@@ -304,11 +345,13 @@ export interface LegFK3 {
   ankle: Float64Array; // [x, y, z]
   ball: Float64Array;
   heel: Float64Array;
+  /** Toe tip on the sole: toeForward past the ball, turned by the toe joint (pivot taken on the sole). */
+  toe: Float64Array;
 }
 
 /** A zeroed LegFK3 to reuse. */
 export function newLegFK3(): LegFK3 {
-  return { ankle: new Float64Array(3), ball: new Float64Array(3), heel: new Float64Array(3) };
+  return { ankle: new Float64Array(3), ball: new Float64Array(3), heel: new Float64Array(3), toe: new Float64Array(3) };
 }
 
 const Q = new Float64Array(3);
@@ -330,7 +373,7 @@ function chainToRoot(g: LegGeometry, angles: Float64Array, side: Side, hipRoll: 
   const lj = LEG_JOINTS[side];
   rotZ(v, ankleRoll); rotX(v, angles[lj.ankle]); v[1] -= g.shin;           // ankle: Euler XYZ
   rotX(v, RIG_ROTATION_SIGN.kneeL * angles[lj.knee]); v[1] -= g.thigh;     // knee
-  rotX(v, RIG_ROTATION_SIGN.hipL * angles[lj.hip]); rotZ(v, hipRoll);       // hip: Euler ZYX
+  rotX(v, RIG_ROTATION_SIGN.hipL * angles[lj.hip]); rotZ(v, hipRoll + hipRestRollOf(g, side)); // hip: Euler ZYX
   v[0] += g.hipLateral[side]; v[1] += g.hipOffset.y; v[2] += g.hipOffset.z;
   for (let k = g.trunk.length - 1; k >= 0; k--) {
     const l = g.trunk[k];
@@ -340,9 +383,9 @@ function chainToRoot(g: LegGeometry, angles: Float64Array, side: Side, hipRoll: 
 }
 
 /**
- * 3D forward kinematics of one leg with hip abduction `hipRoll` (Euler ZYX on the hip pivot)
- * and ankle counter-roll `ankleRoll` (Euler XYZ on the ankle), rig-local metres. With both
- * rolls 0 it equals legFK (plus the hip's lateral x).
+ * 3D forward kinematics of one leg with hip abduction `hipRoll` (Euler ZYX on the hip pivot, on
+ * top of the geometry's hipRestRoll) and ankle counter-roll `ankleRoll` (Euler XYZ on the ankle),
+ * rig-local metres. With both rolls 0 and no rest roll it equals legFK (plus the hip's lateral x).
  */
 export function legFK3(g: LegGeometry, angles: Float64Array, side: Side, hipRoll: number, ankleRoll: number, out: LegFK3): LegFK3 {
   Q[0] = 0; Q[1] = 0; Q[2] = 0;
@@ -351,6 +394,12 @@ export function legFK3(g: LegGeometry, angles: Float64Array, side: Side, hipRoll
   chainToRoot(g, angles, side, hipRoll, ankleRoll, Q); out.ball.set(Q);
   Q[0] = 0; Q[1] = -g.soleOffset; Q[2] = -g.heelBack;
   chainToRoot(g, angles, side, hipRoll, ankleRoll, Q); out.heel.set(Q);
+  // Toe tip: the toe joint sits r = toePivotHeight above the ball contact; the tip's sole point is
+  // (0, -r, toeForward) in the toe frame, turned by the toe angle (sign +1, toe < 0 = toes up).
+  const tf = toeForwardOf(g), ta = angles[LEG_JOINTS[side].toe] * RIG_ROTATION_SIGN.toeL, r = g.toePivotHeight ?? 0;
+  const ct = Math.cos(ta), st = Math.sin(ta);
+  Q[0] = 0; Q[1] = -g.soleOffset + r + (-r * ct - tf * st); Q[2] = g.ballForward + (-r * st + tf * ct);
+  chainToRoot(g, angles, side, hipRoll, ankleRoll, Q); out.toe.set(Q);
   return out;
 }
 

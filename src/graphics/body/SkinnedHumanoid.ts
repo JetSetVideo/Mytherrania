@@ -20,7 +20,7 @@ import type { Element } from "../../game/Skills.ts";
 import type { Appearance } from "../../game/Characters.ts";
 import type { BodySpec, BoneId, MeshData, MeshStats, SkinData, Vec3 } from "./contracts.ts";
 import { generateBody, type BodyMesh, type BodyTiming } from "./BodyMesh.ts";
-import { computeSkinWeights } from "./SkinWeights.ts";
+import { computeSkinWeights, MAX_INFLUENCES, shoulderBands } from "./SkinWeights.ts";
 import { boneBindRoll, boneDisplayRoll, type DetailedAnatomy } from "./Anatomy.ts";
 import { applyFaceMorph, buildFaceParts } from "./FaceParts.ts";
 import { paintVertices } from "../paint/Layers.ts";
@@ -106,7 +106,10 @@ function cachedBody(spec: BodySpec): { body: BodyMesh; skin: SkinData; cached: b
   const hit = BODY_CACHE.get(key);
   if (hit) { BODY_CACHE.delete(key); BODY_CACHE.set(key, hit); return { ...hit, cached: true }; }
   const body = generateBody(spec);
-  const skin = computeSkinWeights(body.mesh, body.plan.bones);
+  // Shoulder seam bands (lane A2): trunk skin medial to the shoulder no longer see-saws with the arm.
+  const skin = computeSkinWeights(body.mesh, body.plan.bones, MAX_INFLUENCES, {
+    rootBands: shoulderBands(body.plan.proportions.radius.deltoid, body.plan.cell),
+  });
   BODY_CACHE.set(key, { body, skin });
   while (BODY_CACHE.size > BODY_CACHE_SIZE) BODY_CACHE.delete(BODY_CACHE.keys().next().value!);
   return { body, skin, cached: false };
@@ -279,10 +282,21 @@ export function buildSkinnedHumanoid(
         qJoint.setFromAxisAngle(jb.axis, rot);
         jb.bone.quaternion.copy(jb.rest);
         if (jb.roll) {
+          // Hip: abduction OUTERMOST (Euler ZYX, rest·Rz(roll)·Rx(pitch)). Ankle: counter-roll
+          // INNERMOST (Euler XYZ, rest·Rx(pitch)·Rz(roll)) — the order that keeps a flat sole level
+          // exactly: Rz(r)·Rx(φ)·[Rx(-φ)·Rz(-r)] = I (lane C2 measured ~2 cm planted-ball drift
+          // on a 0.15 rad-abducted ork with the ankle roll applied outermost).
           const r = jb.roll.kind === "hip" ? sk.legRoll.hip[jb.roll.side] : sk.legRoll.ankle[jb.roll.side];
-          if (r !== 0) jb.bone.quaternion.multiply(qRoll.setFromAxisAngle(Z_AXIS, r));
+          if (jb.roll.kind === "hip") {
+            if (r !== 0) jb.bone.quaternion.multiply(qRoll.setFromAxisAngle(Z_AXIS, r));
+            jb.bone.quaternion.multiply(qJoint);
+          } else {
+            jb.bone.quaternion.multiply(qJoint);
+            if (r !== 0) jb.bone.quaternion.multiply(qRoll.setFromAxisAngle(Z_AXIS, r));
+          }
+        } else {
+          jb.bone.quaternion.multiply(qJoint);
         }
-        jb.bone.quaternion.multiply(qJoint);
       }
       applyFaceMorph(face, sk.face.face());
       soleOffset = measureSoles();

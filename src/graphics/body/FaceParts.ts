@@ -9,7 +9,7 @@ import { createCelSurface } from "../shaders/CelShader.ts";
 import { HAIR_LENGTH_M, raceBuild, seededPick } from "../../game/RaceAppearance.ts";
 import type { Appearance } from "../../game/Characters.ts";
 import type { Vec3 } from "./contracts.ts";
-import type { FaceAnchors } from "./AnatomyParts.ts";
+import { type FaceAnchors, HAIR_CAP_POLAR, HAIR_CAP_SCALE, HAIR_CAP_TILT } from "./AnatomyParts.ts";
 
 /** The parts the face morph drives each frame (brow, eyelid, mouth), like Humanoid's refs. */
 export interface FaceRig {
@@ -101,11 +101,12 @@ export function buildFaceParts(head: THREE.Object3D, face: FaceAnchors, origin: 
   const style = seededPick(build.hairStyles, (a.race ?? "human").length * 31 + (a.subrace ?? "").length);
   const sc = at(face.skullCentre), sr = face.skullRadii;
   if (build.hairLength !== "bald") {
-    const capGeo = new THREE.SphereGeometry(1, 24, 12, 0, Math.PI * 2, 0, Math.PI * 0.42);
+    // The shell's size, extent and tilt are shared with AnatomyParts so pointed ears clear it.
+    const capGeo = new THREE.SphereGeometry(1, 24, 12, 0, Math.PI * 2, 0, HAIR_CAP_POLAR);
     const cap = createCelSurface(capGeo, hairColor);
-    cap.scale.set(sr[0] * 1.08, sr[1] * 1.08, sr[2] * 1.08);
+    cap.scale.set(sr[0] * HAIR_CAP_SCALE, sr[1] * HAIR_CAP_SCALE, sr[2] * HAIR_CAP_SCALE);
     cap.position.set(...sc);
-    cap.rotation.x = -0.35;
+    cap.rotation.x = HAIR_CAP_TILT;
     head.add(cap);
     triangleCount += tris(capGeo);
   }

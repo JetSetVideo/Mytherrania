@@ -5,8 +5,9 @@
 // Vocabulary: σ (side) = +1 for the left limb (+x), −1 for the right. `d` is a limb's unit
 // direction from its root joint, `o` the outward lateral vector ⟂ d in the xy plane, `f` = +z.
 
-import type { BoneId, Primitive, PrimitiveKind, Region, SdfNode, Vec3, VolumeOp } from "./contracts.ts";
+import type { BoneId, Primitive, PrimitiveKind, Region, SdfNode, SdfSample, Vec3, VolumeOp } from "./contracts.ts";
 import type { BodyProportions } from "./Proportions.ts";
+import { compileSdf, primitiveDistance } from "./Sdf.ts";
 
 /** Smooth-union width at a joint: BLEND_FRACTION × the harmonic mean of the two radii (m). */
 export const BLEND_FRACTION = 0.5;
@@ -40,6 +41,136 @@ export function limbFrame(root: Vec3, abduction: number, side: 1 | -1): LimbFram
   const s = Math.sin(abduction), c = Math.cos(abduction);
   // Rz(σ·a) maps the local −y onto d = (σ sin a, −cos a, 0); `roll` is that Euler z.
   return { root, d: [side * s, -c, 0], o: [side * c, s, 0], f: [0, 0, 1], roll: side * abduction };
+}
+
+// --- frames -------------------------------------------------------------------------------
+export const cross = (a: Vec3, b: Vec3): Vec3 => [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]];
+export const unit = (a: Vec3): Vec3 => { const l = Math.hypot(a[0], a[1], a[2]) || 1; return [a[0] / l, a[1] / l, a[2] / l]; };
+/**
+ * XYZ Euler angles (three.js convention M = Rx·Ry·Rz, as Sdf.ts applies `rot`) of the rotation
+ * whose columns are the orthonormal right-handed basis X, Y, Z: the primitive's local x, y, z
+ * axes land on X, Y, Z.
+ */
+export function eulerXYZFromBasis(X: Vec3, Y: Vec3, Z: Vec3): Vec3 {
+  const m13 = Z[0], m23 = Z[1], m33 = Z[2], m12 = Y[0], m11 = X[0], m32 = Y[2], m22 = Y[1];
+  const y = Math.asin(Math.max(-1, Math.min(1, m13)));
+  if (Math.abs(m13) < 0.9999999) return [Math.atan2(-m23, m33), y, Math.atan2(-m12, m11)];
+  return [Math.atan2(m32, m22), y, 0];
+}
+
+// --- ears ----------------------------------------------------------------------------------
+
+/** Canon ear height over head height (a 6.5 cm ear on a 22.7 cm head). */
+export const EAR_HEIGHT_PER_HEAD = 0.29;
+/** Ear centre below the eye line, head heights (the ear spans brow line to nose base). */
+export const EAR_DROP_PER_HEAD = 0.08;
+/** Outward flare of the pinna's back edge away from the side of the head (rad, ≈ 20°). */
+export const EAR_FLARE = 0.35;
+/** Backward lean of the ear's long axis from vertical (rad). */
+export const EAR_LEAN = 0.25;
+/** RaceAppearance.earMul at which an ear is fully pointed (the elf's value). */
+export const POINTED_EAR_MUL = 1.9;
+/** Length of a fully pointed tip beyond the pinna's top-back rim, head heights. */
+export const EAR_TIP_PER_HEAD = 0.34;
+/**
+ * The pinna's outer face stands at least this many cells off the skull side: the grid
+ * resolves a lobe (and the crease behind it) only when it protrudes about a cell or more.
+ */
+export const EAR_MIN_STANDOFF_CELLS = 1.0;
+/** Thinnest resolvable plate / tube radius, cells (a full thickness of ~1.2 cells). */
+export const MIN_PLATE_CELLS = 0.6;
+/** Hair cap (FaceParts): a shell over the skull radii × HAIR_CAP_SCALE, polar extent and tilt. */
+export const HAIR_CAP_SCALE = 1.08;
+export const HAIR_CAP_POLAR = 0.42 * Math.PI;
+export const HAIR_CAP_TILT = -0.35;
+/** A pointed ear's tip stays this many cells outside the hair cap shell. */
+export const EAR_TIP_CLEAR_CELLS = 1.5;
+
+/** True when model point p lies inside the hair cap shell grown by `margin` metres. */
+export function insideHairCap(p: Vec3, skullCentre: Vec3, skullRadii: Vec3, margin: number): boolean {
+  // Undo the cap's x-tilt about the skull centre, then test the scaled ellipsoid.
+  const dy = p[1] - skullCentre[1], dz = p[2] - skullCentre[2];
+  const c = Math.cos(-HAIR_CAP_TILT), s = Math.sin(-HAIR_CAP_TILT);
+  const ly = c * dy - s * dz, lz = s * dy + c * dz;
+  const rx = skullRadii[0] * HAIR_CAP_SCALE + margin, ry = skullRadii[1] * HAIR_CAP_SCALE + margin, rz = skullRadii[2] * HAIR_CAP_SCALE + margin;
+  const q = Math.hypot((p[0] - skullCentre[0]) / rx, ly / ry, lz / rz);
+  const polar = Math.acos(Math.max(-1, Math.min(1, ly / (ry * Math.max(q, 1e-9)))));
+  return q < 1 && polar < HAIR_CAP_POLAR;
+}
+
+/** Smallest ear height, cells: a pinna about 2.6 cells tall keeps its outline in the grid. */
+export const EAR_MIN_HEIGHT_CELLS = 2.6;
+
+/**
+ * Both ears (RaceAppearance.earMul = P.earScale), measured against the actual head: the
+ * head's side surface x_s at the ear (bisection on `headSurface`, the skull + face field
+ * WITHOUT ears) anchors a flared pinna plate whose outer face stands
+ * max(0.06 h, EAR_MIN_STANDOFF_CELLS·cell) off it, bridged to the head by a concha.
+ * Pinna height = max(EAR_HEIGHT_PER_HEAD·h·min(earMul, 1), EAR_MIN_HEIGHT_CELLS·cell).
+ * Pointed ears — pointedness π = clamp((earMul − 1)/(POINTED_EAR_MUL − 1), 0, 1) — add a
+ * leaf-shaped blade (an ellipsoid whose long axis runs from the pinna's top-back rim to the
+ * tip, so its silhouette narrows to a point) of length EAR_TIP_PER_HEAD·h·π swept up, back
+ * and out, pushed outward until the tip clears the hair cap by EAR_TIP_CLEAR_CELLS cells.
+ */
+export function earNodes(
+  P: BodyProportions, skullCentre: Vec3, skullRadii: Vec3, headSurface: (x: number, y: number, z: number) => number,
+): { nodes: SdfNode[]; anchors: [Vec3, Vec3]; tips: [Vec3 | null, Vec3 | null] } {
+  const h = P.head, c = P.cell;
+  const size = Math.min(P.earScale, 1); // big ears grow a tip, small ears shrink
+  const pointed = Math.max(0, Math.min(1, (P.earScale - 1) / (POINTED_EAR_MUL - 1)));
+  const earH = Math.max(EAR_HEIGHT_PER_HEAD * h * size, EAR_MIN_HEIGHT_CELLS * c);
+  const halfT = Math.max(0.035 * h, MIN_PLATE_CELLS * c);
+  const halfD = Math.max(0.32 * earH, 1.2 * MIN_PLATE_CELLS * c);
+  const standoff = Math.max(0.06 * h, EAR_MIN_STANDOFF_CELLS * c);
+  const y = P.y.eye - EAR_DROP_PER_HEAD * h;
+  const z = skullCentre[2] - 0.02 * h;
+  // The head's side: bisection of headSurface(x, y, zz) = 0 on x ∈ [0, 2·skull half-width] at
+  // the ear's own depth (where the concha attaches) and its maximum over the head's depth (the
+  // front silhouette the ear must stand out of).
+  const sideAt = (zz: number): number => {
+    let lo = 0, hi = 2 * skullRadii[0];
+    for (let i = 0; i < 24; i++) { const mid = (lo + hi) / 2; if (headSurface(mid, y, zz) < 0) lo = mid; else hi = mid; }
+    return lo;
+  };
+  const sideHere = sideAt(z);
+  let side = sideHere;
+  for (let zz = skullCentre[2] - skullRadii[2]; zz <= skullCentre[2] + skullRadii[2] + 0.3 * h; zz += 0.5 * c) side = Math.max(side, sideAt(zz));
+  const nodes: SdfNode[] = [];
+  const anchors: Vec3[] = [], tips: (Vec3 | null)[] = [];
+  for (const s of [1, -1] as const) {
+    const L = s > 0 ? "L" : "R";
+    // Pinna frame: thin axis X (outward, flared), long axis Y (up, leaning back), Z = X × Y.
+    const out: Vec3 = [s * Math.cos(EAR_FLARE), 0, -Math.sin(EAR_FLARE)];
+    const up: Vec3 = unit([0, Math.cos(EAR_LEAN), -Math.sin(EAR_LEAN)]);
+    const X = unit(out), Z = unit(cross(X, up)), Y = cross(Z, X);
+    const back: Vec3 = s > 0 ? mul(Z, -1) : Z;
+    const centre: Vec3 = [s * (side + standoff - halfT), y, z];
+    nodes.push(prim(`pinna${L}`, "ellipsoid", "head", "ear", centre, { size: [halfT, earH / 2, halfD], rot: eulerXYZFromBasis(X, Y, Z) }));
+    // Concha: bridges the plate to the head so the ear is one piece with it.
+    const reach = side + standoff - halfT - sideHere; // head surface → pinna centre (m)
+    nodes.push(prim(`concha${L}`, "ellipsoid", "head", "ear", [s * (sideHere + 0.5 * reach), y - 0.1 * earH, z + 0.2 * halfD], {
+      size: [0.5 * reach + 1.5 * halfT, 0.3 * earH, 0.6 * halfD],
+    }));
+    anchors.push(centre);
+    if (pointed > 0) {
+      const rim = sum(centre, mul(Y, 0.3 * earH), mul(back, 0.35 * halfD));
+      const dir = unit(sum(mul(Y, 0.8), mul(out, 0.45), mul(back, 0.3)));
+      let tip = along(rim, dir, EAR_TIP_PER_HEAD * h * pointed);
+      for (let i = 0; i < 40 && insideHairCap(tip, skullCentre, skullRadii, EAR_TIP_CLEAR_CELLS * c); i++) tip = add(tip, [s * 0.25 * c, 0, 0]);
+      // Blade: long axis A rim→tip, thin axis T = the pinna normal made ⟂ A, width axis T × A.
+      const A = unit([tip[0] - rim[0], tip[1] - rim[1], tip[2] - rim[2]]);
+      const T = unit(sum(X, mul(A, -(X[0] * A[0] + X[1] * A[1] + X[2] * A[2]))));
+      const len = Math.hypot(tip[0] - rim[0], tip[1] - rim[1], tip[2] - rim[2]);
+      const mid: Vec3 = [(rim[0] + tip[0]) / 2, (rim[1] + tip[1]) / 2, (rim[2] + tip[2]) / 2];
+      nodes.push(prim(`earBlade${L}`, "ellipsoid", "head", "ear", along(mid, A, -0.25 * len), {
+        size: [halfT, 0.6 * len, Math.max(0.55 * halfD, 0.8 * c)], rot: eulerXYZFromBasis(T, A, cross(T, A)),
+      }));
+      // The point itself: a tapering tube no thinner than the grid resolves (r ≥ 0.7 cell).
+      nodes.push(prim(`earTip${L}`, "roundCone", "head", "ear", rim, { b: tip, r: Math.max(1.2 * halfT, 0.8 * c), r2: 0.7 * c }));
+      tips.push(tip);
+    } else tips.push(null);
+  }
+  return { nodes, anchors: [anchors[0], anchors[1]], tips: [tips[0], tips[1]] };
 }
 
 // --- head --------------------------------------------------------------------------------
@@ -78,13 +209,10 @@ export function headNode(P: BodyProportions, jitter: { nose: number; jaw: number
   const brow = prim("browRidge", "capsule", "head", "face", [-0.24 * h, eyeY + 0.13 * h, 0.31 * h], { b: [0.24 * h, eyeY + 0.13 * h, 0.31 * h], r: Math.max(0.07 * h, 0.6 * c) });
   const noseTip: Vec3 = [0, eyeY - 0.27 * h * jitter.nose, 0.44 * h];
   const nose = prim("nose", "roundCone", "head", "face", [0, eyeY - 0.02 * h, 0.36 * h], { b: noseTip, r: Math.max(0.045 * h, 0.6 * c), r2: Math.max(0.075 * h, 0.75 * c) });
-  const earLen = 0.2 * h * Math.pow(P.earScale, 0.8);
-  const earTilt = 0.35 * (P.earScale - 1); // elf ears sweep up and out
-  const earAt = (s: 1 | -1): Vec3 => [s * sw * 0.95, eyeY - 0.12 * h + (P.earScale - 1) * 0.1 * h, -0.06 * h];
-  const ear = (s: 1 | -1) => prim(`ear${s > 0 ? "L" : "R"}`, "ellipsoid", "head", "ear", earAt(s), {
-    size: [Math.max(0.06 * h, 1.1 * c), earLen, 0.13 * h], rot: [-0.7 * earTilt, 0, -s * earTilt],
-  });
-  const features = op("smoothUnion", 0.05 * h, core, brow, nose, ear(1), ear(-1));
+  const headField = compileSdf(core);
+  const probe: SdfSample = { d: 0, region: 0, bone: 0 };
+  const ears = earNodes(P, skullCentre, skullRadii, (x, y, z) => headField.sample(x, y, z, probe).d);
+  const features = op("smoothUnion", 0.05 * h, core, brow, nose, ...ears.nodes);
   const eyeR = 0.075 * h;
   const socketAt = (s: 1 | -1): Vec3 => [s * 0.2 * h, eyeY, 0.37 * h];
   const socket = (s: 1 | -1) => prim(`eyeSocket${s > 0 ? "L" : "R"}`, "sphere", "head", "face", socketAt(s), { r: 0.105 * h });
@@ -96,7 +224,7 @@ export function headNode(P: BodyProportions, jitter: { nose: number; jaw: number
       eye: [eyeAt(1), eyeAt(-1)], eyeRadius: eyeR,
       brow: [[0.2 * h, eyeY + 0.15 * h, 0.36 * h], [-0.2 * h, eyeY + 0.15 * h, 0.36 * h]],
       mouth: [0, chinY + 0.27 * h, 0.33 * h + jut * 0.5], chin, crown: [0, H, -0.06 * h],
-      skullCentre, skullRadii, ear: [earAt(1), earAt(-1)], noseTip,
+      skullCentre, skullRadii, ear: ears.anchors, noseTip,
     },
   };
 }
@@ -153,7 +281,7 @@ export interface ArmAnchors { shoulder: Vec3; elbow: Vec3; wrist: Vec3; palm: Ve
 
 /** One arm: deltoid, upper arm, biceps, triceps, elbow, forearm, brachioradialis, palm, finger mass, thumb. */
 export function armNode(P: BodyProportions, side: 1 | -1, abduction: number): { node: SdfNode; anchors: ArmAnchors } {
-  const h = P.head, R = P.radius, m = P.muscle, c = P.cell, L = side > 0 ? "L" : "R";
+  const h = P.head, R = P.radius, m = P.muscle, L = side > 0 ? "L" : "R";
   const shoulder: Vec3 = [side * P.halfWidth.shoulderJoint, P.y.shoulder, -0.05 * h];
   const F = limbFrame(shoulder, abduction, side);
   const { d, o, f } = F;
@@ -171,24 +299,87 @@ export function armNode(P: BodyProportions, side: 1 | -1, abduction: number): { 
   const fore = prim(`foreArm${L}`, "roundCone", eb, "foreArm", elbow, { b: wrist, r: R.foreArm, r2: R.wrist });
   const brachio = prim(`brachioradialis${L}`, "ellipsoid", eb, "foreArm", sum(elbow, mul(d, 0.25 * P.foreArm), mul(o, 0.15 * R.foreArm), mul(f, 0.15 * R.foreArm)), { size: [0.7 * R.foreArm * m, 0.3 * P.foreArm, 0.7 * R.foreArm * m], rot });
   const foreGroup = op("smoothUnion", 0.35 * R.foreArm, elbowBall, fore, brachio);
-  const thick = Math.max(R.palmHalfThickness, 1.1 * c);
-  const palm = along(wrist, d, 0.28 * P.hand);
-  const palmBox = prim(`palm${L}`, "roundBox", eb, "hand", palm, { size: [thick, 0.28 * P.hand, R.palmHalfWidth], r: 0.8 * thick, rot });
-  const fingers = prim(`fingers${L}`, "roundBox", eb, "hand", sum(wrist, mul(d, 0.74 * P.hand), mul(f, 0.03 * P.hand)), {
-    size: [0.85 * thick, 0.24 * P.hand, 0.92 * R.palmHalfWidth], r: 0.8 * 0.85 * thick, rot: [0.15, 0, F.roll],
-  });
-  const thumbBase = sum(wrist, mul(d, 0.2 * P.hand), mul(f, 0.75 * R.palmHalfWidth));
-  const thumbTip = sum(wrist, mul(d, 0.55 * P.hand), mul(f, R.palmHalfWidth + 0.06 * h), mul(o, -0.3 * thick));
-  const thumb = prim(`thumb${L}`, "roundCone", eb, "hand", thumbBase, { b: thumbTip, r: Math.max(0.75 * thick, 0.8 * c), r2: Math.max(0.6 * thick, 0.75 * c) });
-  const handGroup = op("smoothUnion", 0.5 * thick, palmBox, fingers, thumb);
+  const hand = handNode(P, side, wrist, F);
   const arm = op("smoothUnion", blendWidth(R.upperArmDistal, R.foreArm), upperGroup, foreGroup);
-  const node = op("smoothUnion", blendWidth(R.wrist, thick), arm, handGroup);
+  const node = op("smoothUnion", blendWidth(R.wrist, hand.halfT), arm, hand.node);
+  const palm = hand.palm;
   const grip = along(wrist, d, 0.45 * P.hand);
   return { node, anchors: { shoulder, elbow, wrist, palm, grip, fingertip, frame: F } };
 }
 
+/** Hand pronation (rad) about the forearm axis: the back of the hand turns forward-out, as in a relaxed stance. */
+export const HAND_PRONATION = 0.6;
+/** Relaxed finger curl toward the palm (rad). */
+export const FINGER_CURL = 0.3;
+/** Thumb splay from the hand axis (rad), start of the solve. */
+export const THUMB_SPLAY = 0.45;
+/** Gap (cells) the thumb tip keeps from the finger mass: the thumb web reads as a notch. */
+export const THUMB_NOTCH_CELLS = 1.4;
+/** Palm half-width floor as a multiple of the wrist radius (a palm is ~1.5 wrists wide). */
+export const PALM_PER_WRIST = 1.35;
+/** Smallest palm half-width (cells): two cells across keeps the palm a plate, not a stick. */
+export const PALM_MIN_HALF_CELLS = 1.5;
+
+/** The hand of one arm: palm plate, curled finger mass, knuckle ridge and a splayed thumb. */
+export interface HandParts { node: SdfNode; palm: Vec3; thumbTip: Vec3; halfT: number; halfW: number; splay: number; notch: number }
+
+/**
+ * One hand in the hand frame (d down the hand, n the back-of-hand normal, w toward the thumb),
+ * pronated HAND_PRONATION about d; sizes from the forearm (R08): half-width
+ * max(canon, PALM_PER_WRIST·wrist, PALM_MIN_HALF_CELLS·cell), half-thickness
+ * max(canon, MIN_PLATE_CELLS·cell), thumb radius max(0.32·half-width, 0.7·cell), length ½ hand. The thumb's
+ * splay is SOLVED: it opens from THUMB_SPLAY until the thumb tip clears the finger mass by
+ * THUMB_NOTCH_CELLS cells, so the thumb survives the grid as its own digit on both hands.
+ */
+export function handNode(P: BodyProportions, side: 1 | -1, wrist: Vec3, F: LimbFrame): HandParts {
+  const R = P.radius, c = P.cell, L = side > 0 ? "L" : "R", eb = `elbow${L}` as BoneId;
+  const d = F.d, cp = Math.cos(HAND_PRONATION), sp = Math.sin(HAND_PRONATION);
+  const n = unit(sum(mul(F.o, cp), mul(F.f, sp)));      // back of the hand: out and forward
+  const w = unit(sum(mul(F.f, cp), mul(F.o, -sp)));     // across the palm, toward the thumb
+  const basis = (dd: Vec3, nn: Vec3): Vec3 => {          // local x = σ·n, y = −d, z = x × y
+    const X = mul(nn, side), Y = mul(dd, -1);
+    return eulerXYZFromBasis(X, Y, cross(X, Y));
+  };
+  const halfT = Math.max(R.palmHalfThickness, MIN_PLATE_CELLS * c);
+  const halfW = Math.max(R.palmHalfWidth, PALM_PER_WRIST * R.wrist, PALM_MIN_HALF_CELLS * c);
+  const palmLen = 0.5 * P.hand, fingerLen = 0.5 * P.hand;
+  const palm = along(wrist, d, 0.5 * palmLen);
+  const palmBox = prim(`palm${L}`, "roundBox", eb, "hand", palm, { size: [halfT, 0.5 * palmLen, halfW], r: 0.8 * halfT, rot: basis(d, n) });
+  // Fingers: curled toward the palm side (−n) about w.
+  const cc = Math.cos(FINGER_CURL), sc = Math.sin(FINGER_CURL);
+  const dCurl = unit(sum(mul(d, cc), mul(n, -sc))), nCurl = unit(sum(mul(n, cc), mul(d, sc)));
+  const knuckle = along(wrist, d, palmLen);
+  const fingerCentre = along(knuckle, dCurl, 0.45 * fingerLen);
+  const fingerT = Math.max(0.8 * halfT, MIN_PLATE_CELLS * c);
+  const fingerParams = { size: [fingerT, 0.5 * fingerLen, 0.92 * halfW] as Vec3, r: 0.85 * fingerT, rot: basis(dCurl, nCurl) };
+  const fingers = prim(`fingers${L}`, "roundBox", eb, "hand", fingerCentre, fingerParams);
+  const knuckles = prim(`knuckles${L}`, "capsule", eb, "hand", sum(knuckle, mul(w, -0.75 * halfW), mul(n, 0.35 * halfT)), {
+    b: sum(knuckle, mul(w, 0.75 * halfW), mul(n, 0.35 * halfT)), r: Math.max(0.75 * halfT, MIN_PLATE_CELLS * c),
+  });
+  // Thumb: from the palm's thumb edge near the wrist, down and out of the palm plane.
+  const thumbR = Math.max(0.32 * halfW, 0.7 * c);
+  const base = sum(wrist, mul(d, 0.22 * P.hand), mul(w, 0.7 * halfW), mul(n, -0.3 * halfT));
+  const thumbLen = 0.5 * P.hand;
+  const fingerPrim = (fingers as { primitive: Primitive }).primitive;
+  let splay = THUMB_SPLAY, tip: Vec3 = base, notch = 0;
+  for (let i = 0; i < 24; i++, splay += 0.04) {
+    const dir = unit(sum(mul(d, Math.cos(splay)), mul(w, Math.sin(splay)), mul(n, -0.25)));
+    tip = along(base, dir, thumbLen);
+    notch = primitiveDistance(fingerPrim, tip) - 0.8 * thumbR;
+    if (notch >= THUMB_NOTCH_CELLS * c) break;
+  }
+  const thumb = prim(`thumb${L}`, "roundCone", eb, "hand", base, { b: tip, r: thumbR, r2: 0.8 * thumbR });
+  const node = op("smoothUnion", 0.45 * halfT, palmBox, knuckles, fingers, thumb);
+  return { node, palm, thumbTip: tip, halfT, halfW, splay, notch };
+}
+
 /** Where a leg's joints and foot landmarks sit (model space). */
 export interface LegAnchors { hip: Vec3; knee: Vec3; ankle: Vec3; ball: Vec3; toeTip: Vec3; heelBack: Vec3; frame: LimbFrame }
+
+/** Vertical radius of the sole pads, cells (floored at 0.35 × the ankle height): the sole edge's wall. */
+export const SOLE_PAD_HALF_HEIGHT_CELLS = 0.9;
+/** Medial-arch lift as a fraction of the ankle-joint height (≈ 2 cm on a 7 cm ankle). */
+export const ARCH_LIFT = 0.3;
 
 /** One leg: thigh, quadriceps, hamstrings, knee, patella, shin, calf, ankle, heel, instep, forefoot, toes. */
 export function legNode(P: BodyProportions, side: 1 | -1, abduction: number): { node: SdfNode; anchors: LegAnchors } {
@@ -223,13 +414,32 @@ export function legNode(P: BodyProportions, side: 1 | -1, abduction: number): { 
   const heelBackZ = ankle[2] - 0.25 * P.foot;
   const ballZ = heelBackZ + 0.72 * P.foot, toeTipZ = heelBackZ + P.foot;
   const ax = ankle[0];
+  const fw = R.footHalfWidth;
   const malleoli = prim(`malleoli${L}`, "ellipsoid", ab, "foot", ankle, { size: [R.ankle * 1.15, R.ankle * 0.9, R.ankle] });
   const heel = prim(`heel${L}`, "ellipsoid", ab, "foot", [ax, below(heelR), heelBackZ + 1.1 * heelR], { size: [heelR * 0.9, heelR, heelR * 1.1] });
   const instep = prim(`instep${L}`, "roundCone", ab, "foot", ankle, { b: [ax, ballR * 1.1, ballZ], r: R.ankle * 0.9, r2: ballR * 0.9 });
   const arch = prim(`arch${L}`, "roundCone", ab, "foot", [ax, heelR, heelBackZ + 1.1 * heelR], { b: [ax, ballR, ballZ], r: 0.85 * heelR, r2: ballR * 0.9 });
-  const forefoot = prim(`forefoot${L}`, "ellipsoid", ab, "foot", [ax, below(ballR), ballZ], { size: [R.footHalfWidth, ballR, ballR * 1.2] });
-  const toes = prim(`toes${L}`, "ellipsoid", tb, "foot", [ax, below(toeR), ballZ + 0.14 * P.foot], { size: [R.footHalfWidth * 0.92, toeR, 0.16 * P.foot] });
-  const footGroup = op("smoothUnion", 0.5 * heelR, malleoli, heel, instep, arch, forefoot, toes);
+  const forefoot = prim(`forefoot${L}`, "ellipsoid", ab, "foot", [ax, below(ballR), ballZ], { size: [fw, ballR, ballR * 1.2] });
+  // Toes taper: the big toe (medial, −σ) reaches farthest, the lesser toes step back and down.
+  const toes = prim(`toes${L}`, "ellipsoid", tb, "foot", [ax + side * 0.12 * fw, below(toeR), ballZ + 0.12 * P.foot], { size: [fw * 0.8, 0.9 * toeR, 0.15 * P.foot] });
+  const bigToe = prim(`bigToe${L}`, "ellipsoid", tb, "foot", [ax - side * 0.45 * fw, below(toeR), ballZ + 0.16 * P.foot], { size: [Math.max(0.42 * fw, MIN_PLATE_CELLS * c), toeR, 0.13 * P.foot] });
+  // Sole pads: ellipsoids centred ON the ground, so the half-space cut leaves a vertical wall
+  // padH tall all round the sole — a crisp sole edge from the side instead of a rounded blob.
+  // Heel pad, ball pad and the lateral band between them carry the weight (the lateral arch is
+  // low); region "sole" so the paint's sole layer draws that edge.
+  const padH = Math.max(SOLE_PAD_HALF_HEIGHT_CELLS * c, 0.35 * P.ankleHeight);
+  const heelPad = prim(`heelPad${L}`, "ellipsoid", ab, "sole", [ax, 0, heelBackZ + heelR], { size: [0.85 * heelR, padH, heelR] });
+  const ballPad = prim(`ballPad${L}`, "ellipsoid", ab, "sole", [ax, 0, ballZ], { size: [0.98 * fw, padH, 0.2 * P.foot] });
+  const lateralBand = prim(`lateralSole${L}`, "ellipsoid", ab, "sole", [ax + side * 0.45 * fw, 0, (heelBackZ + heelR + ballZ) / 2], {
+    size: [0.5 * fw, 0.8 * padH, 0.5 * (ballZ - heelBackZ - heelR) + 0.3 * heelR],
+  });
+  const toePad = prim(`toePad${L}`, "ellipsoid", tb, "sole", [ax - side * 0.1 * fw, 0, ballZ + 0.14 * P.foot], { size: [0.85 * fw, 0.7 * padH, 0.13 * P.foot] });
+  const solid = op("smoothUnion", 0.5 * heelR, malleoli, heel, instep, arch, forefoot, toes, bigToe, heelPad, ballPad, lateralBand, toePad);
+  // Medial longitudinal arch: the inner sole lifts between heel and ball (smooth subtract).
+  const archLift = Math.max(ARCH_LIFT * P.ankleHeight, MIN_PLATE_CELLS * c);
+  const archZ = (heelBackZ + heelR + ballZ) / 2;
+  const archCut = prim(`archHollow${L}`, "ellipsoid", ab, "foot", [ax - side * 0.95 * fw, 0, archZ], { size: [0.7 * fw, archLift, 0.26 * P.foot] });
+  const footGroup = op("smoothSubtract", 0.4 * archLift, solid, archCut);
   const leg = op("smoothUnion", blendWidth(R.thighDistal, R.knee), thighGroup, shinGroup);
   const node = op("smoothUnion", blendWidth(R.ankle, heelR), leg, footGroup);
   return {

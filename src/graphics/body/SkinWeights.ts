@@ -45,6 +45,214 @@ export const REGION_BONE_CLASSES: Record<Region, readonly string[]> = {
   nail: ["elbow", "toe"],
 };
 
+/**
+ * A limb-root SEAM BAND (lane A2). The distance rule above gives a limb root a spherical
+ * influence around its joint, so trunk skin MEDIAL to the shoulder (clavicle end, pectoral
+ * edge, trapezius cap) takes ~100 % shoulder weight and see-saws about the joint when the arm
+ * turns: lowering an A-pose arm by Δ lifts a trunk point x metres medial of the joint by
+ * x·sin Δ (ork 0.11 m · sin 0.43 ≈ 4.7 cm), which folds the skin into a curved slit at the top
+ * of the arm. The band replaces that with an anatomical partition of unity across the SEAM
+ * between the limb's regions and the trunk's regions (the deltoid's border):
+ *   δ(v)    signed geodesic distance (m, along mesh edges) from v to the seam, + on the limb;
+ *   f(v)    = smootherstep(−τ, τ, δ): 0 deep in the trunk, ½ on the seam, 1 down the limb;
+ *   weights = (1 − f)·W_trunk + f·W_limb, where W_trunk is the vertex's distance-rule weights
+ *             without the child bone (or the parent alone) and W_limb its weights without the
+ *             parent (or the child alone). Trunk skin farther than τ from the seam therefore
+ *             never follows the limb, and the limb's skin farther than τ never follows the trunk.
+ */
+export interface RootBand {
+  /** Limb root bone (e.g. shoulderL). */
+  child: BoneId;
+  /** Trunk bone the limb hangs from (e.g. spine). */
+  parent: BoneId;
+  /** Regions that belong to the limb (upperArm, foreArm, hand). */
+  limbRegions: readonly Region[];
+  /** Regions of the trunk the seam is measured against (torso, neck). */
+  trunkRegions: readonly Region[];
+  /** Body half the band applies to: +1 left (+x), −1 right. */
+  side: 1 | -1;
+  /** τ (m): geodesic half-width of the blend on each side of the seam. */
+  halfWidth: number;
+}
+
+/** Options of computeSkinWeights beyond the contract. */
+export interface SkinWeightOptions {
+  /** Limb-root seam bands applied after the distance rule (see RootBand). */
+  rootBands?: readonly RootBand[];
+}
+
+/**
+ * Seam half-width τ as a multiple of the deltoid radius, floored at SEAM_MIN_CELLS cells so the
+ * grid always resolves the gradient. Measured on the posed mesh (lane-A2.md, ork/dwarf/human/elf,
+ * display pose and a half guard): τ = 0.5 R still flips 11–29 triangles at the seam (the band
+ * is too narrow for a 0.43–0.52 rad shoulder turn), 1.0 R leaves 0–2, 1.5 R leaves 0 everywhere
+ * with the fewest sharp (> 60°) concave edges, while trunk skin near the joint moves 24–45 mm
+ * instead of 37–141 mm with the distance rule alone.
+ */
+export const SHOULDER_SEAM_FRACTION = 1.5;
+export const SEAM_MIN_CELLS = 1.5;
+
+/** The two shoulder seam bands of a body (deltoid radius and cell in metres). */
+export function shoulderBands(deltoidRadius: number, cell: number): RootBand[] {
+  const halfWidth = Math.max(SHOULDER_SEAM_FRACTION * deltoidRadius, SEAM_MIN_CELLS * cell);
+  const limbRegions: Region[] = ["upperArm", "foreArm", "hand", "nail"];
+  const trunkRegions: Region[] = ["torso", "neck"];
+  return [
+    { child: "shoulderL", parent: "spine", limbRegions, trunkRegions, side: 1, halfWidth },
+    { child: "shoulderR", parent: "spine", limbRegions, trunkRegions, side: -1, halfWidth },
+  ];
+}
+
+/** Binary min-heap of (key, vertex) for the geodesic seam distance (allocation per call only). */
+function geodesicFromSeam(n: number, adjOff: Uint32Array, adjList: Uint32Array, pos: Float32Array, inSet: Uint8Array, seeds: Map<number, number>, cutoff: number): Float64Array {
+  const dist = new Float64Array(n).fill(Infinity);
+  const heapK: number[] = [], heapV: number[] = [];
+  const push = (k: number, v: number) => {
+    heapK.push(k); heapV.push(v);
+    let i = heapK.length - 1;
+    while (i > 0) {
+      const p = (i - 1) >> 1;
+      if (heapK[p] <= heapK[i]) break;
+      [heapK[p], heapK[i]] = [heapK[i], heapK[p]]; [heapV[p], heapV[i]] = [heapV[i], heapV[p]];
+      i = p;
+    }
+  };
+  const pop = (): [number, number] => {
+    const k = heapK[0], v = heapV[0];
+    const lk = heapK.pop()!, lv = heapV.pop()!;
+    if (heapK.length > 0) {
+      heapK[0] = lk; heapV[0] = lv;
+      let i = 0;
+      for (;;) {
+        const l = 2 * i + 1, r = l + 1;
+        let m = i;
+        if (l < heapK.length && heapK[l] < heapK[m]) m = l;
+        if (r < heapK.length && heapK[r] < heapK[m]) m = r;
+        if (m === i) break;
+        [heapK[m], heapK[i]] = [heapK[i], heapK[m]]; [heapV[m], heapV[i]] = [heapV[i], heapV[m]];
+        i = m;
+      }
+    }
+    return [k, v];
+  };
+  for (const [v, d] of seeds) { if (d < dist[v]) { dist[v] = d; push(d, v); } }
+  while (heapK.length > 0) {
+    const [d, v] = pop();
+    if (d > dist[v] || d > cutoff) continue;
+    for (let e = adjOff[v]; e < adjOff[v + 1]; e++) {
+      const u = adjList[e];
+      if (!inSet[u]) continue;
+      const nd = d + Math.hypot(pos[u * 3] - pos[v * 3], pos[u * 3 + 1] - pos[v * 3 + 1], pos[u * 3 + 2] - pos[v * 3 + 2]);
+      if (nd < dist[u]) { dist[u] = nd; push(nd, u); }
+    }
+  }
+  return dist;
+}
+
+/** Vertex adjacency (CSR) of an indexed triangle mesh. */
+function meshAdjacency(n: number, indices: Uint32Array): { off: Uint32Array; list: Uint32Array } {
+  const deg = new Uint32Array(n + 1);
+  for (let t = 0; t < indices.length; t += 3) for (let e = 0; e < 3; e++) { deg[indices[t + e]] += 2; }
+  const off = new Uint32Array(n + 1);
+  for (let v = 0; v < n; v++) off[v + 1] = off[v] + deg[v];
+  const fill = off.slice(0, n);
+  const list = new Uint32Array(off[n]);
+  for (let t = 0; t < indices.length; t += 3) {
+    for (let e = 0; e < 3; e++) {
+      const a = indices[t + e], b = indices[t + (e + 1) % 3];
+      list[fill[a]++] = b; list[fill[b]++] = a;
+    }
+  }
+  return { off, list };
+}
+
+/**
+ * Apply the seam bands to finished weights in place (see RootBand). Pure; O(V log V) per band.
+ * Returns how many vertices each band touched (seam band ∪ cleaned trunk/limb skin).
+ */
+export function applyRootBands(mesh: MeshData, bones: BoneSegment[], skin: SkinData, bands: readonly RootBand[]): number[] {
+  const n = mesh.positions.length / 3;
+  if (n === 0 || bands.length === 0) return bands.map(() => 0);
+  const { off, list } = meshAdjacency(n, mesh.indices);
+  const index = new Map<BoneId, number>(bones.map((b, i) => [b.id, i]));
+  const touched: number[] = [];
+  const wv = new Float64Array(bones.length);
+  for (const band of bands) {
+    const child = index.get(band.child), parent = index.get(band.parent);
+    if (child === undefined || parent === undefined) { touched.push(0); continue; }
+    // The limb chain: the child bone and every bone below it (shoulder → elbow).
+    const inLimb = new Uint8Array(bones.length);
+    inLimb[child] = 1;
+    for (let changed = true; changed;) {
+      changed = false;
+      bones.forEach((b, i) => { const p = b.parent ? index.get(b.parent) : undefined; if (!inLimb[i] && p !== undefined && inLimb[p]) { inLimb[i] = 1; changed = true; } });
+    }
+    const limbSet = new Uint8Array(n), trunkSet = new Uint8Array(n);
+    for (let v = 0; v < n; v++) {
+      const region = REGIONS[mesh.region[v]];
+      const x = mesh.positions[v * 3];
+      const dom = mesh.bone ? mesh.bone[v] : -1;
+      const domSide = dom >= 0 && dom < bones.length ? boneSide(bones[dom].id) : 0;
+      const side = domSide !== 0 ? domSide : (x >= 0 ? 1 : -1);
+      if (side !== band.side) continue;
+      if (band.limbRegions.includes(region)) limbSet[v] = 1;
+      else if (band.trunkRegions.includes(region)) trunkSet[v] = 1;
+    }
+    // Seeds: both ends of every limb–trunk edge, at half the edge length (the seam is mid-edge).
+    const limbSeeds = new Map<number, number>(), trunkSeeds = new Map<number, number>();
+    for (let v = 0; v < n; v++) {
+      if (!limbSet[v]) continue;
+      for (let e = off[v]; e < off[v + 1]; e++) {
+        const u = list[e];
+        if (!trunkSet[u]) continue;
+        const half = 0.5 * Math.hypot(mesh.positions[u * 3] - mesh.positions[v * 3], mesh.positions[u * 3 + 1] - mesh.positions[v * 3 + 1], mesh.positions[u * 3 + 2] - mesh.positions[v * 3 + 2]);
+        limbSeeds.set(v, Math.min(limbSeeds.get(v) ?? Infinity, half));
+        trunkSeeds.set(u, Math.min(trunkSeeds.get(u) ?? Infinity, half));
+      }
+    }
+    const tau = band.halfWidth;
+    const dLimb = geodesicFromSeam(n, off, list, mesh.positions, limbSet, limbSeeds, 2 * tau);
+    const dTrunk = geodesicFromSeam(n, off, list, mesh.positions, trunkSet, trunkSeeds, 2 * tau);
+    let count = 0;
+    for (let v = 0; v < n; v++) {
+      if (!limbSet[v] && !trunkSet[v]) continue;
+      const delta = limbSet[v] ? dLimb[v] : -dTrunk[v]; // ±Infinity when out of reach
+      // A region that may not follow the other side of the seam stays wholly on its own side
+      // (forearm/hand never take the spine, the neck never takes the shoulder).
+      const allowed = REGION_BONE_CLASSES[REGIONS[mesh.region[v]]];
+      const f = limbSet[v] && !allowed.includes(boneClass(band.parent)) ? 1
+        : trunkSet[v] && !allowed.includes(boneClass(band.child)) ? 0
+        : smootherstep(-tau, tau, delta);
+      // Split the current weights into the trunk part (bones outside the limb chain) and the
+      // limb part (bones of the chain); an empty part falls back to the parent / the child.
+      wv.fill(0);
+      let tSum = 0, lSum = 0;
+      for (let s = 0; s < 4; s++) {
+        const w = skin.skinWeight[v * 4 + s];
+        if (w > 0) wv[skin.skinIndex[v * 4 + s]] += w;
+      }
+      for (let b = 0; b < bones.length; b++) { if (inLimb[b]) lSum += wv[b]; else tSum += wv[b]; }
+      const out = new Map<number, number>();
+      const addPart = (scale: number, limb: number, sum: number, fallback: number) => {
+        if (scale <= 0) return;
+        if (sum <= 1e-9) { out.set(fallback, (out.get(fallback) ?? 0) + scale); return; }
+        for (let b = 0; b < bones.length; b++) if (inLimb[b] === limb && wv[b] > 0) out.set(b, (out.get(b) ?? 0) + scale * wv[b] / sum);
+      };
+      addPart(1 - f, 0, tSum, parent);
+      addPart(f, 1, lSum, child);
+      const top = [...out].filter(([, w]) => w > 1e-6).sort((p, q) => q[1] - p[1]).slice(0, 4);
+      const total = top.reduce((acc, [, w]) => acc + w, 0);
+      for (let s = 0; s < 4; s++) {
+        skin.skinIndex[v * 4 + s] = s < top.length ? top[s][0] : 0;
+        skin.skinWeight[v * 4 + s] = s < top.length ? top[s][1] / total : 0;
+      }
+      count++;
+    }
+    touched.push(count);
+  }
+  return touched;
+}
+
 /** "shoulderL" -> "shoulder"; central bones are their own class. */
 export function boneClass(id: BoneId): string {
   return /[LR]$/.test(id) ? id.slice(0, -1) : id;
@@ -69,7 +277,14 @@ export function segmentDistance(px: number, py: number, pz: number, a: readonly 
  * into `bones`, which must be in BONE_IDS order when `mesh.bone` is present). Every vertex
  * gets ≥ 1 influence and its weights sum to 1.
  */
-export function computeSkinWeights(mesh: MeshData, bones: BoneSegment[], maxInfluences = MAX_INFLUENCES): SkinData {
+export function computeSkinWeights(mesh: MeshData, bones: BoneSegment[], maxInfluences = MAX_INFLUENCES, options: SkinWeightOptions = {}): SkinData {
+  const skin = distanceWeights(mesh, bones, maxInfluences);
+  if (options.rootBands && options.rootBands.length > 0) applyRootBands(mesh, bones, skin, options.rootBands);
+  return skin;
+}
+
+/** The distance rule of the module comment (no seam bands). */
+function distanceWeights(mesh: MeshData, bones: BoneSegment[], maxInfluences: number): SkinData {
   const n = mesh.positions.length / 3;
   const k = Math.max(1, Math.min(MAX_INFLUENCES, maxInfluences));
   const skinIndex = new Uint16Array(n * 4);
