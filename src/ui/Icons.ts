@@ -21,7 +21,8 @@ export const ICON_GRID = 24;
 export type IconName =
   | "serpent" | "mountain" | "flame" | "moon" | "storm" | "void"
   | "chevron-left"
-  | "dash" | "power" | "defense";
+  | "dash" | "power" | "defense"
+  | "gear" | "flag" | "play" | "restart" | "home" | "close";
 
 /**
  * The inner SVG markup (paths only) of each icon, in viewBox units.
@@ -39,6 +40,13 @@ export type IconName =
  * - dash: three staggered speed lines with an arrowhead (a movement burst).
  * - power: an eight-point impact star (outer radius 9.5, inner 4.4, about the centre).
  * - defense: a heater shield.
+ * - gear: the Settings cog — eight teeth (tip radius 9.6, root radius 7.4, each tip 21 deg wide)
+ *   around a hub circle of radius 3.2, all centred on (12, 12).
+ * - flag: a white flag (Give up) — a pole on the left with a waving cloth.
+ * - play: a right-pointing triangle (Resume).
+ * - restart: a circular arrow, open at the top-right, arrowhead clockwise (Restart).
+ * - home: a house outline with a door (Main menu).
+ * - close: an X (close a dialog).
  */
 const PATHS: Record<IconName, string> = {
   serpent:
@@ -65,6 +73,23 @@ const PATHS: Record<IconName, string> = {
     `<path d="M12 2.5 13.7 7.9 18.7 5.3 16.1 10.3 21.5 12 16.1 13.7 18.7 18.7 13.7 16.1 12 21.5 10.3 16.1 5.3 18.7 7.9 13.7 2.5 12 7.9 10.3 5.3 5.3 10.3 7.9z"/>`,
   defense:
     `<path d="M12 2.8 19.5 5.7v5.6c0 4.6-3.1 8.2-7.5 10.2-4.4-2-7.5-5.6-7.5-10.2V5.7z"/>`,
+  gear:
+    `<path d="M9.8 4.9 10.3 2.6 13.7 2.6 14.2 4.9 15.5 5.5 17.4 4.1 19.9 6.6 18.5 8.5 19.1 9.8 21.4 10.3 21.4 13.7 19.1 14.2 18.5 15.5 19.9 17.4 17.4 19.9 15.5 18.5 14.2 19.1 13.7 21.4 10.3 21.4 9.8 19.1 8.5 18.5 6.6 19.9 4.1 17.4 5.5 15.5 4.9 14.2 2.6 13.7 2.6 10.3 4.9 9.8 5.5 8.5 4.1 6.6 6.6 4.1 8.5 5.5z"/>` +
+    `<circle cx="12" cy="12" r="3.2"/>`,
+  flag:
+    `<path d="M5.5 21.5V2.8"/>` +
+    `<path d="M5.5 4.2C8 2.8 10.2 2.8 12.6 4.2S17.2 5.6 19.6 4.2V13C17.2 14.4 15 14.4 12.6 13S8 11.6 5.5 13"/>`,
+  play:
+    `<path d="M7.5 4.5 19 12 7.5 19.5z"/>`,
+  restart:
+    `<path d="M19.6 13.4A7.8 7.8 0 1 1 17.4 6.4"/>` +
+    `<path d="M18.2 2.8 17.6 6.6 13.8 6"/>`,
+  home:
+    `<path d="M3.5 11.2 12 3.8l8.5 7.4"/>` +
+    `<path d="M5.8 9.4V20.2H18.2V9.4"/>` +
+    `<path d="M10 20.2V14.4H14V20.2"/>`,
+  close:
+    `<path d="M6 6 18 18M18 6 6 18"/>`,
 };
 
 /** Every icon name, in a stable order (birth signs, navigation, skill kinds). */

@@ -1,0 +1,460 @@
+--- a/src/engine/Engine.ts
++++ b/src/engine/Engine.ts
+@@ -11,7 +11,11 @@
+ import { Animator } from "../game/anim/Animator.ts";
+ import { legGeometryFromBones, limitTableFrom } from "../game/anim/Rig.ts";
+ import { wrapAngle } from "../core/MathCore.ts";
+-import { LIVE_ARENA_MAX, Menu } from "../ui/Menu.ts";
++import { clampLiveArenaSize, Menu } from "../ui/Menu.ts";
++import {
++  effectiveLayout, effectsDensityScale, fovFor, lookRates, pixelBudgetFor, SettingsPanel,
++  type GameSettings, type LayoutChoice,
++} from "../ui/SettingsPanel.ts";
+ import { createMinimapView, Minimap } from "../ui/Minimap.ts";
+ import { samplerFromGrid } from "../ui/minimap/Relief.ts";
+ import { SkillBar, type SkillView } from "../ui/SkillBar.ts";
+@@ -70,11 +74,14 @@
+  * Pixel ratio for a CSS viewport: the screen's own ratio, capped at 2 and at the pixel
+  * budget:  ratio = min(devicePixelRatio, 2, sqrt(PIXEL_BUDGET / (cssW * cssH))), floor 1.
+  */
+-function renderPixelRatio(cssW: number, cssH: number): number {
++function renderPixelRatio(cssW: number, cssH: number, budget = PIXEL_BUDGET): number {
+   const dpr = globalThis.devicePixelRatio || 1;
+-  return Math.max(1, Math.min(dpr, 2, Math.sqrt(PIXEL_BUDGET / Math.max(1, cssW * cssH))));
++  return Math.max(1, Math.min(dpr, 2, Math.sqrt(budget / Math.max(1, cssW * cssH))));
+ }
+ 
++/** How a match ended: "ko" = the loser's HP reached 0; "forfeit" = the player gave up (W02). */
++type MatchEndReason = "ko" | "forfeit";
++
+ /**
+  * What each technique kind costs to start: a dash is pure stamina, a power spends both
+  * mana and stamina, a defence is mostly stamina. Bounded by ParameterBounds' resources
+@@ -232,6 +239,24 @@
+   /** Which skill each fighter is animating (index into its runtime's list). */
+   #skillFired = new Map<Fighter, boolean>();
+   #frozen = false; // QA: pause the simulation while rendering continues
++  /**
++   * Player pause (W02): true while the settings dialog is open over a live fight. Like
++   * #frozen it stops the simulation (dt = 0: fighters, AI, skills, cooldowns, timers, the
++   * truce clock, the sky) while the frame keeps rendering.
++   */
++  #paused = false;
++  /** How the current match ended (null while it runs). */
++  #endReason: MatchEndReason | null = null;
++  /** The settings gear + dialog (W02/W03). */
++  #settings!: SettingsPanel;
++  /** Settings -> Controls -> Keyboard layout: "auto" follows #layout, else forced labels. */
++  #layoutChoice: LayoutChoice = "auto";
++  /** Mouse-look rates, radians per pixel (pitch < 0 = inverted Y). */
++  #look = { yaw: 0.003, pitch: 0.003 };
++  /** Render pixel budget, device pixels (Settings -> Display -> Quality). */
++  #pixelBudget = PIXEL_BUDGET;
++  /** Multiplier on the effect density exponent (Settings -> Display -> Effects). */
++  #fxScale = 1;
+   /** The opening truce: friendly, then neutral, then hostile. */
+   #timing: PhaseTiming = { ...DEFAULT_TIMING };
+   /** Generated names and unique ids for this match's combatants. */
+@@ -378,7 +403,8 @@
+         this.#startFight(p, o);
+       },
+       onRematch: () => this.#startFight(this.#playerProfile, this.#opponentProfile),
+-      onMenu: () => { this.#phase = "menu"; this.#hud.style.display = "none"; this.#menu.show("title"); },
++      onMenu: () => this.#leaveToTitle(),
++      onSettings: () => { this.#settings.setContext("menu"); this.#settings.open(); },
+       onDigest: () => { this.#menu.show("digest", { history: { list: this.#history, summary: summarize(this.#history) }, leaderboard: this.leaderboardView() }); },
+       onProfile: (playerId) => {
+         const p = this.#profileRepo.select(playerId);
+@@ -408,7 +434,7 @@
+     globalThis.addEventListener("resize", () => {
+       this.#minimap?.resize(); // CSS breakpoints change the map size; backing store = css x devicePixelRatio
+       const w = innerWidth, h = innerHeight;
+-      this.#renderer.setPixelRatio(renderPixelRatio(w, h));
++      this.#renderer.setPixelRatio(renderPixelRatio(w, h, this.#pixelBudget));
+       this.#renderer.setSize(w, h);
+       for (const cam of Object.values(this.#cameras)) {
+         if (cam instanceof THREE.PerspectiveCamera) { cam.aspect = w / h; cam.updateProjectionMatrix(); }
+@@ -465,7 +491,7 @@
+     const env = environmentAt(this.#hour, this.#dayOfYear, this.#place, this.#skyTime);
+     this.#env = env;
+     // Effects thicken in daylight (one shared uniform for every effect material).
+-    FX_DENSITY.value = fxDensityForLuminosity(luminosity(env.sun.elevation, env.sunOcclusion));
++    FX_DENSITY.value = fxDensityForLuminosity(luminosity(env.sun.elevation, env.sunOcclusion)) * this.#fxScale;
+     this.#sky.apply(env, this.#skyTime);
+     // Key light = sun by day, brighter moon by night; the sky decides which.
+     const [sx, sy, sz] = env.sun.dir;
+@@ -814,8 +840,10 @@
+     // engine caps the size it builds so two fighters still meet in a sensible time.
+     const arenaRng = seededRng(Date.now() ^ (this.#history.length * 2654435761));
+     const cfg = randomArena(arenaRng, { ...this.#menu?.arenaChoice(), ...this.#arenaOverride });
+-    const chosenSize = this.#arenaOverride?.size ?? this.#menu?.arenaChoice().size;
+-    if (!chosenSize) cfg.size = Math.min(LIVE_ARENA_MAX, Math.max(8, cfg.size));
++    // Live arenas span [LIVE_ARENA_MIN, LIVE_ARENA_MAX] = [34, 120] m (W04; Menu.liveArenaMinimum
++    // derives the minimum from spawn + dash + knockback slide + prop bypass + wall clearance).
++    // Random sizes AND creator choices are clamped; only a QA override keeps its exact size.
++    if (this.#arenaOverride?.size === undefined) cfg.size = clampLiveArenaSize(cfg.size);
+     this.#arena = cfg;
+     this.#arenaState = {
+       cfg,
+@@ -845,6 +873,9 @@
+     this.#spawnMeshes();
+     this.#phase = "fight";
+     this.#winner = null;
++    this.#endReason = null;
++    this.#paused = false;
++    this.#settings.setContext(this.#spectate ? "spectate" : "fight");
+     this.#elapsed = 0;
+     // The opening truce restarts every match, and the combatants get fresh generated
+     // names and unique ids so a match log can name who fought whom.
+@@ -932,14 +963,20 @@
+     document.addEventListener("keydown", (e) => {
+       if (isTyping(e.target)) return;
+       this.#layout.observe(e.code, e.key);
++      // Paused (settings open): only Esc gets through, as the resume key.
++      if (this.#settings.isOpen && e.code !== "Escape") return;
+       // APM counts deliberate presses, not held-key frames.
+       if (!e.repeat) this.#apm.action(this.#elapsed);
+       if (e.code === "Space" && !e.repeat) { e.preventDefault(); this.#playerAttack(); }
+       else if (SKILL_KEYS[e.code] !== undefined && !e.repeat) { e.preventDefault(); this.#playerSkill(SKILL_KEYS[e.code]); }
+-      else if (e.code === "KeyV" && !e.repeat) { e.preventDefault(); this.#firstPerson = !this.#firstPerson; }
++      else if (e.code === "KeyV" && !e.repeat) { e.preventDefault(); this.#settings.update({ firstPerson: !this.#firstPerson }); }
+       // Minimap view by the TYPED letter M (KeyM on QWERTY, the M key right of L on AZERTY),
+       // because the cursor cannot reach the map while pointer lock holds it.
+-      else if (e.key.toLowerCase() === "m" && !e.repeat) { e.preventDefault(); this.#minimap?.cycleMode(); }
++      else if (e.key.toLowerCase() === "m" && !e.repeat) {
++        e.preventDefault();
++        const mode = this.#minimap?.cycleMode();
++        if (mode) this.#settings.update({ minimap: mode });
++      }
+       else this.#input.press(e.code);
+     });
+     document.addEventListener("keyup", (e) => this.#input.release(e.code));
+@@ -947,6 +984,13 @@
+     // Mouse movement for camera orbit
+     el.addEventListener("mousemove", (e) => { if (document.pointerLockElement === el) this.#input.addMouse(e.movementX, e.movementY); });
+     el.addEventListener("click", () => { el.requestPointerLock(); });
++    // Esc while the pointer is locked is spent by the browser on releasing the lock (the page
++    // may never see the key), and alt-tab drops the lock too: losing it mid-fight = pause.
++    document.addEventListener("pointerlockchange", () => {
++      if (document.pointerLockElement || this.#phase !== "fight" || this.#winner) return;
++      if (this.#menu.visible || this.#settings.isOpen) return;
++      this.#settings.open();
++    });
+     el.addEventListener("mousedown", () => { if (!document.pointerLockElement) el.requestPointerLock(); });
+     el.focus();
+   }
+@@ -977,14 +1021,10 @@
+     });
+     this.#skillBar.dockAbove(hints);
+ 
+-    const openBtn = document.createElement("button");
+-    openBtn.id = "btn-settings";
+-    openBtn.textContent = "⚙";
+-    openBtn.addEventListener("click", () => {
+-      const dlg = document.getElementById("settings-dialog")!;
+-      dlg.classList.toggle("open");
++    // The minimap's own click cycles its view; persist it so the settings stay the truth.
++    document.getElementById("hud-minimap")!.addEventListener("click", () => {
++      if (this.#minimap) this.#settings?.update({ minimap: this.#minimap.mode });
+     });
+-    document.body.appendChild(openBtn);
+   }
+ 
+   /**
+@@ -995,39 +1035,103 @@
+   #renderHints(): void {
+     const hints = document.getElementById("hints");
+     if (!hints) return;
+-    const layout: Layout = this.#layout.layout;
++    const layout: Layout = this.#keyLayout();
+     const letters = SKILL_LETTER_CODES.map((c) => keyLabel(c, layout)).join("/");
+-    hints.textContent = `${movementLabel(layout)}: Move | Space/Click: Attack | 1/2/3 or ${letters}: Dash / Power / Defend | V: First-person | R: Restart | Esc: Menu`;
++    hints.textContent = `${movementLabel(layout)}: Move | Space/Click: Attack | 1/2/3 or ${letters}: Dash / Power / Defend | V: First-person | M: Map | R: Restart | Esc: Pause`;
+     hints.dataset.layout = layout;
+   }
+ 
+   /** The key label for skill slot `i` on the detected layout, e.g. "1 · A" on AZERTY. */
+   skillKeyLabel(i: number): string {
+-    return `${i + 1} · ${keyLabel(SKILL_LETTER_CODES[i] ?? "", this.#layout.layout)}`;
++    return `${i + 1} · ${keyLabel(SKILL_LETTER_CODES[i] ?? "", this.#keyLayout())}`;
+   }
+ 
++  /** The layout key labels use: the settings override, else the detected one. */
++  #keyLayout(): Layout {
++    return effectiveLayout(this.#layoutChoice, this.#layout.layout);
++  }
++
++  /**
++   * The settings gear (in #hud, left of the minimap) and its modal dialog (W02/W03).
++   * Opening it over a live fight pauses; closing resumes; Give up forfeits to the rival.
++   * The saved settings are applied once here, then on every change.
++   */
+   #buildSettings() {
+-    const dlg = document.createElement("div");
+-    dlg.id = "settings-dialog";
+-    dlg.role = "dialog";
+-    dlg.innerHTML = `<h2>Settings</h2>
+-      <label>Volume <input id="rng-volume" type="range" min="0" max="1" step="0.05" value="0.75"></label>
+-      <label>Camera <select id="sel-camera"><option>close</option><option selected>third</option><option>isometric</option><option>birds-eye</option></select></label>
+-      <button id="btn-close-settings">Close</button>`;
+-    document.body.appendChild(dlg);
+-    dlg.querySelector("#rng-volume")!.addEventListener("input", (e) => {
+-      this.#volume = parseFloat((e.target as HTMLInputElement).value);
+-      this.#audio.setVolume(this.#volume);
+-    });
+-    dlg.querySelector("#sel-camera")!.addEventListener("change", (e) => {
+-      this.#activeCamera = (e.target as HTMLSelectElement).value as CameraMode;
+-    });
+-    dlg.querySelector("#btn-close-settings")!.addEventListener("click", () => dlg.classList.remove("open"));
++    this.#settings = new SettingsPanel(document.body, {
++      onOpen: () => this.#setPaused(true),
++      onResume: () => this.#setPaused(false),
++      onGiveUp: () => { this.#setPaused(false); this.#forfeit(); },
++      onRestart: () => {
++        this.#setPaused(false);
++        if (this.#phase === "fight") this.#startFight(this.#playerProfile, this.#opponentProfile);
++      },
++      onMainMenu: () => { this.#setPaused(false); this.#leaveToTitle(); },
++      onChange: (s) => this.#applySettings(s),
++    }, { gearContainer: this.#hud, detectedLayout: this.#layout.layout });
++    this.#layout.onChange((layout) => this.#settings.setDetectedLayout(layout));
++    this.#applySettings(this.#settings.settings);
++  }
++
++  /**
++   * Pause or resume. Only a live fight (phase "fight", no winner) pauses; asking otherwise
++   * just clears the flag. Pausing drops held keys and the pointer lock (the cursor must reach
++   * the dialog).
++   */
++  #setPaused(on: boolean): void {
++    const pause = on && this.#phase === "fight" && !this.#winner;
++    if (pause === this.#paused) return;
++    this.#paused = pause;
++    this.#input.clear();
++    if (pause && document.pointerLockElement) document.exitPointerLock();
+   }
+ 
++  /** Leave the fight (or a result screen) for the title. */
++  #leaveToTitle(): void {
++    this.#paused = false;
++    this.#phase = "menu";
++    this.#settings.setContext("menu");
++    this.#hud.style.display = "none";
++    this.#menu.show("title");
++  }
++
++  /**
++   * Esc, in priority order: the settings dialog backs out one level (confirm -> panel ->
++   * resume); a menu screen goes Back; a live fight pauses and opens the settings.
++   */
++  #onEscape(): void {
++    if (this.#settings.handleEscape()) return;
++    if (this.#menu.visible) { this.#menu.back(); return; }
++    if (this.#phase === "fight" && !this.#winner) this.#settings.open();
++  }
++
++  /** Apply validated settings to the running engine (at start-up and on every change). */
++  #applySettings(s: GameSettings): void {
++    // Controls: labels follow the forced layout or the detector (bindings stay physical).
++    this.#layoutChoice = s.layout;
++    this.#renderHints();
++    this.#look = lookRates(s);
++    // Camera.
++    this.#activeCamera = s.camera;
++    this.#firstPerson = s.firstPerson;
++    for (const mode of ["third", "close"] as const) {
++      const cam = this.#cameras[mode] as THREE.PerspectiveCamera;
++      cam.fov = fovFor(mode, s);
++      cam.updateProjectionMatrix();
++    }
++    // Display.
++    if (this.#minimap && this.#minimap.mode !== s.minimap) this.#minimap.setMode(s.minimap);
++    this.#fxScale = effectsDensityScale(s.effects);
++    document.getElementById("hints")?.classList.toggle("is-hidden", !s.showHints);
++    this.#pixelBudget = pixelBudgetFor(s.quality);
++    this.#renderer.setPixelRatio(renderPixelRatio(globalThis.innerWidth, globalThis.innerHeight, this.#pixelBudget));
++    // Audio.
++    this.#volume = s.volume;
++    this.#audio.setVolume(this.#volume);
++  }
++
+   /** Player input: start skill `index` for the player (0 dash, 1 power, 2 defence). */
+   #playerSkill(index: number): void {
+-    if (this.#phase !== "fight" || this.#winner) return;
++    if (this.#phase !== "fight" || this.#winner || this.#paused) return;
+     this.#useSkill(this.#player, index);
+   }
+ 
+@@ -1185,7 +1289,7 @@
+ 
+   #playerAttack() {
+     const f = this.#player;
+-    if (this.#phase !== "fight" || this.#winner) return;
++    if (this.#phase !== "fight" || this.#winner || this.#paused) return;
+     // The opening truce: nobody may attack until it lifts.
+     if (!canAttack(this.#sinceStart, this.#timing)) return;
+     if (f.attackCooldown > 0 || !this.#canAct(f)) return;
+@@ -1766,7 +1870,7 @@
+         v.name = sk.name;
+         v.kind = sk.kind;
+         v.keyLabel = String(i + 1); // digits are layout-independent
+-        v.altKeyLabel = keyLabel(SKILL_LETTER_CODES[i] ?? "", this.#layout.layout); // A/E/F on AZERTY, Q/E/F on QWERTY
++        v.altKeyLabel = keyLabel(SKILL_LETTER_CODES[i] ?? "", this.#keyLayout()); // A/E/F on AZERTY, Q/E/F on QWERTY
+         v.cooldown = cd;
+         v.cooldownMax = sk.cooldown;
+         v.active = rt.active === i;
+@@ -1989,12 +2093,31 @@
+     // Death is the only victory condition. On a double KO the one with more HP
+     // left (the less negative) wins.
+     if (p.hp <= 0 || o.hp <= 0) {
+-      this.#winner = p.hp <= 0 && o.hp <= 0
++      this.#endMatch(p.hp <= 0 && o.hp <= 0
+         ? (p.hp > o.hp ? "player" : "opponent")
+-        : p.hp <= 0 ? "opponent" : "player";
++        : p.hp <= 0 ? "opponent" : "player", "ko");
+     }
++  }
+ 
+-    if (this.#winner) {
++  /** Settings -> Give up -> Yes: the rival wins by forfeit (never while spectating). */
++  #forfeit(): void {
++    if (this.#phase !== "fight" || this.#winner || this.#spectate) return;
++    this.#endMatch("opponent", "forfeit");
++  }
++
++  /**
++   * End the match once: `winner` takes it by `reason` ("ko" or "forfeit"). Folds the AI
++   * careers, the ladder, the active profile and the history, logs the end and shows the
++   * result screen. A forfeit does not feed AiBrain.adapt: the bot did not win by fighting.
++   */
++  #endMatch(winner: "player" | "opponent", reason: MatchEndReason): void {
++    if (this.#winner) return;
++    this.#winner = winner;
++    this.#endReason = reason;
++    this.#paused = false;
++    this.#settings.setContext("menu");
++    const p = this.#player, o = this.#opponent;
++    {
+       const loser = this.#winner === "player" ? o : p;
+       // Close out each AI's fight: fold the telemetry into the career record and let
+       // its brain adapt from the result, so the next match's bot fights differently.
+@@ -2004,7 +2127,7 @@
+         const won = (this.#winner === "player" && f === p) || (this.#winner === "opponent" && f === o);
+         prof.endFight(won ? "win" : "loss", this.#elapsed);
+         const brain = this.#brains.get(f);
+-        if (brain) brain.adapt(won, prof.winRate(), prof.telemetry.digest());
++        if (brain && reason === "ko") brain.adapt(won, prof.winRate(), prof.telemetry.digest());
+       }
+       // Update the MMR ladder for any two bots that fought (spectate, or player-vs-bot
+       // where the bot is ranked). A human player is not on the AI ladder.
+@@ -2030,12 +2153,15 @@
+       this.#recordMatch();
+       this.#log.record({
+         kind: "ko", from: loser.name, to: this.#winner === "player" ? o.name : p.name,
+-        x: loser.body.x, z: loser.body.z, reason: "ko",
++        x: loser.body.x, z: loser.body.z, reason,
+       }, performance.now());
+       document.exitPointerLock();
+       const w = this.#winner === "player" ? p : o, l = this.#winner === "player" ? o : p;
+       const title = this.#spectate ? `${w.name} wins` : this.#winner === "player" ? "Victory!" : "Defeat";
+-      this.#menu.show("victory", { winner: this.#winner, result: { title, detail: `${w.name} (${w.className}) beat ${l.name} (${l.className}) by knockout in ${this.#elapsed.toFixed(1)}s — ${this.#place.name}, ${this.#env.phase}` } });
++      const how = reason === "forfeit"
++        ? `${l.name} gave up against ${w.name} (${w.className}) after ${this.#elapsed.toFixed(1)}s`
++        : `${w.name} (${w.className}) beat ${l.name} (${l.className}) by knockout in ${this.#elapsed.toFixed(1)}s`;
++      this.#menu.show("victory", { winner: this.#winner, result: { title, detail: `${how} — ${this.#place.name}, ${this.#env.phase}` } });
+     }
+   }
+ 
+@@ -2043,7 +2169,8 @@
+     if (!this.#running) return;
+     this.#lastFrame = performance.now();
+     if (!this.#rafPending) this.#schedule();
+-    const dt = Math.min(this.#clock.getDelta(), 0.1);
++    // getDelta() runs every frame so resuming does not jump; paused, the world's dt is 0.
++    const dt = this.#paused ? 0 : Math.min(this.#clock.getDelta(), 0.1);
+     if (!this.#frozen) this.#skyTime += dt;
+     this.#applyEnvironment();
+     this.#hudTimer -= dt;
+@@ -2058,20 +2185,12 @@
+     if (this.#input.consume("KeyR") && this.#phase === "fight") {
+       this.#startFight(this.#playerProfile, this.#opponentProfile);
+     }
+-    if (this.#input.consume("Escape")) {
+-      // Esc = Back on a visible menu screen (the title is the floor); during a fight it opens
+-      // the title, as before.
+-      if (this.#menu.visible) this.#menu.back();
+-      else if (this.#phase === "fight") {
+-        this.#phase = "menu";
+-        this.#menu.show("title");
+-        this.#hud.style.display = "none";
+-      }
+-    }
++    // Esc: settings back-out, else menu Back, else pause the fight (#onEscape).
++    if (this.#input.consume("Escape")) this.#onEscape();
+ 
+     const p = this.#player, o = this.#opponent;
+ 
+-    if (this.#phase === "fight" && !this.#winner && !this.#frozen) {
++    if (this.#phase === "fight" && !this.#winner && !this.#frozen && !this.#paused) {
+       p.attackCooldown = Math.max(0, p.attackCooldown - dt);
+       o.attackCooldown = Math.max(0, o.attackCooldown - dt);
+       p.stun = Math.max(0, p.stun - dt);
+@@ -2139,6 +2258,7 @@
+     // the solid props. A wall that holds deals the rebound to the body that hit it.
+     for (const f of [p, o]) {
+       if (this.#frozen) { f.ringedOut = false; continue; }
++      if (this.#paused) continue;
+       const v = this.#velocity.get(f);
+       const a = Math.atan2(f.body.z, f.body.x);
+       const outward = v ? v.x * Math.cos(a) + v.z * Math.sin(a) : 0;
+@@ -2167,8 +2287,8 @@
+         o.body.x += sx / sd * push; o.body.z += sz / sd * push;
+       }
+     }
+-    if (this.#phase === "fight" && !this.#frozen) this.#checkElimination();
+-    if (this.#phase === "fight" && !this.#frozen && !this.#winner) this.#tickWorld(dt);
++    if (this.#phase === "fight" && !this.#frozen && !this.#paused) this.#checkElimination();
++    if (this.#phase === "fight" && !this.#frozen && !this.#paused && !this.#winner) this.#tickWorld(dt);
+ 
+     // Skeleton + rig animation
+     this.#updatePose(p, this.#anim.get(p)!, dt);
+@@ -2339,8 +2459,8 @@
+       // Mouse orbit is an offset that eases back to 0 when the mouse is idle, so the
+       // camera stays focused behind the back unless the player deliberately looks around.
+       const md = this.#input.mouseDelta();
+-      this.#orbitYaw -= md.x * 0.003;
+-      this.#orbitPitch = Math.max(0.05, Math.min(1.2, this.#orbitPitch + md.y * 0.003));
++      this.#orbitYaw -= md.x * this.#look.yaw;
++      this.#orbitPitch = Math.max(0.05, Math.min(1.2, this.#orbitPitch + md.y * this.#look.pitch));
+       if (md.x === 0) this.#orbitYaw *= Math.exp(-1.8 * dt);
+       const behind = Math.atan2(p.body.x - o.body.x, p.body.z - o.body.z);
+       const yaw = behind + this.#orbitYaw;
+@@ -2668,7 +2788,7 @@
+       phase: this.#env.phase,
+       place: this.#place.name,
+       arena: this.#arenaType,
+-      reason: "ko",
++      reason: this.#endReason ?? "ko",
+       duration: Math.round(this.#elapsed * 10) / 10,
+       firstStrike: fs?.from ?? null,
+       winner: this.#winner === "player" ? 0 : this.#winner === "opponent" ? 1 : null,
+@@ -2908,7 +3028,7 @@
+       opponent: { className: o.className, race: this.#opponentProfile.race, subrace: this.#opponentProfile.subrace, x: o.body.x, y: o.body.y, z: o.body.z, hp: o.hp, damagePercent: o.damagePercent, weapon: o.weapon.name, ringedOut: o.ringedOut, eliminated: o.eliminated, pose: o.skeleton.pose, stats: o.stats },
+       winner: this.#winner, camera: this.#activeCamera,
+       // How the match ended, and the loser's HP: a death ending must show loser hp <= 0.
+-      endReason: this.#winner ? "ko" : null,
++      endReason: this.#winner ? (this.#endReason ?? "ko") : null,
+       loserHp: this.#winner ? Math.round((this.#winner === "player" ? o : p).hp) : null,
+       // Camera diagnostics: which mode is live and where it actually sits. Needed to
+       // prove a QA camera took effect rather than silently falling back.
+--- a/src/game/MatchHistory.ts
++++ b/src/game/MatchHistory.ts
+@@ -3,7 +3,7 @@
+ // History page and tools/history-report.ts compute from them. Pure: no DOM.
+ 
+ export type Controller = "human" | "decision-tree";
+-export type WinReason = "ko" | "ring-out" | "timed" | "koth";
++export type WinReason = "ko" | "ring-out" | "timed" | "koth" | "forfeit";
+ 
+ export interface FighterRecord {
+   name: string;

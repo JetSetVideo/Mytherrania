@@ -3,7 +3,7 @@
 // History page and tools/history-report.ts compute from them. Pure: no DOM.
 
 export type Controller = "human" | "decision-tree";
-export type WinReason = "ko" | "ring-out" | "timed" | "koth";
+export type WinReason = "ko" | "ring-out" | "timed" | "koth" | "forfeit";
 
 export interface FighterRecord {
   name: string;

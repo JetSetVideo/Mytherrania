@@ -3,16 +3,91 @@ import { NPCS, PALETTES, PRESETS, randomProfile, type CharacterProfile } from ".
 import { RACES, raceById, computeRaceStats, type RaceDef } from "../game/Races.ts";
 import { BIRTHSIGNS } from "../game/Birthsight.ts";
 import { secondaryPreview } from "../game/SecondaryStats.ts";
-import { skillsForClass, type Skill } from "../game/Skills.ts";
+import { ALL_SKILLS, skillsForClass, type Skill } from "../game/Skills.ts";
 import type { HistorySummary, MatchRecord, Rate } from "../game/MatchHistory.ts";
-import { RING_SHAPES, type ArenaConfig } from "../game/ArenaConfig.ts";
+import { objectSize, RING_SHAPES, type ArenaConfig, type ObjectKind } from "../game/ArenaConfig.ts";
+import { surfaceFor } from "../game/Terrain.ts";
 import { weaponForClass } from "../game/Weapon.ts";
 import { COLOUR_HEX, screenPanels, type ScreenId } from "./UiTree.ts";
 import { NavStack } from "./NavStack.ts";
 import { birthsignIcon, icon } from "./Icons.ts";
+import { ancestryView, initialAncestry, nextHeaderIndex, selectSubrace, toggleRace, type AncestryState } from "./AncestryState.ts";
 
 /** Largest arena (m across) the live engine builds; the creator's size slider tops out here. */
 export const LIVE_ARENA_MAX = 120;
+
+/** The arena-size slider's step, metres. */
+export const ARENA_SIZE_STEP = 2;
+
+/**
+ * Base parameters of the minimum arena (W04), each read from where the game defines it:
+ * - spawnOffset: fighters start this far from the centre (Engine.#startFight `spawn` = 2.5 m).
+ * - longestDash: the longest skill lunge in the roster (Skills `animation.lunge`, metres).
+ * - throwSpeed: the knockback speed at which a body is thrown into a ragdoll (Engine.#tickWorld,
+ *   7 m/s) — the hardest shove that still slides instead of tumbling.
+ * - slideTime: the time constant of that slide on stone, the reference ground (Terrain
+ *   `stone.stop`, s): Engine decays knockback as v *= exp(-dt / stop), so it travels v x stop.
+ * - largestProp: the widest arena prop's diameter (ArenaConfig object sizes, 2 x radius).
+ * - bodyRadius: a fighter's collision radius (Engine PLAYER_RADIUS = 0.5 m).
+ */
+export interface ArenaMinimumTerms {
+  spawnOffset: number; longestDash: number; throwSpeed: number; slideTime: number;
+  largestProp: number; bodyRadius: number;
+  /** One fighter's half of the field: s + d + v x tau + (prop + 2r) + r, metres. */
+  half: number;
+  /** The minimum size across: ceil(2 x half / step) x step, metres. */
+  size: number;
+}
+
+/** Every arena prop kind (a Record so the compiler flags a kind added to ArenaConfig). */
+const PROP_KINDS: Readonly<Record<ObjectKind, true>> = {
+  pillar: true, ramp: true, platform: true, crate: true, rock: true, arch: true, tree: true, gliderPad: true,
+};
+
+/**
+ * Derive the smallest live arena from gameplay. Along a line from the centre to the wall,
+ * one fighter's half of the field must hold, end to end:
+ *   half = spawnOffset                 (where it starts)
+ *        + longestDash                 (a full dash away from the rival)
+ *        + throwSpeed x slideTime      (then the hardest non-ragdoll knockback slide)
+ *        + largestProp + 2 x bodyRadius (room to walk AROUND the widest prop on that line)
+ *        + bodyRadius                  (clearance to the wall)
+ *   size = ceil(2 x half / ARENA_SIZE_STEP) x ARENA_SIZE_STEP
+ * With today's data: 2.5 + 3.4 + 7 x 0.7 + (3.8 + 1.0) + 0.5 = 16.1 m -> 32.2 -> 34 m.
+ */
+export function liveArenaMinimum(): ArenaMinimumTerms {
+  const spawnOffset = 2.5, throwSpeed = 7, bodyRadius = 0.5;
+  const longestDash = Math.max(...ALL_SKILLS.map((s) => s.animation.lunge));
+  const slideTime = surfaceFor("stone").stop;
+  const largestProp = Math.max(...(Object.keys(PROP_KINDS) as ObjectKind[]).map((k) => 2 * objectSize(k).r));
+  const half = spawnOffset + longestDash + throwSpeed * slideTime + largestProp + 2 * bodyRadius + bodyRadius;
+  // Round the product first: 2 x 16.1 is 32.2000…01 in floating point.
+  const size = Math.ceil(Math.round(2 * half * 1e6) / 1e6 / ARENA_SIZE_STEP) * ARENA_SIZE_STEP;
+  return { spawnOffset, longestDash, throwSpeed, slideTime, largestProp, bodyRadius, half, size };
+}
+
+/**
+ * Smallest arena (m across) the live engine builds — 34 m today, derived in
+ * {@link liveArenaMinimum} (it was 8 m). The size slider starts here, and a random arena
+ * is clamped up to it by the engine ({@link clampLiveArenaSize}).
+ */
+export const LIVE_ARENA_MIN = liveArenaMinimum().size;
+
+/** Clamp an arena size (m across) into the live range [LIVE_ARENA_MIN, LIVE_ARENA_MAX]. */
+export function clampLiveArenaSize(size: number): number {
+  return Math.min(LIVE_ARENA_MAX, Math.max(LIVE_ARENA_MIN, Number.isFinite(size) ? size : LIVE_ARENA_MIN));
+}
+
+/**
+ * The slider's lowest notch (one step below LIVE_ARENA_MIN) means "random"; any value
+ * below LIVE_ARENA_MIN (including 0) is random (null); the rest clamp into the live range.
+ */
+export function arenaSizeFromSlider(value: number): number | null {
+  return Number.isFinite(value) && value >= LIVE_ARENA_MIN ? clampLiveArenaSize(value) : null;
+}
+
+/** The slider's "random" notch: one step below the minimum size. */
+export const ARENA_SLIDER_RANDOM = LIVE_ARENA_MIN - ARENA_SIZE_STEP;
 
 export type Screen = "title" | "select" | "victory" | "digest" | "sheet";
 
@@ -34,6 +109,8 @@ export interface MenuCallbacks {
   onSpectate?(player: CharacterProfile, opponent: CharacterProfile): void;
   /** A profile was selected; the engine loads its character state + keybindings. */
   onProfile?(playerId: string): void;
+  /** The title's Settings button: open the settings panel over the menu. */
+  onSettings?(): void;
 }
 
 export interface SheetData {
@@ -79,6 +156,8 @@ export class Menu {
   #cb!: MenuCallbacks;
   /** Arena parameters chosen in the creator; empty = fully random. */
   #arena: Partial<ArenaConfig> = {};
+  /** Ancestry accordion: which race box is open and which race + sub-species are chosen (W01). */
+  #ancestry: AncestryState = initialAncestry(RACES, PRESETS[0].race, PRESETS[0].subrace);
 
   /** The arena the player asked for (applied to the next match only). */
   arenaChoice(): Partial<ArenaConfig> {
@@ -162,6 +241,7 @@ export class Menu {
         <button class="menu-btn" data-action="start">⚔ Fight</button>
         <button class="menu-btn menu-btn-alt" data-action="digest">📋 History</button>
         <button class="menu-btn menu-btn-alt" data-action="spectate">👁 Spectate</button>
+        <button class="menu-btn menu-btn-alt" data-action="settings" title="Keyboard layout, mouse, camera, display, sound">${icon("gear", "menu-btn-icon")}Settings</button>
       </div>
 
       <div class="menu-screen" data-screen="select">${this.#backBar()}
@@ -172,13 +252,9 @@ export class Menu {
         <nav class="panel-tabs" data-tabs="select"></nav>
 
         <section class="ui-panel" data-panel="ancestry" data-colour="grass">
-          <h3 class="panel-head"><span class="dot"></span>Ancestry<span class="panel-hint">Race and sub-species drive the body, hair, beard and tusks.</span></h3>
-          <label class="field">Name <input id="creator-name" type="text" value="${this.#player.name}"></label>
-          <div class="race-grid">${RACES.map(r => `
-            <button class="race-card" data-race="${r.id}">
-              <strong>${r.name}</strong>
-              <small>${r.traits[0]}</small>
-            </button>`).join("")}</div>
+          <h3 class="panel-head"><span class="dot"></span>Ancestry<span class="panel-hint">Click a race to open it, then pick its sub-species. They drive the body, hair, beard and tusks.</span></h3>
+          <label class="field">Name <input id="creator-name" type="text" value="${esc(this.#player.name)}"></label>
+          <div class="ancestry-list" id="ancestry-list">${RACES.map((r) => this.#raceBoxHtml(r)).join("")}</div>
           <div id="race-detail" class="race-detail"></div>
         </section>
 
@@ -251,7 +327,8 @@ export class Menu {
               </select>
             </label>
             <label>Size <output id="arena-size-out">random</output>
-              <input id="arena-size" type="range" min="0" max="${LIVE_ARENA_MAX}" step="2" value="0">
+              <input id="arena-size" type="range" min="${ARENA_SLIDER_RANDOM}" max="${LIVE_ARENA_MAX}" step="${ARENA_SIZE_STEP}" value="${ARENA_SLIDER_RANDOM}" aria-describedby="arena-size-hint">
+              <small id="arena-size-hint" class="field-hint">Far left = random. Fixed sizes run ${LIVE_ARENA_MIN}–${LIVE_ARENA_MAX} m.</small>
             </label>
             <label>Wall
               <select id="arena-walls">
@@ -294,6 +371,7 @@ export class Menu {
     root.querySelector('[data-action="start"]')!.addEventListener("click", () => this.show("select"));
     root.querySelector('[data-action="digest"]')!.addEventListener("click", () => { cb.onDigest?.(); });
     root.querySelector('[data-action="spectate"]')!.addEventListener("click", () => { this.hide(); cb.onSpectate?.(this.#player, this.#opponent); });
+    root.querySelector('[data-action="settings"]')!.addEventListener("click", () => { cb.onSettings?.(); });
 
     // Arena choices: an empty value or 0 means "let the generator decide".
     const arenaSel = (id: string) => root.querySelector(`#${id}`) as HTMLInputElement | HTMLSelectElement;
@@ -301,14 +379,14 @@ export class Menu {
       const a: Partial<ArenaConfig> = {};
       const shape = arenaSel("arena-shape").value;
       if (shape !== "") a.shape = Number(shape);
-      const size = Number(arenaSel("arena-size").value);
-      if (size > 0) a.size = size;
+      const size = arenaSizeFromSlider(Number(arenaSel("arena-size").value));
+      if (size !== null) a.size = size;
       const walls = arenaSel("arena-walls").value;
       if (walls !== "") a.walls = Number(walls);
       const res = Number(arenaSel("arena-res").value);
       if (res > 0) a.wallResistance = res;
       this.#arena = a;
-      (root.querySelector("#arena-size-out") as HTMLOutputElement).value = size > 0 ? `${size} m` : "random";
+      (root.querySelector("#arena-size-out") as HTMLOutputElement).value = size !== null ? `${size} m` : "random";
       (root.querySelector("#arena-res-out") as HTMLOutputElement).value = res > 0 ? `${res} N·s` : "random";
     };
     for (const id of ["arena-shape", "arena-size", "arena-walls", "arena-res"]) arenaSel(id).addEventListener("input", readArena);
@@ -344,15 +422,26 @@ export class Menu {
       chip.classList.add("selected");
     }));
 
-    // Race cards: click to select race, show detail
-    root.querySelectorAll(".race-card").forEach(card => card.addEventListener("click", () => {
-      const rid = (card as HTMLElement).dataset.race!;
-      const race = raceById(rid)!;
-      this.#player = { ...this.#player, race: rid, subrace: race.subspecies[0].id };
-      root.querySelectorAll(".race-card").forEach(c => c.classList.remove("selected"));
-      card.classList.add("selected");
-      this.#renderRaceDetail(race);
-    }));
+    // Ancestry accordion (W01): a race header opens its box in place (the others close) and
+    // selects the race; a sub-species chip inside the box selects both. Arrow keys / Home /
+    // End move between the race headers; Enter / Space toggle (native button behaviour).
+    const list = root.querySelector<HTMLElement>("#ancestry-list")!;
+    list.addEventListener("click", (e) => {
+      const target = e.target as Element | null;
+      const chip = target?.closest?.<HTMLElement>(".subrace-chip");
+      if (chip) { this.#setAncestry(selectSubrace(this.#ancestry, chip.dataset.race!, chip.dataset.subrace!, RACES)); return; }
+      const head = target?.closest?.<HTMLElement>(".race-toggle");
+      if (head) this.#setAncestry(toggleRace(this.#ancestry, head.dataset.race!, RACES));
+    });
+    list.addEventListener("keydown", (e) => {
+      const head = (e.target as Element | null)?.closest?.<HTMLElement>(".race-toggle");
+      if (!head) return;
+      const heads = [...list.querySelectorAll<HTMLElement>(".race-toggle")];
+      const next = nextHeaderIndex(heads.indexOf(head), e.key, heads.length);
+      if (next === null) return;
+      e.preventDefault();
+      heads[next].focus();
+    });
 
     // Random / presets
     root.querySelector('[data-action="random"]')!.addEventListener("click", () => {
@@ -433,8 +522,8 @@ export class Menu {
     const statRow = (label: string, s: { min: number; max: number; avg: number; median: number }) =>
       `<div class="stat-row"><span>${label}</span><b>${s.min}–${s.max}</b></div>`;
     // Race hero: the name centred in a hero box, flanked by primary + secondary stat
-    // columns; the sub-species list nests under its parent race; the birth-sign row
-    // drives a live delta preview.
+    // columns; the birth-sign row drives a live delta preview. The sub-species are picked in
+    // the race's own box in the accordion above (W01), not here.
     el.innerHTML = `
       <div class="race-hero">
         <div class="race-hero-name">${esc(race.name)}</div>
@@ -453,25 +542,12 @@ export class Menu {
             <div id="hero-secondary">${this.#secondaryRows()}</div>
           </div>
         </div>
-        <div class="subrace-nest">
-          <div class="nest-head">Sub-species of ${esc(race.name)}</div>
-          <div class="subrace-row">
-            ${race.subspecies.map(s => `<button class="subrace-chip ${this.#player.subrace === s.id ? "selected" : ""}" data-subrace="${s.id}" title="${esc(s.desc)}">${esc(s.name)}</button>`).join("")}
-          </div>
-        </div>
         <div class="sign-row"><strong>Birth Sign:</strong>
           ${BIRTHSIGNS.map(s => `<button class="sign-chip ${this.#player.birthsign === s.id ? "selected" : ""}" data-sign="${s.id}" title="${esc(s.lore)}">${birthsignIcon(s.id, "sign-icon")}<span>${esc(s.name)}</span></button>`).join("")}
         </div>
         <div id="birthsign-preview">${this.#birthsignPreview()}</div>
       </div>`;
     el.classList.remove("hidden");
-    el.querySelectorAll(".subrace-chip").forEach(btn =>
-      btn.addEventListener("click", () => {
-        this.#player = { ...this.#player, subrace: (btn as HTMLElement).dataset.subrace! };
-        el.querySelectorAll(".subrace-chip").forEach(b => b.classList.remove("selected"));
-        btn.classList.add("selected");
-        this.#refreshSecondary();
-      }));
     el.querySelectorAll(".sign-chip").forEach(btn =>
       btn.addEventListener("click", () => {
         this.#player = { ...this.#player, birthsign: (btn as HTMLElement).dataset.sign! };
@@ -531,12 +607,79 @@ export class Menu {
       r.setAttribute("data-selected", String((w || undefined) === this.#player.weaponType || (w === "" && !this.#player.weaponType)));
     });
     this.#renderClassSkills(this.#player.className);
-    // Highlight the matching race card
-    this.#root.querySelectorAll(".race-card").forEach(c => {
-      c.classList.toggle("selected", (c as HTMLElement).dataset.race === this.#player.race);
-    });
+    // Ancestry: open the profile's race box with its sub-species chosen (a missing or foreign
+    // sub-species falls back to the race's first, so the highlight is the real selection).
+    this.#ancestry = initialAncestry(RACES, this.#player.race, this.#player.subrace);
+    this.#player = { ...this.#player, race: this.#ancestry.race, subrace: this.#ancestry.subrace };
+    this.#syncAncestry();
     const race = raceById(this.#player.race);
     if (race) this.#renderRaceDetail(race);
+  }
+
+  /** One race box of the Ancestry accordion: header button + collapsible sub-species region. */
+  #raceBoxHtml(r: RaceDef): string {
+    return `
+            <div class="race-box" data-race-box="${esc(r.id)}">
+              <h4 class="race-box-head">
+                <button type="button" class="race-card race-toggle" id="race-toggle-${esc(r.id)}" data-race="${esc(r.id)}"
+                  aria-expanded="false" aria-controls="race-panel-${esc(r.id)}">
+                  <span class="race-box-text"><strong class="race-box-name" data-race-label>${esc(r.name)}</strong><small class="race-box-trait">${esc(r.traits[0] ?? "")}</small></span>
+                  ${icon("chevron-left", "race-box-chevron")}
+                </button>
+              </h4>
+              <div class="race-box-body" id="race-panel-${esc(r.id)}" role="region" aria-labelledby="race-toggle-${esc(r.id)}">
+                <div class="race-box-inner">
+                  <div class="subrace-row" role="group" aria-label="Sub-species of ${esc(r.name)}">${r.subspecies.map((s) =>
+                    `<button type="button" class="subrace-chip" data-race="${esc(r.id)}" data-subrace="${esc(s.id)}" aria-pressed="false" title="${esc(s.desc)}">${esc(s.name)}</button>`).join("")}</div>
+                  <p class="subrace-desc" data-subrace-desc></p>
+                </div>
+              </div>
+            </div>`;
+  }
+
+  /**
+   * Apply a new accordion state: copy race + sub-species into the profile, redraw the race
+   * detail when the race changed (else refresh the sub-species-driven secondary rows), then
+   * sync the boxes' highlight, labels and open state.
+   */
+  #setAncestry(next: AncestryState): void {
+    const prev = this.#ancestry;
+    this.#ancestry = next;
+    if (next.race !== prev.race || next.subrace !== prev.subrace) {
+      this.#player = { ...this.#player, race: next.race, subrace: next.subrace };
+      const race = raceById(next.race);
+      if (next.race !== prev.race && race) this.#renderRaceDetail(race);
+      else this.#refreshSecondary();
+    }
+    this.#syncAncestry();
+  }
+
+  /**
+   * Draw `#ancestry` into the boxes without rebuilding them: the selected box and chip share
+   * the accent (class `selected`, `aria-pressed`), the selected header reads
+   * "Race · Sub-species", and a collapsed body is `inert` so Tab skips its hidden chips.
+   */
+  #syncAncestry(): void {
+    for (const box of ancestryView(this.#ancestry, RACES)) {
+      const el = this.#root.querySelector<HTMLElement>(`[data-race-box="${box.raceId}"]`);
+      if (!el) continue;
+      el.classList.toggle("selected", box.selected);
+      el.classList.toggle("expanded", box.expanded);
+      const head = el.querySelector<HTMLElement>(".race-toggle")!;
+      head.classList.toggle("selected", box.selected);
+      head.setAttribute("aria-expanded", String(box.expanded));
+      el.querySelector("[data-race-label]")!.textContent = box.label;
+      el.querySelector<HTMLElement>(".race-box-body")!.inert = !box.expanded;
+      let desc = "";
+      for (const chip of box.chips) {
+        const c = el.querySelector<HTMLElement>(`.subrace-chip[data-subrace="${chip.id}"]`);
+        if (!c) continue;
+        c.classList.toggle("selected", chip.selected);
+        c.setAttribute("aria-pressed", String(chip.selected));
+        if (chip.selected) desc = c.title;
+      }
+      el.querySelector("[data-subrace-desc]")!.textContent = desc;
+    }
   }
 
   /** Show the selected class's three skills (dash / power / defense) with their details. */
