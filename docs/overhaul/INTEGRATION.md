@@ -47,3 +47,16 @@ Parent-owned. One row per requirement; "verified" means the parent re-ran it, no
 
 - G: pointer lock blocks mouse presses on skill chips mid-fight; first Esc in a fight may only release pointer lock (Chrome). Back from victory goes to the creator when the fight started there.
 - B: birth sign does not reach `BodySpec` (add optional field or pass the stack from the engine); `Appearance.body` palette no longer colours skin — keep fighters distinguishable (`garment: true`).
+
+## Wave 2 — combat, weapons, menu (2026-10-28 evening)
+
+| Req | State | Evidence (parent-run) |
+|-----|-------|-----------------------|
+| W01 ancestry accordion | **shipped** `d92dc74` | Mouse: Fight → Ancestry → Elf expands (others aria-expanded=false, panels 0 px), High Elf chip selected, header "Human · Imperial" style merge; fighter spawned elf/high. |
+| W02 settings / give up / Esc pause | **shipped** `d92dc74` | Lane U verified Esc pause (clock frozen 2 s), Give up → forfeit saved to history. Gear icon-only (aria-label Settings). |
+| W03 minimap top-right + gear | **shipped** `d92dc74` | 1280 px: minimap [1080,12,1264,196], gear [1028,12,1072,56]. |
+| W04 min arena | **shipped** `d92dc74` | LIVE_ARENA_MIN 34 m (derived); live ring 34 m. |
+| W06/W07 weapons | **shipped** `3cac8f8`, readability `0a2fc6a` | 19 menu rows; rematches rolled Rapier/Greataxe/Mace/Axe/Shortsword/Dagger/Warhammer. Lane W: finesse vs heavy crit 0.28/0.08, min 0.37/1.11, accuracy 0.73/0.86, relativeDps 0.9998–1.0002. W2 blind ID 13/17 (target 15): flail, short sword, greatsword, maul still misnamed. |
+| W05/W08/W09 collision + impact | **shipped** `0a2fc6a` | Hitboxes: human 50 capsules 99% coverage. X2 harness: plain attack 24/24 up to the engage distance, 0/24 at 3 m. Live 20 s (real GPU): longsword 17/17 contacts (12 hit, 2 crit, 3 miss); dagger 30 contacts of 37 swings but 15 grazes + 11 misses. Parent balance fix: Impact damage = efficiency vs the weapon kind's AVERAGE contact × the class armour law; probe `tools/balance_probe.ts`: archetype DPS spread 1.83 → ~1.33 per armour level (staff +15–20 %, flail −10 % outliers). |
+
+Open (wave 2): head hits dominate slashes live (11/17 head on a longsword); daggers/spears graze at body range (point speed); skills land 50–58 % at 1.2–2.0 m and are cut short on contact; off-hand does not grip two-handed hafts; up to 8 cm blade overlap when guards interlock; bow has no projectile; arena-harness balance re-run needed with geometric combat.
