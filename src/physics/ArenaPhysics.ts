@@ -9,9 +9,13 @@
 import { hitWall, type Body } from "../game/Physics.ts";
 import { insideRing, objectSize, ringRadiusAt, wallFor, type ArenaConfig, type ArenaObject } from "../game/ArenaConfig.ts";
 import type { Body as KinematicBody } from "./SmashPhysics.ts";
+import { settleOnFloor, type FloorContact } from "../world/TerrainGround.ts";
 
 /** Gravity used for every free body in the arena, m/s². */
 export const ARENA_GRAVITY = 24;
+
+/** Reused floor-contact result, so the per-frame step allocates nothing. */
+const FLOOR_CONTACT: FloorContact = { grounded: false, blocked: false, floorY: 0 };
 
 /** Mutable per-match arena state: the wall wears down as it is hit. */
 export interface ArenaState {
@@ -21,6 +25,12 @@ export interface ArenaState {
   /** 1 = intact, 0 = broken through. Shared by the whole perimeter. */
   integrity: number;
   props: ArenaObject[];
+  /** Terrain floor height at (x, z), m (TerrainMeshBuild.floorHeightAt). Absent = flat floor at y 0. */
+  floorAt?: (x: number, z: number) => number;
+  /** Highest ledge a walker steps up without being blocked, m (TerrainRules.base.stepHeight). */
+  stepHeight?: number;
+  /** Steepest climbable gradient, rise/run (TerrainRules.maxClimbTan = tan(maxSlope)). */
+  maxClimbTan?: number;
 }
 
 /** What happened to a body this step, for the engine to turn into damage and FX. */
@@ -65,7 +75,9 @@ export function stepArenaBody(
   let wall: ArenaStep["wall"] = null;
 
   // Perimeter wall: only stops bodies that were inside and are low enough to hit it.
-  if (st.walled && st.integrity > 0 && wasInside && !insideRing(cfg, b.x, b.z) && b.y < cfg.wallHeight) {
+  // The wall stands on the rim of the terrain, so "low enough" is measured from the rim.
+  const rimY = st.floorAt ? st.floorAt(b.x * 0.98, b.z * 0.98) : 0;
+  if (st.walled && st.integrity > 0 && wasInside && !insideRing(cfg, b.x, b.z) && b.y < rimY + cfg.wallHeight) {
     const angle = Math.atan2(b.z, b.x);
     const nx = Math.cos(angle), nz = Math.sin(angle);
     const speed = Math.max(0.5, outwardSpeed, b.vx * nx + b.vz * nz);
@@ -84,7 +96,12 @@ export function stepArenaBody(
   }
 
   const onRing = insideRing(cfg, b.x, b.z);
-  if (onRing && b.y < b.radius && b.y > -b.radius * 2) {
+  if (st.floorAt && onRing) {
+    // Terrain: stand on the drawn floor; a cliff face or an over-steep slope undoes the
+    // horizontal move (prev = last frame's position, before walking/AI moved x/z).
+    const px = prev ? prev.x : b.x - b.vx * dt, pz = prev ? prev.z : b.z - b.vz * dt;
+    settleOnFloor(b, px, pz, st.floorAt, st.stepHeight ?? 0.35, st.maxClimbTan ?? Infinity, FLOOR_CONTACT);
+  } else if (onRing && b.y < b.radius && b.y > -b.radius * 2) {
     b.y = b.radius;
     b.vy = 0;
   }
