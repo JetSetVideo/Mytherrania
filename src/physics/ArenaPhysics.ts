@@ -31,6 +31,8 @@ export interface ArenaState {
   stepHeight?: number;
   /** Steepest climbable gradient, rise/run (TerrainRules.maxClimbTan = tan(maxSlope)). */
   maxClimbTan?: number;
+  /** The outside ground follows the terrain (drawn): floorAt is valid outside the ring too. */
+  outsideFollowsTerrain?: boolean;
 }
 
 /** What happened to a body this step, for the engine to turn into damage and FX. */
@@ -108,11 +110,19 @@ export function stepArenaBody(
 
   let landedOutside = 0;
   if (!onRing && cfg.outsideGround >= 1 && cfg.outsideCollision >= 1) {
-    const floor = cfg.outsideHeight + b.radius;
-    if (b.y < floor) {
-      if (b.vy < -0.5) landedOutside = -b.vy;
-      b.y = floor;
-      b.vy = 0;
+    if (st.floorAt && st.outsideFollowsTerrain) {
+      // Drawn outside terrain: holes are fallen into, outside cliff faces block like the ring's.
+      const px = prev ? prev.x : b.x - b.vx * dt, pz = prev ? prev.z : b.z - b.vz * dt;
+      const falling = b.vy;
+      const c = settleOnFloor(b, px, pz, st.floorAt, st.stepHeight ?? 0.35, st.maxClimbTan ?? Infinity, FLOOR_CONTACT);
+      if (c.grounded && falling < -0.5) landedOutside = -falling;
+    } else {
+      const floor = cfg.outsideHeight + b.radius;
+      if (b.y < floor) {
+        if (b.vy < -0.5) landedOutside = -b.vy;
+        b.y = floor;
+        b.vy = 0;
+      }
     }
   }
 

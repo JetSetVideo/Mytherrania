@@ -70,6 +70,12 @@ export interface RingSurfaceOptions {
   ringHalf?: number;
   /** y of the skirt bottom, m. Default: lowest floor vertex - FLOOR_THICKNESS. */
   skirtBottomY?: number;
+  /**
+   * Per-rim-vertex skirt bottom (lane E2): the skirt reaches down to min(rim floor,
+   * skirtBottomAt(x, z)), so it meets a drawn outside ground (OutsideSurface) exactly.
+   * Overrides skirtBottomY; the result's skirtBottomY is then the lowest bottom.
+   */
+  skirtBottomAt?: (x: number, z: number) => number;
 }
 
 /** Derived resolution: one cell per triangle edge, segments a multiple of 24, capped at 768. */
@@ -131,16 +137,26 @@ export function buildRingSurface(field: Heightfield, outline: ArenaOutline, opti
       minY = Math.min(minY, writeFloor(vIndex(layout, i, j), Math.cos(a) * r, Math.sin(a) * r));
     }
   }
-  const skirtBottomY = options.skirtBottomY ?? minY - FLOOR_THICKNESS;
+  let skirtBottomY = options.skirtBottomY ?? minY - FLOOR_THICKNESS;
+  if (options.skirtBottomAt) {
+    skirtBottomY = Infinity;
+    for (let j = 0; j < S; j++) {
+      const rim = vIndex(layout, R, j);
+      skirtBottomY = Math.min(skirtBottomY, positions[rim * 3 + 1], options.skirtBottomAt(positions[rim * 3], positions[rim * 3 + 2]));
+    }
+  }
   for (let j = 0; j < S; j++) {
     const rim = vIndex(layout, R, j), top = floorVerts + j, bottom = floorVerts + S + j;
+    const bottomY = options.skirtBottomAt
+      ? Math.min(positions[rim * 3 + 1], options.skirtBottomAt(positions[rim * 3], positions[rim * 3 + 2]))
+      : skirtBottomY;
     // Outward normal from the outline's tangent at this rim vertex: (tz, 0, -tx) normalised.
     const prev = vIndex(layout, R, j - 1), next = vIndex(layout, R, j + 1);
     const tx = positions[next * 3] - positions[prev * 3], tz = positions[next * 3 + 2] - positions[prev * 3 + 2];
     const len = Math.hypot(tx, tz) || 1;
     for (const v of [top, bottom]) {
       positions[v * 3] = positions[rim * 3];
-      positions[v * 3 + 1] = v === top ? positions[rim * 3 + 1] : skirtBottomY;
+      positions[v * 3 + 1] = v === top ? positions[rim * 3 + 1] : bottomY;
       positions[v * 3 + 2] = positions[rim * 3 + 2];
       normals[v * 3] = tz / len; normals[v * 3 + 1] = 0; normals[v * 3 + 2] = -tx / len;
       colors[v * 3] = SKIRT_COLOUR[0]; colors[v * 3 + 1] = SKIRT_COLOUR[1]; colors[v * 3 + 2] = SKIRT_COLOUR[2];

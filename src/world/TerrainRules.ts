@@ -55,6 +55,10 @@ export interface TerrainBase {
   outsideMarginFraction: number;
   /** Most nodes along one axis: bounds the cost of relaxation, A* and the minimap. */
   maxGridAxis: number;
+  /** Typical weapon reach of a fighter, metres (sizes the fair centre: see TerrainRules.fairRadius). */
+  fighterReach: number;
+  /** A fighter's collision radius, metres (Engine PLAYER_RADIUS). */
+  bodyRadius: number;
 }
 
 /** Range and meaning of one base parameter, for UI sliders and the docs. */
@@ -75,6 +79,8 @@ export const TERRAIN_BASE_SPECS: Record<keyof TerrainBase, BaseParamSpec> = {
   persistence: { min: 0.1, max: 0.9, def: 0.5, unit: "0..1", note: "0.5 is classic fBm: each octave half as loud as the previous" },
   outsideMarginFraction: { min: 0, max: 2, def: 0.5, unit: "x radius", note: "room outside the ring for the skirt, the minimap and the freer ground" },
   maxGridAxis: { min: 16, max: 512, def: 128, unit: "nodes", note: "128^2 = 16k nodes keeps relaxation and A* well under a frame" },
+  fighterReach: { min: 0.5, max: 4, def: 1.9, unit: "m", note: "mean of the Weapon.ts TYPE_BASE reaches (13 m / 7 = 1.86) x the mean build multiplier 0.82 + 0.4 * 0.5 = 1.02" },
+  bodyRadius: { min: 0.1, max: 2, def: 0.5, unit: "m", note: "Engine PLAYER_RADIUS: the fighter's collision circle" },
 };
 
 /** Default base parameters (the `def` column of TERRAIN_BASE_SPECS). */
@@ -175,6 +181,40 @@ export interface TerrainRules {
   slopePenalty: number;
   /** Downhill share of that penalty: d / g = 0.25 (braking costs, but less than climbing). The sign of dh picks the coefficient. */
   downhillFactor: number;
+  // ---- ring readability (lane E2): fair centre, rolling band, band mounds, in-ring feature ----
+  /** Fair-centre radius, m: min(fighterReach / 2 + bodyRadius, arenaRadius * fightZoneFraction) -> two fighters trading blows at full reach ACROSS the centre both stand on it; never more than the central d of the ring's area. No band relief, mound or flagged node touches it. */
+  fairRadius: number;
+  /** Radius of a levelled spawn pad, m: bodyRadius + cell (the body plus the one-cell probe settleOnFloor looks ahead). */
+  fairPadRadius: number;
+  /** Run over which the band relief fades in outside the fair centre, m: PROFILE_PEAK_SLOPE * stepHeight / (tan(maxSlope) g) -> fading one step of relief in with a smoothstep never steepens the ground past the feature slope budget. */
+  fairBlend: number;
+  /** Radial width of the ring band, m: arenaRadius - fairRadius. */
+  bandWidth: number;
+  /** Target RMS slope of the band's rolling ground (tan): tan(maxSlope) / 2 -> ordinary ground uses half its walkable slope on average, so the slope limit still has head-room for mounds and the relaxation rarely has to clip. */
+  rollSlope: number;
+  /** Wavelength of the rolling ground's first octave, m: bandWidth (one swell and one hollow across the band). */
+  rollWavelength: number;
+  /** Rolling-ground octaves: floor(log2(rollWavelength / (2 cell))) + 1 (stops at the grid's Nyquist limit). */
+  rollOctaves: number;
+  /** Pareto mounds and hollows in the band: max(ceil(2/d), round(d bandArea / (pi featureMinRadius^2))), bandArea = pi (R^2 - fairRadius^2). */
+  bandFeatureCount: number;
+  /** Largest band mound radius, m: max(featureMinRadius, bandWidth / 2) (it fills the band without reaching both the fair centre and the rim). */
+  bandFeatureMaxRadius: number;
+  /** Largest band mound amplitude, m: bandFeatureMaxRadius * tan(maxSlope) g / PROFILE_PEAK_SLOPE (its flank uses the feature slope budget exactly). */
+  bandFeatureMaxAmplitude: number;
+  /** Cap ratio and Pareto shape of the band mounds, solved like featureCapRatio / featureAlpha for bandFeatureCount draws. */
+  bandFeatureCapRatio: number;
+  bandFeatureAlpha: number;
+  /** Radial room for a flagged feature INSIDE the ring, m: arenaRadius (1 - fightZoneFraction) (between the fight zone, where holes and cliffs are banned, and the rim). */
+  ringFeatureBand: number;
+  /** Rise of the in-ring terrace (low cliff) and depth of the in-ring shallow hole, m: clamp(g^2 ringFeatureBand tan(maxSlope) / PROFILE_PEAK_SLOPE, max(stepHeight, maxNeighbourDelta) / g, holeDepth) -> the terrace's two falloffs (2 ringCliffSlopeWidth) fill g of the room; never steppable (a step + 25%), never deeper than the outside's dramatic rise. */
+  ringFeatureRise: number;
+  /** Half-width of each falloff of the in-ring terrace, m: PROFILE_PEAK_SLOPE (ringFeatureRise / 2) / (tan(maxSlope) g). */
+  ringCliffSlopeWidth: number;
+  /** In-ring hole radius range, m: [featureMinRadius, max(featureMinRadius, ringFeatureBand d)]. */
+  ringHoleRadiusMax: number;
+  /** Horizontal run of the in-ring hole's exit ramp, m: ringFeatureRise / rampSlopeTan. */
+  ringHoleExitRun: number;
 }
 
 /** One derived value with its equation, for docs and debug overlays. */
@@ -336,6 +376,18 @@ export function deriveTerrainRules(over: Partial<TerrainBase> = {}): TerrainRule
   const cliffFootprint = Math.hypot(1.5 * cliffSlopeWidth, cliffSlopeWidth);
   const holeFootprint = (featureMinRadius + holeRadiusMax) / 2 + holeExitRun;
   const each = Math.max(1, Math.floor((d * deliberateBandArea) / (Math.PI * (cliffFootprint ** 2 + holeFootprint ** 2))));
+  // ---- ring readability (lane E2) ----
+  const fightZoneFraction = Math.sqrt(d);
+  const fairRadius = Math.min(base.fighterReach / 2 + base.bodyRadius, base.arenaRadius * fightZoneFraction);
+  const bandWidth = Math.max(cell, base.arenaRadius - fairRadius);
+  const rollWavelength = bandWidth;
+  const rollOctaves = Math.max(1, Math.floor(Math.log2(rollWavelength / (2 * cell))) + 1);
+  const bandArea = Math.PI * (base.arenaRadius ** 2 - fairRadius ** 2);
+  const bandFeatureCount = Math.max(Math.ceil(2 / d), Math.round((d * bandArea) / (Math.PI * featureMinRadius ** 2)));
+  const bandFeatureCapRatio = solveCapRatio(g, bandFeatureCount, d);
+  const bandFeatureMaxRadius = Math.max(featureMinRadius, bandWidth / 2);
+  const ringFeatureBand = base.arenaRadius * (1 - fightZoneFraction);
+  const ringFeatureRise = clamp((g * g * ringFeatureBand * maxSlopeTan) / PROFILE_PEAK_SLOPE, Math.max(base.stepHeight, cell * maxSlopeTan) / g, dramaticRise);
   return {
     base,
     domainHalf, cell, gridAxis,
@@ -368,6 +420,22 @@ export function deriveTerrainRules(over: Partial<TerrainBase> = {}): TerrainRule
     relaxSlack: 1e-3,
     slopePenalty: 1 / maxSlopeTan,
     downhillFactor: d / g,
+    fairRadius,
+    fairPadRadius: base.bodyRadius + cell,
+    fairBlend: (PROFILE_PEAK_SLOPE * base.stepHeight) / (maxSlopeTan * g),
+    bandWidth,
+    rollSlope: maxSlopeTan / 2,
+    rollWavelength, rollOctaves,
+    bandFeatureCount,
+    bandFeatureMaxRadius,
+    bandFeatureMaxAmplitude: (bandFeatureMaxRadius * maxSlopeTan * g) / PROFILE_PEAK_SLOPE,
+    bandFeatureCapRatio,
+    bandFeatureAlpha: solveParetoAlpha(g, bandFeatureCapRatio, bandFeatureCount, d).alpha,
+    ringFeatureBand,
+    ringFeatureRise,
+    ringCliffSlopeWidth: (PROFILE_PEAK_SLOPE * ringFeatureRise / 2) / (maxSlopeTan * g),
+    ringHoleRadiusMax: Math.max(featureMinRadius, ringFeatureBand * d),
+    ringHoleExitRun: ringFeatureRise / rampSlopeTan,
   };
 }
 
@@ -410,5 +478,22 @@ export function describeTerrainRules(r: TerrainRules): RuleEquation[] {
     e("relaxMaxIterations", r.relaxMaxIterations, "sweep pairs", "gridAxis"),
     e("slopePenalty", r.slopePenalty, "", "1 / tan(maxSlope)"),
     e("downhillFactor", r.downhillFactor, "", "d / g"),
+    e("fairRadius", r.fairRadius, "m", "min(fighterReach / 2 + bodyRadius, arenaRadius * fightZoneFraction)"),
+    e("fairPadRadius", r.fairPadRadius, "m", "bodyRadius + cell"),
+    e("fairBlend", r.fairBlend, "m", "1.5 stepHeight / (tan(maxSlope) g)"),
+    e("bandWidth", r.bandWidth, "m", "arenaRadius - fairRadius"),
+    e("rollSlope", r.rollSlope, "", "tan(maxSlope) / 2: target RMS slope of the band"),
+    e("rollWavelength", r.rollWavelength, "m", "bandWidth"),
+    e("rollOctaves", r.rollOctaves, "", "floor(log2(rollWavelength / (2 cell))) + 1"),
+    e("bandFeatureCount", r.bandFeatureCount, "", "max(ceil(2/d), round(d pi (R^2 - fairRadius^2) / (pi featureMinRadius^2)))"),
+    e("bandFeatureMaxRadius", r.bandFeatureMaxRadius, "m", "max(featureMinRadius, bandWidth / 2)"),
+    e("bandFeatureMaxAmplitude", r.bandFeatureMaxAmplitude, "m", "bandFeatureMaxRadius tan(maxSlope) g / 1.5"),
+    e("bandFeatureCapRatio", r.bandFeatureCapRatio, "x", "smallest 2^k whose capped Pareto reaches g + d(1-g), n = bandFeatureCount"),
+    e("bandFeatureAlpha", r.bandFeatureAlpha, "", "solve E[topShare_d] = g under the cap, n = bandFeatureCount"),
+    e("ringFeatureBand", r.ringFeatureBand, "m", "arenaRadius (1 - fightZoneFraction)"),
+    e("ringFeatureRise", r.ringFeatureRise, "m", "clamp(g^2 ringFeatureBand tan(maxSlope) / 1.5, max(stepHeight, maxNeighbourDelta) / g, holeDepth)"),
+    e("ringCliffSlopeWidth", r.ringCliffSlopeWidth, "m", "1.5 (ringFeatureRise / 2) / (tan(maxSlope) g)"),
+    e("ringHoleRadiusMax", r.ringHoleRadiusMax, "m", "max(featureMinRadius, ringFeatureBand d)"),
+    e("ringHoleExitRun", r.ringHoleExitRun, "m", "ringFeatureRise / rampSlopeTan"),
   ];
 }

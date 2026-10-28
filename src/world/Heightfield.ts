@@ -8,10 +8,15 @@
 //   3. relief   heights_m = relief(rNorm) * relative: the fight zone is held to
 //               fightRelief (one step), the ring band blends up to ringRelief, the
 //               outside to outsideRelief (freer ground), all with smoothstep blends.
+//   3b. ring   (lane E2, RingRelief.ts, its own random stream) rolling ground solved to a
+//               target RMS slope + Pareto mounds/hollows in the ring band; the fair centre
+//               (fairRadius) is untouched.
 //   4. relax    slope-limit pass over unflagged pairs (no node flagged yet).
 //   5. stamps   cliffs, holes and ramps, FLAGGED in featureMask.
+//   5b. ring   (lane E2) when no hole/cliff is visible inside the ring yet: one terrace or
+//               shallow hole (with its ramp) sized to the ring (ringDeliberateSpec).
 //   6. relax    second pass: repairs ordinary ground around the stamps; flagged pairs skipped.
-//   7. stats    summaries, slope statistics, Pareto shares, per-zone spread.
+//   7. stats    summaries, slope statistics, Pareto shares, per-zone spread, ring readability.
 //
 // PUBLIC LAYOUT (Lane F minimap and the mesh read these directly):
 //   node (i, j), i in [0, cols), j in [0, rows), is at world x = originX + i * cell,
@@ -22,7 +27,11 @@
 import { lerp, normalizeMinMax, rng32, smoothstep, summarize, topShare, type Summary } from "../core/MathCore.ts";
 import { ringRadiusAt, type ArenaConfig } from "../game/ArenaConfig.ts";
 import { fbm2, makeFbmOctaves, maxSlopeExcess, relaxSlopes, remapToTargetBand, slopePairs, type RelaxReport } from "./HeightOps.ts";
-import { rNormAt, stampDeliberate, stampParetoBumps, type ArenaOutline, type TerrainFeature, type WorkGrid } from "./TerrainFeatures.ts";
+import {
+  bandMoundShare, duelSpawnPoints, type FairSpot, flaggedInsideRing, minVisibleNodes, RING_STREAM_SALT, stampBandMounds, stampFairPads,
+  stampRingRoll, type RollReport,
+} from "./RingRelief.ts";
+import { ringDeliberateSpec, rNormAt, stampDeliberate, stampParetoBumps, type ArenaOutline, type TerrainFeature, type WorkGrid } from "./TerrainFeatures.ts";
 import { deriveTerrainRules, type DeliberateCounts, type TerrainBase, type TerrainRules } from "./TerrainRules.ts";
 
 export { FEATURE_CLIFF, FEATURE_HOLE, FEATURE_NONE, FEATURE_RAMP, rNormAt } from "./TerrainFeatures.ts";
@@ -74,8 +83,36 @@ export interface HeightfieldStats {
   /** Population stdev of heights per zone, m: the fight zone must be the calmest. */
   zones: { fightStdev: number; ringStdev: number; outsideStdev: number };
   deliberate: { requested: DeliberateCounts; placed: DeliberateCounts; flaggedNodes: number };
+  /** Ring readability (lane E2): what the camera sees inside the outline. */
+  ring: RingStats;
   /** Wall-clock generation time, ms (informative only; not part of determinism). */
   millis: number;
+}
+
+/** What the ring holds (lane E2). Heights in metres, slopes as rise/run. */
+export interface RingStats {
+  /** Heights of the nodes inside the outline (ringNorm < 1). */
+  heights: Summary;
+  /** heights.p80 - heights.p20, m. */
+  band: number;
+  /** max - min height over the nodes within fairRadius of the centre, m (fairness: <= fightRelief, one step). */
+  fairRelief: number;
+  /** Fair datum the spawn pads were levelled to, m (median of the fair centre). */
+  datum: number;
+  /** The levelled spawn spots and max - min of their heights, m (fairness: neither fighter spawns higher). */
+  spots: FairSpot[];
+  spotSpread: number;
+  /** RMS slope of the unflagged 8-neighbour pairs whose two nodes are inside the ring and outside the fair blend. */
+  bandSlopeRms: number;
+  /** Rolling stage (null when options.ringRelief === false). */
+  roll: RollReport | null;
+  /** Band mounds/hollows stamped and the top-20% share of their drawn amplitudes. */
+  mounds: number;
+  moundShare: number;
+  /** HOLE/CLIFF nodes inside the ring before and after the in-ring stamp, and what was stamped. */
+  insideBefore: number;
+  insideAfter: number;
+  feature: "terrace" | "hole" | "existing" | "none" | "off";
 }
 
 /** A generated terrain. Plain data: safe to share with the minimap, the mesh and the path finder. */
@@ -106,6 +143,12 @@ export interface Heightfield {
 /** Options beyond the rules: override the deliberate feature counts (e.g. no holes in a tutorial). */
 export interface GenerateOptions {
   deliberate?: Partial<DeliberateCounts>;
+  /** Lane E2 rolling ground + band mounds (default true; false = the original lane E field). */
+  ringRelief?: boolean;
+  /** Lane E2 in-ring terrace / shallow hole when none is visible (default true). */
+  ringFeature?: boolean;
+  /** Spawn spots levelled with the fair centre (lane E2; default duelSpawnPoints(outline), the engine's duel spawns). */
+  fairSpots?: readonly FairSpot[];
 }
 
 /**
@@ -173,20 +216,88 @@ export function generateHeightfield(seed: number, rules: TerrainRules, outline: 
   const bumps = stampParetoBumps(grid, rules, (x, z) => reliefAtNorm(rules, rNormAt(outline, x, z)), rng);
   for (let n = 0; n < count; n++) grid.h[n] *= relief[n];
 
+  // 3b. ring band relief, from its own stream so the draws above and below are unchanged.
+  const ringRng = rng32((seed ^ RING_STREAM_SALT) >>> 0);
+  const ringOn = options.ringRelief !== false;
+  const spots = ringOn ? options.fairSpots ?? duelSpawnPoints(outline) : [];
+  const pads = ringOn ? stampFairPads(grid, rules, spots) : null;
+  const roll = ringOn ? stampRingRoll(grid, rules, ringRng, spots, ringNorm) : null;
+  const mounds = ringOn ? stampBandMounds(grid, rules, outline, ringRng, spots) : [];
+
   // 4. relax ordinary ground; 5. stamp flagged features; 6. relax again around them.
   const relaxFirst = relaxSlopes(grid.h, grid.mask, cols, rows, rules.maxNeighbourDelta, rules.maxDiagonalDelta, rules.relaxMaxIterations, rules.relaxSlack);
   const requested: DeliberateCounts = { ...rules.deliberate, ...options.deliberate };
-  const deliberate = stampDeliberate(grid, rules, outline, requested, rng);
+  // Spawn pads are taken ground: no hole, cliff or ramp lands under a spawning fighter.
+  const padDiscs = spots.map((p) => ({ x: p.x, z: p.z, r: rules.fairPadRadius }));
+  const deliberate = stampDeliberate(grid, rules, outline, requested, rng, undefined, [], padDiscs);
+  // 5b. one terrace or shallow hole inside the ring when none is visible there yet.
+  const insideBefore = flaggedInsideRing(grid.mask, ringNorm);
+  let ringFeature: RingStats["feature"] = options.ringFeature === false ? "off" : insideBefore >= minVisibleNodes(rules) ? "existing" : "none";
+  const ringFeatures: TerrainFeature[] = [];
+  if (ringFeature === "none") {
+    const order: ("terrace" | "hole")[] = ringRng() < 0.5 ? ["terrace", "hole"] : ["hole", "terrace"];
+    for (const kind of order) {
+      // The terrace keeps its whole face (no causeway through it: it is reachable round its
+      // tapered ends); the hole gets its exit ramp so it is never a trap.
+      const counts = kind === "terrace" ? { holes: 0, cliffs: 1, ramps: 0 } : { holes: 1, cliffs: 0, ramps: 1 };
+      const res = stampDeliberate(grid, rules, outline, counts, ringRng, ringDeliberateSpec(rules), deliberate.taken, padDiscs);
+      if (res.placed.holes + res.placed.cliffs > 0) { ringFeatures.push(...res.features); ringFeature = kind; break; }
+    }
+  }
   const relaxSecond = relaxSlopes(grid.h, grid.mask, cols, rows, rules.maxNeighbourDelta, rules.maxDiagonalDelta, rules.relaxMaxIterations, rules.relaxSlack);
 
   const heights = Float32Array.from(grid.h);
   const field: Heightfield = {
     cols, rows, cell, originX, originZ, heights, featureMask: grid.mask, zone, ringNorm,
-    features: [...bumps, ...deliberate.features], rules, seed,
+    features: [...bumps, ...mounds, ...deliberate.features, ...ringFeatures], rules, seed,
     stats: undefined as unknown as HeightfieldStats,
   };
   field.stats = measureHeightfield(field, baseSummary, before.p80 - before.p20, relaxFirst, relaxSecond, requested, deliberate.placed, started);
+  field.stats.ring = measureRing(field, roll, mounds.length, bandMoundShare(mounds), insideBefore, ringFeature, spots, pads?.datum ?? 0);
   return field;
+}
+
+/** The lane E2 ring statistics of a finished field. */
+function measureRing(
+  f: Heightfield, roll: RollReport | null, mounds: number, moundShare: number, insideBefore: number, feature: RingStats["feature"],
+  spots: readonly FairSpot[], datum: number,
+): RingStats {
+  const r = f.rules, inRing: number[] = [];
+  let fairLo = Infinity, fairHi = -Infinity;
+  for (let j = 0; j < f.rows; j++) {
+    for (let i = 0; i < f.cols; i++) {
+      const n = j * f.cols + i;
+      if (f.ringNorm[n] < 1) inRing.push(f.heights[n]);
+      if (Math.hypot(f.originX + i * f.cell, f.originZ + j * f.cell) <= r.fairRadius) { fairLo = Math.min(fairLo, f.heights[n]); fairHi = Math.max(fairHi, f.heights[n]); }
+    }
+  }
+  const heights = summarize(inRing.length ? inRing : [0]);
+  // RMS slope over unflagged pairs inside the ring and beyond the fair blend.
+  let sq = 0, pairs = 0;
+  const free = r.fairRadius + r.fairBlend;
+  for (let j = 0; j < f.rows; j++) {
+    for (let i = 0; i < f.cols; i++) {
+      const a = j * f.cols + i;
+      if (f.featureMask[a] !== 0 || f.ringNorm[a] >= 1 || Math.hypot(f.originX + i * f.cell, f.originZ + j * f.cell) < free) continue;
+      for (const [di, dj] of [[1, 0], [0, 1], [1, 1], [-1, 1]]) {
+        const ni = i + di, nj = j + dj;
+        if (ni < 0 || ni >= f.cols || nj >= f.rows) continue;
+        const b = nj * f.cols + ni;
+        if (f.featureMask[b] !== 0 || f.ringNorm[b] >= 1) continue;
+        const s = (f.heights[b] - f.heights[a]) / (f.cell * Math.hypot(di, dj));
+        sq += s * s;
+        pairs++;
+      }
+    }
+  }
+  let spotLo = Infinity, spotHi = -Infinity;
+  for (const p of spots) { const h = heightAt(f, p.x, p.z); spotLo = Math.min(spotLo, h); spotHi = Math.max(spotHi, h); }
+  return {
+    heights, band: heights.p80 - heights.p20, fairRelief: fairHi >= fairLo ? fairHi - fairLo : 0,
+    datum, spots: spots.map((p) => ({ x: p.x, z: p.z })), spotSpread: spots.length ? spotHi - spotLo : 0,
+    bandSlopeRms: pairs ? Math.sqrt(sq / pairs) : 0, roll, mounds, moundShare,
+    insideBefore, insideAfter: flaggedInsideRing(f.featureMask, f.ringNorm), feature,
+  };
 }
 
 /**
@@ -213,6 +324,7 @@ export function flatHeightfield(rules: TerrainRules, outline: ArenaOutline): Hei
   const idle: RelaxReport = { iterations: 0, converged: true, residual: -rules.maxNeighbourDelta, corrections: 0 };
   const none: DeliberateCounts = { holes: 0, cliffs: 0, ramps: 0 };
   field.stats = measureHeightfield(field, summarize([0, 1]), 0, idle, idle, none, none, started);
+  field.stats.ring = measureRing(field, null, 0, 0, 0, "off", [], 0);
   return field;
 }
 
@@ -271,6 +383,7 @@ function measureHeightfield(
     },
     zones: { fightStdev: stdev(zoneValues[ZONE_FIGHT]), ringStdev: stdev(zoneValues[ZONE_RING]), outsideStdev: stdev(zoneValues[ZONE_OUTSIDE]) },
     deliberate: { requested, placed, flaggedNodes },
+    ring: undefined as unknown as RingStats, // filled by measureRing
     millis: performance.now() - started,
   };
 }
