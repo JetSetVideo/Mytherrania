@@ -1,0 +1,150 @@
+{
+  "timestamp": "2026-10-09T20:47:03.938Z",
+  "frames": [
+    {
+      "t": 0,
+      "snapshot": {
+        "player": {
+          "x": -2.9253540006110885,
+          "y": 0.6,
+          "z": 0,
+          "hp": 89,
+          "damagePercent": 8.8,
+          "weapon": "Greataxe",
+          "ringedOut": false,
+          "eliminated": false
+        },
+        "opponent": {
+          "x": -2.6016499991416926,
+          "y": 0.6,
+          "z": 0,
+          "hp": 86,
+          "damagePercent": 11.200000000000001,
+          "weapon": "Longsword",
+          "ringedOut": false,
+          "eliminated": false
+        },
+        "winner": null,
+        "roundTime": 1.1502999999523165,
+        "camera": "third"
+      }
+    },
+    {
+      "t": 10,
+      "snapshot": {
+        "player": {
+          "x": 5.760972481350508,
+          "y": 0.5599999199997711,
+          "z": 0,
+          "hp": 78,
+          "damagePercent": 17.6,
+          "weapon": "Greataxe",
+          "ringedOut": false,
+          "eliminated": false
+        },
+        "opponent": {
+          "x": 4.170543747036013,
+          "y": 0.6,
+          "z": 0,
+          "hp": 72,
+          "damagePercent": 22.400000000000002,
+          "weapon": "Longsword",
+          "ringedOut": false,
+          "eliminated": false
+        },
+        "winner": null,
+        "roundTime": 2.3837000000476873,
+        "camera": "third"
+      }
+    },
+    {
+      "t": 20,
+      "snapshot": {
+        "player": {
+          "x": 11.76124991714931,
+          "y": -19.940029919998626,
+          "z": 0,
+          "hp": 78,
+          "damagePercent": 17.6,
+          "weapon": "Greataxe",
+          "ringedOut": true,
+          "eliminated": true
+        },
+        "opponent": {
+          "x": 3.841174749861965,
+          "y": 0.6,
+          "z": 0,
+          "hp": 72,
+          "damagePercent": 22.400000000000002,
+          "weapon": "Longsword",
+          "ringedOut": false,
+          "eliminated": false
+        },
+        "winner": "opponent",
+        "roundTime": 3.1837999999523237,
+        "camera": "third"
+      }
+    },
+    {
+      "t": 30,
+      "snapshot": {
+        "player": {
+          "x": 11.938633405257828,
+          "y": -76.91801087708596,
+          "z": 0,
+          "hp": 78,
+          "damagePercent": 17.6,
+          "weapon": "Greataxe",
+          "ringedOut": true,
+          "eliminated": true
+        },
+        "opponent": {
+          "x": 3.169061915955603,
+          "y": 0.6,
+          "z": 0,
+          "hp": 72,
+          "damagePercent": 22.400000000000002,
+          "weapon": "Longsword",
+          "ringedOut": false,
+          "eliminated": false
+        },
+        "winner": "opponent",
+        "roundTime": 3.1837999999523237,
+        "camera": "third"
+      }
+    },
+    {
+      "t": 40,
+      "snapshot": {
+        "player": {
+          "x": 11.985674005107931,
+          "y": -237.9093674246695,
+          "z": 0,
+          "hp": 78,
+          "damagePercent": 17.6,
+          "weapon": "Greataxe",
+          "ringedOut": true,
+          "eliminated": true
+        },
+        "opponent": {
+          "x": 2.9908232804938577,
+          "y": 0.6,
+          "z": 0,
+          "hp": 72,
+          "damagePercent": 22.400000000000002,
+          "weapon": "Longsword",
+          "ringedOut": false,
+          "eliminated": false
+        },
+        "winner": "opponent",
+        "roundTime": 3.1837999999523237,
+        "camera": "third"
+      }
+    }
+  ],
+  "winner": "opponent",
+  "cpuMean": 0.27888349884922065,
+  "gpuMean": 0.6817232335766421,
+  "errors": [],
+  "bodyText": "You (Barbarian) HP 78 · 18%\nWarrior HP 72 · 22%\nWarrior wins! (press R to restart)\nGreataxe vs Longsword\nWASD/ZQSD: Move | Space/Click: Attack | Knock them out or off the ring!\n⚙"
+}

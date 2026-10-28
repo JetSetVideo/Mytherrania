@@ -1,0 +1,930 @@
+{
+  "meta": {
+    "fights": 200,
+    "seed": 1,
+    "exploreBias": 0.5,
+    "at": "2026-10-11T08:11:58.805Z"
+  },
+  "digest": {
+    "reasons": {
+      "domination": 40,
+      "ko": 106,
+      "sudden-death": 36,
+      "endurance": 18
+    },
+    "duration": {
+      "n": 200,
+      "mean": 58.34511999999998,
+      "median": 65.78599999999996,
+      "min": 0.8760000000000001,
+      "max": 146.38000000000028,
+      "sd": 36.02393834570669
+    },
+    "byClass": [
+      {
+        "cls": "Barbarian",
+        "games": 65,
+        "winRate": 0.431
+      },
+      {
+        "cls": "Necromancer",
+        "games": 58,
+        "winRate": 0.483
+      },
+      {
+        "cls": "Mage",
+        "games": 57,
+        "winRate": 0.596
+      },
+      {
+        "cls": "Archer",
+        "games": 51,
+        "winRate": 0.412
+      },
+      {
+        "cls": "Warrior",
+        "games": 47,
+        "winRate": 0.511
+      },
+      {
+        "cls": "Assassin",
+        "games": 47,
+        "winRate": 0.66
+      },
+      {
+        "cls": "Rogue",
+        "games": 38,
+        "winRate": 0.342
+      },
+      {
+        "cls": "Priest",
+        "games": 37,
+        "winRate": 0.541
+      }
+    ],
+    "koShare": 0.53,
+    "training": {
+      "batches": 41,
+      "matches": 200,
+      "avgDurationS": 58.3,
+      "endReasons": {
+        "domination": 40,
+        "ko": 106,
+        "sudden-death": 36,
+        "endurance": 18
+      },
+      "winRateByClass": {
+        "Warrior": 0.125,
+        "Barbarian": 0.14,
+        "Archer": 0.105,
+        "Assassin": 0.155,
+        "Rogue": 0.065,
+        "Mage": 0.17,
+        "Necromancer": 0.14,
+        "Priest": 0.1
+      }
+    }
+  },
+  "sample": [
+    {
+      "matchup": "Kestrel the Ninth (Warrior) vs Quill the Late (Barbarian)",
+      "classes": [
+        "Warrior",
+        "Barbarian"
+      ],
+      "arenaSize": 308,
+      "winCondition": "domination",
+      "winner": 0,
+      "reason": "domination",
+      "duration": 1.2,
+      "exchanges": 1,
+      "coords": [
+        0.143,
+        0,
+        0.667,
+        0.333,
+        0.961,
+        1
+      ]
+    },
+    {
+      "matchup": "Kestrel the Ninth (Archer) vs Quill the Late (Warrior)",
+      "classes": [
+        "Archer",
+        "Warrior"
+      ],
+      "arenaSize": 214,
+      "winCondition": "ko",
+      "winner": 0,
+      "reason": "ko",
+      "duration": 107.5,
+      "exchanges": 120,
+      "coords": [
+        0.857,
+        0.143,
+        0,
+        0,
+        0.667,
+        0
+      ]
+    },
+    {
+      "matchup": "Kestrel the Ninth (Archer) vs Quill the Late (Assassin)",
+      "classes": [
+        "Archer",
+        "Assassin"
+      ],
+      "arenaSize": 38,
+      "winCondition": "sudden-death",
+      "winner": 0,
+      "reason": "ko",
+      "duration": 73.5,
+      "exchanges": 82,
+      "coords": [
+        0.857,
+        0.429,
+        1,
+        0,
+        0.113,
+        0.333
+      ]
+    },
+    {
+      "matchup": "Kestrel the Ninth (Rogue) vs Quill the Late (Mage)",
+      "classes": [
+        "Rogue",
+        "Mage"
+      ],
+      "arenaSize": 314,
+      "winCondition": "domination",
+      "winner": 0,
+      "reason": "domination",
+      "duration": 0.9,
+      "exchanges": 1,
+      "coords": [
+        0.286,
+        0.571,
+        0,
+        1,
+        0.982,
+        1
+      ]
+    },
+    {
+      "matchup": "Kestrel the Ninth (Mage) vs Quill the Late (Archer)",
+      "classes": [
+        "Mage",
+        "Archer"
+      ],
+      "arenaSize": 270,
+      "winCondition": "ko",
+      "winner": 1,
+      "reason": "ko",
+      "duration": 56.8,
+      "exchanges": 62,
+      "coords": [
+        0.571,
+        0.857,
+        0.333,
+        1,
+        0.842,
+        0
+      ]
+    },
+    {
+      "matchup": "Kestrel the Ninth (Warrior) vs Quill the Late (Assassin)",
+      "classes": [
+        "Warrior",
+        "Assassin"
+      ],
+      "arenaSize": 131,
+      "winCondition": "ko",
+      "winner": 1,
+      "reason": "ko",
+      "duration": 85.1,
+      "exchanges": 95,
+      "coords": [
+        0.143,
+        0.429,
+        0.333,
+        0,
+        0.407,
+        0
+      ]
+    },
+    {
+      "matchup": "Kestrel the Ninth (Barbarian) vs Quill the Late (Necromancer)",
+      "classes": [
+        "Barbarian",
+        "Necromancer"
+      ],
+      "arenaSize": 184,
+      "winCondition": "domination",
+      "winner": 1,
+      "reason": "domination",
+      "duration": 1.2,
+      "exchanges": 1,
+      "coords": [
+        0,
+        0.714,
+        0.333,
+        0,
+        0.572,
+        1
+      ]
+    },
+    {
+      "matchup": "Kestrel the Ninth (Mage) vs Quill the Late (Warrior)",
+      "classes": [
+        "Mage",
+        "Warrior"
+      ],
+      "arenaSize": 161,
+      "winCondition": "endurance",
+      "winner": 1,
+      "reason": "ko",
+      "duration": 74.1,
+      "exchanges": 67,
+      "coords": [
+        0.571,
+        0.143,
+        0.333,
+        1,
+        0.5,
+        0.667
+      ]
+    },
+    {
+      "matchup": "Kestrel the Ninth (Barbarian) vs Quill the Late (Rogue)",
+      "classes": [
+        "Barbarian",
+        "Rogue"
+      ],
+      "arenaSize": 92,
+      "winCondition": "domination",
+      "winner": 1,
+      "reason": "domination",
+      "duration": 1,
+      "exchanges": 1,
+      "coords": [
+        0,
+        0.286,
+        0.667,
+        1,
+        0.284,
+        1
+      ]
+    },
+    {
+      "matchup": "Kestrel the Ninth (Necromancer) vs Quill the Late (Barbarian)",
+      "classes": [
+        "Necromancer",
+        "Barbarian"
+      ],
+      "arenaSize": 149,
+      "winCondition": "endurance",
+      "winner": 1,
+      "reason": "ko",
+      "duration": 104.2,
+      "exchanges": 86,
+      "coords": [
+        0.714,
+        0,
+        0.667,
+        1,
+        0.462,
+        0.667
+      ]
+    },
+    {
+      "matchup": "Kestrel the Ninth (Mage) vs Quill the Late (Archer)",
+      "classes": [
+        "Mage",
+        "Archer"
+      ],
+      "arenaSize": 202,
+      "winCondition": "sudden-death",
+      "winner": 0,
+      "reason": "sudden-death",
+      "duration": 40.2,
+      "exchanges": 43,
+      "coords": [
+        0.571,
+        0.857,
+        0.333,
+        0.667,
+        0.629,
+        0.333
+      ]
+    },
+    {
+      "matchup": "Kestrel the Ninth (Barbarian) vs Quill the Late (Mage)",
+      "classes": [
+        "Barbarian",
+        "Mage"
+      ],
+      "arenaSize": 232,
+      "winCondition": "endurance",
+      "winner": 1,
+      "reason": "endurance",
+      "duration": 95.6,
+      "exchanges": 82,
+      "coords": [
+        0,
+        0.571,
+        0,
+        0.667,
+        0.724,
+        0.667
+      ]
+    },
+    {
+      "matchup": "Kestrel the Ninth (Warrior) vs Quill the Late (Barbarian)",
+      "classes": [
+        "Warrior",
+        "Barbarian"
+      ],
+      "arenaSize": 214,
+      "winCondition": "ko",
+      "winner": 1,
+      "reason": "ko",
+      "duration": 146.4,
+      "exchanges": 130,
+      "coords": [
+        0.143,
+        0,
+        0,
+        1,
+        0.667,
+        0
+      ]
+    },
+    {
+      "matchup": "Kestrel the Ninth (Mage) vs Quill the Late (Necromancer)",
+      "classes": [
+        "Mage",
+        "Necromancer"
+      ],
+      "arenaSize": 213,
+      "winCondition": "sudden-death",
+      "winner": 0,
+      "reason": "ko",
+      "duration": 56.2,
+      "exchanges": 49,
+      "coords": [
+        0.571,
+        0.714,
+        1,
+        0.333,
+        0.664,
+        0.333
+      ]
+    },
+    {
+      "matchup": "Kestrel the Ninth (Archer) vs Quill the Late (Barbarian)",
+      "classes": [
+        "Archer",
+        "Barbarian"
+      ],
+      "arenaSize": 307,
+      "winCondition": "ko",
+      "winner": 1,
+      "reason": "ko",
+      "duration": 89.4,
+      "exchanges": 102,
+      "coords": [
+        0.857,
+        0,
+        0.333,
+        0.667,
+        0.959,
+        0
+      ]
+    },
+    {
+      "matchup": "Kestrel the Ninth (Necromancer) vs Quill the Late (Archer)",
+      "classes": [
+        "Necromancer",
+        "Archer"
+      ],
+      "arenaSize": 103,
+      "winCondition": "ko",
+      "winner": 0,
+      "reason": "ko",
+      "duration": 69.3,
+      "exchanges": 74,
+      "coords": [
+        0.714,
+        0.857,
+        0,
+        0.667,
+        0.319,
+        0
+      ]
+    },
+    {
+      "matchup": "Kestrel the Ninth (Barbarian) vs Quill the Late (Priest)",
+      "classes": [
+        "Barbarian",
+        "Priest"
+      ],
+      "arenaSize": 111,
+      "winCondition": "ko",
+      "winner": 1,
+      "reason": "ko",
+      "duration": 112.6,
+      "exchanges": 94,
+      "coords": [
+        0,
+        1,
+        0.333,
+        0.667,
+        0.343,
+        0
+      ]
+    },
+    {
+      "matchup": "Kestrel the Ninth (Rogue) vs Quill the Late (Necromancer)",
+      "classes": [
+        "Rogue",
+        "Necromancer"
+      ],
+      "arenaSize": 9,
+      "winCondition": "endurance",
+      "winner": 1,
+      "reason": "ko",
+      "duration": 77.2,
+      "exchanges": 82,
+      "coords": [
+        0.286,
+        0.714,
+        0,
+        0.667,
+        0.021,
+        0.667
+      ]
+    },
+    {
+      "matchup": "Kestrel the Ninth (Barbarian) vs Quill the Late (Warrior)",
+      "classes": [
+        "Barbarian",
+        "Warrior"
+      ],
+      "arenaSize": 88,
+      "winCondition": "endurance",
+      "winner": 1,
+      "reason": "endurance",
+      "duration": 97.9,
+      "exchanges": 84,
+      "coords": [
+        0,
+        0.143,
+        0.333,
+        0.667,
+        0.272,
+        0.667
+      ]
+    },
+    {
+      "matchup": "Kestrel the Ninth (Mage) vs Quill the Late (Necromancer)",
+      "classes": [
+        "Mage",
+        "Necromancer"
+      ],
+      "arenaSize": 132,
+      "winCondition": "ko",
+      "winner": 0,
+      "reason": "ko",
+      "duration": 75.6,
+      "exchanges": 66,
+      "coords": [
+        0.571,
+        0.714,
+        1,
+        1,
+        0.409,
+        0
+      ]
+    },
+    {
+      "matchup": "Kestrel the Ninth (Mage) vs Quill the Late (Barbarian)",
+      "classes": [
+        "Mage",
+        "Barbarian"
+      ],
+      "arenaSize": 20,
+      "winCondition": "domination",
+      "winner": 0,
+      "reason": "domination",
+      "duration": 1.2,
+      "exchanges": 1,
+      "coords": [
+        0.571,
+        0,
+        0.667,
+        1,
+        0.058,
+        1
+      ]
+    },
+    {
+      "matchup": "Kestrel the Ninth (Barbarian) vs Quill the Late (Assassin)",
+      "classes": [
+        "Barbarian",
+        "Assassin"
+      ],
+      "arenaSize": 254,
+      "winCondition": "ko",
+      "winner": 0,
+      "reason": "ko",
+      "duration": 73.6,
+      "exchanges": 84,
+      "coords": [
+        0,
+        0.429,
+        1,
+        0.333,
+        0.794,
+        0
+      ]
+    },
+    {
+      "matchup": "Kestrel the Ninth (Barbarian) vs Quill the Late (Priest)",
+      "classes": [
+        "Barbarian",
+        "Priest"
+      ],
+      "arenaSize": 200,
+      "winCondition": "domination",
+      "winner": 1,
+      "reason": "domination",
+      "duration": 1.2,
+      "exchanges": 1,
+      "coords": [
+        0,
+        1,
+        1,
+        1,
+        0.622,
+        1
+      ]
+    },
+    {
+      "matchup": "Kestrel the Ninth (Assassin) vs Quill the Late (Necromancer)",
+      "classes": [
+        "Assassin",
+        "Necromancer"
+      ],
+      "arenaSize": 142,
+      "winCondition": "sudden-death",
+      "winner": 0,
+      "reason": "sudden-death",
+      "duration": 27.1,
+      "exchanges": 30,
+      "coords": [
+        0.429,
+        0.714,
+        0.667,
+        0.333,
+        0.441,
+        0.333
+      ]
+    },
+    {
+      "matchup": "Kestrel the Ninth (Priest) vs Quill the Late (Mage)",
+      "classes": [
+        "Priest",
+        "Mage"
+      ],
+      "arenaSize": 88,
+      "winCondition": "domination",
+      "winner": 1,
+      "reason": "domination",
+      "duration": 1.1,
+      "exchanges": 1,
+      "coords": [
+        1,
+        0.571,
+        0,
+        1,
+        0.269,
+        1
+      ]
+    },
+    {
+      "matchup": "Kestrel the Ninth (Necromancer) vs Quill the Late (Mage)",
+      "classes": [
+        "Necromancer",
+        "Mage"
+      ],
+      "arenaSize": 234,
+      "winCondition": "sudden-death",
+      "winner": 1,
+      "reason": "ko",
+      "duration": 68.8,
+      "exchanges": 59,
+      "coords": [
+        0.714,
+        0.571,
+        0,
+        0.667,
+        0.729,
+        0.333
+      ]
+    },
+    {
+      "matchup": "Kestrel the Ninth (Warrior) vs Quill the Late (Archer)",
+      "classes": [
+        "Warrior",
+        "Archer"
+      ],
+      "arenaSize": 121,
+      "winCondition": "ko",
+      "winner": 0,
+      "reason": "ko",
+      "duration": 81.5,
+      "exchanges": 93,
+      "coords": [
+        0.143,
+        0.857,
+        0.667,
+        0.333,
+        0.373,
+        0
+      ]
+    },
+    {
+      "matchup": "Kestrel the Ninth (Assassin) vs Quill the Late (Barbarian)",
+      "classes": [
+        "Assassin",
+        "Barbarian"
+      ],
+      "arenaSize": 176,
+      "winCondition": "endurance",
+      "winner": 1,
+      "reason": "endurance",
+      "duration": 48.7,
+      "exchanges": 52,
+      "coords": [
+        0.429,
+        0,
+        0.667,
+        1,
+        0.547,
+        0.667
+      ]
+    },
+    {
+      "matchup": "Kestrel the Ninth (Archer) vs Quill the Late (Necromancer)",
+      "classes": [
+        "Archer",
+        "Necromancer"
+      ],
+      "arenaSize": 240,
+      "winCondition": "ko",
+      "winner": 0,
+      "reason": "ko",
+      "duration": 66.5,
+      "exchanges": 71,
+      "coords": [
+        0.857,
+        0.714,
+        0.667,
+        0,
+        0.748,
+        0
+      ]
+    },
+    {
+      "matchup": "Kestrel the Ninth (Mage) vs Quill the Late (Archer)",
+      "classes": [
+        "Mage",
+        "Archer"
+      ],
+      "arenaSize": 92,
+      "winCondition": "endurance",
+      "winner": 0,
+      "reason": "endurance",
+      "duration": 67.2,
+      "exchanges": 75,
+      "coords": [
+        0.571,
+        0.857,
+        0,
+        0,
+        0.282,
+        0.667
+      ]
+    },
+    {
+      "matchup": "Kestrel the Ninth (Assassin) vs Quill the Late (Barbarian)",
+      "classes": [
+        "Assassin",
+        "Barbarian"
+      ],
+      "arenaSize": 127,
+      "winCondition": "ko",
+      "winner": 1,
+      "reason": "ko",
+      "duration": 95.5,
+      "exchanges": 102,
+      "coords": [
+        0.429,
+        0,
+        0.667,
+        1,
+        0.394,
+        0
+      ]
+    },
+    {
+      "matchup": "Kestrel the Ninth (Archer) vs Quill the Late (Assassin)",
+      "classes": [
+        "Archer",
+        "Assassin"
+      ],
+      "arenaSize": 269,
+      "winCondition": "ko",
+      "winner": 1,
+      "reason": "ko",
+      "duration": 62.2,
+      "exchanges": 71,
+      "coords": [
+        0.857,
+        0.429,
+        0.333,
+        1,
+        0.838,
+        0
+      ]
+    },
+    {
+      "matchup": "Kestrel the Ninth (Barbarian) vs Quill the Late (Mage)",
+      "classes": [
+        "Barbarian",
+        "Mage"
+      ],
+      "arenaSize": 275,
+      "winCondition": "domination",
+      "winner": 1,
+      "reason": "domination",
+      "duration": 1.1,
+      "exchanges": 1,
+      "coords": [
+        0,
+        0.571,
+        0.333,
+        0,
+        0.859,
+        1
+      ]
+    },
+    {
+      "matchup": "Kestrel the Ninth (Necromancer) vs Quill the Late (Warrior)",
+      "classes": [
+        "Necromancer",
+        "Warrior"
+      ],
+      "arenaSize": 43,
+      "winCondition": "endurance",
+      "winner": 0,
+      "reason": "ko",
+      "duration": 96.8,
+      "exchanges": 86,
+      "coords": [
+        0.714,
+        0.143,
+        1,
+        0,
+        0.128,
+        0.667
+      ]
+    },
+    {
+      "matchup": "Kestrel the Ninth (Warrior) vs Quill the Late (Archer)",
+      "classes": [
+        "Warrior",
+        "Archer"
+      ],
+      "arenaSize": 30,
+      "winCondition": "endurance",
+      "winner": 1,
+      "reason": "endurance",
+      "duration": 58.6,
+      "exchanges": 64,
+      "coords": [
+        0.143,
+        0.857,
+        0.333,
+        1,
+        0.087,
+        0.667
+      ]
+    },
+    {
+      "matchup": "Kestrel the Ninth (Rogue) vs Quill the Late (Barbarian)",
+      "classes": [
+        "Rogue",
+        "Barbarian"
+      ],
+      "arenaSize": 176,
+      "winCondition": "sudden-death",
+      "winner": 0,
+      "reason": "sudden-death",
+      "duration": 49.1,
+      "exchanges": 50,
+      "coords": [
+        0.286,
+        0,
+        0.667,
+        0.333,
+        0.547,
+        0.333
+      ]
+    },
+    {
+      "matchup": "Kestrel the Ninth (Barbarian) vs Quill the Late (Mage)",
+      "classes": [
+        "Barbarian",
+        "Mage"
+      ],
+      "arenaSize": 312,
+      "winCondition": "ko",
+      "winner": 0,
+      "reason": "ko",
+      "duration": 103.6,
+      "exchanges": 92,
+      "coords": [
+        0,
+        0.571,
+        1,
+        0,
+        0.975,
+        0
+      ]
+    },
+    {
+      "matchup": "Kestrel the Ninth (Barbarian) vs Quill the Late (Assassin)",
+      "classes": [
+        "Barbarian",
+        "Assassin"
+      ],
+      "arenaSize": 24,
+      "winCondition": "domination",
+      "winner": 1,
+      "reason": "domination",
+      "duration": 0.9,
+      "exchanges": 1,
+      "coords": [
+        0,
+        0.429,
+        0.333,
+        0.667,
+        0.069,
+        1
+      ]
+    },
+    {
+      "matchup": "Kestrel the Ninth (Rogue) vs Quill the Late (Necromancer)",
+      "classes": [
+        "Rogue",
+        "Necromancer"
+      ],
+      "arenaSize": 290,
+      "winCondition": "endurance",
+      "winner": 1,
+      "reason": "endurance",
+      "duration": 54,
+      "exchanges": 55,
+      "coords": [
+        0.286,
+        0.714,
+        0.667,
+        0.667,
+        0.906,
+        0.667
+      ]
+    },
+    {
+      "matchup": "Kestrel the Ninth (Archer) vs Quill the Late (Necromancer)",
+      "classes": [
+        "Archer",
+        "Necromancer"
+      ],
+      "arenaSize": 83,
+      "winCondition": "domination",
+      "winner": 0,
+      "reason": "domination",
+      "duration": 0.9,
+      "exchanges": 1,
+      "coords": [
+        0.857,
+        0.714,
+        0.667,
+        1,
+        0.256,
+        1
+      ]
+    }
+  ]
+}

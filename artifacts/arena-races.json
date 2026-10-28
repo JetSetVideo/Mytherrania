@@ -1,0 +1,22 @@
+{
+  "Human": {
+    "balanced": 6,
+    "total": 28,
+    "pct": 21
+  },
+  "Elf": {
+    "balanced": 3,
+    "total": 28,
+    "pct": 11
+  },
+  "Dwarf": {
+    "balanced": 2,
+    "total": 28,
+    "pct": 7
+  },
+  "Ork": {
+    "balanced": 1,
+    "total": 28,
+    "pct": 4
+  }
+}

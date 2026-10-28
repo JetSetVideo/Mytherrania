@@ -1,0 +1,78 @@
+{
+  "timestamp": "2026-10-09T22:00:20.428Z",
+  "profile": {
+    "browser": "154.0.8037.98",
+    "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+    "viewport": "1440x900 DPR1",
+    "load": "warm after 2.5s, 600 callbacks",
+    "network": "only localhost allowed"
+  },
+  "sourceHashes": {
+    "dist/app.js": "a5228e644f34c58eac198db49e6369b0eb572031985fc12a3dbb2a20438d5cdb",
+    "dist/index.html": "2c5090749ff997f65f999e96c22539825da5375a02d7fa59b21a725c123a0607",
+    "dist/styles.css": "9070d42077e6e09e776aabb7a8f673efc1126b38f67b98a5b193ba83ad04227d"
+  },
+  "frameBudget": {
+    "pass": true,
+    "targetMs": 16.6,
+    "interpretation": "Every measured warm callback and GPU sample must be <=16.6ms; finite lab sample only, not universal guarantee.",
+    "cpuOverruns": 0,
+    "gpuOverruns": 0
+  },
+  "cpuCallbackMs": {
+    "samples": 601,
+    "mean": 0.4016638944629028,
+    "p95": 0.5,
+    "max": 0.8999998569488525,
+    "overBudget": 0
+  },
+  "gpuMs": {
+    "samples": 600,
+    "mean": 0.8116986733333333,
+    "p95": 2.683874,
+    "max": 8.572541,
+    "overBudget": 0
+  },
+  "rafIntervalMs": {
+    "samples": 600,
+    "mean": 16.665999999999993,
+    "p95": 16.799999999999272,
+    "max": 16.80000000000109,
+    "overBudget": 512
+  },
+  "gpuSupported": true,
+  "gpuDisjointEvents": 0,
+  "lcpMs": 184,
+  "cls": 0,
+  "captures": [
+    {
+      "path": "artifacts/screenshots/root-1440.png",
+      "width": 1440,
+      "height": 900,
+      "state": "root"
+    },
+    {
+      "path": "artifacts/screenshots/root-768.png",
+      "width": 768,
+      "height": 1024,
+      "state": "root"
+    },
+    {
+      "path": "artifacts/screenshots/root-375.png",
+      "width": 375,
+      "height": 812,
+      "state": "root"
+    }
+  ],
+  "requests": [
+    "http://127.0.0.1:8788/",
+    "http://127.0.0.1:8788/styles.css",
+    "http://127.0.0.1:8788/app.js"
+  ],
+  "externalRequests": [],
+  "failures": [],
+  "consoleErrors": [],
+  "uncaught": [],
+  "bodyText": "WASD/ZQSD: Move | Space/Click: Attack | V: First-person | R: Restart | Esc: Menu\n⚙\nMYTHERRANIA\n\nCel-shaded arena combat\n\n⚔ Fight",
+  "limits": "Warm idle-root lab only. CPU callback includes update and submission, not GPU completion. rAF cadence separate; GPU timer measures actual commands. No allocation or exhaustive path-coverage claim."
+}

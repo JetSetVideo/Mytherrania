@@ -1,0 +1,458 @@
+{
+  "seed": 20261009,
+  "fightsPerPair": 10000,
+  "matrix": {
+    "Barbarian-Warrior": {
+      "wins": 4176,
+      "trials": 4437
+    },
+    "Barbarian-Rogue": {
+      "wins": 4377,
+      "trials": 4614
+    },
+    "Barbarian-Assassin": {
+      "wins": 4425,
+      "trials": 4640
+    },
+    "Barbarian-Mage": {
+      "wins": 4404,
+      "trials": 4632
+    },
+    "Barbarian-Necromancer": {
+      "wins": 4542,
+      "trials": 4794
+    },
+    "Barbarian-Archer": {
+      "wins": 4354,
+      "trials": 4575
+    },
+    "Barbarian-Priest": {
+      "wins": 4522,
+      "trials": 4721
+    },
+    "Warrior-Rogue": {
+      "wins": 1298,
+      "trials": 2533
+    },
+    "Warrior-Assassin": {
+      "wins": 1244,
+      "trials": 2535
+    },
+    "Warrior-Mage": {
+      "wins": 1288,
+      "trials": 2570
+    },
+    "Warrior-Necromancer": {
+      "wins": 1293,
+      "trials": 2339
+    },
+    "Warrior-Archer": {
+      "wins": 1295,
+      "trials": 2561
+    },
+    "Warrior-Priest": {
+      "wins": 1350,
+      "trials": 2386
+    },
+    "Rogue-Assassin": {
+      "wins": 1327,
+      "trials": 2661
+    },
+    "Rogue-Mage": {
+      "wins": 1313,
+      "trials": 2550
+    },
+    "Rogue-Necromancer": {
+      "wins": 1283,
+      "trials": 2568
+    },
+    "Rogue-Archer": {
+      "wins": 1330,
+      "trials": 2585
+    },
+    "Rogue-Priest": {
+      "wins": 1245,
+      "trials": 2585
+    },
+    "Assassin-Mage": {
+      "wins": 1255,
+      "trials": 2572
+    },
+    "Assassin-Necromancer": {
+      "wins": 1350,
+      "trials": 2616
+    },
+    "Assassin-Archer": {
+      "wins": 1236,
+      "trials": 2569
+    },
+    "Assassin-Priest": {
+      "wins": 1275,
+      "trials": 2559
+    },
+    "Mage-Necromancer": {
+      "wins": 1324,
+      "trials": 2617
+    },
+    "Mage-Archer": {
+      "wins": 1291,
+      "trials": 2520
+    },
+    "Mage-Priest": {
+      "wins": 1307,
+      "trials": 2593
+    },
+    "Necromancer-Archer": {
+      "wins": 1294,
+      "trials": 2560
+    },
+    "Necromancer-Priest": {
+      "wins": 1322,
+      "trials": 2642
+    },
+    "Archer-Priest": {
+      "wins": 1299,
+      "trials": 2592
+    }
+  },
+  "pairResults": [
+    {
+      "a": "Barbarian",
+      "b": "Warrior",
+      "wins": 4176,
+      "trials": 4437,
+      "p": 0.941,
+      "ci95": [
+        0.9338638579337281,
+        0.9477257939016358
+      ],
+      "draws": 5563
+    },
+    {
+      "a": "Barbarian",
+      "b": "Rogue",
+      "wins": 4377,
+      "trials": 4614,
+      "p": 0.949,
+      "ci95": [
+        0.9418836368768866,
+        0.9546391022313583
+      ],
+      "draws": 5386
+    },
+    {
+      "a": "Barbarian",
+      "b": "Assassin",
+      "wins": 4425,
+      "trials": 4640,
+      "p": 0.954,
+      "ci95": [
+        0.947230766115586,
+        0.9593462368554025
+      ],
+      "draws": 5360
+    },
+    {
+      "a": "Barbarian",
+      "b": "Mage",
+      "wins": 4404,
+      "trials": 4632,
+      "p": 0.951,
+      "ci95": [
+        0.9441649534443736,
+        0.9566423562790648
+      ],
+      "draws": 5368
+    },
+    {
+      "a": "Barbarian",
+      "b": "Necromancer",
+      "wins": 4542,
+      "trials": 4794,
+      "p": 0.947,
+      "ci95": [
+        0.9407510906505162,
+        0.9534009797304651
+      ],
+      "draws": 5206
+    },
+    {
+      "a": "Barbarian",
+      "b": "Archer",
+      "wins": 4354,
+      "trials": 4575,
+      "p": 0.952,
+      "ci95": [
+        0.9450929574747727,
+        0.9575370876440626
+      ],
+      "draws": 5425
+    },
+    {
+      "a": "Barbarian",
+      "b": "Priest",
+      "wins": 4522,
+      "trials": 4721,
+      "p": 0.958,
+      "ci95": [
+        0.9517340266297352,
+        0.9632172809442585
+      ],
+      "draws": 5279
+    },
+    {
+      "a": "Warrior",
+      "b": "Rogue",
+      "wins": 1298,
+      "trials": 2533,
+      "p": 0.512,
+      "ci95": [
+        0.49296586708176243,
+        0.5318681627606999
+      ],
+      "draws": 7467
+    },
+    {
+      "a": "Warrior",
+      "b": "Assassin",
+      "wins": 1244,
+      "trials": 2535,
+      "p": 0.491,
+      "ci95": [
+        0.4712976557168255,
+        0.5101899644639687
+      ],
+      "draws": 7465
+    },
+    {
+      "a": "Warrior",
+      "b": "Mage",
+      "wins": 1288,
+      "trials": 2570,
+      "p": 0.501,
+      "ci95": [
+        0.4818488261498158,
+        0.520482319636312
+      ],
+      "draws": 7430
+    },
+    {
+      "a": "Warrior",
+      "b": "Necromancer",
+      "wins": 1293,
+      "trials": 2339,
+      "p": 0.553,
+      "ci95": [
+        0.5325800683777893,
+        0.5728474603121572
+      ],
+      "draws": 7661
+    },
+    {
+      "a": "Warrior",
+      "b": "Archer",
+      "wins": 1295,
+      "trials": 2561,
+      "p": 0.506,
+      "ci95": [
+        0.48630394853196934,
+        0.5250027925938765
+      ],
+      "draws": 7439
+    },
+    {
+      "a": "Warrior",
+      "b": "Priest",
+      "wins": 1350,
+      "trials": 2386,
+      "p": 0.566,
+      "ci95": [
+        0.5458221627615779,
+        0.5855672983642138
+      ],
+      "draws": 7614
+    },
+    {
+      "a": "Rogue",
+      "b": "Assassin",
+      "wins": 1327,
+      "trials": 2661,
+      "p": 0.499,
+      "ci95": [
+        0.47970255082752233,
+        0.5176706513920768
+      ],
+      "draws": 7339
+    },
+    {
+      "a": "Rogue",
+      "b": "Mage",
+      "wins": 1313,
+      "trials": 2550,
+      "p": 0.515,
+      "ci95": [
+        0.49549585638519666,
+        0.5342632328237816
+      ],
+      "draws": 7450
+    },
+    {
+      "a": "Rogue",
+      "b": "Necromancer",
+      "wins": 1283,
+      "trials": 2568,
+      "p": 0.5,
+      "ci95": [
+        0.48028687068674764,
+        0.5189354764438067
+      ],
+      "draws": 7432
+    },
+    {
+      "a": "Rogue",
+      "b": "Archer",
+      "wins": 1330,
+      "trials": 2585,
+      "p": 0.515,
+      "ci95": [
+        0.49523258321082936,
+        0.5337379030483533
+      ],
+      "draws": 7415
+    },
+    {
+      "a": "Rogue",
+      "b": "Priest",
+      "wins": 1245,
+      "trials": 2585,
+      "p": 0.482,
+      "ci95": [
+        0.46240426091651815,
+        0.5008997898218506
+      ],
+      "draws": 7415
+    },
+    {
+      "a": "Assassin",
+      "b": "Mage",
+      "wins": 1255,
+      "trials": 2572,
+      "p": 0.488,
+      "ci95": [
+        0.4686614024827849,
+        0.5072687944672138
+      ],
+      "draws": 7428
+    },
+    {
+      "a": "Assassin",
+      "b": "Necromancer",
+      "wins": 1350,
+      "trials": 2616,
+      "p": 0.516,
+      "ci95": [
+        0.4968948991215193,
+        0.5351681080465475
+      ],
+      "draws": 7384
+    },
+    {
+      "a": "Assassin",
+      "b": "Archer",
+      "wins": 1236,
+      "trials": 2569,
+      "p": 0.481,
+      "ci95": [
+        0.46184245124322837,
+        0.5004560439303573
+      ],
+      "draws": 7431
+    },
+    {
+      "a": "Assassin",
+      "b": "Priest",
+      "wins": 1275,
+      "trials": 2559,
+      "p": 0.498,
+      "ci95": [
+        0.47888604621112807,
+        0.5176022268058231
+      ],
+      "draws": 7441
+    },
+    {
+      "a": "Mage",
+      "b": "Necromancer",
+      "wins": 1324,
+      "trials": 2617,
+      "p": 0.506,
+      "ci95": [
+        0.48677266191227164,
+        0.5250555996659938
+      ],
+      "draws": 7383
+    },
+    {
+      "a": "Mage",
+      "b": "Archer",
+      "wins": 1291,
+      "trials": 2520,
+      "p": 0.512,
+      "ci95": [
+        0.492781554553715,
+        0.5317841709656678
+      ],
+      "draws": 7480
+    },
+    {
+      "a": "Mage",
+      "b": "Priest",
+      "wins": 1307,
+      "trials": 2593,
+      "p": 0.504,
+      "ci95": [
+        0.4848129376118295,
+        0.5232738089960499
+      ],
+      "draws": 7407
+    },
+    {
+      "a": "Necromancer",
+      "b": "Archer",
+      "wins": 1294,
+      "trials": 2560,
+      "p": 0.505,
+      "ci95": [
+        0.4861072774898306,
+        0.5248138340172143
+      ],
+      "draws": 7440
+    },
+    {
+      "a": "Necromancer",
+      "b": "Priest",
+      "wins": 1322,
+      "trials": 2642,
+      "p": 0.5,
+      "ci95": [
+        0.481325799860549,
+        0.5194301032895111
+      ],
+      "draws": 7358
+    },
+    {
+      "a": "Archer",
+      "b": "Priest",
+      "wins": 1299,
+      "trials": 2592,
+      "p": 0.501,
+      "ci95": [
+        0.48192097671531864,
+        0.520390412392553
+      ],
+      "draws": 7408
+    }
+  ],
+  "balanced": 19,
+  "total": 28
+}

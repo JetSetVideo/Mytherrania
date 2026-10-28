@@ -1,0 +1,3373 @@
+{
+  "errors": [],
+  "shots": [
+    {
+      "name": "01-title-noon",
+      "note": "title screen, 12h, Sunspire Steppe",
+      "snapshot": {
+        "phase": "menu",
+        "arena": "ring",
+        "world": {
+          "hour": 12,
+          "dayOfYear": 283,
+          "place": "Sunspire Steppe",
+          "dayPhase": "day",
+          "sunElevationDeg": 70.3,
+          "sunOcclusion": 0.11
+        },
+        "history": 0,
+        "winCondition": "ko",
+        "surface": "stone",
+        "firstPerson": false,
+        "elapsed": 0,
+        "firstStrike": null,
+        "skill": {
+          "element": "fire",
+          "active": null,
+          "progress": null,
+          "effectFx": 0,
+          "buffs": {
+            "armor": 1,
+            "speed": 1,
+            "attack": 1
+          },
+          "dot": null,
+          "cooldowns": [
+            {
+              "name": "Shield Dash",
+              "kind": "dash",
+              "cd": 0
+            },
+            {
+              "name": "Crushing Blow",
+              "kind": "power",
+              "cd": 0
+            },
+            {
+              "name": "Bulwark",
+              "kind": "defense",
+              "cd": 0
+            }
+          ]
+        },
+        "polygons": 14064,
+        "player": {
+          "race": "human",
+          "subrace": "imperial",
+          "x": -2.5,
+          "y": 0.6,
+          "z": 0,
+          "hp": 48.75,
+          "damagePercent": 0,
+          "weapon": "Longsword",
+          "ringedOut": false,
+          "eliminated": false,
+          "pose": "idle",
+          "stats": {
+            "vitality": 7,
+            "resilience": 9,
+            "willpower": 5,
+            "reflex": 5,
+            "strength": 8,
+            "intelligence": 6,
+            "maxHealth": 48.75,
+            "attackPower": 8.383468327168876,
+            "attackInterval": 1.1260000000000001,
+            "armor": 4.76
+          }
+        },
+        "opponent": {
+          "race": "human",
+          "subrace": "imperial",
+          "x": 2.5,
+          "y": 0.6,
+          "z": 0,
+          "hp": 48.75,
+          "damagePercent": 0,
+          "weapon": "Longsword",
+          "ringedOut": false,
+          "eliminated": false,
+          "pose": "idle",
+          "stats": {
+            "vitality": 7,
+            "resilience": 9,
+            "willpower": 5,
+            "reflex": 5,
+            "strength": 8,
+            "intelligence": 6,
+            "maxHealth": 48.75,
+            "attackPower": 8.383468327168876,
+            "attackInterval": 1.1260000000000001,
+            "armor": 4.76
+          }
+        },
+        "winner": null,
+        "camera": "third"
+      }
+    },
+    {
+      "name": "01-title-dusk",
+      "note": "title screen, 18.3h, Sunspire Steppe",
+      "snapshot": {
+        "phase": "menu",
+        "arena": "ring",
+        "world": {
+          "hour": 18.3,
+          "dayOfYear": 283,
+          "place": "Sunspire Steppe",
+          "dayPhase": "dusk",
+          "sunElevationDeg": -6,
+          "sunOcclusion": 0
+        },
+        "history": 0,
+        "winCondition": "ko",
+        "surface": "stone",
+        "firstPerson": false,
+        "elapsed": 0,
+        "firstStrike": null,
+        "skill": {
+          "element": "fire",
+          "active": null,
+          "progress": null,
+          "effectFx": 0,
+          "buffs": {
+            "armor": 1,
+            "speed": 1,
+            "attack": 1
+          },
+          "dot": null,
+          "cooldowns": [
+            {
+              "name": "Shield Dash",
+              "kind": "dash",
+              "cd": 0
+            },
+            {
+              "name": "Crushing Blow",
+              "kind": "power",
+              "cd": 0
+            },
+            {
+              "name": "Bulwark",
+              "kind": "defense",
+              "cd": 0
+            }
+          ]
+        },
+        "polygons": 14064,
+        "player": {
+          "race": "human",
+          "subrace": "imperial",
+          "x": -2.5,
+          "y": 0.6,
+          "z": 0,
+          "hp": 48.75,
+          "damagePercent": 0,
+          "weapon": "Longsword",
+          "ringedOut": false,
+          "eliminated": false,
+          "pose": "idle",
+          "stats": {
+            "vitality": 7,
+            "resilience": 9,
+            "willpower": 5,
+            "reflex": 5,
+            "strength": 8,
+            "intelligence": 6,
+            "maxHealth": 48.75,
+            "attackPower": 8.383468327168876,
+            "attackInterval": 1.1260000000000001,
+            "armor": 4.76
+          }
+        },
+        "opponent": {
+          "race": "human",
+          "subrace": "imperial",
+          "x": 2.5,
+          "y": 0.6,
+          "z": 0,
+          "hp": 48.75,
+          "damagePercent": 0,
+          "weapon": "Longsword",
+          "ringedOut": false,
+          "eliminated": false,
+          "pose": "idle",
+          "stats": {
+            "vitality": 7,
+            "resilience": 9,
+            "willpower": 5,
+            "reflex": 5,
+            "strength": 8,
+            "intelligence": 6,
+            "maxHealth": 48.75,
+            "attackPower": 8.383468327168876,
+            "attackInterval": 1.1260000000000001,
+            "armor": 4.76
+          }
+        },
+        "winner": null,
+        "camera": "third"
+      }
+    },
+    {
+      "name": "01-title-night",
+      "note": "title screen, 23h, Sunspire Steppe",
+      "snapshot": {
+        "phase": "menu",
+        "arena": "ring",
+        "world": {
+          "hour": 23,
+          "dayOfYear": 283,
+          "place": "Sunspire Steppe",
+          "dayPhase": "night",
+          "sunElevationDeg": -74.6,
+          "sunOcclusion": 0
+        },
+        "history": 0,
+        "winCondition": "ko",
+        "surface": "stone",
+        "firstPerson": false,
+        "elapsed": 0,
+        "firstStrike": null,
+        "skill": {
+          "element": "fire",
+          "active": null,
+          "progress": null,
+          "effectFx": 0,
+          "buffs": {
+            "armor": 1,
+            "speed": 1,
+            "attack": 1
+          },
+          "dot": null,
+          "cooldowns": [
+            {
+              "name": "Shield Dash",
+              "kind": "dash",
+              "cd": 0
+            },
+            {
+              "name": "Crushing Blow",
+              "kind": "power",
+              "cd": 0
+            },
+            {
+              "name": "Bulwark",
+              "kind": "defense",
+              "cd": 0
+            }
+          ]
+        },
+        "polygons": 14064,
+        "player": {
+          "race": "human",
+          "subrace": "imperial",
+          "x": -2.5,
+          "y": 0.6,
+          "z": 0,
+          "hp": 48.75,
+          "damagePercent": 0,
+          "weapon": "Longsword",
+          "ringedOut": false,
+          "eliminated": false,
+          "pose": "idle",
+          "stats": {
+            "vitality": 7,
+            "resilience": 9,
+            "willpower": 5,
+            "reflex": 5,
+            "strength": 8,
+            "intelligence": 6,
+            "maxHealth": 48.75,
+            "attackPower": 8.383468327168876,
+            "attackInterval": 1.1260000000000001,
+            "armor": 4.76
+          }
+        },
+        "opponent": {
+          "race": "human",
+          "subrace": "imperial",
+          "x": 2.5,
+          "y": 0.6,
+          "z": 0,
+          "hp": 48.75,
+          "damagePercent": 0,
+          "weapon": "Longsword",
+          "ringedOut": false,
+          "eliminated": false,
+          "pose": "idle",
+          "stats": {
+            "vitality": 7,
+            "resilience": 9,
+            "willpower": 5,
+            "reflex": 5,
+            "strength": 8,
+            "intelligence": 6,
+            "maxHealth": 48.75,
+            "attackPower": 8.383468327168876,
+            "attackInterval": 1.1260000000000001,
+            "armor": 4.76
+          }
+        },
+        "winner": null,
+        "camera": "third"
+      }
+    },
+    {
+      "name": "02-fight-start-third",
+      "note": "fight start: camera must be behind the player, facing the opponent",
+      "snapshot": {
+        "phase": "fight",
+        "arena": "river",
+        "world": {
+          "hour": 14.066666666666666,
+          "dayOfYear": 283,
+          "place": "Frostford Crossing",
+          "dayPhase": "day",
+          "sunElevationDeg": 15.4,
+          "sunOcclusion": 0
+        },
+        "history": 0,
+        "winCondition": "ring-out",
+        "surface": "wood",
+        "firstPerson": false,
+        "elapsed": 1.1,
+        "firstStrike": {
+          "from": "Ser Vail",
+          "to": "Sir Aldric",
+          "time": 319.5,
+          "weapon": "Longsword"
+        },
+        "skill": {
+          "element": "fire",
+          "active": null,
+          "progress": null,
+          "effectFx": 0,
+          "buffs": {
+            "armor": 1,
+            "speed": 1,
+            "attack": 1
+          },
+          "dot": null,
+          "cooldowns": [
+            {
+              "name": "Shield Dash",
+              "kind": "dash",
+              "cd": 0
+            },
+            {
+              "name": "Crushing Blow",
+              "kind": "power",
+              "cd": 0
+            },
+            {
+              "name": "Bulwark",
+              "kind": "defense",
+              "cd": 0
+            }
+          ]
+        },
+        "polygons": 14064,
+        "player": {
+          "race": "human",
+          "subrace": "imperial",
+          "x": -3.2141498367719223,
+          "y": 0.6,
+          "z": -0.35707491838596106,
+          "hp": 36.75,
+          "damagePercent": 9.600000000000001,
+          "weapon": "Longsword",
+          "ringedOut": false,
+          "eliminated": false,
+          "pose": "idle",
+          "stats": {
+            "vitality": 7,
+            "resilience": 9,
+            "willpower": 5,
+            "reflex": 5,
+            "strength": 8,
+            "intelligence": 6,
+            "maxHealth": 48.75,
+            "attackPower": 8.383468327168876,
+            "attackInterval": 1.1260000000000001,
+            "armor": 4.76
+          }
+        },
+        "opponent": {
+          "race": "human",
+          "subrace": "imperial",
+          "x": -1.4145452184045713,
+          "y": 0.6,
+          "z": 0.5427273907977147,
+          "hp": 48.75,
+          "damagePercent": 0,
+          "weapon": "Longsword",
+          "ringedOut": false,
+          "eliminated": false,
+          "pose": "idle",
+          "stats": {
+            "vitality": 7,
+            "resilience": 9,
+            "willpower": 5,
+            "reflex": 5,
+            "strength": 8,
+            "intelligence": 6,
+            "maxHealth": 48.75,
+            "attackPower": 8.383468327168876,
+            "attackInterval": 1.1260000000000001,
+            "armor": 4.76
+          }
+        },
+        "winner": null,
+        "camera": "third"
+      }
+    },
+    {
+      "name": "03-time-dawn",
+      "note": "third-person, 6.4h, Sunspire Steppe (lat 12)",
+      "snapshot": {
+        "phase": "fight",
+        "arena": "river",
+        "world": {
+          "hour": 6.4,
+          "dayOfYear": 283,
+          "place": "Sunspire Steppe",
+          "dayPhase": "dawn",
+          "sunElevationDeg": 4.2,
+          "sunOcclusion": 0
+        },
+        "history": 0,
+        "winCondition": "ring-out",
+        "surface": "wood",
+        "firstPerson": false,
+        "elapsed": 1.7,
+        "firstStrike": {
+          "from": "Ser Vail",
+          "to": "Sir Aldric",
+          "time": 319.5,
+          "weapon": "Longsword"
+        },
+        "skill": {
+          "element": "fire",
+          "active": null,
+          "progress": null,
+          "effectFx": 0,
+          "buffs": {
+            "armor": 1,
+            "speed": 1,
+            "attack": 1
+          },
+          "dot": null,
+          "cooldowns": [
+            {
+              "name": "Shield Dash",
+              "kind": "dash",
+              "cd": 0
+            },
+            {
+              "name": "Crushing Blow",
+              "kind": "power",
+              "cd": 0
+            },
+            {
+              "name": "Bulwark",
+              "kind": "defense",
+              "cd": 0
+            }
+          ]
+        },
+        "polygons": 14064,
+        "player": {
+          "race": "human",
+          "subrace": "imperial",
+          "x": -3.2141498367719223,
+          "y": 0.6,
+          "z": -0.35707491838596106,
+          "hp": 36.75,
+          "damagePercent": 9.600000000000001,
+          "weapon": "Longsword",
+          "ringedOut": false,
+          "eliminated": false,
+          "pose": "idle",
+          "stats": {
+            "vitality": 7,
+            "resilience": 9,
+            "willpower": 5,
+            "reflex": 5,
+            "strength": 8,
+            "intelligence": 6,
+            "maxHealth": 48.75,
+            "attackPower": 8.383468327168876,
+            "attackInterval": 1.1260000000000001,
+            "armor": 4.76
+          }
+        },
+        "opponent": {
+          "race": "human",
+          "subrace": "imperial",
+          "x": -1.4145452184045713,
+          "y": 0.6,
+          "z": 0.5427273907977147,
+          "hp": 48.75,
+          "damagePercent": 0,
+          "weapon": "Longsword",
+          "ringedOut": false,
+          "eliminated": false,
+          "pose": "idle",
+          "stats": {
+            "vitality": 7,
+            "resilience": 9,
+            "willpower": 5,
+            "reflex": 5,
+            "strength": 8,
+            "intelligence": 6,
+            "maxHealth": 48.75,
+            "attackPower": 8.383468327168876,
+            "attackInterval": 1.1260000000000001,
+            "armor": 4.76
+          }
+        },
+        "winner": null,
+        "camera": "third"
+      }
+    },
+    {
+      "name": "03-time-morning",
+      "note": "third-person, 9.5h, Sunspire Steppe (lat 12)",
+      "snapshot": {
+        "phase": "fight",
+        "arena": "river",
+        "world": {
+          "hour": 9.5,
+          "dayOfYear": 283,
+          "place": "Sunspire Steppe",
+          "dayPhase": "day",
+          "sunElevationDeg": 47.8,
+          "sunOcclusion": 0
+        },
+        "history": 0,
+        "winCondition": "ring-out",
+        "surface": "wood",
+        "firstPerson": false,
+        "elapsed": 2.2,
+        "firstStrike": {
+          "from": "Ser Vail",
+          "to": "Sir Aldric",
+          "time": 319.5,
+          "weapon": "Longsword"
+        },
+        "skill": {
+          "element": "fire",
+          "active": null,
+          "progress": null,
+          "effectFx": 0,
+          "buffs": {
+            "armor": 1,
+            "speed": 1,
+            "attack": 1
+          },
+          "dot": null,
+          "cooldowns": [
+            {
+              "name": "Shield Dash",
+              "kind": "dash",
+              "cd": 0
+            },
+            {
+              "name": "Crushing Blow",
+              "kind": "power",
+              "cd": 0
+            },
+            {
+              "name": "Bulwark",
+              "kind": "defense",
+              "cd": 0
+            }
+          ]
+        },
+        "polygons": 14064,
+        "player": {
+          "race": "human",
+          "subrace": "imperial",
+          "x": -3.2141498367719223,
+          "y": 0.6,
+          "z": -0.35707491838596106,
+          "hp": 36.75,
+          "damagePercent": 9.600000000000001,
+          "weapon": "Longsword",
+          "ringedOut": false,
+          "eliminated": false,
+          "pose": "idle",
+          "stats": {
+            "vitality": 7,
+            "resilience": 9,
+            "willpower": 5,
+            "reflex": 5,
+            "strength": 8,
+            "intelligence": 6,
+            "maxHealth": 48.75,
+            "attackPower": 8.383468327168876,
+            "attackInterval": 1.1260000000000001,
+            "armor": 4.76
+          }
+        },
+        "opponent": {
+          "race": "human",
+          "subrace": "imperial",
+          "x": -1.4145452184045713,
+          "y": 0.6,
+          "z": 0.5427273907977147,
+          "hp": 48.75,
+          "damagePercent": 0,
+          "weapon": "Longsword",
+          "ringedOut": false,
+          "eliminated": false,
+          "pose": "idle",
+          "stats": {
+            "vitality": 7,
+            "resilience": 9,
+            "willpower": 5,
+            "reflex": 5,
+            "strength": 8,
+            "intelligence": 6,
+            "maxHealth": 48.75,
+            "attackPower": 8.383468327168876,
+            "attackInterval": 1.1260000000000001,
+            "armor": 4.76
+          }
+        },
+        "winner": null,
+        "camera": "third"
+      }
+    },
+    {
+      "name": "03-time-noon",
+      "note": "third-person, 12.5h, Sunspire Steppe (lat 12)",
+      "snapshot": {
+        "phase": "fight",
+        "arena": "river",
+        "world": {
+          "hour": 12.5,
+          "dayOfYear": 283,
+          "place": "Sunspire Steppe",
+          "dayPhase": "day",
+          "sunElevationDeg": 68.9,
+          "sunOcclusion": 0
+        },
+        "history": 0,
+        "winCondition": "ring-out",
+        "surface": "wood",
+        "firstPerson": false,
+        "elapsed": 2.7,
+        "firstStrike": {
+          "from": "Ser Vail",
+          "to": "Sir Aldric",
+          "time": 319.5,
+          "weapon": "Longsword"
+        },
+        "skill": {
+          "element": "fire",
+          "active": null,
+          "progress": null,
+          "effectFx": 0,
+          "buffs": {
+            "armor": 1,
+            "speed": 1,
+            "attack": 1
+          },
+          "dot": null,
+          "cooldowns": [
+            {
+              "name": "Shield Dash",
+              "kind": "dash",
+              "cd": 0
+            },
+            {
+              "name": "Crushing Blow",
+              "kind": "power",
+              "cd": 0
+            },
+            {
+              "name": "Bulwark",
+              "kind": "defense",
+              "cd": 0
+            }
+          ]
+        },
+        "polygons": 14064,
+        "player": {
+          "race": "human",
+          "subrace": "imperial",
+          "x": -3.2141498367719223,
+          "y": 0.6,
+          "z": -0.35707491838596106,
+          "hp": 36.75,
+          "damagePercent": 9.600000000000001,
+          "weapon": "Longsword",
+          "ringedOut": false,
+          "eliminated": false,
+          "pose": "idle",
+          "stats": {
+            "vitality": 7,
+            "resilience": 9,
+            "willpower": 5,
+            "reflex": 5,
+            "strength": 8,
+            "intelligence": 6,
+            "maxHealth": 48.75,
+            "attackPower": 8.383468327168876,
+            "attackInterval": 1.1260000000000001,
+            "armor": 4.76
+          }
+        },
+        "opponent": {
+          "race": "human",
+          "subrace": "imperial",
+          "x": -1.4145452184045713,
+          "y": 0.6,
+          "z": 0.5427273907977147,
+          "hp": 48.75,
+          "damagePercent": 0,
+          "weapon": "Longsword",
+          "ringedOut": false,
+          "eliminated": false,
+          "pose": "idle",
+          "stats": {
+            "vitality": 7,
+            "resilience": 9,
+            "willpower": 5,
+            "reflex": 5,
+            "strength": 8,
+            "intelligence": 6,
+            "maxHealth": 48.75,
+            "attackPower": 8.383468327168876,
+            "attackInterval": 1.1260000000000001,
+            "armor": 4.76
+          }
+        },
+        "winner": null,
+        "camera": "third"
+      }
+    },
+    {
+      "name": "03-time-dusk",
+      "note": "third-person, 17.9h, Sunspire Steppe (lat 12)",
+      "snapshot": {
+        "phase": "fight",
+        "arena": "river",
+        "world": {
+          "hour": 17.9,
+          "dayOfYear": 283,
+          "place": "Sunspire Steppe",
+          "dayPhase": "dusk",
+          "sunElevationDeg": -0.1,
+          "sunOcclusion": 0
+        },
+        "history": 0,
+        "winCondition": "ring-out",
+        "surface": "wood",
+        "firstPerson": false,
+        "elapsed": 3.2,
+        "firstStrike": {
+          "from": "Ser Vail",
+          "to": "Sir Aldric",
+          "time": 319.5,
+          "weapon": "Longsword"
+        },
+        "skill": {
+          "element": "fire",
+          "active": null,
+          "progress": null,
+          "effectFx": 0,
+          "buffs": {
+            "armor": 1,
+            "speed": 1,
+            "attack": 1
+          },
+          "dot": null,
+          "cooldowns": [
+            {
+              "name": "Shield Dash",
+              "kind": "dash",
+              "cd": 0
+            },
+            {
+              "name": "Crushing Blow",
+              "kind": "power",
+              "cd": 0
+            },
+            {
+              "name": "Bulwark",
+              "kind": "defense",
+              "cd": 0
+            }
+          ]
+        },
+        "polygons": 14064,
+        "player": {
+          "race": "human",
+          "subrace": "imperial",
+          "x": -3.2141498367719223,
+          "y": 0.6,
+          "z": -0.35707491838596106,
+          "hp": 36.75,
+          "damagePercent": 9.600000000000001,
+          "weapon": "Longsword",
+          "ringedOut": false,
+          "eliminated": false,
+          "pose": "idle",
+          "stats": {
+            "vitality": 7,
+            "resilience": 9,
+            "willpower": 5,
+            "reflex": 5,
+            "strength": 8,
+            "intelligence": 6,
+            "maxHealth": 48.75,
+            "attackPower": 8.383468327168876,
+            "attackInterval": 1.1260000000000001,
+            "armor": 4.76
+          }
+        },
+        "opponent": {
+          "race": "human",
+          "subrace": "imperial",
+          "x": -1.4145452184045713,
+          "y": 0.6,
+          "z": 0.5427273907977147,
+          "hp": 48.75,
+          "damagePercent": 0,
+          "weapon": "Longsword",
+          "ringedOut": false,
+          "eliminated": false,
+          "pose": "idle",
+          "stats": {
+            "vitality": 7,
+            "resilience": 9,
+            "willpower": 5,
+            "reflex": 5,
+            "strength": 8,
+            "intelligence": 6,
+            "maxHealth": 48.75,
+            "attackPower": 8.383468327168876,
+            "attackInterval": 1.1260000000000001,
+            "armor": 4.76
+          }
+        },
+        "winner": null,
+        "camera": "third"
+      }
+    },
+    {
+      "name": "03-time-night",
+      "note": "third-person, 22.5h, Sunspire Steppe (lat 12)",
+      "snapshot": {
+        "phase": "fight",
+        "arena": "river",
+        "world": {
+          "hour": 22.5,
+          "dayOfYear": 283,
+          "place": "Sunspire Steppe",
+          "dayPhase": "night",
+          "sunElevationDeg": -67.4,
+          "sunOcclusion": 0
+        },
+        "history": 0,
+        "winCondition": "ring-out",
+        "surface": "wood",
+        "firstPerson": false,
+        "elapsed": 3.7,
+        "firstStrike": {
+          "from": "Ser Vail",
+          "to": "Sir Aldric",
+          "time": 319.5,
+          "weapon": "Longsword"
+        },
+        "skill": {
+          "element": "fire",
+          "active": null,
+          "progress": null,
+          "effectFx": 0,
+          "buffs": {
+            "armor": 1,
+            "speed": 1,
+            "attack": 1
+          },
+          "dot": null,
+          "cooldowns": [
+            {
+              "name": "Shield Dash",
+              "kind": "dash",
+              "cd": 0
+            },
+            {
+              "name": "Crushing Blow",
+              "kind": "power",
+              "cd": 0
+            },
+            {
+              "name": "Bulwark",
+              "kind": "defense",
+              "cd": 0
+            }
+          ]
+        },
+        "polygons": 14064,
+        "player": {
+          "race": "human",
+          "subrace": "imperial",
+          "x": -3.2141498367719223,
+          "y": 0.6,
+          "z": -0.35707491838596106,
+          "hp": 36.75,
+          "damagePercent": 9.600000000000001,
+          "weapon": "Longsword",
+          "ringedOut": false,
+          "eliminated": false,
+          "pose": "idle",
+          "stats": {
+            "vitality": 7,
+            "resilience": 9,
+            "willpower": 5,
+            "reflex": 5,
+            "strength": 8,
+            "intelligence": 6,
+            "maxHealth": 48.75,
+            "attackPower": 8.383468327168876,
+            "attackInterval": 1.1260000000000001,
+            "armor": 4.76
+          }
+        },
+        "opponent": {
+          "race": "human",
+          "subrace": "imperial",
+          "x": -1.4145452184045713,
+          "y": 0.6,
+          "z": 0.5427273907977147,
+          "hp": 48.75,
+          "damagePercent": 0,
+          "weapon": "Longsword",
+          "ringedOut": false,
+          "eliminated": false,
+          "pose": "idle",
+          "stats": {
+            "vitality": 7,
+            "resilience": 9,
+            "willpower": 5,
+            "reflex": 5,
+            "strength": 8,
+            "intelligence": 6,
+            "maxHealth": 48.75,
+            "attackPower": 8.383468327168876,
+            "attackInterval": 1.1260000000000001,
+            "armor": 4.76
+          }
+        },
+        "winner": null,
+        "camera": "third"
+      }
+    },
+    {
+      "name": "03-sky-sun-16h",
+      "note": "camera aimed at the sun, 16h (sun disc + halo)",
+      "snapshot": {
+        "phase": "fight",
+        "arena": "river",
+        "world": {
+          "hour": 16,
+          "dayOfYear": 283,
+          "place": "Sunspire Steppe",
+          "dayPhase": "day",
+          "sunElevationDeg": 27.2,
+          "sunOcclusion": 0.25
+        },
+        "history": 0,
+        "winCondition": "ring-out",
+        "surface": "wood",
+        "firstPerson": false,
+        "elapsed": 4.3,
+        "firstStrike": {
+          "from": "Ser Vail",
+          "to": "Sir Aldric",
+          "time": 319.5,
+          "weapon": "Longsword"
+        },
+        "skill": {
+          "element": "fire",
+          "active": null,
+          "progress": null,
+          "effectFx": 0,
+          "buffs": {
+            "armor": 1,
+            "speed": 1,
+            "attack": 1
+          },
+          "dot": null,
+          "cooldowns": [
+            {
+              "name": "Shield Dash",
+              "kind": "dash",
+              "cd": 0
+            },
+            {
+              "name": "Crushing Blow",
+              "kind": "power",
+              "cd": 0
+            },
+            {
+              "name": "Bulwark",
+              "kind": "defense",
+              "cd": 0
+            }
+          ]
+        },
+        "polygons": 14064,
+        "player": {
+          "race": "human",
+          "subrace": "imperial",
+          "x": -3.2141498367719223,
+          "y": 0.6,
+          "z": -0.35707491838596106,
+          "hp": 36.75,
+          "damagePercent": 9.600000000000001,
+          "weapon": "Longsword",
+          "ringedOut": false,
+          "eliminated": false,
+          "pose": "idle",
+          "stats": {
+            "vitality": 7,
+            "resilience": 9,
+            "willpower": 5,
+            "reflex": 5,
+            "strength": 8,
+            "intelligence": 6,
+            "maxHealth": 48.75,
+            "attackPower": 8.383468327168876,
+            "attackInterval": 1.1260000000000001,
+            "armor": 4.76
+          }
+        },
+        "opponent": {
+          "race": "human",
+          "subrace": "imperial",
+          "x": -1.4145452184045713,
+          "y": 0.6,
+          "z": 0.5427273907977147,
+          "hp": 48.75,
+          "damagePercent": 0,
+          "weapon": "Longsword",
+          "ringedOut": false,
+          "eliminated": false,
+          "pose": "idle",
+          "stats": {
+            "vitality": 7,
+            "resilience": 9,
+            "willpower": 5,
+            "reflex": 5,
+            "strength": 8,
+            "intelligence": 6,
+            "maxHealth": 48.75,
+            "attackPower": 8.383468327168876,
+            "attackInterval": 1.1260000000000001,
+            "armor": 4.76
+          }
+        },
+        "winner": null,
+        "camera": "third"
+      }
+    },
+    {
+      "name": "03-sky-two-moons",
+      "note": "both moons in frame: day 307 21h, separation 4.9°",
+      "snapshot": {
+        "phase": "fight",
+        "arena": "river",
+        "world": {
+          "hour": 21,
+          "dayOfYear": 307,
+          "place": "Sunspire Steppe",
+          "dayPhase": "night",
+          "sunElevationDeg": -46.2,
+          "sunOcclusion": 0
+        },
+        "history": 0,
+        "winCondition": "ring-out",
+        "surface": "wood",
+        "firstPerson": false,
+        "elapsed": 4.8,
+        "firstStrike": {
+          "from": "Ser Vail",
+          "to": "Sir Aldric",
+          "time": 319.5,
+          "weapon": "Longsword"
+        },
+        "skill": {
+          "element": "fire",
+          "active": null,
+          "progress": null,
+          "effectFx": 0,
+          "buffs": {
+            "armor": 1,
+            "speed": 1,
+            "attack": 1
+          },
+          "dot": null,
+          "cooldowns": [
+            {
+              "name": "Shield Dash",
+              "kind": "dash",
+              "cd": 0
+            },
+            {
+              "name": "Crushing Blow",
+              "kind": "power",
+              "cd": 0
+            },
+            {
+              "name": "Bulwark",
+              "kind": "defense",
+              "cd": 0
+            }
+          ]
+        },
+        "polygons": 14064,
+        "player": {
+          "race": "human",
+          "subrace": "imperial",
+          "x": -3.2141498367719223,
+          "y": 0.6,
+          "z": -0.35707491838596106,
+          "hp": 36.75,
+          "damagePercent": 9.600000000000001,
+          "weapon": "Longsword",
+          "ringedOut": false,
+          "eliminated": false,
+          "pose": "idle",
+          "stats": {
+            "vitality": 7,
+            "resilience": 9,
+            "willpower": 5,
+            "reflex": 5,
+            "strength": 8,
+            "intelligence": 6,
+            "maxHealth": 48.75,
+            "attackPower": 8.383468327168876,
+            "attackInterval": 1.1260000000000001,
+            "armor": 4.76
+          }
+        },
+        "opponent": {
+          "race": "human",
+          "subrace": "imperial",
+          "x": -1.4145452184045713,
+          "y": 0.6,
+          "z": 0.5427273907977147,
+          "hp": 48.75,
+          "damagePercent": 0,
+          "weapon": "Longsword",
+          "ringedOut": false,
+          "eliminated": false,
+          "pose": "idle",
+          "stats": {
+            "vitality": 7,
+            "resilience": 9,
+            "willpower": 5,
+            "reflex": 5,
+            "strength": 8,
+            "intelligence": 6,
+            "maxHealth": 48.75,
+            "attackPower": 8.383468327168876,
+            "attackInterval": 1.1260000000000001,
+            "armor": 4.76
+          }
+        },
+        "winner": null,
+        "camera": "third"
+      }
+    },
+    {
+      "name": "03-sky-frostford-clouds",
+      "note": "Frostford cloudiness 0.65, aimed at the sun: heavy cloud",
+      "snapshot": {
+        "phase": "fight",
+        "arena": "river",
+        "world": {
+          "hour": 13,
+          "dayOfYear": 283,
+          "place": "Frostford Crossing",
+          "dayPhase": "day",
+          "sunElevationDeg": 18.4,
+          "sunOcclusion": 0
+        },
+        "history": 0,
+        "winCondition": "ring-out",
+        "surface": "wood",
+        "firstPerson": false,
+        "elapsed": 5.4,
+        "firstStrike": {
+          "from": "Ser Vail",
+          "to": "Sir Aldric",
+          "time": 319.5,
+          "weapon": "Longsword"
+        },
+        "skill": {
+          "element": "fire",
+          "active": null,
+          "progress": null,
+          "effectFx": 0,
+          "buffs": {
+            "armor": 1,
+            "speed": 1,
+            "attack": 1
+          },
+          "dot": null,
+          "cooldowns": [
+            {
+              "name": "Shield Dash",
+              "kind": "dash",
+              "cd": 0
+            },
+            {
+              "name": "Crushing Blow",
+              "kind": "power",
+              "cd": 0
+            },
+            {
+              "name": "Bulwark",
+              "kind": "defense",
+              "cd": 0
+            }
+          ]
+        },
+        "polygons": 14064,
+        "player": {
+          "race": "human",
+          "subrace": "imperial",
+          "x": -3.2141498367719223,
+          "y": 0.6,
+          "z": -0.35707491838596106,
+          "hp": 36.75,
+          "damagePercent": 9.600000000000001,
+          "weapon": "Longsword",
+          "ringedOut": false,
+          "eliminated": false,
+          "pose": "idle",
+          "stats": {
+            "vitality": 7,
+            "resilience": 9,
+            "willpower": 5,
+            "reflex": 5,
+            "strength": 8,
+            "intelligence": 6,
+            "maxHealth": 48.75,
+            "attackPower": 8.383468327168876,
+            "attackInterval": 1.1260000000000001,
+            "armor": 4.76
+          }
+        },
+        "opponent": {
+          "race": "human",
+          "subrace": "imperial",
+          "x": -1.4145452184045713,
+          "y": 0.6,
+          "z": 0.5427273907977147,
+          "hp": 48.75,
+          "damagePercent": 0,
+          "weapon": "Longsword",
+          "ringedOut": false,
+          "eliminated": false,
+          "pose": "idle",
+          "stats": {
+            "vitality": 7,
+            "resilience": 9,
+            "willpower": 5,
+            "reflex": 5,
+            "strength": 8,
+            "intelligence": 6,
+            "maxHealth": 48.75,
+            "attackPower": 8.383468327168876,
+            "attackInterval": 1.1260000000000001,
+            "armor": 4.76
+          }
+        },
+        "winner": null,
+        "camera": "third"
+      }
+    },
+    {
+      "name": "03-sky-sunspire-clouds",
+      "note": "Sunspire cloudiness 0.25, aimed at the sun: lighter cloud (compare)",
+      "snapshot": {
+        "phase": "fight",
+        "arena": "river",
+        "world": {
+          "hour": 13,
+          "dayOfYear": 283,
+          "place": "Sunspire Steppe",
+          "dayPhase": "day",
+          "sunElevationDeg": 65.3,
+          "sunOcclusion": 0
+        },
+        "history": 0,
+        "winCondition": "ring-out",
+        "surface": "wood",
+        "firstPerson": false,
+        "elapsed": 6,
+        "firstStrike": {
+          "from": "Ser Vail",
+          "to": "Sir Aldric",
+          "time": 319.5,
+          "weapon": "Longsword"
+        },
+        "skill": {
+          "element": "fire",
+          "active": null,
+          "progress": null,
+          "effectFx": 0,
+          "buffs": {
+            "armor": 1,
+            "speed": 1,
+            "attack": 1
+          },
+          "dot": null,
+          "cooldowns": [
+            {
+              "name": "Shield Dash",
+              "kind": "dash",
+              "cd": 0
+            },
+            {
+              "name": "Crushing Blow",
+              "kind": "power",
+              "cd": 0
+            },
+            {
+              "name": "Bulwark",
+              "kind": "defense",
+              "cd": 0
+            }
+          ]
+        },
+        "polygons": 14064,
+        "player": {
+          "race": "human",
+          "subrace": "imperial",
+          "x": -3.2141498367719223,
+          "y": 0.6,
+          "z": -0.35707491838596106,
+          "hp": 36.75,
+          "damagePercent": 9.600000000000001,
+          "weapon": "Longsword",
+          "ringedOut": false,
+          "eliminated": false,
+          "pose": "idle",
+          "stats": {
+            "vitality": 7,
+            "resilience": 9,
+            "willpower": 5,
+            "reflex": 5,
+            "strength": 8,
+            "intelligence": 6,
+            "maxHealth": 48.75,
+            "attackPower": 8.383468327168876,
+            "attackInterval": 1.1260000000000001,
+            "armor": 4.76
+          }
+        },
+        "opponent": {
+          "race": "human",
+          "subrace": "imperial",
+          "x": -1.4145452184045713,
+          "y": 0.6,
+          "z": 0.5427273907977147,
+          "hp": 48.75,
+          "damagePercent": 0,
+          "weapon": "Longsword",
+          "ringedOut": false,
+          "eliminated": false,
+          "pose": "idle",
+          "stats": {
+            "vitality": 7,
+            "resilience": 9,
+            "willpower": 5,
+            "reflex": 5,
+            "strength": 8,
+            "intelligence": 6,
+            "maxHealth": 48.75,
+            "attackPower": 8.383468327168876,
+            "attackInterval": 1.1260000000000001,
+            "armor": 4.76
+          }
+        },
+        "winner": null,
+        "camera": "third"
+      }
+    },
+    {
+      "name": "03-shadow-elev06",
+      "note": "isometric at 6.6h — shadow length should shrink as the sun rises",
+      "snapshot": {
+        "phase": "fight",
+        "arena": "river",
+        "world": {
+          "hour": 6.6,
+          "dayOfYear": 283,
+          "place": "Sunspire Steppe",
+          "dayPhase": "dawn",
+          "sunElevationDeg": 7.1,
+          "sunOcclusion": 0.48
+        },
+        "history": 0,
+        "winCondition": "ring-out",
+        "surface": "wood",
+        "firstPerson": false,
+        "elapsed": 6.5,
+        "firstStrike": {
+          "from": "Ser Vail",
+          "to": "Sir Aldric",
+          "time": 319.5,
+          "weapon": "Longsword"
+        },
+        "skill": {
+          "element": "fire",
+          "active": null,
+          "progress": null,
+          "effectFx": 0,
+          "buffs": {
+            "armor": 1,
+            "speed": 1,
+            "attack": 1
+          },
+          "dot": null,
+          "cooldowns": [
+            {
+              "name": "Shield Dash",
+              "kind": "dash",
+              "cd": 0
+            },
+            {
+              "name": "Crushing Blow",
+              "kind": "power",
+              "cd": 0
+            },
+            {
+              "name": "Bulwark",
+              "kind": "defense",
+              "cd": 0
+            }
+          ]
+        },
+        "polygons": 14064,
+        "player": {
+          "race": "human",
+          "subrace": "imperial",
+          "x": -3.2141498367719223,
+          "y": 0.6,
+          "z": -0.35707491838596106,
+          "hp": 36.75,
+          "damagePercent": 9.600000000000001,
+          "weapon": "Longsword",
+          "ringedOut": false,
+          "eliminated": false,
+          "pose": "idle",
+          "stats": {
+            "vitality": 7,
+            "resilience": 9,
+            "willpower": 5,
+            "reflex": 5,
+            "strength": 8,
+            "intelligence": 6,
+            "maxHealth": 48.75,
+            "attackPower": 8.383468327168876,
+            "attackInterval": 1.1260000000000001,
+            "armor": 4.76
+          }
+        },
+        "opponent": {
+          "race": "human",
+          "subrace": "imperial",
+          "x": -1.4145452184045713,
+          "y": 0.6,
+          "z": 0.5427273907977147,
+          "hp": 48.75,
+          "damagePercent": 0,
+          "weapon": "Longsword",
+          "ringedOut": false,
+          "eliminated": false,
+          "pose": "idle",
+          "stats": {
+            "vitality": 7,
+            "resilience": 9,
+            "willpower": 5,
+            "reflex": 5,
+            "strength": 8,
+            "intelligence": 6,
+            "maxHealth": 48.75,
+            "attackPower": 8.383468327168876,
+            "attackInterval": 1.1260000000000001,
+            "armor": 4.76
+          }
+        },
+        "winner": null,
+        "camera": "isometric"
+      }
+    },
+    {
+      "name": "03-shadow-elev15",
+      "note": "isometric at 7.2h — shadow length should shrink as the sun rises",
+      "snapshot": {
+        "phase": "fight",
+        "arena": "river",
+        "world": {
+          "hour": 7.2,
+          "dayOfYear": 283,
+          "place": "Sunspire Steppe",
+          "dayPhase": "day",
+          "sunElevationDeg": 15.8,
+          "sunOcclusion": 0
+        },
+        "history": 0,
+        "winCondition": "ring-out",
+        "surface": "wood",
+        "firstPerson": false,
+        "elapsed": 7,
+        "firstStrike": {
+          "from": "Ser Vail",
+          "to": "Sir Aldric",
+          "time": 319.5,
+          "weapon": "Longsword"
+        },
+        "skill": {
+          "element": "fire",
+          "active": null,
+          "progress": null,
+          "effectFx": 0,
+          "buffs": {
+            "armor": 1,
+            "speed": 1,
+            "attack": 1
+          },
+          "dot": null,
+          "cooldowns": [
+            {
+              "name": "Shield Dash",
+              "kind": "dash",
+              "cd": 0
+            },
+            {
+              "name": "Crushing Blow",
+              "kind": "power",
+              "cd": 0
+            },
+            {
+              "name": "Bulwark",
+              "kind": "defense",
+              "cd": 0
+            }
+          ]
+        },
+        "polygons": 14064,
+        "player": {
+          "race": "human",
+          "subrace": "imperial",
+          "x": -3.2141498367719223,
+          "y": 0.6,
+          "z": -0.35707491838596106,
+          "hp": 36.75,
+          "damagePercent": 9.600000000000001,
+          "weapon": "Longsword",
+          "ringedOut": false,
+          "eliminated": false,
+          "pose": "idle",
+          "stats": {
+            "vitality": 7,
+            "resilience": 9,
+            "willpower": 5,
+            "reflex": 5,
+            "strength": 8,
+            "intelligence": 6,
+            "maxHealth": 48.75,
+            "attackPower": 8.383468327168876,
+            "attackInterval": 1.1260000000000001,
+            "armor": 4.76
+          }
+        },
+        "opponent": {
+          "race": "human",
+          "subrace": "imperial",
+          "x": -1.4145452184045713,
+          "y": 0.6,
+          "z": 0.5427273907977147,
+          "hp": 48.75,
+          "damagePercent": 0,
+          "weapon": "Longsword",
+          "ringedOut": false,
+          "eliminated": false,
+          "pose": "idle",
+          "stats": {
+            "vitality": 7,
+            "resilience": 9,
+            "willpower": 5,
+            "reflex": 5,
+            "strength": 8,
+            "intelligence": 6,
+            "maxHealth": 48.75,
+            "attackPower": 8.383468327168876,
+            "attackInterval": 1.1260000000000001,
+            "armor": 4.76
+          }
+        },
+        "winner": null,
+        "camera": "isometric"
+      }
+    },
+    {
+      "name": "03-shadow-elev38",
+      "note": "isometric at 9h — shadow length should shrink as the sun rises",
+      "snapshot": {
+        "phase": "fight",
+        "arena": "river",
+        "world": {
+          "hour": 9,
+          "dayOfYear": 283,
+          "place": "Sunspire Steppe",
+          "dayPhase": "day",
+          "sunElevationDeg": 41.1,
+          "sunOcclusion": 0.46
+        },
+        "history": 0,
+        "winCondition": "ring-out",
+        "surface": "wood",
+        "firstPerson": false,
+        "elapsed": 7.5,
+        "firstStrike": {
+          "from": "Ser Vail",
+          "to": "Sir Aldric",
+          "time": 319.5,
+          "weapon": "Longsword"
+        },
+        "skill": {
+          "element": "fire",
+          "active": null,
+          "progress": null,
+          "effectFx": 0,
+          "buffs": {
+            "armor": 1,
+            "speed": 1,
+            "attack": 1
+          },
+          "dot": null,
+          "cooldowns": [
+            {
+              "name": "Shield Dash",
+              "kind": "dash",
+              "cd": 0
+            },
+            {
+              "name": "Crushing Blow",
+              "kind": "power",
+              "cd": 0
+            },
+            {
+              "name": "Bulwark",
+              "kind": "defense",
+              "cd": 0
+            }
+          ]
+        },
+        "polygons": 14064,
+        "player": {
+          "race": "human",
+          "subrace": "imperial",
+          "x": -3.2141498367719223,
+          "y": 0.6,
+          "z": -0.35707491838596106,
+          "hp": 36.75,
+          "damagePercent": 9.600000000000001,
+          "weapon": "Longsword",
+          "ringedOut": false,
+          "eliminated": false,
+          "pose": "idle",
+          "stats": {
+            "vitality": 7,
+            "resilience": 9,
+            "willpower": 5,
+            "reflex": 5,
+            "strength": 8,
+            "intelligence": 6,
+            "maxHealth": 48.75,
+            "attackPower": 8.383468327168876,
+            "attackInterval": 1.1260000000000001,
+            "armor": 4.76
+          }
+        },
+        "opponent": {
+          "race": "human",
+          "subrace": "imperial",
+          "x": -1.4145452184045713,
+          "y": 0.6,
+          "z": 0.5427273907977147,
+          "hp": 48.75,
+          "damagePercent": 0,
+          "weapon": "Longsword",
+          "ringedOut": false,
+          "eliminated": false,
+          "pose": "idle",
+          "stats": {
+            "vitality": 7,
+            "resilience": 9,
+            "willpower": 5,
+            "reflex": 5,
+            "strength": 8,
+            "intelligence": 6,
+            "maxHealth": 48.75,
+            "attackPower": 8.383468327168876,
+            "attackInterval": 1.1260000000000001,
+            "armor": 4.76
+          }
+        },
+        "winner": null,
+        "camera": "isometric"
+      }
+    },
+    {
+      "name": "03-shadow-elev66",
+      "note": "isometric at 12.5h — shadow length should shrink as the sun rises",
+      "snapshot": {
+        "phase": "fight",
+        "arena": "river",
+        "world": {
+          "hour": 12.5,
+          "dayOfYear": 283,
+          "place": "Sunspire Steppe",
+          "dayPhase": "day",
+          "sunElevationDeg": 68.9,
+          "sunOcclusion": 0
+        },
+        "history": 0,
+        "winCondition": "ring-out",
+        "surface": "wood",
+        "firstPerson": false,
+        "elapsed": 8.1,
+        "firstStrike": {
+          "from": "Ser Vail",
+          "to": "Sir Aldric",
+          "time": 319.5,
+          "weapon": "Longsword"
+        },
+        "skill": {
+          "element": "fire",
+          "active": null,
+          "progress": null,
+          "effectFx": 0,
+          "buffs": {
+            "armor": 1,
+            "speed": 1,
+            "attack": 1
+          },
+          "dot": null,
+          "cooldowns": [
+            {
+              "name": "Shield Dash",
+              "kind": "dash",
+              "cd": 0
+            },
+            {
+              "name": "Crushing Blow",
+              "kind": "power",
+              "cd": 0
+            },
+            {
+              "name": "Bulwark",
+              "kind": "defense",
+              "cd": 0
+            }
+          ]
+        },
+        "polygons": 14064,
+        "player": {
+          "race": "human",
+          "subrace": "imperial",
+          "x": -3.2141498367719223,
+          "y": 0.6,
+          "z": -0.35707491838596106,
+          "hp": 36.75,
+          "damagePercent": 9.600000000000001,
+          "weapon": "Longsword",
+          "ringedOut": false,
+          "eliminated": false,
+          "pose": "idle",
+          "stats": {
+            "vitality": 7,
+            "resilience": 9,
+            "willpower": 5,
+            "reflex": 5,
+            "strength": 8,
+            "intelligence": 6,
+            "maxHealth": 48.75,
+            "attackPower": 8.383468327168876,
+            "attackInterval": 1.1260000000000001,
+            "armor": 4.76
+          }
+        },
+        "opponent": {
+          "race": "human",
+          "subrace": "imperial",
+          "x": -1.4145452184045713,
+          "y": 0.6,
+          "z": 0.5427273907977147,
+          "hp": 48.75,
+          "damagePercent": 0,
+          "weapon": "Longsword",
+          "ringedOut": false,
+          "eliminated": false,
+          "pose": "idle",
+          "stats": {
+            "vitality": 7,
+            "resilience": 9,
+            "willpower": 5,
+            "reflex": 5,
+            "strength": 8,
+            "intelligence": 6,
+            "maxHealth": 48.75,
+            "attackPower": 8.383468327168876,
+            "attackInterval": 1.1260000000000001,
+            "armor": 4.76
+          }
+        },
+        "winner": null,
+        "camera": "isometric"
+      }
+    },
+    {
+      "name": "04-place-greywall-december-noon",
+      "note": "third-person, 12.5h, day 355, place greywall",
+      "snapshot": {
+        "phase": "fight",
+        "arena": "river",
+        "world": {
+          "hour": 12.5,
+          "dayOfYear": 355,
+          "place": "Greywall Keep",
+          "dayPhase": "day",
+          "sunElevationDeg": 18.2,
+          "sunOcclusion": 0
+        },
+        "history": 0,
+        "winCondition": "ring-out",
+        "surface": "wood",
+        "firstPerson": false,
+        "elapsed": 8.6,
+        "firstStrike": {
+          "from": "Ser Vail",
+          "to": "Sir Aldric",
+          "time": 319.5,
+          "weapon": "Longsword"
+        },
+        "skill": {
+          "element": "fire",
+          "active": null,
+          "progress": null,
+          "effectFx": 0,
+          "buffs": {
+            "armor": 1,
+            "speed": 1,
+            "attack": 1
+          },
+          "dot": null,
+          "cooldowns": [
+            {
+              "name": "Shield Dash",
+              "kind": "dash",
+              "cd": 0
+            },
+            {
+              "name": "Crushing Blow",
+              "kind": "power",
+              "cd": 0
+            },
+            {
+              "name": "Bulwark",
+              "kind": "defense",
+              "cd": 0
+            }
+          ]
+        },
+        "polygons": 14064,
+        "player": {
+          "race": "human",
+          "subrace": "imperial",
+          "x": -3.2141498367719223,
+          "y": 0.6,
+          "z": -0.35707491838596106,
+          "hp": 36.75,
+          "damagePercent": 9.600000000000001,
+          "weapon": "Longsword",
+          "ringedOut": false,
+          "eliminated": false,
+          "pose": "idle",
+          "stats": {
+            "vitality": 7,
+            "resilience": 9,
+            "willpower": 5,
+            "reflex": 5,
+            "strength": 8,
+            "intelligence": 6,
+            "maxHealth": 48.75,
+            "attackPower": 8.383468327168876,
+            "attackInterval": 1.1260000000000001,
+            "armor": 4.76
+          }
+        },
+        "opponent": {
+          "race": "human",
+          "subrace": "imperial",
+          "x": -1.4145452184045713,
+          "y": 0.6,
+          "z": 0.5427273907977147,
+          "hp": 48.75,
+          "damagePercent": 0,
+          "weapon": "Longsword",
+          "ringedOut": false,
+          "eliminated": false,
+          "pose": "idle",
+          "stats": {
+            "vitality": 7,
+            "resilience": 9,
+            "willpower": 5,
+            "reflex": 5,
+            "strength": 8,
+            "intelligence": 6,
+            "maxHealth": 48.75,
+            "attackPower": 8.383468327168876,
+            "attackInterval": 1.1260000000000001,
+            "armor": 4.76
+          }
+        },
+        "winner": null,
+        "camera": "third"
+      }
+    },
+    {
+      "name": "04-place-frostford-december-noon",
+      "note": "third-person, 12.5h, day 355, place frostford",
+      "snapshot": {
+        "phase": "fight",
+        "arena": "river",
+        "world": {
+          "hour": 12.5,
+          "dayOfYear": 355,
+          "place": "Frostford Crossing",
+          "dayPhase": "dusk",
+          "sunElevationDeg": 3.4,
+          "sunOcclusion": 0.13
+        },
+        "history": 0,
+        "winCondition": "ring-out",
+        "surface": "wood",
+        "firstPerson": false,
+        "elapsed": 9.1,
+        "firstStrike": {
+          "from": "Ser Vail",
+          "to": "Sir Aldric",
+          "time": 319.5,
+          "weapon": "Longsword"
+        },
+        "skill": {
+          "element": "fire",
+          "active": null,
+          "progress": null,
+          "effectFx": 0,
+          "buffs": {
+            "armor": 1,
+            "speed": 1,
+            "attack": 1
+          },
+          "dot": null,
+          "cooldowns": [
+            {
+              "name": "Shield Dash",
+              "kind": "dash",
+              "cd": 0
+            },
+            {
+              "name": "Crushing Blow",
+              "kind": "power",
+              "cd": 0
+            },
+            {
+              "name": "Bulwark",
+              "kind": "defense",
+              "cd": 0
+            }
+          ]
+        },
+        "polygons": 14064,
+        "player": {
+          "race": "human",
+          "subrace": "imperial",
+          "x": -3.2141498367719223,
+          "y": 0.6,
+          "z": -0.35707491838596106,
+          "hp": 36.75,
+          "damagePercent": 9.600000000000001,
+          "weapon": "Longsword",
+          "ringedOut": false,
+          "eliminated": false,
+          "pose": "idle",
+          "stats": {
+            "vitality": 7,
+            "resilience": 9,
+            "willpower": 5,
+            "reflex": 5,
+            "strength": 8,
+            "intelligence": 6,
+            "maxHealth": 48.75,
+            "attackPower": 8.383468327168876,
+            "attackInterval": 1.1260000000000001,
+            "armor": 4.76
+          }
+        },
+        "opponent": {
+          "race": "human",
+          "subrace": "imperial",
+          "x": -1.4145452184045713,
+          "y": 0.6,
+          "z": 0.5427273907977147,
+          "hp": 48.75,
+          "damagePercent": 0,
+          "weapon": "Longsword",
+          "ringedOut": false,
+          "eliminated": false,
+          "pose": "idle",
+          "stats": {
+            "vitality": 7,
+            "resilience": 9,
+            "willpower": 5,
+            "reflex": 5,
+            "strength": 8,
+            "intelligence": 6,
+            "maxHealth": 48.75,
+            "attackPower": 8.383468327168876,
+            "attackInterval": 1.1260000000000001,
+            "armor": 4.76
+          }
+        },
+        "winner": null,
+        "camera": "third"
+      }
+    },
+    {
+      "name": "05-camera-close",
+      "note": "close camera, 15h, Verdant Hills",
+      "snapshot": {
+        "phase": "fight",
+        "arena": "river",
+        "world": {
+          "hour": 15,
+          "dayOfYear": 283,
+          "place": "Verdant Hills",
+          "dayPhase": "day",
+          "sunElevationDeg": 30.4,
+          "sunOcclusion": 0.4
+        },
+        "history": 0,
+        "winCondition": "ring-out",
+        "surface": "wood",
+        "firstPerson": false,
+        "elapsed": 9.7,
+        "firstStrike": {
+          "from": "Ser Vail",
+          "to": "Sir Aldric",
+          "time": 319.5,
+          "weapon": "Longsword"
+        },
+        "skill": {
+          "element": "fire",
+          "active": null,
+          "progress": null,
+          "effectFx": 0,
+          "buffs": {
+            "armor": 1,
+            "speed": 1,
+            "attack": 1
+          },
+          "dot": null,
+          "cooldowns": [
+            {
+              "name": "Shield Dash",
+              "kind": "dash",
+              "cd": 0
+            },
+            {
+              "name": "Crushing Blow",
+              "kind": "power",
+              "cd": 0
+            },
+            {
+              "name": "Bulwark",
+              "kind": "defense",
+              "cd": 0
+            }
+          ]
+        },
+        "polygons": 14064,
+        "player": {
+          "race": "human",
+          "subrace": "imperial",
+          "x": -3.2141498367719223,
+          "y": 0.6,
+          "z": -0.35707491838596106,
+          "hp": 36.75,
+          "damagePercent": 9.600000000000001,
+          "weapon": "Longsword",
+          "ringedOut": false,
+          "eliminated": false,
+          "pose": "idle",
+          "stats": {
+            "vitality": 7,
+            "resilience": 9,
+            "willpower": 5,
+            "reflex": 5,
+            "strength": 8,
+            "intelligence": 6,
+            "maxHealth": 48.75,
+            "attackPower": 8.383468327168876,
+            "attackInterval": 1.1260000000000001,
+            "armor": 4.76
+          }
+        },
+        "opponent": {
+          "race": "human",
+          "subrace": "imperial",
+          "x": -1.4145452184045713,
+          "y": 0.6,
+          "z": 0.5427273907977147,
+          "hp": 48.75,
+          "damagePercent": 0,
+          "weapon": "Longsword",
+          "ringedOut": false,
+          "eliminated": false,
+          "pose": "idle",
+          "stats": {
+            "vitality": 7,
+            "resilience": 9,
+            "willpower": 5,
+            "reflex": 5,
+            "strength": 8,
+            "intelligence": 6,
+            "maxHealth": 48.75,
+            "attackPower": 8.383468327168876,
+            "attackInterval": 1.1260000000000001,
+            "armor": 4.76
+          }
+        },
+        "winner": null,
+        "camera": "close"
+      }
+    },
+    {
+      "name": "05-camera-isometric",
+      "note": "isometric camera, 15h, Verdant Hills",
+      "snapshot": {
+        "phase": "fight",
+        "arena": "river",
+        "world": {
+          "hour": 15,
+          "dayOfYear": 283,
+          "place": "Verdant Hills",
+          "dayPhase": "day",
+          "sunElevationDeg": 30.4,
+          "sunOcclusion": 0.4
+        },
+        "history": 0,
+        "winCondition": "ring-out",
+        "surface": "wood",
+        "firstPerson": false,
+        "elapsed": 10.2,
+        "firstStrike": {
+          "from": "Ser Vail",
+          "to": "Sir Aldric",
+          "time": 319.5,
+          "weapon": "Longsword"
+        },
+        "skill": {
+          "element": "fire",
+          "active": null,
+          "progress": null,
+          "effectFx": 0,
+          "buffs": {
+            "armor": 1,
+            "speed": 1,
+            "attack": 1
+          },
+          "dot": null,
+          "cooldowns": [
+            {
+              "name": "Shield Dash",
+              "kind": "dash",
+              "cd": 0
+            },
+            {
+              "name": "Crushing Blow",
+              "kind": "power",
+              "cd": 0
+            },
+            {
+              "name": "Bulwark",
+              "kind": "defense",
+              "cd": 0
+            }
+          ]
+        },
+        "polygons": 14064,
+        "player": {
+          "race": "human",
+          "subrace": "imperial",
+          "x": -3.2141498367719223,
+          "y": 0.6,
+          "z": -0.35707491838596106,
+          "hp": 36.75,
+          "damagePercent": 9.600000000000001,
+          "weapon": "Longsword",
+          "ringedOut": false,
+          "eliminated": false,
+          "pose": "idle",
+          "stats": {
+            "vitality": 7,
+            "resilience": 9,
+            "willpower": 5,
+            "reflex": 5,
+            "strength": 8,
+            "intelligence": 6,
+            "maxHealth": 48.75,
+            "attackPower": 8.383468327168876,
+            "attackInterval": 1.1260000000000001,
+            "armor": 4.76
+          }
+        },
+        "opponent": {
+          "race": "human",
+          "subrace": "imperial",
+          "x": -1.4145452184045713,
+          "y": 0.6,
+          "z": 0.5427273907977147,
+          "hp": 48.75,
+          "damagePercent": 0,
+          "weapon": "Longsword",
+          "ringedOut": false,
+          "eliminated": false,
+          "pose": "idle",
+          "stats": {
+            "vitality": 7,
+            "resilience": 9,
+            "willpower": 5,
+            "reflex": 5,
+            "strength": 8,
+            "intelligence": 6,
+            "maxHealth": 48.75,
+            "attackPower": 8.383468327168876,
+            "attackInterval": 1.1260000000000001,
+            "armor": 4.76
+          }
+        },
+        "winner": null,
+        "camera": "isometric"
+      }
+    },
+    {
+      "name": "05-camera-birds-eye",
+      "note": "birds-eye camera, 15h, Verdant Hills",
+      "snapshot": {
+        "phase": "fight",
+        "arena": "river",
+        "world": {
+          "hour": 15,
+          "dayOfYear": 283,
+          "place": "Verdant Hills",
+          "dayPhase": "day",
+          "sunElevationDeg": 30.4,
+          "sunOcclusion": 0.4
+        },
+        "history": 0,
+        "winCondition": "ring-out",
+        "surface": "wood",
+        "firstPerson": false,
+        "elapsed": 10.7,
+        "firstStrike": {
+          "from": "Ser Vail",
+          "to": "Sir Aldric",
+          "time": 319.5,
+          "weapon": "Longsword"
+        },
+        "skill": {
+          "element": "fire",
+          "active": null,
+          "progress": null,
+          "effectFx": 0,
+          "buffs": {
+            "armor": 1,
+            "speed": 1,
+            "attack": 1
+          },
+          "dot": null,
+          "cooldowns": [
+            {
+              "name": "Shield Dash",
+              "kind": "dash",
+              "cd": 0
+            },
+            {
+              "name": "Crushing Blow",
+              "kind": "power",
+              "cd": 0
+            },
+            {
+              "name": "Bulwark",
+              "kind": "defense",
+              "cd": 0
+            }
+          ]
+        },
+        "polygons": 14064,
+        "player": {
+          "race": "human",
+          "subrace": "imperial",
+          "x": -3.2141498367719223,
+          "y": 0.6,
+          "z": -0.35707491838596106,
+          "hp": 36.75,
+          "damagePercent": 9.600000000000001,
+          "weapon": "Longsword",
+          "ringedOut": false,
+          "eliminated": false,
+          "pose": "idle",
+          "stats": {
+            "vitality": 7,
+            "resilience": 9,
+            "willpower": 5,
+            "reflex": 5,
+            "strength": 8,
+            "intelligence": 6,
+            "maxHealth": 48.75,
+            "attackPower": 8.383468327168876,
+            "attackInterval": 1.1260000000000001,
+            "armor": 4.76
+          }
+        },
+        "opponent": {
+          "race": "human",
+          "subrace": "imperial",
+          "x": -1.4145452184045713,
+          "y": 0.6,
+          "z": 0.5427273907977147,
+          "hp": 48.75,
+          "damagePercent": 0,
+          "weapon": "Longsword",
+          "ringedOut": false,
+          "eliminated": false,
+          "pose": "idle",
+          "stats": {
+            "vitality": 7,
+            "resilience": 9,
+            "willpower": 5,
+            "reflex": 5,
+            "strength": 8,
+            "intelligence": 6,
+            "maxHealth": 48.75,
+            "attackPower": 8.383468327168876,
+            "attackInterval": 1.1260000000000001,
+            "armor": 4.76
+          }
+        },
+        "winner": null,
+        "camera": "birds-eye"
+      }
+    },
+    {
+      "name": "06-first-person",
+      "note": "first-person view, 15h",
+      "snapshot": {
+        "phase": "fight",
+        "arena": "river",
+        "world": {
+          "hour": 15,
+          "dayOfYear": 283,
+          "place": "Verdant Hills",
+          "dayPhase": "day",
+          "sunElevationDeg": 30.4,
+          "sunOcclusion": 0.4
+        },
+        "history": 0,
+        "winCondition": "ring-out",
+        "surface": "wood",
+        "firstPerson": true,
+        "elapsed": 11.3,
+        "firstStrike": {
+          "from": "Ser Vail",
+          "to": "Sir Aldric",
+          "time": 319.5,
+          "weapon": "Longsword"
+        },
+        "skill": {
+          "element": "fire",
+          "active": null,
+          "progress": null,
+          "effectFx": 0,
+          "buffs": {
+            "armor": 1,
+            "speed": 1,
+            "attack": 1
+          },
+          "dot": null,
+          "cooldowns": [
+            {
+              "name": "Shield Dash",
+              "kind": "dash",
+              "cd": 0
+            },
+            {
+              "name": "Crushing Blow",
+              "kind": "power",
+              "cd": 0
+            },
+            {
+              "name": "Bulwark",
+              "kind": "defense",
+              "cd": 0
+            }
+          ]
+        },
+        "polygons": 14064,
+        "player": {
+          "race": "human",
+          "subrace": "imperial",
+          "x": -3.2141498367719223,
+          "y": 0.6,
+          "z": -0.35707491838596106,
+          "hp": 36.75,
+          "damagePercent": 9.600000000000001,
+          "weapon": "Longsword",
+          "ringedOut": false,
+          "eliminated": false,
+          "pose": "idle",
+          "stats": {
+            "vitality": 7,
+            "resilience": 9,
+            "willpower": 5,
+            "reflex": 5,
+            "strength": 8,
+            "intelligence": 6,
+            "maxHealth": 48.75,
+            "attackPower": 8.383468327168876,
+            "attackInterval": 1.1260000000000001,
+            "armor": 4.76
+          }
+        },
+        "opponent": {
+          "race": "human",
+          "subrace": "imperial",
+          "x": -1.4145452184045713,
+          "y": 0.6,
+          "z": 0.5427273907977147,
+          "hp": 48.75,
+          "damagePercent": 0,
+          "weapon": "Longsword",
+          "ringedOut": false,
+          "eliminated": false,
+          "pose": "idle",
+          "stats": {
+            "vitality": 7,
+            "resilience": 9,
+            "willpower": 5,
+            "reflex": 5,
+            "strength": 8,
+            "intelligence": 6,
+            "maxHealth": 48.75,
+            "attackPower": 8.383468327168876,
+            "attackInterval": 1.1260000000000001,
+            "armor": 4.76
+          }
+        },
+        "winner": null,
+        "camera": "third"
+      }
+    },
+    {
+      "name": "07a-spectate-start",
+      "note": "AI vs AI, menu hidden; rings green (calm) or orange (closing in)",
+      "snapshot": {
+        "phase": "fight",
+        "arena": "hills",
+        "world": {
+          "hour": 14,
+          "dayOfYear": 283,
+          "place": "Verdant Hills",
+          "dayPhase": "day",
+          "sunElevationDeg": 39.5,
+          "sunOcclusion": 0.62
+        },
+        "history": 0,
+        "winCondition": "koth",
+        "surface": "stone",
+        "firstPerson": false,
+        "elapsed": 0.9,
+        "firstStrike": {
+          "from": "Ser Vail",
+          "to": "Sir Aldric",
+          "time": 239.70000004768372,
+          "weapon": "Longsword"
+        },
+        "skill": {
+          "element": "fire",
+          "active": "Crushing Blow",
+          "progress": 0.412,
+          "effectFx": 0.565,
+          "buffs": {
+            "armor": 1,
+            "speed": 1,
+            "attack": 1
+          },
+          "dot": null,
+          "cooldowns": [
+            {
+              "name": "Shield Dash",
+              "kind": "dash",
+              "cd": 3.7
+            },
+            {
+              "name": "Crushing Blow",
+              "kind": "power",
+              "cd": 7.7
+            },
+            {
+              "name": "Bulwark",
+              "kind": "defense",
+              "cd": 0
+            }
+          ]
+        },
+        "polygons": 14064,
+        "player": {
+          "race": "human",
+          "subrace": "imperial",
+          "x": 1.2477711892167138,
+          "y": 0.625666944458743,
+          "z": -1.1641860862228028,
+          "hp": 28.351576553815065,
+          "damagePercent": 16.31873875694795,
+          "weapon": "Longsword",
+          "ringedOut": false,
+          "eliminated": false,
+          "pose": "hit",
+          "stats": {
+            "vitality": 7,
+            "resilience": 9,
+            "willpower": 5,
+            "reflex": 5,
+            "strength": 8,
+            "intelligence": 6,
+            "maxHealth": 48.75,
+            "attackPower": 8.383468327168876,
+            "attackInterval": 1.1260000000000001,
+            "armor": 4.76
+          }
+        },
+        "opponent": {
+          "race": "human",
+          "subrace": "imperial",
+          "x": -0.4433372596451647,
+          "y": 0.6233771465790814,
+          "z": -2.0406908001527246,
+          "hp": 35.11863062152602,
+          "damagePercent": 10.905095502779181,
+          "weapon": "Longsword",
+          "ringedOut": false,
+          "eliminated": false,
+          "pose": "hit",
+          "stats": {
+            "vitality": 7,
+            "resilience": 9,
+            "willpower": 5,
+            "reflex": 5,
+            "strength": 8,
+            "intelligence": 6,
+            "maxHealth": 48.75,
+            "attackPower": 8.383468327168876,
+            "attackInterval": 1.1260000000000001,
+            "armor": 4.76
+          }
+        },
+        "winner": null,
+        "camera": "isometric"
+      }
+    },
+    {
+      "name": "07b-spectate-clash",
+      "note": "AI clash: at least one ring red (attack/hit)",
+      "snapshot": {
+        "phase": "fight",
+        "arena": "hills",
+        "world": {
+          "hour": 14,
+          "dayOfYear": 283,
+          "place": "Verdant Hills",
+          "dayPhase": "day",
+          "sunElevationDeg": 39.5,
+          "sunOcclusion": 0.62
+        },
+        "history": 0,
+        "winCondition": "koth",
+        "surface": "stone",
+        "firstPerson": false,
+        "elapsed": 0.9,
+        "firstStrike": {
+          "from": "Ser Vail",
+          "to": "Sir Aldric",
+          "time": 239.70000004768372,
+          "weapon": "Longsword"
+        },
+        "skill": {
+          "element": "fire",
+          "active": "Crushing Blow",
+          "progress": 0.412,
+          "effectFx": 0.565,
+          "buffs": {
+            "armor": 1,
+            "speed": 1,
+            "attack": 1
+          },
+          "dot": null,
+          "cooldowns": [
+            {
+              "name": "Shield Dash",
+              "kind": "dash",
+              "cd": 3.7
+            },
+            {
+              "name": "Crushing Blow",
+              "kind": "power",
+              "cd": 7.7
+            },
+            {
+              "name": "Bulwark",
+              "kind": "defense",
+              "cd": 0
+            }
+          ]
+        },
+        "polygons": 14064,
+        "player": {
+          "race": "human",
+          "subrace": "imperial",
+          "x": 1.2477711892167138,
+          "y": 0.625666944458743,
+          "z": -1.1641860862228028,
+          "hp": 28.351576553815065,
+          "damagePercent": 16.31873875694795,
+          "weapon": "Longsword",
+          "ringedOut": false,
+          "eliminated": false,
+          "pose": "hit",
+          "stats": {
+            "vitality": 7,
+            "resilience": 9,
+            "willpower": 5,
+            "reflex": 5,
+            "strength": 8,
+            "intelligence": 6,
+            "maxHealth": 48.75,
+            "attackPower": 8.383468327168876,
+            "attackInterval": 1.1260000000000001,
+            "armor": 4.76
+          }
+        },
+        "opponent": {
+          "race": "human",
+          "subrace": "imperial",
+          "x": -0.4433372596451647,
+          "y": 0.6233771465790814,
+          "z": -2.0406908001527246,
+          "hp": 35.11863062152602,
+          "damagePercent": 10.905095502779181,
+          "weapon": "Longsword",
+          "ringedOut": false,
+          "eliminated": false,
+          "pose": "hit",
+          "stats": {
+            "vitality": 7,
+            "resilience": 9,
+            "willpower": 5,
+            "reflex": 5,
+            "strength": 8,
+            "intelligence": 6,
+            "maxHealth": 48.75,
+            "attackPower": 8.383468327168876,
+            "attackInterval": 1.1260000000000001,
+            "armor": 4.76
+          }
+        },
+        "winner": null,
+        "camera": "isometric"
+      }
+    },
+    {
+      "name": "08-victory",
+      "note": "victory screen after spectate match",
+      "snapshot": {
+        "phase": "fight",
+        "arena": "hills",
+        "world": {
+          "hour": 14,
+          "dayOfYear": 283,
+          "place": "Verdant Hills",
+          "dayPhase": "day",
+          "sunElevationDeg": 39.5,
+          "sunOcclusion": 0.91
+        },
+        "history": 1,
+        "winCondition": "koth",
+        "surface": "ice",
+        "firstPerson": false,
+        "elapsed": 5.7,
+        "firstStrike": {
+          "from": "Ser Vail",
+          "to": "Sir Aldric",
+          "time": 239.70000004768372,
+          "weapon": "Longsword"
+        },
+        "skill": {
+          "element": "fire",
+          "active": null,
+          "progress": null,
+          "effectFx": 0,
+          "buffs": {
+            "armor": 1,
+            "speed": 1,
+            "attack": 1
+          },
+          "dot": null,
+          "cooldowns": [
+            {
+              "name": "Shield Dash",
+              "kind": "dash",
+              "cd": 3.4
+            },
+            {
+              "name": "Crushing Blow",
+              "kind": "power",
+              "cd": 2.9
+            },
+            {
+              "name": "Bulwark",
+              "kind": "defense",
+              "cd": 6
+            }
+          ]
+        },
+        "polygons": 14064,
+        "player": {
+          "race": "human",
+          "subrace": "imperial",
+          "x": 10.848274426561566,
+          "y": -9.5,
+          "z": 3.8117729359767902,
+          "hp": 2.686493178372926,
+          "damagePercent": 36.85080545730166,
+          "weapon": "Longsword",
+          "ringedOut": true,
+          "eliminated": true,
+          "pose": "ko",
+          "stats": {
+            "vitality": 7,
+            "resilience": 9,
+            "willpower": 5,
+            "reflex": 5,
+            "strength": 8,
+            "intelligence": 6,
+            "maxHealth": 48.75,
+            "attackPower": 8.383468327168876,
+            "attackInterval": 1.1260000000000001,
+            "armor": 4.76
+          }
+        },
+        "opponent": {
+          "race": "human",
+          "subrace": "imperial",
+          "x": 4.488218885225575,
+          "y": 0.6,
+          "z": 0.5153440957159284,
+          "hp": 10.38666362390266,
+          "damagePercent": 30.69066910087787,
+          "weapon": "Longsword",
+          "ringedOut": false,
+          "eliminated": false,
+          "pose": "idle",
+          "stats": {
+            "vitality": 7,
+            "resilience": 9,
+            "willpower": 5,
+            "reflex": 5,
+            "strength": 8,
+            "intelligence": 6,
+            "maxHealth": 48.75,
+            "attackPower": 8.383468327168876,
+            "attackInterval": 1.1260000000000001,
+            "armor": 4.76
+          }
+        },
+        "winner": "opponent",
+        "camera": "isometric"
+      }
+    },
+    {
+      "name": "09-history",
+      "note": "History page after at least one recorded match",
+      "snapshot": {
+        "phase": "menu",
+        "arena": "hills",
+        "world": {
+          "hour": 14,
+          "dayOfYear": 283,
+          "place": "Verdant Hills",
+          "dayPhase": "day",
+          "sunElevationDeg": 39.5,
+          "sunOcclusion": 0.93
+        },
+        "history": 1,
+        "winCondition": "koth",
+        "surface": "ice",
+        "firstPerson": false,
+        "elapsed": 5.7,
+        "firstStrike": {
+          "from": "Ser Vail",
+          "to": "Sir Aldric",
+          "time": 239.70000004768372,
+          "weapon": "Longsword"
+        },
+        "skill": {
+          "element": "fire",
+          "active": null,
+          "progress": null,
+          "effectFx": 0,
+          "buffs": {
+            "armor": 1,
+            "speed": 1,
+            "attack": 1
+          },
+          "dot": null,
+          "cooldowns": [
+            {
+              "name": "Shield Dash",
+              "kind": "dash",
+              "cd": 3.4
+            },
+            {
+              "name": "Crushing Blow",
+              "kind": "power",
+              "cd": 2.9
+            },
+            {
+              "name": "Bulwark",
+              "kind": "defense",
+              "cd": 6
+            }
+          ]
+        },
+        "polygons": 14064,
+        "player": {
+          "race": "human",
+          "subrace": "imperial",
+          "x": 10.848274426562346,
+          "y": -9.5,
+          "z": 3.8117729359771944,
+          "hp": 2.686493178372926,
+          "damagePercent": 36.85080545730166,
+          "weapon": "Longsword",
+          "ringedOut": true,
+          "eliminated": true,
+          "pose": "ko",
+          "stats": {
+            "vitality": 7,
+            "resilience": 9,
+            "willpower": 5,
+            "reflex": 5,
+            "strength": 8,
+            "intelligence": 6,
+            "maxHealth": 48.75,
+            "attackPower": 8.383468327168876,
+            "attackInterval": 1.1260000000000001,
+            "armor": 4.76
+          }
+        },
+        "opponent": {
+          "race": "human",
+          "subrace": "imperial",
+          "x": 4.483413734463094,
+          "y": 0.6,
+          "z": 0.5128535769693099,
+          "hp": 10.38666362390266,
+          "damagePercent": 30.69066910087787,
+          "weapon": "Longsword",
+          "ringedOut": false,
+          "eliminated": false,
+          "pose": "idle",
+          "stats": {
+            "vitality": 7,
+            "resilience": 9,
+            "willpower": 5,
+            "reflex": 5,
+            "strength": 8,
+            "intelligence": 6,
+            "maxHealth": 48.75,
+            "attackPower": 8.383468327168876,
+            "attackInterval": 1.1260000000000001,
+            "armor": 4.76
+          }
+        },
+        "winner": "opponent",
+        "camera": "isometric"
+      }
+    },
+    {
+      "name": "10-history-mobile",
+      "note": "History page at 390×844",
+      "snapshot": {
+        "phase": "menu",
+        "arena": "hills",
+        "world": {
+          "hour": 14,
+          "dayOfYear": 283,
+          "place": "Verdant Hills",
+          "dayPhase": "day",
+          "sunElevationDeg": 39.5,
+          "sunOcclusion": 0.94
+        },
+        "history": 1,
+        "winCondition": "koth",
+        "surface": "ice",
+        "firstPerson": false,
+        "elapsed": 5.7,
+        "firstStrike": {
+          "from": "Ser Vail",
+          "to": "Sir Aldric",
+          "time": 239.70000004768372,
+          "weapon": "Longsword"
+        },
+        "skill": {
+          "element": "fire",
+          "active": null,
+          "progress": null,
+          "effectFx": 0,
+          "buffs": {
+            "armor": 1,
+            "speed": 1,
+            "attack": 1
+          },
+          "dot": null,
+          "cooldowns": [
+            {
+              "name": "Shield Dash",
+              "kind": "dash",
+              "cd": 3.4
+            },
+            {
+              "name": "Crushing Blow",
+              "kind": "power",
+              "cd": 2.9
+            },
+            {
+              "name": "Bulwark",
+              "kind": "defense",
+              "cd": 6
+            }
+          ]
+        },
+        "polygons": 14064,
+        "player": {
+          "race": "human",
+          "subrace": "imperial",
+          "x": 10.848274426562346,
+          "y": -9.5,
+          "z": 3.8117729359771944,
+          "hp": 2.686493178372926,
+          "damagePercent": 36.85080545730166,
+          "weapon": "Longsword",
+          "ringedOut": true,
+          "eliminated": true,
+          "pose": "ko",
+          "stats": {
+            "vitality": 7,
+            "resilience": 9,
+            "willpower": 5,
+            "reflex": 5,
+            "strength": 8,
+            "intelligence": 6,
+            "maxHealth": 48.75,
+            "attackPower": 8.383468327168876,
+            "attackInterval": 1.1260000000000001,
+            "armor": 4.76
+          }
+        },
+        "opponent": {
+          "race": "human",
+          "subrace": "imperial",
+          "x": 4.483271129548242,
+          "y": 0.6,
+          "z": 0.5127796645716847,
+          "hp": 10.38666362390266,
+          "damagePercent": 30.69066910087787,
+          "weapon": "Longsword",
+          "ringedOut": false,
+          "eliminated": false,
+          "pose": "idle",
+          "stats": {
+            "vitality": 7,
+            "resilience": 9,
+            "willpower": 5,
+            "reflex": 5,
+            "strength": 8,
+            "intelligence": 6,
+            "maxHealth": 48.75,
+            "attackPower": 8.383468327168876,
+            "attackInterval": 1.1260000000000001,
+            "armor": 4.76
+          }
+        },
+        "winner": "opponent",
+        "camera": "isometric"
+      }
+    },
+    {
+      "name": "10-history-tablet",
+      "note": "History page at 820×1180",
+      "snapshot": {
+        "phase": "menu",
+        "arena": "hills",
+        "world": {
+          "hour": 14,
+          "dayOfYear": 283,
+          "place": "Verdant Hills",
+          "dayPhase": "day",
+          "sunElevationDeg": 39.5,
+          "sunOcclusion": 0.94
+        },
+        "history": 1,
+        "winCondition": "koth",
+        "surface": "ice",
+        "firstPerson": false,
+        "elapsed": 5.7,
+        "firstStrike": {
+          "from": "Ser Vail",
+          "to": "Sir Aldric",
+          "time": 239.70000004768372,
+          "weapon": "Longsword"
+        },
+        "skill": {
+          "element": "fire",
+          "active": null,
+          "progress": null,
+          "effectFx": 0,
+          "buffs": {
+            "armor": 1,
+            "speed": 1,
+            "attack": 1
+          },
+          "dot": null,
+          "cooldowns": [
+            {
+              "name": "Shield Dash",
+              "kind": "dash",
+              "cd": 3.4
+            },
+            {
+              "name": "Crushing Blow",
+              "kind": "power",
+              "cd": 2.9
+            },
+            {
+              "name": "Bulwark",
+              "kind": "defense",
+              "cd": 6
+            }
+          ]
+        },
+        "polygons": 14064,
+        "player": {
+          "race": "human",
+          "subrace": "imperial",
+          "x": 10.848274426562346,
+          "y": -9.5,
+          "z": 3.8117729359771944,
+          "hp": 2.686493178372926,
+          "damagePercent": 36.85080545730166,
+          "weapon": "Longsword",
+          "ringedOut": true,
+          "eliminated": true,
+          "pose": "ko",
+          "stats": {
+            "vitality": 7,
+            "resilience": 9,
+            "willpower": 5,
+            "reflex": 5,
+            "strength": 8,
+            "intelligence": 6,
+            "maxHealth": 48.75,
+            "attackPower": 8.383468327168876,
+            "attackInterval": 1.1260000000000001,
+            "armor": 4.76
+          }
+        },
+        "opponent": {
+          "race": "human",
+          "subrace": "imperial",
+          "x": 4.483249561406115,
+          "y": 0.6,
+          "z": 0.5127684857627467,
+          "hp": 10.38666362390266,
+          "damagePercent": 30.69066910087787,
+          "weapon": "Longsword",
+          "ringedOut": false,
+          "eliminated": false,
+          "pose": "idle",
+          "stats": {
+            "vitality": 7,
+            "resilience": 9,
+            "willpower": 5,
+            "reflex": 5,
+            "strength": 8,
+            "intelligence": 6,
+            "maxHealth": 48.75,
+            "attackPower": 8.383468327168876,
+            "attackInterval": 1.1260000000000001,
+            "armor": 4.76
+          }
+        },
+        "winner": "opponent",
+        "camera": "isometric"
+      }
+    },
+    {
+      "name": "10-history-large",
+      "note": "History page at 1920×1080",
+      "snapshot": {
+        "phase": "menu",
+        "arena": "hills",
+        "world": {
+          "hour": 14,
+          "dayOfYear": 283,
+          "place": "Verdant Hills",
+          "dayPhase": "day",
+          "sunElevationDeg": 39.5,
+          "sunOcclusion": 0.94
+        },
+        "history": 1,
+        "winCondition": "koth",
+        "surface": "ice",
+        "firstPerson": false,
+        "elapsed": 5.7,
+        "firstStrike": {
+          "from": "Ser Vail",
+          "to": "Sir Aldric",
+          "time": 239.70000004768372,
+          "weapon": "Longsword"
+        },
+        "skill": {
+          "element": "fire",
+          "active": null,
+          "progress": null,
+          "effectFx": 0,
+          "buffs": {
+            "armor": 1,
+            "speed": 1,
+            "attack": 1
+          },
+          "dot": null,
+          "cooldowns": [
+            {
+              "name": "Shield Dash",
+              "kind": "dash",
+              "cd": 3.4
+            },
+            {
+              "name": "Crushing Blow",
+              "kind": "power",
+              "cd": 2.9
+            },
+            {
+              "name": "Bulwark",
+              "kind": "defense",
+              "cd": 6
+            }
+          ]
+        },
+        "polygons": 14064,
+        "player": {
+          "race": "human",
+          "subrace": "imperial",
+          "x": 10.848274426562346,
+          "y": -9.5,
+          "z": 3.8117729359771944,
+          "hp": 2.686493178372926,
+          "damagePercent": 36.85080545730166,
+          "weapon": "Longsword",
+          "ringedOut": true,
+          "eliminated": true,
+          "pose": "ko",
+          "stats": {
+            "vitality": 7,
+            "resilience": 9,
+            "willpower": 5,
+            "reflex": 5,
+            "strength": 8,
+            "intelligence": 6,
+            "maxHealth": 48.75,
+            "attackPower": 8.383468327168876,
+            "attackInterval": 1.1260000000000001,
+            "armor": 4.76
+          }
+        },
+        "opponent": {
+          "race": "human",
+          "subrace": "imperial",
+          "x": 4.4832466848906,
+          "y": 0.6,
+          "z": 0.512766994859303,
+          "hp": 10.38666362390266,
+          "damagePercent": 30.69066910087787,
+          "weapon": "Longsword",
+          "ringedOut": false,
+          "eliminated": false,
+          "pose": "idle",
+          "stats": {
+            "vitality": 7,
+            "resilience": 9,
+            "willpower": 5,
+            "reflex": 5,
+            "strength": 8,
+            "intelligence": 6,
+            "maxHealth": 48.75,
+            "attackPower": 8.383468327168876,
+            "attackInterval": 1.1260000000000001,
+            "armor": 4.76
+          }
+        },
+        "winner": "opponent",
+        "camera": "isometric"
+      }
+    },
+    {
+      "name": "10-history-mobile-matches",
+      "note": "mobile: matches table scrolled into view (must scroll inside its box)",
+      "snapshot": {
+        "phase": "menu",
+        "arena": "hills",
+        "world": {
+          "hour": 14,
+          "dayOfYear": 283,
+          "place": "Verdant Hills",
+          "dayPhase": "day",
+          "sunElevationDeg": 39.5,
+          "sunOcclusion": 0.94
+        },
+        "history": 1,
+        "winCondition": "koth",
+        "surface": "ice",
+        "firstPerson": false,
+        "elapsed": 5.7,
+        "firstStrike": {
+          "from": "Ser Vail",
+          "to": "Sir Aldric",
+          "time": 239.70000004768372,
+          "weapon": "Longsword"
+        },
+        "skill": {
+          "element": "fire",
+          "active": null,
+          "progress": null,
+          "effectFx": 0,
+          "buffs": {
+            "armor": 1,
+            "speed": 1,
+            "attack": 1
+          },
+          "dot": null,
+          "cooldowns": [
+            {
+              "name": "Shield Dash",
+              "kind": "dash",
+              "cd": 3.4
+            },
+            {
+              "name": "Crushing Blow",
+              "kind": "power",
+              "cd": 2.9
+            },
+            {
+              "name": "Bulwark",
+              "kind": "defense",
+              "cd": 6
+            }
+          ]
+        },
+        "polygons": 14064,
+        "player": {
+          "race": "human",
+          "subrace": "imperial",
+          "x": 10.848274426562346,
+          "y": -9.5,
+          "z": 3.8117729359771944,
+          "hp": 2.686493178372926,
+          "damagePercent": 36.85080545730166,
+          "weapon": "Longsword",
+          "ringedOut": true,
+          "eliminated": true,
+          "pose": "ko",
+          "stats": {
+            "vitality": 7,
+            "resilience": 9,
+            "willpower": 5,
+            "reflex": 5,
+            "strength": 8,
+            "intelligence": 6,
+            "maxHealth": 48.75,
+            "attackPower": 8.383468327168876,
+            "attackInterval": 1.1260000000000001,
+            "armor": 4.76
+          }
+        },
+        "opponent": {
+          "race": "human",
+          "subrace": "imperial",
+          "x": 4.483246365384124,
+          "y": 0.6,
+          "z": 0.512766829258491,
+          "hp": 10.38666362390266,
+          "damagePercent": 30.69066910087787,
+          "weapon": "Longsword",
+          "ringedOut": false,
+          "eliminated": false,
+          "pose": "idle",
+          "stats": {
+            "vitality": 7,
+            "resilience": 9,
+            "willpower": 5,
+            "reflex": 5,
+            "strength": 8,
+            "intelligence": 6,
+            "maxHealth": 48.75,
+            "attackPower": 8.383468327168876,
+            "attackInterval": 1.1260000000000001,
+            "armor": 4.76
+          }
+        },
+        "winner": "opponent",
+        "camera": "isometric"
+      }
+    },
+    {
+      "name": "check-mobile-overflow",
+      "horizontalOverflow": false
+    }
+  ]
+}

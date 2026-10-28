@@ -1,0 +1,730 @@
+# Mytherrania — consolidated specification
+
+Version 3 · 2026-10-10 · supersedes the scattered prompt history as the single source of
+truth for WHAT the game is. `DESIGN.md` remains the visual contract; `PHASE1_PLAN.md` the
+phase-1 gate list; `artifacts/data-science.md` the measured evidence log.
+
+**How to read this.** Every requirement has an id (`R-…`), a precise definition, its bounds,
+the equation that implements it, the file that owns it, and a status:
+
+| Status | Meaning |
+| --- | --- |
+| **LIVE** | Implemented, unit-tested, *and* observed running in a real browser. |
+| **TESTED** | Implemented and unit-tested; not yet observed in the browser. |
+| **MODEL** | The pure model exists and is tested, but the engine does not render/use it yet. |
+| **OPEN** | Asked for; not built. Listed so it cannot be silently forgotten. |
+
+Numbers in this document come from `docs/SPEC-tables.md`, which is **generated from the code**
+by `tools/gen-spec-tables.ts`. Bounds marked `[SPEC Xn]` are pinned by a test of that name
+in `tests/spec_test.ts`, so the spec cannot drift from the code without a test failing.
+
+---
+
+## 0. Glossary (controlled vocabulary)
+
+Words below have exactly one meaning in code, tests and docs.
+
+| Term | Definition |
+| --- | --- |
+| **Fighter** | One combatant: stats + body + weapon + runtime state (`src/game/Fighter.ts`). |
+| **Primary attribute** | One of six integer stats: Vitality, Resilience, Willpower, Reflex, Strength, Intelligence. Range 1–20. |
+| **Combat stat** | A value *derived* from primaries: maxHealth, attackPower, attackInterval, armor. Never set directly. |
+| **Body** | The physical model of a fighter: a list of **parts**, each with mass (kg), volume (m³) and frontal area (m²). |
+| **Density ρ** | Total body mass ÷ total body volume, kg/m³. Composite: parts are summed first, then divided. |
+| **Toughness T** | How much impulse a body absorbs per unit of damage: `ρ·(0.4+0.6·armour)·√area`. |
+| **Impulse J** | Momentum transferred by a collision, N·s: `μ·(1+e)·|Δv|`. |
+| **Reduced mass μ** | `m₁m₂/(m₁+m₂)`; equal bodies → m/2; against an immovable wall → m₁. |
+| **Physics multiplier** | The bounded factor physics applies to every blow (§3.4). |
+| **Disposition** | A fighter's stance toward another: *friendly*, *neutral* or *enemy* (§6.1). |
+| **Truce** | The opening window in which no damage can be dealt: friendly + neutral phases. |
+| **Ring** | The fighting surface. Has a **shape**, a size, and optionally a **wall**. |
+| **Ring-out** | A body leaving the ring outline. **Not** a loss (§5.3). |
+| **Elimination** | `hp ≤ 0`. The **only** loss condition. |
+| **Sense** | One perception channel with a base range and falloff: sight, hearing, touch, scent, magnetism. |
+| **Lens** | The directional shape of a sense's coverage — a polar function, not a sphere (§6.3). |
+| **Fog of war** | A per-fighter grid of cells with two layers: *seen* (persistent) and *visible* (this frame). |
+| **Status** | A timed condition: stunned, hypnotized, controlled, plus the DoT/buff set in `Status.ts`. |
+| **Skill** | One of a class's three named moves: *dash*, *power*, *defense* (§4). |
+| **Element** | A skill's damage flavour, which sets its effect colour (§4.3). |
+| **Arena parameter** | One entry of `PARAMS` in `ArenaConfig.ts`: key, category, min, default, max, unit. |
+| **Forge category** | Grouping of arena parameters, after Halo Forge: space, ground, phases, population, items, hazards, atmosphere. |
+| **Scale constants** | `HEALTH_SCALE = 1000`, `FIGHT_LENGTH = 10`, `DAMAGE_SCALE = HEALTH_SCALE / FIGHT_LENGTH = 100`. |
+
+---
+
+## 1. Product scope and invariants
+
+| Id | Requirement | Bound / acceptance | Status |
+| --- | --- | --- | --- |
+| R-1.1 | Browser 3D cel-shaded action RPG; TypeScript, Deno 2, Three.js with custom GLSL. | Runs from `deno task dev` at `http://127.0.0.1:8788/`. | LIVE |
+| R-1.2 | **Zero runtime dependencies.** No CDN, no network at runtime; Three.js bundled locally. | `dist/app.js` self-contained; build ≈ 0.72 MB (719,028 B). | LIVE |
+| R-1.3 | **Gall's Law.** Each layer added only on a working layer below it. | No subsystem lands without a passing gate (§10). | process |
+| R-1.4 | **Zero dead code.** Every exported module has a runtime caller. | Each `src/game/*.ts` reached from `Engine.ts` or a tool; checked §10.3. | LIVE (see §10.3) |
+| R-1.5 | **Physical keys.** Input via `KeyboardEvent.code`, so AZERTY works without remapping. | `KeyW` = AZERTY `Z` (forward); `KeyA` = AZERTY `Q` (left). | LIVE |
+| R-1.6 | **Frame budget.** | ≤ 16.6 ms per frame (60 FPS). Last measured: day 1.60 ms, night 1.01 ms CPU submission. | LIVE (CPU only; GPU time not separated) |
+| R-1.7 | **Honest evidence.** No invented perf, coverage or balance numbers. | Every number traces to a tool output or generated table. | process |
+
+**Deferred, not stubbed** (from the original brief — kept on record, none implemented):
+networking (WebSocket/WebRTC rooms, authority reconciliation), the 12 biome island paths with
+2-border blend zones, Maslow utility AI with speech bubbles, metroidvania locks/keys and item
+provenance, radial wheel + Diablo grid inventory + map pen, swimming/buoyancy, wind flame spread.
+Status of all: **OPEN**.
+
+---
+
+## 2. Character model
+
+### 2.1 Primary attributes
+
+| Attribute | Drives |
+| --- | --- |
+| Vitality | maxHealth (+1.7 base units/pt, ×1000), body mass (+1.4 kg/pt). |
+| Resilience | armor (+0.32/pt), crit defence, body mass (+1.1 kg/pt). |
+| Willpower | damage solve for casters (through the power index), status resistance (not yet). |
+| Reflex | attackInterval (−0.046 s/pt), crit chance, limb area. |
+| Strength | maxHealth (+0.55 base units/pt), body mass (+3.5 kg/pt) **and** volume (+0.0016 m³/pt), torso area. |
+| Intelligence | damage solve for casters (through the power index). |
+
+### 2.2 Derived combat stats (`src/game/Stats.ts`)
+
+```
+maxHealth      = clamp(33 + 1.7·VIT + 0.55·STR, 34, 58) · HEALTH_SCALE
+attackInterval = clamp(1.33 − 0.046·REF, 0.85, 1.35)                        seconds
+armor          = clamp(2.2 + 0.32·RES, 2, 6.5)
+CriticalChance = clamp( 0.008·REF / (0.010·RES_target + 0.1), 0.03, 0.15 )   [as implemented]
+```
+
+**Brief formulas vs implementation** (kept verbatim, not silently replaced):
+
+| Brief (verbatim) | Implemented | Why it differs |
+| --- | --- | --- |
+| `MaxHealth = Vitality·10 + Strength·2 − Fatigue` | the clamped linear form above, ×1000; no Fatigue term | with the brief's slopes HP spread was too wide to balance; fatigue lives in the senses (§6.3), not HP. **Status: brief formula NOT implemented.** |
+| `CriticalChance = (Reflex·0.015)/(TargetResilience·0.005)` | `0.008·REF/(0.010·RES+0.1)`, clamped 3–15% | the brief's ratio exceeds 100% for REF ≥ RES/3 (e.g. REF 9 vs RES 4 → 675%). The +0.1 bounds the denominator. **Status: brief formula NOT implemented as written.** |
+
+**Damage per hit — the ONE model, used by both the live engine and the harness**
+(`Stats.attackDamage` → `Engine.#resolveHit`, `ArenaHarness.simulate`):
+
+```
+base   = attackPower · crit · (1 + 0.35·(2·roll − 1)) / (1 + 0.04·armor_d)     crit ∈ {1, 1.4}
+damage = base · skillMul · statusAttackMul · physicsMul(§3.4) · (blocking ? 0.4 : 1)
+cooldown between swings = attackInterval · stanceMul / statusAttackMul
+```
+
+v2.1 fix: the engine previously used `weapon.damage` (7–17 per hit) against ~48 000 HP, so the
+balanced class model existed only in the harness. Weapons now shape reach and knockback only.
+
+**Damage solve.** Every class is solved to the same *power index* `I = (attackPower /
+attackInterval) · maxHealth · (1 + 0.04·armor)`, then adjusted for two edges it would
+otherwise carry for free:
+
+```
+raw          = I_target · POWER_SCALE · attackInterval / EHP
+attackPower  = raw / (1 + E[crit]·(CRIT_MULT − 1)) / edge_phys · (1 + calibration)
+edge_phys    = physicsMul(body → avgBody) / physicsMul(avgBody → body)
+clamped to   [5, 14] · DAMAGE_SCALE
+```
+
+`edge_phys` is new in v2: physics (§3) makes heavy bodies hit harder *and* take less, and
+without pricing that in, the Barbarian won 99.7% of the field (measured, see §9).
+
+**Design band** `[SPEC H2]`: every class needs 25–90 average hits to kill any other class.
+
+### 2.3 Classes (verbatim list)
+
+"Barbarian, Warrior, Rogue, Assassin, Mage, Necromancer, Archer, Priest". Per-class primaries,
+HP, damage, mass, density and toughness: **table T1** in `docs/SPEC-tables.md`.
+
+### 2.4 Races, subraces, birthsigns, leveling
+
+Additive deltas on primaries (`Races.ts`, `applyRaceBonus`), so a race shifts a class rather
+than replacing it. Table **T3** lists every race × subrace applied to a Warrior. Leveling
+(`Leveling.ts`) grants talent points from secondary-stat milestones and rescales combat stats
+with the same `HEALTH_SCALE`/`DAMAGE_SCALE`. Status: TESTED (no stat-allocation UI — OPEN).
+
+### 2.5 Race and sub-species appearance (`RaceAppearance.ts`)
+
+Ancestry drives the **3D build**, not just the palette: height/weight multipliers, hair length
+tier, permitted haircut styles, whether facial hair grows, the ork underbite depth and the ear
+length multiplier. `raceBuild(race, subrace)` layers the sub-species tweak on the race base;
+`seededPick` makes a character's style reproducible.
+
+| Race | height× | weight× | hair | beard | underbite | ears× |
+| --- | --- | --- | --- | --- | --- | --- |
+| human | 1.00 | 1.00 | medium | yes (per-char) | 0 | 1.0 |
+| elf | 1.04 | 0.88 | verylong | no | 0 | 1.9 |
+| dwarf | 0.82 | 1.35 | long | **yes (always)** | 0.05 | 0.9 |
+| ork | 1.12 | 1.55 | short | no | **0.35** | 0.8 |
+
+Hair length in metres: `bald 0 / short 0.08 / medium 0.22 / long 0.48 / verylong 0.72`.
+Expanded palette: `HAIR_COLORS` (10) and `SKIN_TONES` (10). The rig applies `heightMul`/
+`weightMul` on top of the per-character height/weight, grows the hair fall, the beard, the
+tusks and the ears. `[SPEC R1]` ork underbite > 0 and elf ears > human ears; hair length is
+monotonic across tiers. Status: LIVE (elf long hair to mid-back and ork tusks observed).
+
+### 2.6 Secondary stats (`SecondaryStats.ts`)
+
+Race → primary bonus; sub-species → secondary (crit, haste, mastery, physResist, magicResist,
+versatility); birthsign stacks additively on top. `combineSecondary` sums the layers and
+`secondaryPreview` returns labelled delta rows for the creator's birthsign preview.
+`[SPEC SS1]` stacking is additive (wood +0.02 + serpent +0.02 → 0.04).
+
+**The bridge to combat (`applySecondary`).** The secondary stats are no longer preview-only:
+`applySecondary(stats, subrace, birthsign)` folds them into the combat stats the fight runs on,
+with the conversion constants in `SECONDARY_BRIDGE`:
+
+| Secondary | Combat effect |
+| --- | --- |
+| mastery, versatility | `attackPower × (1 + mastery + 0.5·versatility)` |
+| haste | `attackInterval × (1 − haste)`, floored at 0.25 s |
+| physResist, magicResist | `armor += (phys + 0.5·magic) × 40` (one damage channel, so magic counts half) |
+| crit | `reflex += crit × 12.5`, and reflex is what `criticalChance` reads |
+
+`applySecondary` is called in `createFighter`, so every live fighter carries its ancestry into
+the damage, speed and crit equations; `ArenaHarness` prices in a representative pair so the
+harness and the live build run the same game. `[SPEC SS2]` a buffed fighter has strictly more
+attack power, armour and crit chance, and no ancestry is a true no-op. Status: LIVE.
+
+---
+
+## 3. Physics (`src/game/Physics.ts`, `src/physics/SmashPhysics.ts`, `src/game/Ragdoll.ts`)
+
+### 3.1 Composite bodies
+
+```
+m_total = Σ mᵢ        V_total = Σ Vᵢ        A_total = Σ Aᵢ
+ρ       = m_total / V_total                       (composite density)
+```
+
+Adding a dense part (a steel plate) raises the whole body's density; a hollow part lowers it.
+
+**Body from stats** (`bodyFromStats`), shared by engine, harness and tests:
+
+```
+mass   = 42 + 3.5·STR + 1.4·VIT + 1.1·RES          kg
+volume = 0.055 + 0.0016·STR                        m³
+torso  = 62% of mass and volume, area 0.22 + 0.006·STR
+limbs  = 38% of mass and volume, area 0.15 + 0.004·REF
+armour = min(1, armor / 8),  restitution e = 0.24
+```
+
+Bound `[SPEC P1]`: Strength raises density, not only mass (mass grows 3.5 kg/pt; volume only
+1.6 L/pt). `[SPEC P3]`: the Barbarian is the heaviest class; at least 6 of 8 bodies distinct.
+
+### 3.2 Collisions (`resolveImpact`)
+
+```
+μ = m₁m₂/(m₁+m₂)        J = μ·(1+e)·max(0, v_a − v_d)      e = max(e_a, e_d)
+T = ρ·(0.4+0.6·armour)·√A                                  damage = IMPACT_K · J / T,  IMPACT_K = 1.15
+```
+
+Live use: `#resolveHit` takes **J** for the hit-response on the skeleton (§3.7), with a swing
+speed `v = max(3, v_close + 3) · knockbackMul` m/s. HP damage itself comes from §2.2 × §3.4.
+
+### 3.3 Walls (`hitWall`, driven by `ArenaPhysics.stepArenaBody`)
+
+```
+J_wall    = m · |v_out|                          (no (1+e): the wall is the immovable partner)
+effective = R · integrity                         R = wallResistance N·s, integrity ∈ [0,1]
+breached  ⇔ J_wall > 1.05 · effective
+held:     body clamped to 0.98·R(θ), radial velocity ← −e_wall · |v_out|
+          self-damage = 0.05 · (effective − J_wall) / T  (×DAMAGE_SCALE in HP), stun with 1 wall bounce
+breached: integrity −= (J_wall − effective)/R, body keeps max(0.15, 1 − effective/J_wall) of its speed
+```
+
+`wallHeight` is used for **contact** (a body above it passes over), not in `effective`.
+Status: **LIVE** — walls are built from the shaped outline and collide (see §5.3 evidence).
+
+### 3.4 Physics damage multiplier (applied to every blow)
+
+```
+physicsMul = clamp( (0.55 + 0.30·(m_a/m_d) + 0.25·(ρ_a/ρ_d)) · closing , 0.6, 1.8 )
+closing    = 0.85 + 0.15·min(2, v_close)
+v_close    = max(0, (v_a − v_d) · n̂)          n̂ = unit vector attacker → defender
+```
+
+`v_a`, `v_d` are **measured** ground velocities (position change per frame, smoothed over
+τ = 0.1 s) — not `body.vx`, which carries only knockback. So a fast attacker raises the blow,
+a defender **fleeing** lowers it, and a slow or stepping-in defender keeps it high: that is
+"fastest onto slowest" as an equation. `[SPEC P5]` pins the relative-velocity cases.
+
+`[SPEC P2]`: equal bodies at rest give exactly **0.935**; every class pair at every speed stays
+inside [0.6, 1.8]. `[SPEC P4]`: closing speed only raises it, saturating at 2 m/s.
+Matrix of all 64 class pairs: **table T2**.
+
+### 3.5 Stun (verbatim formula, unit-corrected)
+
+```
+Stun_total = (Damage × Force_impact) × 1.5^WallBounce          [verbatim brief]
+implemented: stunDuration(dmg / DAMAGE_SCALE, 1.2, bounces) = d·F·1.5^b·0.01   seconds
+```
+
+`[SPEC H1]` — **v2 fix.** Damage is divided back to the brief's original units before entering
+the formula. Without this, the ×1000 health change made each hit stun for ~10 s. A normal hit
+now stuns 0.10–0.14 s (table T1 column "Stun/hit").
+
+### 3.6 Falls and ragdoll
+
+```
+fallDamage = IMPACT_K · m·v² / (2·T)
+```
+
+A ragdoll is Verlet-integrated, dt clamped to 1/30 s, ground contact kills normal velocity, and
+it is judged settled when the body centre drifts < 0.3 mm/step. Status: **LIVE** (forced via
+`debugWorld({ragdoll})` in `tools/probe-world.ts`: appeared, settled, cleared).
+
+### 3.7 Physics influence on body points — OPEN
+
+The user asked that physics move the skeleton's points more. Today physics moves the *body*
+(knockback, wall rebound, ragdoll); skill animation is still kinematic (§4.2). Driving joint
+angles from impulse (`Δθ ∝ J / I_joint`) is not built.
+
+---
+
+## 4. Skills, animation and weapons
+
+### 4.1 Skills (`src/game/Skills.ts`, `SkillRuntime.ts`)
+
+24 skills = 8 classes × {dash, power, defense}. Each has an element and a payload:
+`damageMul, stun, knockbackMul, lifesteal, armorMul, speedMul, attackIntervalMul`. Full list
+with numbers: **table T4**. Keys: `1/2/3` or `Q/E/F` (physical codes). Status: LIVE.
+
+Skills are fixed per class — **player selection of skills is OPEN.**
+
+### 4.2 Procedural animation (`AnimationCurve.ts`)
+
+```
+angle(t) = rest + A·impulse(t, peak) + w·dampedSin(t, f, ζ)       clamped to joint limits
+impulse  = sin rise to the peak, cos fall after it (continuous at the peak, asymmetric)
+```
+
+Bounds: dash travel ≥ 40°, power travel ≥ 74°; `shoulderR` limit +0.6 rad (negative raises the
+arm). Tested per joint.
+
+#### 4.2.1 Stance transitions (`StanceAnim.ts`)
+
+Stance changes are **keyframed sub-animations**, not instantaneous snaps. Each transition is a
+table of joints with `{start, peak, end}` keys; `keyAngle(key, t)` interpolates with sin/cos
+easing so the motion is **continuous at the peak** and has **zero velocity at both ends**. Chains
+are coherent: one move's end pose is the next move's start pose.
+
+| Property | Bound |
+| --- | --- |
+| `keyAngle(key, 0)` | 0 (start) |
+| `keyAngle(key, 0.5)` | 1 (peak) |
+| `keyAngle(key, 1)` | 0.5 (end, blended toward the next stance) |
+
+`[SPEC AN1]` `findTransition(a, b)` returns a playable chain or null; `StanceAnimator.update`
+returns the **final pose on the completing frame** (never null mid-chain). Status: LIVE.
+
+#### 4.2.2 Grip, palm and hand constraints (`PalmWeapon.ts`)
+
+The **palm decides the weapon**: the blade's tip axis *is* the palm normal `N_palm`, so a palm
+facing up holds the blade vertical and a tilted palm tilts it.
+
+| Rule | Definition |
+| --- | --- |
+| Rest | `pitch = atan2(0, 1) = 0` → blade vertical (+Z) |
+| Thrust | blade aligned to the character's forward vector `V_forward` (measured pitch −1.345 rad) |
+| Guard | blade near-vertical, ~80–90° to the ground, held for the defense skill's duration |
+| Swing | arc alternates between horizontal / diagonal / vertical planes (measured pitch −0.836 rad) |
+
+Two-point IK solves the elbow (`solveElbow`) and the arm chain (`armChainPose`); link lengths
+`ARM_LINK = { shoulderToElbow: 0.46, elbowToWrist: 0.40, wristToPalm: 0.12 }`. The fist closure
+follows the grip tangent. Status: LIVE (grip pitch alternates −1.345 / −0.836 / −0.35 in probe).
+
+#### 4.2.3 Facial morph loop (`FaceMorph.ts`)
+
+Eyebrows, eyelids and mouth deform through the combat states so the face reacts when a fighter
+**hits or gets hit**. `FaceMorph` blends toward a per-state target pose with a time constant, so
+the loop is smooth rather than a snap.
+
+| State | Face |
+| --- | --- |
+| idle | neutral |
+| attack | brows down, eyes narrowed, mouth open (exertion) |
+| hit | brows up, eyes wide, mouth wide (pain) |
+| block | brows down, eyes squinted, mouth closed (effort) |
+| ko | brows up, eyes closed, mouth slack |
+
+`[SPEC F1]` every pose is clamped to its limit and blend is continuous; driven from `#updatePose`
+so the face follows the parent animation. Status: LIVE.
+
+#### 4.2.4 Animation tensor bounds (`AnimTensor.ts`)
+
+Every class power's animation envelope is inspectable and bounded on the sin/cos/tan axes, so the
+swing is a described curve rather than free-form motion. `powerTensor`, `classTensors`,
+`allTensors` report, per power: the prime joint, the max/min angle reached, and the sin/cos/tan
+extremes over the animation span.
+
+`[SPEC T1]` every power sweeps a meaningful arc and its prime joint is the weapon arm or the
+spine; no tensor value is NaN or unbounded. Status: LIVE.
+
+### 4.3 Elements and effect strength
+
+| Element | Colour |
+| --- | --- |
+| fire / fury | orange |
+| arcane | cyan |
+| holy | gold |
+| shadow | violet |
+| wind | white-blue |
+| poison | green |
+| necrotic | lime |
+
+Effect strength scales with the % of the target's HP the hit removes (3.6% → 0.16,
+17.1% → 0.86). The effect shell wraps striking parts only (blade, head), never bow limbs.
+
+### 4.4 Weapon generator (`WeaponGen.ts`)
+
+Parameters shaft, blade, curve, weight, metal. Metals: steel (grey), iron (dark grey), bronze,
+gold, silver. Status: LIVE. **Known gap:** the Archer's bow does not read at QA distance.
+
+---
+
+## 5. Arena
+
+### 5.1 Parameters (`src/game/ArenaConfig.ts`)
+
+All parameters, bounds, defaults and units are listed by forge category in **table T5**
+(generated). Key bounds changed in v2:
+
+| Key | Min | Max | Note |
+| --- | --- | --- | --- |
+| `size` | 2 m (the 2 m² room) | **320 m** | was 40; user asked for "way larger" |
+| `wallChance` | 0 | 1 | random generator uses **0.9** |
+| `wallResistance` | 100 | 20 000 N·s | default 2200; random 900–9000 |
+| `wallHeight`, `wallBounce` | — | — | feed §3.3 |
+
+`makeArena(over)` clamps every value into its range. Random generation is seeded.
+
+### 5.2 Ring shapes
+
+circle, triangle, square, pentagon, hexagon, octagon, oval, diamond. Inside test:
+
+```
+polygon (n sides): r(θ) = apothem / cos(((θ mod 2π/n) − π/n))
+oval:              polar ellipse
+diamond:           |x| + |z| ≤ R  (taxicab)
+```
+
+Status: **LIVE** — the engine builds the shaped ring floor and, on 90% of arenas, a wall of
+segmented meshes with its own resistance; ring-outs are resolved against the real outline.
+
+### 5.3 Victory conditions
+
+| Condition | Ends the fight? |
+| --- | --- |
+| `hp ≤ 0` (death) | **Yes — the only ending implemented.** |
+| Ring-out | No. The body takes fall damage and is returned inside the ring. |
+| Timer / hill / score | No. Display only. |
+
+Status: **LIVE** — `tools/probe-ko.ts`: `winCondition: ko`, 0 non-death endings, ring-outs
+observed with the fight continuing.
+
+**Variety is OPEN.** The prompt asks for *several* win conditions (only one need trigger per
+fight) tracked per match so the neural models see variation. None beyond death is implemented;
+the removed `timed`/`koth` branches are gone rather than parked, so this is a real gap.
+
+### 5.4 Glider, outside ground, props — MODEL / OPEN
+
+Glider (speed, sink, updraft, fuel, pads) and placeable props are modelled and clamped. No
+glider input binding and no colliding outside-ground mesh yet.
+
+---
+
+## 6. AI and perception
+
+### 6.1 Disposition and truce (`Disposition.ts`)
+
+| Phase | Time from fight start | Ring colour | May attack? |
+| --- | --- | --- | --- |
+| friendly | 0 – 3 s | green | no |
+| neutral | 3 – 6 s | amber | no |
+| enemy | ≥ 6 s | red | yes |
+
+`[SPEC D1]` truce = exactly 6 s. Damage is gated in **one place** (`#resolveHit`), and the truce
+has its own clock (`#sinceStart`) that does not pause with the match timer. During the truce,
+bots roam a seeded Lissajous path. Status: LIVE (no damage before 6 s; first damage ≈ 7.3 s).
+
+### 6.2 Identity
+
+Generated name + unique id per fighter, e.g. `MY-786218 Halric of Low Water`. No duplicates in
+a roster. Status: LIVE.
+
+### 6.2.1 Adaptive AI profiles and brains (`AiStats.ts`, `AiBrain.ts`)
+
+Each AI is a **named profile** with a career record and a `Brain`. The brain owns the decision
+thresholds (when to close, retreat, spend a skill, guard) and **retunes them from its own
+win/loss record**, so two bots of the same class diverge by experience. Four archetypes —
+**berserker, tactician, duelist, sentinel** — rotate onto bots, so personalities differ beyond
+class stats.
+
+Action dispatch is a **data table** (`ACTIONS` + `executeAction` field-presence lookup), not an
+if/else chain, in keeping with the else-reduction rule. `[SPEC AI1]` a brain's thresholds move
+after a recorded match, and the direction follows the outcome (win → more aggressive).
+Status: LIVE (`P brain: true O brain: true`; thresholds shift across matches).
+
+### 6.2.2 Per-fight telemetry and digests (`AiStats.ts`)
+
+Every fight records, per fighter, the statistics the prompt asked for, and folds them into the
+career record as **min / max / average / median** digests:
+
+| Family | Samples |
+| --- | --- |
+| Movement | distance travelled; average distance to the enemy |
+| Damage | dealt, prevented, missed (min/max/avg/median) |
+| Techniques | per-technique share of damage dealt (%) |
+| Space | altitude and x, y, z samples |
+| Thresholds | crossings at 80% / 50% / 20% HP and right before the last hit |
+
+`[SPEC AI2]` every digest is finite and the median of a constant series equals that constant.
+Status: LIVE (e.g. Yorick travelled 333 m, Tova 275 m, dealt max 1786, prevented avg 386).
+
+### 6.2.3 Instant battle corpus and ranking (`Ranking.ts`, `tools/battle-corpus.ts`)
+
+`tools/battle-corpus.ts` runs **instant headless battles** across class × race × weapon × arena
+diameter with fluctuating probabilities, so the system is pushed onto new AI/parameter
+combinations without playing them visually; results land in `artifacts/battle-corpus.json`.
+Ranking is **Elo**: `expected = 1/(1 + 10^((rb − ra)/400))`, **K = 32**, start 1000; the
+`Leaderboard` crowns a **king** at rank 1. `[SPEC AI3]` an upset moves more MMR than an expected
+win. Status: LIVE in the leaderboard; **the corpus is not yet fed to `NeuralTrainer`** (OPEN).
+
+### 6.3 Senses (`Senses.ts`)
+
+| Sense | Base m | Falloff exponent |
+| --- | --- | --- |
+| sight | 42 | 1.0 |
+| hearing | 26 | 1.35 |
+| touch | 1.1 | 3.0 |
+| scent | 18 | 1.6 |
+| magnetism | 30 | 1.2 |
+
+**Lens.** Coverage is a polar shape, not a sphere: the range at bearing θ is modulated by
+sin/cos/tan terms (forward-biased sight, omnidirectional hearing). Helmets cut hearing.
+
+**Adaptation** to light, cloud, weather, fatigue and agitation. Night collapses sight and makes
+hearing dominant; rain masks sound; adrenaline sharpens touch; sight never reaches 0.
+Adapted ranges by light level: **table T6**. `[SPEC S1]`: night sight < ½ day sight; night
+hearing > day hearing.
+
+### 6.4 Luminosity — v2, new coupling
+
+```
+L = clamp( 0.04 + 0.96·smoothstep(−0.105, 0.35, elevation_rad), 0, 1 ) · (1 − 0.45·cloud)
+```
+
+−0.105 rad ≈ −6° (civil twilight); 0.35 rad ≈ 20° (daylight saturates); 0.04 is the starlight
+floor. **Replaces** an ad-hoc engine formula that left sight pinned at its night floor through
+most of a real afternoon. `[SPEC L1]` monotonic and bounded; `[SPEC L2]` overcast keeps 55%.
+Table **T7**.
+
+### 6.5 Fog of war (`FogOfWar.ts`)
+
+Per-fighter grid, 0.5 m cells. Each frame, *visible* is cleared and re-revealed through the
+sense lens; *seen* persists. Status: **LIVE** (explored fraction rises 0.896 → 1.0 in a match).
+The **minimap is LIVE**: a 132 px HUD canvas drawn from the viewed fighter's own grid (black =
+never seen, dim grey = seen, lit sand = visible) plus a compass bearing to the rival.
+
+**Sense-gated engagement.** A bot engages the rival only when a sense reaches it
+(`#sensesReaching`, ranked strongest first); otherwise it hunts toward `#lastSeen`. The snapshot
+exposes `perceivesBy` per fighter. Status: LIVE.
+
+### 6.6 Statuses (`Status.ts`)
+
+Stunned, hypnotized, controlled, plus DoT and buff statuses; each has a duration, speed/attack
+multipliers and what clears it. **Table T8.** Status: LIVE (stun observed in-browser,
+`stunned 0.5s`).
+
+### 6.7 Items and distraction (`Items.ts`)
+
+Coins: a big, low yellow cylinder that pops above ground and falls under `coinGravity`.
+When one lands within a fighter's senses, it may break off the fight to collect it — rarely,
+weighted by `coinGreed`. Status: LIVE (forced coin spawned and was collected).
+
+---
+
+## 7. Environment
+
+Sun and moon positions from date, hour and place (`Environment.ts`); day phases
+night (< −6°), dawn/dusk (< 8°), day. Shadows from a clamp-free light height. Status: LIVE.
+**Known gap:** low-sun shadow length is not verified visually.
+
+---
+
+## 8. Interface
+
+Creator, character sheet, History page, settings dialog, skill bar with generated icons.
+
+| Element | Definition | Status |
+| --- | --- | --- |
+| Selection pick-tables | Class and weapon are chosen from row tables showing each class's **three skills**, replacing the old dropdowns | LIVE |
+| Race hero box | Centred ancestry panel with two columns (primary / secondary), sub-species **nested under the parent race**, and a birthsign delta preview with +/-/0 rows | LIVE |
+| Player profiles | `Player_ID` profiles persisted across reload (`ProfileRepo`), with keybindings and telemetry; a title-screen picker loads a saved character | LIVE (keybindings stored but **not applied** — OPEN) |
+| Leaderboard | History page ranks the AI by Elo MMR, crowns the king, and opens a floating per-AI profile card (rank, MMR, peak, W–L, win rate, archetype, style) | LIVE |
+| Minimap | 132 px HUD canvas from the fighter's own fog grid + compass | LIVE |
+| Responsive layout | Four breakpoints (≤767 mobile, 768–1023 tablet, 1024 laptop, 1440 desktop) plus a portrait rule; fluid menu root `max-width: min(880px, 97vw)`, no fixed border | LIVE (verified at 390/820/1280/1920) |
+| Settings dialog | Native dialog with internal scroll; reachable at every breakpoint | LIVE |
+
+**Input model.** `analogVector` blends keyboard and controller stick (stick wins past the
+dead zone, sub-dead-zone falls back to keyboard); `toCameraSpace` rotates the vector by the live
+`#orbitYaw`, so movement is genuinely camera-relative; `ApmTracker` + `turnScale` tighten the
+turn rate with input rate. Status: TESTED (controller not verified on hardware — OPEN).
+
+**OPEN** from the prompts: stat-allocation UI; player skill selection; keybinding rebind UI.
+
+---
+
+## 9. Balance
+
+**Harness** (`src/balance/ArenaHarness.ts`): per-fighter RNG streams, decisive-only win rate,
+10 000-fight capability, seeded. **v2:** the harness now applies the same physics multiplier
+as the live game — before this, it reported on a different game from the one being played.
+
+**Targets:** mirror matchups 50% ± 2; cross-class pairs 48–52%.
+
+**Measured (seed 20261009, decisive-only):**
+
+| Stage | Barbarian field share | Balanced pairs (48–52%) |
+| --- | --- | --- |
+| Physics added to harness, not priced in | 99.7% | 1 / 28 |
+| `edge_phys` priced into the damage solve | 39.3% | 5 / 28 |
+| Tuner, buggy (raw 5–14 clamp; compounding calibration) | 70.5% | 2 / 28 |
+| **Tuner fixed, calibration ±1.6%** | **49.6%** | **15 / 28** (4000/pair); 17 / 28 (2000/pair) |
+
+Final per-class field share: **49.4–50.6%** for all eight classes (target 50 ± 2: **met**).
+Mirror matchups 48.7–51.1%. Individual cross-class pairs span **44–56%**: 13 of 28 still
+sit outside the 48–52% band. **SC-002 pairwise target: not met** — per-class parity is, but
+one damage scalar per class cannot fix 28 pairs at once (that needs per-matchup terms).
+
+**Reading T9.** The power index (DPS × EHP) is no longer equal across classes, by design:
+it ranges 0.79 (Barbarian) – 1.15 (Necromancer) because heavy classes receive less damage
+*per stat* — their bodies win the physics. Win share, not the index, is the parity measure.
+
+---
+
+## 10. Verification
+
+### 10.1 Gate (every change)
+
+`deno task check` (0 errors) · `deno task test` (all pass) · `deno task lint` · `deno task build` ·
+`deno run -A tools/dead-exports.ts` (0 dead functions / test-only / constants).
+
+Last gate: **0 type errors · 340 tests, 0 failed · lint clean 161 files · build 733,539 B · 0 dead.**
+
+### 10.2 Browser probes
+
+| Tool | Proves |
+| --- | --- |
+| `tools/probe-truce.ts` | truce timing and first damage |
+| `tools/probe-ko.ts` | death is the only ending |
+| `tools/probe-world.ts` | senses, fog, statuses, ragdoll, items are live |
+| `tools/qa-skills.ts`, `qa-axis.ts`, `qa-matrix.ts` | visual coverage |
+| `tools/frame-budget.ts` | ≤ 16.6 ms |
+
+### 10.3 Zero-dead-code audit (v2)
+
+Before v2, five modules had **no runtime caller**: Items, Status, Ragdoll, FogOfWar, Senses.
+They are now driven once per frame by `Engine.#tickWorld` and exposed in `snapshot().world2`.
+
+### 10.4 Review rule
+
+Every gate is signed by at least two independent reviewers answering WHO / WHAT / WHERE /
+WHEN / WHY / HOW. Reviewers are read-only; the orchestrator does all writes.
+
+---
+
+## 11. Rig, camera and physical animation
+
+### 11.1 Spine curve (`SpineCurve.ts`)
+
+The back is **33 vertebrae** in four anatomical curves, so it reads correctly from the side
+(the "dig the back with a spine made of 33 aligned points" requirement):
+
+| Segment | Vertebrae | Curve |
+| --- | --- | --- |
+| cervical | C1–C7 (7) | lordosis (neck bows forward) |
+| thoracic | T1–T12 (12) | kyphosis (upper back bows back) |
+| lumbar | L1–L5 (5) | lordosis (lower back bows forward) |
+| sacral | S1–S5 (5) | fused, slight kyphosis |
+
+Adjacent segments meet at **zero offset** (the half-sine arch is zero at both ends), so the
+column is a smooth S-curve with no kinks. `spineOffset(t)`, `spineColumn()`, `smoothSpine()`
+expose it; the rig bows the torso and places a ridge of segments on the curve. `[SPEC SP1]`
+33 points, offsets finite, adjacent curves meet at 0. Status: LIVE.
+
+### 11.2 Balance plates and recovery (`BalancePlates.ts`)
+
+Three mass-weighted force plates — **feet 0.2 / pelvis 0.5 / shoulder 0.3** — give a centre of
+pressure and a support radius. Instability maps to a stance:
+`standing → staggered → kneeling → fallen` at `STANCE_THRESHOLD`. Ground slope **shrinks the
+support radius**; it does not offset the balance point (planted feet do not slide).
+
+Post-impact the body sways back toward balance along the lateral axis with a damped sinusoid,
+`Pos(t) = A·e^(−γt)·sin(ωt + φ) + Pos_balance`, where the amplitude `A`, decay `γ` and the
+recovery speed come from weight, strength, power, HP %, stamina %, armour mass, the critical
+multiplier and the impact vector. If the lateral offset exceeds the support polygon the body
+transitions to stagger or knock-down. Status: LIVE (`rig.group.rotation.z = balTilt · 0.6`).
+
+### 11.3 Camera occlusion (`#updateOcclusion`)
+
+A continuous corridor is tested between the third-person camera and the viewed character; any
+wall inside it fades out with **per-mesh eased alpha**, so the character is never hidden by
+geometry. The alpha follows
+`α_target = clamp((d_object − d_min)/(d_max − d_min), 0, 1)`.
+
+Implemented as a **2D corridor test, not a `THREE.Raycaster`** (the unused raycaster field was
+deleted). Status: LIVE.
+
+### 11.4 Rig topology and hands
+
+Every body part is a **lofted surface**, not a primitive (`graphics/Loft.ts` +
+`graphics/BodySurface.ts`): a superellipse section modulated by directional muscle lobes,
+tapered along the part, pinched at a waist, dome-capped at both ends, and blended into its
+neighbours by a connector loft. The proportions come from `RaceSilhouette`
+(`game/BodyProfile.ts`); the maths lives in `game/ShapeEquations.ts`.
+
+| Property | Bound |
+| --- | --- |
+| Section exponent `n` | 1.75 – 2.45 (organic: never a circle, never a square) |
+| Sharpest turn in a section | < 0.6 rad (a right angle is 1.571) |
+| End caps | domed, never a flat disc |
+| Part joins | connector loft on a smoothstep (matched tangents) |
+| Rig scale | `height / (legDrop + crownRise)`, so the sole lands on the ground |
+
+`[SPEC B1]` no part is a primitive and no section corners; `[SPEC B2]` the state x joint
+scale table is complete (9 states x 16 joints) and a braced state articulates less;
+`[SPEC B3]` a random silhouette stays inside its race's band and still scores; `[SPEC B4]`
+the elf is the narrowest body and the ork the widest. Two-handed weapons and
+hand-separation clamps are **OPEN**.
+
+### 11.5 Menu expansion
+
+Menu windows grew to the full parameter set: fluid root `min(880px, 97vw)`, internal scroll, and
+per-breakpoint sizing, so the creator, race hero, leaderboard and settings all fit without
+clipping at 390–1920 px. Status: LIVE (vision-verified at 390 px and 900 px).
+
+---
+
+## 12. Traceability — every prompt to its requirements
+
+| Prompt (date, gist) | Requirements |
+| --- | --- |
+| Original 12-agent brief | R-1.x, §2, §3.5, §9, §10 |
+| Rig, classes, weapons, shader effects | §4 |
+| X/Y/Z axis pictures, senses, statuses, ragdoll, items, arena ×40 | §3.6, §5.1, §6.3, §6.6, §6.7 |
+| Glider, shapes, truce, identity, fog | §5.2, §5.4, §6.1, §6.2, §6.5 |
+| Huge rings, walls 90%, density, death-only ending | §3.1–3.4, §5.1, §5.3 |
+| Precise definitions, bounds, md expansion | this file, `SPEC-tables.md`, `spec_test.ts` |
+| Adaptive AI identities/decision trees, full telemetry, instant battles, win-condition variety, sword/grip/palm, camera occlusion, balance plates, 4D solvers | §4.2.2, §5.3, §6.2.1–6.2.3, §11.2–11.3 |
+| Kneeling/stance transitions, coherent animation points, palm decides weapon, tensors, sub-animations | §4.2.1–4.2.2, §11.1–11.2 |
+| Reduce `else`, leaderboard in History, 4 archetypes, per-AI profile cards, selection tables | §6.2.1, §6.2.3, §8 |
+| Responsive UI, high-responsiveness input, Player_ID profiles, race hero + sub-species + birthsign preview, secondary stats, creation telemetry | §2.5–2.6, §8 |
+| 3D models: separate shapes, all-angle shots, 33-vertex spine back, race/subrace expansion, hair/beards/tusks, facial morph loop, animation tensor bounds, menu expansion | §2.5, §4.2.3–4.2.4, §11.1, §11.4–11.5 |
+
+**Statuses in one line.** LIVE: races, physics, skills, shaped arenas with walls, truce, senses,
+fog + minimap, statuses, items, environment, adaptive AI + telemetry + Elo leaderboard, stance
+transitions, palm grip, face morph, animation tensors, camera occlusion, balance plates, spine
+curve, responsive UI, selection tables, profiles. TESTED (not yet seen in-browser): secondary
+stats preview, controller input. OPEN: win-condition variety, battle-corpus → `NeuralTrainer`,
+glider, two-handed weapons, stat allocation, skill selection, keybinding rebind UI, a telemetry
+backend, low-sun shadow verification.

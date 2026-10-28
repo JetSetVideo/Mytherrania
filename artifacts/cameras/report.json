@@ -1,0 +1,26 @@
+{
+  "timestamp": "2026-10-09T20:34:22.805Z",
+  "modes": [
+    {
+      "mode": "close",
+      "path": "artifacts/cameras/close.png",
+      "camera": "close"
+    },
+    {
+      "mode": "third",
+      "path": "artifacts/cameras/third.png",
+      "camera": "third"
+    },
+    {
+      "mode": "isometric",
+      "path": "artifacts/cameras/isometric.png",
+      "camera": "isometric"
+    },
+    {
+      "mode": "birds-eye",
+      "path": "artifacts/cameras/birds-eye.png",
+      "camera": "birds-eye"
+    }
+  ],
+  "errors": []
+}

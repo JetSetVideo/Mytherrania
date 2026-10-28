@@ -1,0 +1,328 @@
+{
+  "options": {
+    "seed": 7,
+    "population": 40,
+    "generations": 30,
+    "duelsPerOpponent": 1200,
+    "mutationRate": 0.25,
+    "keep": 4
+  },
+  "totalDuels": 11520000,
+  "bestDeviation": 0.125,
+  "history": [
+    {
+      "generation": 0,
+      "bestDeviation": 0.375
+    },
+    {
+      "generation": 1,
+      "bestDeviation": 0.25
+    },
+    {
+      "generation": 2,
+      "bestDeviation": 0.125
+    },
+    {
+      "generation": 3,
+      "bestDeviation": 0.0625
+    },
+    {
+      "generation": 4,
+      "bestDeviation": 0.0625
+    },
+    {
+      "generation": 5,
+      "bestDeviation": 0
+    },
+    {
+      "generation": 6,
+      "bestDeviation": 0.0625
+    },
+    {
+      "generation": 7,
+      "bestDeviation": 0.125
+    },
+    {
+      "generation": 8,
+      "bestDeviation": 0.125
+    },
+    {
+      "generation": 9,
+      "bestDeviation": 0.125
+    },
+    {
+      "generation": 10,
+      "bestDeviation": 0
+    },
+    {
+      "generation": 11,
+      "bestDeviation": 0.125
+    },
+    {
+      "generation": 12,
+      "bestDeviation": 0.1875
+    },
+    {
+      "generation": 13,
+      "bestDeviation": 0
+    },
+    {
+      "generation": 14,
+      "bestDeviation": 0.1875
+    },
+    {
+      "generation": 15,
+      "bestDeviation": 0.0625
+    },
+    {
+      "generation": 16,
+      "bestDeviation": 0
+    },
+    {
+      "generation": 17,
+      "bestDeviation": 0
+    },
+    {
+      "generation": 18,
+      "bestDeviation": 0
+    },
+    {
+      "generation": 19,
+      "bestDeviation": 0.0625
+    },
+    {
+      "generation": 20,
+      "bestDeviation": 0.0625
+    },
+    {
+      "generation": 21,
+      "bestDeviation": 0.125
+    },
+    {
+      "generation": 22,
+      "bestDeviation": 0.125
+    },
+    {
+      "generation": 23,
+      "bestDeviation": 0.0625
+    },
+    {
+      "generation": 24,
+      "bestDeviation": 0.125
+    },
+    {
+      "generation": 25,
+      "bestDeviation": 0
+    },
+    {
+      "generation": 26,
+      "bestDeviation": 0.0625
+    },
+    {
+      "generation": 27,
+      "bestDeviation": 0.1875
+    },
+    {
+      "generation": 28,
+      "bestDeviation": 0.0625
+    },
+    {
+      "generation": 29,
+      "bestDeviation": 0.125
+    }
+  ],
+  "population": [
+    {
+      "stats": {
+        "vitality": 2,
+        "resilience": 4,
+        "willpower": 3,
+        "reflex": 5,
+        "strength": 3,
+        "intelligence": 9,
+        "maxHealth": 37,
+        "attackPower": 13,
+        "attackInterval": 0.7999999999999999,
+        "armor": 2
+      },
+      "weapon": {
+        "name": "sword",
+        "type": "sword",
+        "weight": 3.618560917908326,
+        "balance": 0.5479014315642416,
+        "sharpness": 0.9679993558675051,
+        "damage": 13,
+        "cooldown": 0.7253043746155454,
+        "reach": 1.766572973463684
+      }
+    },
+    {
+      "stats": {
+        "vitality": 2,
+        "resilience": 4,
+        "willpower": 3,
+        "reflex": 5,
+        "strength": 3,
+        "intelligence": 9,
+        "maxHealth": 37,
+        "attackPower": 13,
+        "attackInterval": 0.7999999999999999,
+        "armor": 2
+      },
+      "weapon": {
+        "name": "sword",
+        "type": "sword",
+        "weight": 3.618560917908326,
+        "balance": 0.5479014315642416,
+        "sharpness": 1,
+        "damage": 13,
+        "cooldown": 0.7253043746155454,
+        "reach": 1.766572973463684
+      }
+    },
+    {
+      "stats": {
+        "vitality": 2,
+        "resilience": 4,
+        "willpower": 3,
+        "reflex": 5,
+        "strength": 3,
+        "intelligence": 9,
+        "maxHealth": 37,
+        "attackPower": 13,
+        "attackInterval": 0.7999999999999999,
+        "armor": 2
+      },
+      "weapon": {
+        "name": "sword",
+        "type": "sword",
+        "weight": 3.618560917908326,
+        "balance": 0.6107769282534719,
+        "sharpness": 0.7618736950680614,
+        "damage": 12,
+        "cooldown": 0.7253043746155454,
+        "reach": 1.8093283112123606
+      }
+    },
+    {
+      "stats": {
+        "vitality": 2,
+        "resilience": 4,
+        "willpower": 3,
+        "reflex": 5,
+        "strength": 3,
+        "intelligence": 9,
+        "maxHealth": 37,
+        "attackPower": 13,
+        "attackInterval": 0.7516132388962432,
+        "armor": 1
+      },
+      "weapon": {
+        "name": "sword",
+        "type": "sword",
+        "weight": 3.618560917908326,
+        "balance": 0.4969621759839356,
+        "sharpness": 0.8143480091355741,
+        "damage": 12,
+        "cooldown": 0.7253043746155454,
+        "reach": 1.7319342796690762
+      }
+    },
+    {
+      "stats": {
+        "vitality": 2,
+        "resilience": 4,
+        "willpower": 3,
+        "reflex": 5,
+        "strength": 3,
+        "intelligence": 9,
+        "maxHealth": 37,
+        "attackPower": 13,
+        "attackInterval": 0.7999999999999999,
+        "armor": 1
+      },
+      "weapon": {
+        "name": "sword",
+        "type": "sword",
+        "weight": 3.618560917908326,
+        "balance": 0.5479014315642416,
+        "sharpness": 1,
+        "damage": 13,
+        "cooldown": 0.7253043746155454,
+        "reach": 1.766572973463684
+      }
+    },
+    {
+      "stats": {
+        "vitality": 2,
+        "resilience": 4,
+        "willpower": 3,
+        "reflex": 5,
+        "strength": 3,
+        "intelligence": 9,
+        "maxHealth": 31,
+        "attackPower": 13,
+        "attackInterval": 0.7516132388962432,
+        "armor": 1
+      },
+      "weapon": {
+        "name": "sword",
+        "type": "sword",
+        "weight": 3.618560917908326,
+        "balance": 0.4969621759839356,
+        "sharpness": 0.8143480091355741,
+        "damage": 12,
+        "cooldown": 0.7253043746155454,
+        "reach": 1.7319342796690762
+      }
+    },
+    {
+      "stats": {
+        "vitality": 2,
+        "resilience": 4,
+        "willpower": 3,
+        "reflex": 5,
+        "strength": 3,
+        "intelligence": 9,
+        "maxHealth": 35,
+        "attackPower": 13,
+        "attackInterval": 0.7516132388962432,
+        "armor": 1
+      },
+      "weapon": {
+        "name": "sword",
+        "type": "sword",
+        "weight": 3.618560917908326,
+        "balance": 0.549232246633619,
+        "sharpness": 0.8143480091355741,
+        "damage": 12,
+        "cooldown": 0.7253043746155454,
+        "reach": 1.7674779277108608
+      }
+    },
+    {
+      "stats": {
+        "vitality": 2,
+        "resilience": 4,
+        "willpower": 3,
+        "reflex": 5,
+        "strength": 3,
+        "intelligence": 9,
+        "maxHealth": 37,
+        "attackPower": 13,
+        "attackInterval": 0.7442916197236626,
+        "armor": 1
+      },
+      "weapon": {
+        "name": "sword",
+        "type": "sword",
+        "weight": 3.618560917908326,
+        "balance": 0.4969621759839356,
+        "sharpness": 0.6649741634726525,
+        "damage": 11,
+        "cooldown": 0.7253043746155454,
+        "reach": 1.7319342796690762
+      }
+    }
+  ]
+}

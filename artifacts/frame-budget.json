@@ -1,0 +1,48 @@
+{
+  "day": {
+    "cpuMs": {
+      "n": 241,
+      "mean": 1.595,
+      "p50": 1.6,
+      "p95": 1.9,
+      "p99": 2.2,
+      "max": 2.3
+    },
+    "frameGapMs": {
+      "n": 241,
+      "mean": 16.666,
+      "p50": 16.7,
+      "p95": 16.7,
+      "p99": 16.8,
+      "max": 16.8
+    },
+    "polygons": 12520,
+    "phase": "day"
+  },
+  "night": {
+    "cpuMs": {
+      "n": 241,
+      "mean": 1.012,
+      "p50": 1,
+      "p95": 1.4,
+      "p99": 1.8,
+      "max": 2.6
+    },
+    "frameGapMs": {
+      "n": 241,
+      "mean": 16.666,
+      "p50": 16.7,
+      "p95": 16.7,
+      "p99": 16.8,
+      "max": 16.8
+    },
+    "polygons": 12520,
+    "phase": "night"
+  },
+  "environment": {
+    "browser": "154.0.8037.98",
+    "headless": true,
+    "viewport": "1440x900",
+    "note": "headless lab sample; frameGap reflects headless vsync throttling, cpuMs is the engine's own per-frame cost"
+  }
+}

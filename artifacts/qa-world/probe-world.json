@@ -1,0 +1,335 @@
+{
+  "rows": [
+    {
+      "t": 1,
+      "disp": "friendly",
+      "explored": 0.973,
+      "items": 0,
+      "coins": 0,
+      "status": "-",
+      "ragdoll": false,
+      "hp": [
+        48750,
+        48750
+      ]
+    },
+    {
+      "t": 2,
+      "disp": "friendly",
+      "explored": 0.973,
+      "items": 0,
+      "coins": 0,
+      "status": "-",
+      "ragdoll": false,
+      "hp": [
+        48750,
+        48750
+      ]
+    },
+    {
+      "t": 3,
+      "disp": "neutral",
+      "explored": 0.973,
+      "items": 0,
+      "coins": 0,
+      "status": "-",
+      "ragdoll": false,
+      "hp": [
+        48750,
+        48750
+      ]
+    },
+    {
+      "t": 4,
+      "disp": "neutral",
+      "explored": 0.973,
+      "items": 0,
+      "coins": 0,
+      "status": "-",
+      "ragdoll": false,
+      "hp": [
+        48750,
+        48750
+      ]
+    },
+    {
+      "t": 5,
+      "disp": "neutral",
+      "explored": 0.973,
+      "items": 0,
+      "coins": 0,
+      "status": "-",
+      "ragdoll": false,
+      "hp": [
+        48750,
+        48750
+      ]
+    },
+    {
+      "t": 6,
+      "disp": "enemy",
+      "explored": 0.973,
+      "items": 0,
+      "coins": 0,
+      "status": "-",
+      "ragdoll": false,
+      "hp": [
+        48750,
+        48750
+      ]
+    },
+    {
+      "t": 7,
+      "disp": "enemy",
+      "explored": 0.973,
+      "items": 0,
+      "coins": 0,
+      "status": "stunned 0.5s",
+      "ragdoll": false,
+      "hp": [
+        48709,
+        48750
+      ]
+    },
+    {
+      "t": 8,
+      "disp": "enemy",
+      "explored": 0.973,
+      "items": 0,
+      "coins": 0,
+      "status": "-",
+      "ragdoll": false,
+      "hp": [
+        48695,
+        48750
+      ]
+    },
+    {
+      "t": 9,
+      "disp": "enemy",
+      "explored": 0.986,
+      "items": 0,
+      "coins": 0,
+      "status": "-",
+      "ragdoll": false,
+      "hp": [
+        48652,
+        48750
+      ]
+    },
+    {
+      "t": 10,
+      "disp": "enemy",
+      "explored": 0.986,
+      "items": 0,
+      "coins": 0,
+      "status": "-",
+      "ragdoll": false,
+      "hp": [
+        48637,
+        48708
+      ]
+    },
+    {
+      "t": 11,
+      "disp": "enemy",
+      "explored": 0.986,
+      "items": 0,
+      "coins": 0,
+      "status": "-",
+      "ragdoll": false,
+      "hp": [
+        48624,
+        48708
+      ]
+    },
+    {
+      "t": 12,
+      "disp": "enemy",
+      "explored": 0.998,
+      "items": 0,
+      "coins": 0,
+      "status": "-",
+      "ragdoll": false,
+      "hp": [
+        48581,
+        48708
+      ]
+    },
+    {
+      "t": 13,
+      "disp": "enemy",
+      "explored": 0.999,
+      "items": 0,
+      "coins": 0,
+      "status": "-",
+      "ragdoll": false,
+      "hp": [
+        48581,
+        48665
+      ]
+    },
+    {
+      "t": 14,
+      "disp": "enemy",
+      "explored": 0.999,
+      "items": 0,
+      "coins": 0,
+      "status": "-",
+      "ragdoll": false,
+      "hp": [
+        48581,
+        48665
+      ]
+    },
+    {
+      "t": 15,
+      "disp": "enemy",
+      "explored": 0.999,
+      "items": 0,
+      "coins": 0,
+      "status": "stunned 0.4s",
+      "ragdoll": false,
+      "hp": [
+        48541,
+        48665
+      ]
+    },
+    {
+      "t": 16,
+      "disp": "enemy",
+      "explored": 0.999,
+      "items": 0,
+      "coins": 0,
+      "status": "-",
+      "ragdoll": false,
+      "hp": [
+        48497,
+        48665
+      ]
+    },
+    {
+      "t": 17,
+      "disp": "enemy",
+      "explored": 0.999,
+      "items": 0,
+      "coins": 0,
+      "status": "-",
+      "ragdoll": false,
+      "hp": [
+        48497,
+        48623
+      ]
+    },
+    {
+      "t": 18,
+      "disp": "enemy",
+      "explored": 0.999,
+      "items": 0,
+      "coins": 0,
+      "status": "-",
+      "ragdoll": false,
+      "hp": [
+        48482,
+        48623
+      ]
+    },
+    {
+      "t": 19,
+      "disp": "enemy",
+      "explored": 0.999,
+      "items": 0,
+      "coins": 0,
+      "status": "-",
+      "ragdoll": false,
+      "hp": [
+        48467,
+        48623
+      ]
+    },
+    {
+      "t": 20,
+      "disp": "enemy",
+      "explored": 1,
+      "items": 0,
+      "coins": 0,
+      "status": "-",
+      "ragdoll": false,
+      "hp": [
+        48400,
+        48623
+      ]
+    },
+    {
+      "t": 21,
+      "disp": "enemy",
+      "explored": 1,
+      "items": 0,
+      "coins": 0,
+      "status": "-",
+      "ragdoll": false,
+      "hp": [
+        48400,
+        48623
+      ]
+    },
+    {
+      "t": 22,
+      "disp": "enemy",
+      "explored": 1,
+      "items": 0,
+      "coins": 0,
+      "status": "-",
+      "ragdoll": false,
+      "hp": [
+        48339,
+        48623
+      ]
+    },
+    {
+      "t": 23,
+      "disp": "enemy",
+      "explored": 1,
+      "items": 0,
+      "coins": 0,
+      "status": "-",
+      "ragdoll": false,
+      "hp": [
+        48295,
+        48623
+      ]
+    },
+    {
+      "t": 24,
+      "disp": "enemy",
+      "explored": 1,
+      "items": 0,
+      "coins": 0,
+      "status": "-",
+      "ragdoll": false,
+      "hp": [
+        48295,
+        48580
+      ]
+    }
+  ],
+  "maxExplored": 1,
+  "sawSenses": true,
+  "sawStatus": true,
+  "sawRagdoll": false,
+  "sawItem": false,
+  "errors": [],
+  "final": {
+    "senses": {
+      "sight": 11.4,
+      "hearing": 28.6,
+      "scent": 22.3,
+      "touch": 1.12,
+      "magnetism": 31.5
+    },
+    "mass": [
+      90,
+      90
+    ]
+  }
+}

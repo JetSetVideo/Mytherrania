@@ -1,0 +1,558 @@
+{
+  "shots": [
+    {
+      "name": "axis-barbarian-x",
+      "axis": "x",
+      "cls": "Barbarian",
+      "bbox": {
+        "min": {
+          "x": -5.028,
+          "y": -0.452,
+          "z": -1.259
+        },
+        "max": {
+          "x": -2.52,
+          "y": 1.768,
+          "z": 0.426
+        },
+        "size": {
+          "x": 2.508,
+          "y": 2.22,
+          "z": 1.685
+        }
+      },
+      "note": "orthographic, looking along X"
+    },
+    {
+      "name": "axis-barbarian-y",
+      "axis": "y",
+      "cls": "Barbarian",
+      "bbox": {
+        "min": {
+          "x": -5.031,
+          "y": -0.45,
+          "z": -1.261
+        },
+        "max": {
+          "x": -2.521,
+          "y": 1.769,
+          "z": 0.426
+        },
+        "size": {
+          "x": 2.51,
+          "y": 2.218,
+          "z": 1.686
+        }
+      },
+      "note": "orthographic, looking along Y"
+    },
+    {
+      "name": "axis-barbarian-z",
+      "axis": "z",
+      "cls": "Barbarian",
+      "bbox": {
+        "min": {
+          "x": -5.031,
+          "y": -0.45,
+          "z": -1.261
+        },
+        "max": {
+          "x": -2.521,
+          "y": 1.769,
+          "z": 0.426
+        },
+        "size": {
+          "x": 2.51,
+          "y": 2.218,
+          "z": 1.686
+        }
+      },
+      "note": "orthographic, looking along Z"
+    },
+    {
+      "name": "axis-warrior-x",
+      "axis": "x",
+      "cls": "Warrior",
+      "bbox": {
+        "min": {
+          "x": -4.75,
+          "y": -0.321,
+          "z": -1.051
+        },
+        "max": {
+          "x": -2.518,
+          "y": 1.768,
+          "z": 0.338
+        },
+        "size": {
+          "x": 2.232,
+          "y": 2.089,
+          "z": 1.389
+        }
+      },
+      "note": "orthographic, looking along X"
+    },
+    {
+      "name": "axis-warrior-y",
+      "axis": "y",
+      "cls": "Warrior",
+      "bbox": {
+        "min": {
+          "x": -4.753,
+          "y": -0.321,
+          "z": -1.051
+        },
+        "max": {
+          "x": -2.519,
+          "y": 1.769,
+          "z": 0.337
+        },
+        "size": {
+          "x": 2.234,
+          "y": 2.089,
+          "z": 1.388
+        }
+      },
+      "note": "orthographic, looking along Y"
+    },
+    {
+      "name": "axis-warrior-z",
+      "axis": "z",
+      "cls": "Warrior",
+      "bbox": {
+        "min": {
+          "x": -4.753,
+          "y": -0.321,
+          "z": -1.051
+        },
+        "max": {
+          "x": -2.519,
+          "y": 1.769,
+          "z": 0.337
+        },
+        "size": {
+          "x": 2.234,
+          "y": 2.089,
+          "z": 1.388
+        }
+      },
+      "note": "orthographic, looking along Z"
+    },
+    {
+      "name": "axis-rogue-x",
+      "axis": "x",
+      "cls": "Rogue",
+      "bbox": {
+        "min": {
+          "x": -3.968,
+          "y": -0.321,
+          "z": -1.053
+        },
+        "max": {
+          "x": -2.523,
+          "y": 1.768,
+          "z": 0.335
+        },
+        "size": {
+          "x": 1.444,
+          "y": 2.089,
+          "z": 1.389
+        }
+      },
+      "note": "orthographic, looking along X"
+    },
+    {
+      "name": "axis-rogue-y",
+      "axis": "y",
+      "cls": "Rogue",
+      "bbox": {
+        "min": {
+          "x": -3.97,
+          "y": -0.321,
+          "z": -1.053
+        },
+        "max": {
+          "x": -2.524,
+          "y": 1.769,
+          "z": 0.335
+        },
+        "size": {
+          "x": 1.446,
+          "y": 2.089,
+          "z": 1.388
+        }
+      },
+      "note": "orthographic, looking along Y"
+    },
+    {
+      "name": "axis-rogue-z",
+      "axis": "z",
+      "cls": "Rogue",
+      "bbox": {
+        "min": {
+          "x": -3.97,
+          "y": -0.321,
+          "z": -1.053
+        },
+        "max": {
+          "x": -2.524,
+          "y": 1.769,
+          "z": 0.335
+        },
+        "size": {
+          "x": 1.446,
+          "y": 2.089,
+          "z": 1.388
+        }
+      },
+      "note": "orthographic, looking along Z"
+    },
+    {
+      "name": "axis-assassin-x",
+      "axis": "x",
+      "cls": "Assassin",
+      "bbox": {
+        "min": {
+          "x": -3.914,
+          "y": -0.321,
+          "z": -1.054
+        },
+        "max": {
+          "x": -2.525,
+          "y": 1.768,
+          "z": 0.335
+        },
+        "size": {
+          "x": 1.389,
+          "y": 2.089,
+          "z": 1.388
+        }
+      },
+      "note": "orthographic, looking along X"
+    },
+    {
+      "name": "axis-assassin-y",
+      "axis": "y",
+      "cls": "Assassin",
+      "bbox": {
+        "min": {
+          "x": -3.913,
+          "y": -0.321,
+          "z": -1.054
+        },
+        "max": {
+          "x": -2.525,
+          "y": 1.769,
+          "z": 0.334
+        },
+        "size": {
+          "x": 1.388,
+          "y": 2.089,
+          "z": 1.388
+        }
+      },
+      "note": "orthographic, looking along Y"
+    },
+    {
+      "name": "axis-assassin-z",
+      "axis": "z",
+      "cls": "Assassin",
+      "bbox": {
+        "min": {
+          "x": -3.913,
+          "y": -0.321,
+          "z": -1.054
+        },
+        "max": {
+          "x": -2.525,
+          "y": 1.769,
+          "z": 0.334
+        },
+        "size": {
+          "x": 1.388,
+          "y": 2.089,
+          "z": 1.388
+        }
+      },
+      "note": "orthographic, looking along Z"
+    },
+    {
+      "name": "axis-mage-x",
+      "axis": "x",
+      "cls": "Mage",
+      "bbox": {
+        "min": {
+          "x": -5.607,
+          "y": -0.321,
+          "z": -1.227
+        },
+        "max": {
+          "x": -2.525,
+          "y": 1.768,
+          "z": 0.335
+        },
+        "size": {
+          "x": 3.082,
+          "y": 2.089,
+          "z": 1.562
+        }
+      },
+      "note": "orthographic, looking along X"
+    },
+    {
+      "name": "axis-mage-y",
+      "axis": "y",
+      "cls": "Mage",
+      "bbox": {
+        "min": {
+          "x": -5.609,
+          "y": -0.321,
+          "z": -1.228
+        },
+        "max": {
+          "x": -2.526,
+          "y": 1.769,
+          "z": 0.334
+        },
+        "size": {
+          "x": 3.083,
+          "y": 2.089,
+          "z": 1.562
+        }
+      },
+      "note": "orthographic, looking along Y"
+    },
+    {
+      "name": "axis-mage-z",
+      "axis": "z",
+      "cls": "Mage",
+      "bbox": {
+        "min": {
+          "x": -5.609,
+          "y": -0.321,
+          "z": -1.228
+        },
+        "max": {
+          "x": -2.526,
+          "y": 1.769,
+          "z": 0.334
+        },
+        "size": {
+          "x": 3.083,
+          "y": 2.089,
+          "z": 1.562
+        }
+      },
+      "note": "orthographic, looking along Z"
+    },
+    {
+      "name": "axis-necromancer-x",
+      "axis": "x",
+      "cls": "Necromancer",
+      "bbox": {
+        "min": {
+          "x": -5.355,
+          "y": -0.321,
+          "z": -1.055
+        },
+        "max": {
+          "x": -2.496,
+          "y": 1.768,
+          "z": 0.349
+        },
+        "size": {
+          "x": 2.859,
+          "y": 2.089,
+          "z": 1.404
+        }
+      },
+      "note": "orthographic, looking along X"
+    },
+    {
+      "name": "axis-necromancer-y",
+      "axis": "y",
+      "cls": "Necromancer",
+      "bbox": {
+        "min": {
+          "x": -5.355,
+          "y": -0.321,
+          "z": -1.055
+        },
+        "max": {
+          "x": -2.496,
+          "y": 1.769,
+          "z": 0.349
+        },
+        "size": {
+          "x": 2.859,
+          "y": 2.089,
+          "z": 1.404
+        }
+      },
+      "note": "orthographic, looking along Y"
+    },
+    {
+      "name": "axis-necromancer-z",
+      "axis": "z",
+      "cls": "Necromancer",
+      "bbox": {
+        "min": {
+          "x": -5.355,
+          "y": -0.321,
+          "z": -1.055
+        },
+        "max": {
+          "x": -2.496,
+          "y": 1.769,
+          "z": 0.349
+        },
+        "size": {
+          "x": 2.859,
+          "y": 2.089,
+          "z": 1.404
+        }
+      },
+      "note": "orthographic, looking along Z"
+    },
+    {
+      "name": "axis-archer-x",
+      "axis": "x",
+      "cls": "Archer",
+      "bbox": {
+        "min": {
+          "x": -3.885,
+          "y": -0.321,
+          "z": -1.039
+        },
+        "max": {
+          "x": -2.495,
+          "y": 1.768,
+          "z": 0.421
+        },
+        "size": {
+          "x": 1.389,
+          "y": 2.089,
+          "z": 1.46
+        }
+      },
+      "note": "orthographic, looking along X"
+    },
+    {
+      "name": "axis-archer-y",
+      "axis": "y",
+      "cls": "Archer",
+      "bbox": {
+        "min": {
+          "x": -3.884,
+          "y": -0.321,
+          "z": -1.039
+        },
+        "max": {
+          "x": -2.496,
+          "y": 1.769,
+          "z": 0.419
+        },
+        "size": {
+          "x": 1.388,
+          "y": 2.089,
+          "z": 1.458
+        }
+      },
+      "note": "orthographic, looking along Y"
+    },
+    {
+      "name": "axis-archer-z",
+      "axis": "z",
+      "cls": "Archer",
+      "bbox": {
+        "min": {
+          "x": -3.884,
+          "y": -0.321,
+          "z": -1.039
+        },
+        "max": {
+          "x": -2.496,
+          "y": 1.769,
+          "z": 0.419
+        },
+        "size": {
+          "x": 1.388,
+          "y": 2.089,
+          "z": 1.458
+        }
+      },
+      "note": "orthographic, looking along Z"
+    },
+    {
+      "name": "axis-priest-x",
+      "axis": "x",
+      "cls": "Priest",
+      "bbox": {
+        "min": {
+          "x": -4.7,
+          "y": -0.321,
+          "z": -1.053
+        },
+        "max": {
+          "x": -2.523,
+          "y": 1.768,
+          "z": 0.336
+        },
+        "size": {
+          "x": 2.178,
+          "y": 2.089,
+          "z": 1.389
+        }
+      },
+      "note": "orthographic, looking along X"
+    },
+    {
+      "name": "axis-priest-y",
+      "axis": "y",
+      "cls": "Priest",
+      "bbox": {
+        "min": {
+          "x": -4.703,
+          "y": -0.321,
+          "z": -1.053
+        },
+        "max": {
+          "x": -2.523,
+          "y": 1.769,
+          "z": 0.335
+        },
+        "size": {
+          "x": 2.18,
+          "y": 2.089,
+          "z": 1.388
+        }
+      },
+      "note": "orthographic, looking along Y"
+    },
+    {
+      "name": "axis-priest-z",
+      "axis": "z",
+      "cls": "Priest",
+      "bbox": {
+        "min": {
+          "x": -4.703,
+          "y": -0.321,
+          "z": -1.053
+        },
+        "max": {
+          "x": -2.523,
+          "y": 1.769,
+          "z": 0.335
+        },
+        "size": {
+          "x": 2.18,
+          "y": 2.089,
+          "z": 1.388
+        }
+      },
+      "note": "orthographic, looking along Z"
+    }
+  ],
+  "errors": [],
+  "note": "X/Y/Z axis views: orthographic, no perspective"
+}

@@ -1,0 +1,43 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "lib": [
+      "deno.window",
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ]
+  },
+  "imports": {
+    "three": "npm:three@0.180.0",
+    "@types/three": "npm:@types/three@0.180.0",
+    "playwright": "npm:playwright@1.56.1"
+  },
+  "lint": {
+    "exclude": [
+      "dist/"
+    ]
+  },
+  "tasks": {
+    "build": "deno run -A tools/build.ts",
+    "dev": "deno task build && deno run --allow-net=127.0.0.1:8788 --allow-read=dist tools/serve.ts",
+    "check": "deno check main.ts src/**/*.ts tests/*.ts tools/*.ts",
+    "test": "deno test --allow-read --allow-write=artifacts --allow-env tests/ --ignore=tests/probe_test.ts",
+    "test:browser-probe": "deno test -A tests/probe_test.ts",
+    "verify:browser": "deno run -A tools/browser-verify.ts",
+    "verify:cameras": "deno run -A tools/browser-cameras.ts",
+    "verify:menu": "deno run -A tools/browser-menu.ts",
+    "audit": "deno run --allow-read --allow-write=artifacts tools/audit.ts",
+    "lint": "deno lint",
+    "arena": "deno run --allow-read --allow-write=artifacts tools/arena.ts",
+    "arena:parallel": "deno run --allow-read --allow-write=artifacts tools/arena-parallel.ts 20261009 10000 4",
+    "evolve": "deno run --allow-read --allow-write=artifacts tools/evolve.ts 42 20 24 300",
+    "arena:race": "deno run --allow-read --allow-write=artifacts tools/arena.ts 20261009 3000 all",
+    "qa:matrix": "deno run -A tools/qa-matrix.ts artifacts/qa-v4"
+  },
+  "fmt": {
+    "lineWidth": 100
+  }
+}

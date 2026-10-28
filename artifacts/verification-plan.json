@@ -1,0 +1,19 @@
+{
+  "schema": "verification_matrix/v1",
+  "target": "/Users/macmax/Desktop/Mytherrania",
+  "scope": "Phase 1 only",
+  "budget": {"cpuUpdateAndRenderSubmitMs": 16.6, "gpuMs": 16.6, "rafCadenceNote": "60 Hz interval is 16.667ms, not exactly 16.60; report cadence independently", "lab": "Local Apple Silicon Chrome, 1440x900 DPR1, warm run at least 600 frames", "lcpMs": 2500, "lcpBaseline": "greenfield; no existing build", "fieldData": "not collected"},
+  "checks": [
+    {"id":"typecheck","command":"deno task check","requirements":["FR-001","FR-002","FR-004"]},
+    {"id":"lint","command":"deno task lint","requirements":["SC-003"]},
+    {"id":"unit","command":"deno task test","requirements":["FR-003","FR-004","FR-006","FR-007","FR-008"]},
+    {"id":"build","command":"deno task build","requirements":["FR-001"]},
+    {"id":"arena","command":"deno task arena","requirements":["FR-005","SC-002"]},
+    {"id":"browser","command":"deno run -A tools/browser-verify.ts","requirements":["FR-002","FR-003","FR-006","FR-007","FR-008","SC-001"]},
+    {"id":"audit","command":"deno run -A tools/audit.ts","requirements":["SC-003"]},
+    {"id":"review","command":"independent agent reviews plus parent reproductions","requirements":["SC-004"]}
+  ],
+  "ci": "not configured; local checks only", "deploy": "localhost only", "merge": "not requested",
+  "zeroAllocation": "requires actual profiler evidence; do not infer from code",
+  "zeroDeadPaths": "static reachability is not proof of 100% dynamic paths; report measured coverage and gaps"
+}
