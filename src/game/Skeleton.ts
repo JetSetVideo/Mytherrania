@@ -74,8 +74,11 @@ export class Skeleton {
   }
   /** True while the Animator owns the joints. */
   isDriven(): boolean { return this.#driven !== null; }
-  /** Active skill animation, if any: normalised progress runs 0 -> 1. */
-  #skill: { anim: SkillAnimation; t: number; fired: boolean; holdAt: number | null } | null = null;
+  /**
+   * Active skill animation, if any: normalised progress runs 0 -> 1. `stopIn` (s, null = none):
+   * the clock is frozen and the skill ends when it runs out (stopSkillAfter: a weapon contact).
+   */
+  #skill: { anim: SkillAnimation; t: number; fired: boolean; holdAt: number | null; stopIn: number | null } | null = null;
   /** Physics offset per joint (rad), its rate, and how much it moved this frame. */
   #kick = new Map<JointName, { off: number; vel: number; offDelta: number }>();
   /** Centre-of-mass balance: the damped sway that brings the body back upright. */
@@ -153,7 +156,7 @@ export class Skeleton {
   /** Start a skill animation, replacing any that is running. */
   /** Start a skill animation. `holdAt` pins the progress (QA captures). */
   playSkill(anim: SkillAnimation, holdAt: number | null = null): void {
-    this.#skill = { anim, t: holdAt ?? 0, fired: false, holdAt };
+    this.#skill = { anim, t: holdAt ?? 0, fired: false, holdAt, stopIn: null };
     // The skill owns the joints, so the reported pose is "skill" — otherwise the
     // diagnostics claim "idle" while a swing is on screen.
     this.pose = "skill";
@@ -161,6 +164,14 @@ export class Skeleton {
 
   /** Cancel the running skill (e.g. the fighter was knocked out mid-swing). */
   cancelSkill(): void { this.#skill = null; if (this.pose === "skill") this.pose = "idle"; }
+
+  /**
+   * Freeze the running skill's clock NOW and end the skill after `seconds` (lane X2: the blade met
+   * a body — the swing stops there instead of passing through, then the arm returns to guard).
+   */
+  stopSkillAfter(seconds: number): void {
+    if (this.#skill && this.#skill.stopIn === null) this.#skill.stopIn = Math.max(0, seconds);
+  }
 
   skillProgress(): number | null { return this.#skill ? this.#skill.t : null; }
   /** True while a skill owns the joints. */
@@ -227,6 +238,12 @@ export class Skeleton {
         }
       }
     }
+    if (this.#skill && this.#skill.stopIn !== null) {
+      // Contact hold: the curve stays where the blade met the body, then the skill ends.
+      this.#skill.stopIn -= dt;
+      if (this.#skill.stopIn <= 0) { this.#skill = null; this.pose = "idle"; }
+      if (this.#driven) return;
+    }
     if (this.#skill) {
       if (this.#driven) {
         // The Animator blends the skill curve itself; keep only the clock here
@@ -236,7 +253,7 @@ export class Skeleton {
         return;
       }
       const { anim } = this.#skill;
-      if (this.#skill.holdAt === null) this.#skill.t += dt / anim.duration;
+      if (this.#skill.holdAt === null && this.#skill.stopIn === null) this.#skill.t += dt / anim.duration;
       const t = Math.min(1, this.#skill.t);
       // The curve drives every animated joint directly, clamped to its limits.
       for (const [joint, angle] of poseAt(anim, t, this.#base)) {

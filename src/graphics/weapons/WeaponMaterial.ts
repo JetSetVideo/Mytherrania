@@ -12,11 +12,18 @@ import { celLighting } from "../shaders/CelShader.ts";
 /** Ink colour of every cel outline in the game (CelShader.ts). */
 export const INK_COLOR = "#172128";
 /**
- * Weapon ink width in view space, m. Bodies use 0.035 (CelShader); a blade is only 25-60 mm
- * wide, so 35 mm of ink on each side would triple its silhouette. 0.02 keeps the line visibly
- * the same family while the blade still reads as a blade.
+ * Weapon ink width in view space, m, at and beyond INK_REF_DISTANCE. Bodies use 0.035
+ * (CelShader); a blade is only 20-60 mm wide, so 35 mm of ink on each side would triple its
+ * silhouette. 0.02 keeps the line visibly the same family while the blade still reads as a blade.
  */
 export const WEAPON_OUTLINE_WIDTH = 0.02;
+/**
+ * Closer than this (m, view depth) the ink keeps a constant SCREEN width instead of a constant
+ * world width: w = outlineWidth * min(1, depth / INK_REF_DISTANCE). At the 7 m gameplay distance
+ * nothing changes (~1.8 px at 577 px / 50 deg); in a 1-3 m close-up the ink no longer swells to
+ * 2 cm a side, which turned a 2 cm rapier blade into a blunt 6 cm dark bar.
+ */
+export const INK_REF_DISTANCE = 7;
 
 const vertex = /* glsl */ `
   attribute vec3 aColor;
@@ -65,10 +72,11 @@ const fragment = /* glsl */ `
 const outlineVertex = /* glsl */ `
   attribute vec3 outlineNormal;
   uniform float outlineWidth;
+  uniform float inkDistance;
   void main() {
     vec4 viewPosition = modelViewMatrix * vec4(position, 1.0);
     vec3 n = normalize(normalMatrix * outlineNormal);
-    viewPosition.xyz += n * outlineWidth;
+    viewPosition.xyz += n * outlineWidth * clamp(-viewPosition.z / inkDistance, 0.0, 1.0);
     gl_Position = projectionMatrix * viewPosition;
   }
 `;
@@ -98,12 +106,13 @@ export function createWeaponCelMaterial(): THREE.ShaderMaterial {
   return m;
 }
 
-/** Inverted-hull ink outline pushed along the welded outline normals. */
+/** Inverted-hull ink outline pushed along the welded outline normals (depth-capped, see INK_REF_DISTANCE). */
 export function createWeaponOutlineMaterial(width = WEAPON_OUTLINE_WIDTH): THREE.ShaderMaterial {
   const m = new THREE.ShaderMaterial({
     uniforms: {
       inkColor: { value: new THREE.Color(INK_COLOR) },
       outlineWidth: { value: width },
+      inkDistance: { value: INK_REF_DISTANCE },
     },
     vertexShader: outlineVertex,
     fragmentShader: outlineFragment,

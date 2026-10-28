@@ -192,6 +192,12 @@ export interface AnimatorInput {
   grounded: boolean;
   hit: boolean;
   attack: boolean;
+  /**
+   * Optional dense JOINT_ORDER pose for the attack layer THIS frame (a weapon swing curve, lane X2
+   * Swing.ts). Null/absent: the static ATTACK_POSE. A swing curve is smooth by construction, so
+   * the pop guard does not delay it (trusted in proportion to the attack layer's weight).
+   */
+  attackPose?: Float64Array | null;
   block: boolean;
   ko: boolean;
   /** Combat-ready guard stance (fight phase, opponent near). */
@@ -285,6 +291,10 @@ export class Animator {
   readonly #pitch = new Float64Array(2);
   readonly #skillAnimated = new Float64Array(JOINT_COUNT);
   readonly #breathUnit: Float64Array;
+  /** The static ATTACK_POSE array, restored when a legacy attack follows a swing curve. */
+  readonly #attackStatic: Float64Array;
+  /** True while the attack layer holds a swing curve's values (not ATTACK_POSE). */
+  #attackDynamic = false;
   #time = 0;
   #accel = 0;
   #stance = 0;
@@ -327,7 +337,8 @@ export class Animator {
     B.addLayer({ name: "breath", mode: "additive", mask: MASK_UPPER, smoothTime: p.smoothBreath });
     B.values(LAYER.air).set(poseArray(AIR_POSE, limits, "override"));
     B.values(LAYER.guard).set(poseArray(GUARD_POSE, limits, "override"));
-    B.values(LAYER.attack).set(poseArray(ATTACK_POSE, limits, "override"));
+    this.#attackStatic = poseArray(ATTACK_POSE, limits, "override");
+    B.values(LAYER.attack).set(this.#attackStatic);
     B.values(LAYER.ko).set(poseArray(KO_POSE, limits, "override"));
     B.values(LAYER.hit).set(poseArray(HIT_OFFSETS, limits, "additive"));
     B.values(LAYER.skill).set(limits.rest);
@@ -394,10 +405,15 @@ export class Animator {
     B.setTarget(LAYER.breath, inp.ko ? 0 : 1 - m);
     B.stepWeights(h);
     if (skill) this.#fillSkill(skill, inp.skillProgress, h);
+    // A swing curve replaces the attack layer's values while it plays; the last curve values stay
+    // while the layer fades out (no pop), and a later legacy attack restores ATTACK_POSE.
+    if (inp.attackPose) { B.values(LAYER.attack).set(inp.attackPose); this.#attackDynamic = true; }
+    else if (inp.attack && this.#attackDynamic) { B.values(LAYER.attack).set(this.#attackStatic); this.#attackDynamic = false; }
     {
-      // Skill curves are smooth by construction: the pop guard must not delay the strike pose.
+      // Skill and swing curves are smooth by construction: the pop guard must not delay the strike pose.
       const ws = B.weight(LAYER.skill), sm = B.mask(LAYER.skill);
-      for (let j = 0; j < JOINT_COUNT; j++) B.trusted[j] = ws * sm[j];
+      const wa = inp.attackPose ? B.weight(LAYER.attack) : 0, am = B.mask(LAYER.attack);
+      for (let j = 0; j < JOINT_COUNT; j++) B.trusted[j] = Math.max(ws * sm[j], wa * am[j]);
     }
 
     // 3. Trunk (locomotion lean + acceleration lean + breathing), evaluated first. The CHEST

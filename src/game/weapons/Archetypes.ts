@@ -148,7 +148,8 @@ const DAGGER_GRIPS: GripTemplate[] = [{ id: "main", modes: ["reverse", "forward"
 /** Every archetype. Ranges cite typical historical pieces (see each comment). */
 export const ARCHETYPES: Record<ArchetypeId, ArchetypeSpec> = {
   // Rondel / quillon daggers 0.3-0.5 m, 0.25-0.5 kg; Fairbairn-Sykes 0.29 m 0.25 kg;
-  // a jambiya is curved. Balance sits at the guard.
+  // a jambiya is curved. Balance sits at the guard. The quillons span >= 7 cm (look only:
+  // the guard's width is 6 px at 7 m, the dagger's one readable feature besides its size).
   dagger: {
     id: "dagger", label: "Dagger", noun: "Dagger", weaponClass: "finesse", family: "blade",
     head: "blade", hands: 1, mix: { cut: 0.4, thrust: 0.6, blunt: 0 }, grips: DAGGER_GRIPS,
@@ -157,7 +158,7 @@ export const ARCHETYPES: Record<ArchetypeId, ArchetypeSpec> = {
       curvature: r(0, 0.35), headRadius: r(0.012, 0.024), balanceFraction: r(0.05, 0.3),
     },
     hilt: {
-      handle: r(0.085, 0.13), guardThickness: 0.012, guardHalfSpan: r(0.03, 0.05), pommelLength: 0.025,
+      handle: r(0.085, 0.13), guardThickness: 0.012, guardHalfSpan: r(0.035, 0.055), pommelLength: 0.025,
       guardShare: 0.1, singleEdged: false, fullered: false, maxBend: 0.5,
     },
     metals: ALL_METALS, rollWeight: 1.2, legacyType: "dagger",
@@ -221,13 +222,14 @@ export const ARCHETYPES: Record<ArchetypeId, ArchetypeSpec> = {
     },
     metals: ALL_METALS, rollWeight: 0.8, legacyType: "sword",
   },
-  // Rapier: 1.1-1.3 m, 1.0-1.4 kg, narrow 1.0 m blade, heavy swept hilt so the point of
-  // balance is 0.05-0.1 m past the guard.
+  // Rapier: 1.1-1.3 m, 1.0-1.4 kg, narrow 0.95-1.1 m blade (a rapier is mostly blade: the
+  // length is what tells it from an arming sword at a distance), heavy swept hilt so the
+  // point of balance is 0.05-0.1 m past the guard.
   rapier: {
     id: "rapier", label: "Rapier", noun: "Rapier", weaponClass: "finesse", family: "blade",
     head: "blade", hands: 1, mix: { cut: 0.15, thrust: 0.85, blunt: 0 }, grips: ONE_HAND,
     axes: {
-      length: r(1.07, 1.32), mass: r(1, 1.45), headLength: r(0.9, 1.12), sharpness: r(0.8, 1),
+      length: r(1.1, 1.3), mass: r(1, 1.45), headLength: r(0.95, 1.1), sharpness: r(0.8, 1),
       curvature: fixed(0), headRadius: r(0.01, 0.015), balanceFraction: r(0.03, 0.16),
     },
     hilt: {
@@ -259,24 +261,28 @@ export const ARCHETYPES: Record<ArchetypeId, ArchetypeSpec> = {
     haft: { tailFraction: 0.15, shaftRadius: r(0.015, 0.019), haftShare: r(0.3, 0.6) },
     metals: ALL_METALS, rollWeight: 0.6, legacyType: "axe",
   },
-  // Viking hand axe: 0.6-0.9 m haft, 0.8-1.6 kg (head 0.4-0.9 kg), bit 0.1-0.2 m tall.
+  // Viking hand axe: 0.6-0.9 m haft, 0.8-1.6 kg (head 0.4-0.9 kg). Bearded bits are drawn and
+  // collided at 0.16-0.27 m along the edge, 0.13-0.2 m deep: the broad (Mammen / "skeggox")
+  // end of the type and beyond it, a stylised game proportion (bit ~1/3 of the haft). At the
+  // historical 0.1-0.2 m the bit is a 12 x 7 px blob at 7 m and reads as a hammer (lane W2).
   axe: {
     id: "axe", label: "Axe", noun: "Axe", weaponClass: "heavy", family: "hafted",
     head: "axe", hands: 1, mix: { cut: 0.75, thrust: 0, blunt: 0.25 }, grips: ONE_HAND,
     axes: {
-      length: r(0.55, 0.85), mass: r(0.9, 1.7), headLength: r(0.1, 0.2), sharpness: r(0.55, 0.85),
-      curvature: r(0.1, 0.6), headRadius: r(0.08, 0.15), balanceFraction: r(0.5, 0.84),
+      length: r(0.55, 0.85), mass: r(0.9, 1.7), headLength: r(0.16, 0.27), sharpness: r(0.55, 0.85),
+      curvature: r(0.1, 0.6), headRadius: r(0.13, 0.2), balanceFraction: r(0.5, 0.84),
     },
     haft: { tailFraction: 0.1, shaftRadius: r(0.014, 0.017), haftShare: r(0.15, 0.45) },
     metals: ALL_METALS, rollWeight: 1, legacyType: "axe",
   },
-  // Dane axe: 1.2-1.7 m haft, 1.5-3 kg, crescent bit 0.2-0.3 m tall.
+  // Dane axe: 1.2-1.7 m haft, 1.5-3 kg, crescent bit 0.24-0.36 m along the edge, 0.18-0.26 m
+  // deep (the broad end of the type, stylised: the bit must dwarf the hand axe's, lane W2).
   greataxe: {
     id: "greataxe", label: "Greataxe", noun: "Greataxe", weaponClass: "heavy", family: "hafted",
     head: "axe", hands: 2, mix: { cut: 0.8, thrust: 0, blunt: 0.2 }, grips: POLE_GRIPS,
     axes: {
-      length: r(1.2, 1.65), mass: r(1.8, 3), headLength: r(0.18, 0.32), sharpness: r(0.55, 0.8),
-      curvature: r(0.2, 0.75), headRadius: r(0.13, 0.22), balanceFraction: r(0.5, 0.82),
+      length: r(1.2, 1.65), mass: r(1.8, 3), headLength: r(0.24, 0.36), sharpness: r(0.55, 0.8),
+      curvature: r(0.2, 0.75), headRadius: r(0.18, 0.26), balanceFraction: r(0.5, 0.82),
     },
     haft: { tailFraction: 0.12, shaftRadius: r(0.016, 0.02), haftShare: r(0.2, 0.5) },
     metals: ALL_METALS, rollWeight: 0.7, legacyType: "axe",

@@ -42,12 +42,21 @@ export class MeshKit {
   readonly spec: number[] = [];
   /** Smooth-group id per vertex (-1 = flat). */
   readonly group: number[] = [];
+  /** Part label per TRIANGLE (QA only: the readability probe measures the tagged feature). */
+  readonly parts: string[] = [];
   #nextGroup = 0;
   #specular = 0;
+  #part = "body";
 
   /** Specular strength applied to the triangles emitted next. */
   setSpecular(s: number): this {
     this.#specular = s;
+    return this;
+  }
+
+  /** Label the triangles emitted next (e.g. "feature" for the part that tells the archetype). */
+  setPart(name: string): this {
+    this.#part = name;
     return this;
   }
 
@@ -63,6 +72,7 @@ export class MeshKit {
       const centroid: V3 = [(a[0] + b[0] + c[0]) / 3, (a[1] + b[1] + c[1]) / 3, (a[2] + b[2] + c[2]) / 3];
       if (dot(n, sub(centroid, inside)) < 0) { p1 = c; p2 = b; c1 = cc; c2 = cb; }
     }
+    this.parts.push(this.#part);
     for (const [p, col] of [[a, ca], [p1, c1], [p2, c2]] as const) {
       this.pos.push(p[0], p[1], p[2]);
       this.col.push(col.r, col.g, col.b);
