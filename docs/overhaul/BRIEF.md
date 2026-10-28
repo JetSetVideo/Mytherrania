@@ -107,3 +107,23 @@ whether it moves into MathCore.
 | Parent | R14, R11, R13, integration | everything shared |
 
 Contract for lanes A and B: `src/graphics/body/contracts.ts` (written by the parent before dispatch).
+
+---
+
+## Wave 2 (2026-10-28 evening) — combat, weapons, menu/HUD
+
+User request (voice-transcribed), decoded:
+
+| Id | Requirement |
+|----|-------------|
+| W01 | Ancestry: each race and its sub-species live in ONE box; clicking a race expands it in place to show its sub-species; the selected race AND sub-species are highlighted together. |
+| W02 | In-fight settings: a **Give up** (forfeit) option; more options; **Esc pauses** the fight and opens settings (Esc again resumes). |
+| W03 | Minimap at the **top right**; the settings button next to it, **icon only** (keep it clickable). |
+| W04 | The **minimum arena size much bigger** (live minimum is 8 m today). |
+| W05 | Collision: a real **blade edge** (today hits are `distance <= reach + radius`, no geometry); the holder's own weapon **never passes through its own body**. |
+| W06 | Procedural **weapons**: random bow, spear, mace, axe, war hammer, …; distributed along axes (size, weight, blade, sharpness, curvature); **grip points**; some held **two ways** (dagger reverse grip, better pointing down). |
+| W07 | Weapon-class trade-offs: finesse (dagger, sword, spear) = higher crit, lower min damage, miss more; heavy (axe, mace, hammer, war hammer) = lower crit, higher min and max damage, miss less. Balanced in expectation. |
+| W08 | Impact physics: knockback from hit angle, contact, two-handed swing vs thrust, mass/inertia; the defender's characteristics count too. |
+| W09 | **Hitboxes from the body's shape and skeleton**; damage by hit location (body part). |
+
+Contract: `src/combat/contracts.ts` (written by the parent). Lanes: **U** menu/HUD/settings, **W** weapons, **X** collision/impact. Same rules as wave 1 (own files only; engine patches in the handoff; real outputs only).
