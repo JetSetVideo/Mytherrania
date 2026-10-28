@@ -17,6 +17,8 @@ import type { Appearance } from "../game/Characters.ts";
 export interface HumanoidRig {
   group: THREE.Group;
   triangleCount: number;
+  /** Root of the weapon mesh: local +y is the weapon axis, the grip sits at y = 0 (blade trails sample it). */
+  weaponNode: THREE.Object3D;
   /** Flare the weapon's elemental effect (0 = off). */
   setEffect(strength: number, time: number): void;
   /**
@@ -249,6 +251,7 @@ export function buildHumanoid(weapon: GeneratedWeapon, appearance: Appearance = 
   return {
     group,
     triangleCount: triCount,
+    weaponNode: weaponMesh.group,
     setEffect(strength: number, time: number): void { weaponMesh.setEffect(strength, time); },
     setGrip(pitch: number, roll: number): void { grip.rotation.x = pitch; grip.rotation.z = roll; },
     update(sk: Skeleton, dt: number): void {
