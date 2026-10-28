@@ -1,0 +1,96 @@
+--- a/src/engine/Engine.ts
++++ b/src/engine/Engine.ts
+@@ -8,6 +8,7 @@
+ import { decide, type CombatView } from "../game/DecisionTree.ts";
+ import { buildHumanoid, type HumanoidRig } from "../graphics/Humanoid.ts";
+ import { LIVE_ARENA_MAX, Menu } from "../ui/Menu.ts";
++import { SkillBar, type SkillView } from "../ui/SkillBar.ts";
+ import { renderPortrait } from "../graphics/Portrait.ts";
+ import type { JointName, PoseName, Skeleton } from "../game/Skeleton.ts";
+ import { CombatLog } from "../game/CombatLog.ts";
+@@ -268,6 +269,10 @@
+   #lookScratch = new THREE.Vector3();
+   /** Which keyboard layout the player types on, for key labels (bindings are physical). */
+   #layout = new LayoutDetector();
++  /** The bottom-centre skill bar (R09): chips built once, patched each HUD tick. */
++  #skillBar!: SkillBar;
++  /** Reused per-tick view objects for #skillBar (no allocation once warm). */
++  #skillViews: SkillView[] = [];
+ 
+   constructor() {
+     this.#renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+@@ -830,6 +835,12 @@
+     hints.id = "hints"; // so QA views can hide the control legend too
+     document.body.appendChild(hints);
+     this.#renderHints();
++    // Skill bar (R09): one horizontal row at the bottom centre, docked above the hint line.
++    // Chips are pressable (mouse-only play); spectators watch, so their presses do nothing.
++    this.#skillBar = new SkillBar(document.getElementById("hud-skills")!, {
++      onActivate: (i) => { if (!this.#spectate) this.#playerSkill(i); },
++    });
++    this.#skillBar.dockAbove(hints);
+ 
+     const openBtn = document.createElement("button");
+     openBtn.id = "btn-settings";
+@@ -1566,21 +1577,27 @@
+     const line = (f: Fighter, who: string) => `${who} — ${f.name}${tagOf(f)} (${f.className}) · HP ${Math.max(0, Math.round(f.hp))}/${Math.round(f.stats.maxHealth)} · knockback ${Math.round(f.damagePercent)}%`;
+     document.getElementById("hud-player")!.textContent = line(p, this.#spectate ? "AI" : "You");
+     document.getElementById("hud-opponent")!.textContent = line(o, "AI");
+-    // Skill bar: name, kind, cooldown. The player's own three skills.
+-    const bar = document.getElementById("hud-skills");
+-    if (bar) {
+-      const rt = this.#skills.get(this.#spectate ? o : p);
+-      if (rt) {
+-        bar.innerHTML = rt.skills.map((sk, i) => {
+-          const cd = rt.cooldowns[i];
+-          const ready = cd <= 0 && rt.active !== i;
+-          const active = rt.active === i;
+-          const art = this.#skillArt.get(this.#spectate ? o : p)?.[i] ?? "";
+-          return `<span class="skill-chip${ready ? " ready" : ""}${active ? " active" : ""}">` +
+-            (art ? `<img class="skill-art" src="${art}" alt="${sk.name}">` : "") +
+-            `<b>${i + 1}</b> ${sk.name}<small>${sk.kind}${cd > 0 ? ` · ${cd.toFixed(1)}s` : ""}</small></span>`;
+-        }).join("");
++    // Skill bar: the shown fighter's three skills, patched in place (no innerHTML per tick).
++    const shown = this.#spectate ? o : p;
++    const rt = this.#skills.get(shown);
++    if (rt) {
++      const art = this.#skillArt.get(shown);
++      const views = this.#skillViews;
++      views.length = rt.skills.length;
++      for (let i = 0; i < rt.skills.length; i++) {
++        const sk = rt.skills[i], cd = rt.cooldowns[i];
++        const v = views[i] ??= { name: "", kind: "", keyLabel: "", cooldown: 0, cooldownMax: 0, ready: false, active: false };
++        v.name = sk.name;
++        v.kind = sk.kind;
++        v.keyLabel = String(i + 1); // digits are layout-independent
++        v.altKeyLabel = keyLabel(SKILL_LETTER_CODES[i] ?? "", this.#layout.layout); // A/E/F on AZERTY, Q/E/F on QWERTY
++        v.cooldown = cd;
++        v.cooldownMax = sk.cooldown;
++        v.active = rt.active === i;
++        v.ready = cd <= 0 && !v.active;
++        v.art = art?.[i];
+       }
++      this.#skillBar.update(views);
+     }
+     const w = document.getElementById("hud-world");
+     const mins = Math.round(this.#hour * 60) % 1440;
+@@ -1828,10 +1845,15 @@
+     if (this.#input.consume("KeyR") && this.#phase === "fight") {
+       this.#startFight(this.#playerProfile, this.#opponentProfile);
+     }
+-    if (this.#input.consume("Escape") && this.#phase === "fight") {
+-      this.#phase = "menu";
+-      this.#menu.show("title");
+-      this.#hud.style.display = "none";
++    if (this.#input.consume("Escape")) {
++      // Esc = Back on a visible menu screen (the title is the floor); during a fight it opens
++      // the title, as before.
++      if (this.#menu.visible) this.#menu.back();
++      else if (this.#phase === "fight") {
++        this.#phase = "menu";
++        this.#menu.show("title");
++        this.#hud.style.display = "none";
++      }
+     }
+ 
+     const p = this.#player, o = this.#opponent;

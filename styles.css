@@ -293,13 +293,98 @@ canvas{display:block}
 .match-table td{word-break:break-word;min-width:92px}
 .menu-sub{font-family:'Palatino Linotype','Palatino',Georgia,serif;font-style:italic}
 
-/* Skill bar: the player's three class skills with cooldown state */
-#hud-skills{display:flex;flex-direction:column;gap:4px;margin-top:6px;max-width:340px}
-.skill-chip{display:flex;align-items:center;gap:6px;font-size:12px;line-height:1.2;padding:3px 8px;border:1px solid #4f8490;border-radius:4px;background:rgba(10,14,18,.55);color:#c8d4d4;opacity:.72}
-.skill-chip b{display:inline-block;min-width:14px;text-align:center;color:#172128;background:#7c8b93;border-radius:3px;font-size:11px;padding:1px 3px}
-.skill-chip small{color:#9fb0b0;margin-left:auto;font-size:10px}
-.skill-chip.ready{opacity:1;border-color:#f2c46b;color:#fff3cf}
-.skill-chip.ready b{background:#f2c46b}
-.skill-chip.active{border-color:#ef7455;box-shadow:0 0 8px rgba(239,116,85,.7);opacity:1}
-.skill-chip.active b{background:#ef7455;color:#fff3cf}
-.skill-art{width:22px;height:22px;border-radius:3px;flex:0 0 auto;image-rendering:auto}
+/* Line icons (src/ui/Icons.ts): inline SVG stroked with currentColor, so `color` paints them. */
+.icon{display:inline-block;flex:none;width:1.2em;height:1.2em;vertical-align:middle;overflow:visible}
+
+/* Back navigation (R01): every non-title screen opens with the same row, top-left — a Back
+   button (chevron + label, returns to the PREVIOUS screen; Esc does the same) and a breadcrumb
+   of the trail. Sticky, so it stays reachable while a long history page scrolls. */
+.screen-nav{position:sticky;top:0;z-index:3;display:flex;align-items:center;gap:12px;align-self:stretch;min-width:0;margin:0 0 2px;padding:2px 0 6px;background:linear-gradient(180deg,rgba(28,25,22,.96) 70%,rgba(28,25,22,0))}
+.screen-back{display:inline-flex;align-items:center;gap:6px;flex:none;min-height:38px;padding:6px 14px 6px 8px;font:inherit;font-size:14px;font-weight:700;letter-spacing:.04em;color:#fff3cf;background:rgba(32,45,53,.9);border:1px solid #8a7148;border-radius:7px;cursor:pointer}
+.screen-back .back-icon{width:18px;height:18px;color:#fff;transition:transform .12s ease-out}
+.screen-back:hover{background:#2a3a44;border-color:#f2c46b}
+.screen-back:hover .back-icon{transform:translateX(-2px)}
+.screen-back:focus-visible{outline:3px solid #ef7455;outline-offset:2px}
+.screen-crumb{min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font-size:12px;color:#9fb0b0;text-align:left}
+
+/* Birth-sign icons (R02): small white line icons on the LEFT of every sign label. */
+.sign-icon{width:18px;height:18px;color:#fff}
+.sign-chip{display:inline-flex;align-items:center;gap:6px}
+.sign-label{display:inline-flex;align-items:center;gap:8px}
+.birthsign-preview .bp-head .bp-symbol{display:inline-flex;align-items:center}
+.birthsign-preview .bp-head .bp-symbol .sign-icon{width:22px;height:22px}
+
+/* Skill bar (R09): the player's three skills as ONE horizontal row centred at the bottom of
+   the screen, docked above the controls hint line (#hints, bottom:12px). SkillBar.dockAbove()
+   measures #hints and writes the reserve to --skillbar-bottom (viewport bottom -> #hints top
+   + 8 px gap); the fallbacks below assume a one-line hint (12 + 18 + 8 = 38 -> 40 px) and,
+   on phones, a three-line wrapped hint (12 + 3 x 14 + 8 = 62 -> 64 px).
+   Position: fixed inside #hud (no transform on #hud, so fixed resolves to the viewport); the
+   rest of #hud stays a column at the top-left, so nothing else sits at the bottom centre. */
+#hud-skills{position:fixed;left:50%;bottom:var(--skillbar-bottom,40px);transform:translateX(-50%);z-index:1;display:flex;flex-direction:row;align-items:stretch;gap:8px;width:min(720px,calc(100vw - 24px));margin:0;pointer-events:none}
+.skill-chip{position:relative;flex:1 1 0;min-width:0;display:grid;grid-template-columns:auto minmax(0,1fr) auto;grid-template-rows:auto auto;column-gap:9px;row-gap:1px;align-items:center;padding:7px 10px 7px 7px;border:1px solid #4f8490;border-radius:9px;background:rgba(10,14,18,.78);color:#c8d4d4;overflow:hidden;line-height:1.15}
+.skill-sweep{position:absolute;inset:0;z-index:1;pointer-events:none;background:rgba(4,7,9,.58);transform-origin:50% 100%;transform:scaleY(var(--cd,0));transition:transform .25s linear}
+.skill-icon{grid-column:1;grid-row:1 / 3;display:flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:7px;background:rgba(255,255,255,.07);color:#fff;overflow:hidden}
+.skill-icon .icon{width:22px;height:22px}
+.skill-art{width:100%;height:100%;object-fit:cover;image-rendering:auto}
+.skill-text{grid-column:2;grid-row:1 / 3;display:flex;flex-direction:column;justify-content:center;min-width:0;text-align:left}
+.skill-name{font-size:13px;font-weight:700;color:inherit;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.skill-kind{font-size:10px;letter-spacing:.07em;text-transform:uppercase;color:#9fb0b0}
+.skill-keys{grid-column:3;grid-row:1;position:relative;z-index:2;display:flex;gap:3px;justify-content:flex-end}
+.skill-key,.skill-alt{display:inline-block;min-width:18px;height:18px;padding:0 4px;border-radius:4px;font:700 11px/18px system-ui,-apple-system,'Segoe UI',sans-serif;text-align:center;text-shadow:none}
+.skill-key{color:#172128;background:#7c8b93}
+.skill-alt{color:#c8d4d4;border:1px solid #5c6b73;line-height:16px}
+.skill-alt.is-empty{display:none}
+.skill-cd{grid-column:3;grid-row:2;position:relative;z-index:2;min-width:3.4ch;text-align:right;font:700 12px/1.2 system-ui,-apple-system,'Segoe UI',sans-serif;font-variant-numeric:tabular-nums;color:#fff3cf}
+.skill-chip.cooling .skill-icon{opacity:.55}
+.skill-chip.ready{border-color:#f2c46b;color:#fff3cf}
+.skill-chip.ready .skill-key{background:#f2c46b}
+.skill-chip.active{border-color:#ef7455;box-shadow:0 0 10px rgba(239,116,85,.7)}
+.skill-chip.active .skill-key{background:#ef7455;color:#fff3cf}
+/* Clickable chips (SkillBar onActivate): the bar itself stays pointer-events:none so world
+   clicks around it still reach the canvas; only the chips take the press. */
+.skill-chip.clickable{pointer-events:auto;cursor:pointer}
+.skill-chip.clickable:hover{border-color:#dfaa55;background:rgba(22,30,36,.86)}
+.skill-chip.clickable:active{transform:translateY(1px)}
+
+/* Tablet (768-1023): same row, a little narrower. */
+@media(min-width:768px) and (max-width:1023px){
+  #hud-skills{width:min(640px,calc(100vw - 32px))}
+}
+/* Desktop (>= 1440): larger chips; #hud already scales its text to 16 px here. */
+@media(min-width:1440px){
+  #hud-skills{width:min(820px,60vw);gap:10px}
+  .skill-chip{padding:8px 12px 8px 8px}
+  .skill-icon{width:42px;height:42px}
+  .skill-icon .icon{width:26px;height:26px}
+  .skill-name{font-size:15px}
+  .skill-kind{font-size:11px}
+}
+/* Phones (< 768, e.g. 375): compact chips — icon + name + cooldown; the digit badge sits on the
+   icon's corner, the kind line and the alternative-key badge are dropped (touch has no keys),
+   names truncate with an ellipsis. #hints wraps to up to three lines here, so the fallback
+   reserve is taller. */
+@media(max-width:767px){
+  #hud-skills{bottom:var(--skillbar-bottom,64px);width:calc(100vw - 16px);gap:6px}
+  .skill-chip{grid-template-columns:auto minmax(0,1fr);column-gap:6px;padding:5px 7px 5px 5px;border-radius:7px}
+  .skill-icon{width:28px;height:28px;border-radius:5px}
+  .skill-icon .icon{width:18px;height:18px}
+  .skill-text{grid-row:1}
+  .skill-name{font-size:11px}
+  .skill-kind,.skill-alt{display:none}
+  .skill-keys{position:absolute;left:2px;top:2px;grid-column:auto;grid-row:auto}
+  .skill-key{min-width:13px;height:13px;padding:0 2px;font-size:9px;line-height:13px;border-radius:3px}
+  .skill-cd{grid-column:2;grid-row:2;text-align:left;font-size:10px;min-width:0}
+  .screen-back{min-height:40px;font-size:13px}
+  .screen-crumb{display:none}
+}
+/* Short landscape screens (phones on their side): the top-left #hud column reaches the
+   bottom, so the bar docks bottom-RIGHT instead of centre, clear of that column. */
+@media(max-height:500px) and (min-width:560px){
+  #hud-skills{left:auto;right:10px;transform:none;width:min(440px,54vw);gap:6px}
+  .skill-chip{padding:4px 7px 4px 4px}
+  .skill-icon{width:26px;height:26px}
+  .skill-icon .icon{width:17px;height:17px}
+  .skill-kind{display:none}
+}
+@media(prefers-reduced-motion:reduce){.skill-sweep,.screen-back .back-icon{transition:none}}

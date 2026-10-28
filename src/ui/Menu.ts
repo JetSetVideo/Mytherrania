@@ -8,11 +8,22 @@ import type { HistorySummary, MatchRecord, Rate } from "../game/MatchHistory.ts"
 import { RING_SHAPES, type ArenaConfig } from "../game/ArenaConfig.ts";
 import { weaponForClass } from "../game/Weapon.ts";
 import { COLOUR_HEX, screenPanels, type ScreenId } from "./UiTree.ts";
+import { NavStack } from "./NavStack.ts";
+import { birthsignIcon, icon } from "./Icons.ts";
 
 /** Largest arena (m across) the live engine builds; the creator's size slider tops out here. */
 export const LIVE_ARENA_MAX = 120;
 
 export type Screen = "title" | "select" | "victory" | "digest" | "sheet";
+
+/** Short name of each screen, used by the breadcrumb next to the Back button. */
+export const SCREEN_LABEL: Readonly<Record<Screen, string>> = {
+  title: "Menu",
+  select: "Create your fighter",
+  victory: "Result",
+  sheet: "Character sheet",
+  digest: "Match history",
+};
 
 export interface MenuCallbacks {
   onStart(player: CharacterProfile, opponent: CharacterProfile): void;
@@ -55,6 +66,12 @@ export class Menu {
   #player: CharacterProfile = PRESETS[0];
   #opponent: CharacterProfile = { name: "Ser Vail", race: "human", subrace: "imperial", className: "Warrior", palette: "Ember", birthsign: "mountain", level: 1, allocated: {}, appearance: NPCS[1].appearance };
   #visible = false;
+  /**
+   * Navigation history: every screen change goes through it, so Back (button or Esc) returns
+   * to the PREVIOUS screen. The title is the root: showing it resets the trail.
+   */
+  #nav = new NavStack<Screen>("title");
+  #cb!: MenuCallbacks;
   /** Arena parameters chosen in the creator; empty = fully random. */
   #arena: Partial<ArenaConfig> = {};
 
@@ -71,6 +88,47 @@ export class Menu {
   }
 
   get visible(): boolean { return this.#visible; }
+
+  /** The screen on display (top of the navigation history). */
+  get screen(): Screen { return this.#nav.current; }
+
+  /** True when Back would leave the current screen (it is not the title). */
+  get canGoBack(): boolean { return this.#visible && this.#nav.canGoBack; }
+
+  /**
+   * Go back one step: close an open AI profile card first, else return to the previous screen.
+   * Returning to the title runs the same path as the "Menu" button (`onMenu`), so the engine
+   * leaves a finished fight. Returns false when there is nothing to go back to (the menu is
+   * hidden, or the title is showing) so the caller can fall through to its own Esc handling.
+   */
+  back(): boolean {
+    if (!this.#visible) return false;
+    const modal = this.#root.querySelector<HTMLElement>("#ai-profile.open");
+    if (modal) { modal.classList.remove("open"); return true; }
+    if (!this.#nav.canGoBack) return false;
+    const target = this.#nav.back();
+    if (target === this.#nav.root) this.#toTitle();
+    else this.#activate(target);
+    return true;
+  }
+
+  /** Leave for the title through the engine (`onMenu`), as the "Menu" button does. */
+  #toTitle(): void {
+    this.#visible = false;
+    this.#root.style.display = "none";
+    this.#cb.onMenu();
+    // The engine normally re-shows the title from onMenu; never leave the player on a blank menu.
+    if (!this.#visible) this.show("title");
+  }
+
+  /** The Back control + breadcrumb that heads every non-title screen. */
+  #backBar(): string {
+    return `
+        <div class="screen-nav">
+          <button type="button" class="screen-back" data-action="back" title="Back to the previous screen (Esc)">${icon("chevron-left", "back-icon")}<span>Back</span></button>
+          <span class="screen-crumb" data-crumb></span>
+        </div>`;
+  }
 
   /** Render the profile picker on the title screen: one chip per saved profile. */
   renderProfiles(profiles: { playerId: string; name: string; className: string; active: boolean }[], onProfile: (playerId: string) => void): void {
@@ -89,6 +147,7 @@ export class Menu {
   }
 
   #render(cb: MenuCallbacks) {
+    this.#cb = cb;
     const root = this.#root;
     root.innerHTML = `
       <div class="menu-screen" data-screen="title">
@@ -100,7 +159,7 @@ export class Menu {
         <button class="menu-btn menu-btn-alt" data-action="spectate">👁 Spectate</button>
       </div>
 
-      <div class="menu-screen" data-screen="select">
+      <div class="menu-screen" data-screen="select">${this.#backBar()}
         <header class="screen-head">
           <h2>Create your fighter</h2>
           <p class="screen-hint">Everything is one screen away: pick a panel, and the rest stays visible in the tabs.</p>
@@ -151,7 +210,7 @@ export class Menu {
           <table class="pick-table" id="birthsign-table">
             <tbody>${BIRTHSIGNS.map(b => `
               <tr class="pick-row" data-birthsign="${b.id}" data-selected="${b.id === this.#player.birthsign}">
-                <td class="pick-name">${b.name}</td>
+                <td class="pick-name"><span class="sign-label">${birthsignIcon(b.id, "sign-icon")}<span>${esc(b.name)}</span></span></td>
                 <td class="pick-hint">${b.lore}</td>
               </tr>`).join("")}
             </tbody>
@@ -205,7 +264,7 @@ export class Menu {
         <button class="menu-btn menu-btn-primary" data-action="begin">Enter the ring</button>
       </div>
 
-      <div class="menu-screen" data-screen="victory">
+      <div class="menu-screen" data-screen="victory">${this.#backBar()}
         <h2 id="victory-text">Victory!</h2>
         <p id="victory-detail" class="menu-sub"></p>
         <button class="menu-btn" data-action="rematch">Rematch</button>
@@ -214,20 +273,20 @@ export class Menu {
         <button class="menu-btn menu-btn-alt" data-action="menu">Menu</button>
       </div>
 
-      <div class="menu-screen" data-screen="sheet">
+      <div class="menu-screen" data-screen="sheet">${this.#backBar()}
         <h2>Character Sheet</h2>
         <div id="sheet-body" class="sheet-body"></div>
-        <button class="menu-btn menu-btn-alt" data-action="menu">Back</button>
+        <button class="menu-btn menu-btn-alt" data-action="menu">Main menu</button>
       </div>
 
-      <div class="menu-screen" data-screen="digest">
+      <div class="menu-screen" data-screen="digest">${this.#backBar()}
         <h2>Match History</h2>
         <div id="digest-body" class="digest-body">No fights recorded yet.</div>
-        <button class="menu-btn menu-btn-alt" data-action="menu">Back</button>
+        <button class="menu-btn menu-btn-alt" data-action="menu">Main menu</button>
       </div>`;
 
     // Title buttons
-    root.querySelector('[data-action="start"]')!.addEventListener("click", () => this.#activate("select"));
+    root.querySelector('[data-action="start"]')!.addEventListener("click", () => this.show("select"));
     root.querySelector('[data-action="digest"]')!.addEventListener("click", () => { cb.onDigest?.(); });
     root.querySelector('[data-action="spectate"]')!.addEventListener("click", () => { this.hide(); cb.onSpectate?.(this.#player, this.#opponent); });
 
@@ -317,7 +376,15 @@ export class Menu {
     root.querySelector('[data-action="rematch"]')!.addEventListener("click", () => { this.hide(); cb.onRematch(); });
     root.querySelector('[data-action="sheet"]')!.addEventListener("click", () => { cb.onSheet?.(); });
     root.querySelector('[data-action="history"]')!.addEventListener("click", () => { cb.onDigest?.(); });
-    root.querySelectorAll('[data-action="menu"]').forEach(b => b.addEventListener("click", () => { this.#visible = false; this.#root.style.display = "none"; cb.onMenu(); }));
+    root.querySelectorAll('[data-action="menu"]').forEach(b => b.addEventListener("click", () => this.#toTitle()));
+    // Back (top-left of every non-title screen): the previous screen in the history.
+    root.querySelectorAll('[data-action="back"]').forEach(b => b.addEventListener("click", () => { this.back(); }));
+    // Mouse clicks must not leave focus on a button: Space/E would re-press it mid-fight.
+    // Keyboard-activated clicks (detail 0) keep focus so Tab navigation still works.
+    root.addEventListener("click", (e) => {
+      const btn = (e.target as Element | null)?.closest?.("button");
+      if (btn && e.detail > 0) btn.blur();
+    });
 
     this.#syncCreatorUI();
     this.#wireTabs();
@@ -333,8 +400,13 @@ export class Menu {
       const screen = nav.dataset.tabs as ScreenId;
       const panels = screenPanels(screen);
       nav.innerHTML = panels.map((p, i) =>
-        `<button class="tab" data-tab="${p.id}" data-colour="${p.colour}" style="--tab:${COLOUR_HEX[p.colour]}" title="${p.hint}" data-selected="${i === 0}">${p.label}</button>`,
+        `<button class="tab" data-tab="${p.id}" data-colour="${p.colour}" title="${p.hint}" data-selected="${i === 0}">${p.label}</button>`,
       ).join("");
+      // CSP (style-src 'self') blocks style="" attributes: set the tab colour through CSSOM.
+      nav.querySelectorAll<HTMLElement>("[data-tab]").forEach((tab) => {
+        const panel = panels.find((p) => p.id === tab.dataset.tab);
+        if (panel) tab.style.setProperty("--tab", COLOUR_HEX[panel.colour]);
+      });
       const show = (id: string) => {
         for (const panel of this.#root.querySelectorAll<HTMLElement>(`[data-panel]`)) {
           panel.hidden = panel.dataset.panel !== id;
@@ -383,7 +455,7 @@ export class Menu {
           </div>
         </div>
         <div class="sign-row"><strong>Birth Sign:</strong>
-          ${BIRTHSIGNS.map(s => `<button class="sign-chip ${this.#player.birthsign === s.id ? "selected" : ""}" data-sign="${s.id}" title="${esc(s.lore)}">${s.symbol} ${esc(s.name)}</button>`).join("")}
+          ${BIRTHSIGNS.map(s => `<button class="sign-chip ${this.#player.birthsign === s.id ? "selected" : ""}" data-sign="${s.id}" title="${esc(s.lore)}">${birthsignIcon(s.id, "sign-icon")}<span>${esc(s.name)}</span></button>`).join("")}
         </div>
         <div id="birthsign-preview">${this.#birthsignPreview()}</div>
       </div>`;
@@ -419,7 +491,7 @@ export class Menu {
     if (!sign) return `<p class="bp-lore">Choose a birth sign to preview its astral alignment.</p>`;
     return `
       <div class="birthsign-preview">
-        <div class="bp-head"><span class="bp-symbol">${sign.symbol}</span><b>${esc(sign.name)}</b><span class="bp-tag">Stat deltas</span></div>
+        <div class="bp-head"><span class="bp-symbol">${birthsignIcon(sign.id, "sign-icon")}</span><b>${esc(sign.name)}</b><span class="bp-tag">Stat deltas</span></div>
         <p class="bp-lore">${esc(sign.lore)}</p>
         <div class="bp-deltas">${this.#secondaryRows()}</div>
       </div>`;
@@ -433,10 +505,14 @@ export class Menu {
     if (prev) prev.innerHTML = this.#birthsignPreview();
   }
 
+  /** Display `screen` (no history change) and refresh its breadcrumb from the history. */
   #activate(screen: Screen) {
     this.#root.querySelectorAll("[data-screen]").forEach(el => (el as HTMLElement).classList.remove("active"));
-    this.#root.querySelector(`[data-screen="${screen}"]`)!.classList.add("active");
+    const el = this.#root.querySelector(`[data-screen="${screen}"]`)!;
+    el.classList.add("active");
     this.#root.dataset.active = screen;
+    const crumb = el.querySelector("[data-crumb]");
+    if (crumb) crumb.textContent = this.#nav.trail().map((s) => SCREEN_LABEL[s]).join("  ›  ");
   }
 
   #syncCreatorUI() {
@@ -485,9 +561,14 @@ export class Menu {
       </div>`;
   }
 
+  /**
+   * Show `screen` and record it in the navigation history: the title resets the history (it is
+   * the root), any other screen is pushed on top (re-showing the current screen adds nothing).
+   */
   show(screen: Screen, opts?: { winner?: "player" | "opponent"; result?: { title: string; detail: string }; history?: HistoryView; sheet?: SheetData; leaderboard?: LeaderRow[] }) {
     this.#visible = true;
     this.#root.style.display = "flex";
+    this.#nav.push(screen);
     this.#activate(screen);
     if (screen === "victory" && opts?.result) {
       this.#root.querySelector("#victory-text")!.textContent = opts.result.title;
