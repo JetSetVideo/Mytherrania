@@ -13,8 +13,8 @@ Parent-owned. One row per requirement; "verified" means the parent re-ran it, no
 | R07/R12 terrain (E) | **shipped** `0e2b1f4`; readability → lane E2 running | 3 matches: slope max ≤ limit (0.451/0.393/0.577 vs 0.577); flagged features 3.55–3.68 (exceptions exist); feet within 1 cm of the floor on 83% of samples, the rest are knockback arcs; AI used a 3-point A* route. **Vision at noon: relief 0/10** — ±15 cm in-ring, features outside the ring undrawn, weak colour bands. |
 | R06 minimap (F) | **shipped** `0a9a3ac` | 1 bake/match; 7 contours from terrain; click + AZERTY typed M cycle overview→follow→heading. Vision clarity 5/10 → 7/10 after parent fix (capped sight wedge, token markers instead of cursor-like arrows). |
 | R05 trails (D) | **shipped** `ed125ba` | No shader/console errors. Real dash mid-lunge shows telegraph, trail, afterimage, ring. Noon visibility: dash 2→7/10, shield arc 2→6/10 after parent's daylight density uniform. Speed lines not seen by vision. |
-| R03/R15 body (A) | finished, awaiting delivery | must add `weaponNode` to SkinnedHumanoid (steer missed: A had ended) |
-| R04 motion (C) | running | |
+| R03/R15 body (A) | **shipped** `8d53c0a`; polish → lane A2 running | Browser: no shader/console errors; 2 fighters 62,288 → 20,376 tris. Clean single-model captures (noon, 2× DPR, character-relative views): human 9/10, elf 8/10, ork 6/10, dwarf 6/10 "full, complete, connected". Two zoomed reviews agree: dark crease across the top of each arm at the shoulder on stocky races; dwarf free hand reads as a stump; elf ears not visible. |
+| R04 motion (C) | **shipped** `8d53c0a`; real-rig fixes → lane C2 running | Both fighters driven; phase advances; feet alternate. Sole gap (measured under the sole point): standing +2–3 mm; planted −1.9…+4.2 cm; **unplanted frames down to −12.8 cm** (toe tip through the floor, suspected). Vision on a side-view walk strip: front knee correct, trailing knee reads reversed, torso/head lean back, 21 cm pelvis drop at walk start. |
 | R11 review agents | after integration | |
 | R13 perf | after integration | |
 
@@ -38,6 +38,8 @@ Parent-owned. One row per requirement; "verified" means the parent re-ran it, no
 - E: cliffs render as ~74° slopes (mesh vs grid differ up to 0.5 m at faces); A* ignores the other fighter.
 - F: fog grid sized from the ring's smallest radius, so triangle/oval/diamond corners never reveal (Engine fix); ramp glyph direction unchecked.
 - QA hook: `debugView({skillHold})` leaves `rt.active` set after release — restart the match (R) before a real-use capture.
+- A+C: cold body build ~0.3 s each (0.6 s at match start for two; rematches cached). Bundle 1.24 MB. Portrait.ts still renders the OLD Humanoid for the sheet portrait.
+- C: spine counter-twist not implemented (pitch-only joints); feet have no yaw joint, so turning on the spot sweeps the heel around the ball.
 
 - G: pointer lock blocks mouse presses on skill chips mid-fight; first Esc in a fight may only release pointer lock (Chrome). Back from victory goes to the creator when the fight started there.
 - B: birth sign does not reach `BodySpec` (add optional field or pass the stack from the engine); `Appearance.body` palette no longer colours skin — keep fighters distinguishable (`garment: true`).
