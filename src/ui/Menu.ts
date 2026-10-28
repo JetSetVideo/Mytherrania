@@ -58,7 +58,12 @@ export interface LeaderRow {
   mmr: number; wins: number; losses: number; peak: number;
 }
 
-const esc = (v: unknown) => String(v).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]!);
+const esc = (v: unknown) => String(v).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!);
+/**
+ * A saved NUMBER for HTML: saves are user-editable (localStorage), so a "number" field may
+ * hold markup. Finite numbers print as-is; anything else prints as an escaped string.
+ */
+const num = (v: unknown) => (typeof v === "number" && Number.isFinite(v) ? String(v) : esc(v ?? "—"));
 const pct = (v: number) => `${Math.round(v * 1000) / 10}%`;
 
 export class Menu {
@@ -577,18 +582,18 @@ export class Menu {
     if (screen === "digest" && opts?.history) this.#renderHistory(opts.history, opts.leaderboard ?? []);
     if (screen === "sheet" && opts?.sheet) {
       const s = opts.sheet;
-      const statKV = Object.entries(s.stats).map(([k, v]) => `<tr><td>${k}</td><td>${v}</td></tr>`).join("");
+      const statKV = Object.entries(s.stats).map(([k, v]) => `<tr><td>${esc(k)}</td><td>${num(v)}</td></tr>`).join("");
       const duelsKV = (s.duels ?? []).slice(-5).reverse().map(d =>
-        `<tr><td>${(d.date??"").slice(0,10)}</td><td>${d.opponent}</td><td>${d.result}</td><td>${d.duration}s</td><td>${d.dealt}/${d.received}</td><td>${d.weapon??"-"}</td><td>${d.arena??"-"}</td></tr>`
+        `<tr><td>${esc(String(d.date ?? "").slice(0, 10))}</td><td>${esc(d.opponent)}</td><td>${esc(d.result)}</td><td>${num(d.duration)}s</td><td>${num(d.dealt)}/${num(d.received)}</td><td>${esc(d.weapon ?? "-")}</td><td>${esc(d.arena ?? "-")}</td></tr>`
       ).join("");
       this.#root.querySelector("#sheet-body")!.innerHTML = `
         <div class="sheet-grid">
-          <div>${s.portrait ? `<img src="${s.portrait}" class="sheet-portrait" alt="${s.name}">` : ""}
-          <h3>${s.name}</h3>
-            <p><strong>Race:</strong> ${s.race} ${s.subrace ? "· " + s.subrace : ""}</p>
-            <p><strong>Birthsign:</strong> ${s.birthsign ?? "none"}</p>
-            <p><strong>Class:</strong> ${s.className}</p>
-            <p><strong>HP:</strong> ${s.hp} | <strong>Weapon:</strong> ${s.weapon}</p>
+          <div>${s.portrait && /^data:image\/png;base64,[A-Za-z0-9+/=]+$/.test(s.portrait) ? `<img src="${s.portrait}" class="sheet-portrait" alt="${esc(s.name)}">` : ""}
+          <h3>${esc(s.name)}</h3>
+            <p><strong>Race:</strong> ${esc(s.race)} ${s.subrace ? "· " + esc(s.subrace) : ""}</p>
+            <p><strong>Birthsign:</strong> ${esc(s.birthsign ?? "none")}</p>
+            <p><strong>Class:</strong> ${esc(s.className)}</p>
+            <p><strong>HP:</strong> ${num(s.hp)} | <strong>Weapon:</strong> ${esc(s.weapon)}</p>
           </div>
           <div><h3>Stats</h3><table class="digest-table"><tr><th>Stat</th><th>Value</th></tr>${statKV}</table></div>
         </div>
@@ -634,12 +639,12 @@ export class Menu {
     const rows = [...list].reverse().slice(0, 60).map((r) => {
       const [a, b] = r.fighters;
       const who = (f: typeof a, i: number) => `<span class="${r.winner === i ? "won" : "lost"}">${esc(f.name)}</span><small>${esc(f.race)} ${esc(f.className)} · ${esc(f.weapon)} · ${f.controller === "human" ? "Player" : "AI tree"}</small>`;
-      return `<tr><td>#${r.id}<small>${esc(r.at.slice(0, 16).replace("T", " "))}</small><small>in-world ${String(Math.floor(r.hour)).padStart(2, "0")}:${String(Math.round((r.hour % 1) * 60) % 60).padStart(2, "0")}</small></td>
+      return `<tr><td>#${num(r.id)}<small>${esc(r.at.slice(0, 16).replace("T", " "))}</small><small>in-world ${String(Math.floor(r.hour)).padStart(2, "0")}:${String(Math.round((r.hour % 1) * 60) % 60).padStart(2, "0")}</small></td>
         <td>${who(a, 0)}</td><td>${who(b, 1)}</td>
         <td>${esc(r.place)}<small>${esc(r.arena)} · ${esc(r.phase)} ${String(Math.floor(r.hour)).padStart(2, "0")}h</small></td>
-        <td>${esc(r.reason)}<small>${r.duration}s · 1st: ${esc(r.firstStrike ?? "—")}</small></td>
-        <td>${a.dealt}/${b.dealt}<small>${a.hits}/${b.hits} hits</small></td>
-        <td>V${a.stats.vitality} R${a.stats.resilience} W${a.stats.willpower} Rx${a.stats.reflex} S${a.stats.strength} I${a.stats.intelligence}<small>vs V${b.stats.vitality} R${b.stats.resilience} W${b.stats.willpower} Rx${b.stats.reflex} S${b.stats.strength} I${b.stats.intelligence}</small></td></tr>`;
+        <td>${esc(r.reason)}<small>${num(r.duration)}s · 1st: ${esc(r.firstStrike ?? "—")}</small></td>
+        <td>${num(a.dealt)}/${num(b.dealt)}<small>${num(a.hits)}/${num(b.hits)} hits</small></td>
+        <td>V${num(a.stats.vitality)} R${num(a.stats.resilience)} W${num(a.stats.willpower)} Rx${num(a.stats.reflex)} S${num(a.stats.strength)} I${num(a.stats.intelligence)}<small>vs V${num(b.stats.vitality)} R${num(b.stats.resilience)} W${num(b.stats.willpower)} Rx${num(b.stats.reflex)} S${num(b.stats.strength)} I${num(b.stats.intelligence)}</small></td></tr>`;
     }).join("");
     body.innerHTML = `
       ${board}

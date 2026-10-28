@@ -1,0 +1,1 @@
+{"note":"run_coldphone.js: 375x812 @3, isMobile, CPU throttled 4x BEFORE navigation; longtask entries (PerformanceObserver 'longtask') in ms","load":{"lt":[{"start":60,"dur":2909},{"start":2970,"dur":131}],"dcl":2832},"enter":[{"start":5763,"dur":614},{"start":6378,"dur":74}],"restart12":[{"start":8011,"dur":331}],"restart120":[{"start":9906,"dur":644}]}
