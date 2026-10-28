@@ -178,6 +178,13 @@ export interface Contact {
   edgeAlignment: number;
   /** For points: |cos| of the angle between the weapon axis and velocity (1 = clean thrust). */
   thrustAlignment: number;
+  /**
+   * OPTIONAL (lane X): the contact point in WEAPON LOCAL coordinates — its distance from the
+   * grip is the lever arm of the impulse (Impact.ts effective mass). Absent: the feature centroid.
+   */
+  local?: V3;
+  /** OPTIONAL (lane X): index of the striking feature in WeaponSpec.features (its own damage mix). */
+  featureIndex?: number;
 }
 
 export interface ImpactInput {

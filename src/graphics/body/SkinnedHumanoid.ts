@@ -26,6 +26,9 @@ import { applyFaceMorph, buildFaceParts } from "./FaceParts.ts";
 import { paintVertices } from "../paint/Layers.ts";
 import { stackFor } from "../paint/Recipes.ts";
 import { RIG_ROTATION_SIGN } from "../../game/anim/Rig.ts";
+import type { WeaponSpec } from "../../combat/contracts.ts";
+import { buildWeaponModel } from "../weapons/WeaponModel.ts";
+import { gripModeRotation, preferredGrip } from "../../game/weapons/Generate.ts";
 
 /** What the skinned rig adds to HumanoidRig. */
 export interface SkinnedExtras {
@@ -63,6 +66,8 @@ export interface SkinnedHumanoidOptions {
   levelFeet?: boolean;
   /** Weapon scale (1 = its authored size in metres). */
   weaponScale?: number;
+  /** A generated weapon (W06): drawn with the cel WeaponModel (real edges) instead of part boxes. */
+  weaponSpec?: WeaponSpec;
   /**
    * The palette colour painted as the garment (tunic + breeches) so two fighters stay
    * distinguishable. Default `appearance.body`. The engine overwrites `app.body` with the
@@ -192,7 +197,10 @@ export function buildSkinnedHumanoid(
   grip.name = "grip";
   grip.rotation.x = -0.35; // Humanoid's rest grip: blade up with a slight forward cant
   mount.add(grip);
-  const weaponMesh = buildWeaponMesh(weapon, element);
+  const weaponMesh = options.weaponSpec ? buildWeaponModel(options.weaponSpec, { element }) : buildWeaponMesh(weapon, element);
+  // Generated weapons: the preferred grip (a dagger's reverse "ice-pick" grip) rotates the
+  // weapon frame itself, so strike features (weapon-local) rotate with the mesh.
+  if (options.weaponSpec) weaponMesh.group.rotation.set(...gripModeRotation(preferredGrip(options.weaponSpec)));
   weaponMesh.group.scale.setScalar(options.weaponScale ?? 1);
   grip.add(weaponMesh.group);
   triangleCount += weaponMesh.triangleCount;

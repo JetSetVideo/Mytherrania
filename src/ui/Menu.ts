@@ -12,6 +12,7 @@ import { COLOUR_HEX, screenPanels, type ScreenId } from "./UiTree.ts";
 import { NavStack } from "./NavStack.ts";
 import { birthsignIcon, icon } from "./Icons.ts";
 import { ancestryView, initialAncestry, nextHeaderIndex, selectSubrace, toggleRace, type AncestryState } from "./AncestryState.ts";
+import { weaponMenuOptions } from "../game/weapons/Loadout.ts";
 
 /** Largest arena (m across) the live engine builds; the creator's size slider tops out here. */
 export const LIVE_ARENA_MAX = 120;
@@ -271,9 +272,10 @@ export class Menu {
           <div id="class-skills" class="class-skills"></div>
           <h4 class="group-head">Weapon</h4>
           <table class="pick-table" id="weapon-table">
-            <tbody>${(["", "axe", "sword", "dagger", "staff", "scythe", "bow", "mace"] as const).map(w => `
-              <tr class="pick-row" data-weapon="${w}" data-selected="${(w || undefined) === this.#player.weaponType || (w === "" && !this.#player.weaponType)}">
-                <td class="pick-name">${w === "" ? "Class default" : w[0].toUpperCase() + w.slice(1)}</td>
+            <tbody>${weaponMenuOptions().map(o => `
+              <tr class="pick-row" data-weapon="${esc(o.value)}" data-selected="${(o.value || undefined) === this.#player.weaponType || (o.value === "" && !this.#player.weaponType)}">
+                <td class="pick-name">${esc(o.label)}</td>
+                <td class="pick-hint">${esc(o.hint)}</td>
               </tr>`).join("")}
             </tbody>
           </table>
