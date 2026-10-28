@@ -9,7 +9,17 @@ canvas{display:block}
 #hud-status{font-family:'Cinzel','Trajan Pro','Palatino Linotype','Palatino','Book Antiqua',Georgia,serif;font-size:24px;line-height:1.1;margin-top:2px}
 #hud-weapons{font-size:14px;color:#dfaa55;margin-top:2px}
 #hud-world{font-size:13px;color:#cfe3ff;margin-top:2px;text-shadow:0 1px 2px #000}
-#hud-minimap{display:block;margin-top:6px;width:132px;height:132px;border:2px solid #172128;border-radius:6px;background:#0b1014;image-rendering:pixelated}
+/* Minimap. Backing store = CSS size x devicePixelRatio, set by Minimap.resize(). */
+:root{--minimap-size:200px}
+#hud-minimap{display:block;margin-top:6px;width:var(--minimap-size);height:var(--minimap-size);
+  border:2px solid #b9c9c8;border-radius:8px;background:#0b1014;box-shadow:0 2px 10px rgba(0,0,0,.55);
+  pointer-events:auto;cursor:pointer;touch-action:manipulation}
+#hud-minimap:hover{border-color:#dfaa55}
+#hud-minimap:focus-visible{outline:3px solid #ef7455;outline-offset:2px}
+@media(max-width:767px){:root{--minimap-size:132px}}
+@media(min-width:768px) and (max-width:1439px){:root{--minimap-size:184px}}
+@media(min-width:1440px){:root{--minimap-size:220px}}
+@media(max-height:480px){:root{--minimap-size:120px}}
 #hud-compass{font-size:12px;color:#dfaa55;margin-top:2px;text-shadow:0 1px 2px #000}
 #hud{text-shadow:0 1px 2px rgba(0,0,0,.85)}
 #hints{position:fixed;bottom:12px;left:50%;transform:translateX(-50%);font-size:12px;color:#a9ce7c;pointer-events:none;z-index:10;white-space:nowrap;text-shadow:0 0 4px rgba(23,33,40,.8)}
