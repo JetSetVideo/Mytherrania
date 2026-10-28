@@ -10,11 +10,11 @@ Parent-owned. One row per requirement; "verified" means the parent re-ran it, no
 | R09 skill bar | **shipped** `d9d6d15` | 1440×900, 768×1024, 375×812: 3 chips on one row, centred, above `#hints`, no overlap with any HUD rect. At 375 px "Crushing Blow" ellipsises. |
 | R15 paint | landed, **unwired** `43d04c2` | 29/29 paint tests. Waits for lane A's mesh. |
 | R10/R08 review | landed `43d04c2` | `docs/GLOSSARY.md`, `docs/review/*`. |
-| R03/R15 body (A) | running | |
+| R07/R12 terrain (E) | **shipped** `0e2b1f4`; readability → lane E2 running | 3 matches: slope max ≤ limit (0.451/0.393/0.577 vs 0.577); flagged features 3.55–3.68 (exceptions exist); feet within 1 cm of the floor on 83% of samples, the rest are knockback arcs; AI used a 3-point A* route. **Vision at noon: relief 0/10** — ±15 cm in-ring, features outside the ring undrawn, weak colour bands. |
+| R06 minimap (F) | **shipped** `0a9a3ac` | 1 bake/match; 7 contours from terrain; click + AZERTY typed M cycle overview→follow→heading. Vision clarity 5/10 → 7/10 after parent fix (capped sight wedge, token markers instead of cursor-like arrows). |
+| R05 trails (D) | **shipped** `ed125ba` | No shader/console errors. Real dash mid-lunge shows telegraph, trail, afterimage, ring. Noon visibility: dash 2→7/10, shield arc 2→6/10 after parent's daylight density uniform. Speed lines not seen by vision. |
+| R03/R15 body (A) | finished, awaiting delivery | must add `weaponNode` to SkinnedHumanoid (steer missed: A had ended) |
 | R04 motion (C) | running | |
-| R05 trails (D) | running | |
-| R07/R12 terrain (E) | running | |
-| R06 minimap (F) | running | |
 | R11 review agents | after integration | |
 | R13 perf | after integration | |
 
@@ -33,6 +33,11 @@ Parent-owned. One row per requirement; "verified" means the parent re-ran it, no
 | 9 | Palm direction computed, never changes the grip | not yet | review wave |
 
 ## Known open items from lanes
+
+- D: afterimages are a generic standing figure facing the camera (not the fighter's pose); the floor arrow is a straight-line prediction; shield arc hazes the view at close orbit distance; speed lines not confirmed visible.
+- E: cliffs render as ~74° slopes (mesh vs grid differ up to 0.5 m at faces); A* ignores the other fighter.
+- F: fog grid sized from the ring's smallest radius, so triangle/oval/diamond corners never reveal (Engine fix); ramp glyph direction unchecked.
+- QA hook: `debugView({skillHold})` leaves `rt.active` set after release — restart the match (R) before a real-use capture.
 
 - G: pointer lock blocks mouse presses on skill chips mid-fight; first Esc in a fight may only release pointer lock (Chrome). Back from victory goes to the creator when the fight started there.
 - B: birth sign does not reach `BodySpec` (add optional field or pass the stack from the engine); `Appearance.body` palette no longer colours skin — keep fighters distinguishable (`garment: true`).
