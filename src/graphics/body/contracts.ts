@@ -154,6 +154,8 @@ export interface BodySpec {
   /** Body mass in kg; drives girth through BMI-like ratios. */
   weight: number;
   seed: number;
+  /** Birth sign id (e.g. "serpent"); drives the paint recipe's warpaint/tattoo. Optional. */
+  birthsign?: string | null;
 }
 
 /** The full generated body: volumes, brushes, bones and the box to polygonise. */
