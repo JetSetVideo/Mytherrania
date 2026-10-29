@@ -1,0 +1,175 @@
+--- a/src/engine/Engine.ts
++++ b/src/engine/Engine.ts
+@@ -145,7 +145,8 @@
+ import { AiProfile } from "../game/AiStats.ts";
+ import { Brain } from "../game/AiBrain.ts";
+ import { executeAction } from "../game/AiBrain.ts";
+-import { blockDistance, occlusionAlpha } from "../game/CameraOcclusion.ts";
++import { CameraClearance } from "../game/CameraOcclusion.ts";
++import { OccluderSystem } from "../graphics/occlusion/Occluders.ts";
+ import { stanceForTechnique } from "../game/GripStance.ts";
+ import { weaponFromPalm, palmIsUp } from "../game/PalmWeapon.ts";
+ import { ARCHETYPE_LIST, Leaderboard, type Archetype, type RankedAi } from "../game/Ranking.ts";
+@@ -309,10 +310,14 @@
+   #telemetry = beaconSink();
+   /** How many swings each fighter has thrown, for alternating the swing plane. */
+   #swingIndex = new Map<Fighter, number>();
+-  /** The wall meshes built for this match, for the camera-occlusion fade. */
++  /** The wall meshes built for this match (QA clean capture toggles their visibility). */
+   #wallMeshes: THREE.Mesh[] = [];
+-  /** Each wall mesh's current fade alpha, eased toward the target. */
+-  #occlusion = new Map<THREE.Mesh, number>();
++  /** Lane O (V01): fades every registered object standing between the camera and the viewed fighter. */
++  #occluders = new OccluderSystem();
++  /** Lane O (V01): pulls the third-person camera in front of terrain that hides the player. */
++  #clearance = new CameraClearance();
++  /** Scratch: the point the third-person camera must keep in view (the player's chest), m. */
++  #clearanceAim = new THREE.Vector3();
+   /** Which skill each fighter is animating (index into its runtime's list). */
+   #skillFired = new Map<Fighter, boolean>();
+   #frozen = false; // QA: pause the simulation while rendering continues
+@@ -612,6 +617,9 @@
+    */
+   #buildArena() {
+     if (this.#arenaMesh) this.#scene.remove(this.#arenaMesh);
++    // Lane O: forget last match's walls/props (restores their materials, frees fade variants).
++    this.#occluders.clear(["wall", "prop"]);
++    this.#clearance.reset();
+     const g = new THREE.Group();
+     this.#arenaMesh = g;
+     this.#scene.add(g);
+@@ -656,7 +664,6 @@
+     // The material is transparent-capable so the camera-occlusion fade can drop a
+     // blocking wall's alpha instead of hiding the viewed character behind it.
+     this.#wallMeshes = [];
+-    this.#occlusion.clear();
+     if (this.#arenaState.walled) {
+       const tough = Math.min(1, cfg.wallResistance / 9000);
+       const wallMat = new THREE.MeshLambertMaterial({ color: new THREE.Color().setHSL(0.55, 0.25, 0.55 - 0.3 * tough), transparent: true, opacity: 1 });
+@@ -673,8 +680,8 @@
+         seg.rotation.y = -Math.atan2(b.z - a.z, b.x - a.x);
+         seg.name = "arena-wall";
+         this.#wallMeshes.push(seg);
+-        this.#occlusion.set(seg, 1);
+         g.add(seg);
++        this.#occluders.register(seg, { kind: "wall" });
+       }
+     }
+     // Outside ground: a solid concrete plane when the arena has one.
+@@ -703,6 +710,7 @@
+       m.castShadow = true;
+       m.name = `prop-${p.kind}`;
+       g.add(m);
++      this.#occluders.register(m, { kind: "prop" });
+     }
+     this.#spawnPickups();
+     // The arena is rebuilt for every match, so the visibility set by debugView({clean})
+@@ -776,6 +784,7 @@
+ 
+   #rebuildTerrain() {
+     if (this.#terrain) this.#scene.remove(this.#terrain);
++    this.#occluders.clear(["terrain"]);
+     const g = new THREE.Group();
+     this.#terrain = g;
+     this.#scene.add(g);
+@@ -792,6 +801,7 @@
+         hill.position.set(x * h, s * 0.4, z * h);
+         hill.scale.y = 0.5;
+         g.add(hill);
++        this.#occluders.register(hill, { kind: "terrain" });
+       }
+     } else if (this.#arenaType === "river") {
+       const river = new THREE.Mesh(new THREE.BoxGeometry(h * 2, 0.3, 2.5), mat("#4f8490"));
+@@ -818,6 +828,7 @@
+   }
+ 
+   #spawnMeshes() {
++    this.#occluders.clear(["fighter", "weapon"]);
+     for (const a of this.#auras.values()) this.#scene.remove(a);
+     this.#auras.clear();
+     this.#rigs.clear();
+@@ -885,6 +896,10 @@
+         if (child instanceof THREE.Mesh) child.castShadow = !/outline/.test(child.name);
+       });
+       this.#rigs.set(f, rig);
++      // Lane O (V01): the weapon is its own occluder (registered first so the body's capsule
++      // bound excludes it); the body takes every other mesh of the rig (skin, ink hull, face).
++      this.#occluders.register(rig.weaponNode, { kind: "weapon" });
++      this.#occluders.register(rig.group, { kind: "fighter" });
+       // Leg geometry from the body's own bones (bind pose: soles on y 0, so the ankle's
+       // bind height IS the ankle-to-sole distance).
+       const ankleY = rig.plan.bones.find((b) => b.id === "ankleL")?.head[1] ?? 0.08;
+@@ -2872,6 +2887,14 @@
+         p.body.y + 0.9 + cy + camLift,
+         p.body.z + Math.cos(yaw) * horiz - Math.sin(yaw) * sh * -1,
+       );
++      // Lane O (V01): a hill or cliff between the camera and the player pulls the camera in
++      // front of it at once (or lifts it when that would come closer than 1.2 m) and eases back
++      // out once the view is clear. Walls, props and fighters fade instead (#updateOcclusion).
++      const floorAt = this.#arenaState.floorAt;
++      if (floorAt) {
++        this.#clearanceAim.set(p.body.x, p.body.y + 0.9, p.body.z);
++        this.#clearance.apply(cam.position, this.#clearanceAim, floorAt, dt);
++      }
+       // Look over the shoulder toward where the character faces.
+       // Aim along the player->opponent axis while the CAMERA sits off to one side.
+       // Offsetting both by the same vector is a pure translation and leaves the
+@@ -2923,7 +2946,7 @@
+         : (e.moons[0].dir[1] >= e.moons[1].dir[1] ? m0 : m1);
+       cam.lookAt(cam.position.x + d[0], cam.position.y + Math.max(d[1], 0.05), cam.position.z + d[2]);
+     }
+-    this.#updateOcclusion(cam);
++    this.#updateOcclusion(cam, dt);
+     // Remember where this camera looks on the ground: next frame's "forward" key.
+     cam.getWorldDirection(this.#lookScratch);
+     this.#cameraForward = groundForward(this.#lookScratch.x, this.#lookScratch.z, this.#cameraForward);
+@@ -2943,38 +2966,20 @@
+     }
+   }
+ 
+-  dispose() { this.#running = false; this.#renderer.dispose(); this.#audio.dispose(); }
++  dispose() { this.#running = false; this.#occluders.dispose(); this.#renderer.dispose(); this.#audio.dispose(); }
+ 
+   /**
+-   * Camera-occlusion fade: a wall sitting between the third-person camera and the
+-   * viewed character drops its opacity in the radial area around the character, so
+-   * the subject is never hidden behind geometry. Each wall's alpha eases toward the
+-   * target from CameraOcclusion.occlusionAlpha, so the fade is smooth, not a pop.
+-   * Non-blocking walls ease back to opaque.
++   * Camera occlusion (lane O, V01): every registered wall, prop, detached hill, the other fighter
++   * and the weapons standing between the camera and the viewed fighter fade (eased, frame-rate
++   * independent; src/graphics/occlusion/Occluders.ts). The viewed fighter is the one the camera
++   * rig frames (`#player`, AI-driven in spectate). In first person the eye IS the head: no
++   * subject, so every occluder eases back to opaque.
+    */
+-  #updateOcclusion(cam: THREE.Camera): void {
+-    if (this.#wallMeshes.length === 0) return;
+-    const self = this.#spectate ? this.#opponent : this.#player;
+-    if (!self) return;
+-    const cx = self.body.x, cz = self.body.z;
+-    const camX = cam.position.x, camZ = cam.position.z;
+-    for (const wall of this.#wallMeshes) {
+-      const mat = wall.material as THREE.MeshLambertMaterial;
+-      // The wall's footprint centre on the ground plane; its half-length + half-thickness
+-      // is the radius that decides whether it crosses the view corridor.
+-      const halfLen = (wall.geometry as THREE.BoxGeometry).parameters.width / 2;
+-      const d = blockDistance(camX, camZ, cx, cz, wall.position.x, wall.position.z, halfLen + 0.2);
+-      const target = d === null ? 1 : occlusionAlpha(d, 1.5, 6, 0.12);
+-      const cur = this.#occlusion.get(wall) ?? 1;
+-      const next = cur + (target - cur) * 0.2;
+-      this.#occlusion.set(wall, next);
+-      mat.opacity = next;
+-      // Opaque (sorted front-to-back, no blending) unless actually fading: an always-
+-      // transparent wall cost 1.2–2.6 blended layers per pixel (perf review).
+-      mat.transparent = next < 0.995;
+-      mat.depthWrite = next > 0.6;
+-      wall.visible = next > 0.03;
+-    }
++  #updateOcclusion(cam: THREE.Camera, dt: number): void {
++    const rig = this.#rigs.get(this.#player);
++    const firstPerson = this.#firstPerson && this.#activeCamera === "third";
++    this.#occluders.setSubject(rig && !firstPerson ? rig.group : null);
++    this.#occluders.update(cam, dt);
+   }
+ 
+   /**

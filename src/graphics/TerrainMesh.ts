@@ -52,6 +52,11 @@ export interface TerrainMeshOptions extends RingSurfaceOptions {
   outside?: boolean;
   /** Triangle budget of the outside, default TERRAIN_TRIANGLE_BUDGET - ring triangles. */
   outsideTriangleBudget?: number;
+  /**
+   * Far apron radius of the outside, m (OutsideOptions.farRadius). Default 4 arenaRadius + 40.
+   * Lane S (V04) passes the field edge (+ 5 cm) so the biome mesh continues the ground from there.
+   */
+  outsideFarRadius?: number;
   /** Paint ring and outside with TerrainPaint (false/absent = the plain band colours). */
   paint?: TerrainPaintOptions | false;
 }
@@ -81,7 +86,7 @@ export function buildTerrainMesh(field: Heightfield, outline: ArenaOutline, opti
   mesh.receiveShadow = true;
   let outside: TerrainOutsideBuild | null = null;
   if (drawOutside) {
-    outside = buildTerrainOutside(field, outline, surface, { baseY, triangleBudget: options.outsideTriangleBudget, paint: options.paint }, reuse?.outside ?? undefined);
+    outside = buildTerrainOutside(field, outline, surface, { baseY, triangleBudget: options.outsideTriangleBudget, paint: options.paint, farRadius: options.outsideFarRadius }, reuse?.outside ?? undefined);
     if (outside.mesh.parent !== mesh) mesh.add(outside.mesh);
   } else if (reuse?.outside) {
     mesh.remove(reuse.outside.mesh);

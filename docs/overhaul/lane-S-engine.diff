@@ -1,0 +1,161 @@
+diff --git a/src/engine/Engine.ts b/src/engine/Engine.ts
+index 280a5e8..bd2fb4e 100644
+--- a/src/engine/Engine.ts
++++ b/src/engine/Engine.ts
+@@ -156,6 +156,8 @@ import { createProfile, ProfileRepo, type Profile } from "../game/Profiles.ts";
+ import { generateArenaTerrain, heightAt, outlineFromArena, type Heightfield } from "../world/Heightfield.ts";
+ import { GridPathFinder, obstaclesFromProps, steerAlongPath, type PathCursor, type PathPoint, type Steer } from "../world/PathFinder.ts";
+ import { buildTerrainMesh, type TerrainMeshBuild } from "../graphics/TerrainMesh.ts";
++import { chooseBiome, createSurroundings, fieldNearRadius, type BiomeSurroundings } from "../world/biomes/Biomes.ts";
++import { APRON_TUCK, buildSurroundingsMesh, type SurroundingsLight, type SurroundingsMesh } from "../graphics/biomes/SurroundingsMesh.ts";
+ import { beaconSink, characterCreationEvent, isValidEvent, TELEMETRY_ENDPOINT } from "../game/CreationTelemetry.ts";
+ 
+ type CameraMode = "close" | "third" | "isometric" | "birds-eye" | "axis";
+@@ -254,6 +256,17 @@ export class Engine {
+   #opponentProfile!: CharacterProfile;
+   #arenaType: ArenaType = "ring";
+   #terrain: THREE.Group | null = null;
++  /**
++   * V04 (lane S): what lies around and below the arena. Physics (lane R) reads
++   * surfaceAt(x, z, this.#skyTime) - the SAME clock the water shader animates with -
++   * plus mediumAt / drag / buoyancy / hazardDps / killPlaneY. Null outside a fight.
++   */
++  #surroundings: BiomeSurroundings | null = null;
++  #surroundingsMesh: SurroundingsMesh | null = null;
++  readonly #surAmbient = new THREE.Color();
++  readonly #surSun = new THREE.Color();
++  /** Reused per-frame light input (no allocation in the loop). */
++  readonly #surLight: SurroundingsLight = { sunColor: this.#surSun };
+   #camDist = 9;   // adaptive camera distance
+   #camHeight = 7; // adaptive camera height
+   #firstPerson = false;
+@@ -627,6 +640,8 @@ export class Engine {
+         outsideFollowsTerrain: outsideOn,    // floorHeightAt returns that drawn outside
+         // Painted ground layers; the outside is tinted for the place the sky shows.
+         paint: { ringHalf: this.#ringHalf(), place: this.#place.id },
++        // V04: the flat apron stops just past the field; the biome mesh continues the ground.
++        outsideFarRadius: outsideOn ? fieldNearRadius(field, this.#ringMaxRadius()) + 0.05 : undefined,
+       }, this.#terrainMesh);
+       this.#arenaState.outsideFollowsTerrain = outsideOn;
+       g.add(this.#terrainMesh.mesh);
+@@ -774,6 +789,42 @@ export class Engine {
+     return r;
+   }
+ 
++  /** Largest rim radius over 64 bearings, m (the surroundings' ringRadius). */
++  #ringMaxRadius(): number {
++    let r = 0;
++    for (let i = 0; i < 64; i++) r = Math.max(r, ringRadiusAt(this.#arena, (i / 64) * Math.PI * 2));
++    return r;
++  }
++
++  /**
++   * V04 (lane S): choose and build what surrounds the arena (water, magma, clouds, canopy, void,
++   * meadow, hills) from the arena + place, replacing the flat void-plane / lowland. Seeded from
++   * the terrain field, so a replayed arena gets the same biome. Call after the place is known.
++   */
++  #buildSurroundings() {
++    this.#surroundingsMesh?.dispose();
++    this.#surroundingsMesh = null;
++    this.#surroundings = null;
++    const field = this.#terrainField, terrain = this.#terrainMesh;
++    if (!field || !terrain) return;
++    const cfg = this.#arena;
++    const spec = chooseBiome(cfg, this.#place.id, seededRng((field.seed ^ 0x5eed5) >>> 0));
++    const outside = terrain.outside;
++    const layout = outside?.surface.layout;
++    this.#surroundings = createSurroundings(spec, field, this.#ringMaxRadius(),
++      outside && layout ? { near: { radius: layout.outerRadius, floorAt: terrain.floorHeightAt, edgeY: outside.surface.farY } } : {});
++    this.#surroundingsMesh = buildSurroundingsMesh(this.#surroundings, {
++      rimRadiusAt: (a) => ringRadiusAt(cfg, a),
++      rimBottomY: terrain.surface.skirtBottomY,
++      innerRadius: layout?.outerRadius,
++      // Without the TerrainMesh outsideFarRadius patch the flat apron still overlaps the land: tuck under it.
++      apronTuck: layout && layout.farRadius > layout.outerRadius + 1 ? APRON_TUCK : 0,
++    });
++    this.#scene.add(this.#surroundingsMesh.group);
++    this.#scene.traverse((o) => { if (o.name === "void-plane") o.visible = false; });
++    if (this.#cleanCapture) this.#surroundingsMesh.group.visible = false;
++  }
++
+   #rebuildTerrain() {
+     if (this.#terrain) this.#scene.remove(this.#terrain);
+     const g = new THREE.Group();
+@@ -999,6 +1050,7 @@ export class Engine {
+     const now = clockFromDate(new Date());
+     const placeIdx = (["ring", "walls", "hills", "river"] as ArenaType[]).indexOf(this.#arenaType);
+     this.#setWorldTime(now.hour, now.dayOfYear, PLACES[placeIdx]);
++    this.#buildSurroundings();
+     this.#hits.clear();
+     // Fresh AI identities + brains. The opponent always gets a profile; the player
+     // gets one too in spectate (AI-vs-AI) so both fighters feed the corpus. A human
+@@ -2553,6 +2605,13 @@ export class Engine {
+     const dt = this.#paused ? 0 : Math.min(this.#clock.getDelta(), 0.1);
+     if (!this.#frozen) this.#skyTime += dt;
+     this.#applyEnvironment();
++    if (this.#surroundingsMesh) {
++      this.#surAmbient.copy(this.#ambient.color).multiplyScalar(this.#ambient.intensity);
++      this.#surSun.copy(this.#sunLight.color).multiplyScalar(this.#sunLight.intensity);
++      this.#surLight.zenith = this.#env.zenith;
++      this.#surLight.horizon = this.#env.horizon;
++      this.#surroundingsMesh.update(this.#skyTime, this.#sunLight.position, this.#surAmbient, this.#surLight);
++    }
+     this.#hudTimer -= dt;
+     if (this.#hudTimer <= 0 && this.#phase === "fight") { this.#hudTimer = 0.25; this.#updateHUD(); this.#updateCompass(); }
+     this.#minimapTimer -= dt;
+@@ -3069,6 +3128,7 @@ export class Engine {
+ 
+   debugView(opts: { hour?: number; dayOfYear?: number; place?: number; camera?: CameraMode; firstPerson?: boolean; freeze?: boolean; skyAim?: "sun" | "moon" | "moons" | null; skillHold?: { index: number; at: number } | null; fxOverride?: number; orbit?: { yaw: number; pitch: number; dist: number } | null; axis?: "x" | "y" | "z" | null; clean?: boolean; pose?: PoseName }) {
+     this.#setWorldTime(opts.hour ?? this.#hour, opts.dayOfYear ?? this.#dayOfYear, PLACES[opts.place ?? PLACES.indexOf(this.#place)] ?? this.#place);
++    if (opts.place !== undefined && this.#phase === "fight") this.#buildSurroundings();
+     if (opts.camera) this.#activeCamera = opts.camera;
+     if (opts.firstPerson !== undefined) this.#firstPerson = opts.firstPerson;
+     if (opts.freeze !== undefined) this.#frozen = opts.freeze;
+@@ -3109,7 +3169,8 @@ export class Engine {
+       // three gone, or the silhouette cannot be judged against empty space.
+       if (this.#arenaMesh) this.#arenaMesh.visible = !opts.clean;
+       for (const wall of this.#wallMeshes) wall.visible = !opts.clean;
+-      this.#scene.traverse((o) => { if (o.name === "void-plane") o.visible = !opts.clean; });
++      this.#scene.traverse((o) => { if (o.name === "void-plane") o.visible = !opts.clean && !this.#surroundingsMesh; });
++      if (this.#surroundingsMesh) this.#surroundingsMesh.group.visible = !opts.clean;
+       // The sky is a MESH added to the scene, not `scene.background`, so flattening the
+       // background alone still leaves clouds and a horizon in frame. Hide the mesh itself.
+       this.#sky.mesh.visible = !opts.clean;
+@@ -3345,6 +3406,12 @@ export class Engine {
+         wallHeight: +this.#arena.wallHeight.toFixed(2), wallIntegrity: +this.#arenaState.integrity.toFixed(3),
+         wallHits: { held: this.#wallHits[0], breached: this.#wallHits[1] },
+         outsideGround: this.#arena.outsideGround >= 1, props: this.#arenaState.props.length,
++        surroundings: this.#surroundings ? {
++          kind: this.#surroundings.spec.kind, variant: this.#surroundings.spec.variant,
++          agitation: this.#surroundings.spec.agitation, surfaceDrop: this.#surroundings.spec.surfaceDrop,
++          killPlaneY: this.#surroundings.killPlaneY, drawCalls: this.#surroundingsMesh?.stats.drawCalls ?? 0,
++          triangles: this.#surroundingsMesh?.stats.triangles ?? 0,
++        } : null,
+         truceSeconds: this.#timing.friendlySeconds + this.#timing.neutralSeconds,
+         statusesApplied: Object.fromEntries(this.#statusTally),
+         closingSpeeds: this.#closingLog.map((v) => Math.round(v * 100) / 100),
+diff --git a/src/graphics/TerrainMesh.ts b/src/graphics/TerrainMesh.ts
+index 9eb36ae..f3010a3 100644
+--- a/src/graphics/TerrainMesh.ts
++++ b/src/graphics/TerrainMesh.ts
+@@ -52,6 +52,11 @@ export interface TerrainMeshOptions extends RingSurfaceOptions {
+   outside?: boolean;
+   /** Triangle budget of the outside, default TERRAIN_TRIANGLE_BUDGET - ring triangles. */
+   outsideTriangleBudget?: number;
++  /**
++   * Far apron radius of the outside, m (OutsideOptions.farRadius). Default 4 arenaRadius + 40.
++   * Lane S (V04) passes the field edge (+ 5 cm) so the biome mesh continues the ground from there.
++   */
++  outsideFarRadius?: number;
+   /** Paint ring and outside with TerrainPaint (false/absent = the plain band colours). */
+   paint?: TerrainPaintOptions | false;
+ }
+@@ -81,7 +86,7 @@ export function buildTerrainMesh(field: Heightfield, outline: ArenaOutline, opti
+   mesh.receiveShadow = true;
+   let outside: TerrainOutsideBuild | null = null;
+   if (drawOutside) {
+-    outside = buildTerrainOutside(field, outline, surface, { baseY, triangleBudget: options.outsideTriangleBudget, paint: options.paint }, reuse?.outside ?? undefined);
++    outside = buildTerrainOutside(field, outline, surface, { baseY, triangleBudget: options.outsideTriangleBudget, paint: options.paint, farRadius: options.outsideFarRadius }, reuse?.outside ?? undefined);
+     if (outside.mesh.parent !== mesh) mesh.add(outside.mesh);
+   } else if (reuse?.outside) {
+     mesh.remove(reuse.outside.mesh);

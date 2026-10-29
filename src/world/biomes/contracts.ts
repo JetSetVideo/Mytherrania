@@ -39,6 +39,14 @@ export interface BiomeSpec {
   groundDepth?: number;
   /** Radius out to which the surroundings are modelled and drawn, m. */
   extent: number;
+  /** (lane S, optional) Environment place id the biome was chosen for ("sunspire", …): palette. */
+  place?: string;
+  /** (lane S, optional) Palette variant: "icy" water, "dry" hills, "lush" meadow, "heath", "snow", "basalt" magma, "storm" clouds. */
+  variant?: string;
+  /** (lane S, optional) Wind heading, rad in the xz plane (direction = (cos, sin)): waves travel and clouds drift this way. */
+  windAngle?: number;
+  /** (lane S, optional) The arena has solid outside ground (ArenaConfig.outsideGround 1) out to the heightfield's edge; the biome starts beyond it. */
+  outsideGround?: boolean;
 }
 
 /** The live surroundings: queried by physics every frame, drawn by graphics. */

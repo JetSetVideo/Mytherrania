@@ -7,6 +7,17 @@
 
 export type WinConditionKind = "ko" | "sudden-death" | "first-blood" | "endurance" | "domination";
 
+/**
+ * Why a match ended: a rolled condition, or a RING-OUT (V03, src/game/RingOut.ts) — like
+ * death, ring-out is always on and never rolled: a body ejected from the arena loses.
+ */
+export type WinReasonKind = WinConditionKind | "ringout";
+
+/** The verdict for a ring-out: the other fighter (index 0 = A/player, 1 = B/opponent) wins. */
+export function ringOutVerdict(loser: 0 | 1): WinVerdict {
+  return { over: true, winner: loser === 0 ? 1 : 0, reason: "ringout" };
+}
+
 export interface WinCondition {
   kind: WinConditionKind;
   /** human-readable label for the history page. */
@@ -28,7 +39,7 @@ export interface FightState {
 export interface WinVerdict {
   over: boolean;
   winner: 0 | 1 | null;   // null while undecided or on a draw
-  reason: WinConditionKind;
+  reason: WinReasonKind;
 }
 
 /** Parameter bounds each condition samples inside (for the harness). */

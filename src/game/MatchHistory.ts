@@ -3,7 +3,8 @@
 // History page and tools/history-report.ts compute from them. Pure: no DOM.
 
 export type Controller = "human" | "decision-tree";
-export type WinReason = "ko" | "ring-out" | "timed" | "koth" | "forfeit";
+/** How a match ended. "ringout" (V03) = ejected from the arena and eliminated; "ring-out" is the legacy spelling in old records. */
+export type WinReason = "ko" | "ring-out" | "ringout" | "timed" | "koth" | "forfeit";
 
 export interface FighterRecord {
   name: string;

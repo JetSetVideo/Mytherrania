@@ -3,11 +3,7 @@ import { edgeDistance } from "../src/physics/ArenaPhysics.ts";
 import { randomSource, wilsonInterval } from "../src/balance/ArenaHarness.ts";
 import { seededRng, spawnItem, tickItem, itemRadius, decideDistraction, itemNoticed, ITEM_DEFS } from "../src/game/Items.ts";
 import { applyStatus, attackMultiplier, canAct, cleanse, controller, createStatusState, hasStatus, speedMultiplier, statusLabel, tickStatuses } from "../src/game/Status.ts";
-import { createRagdoll, stepRagdoll, ragdollCentre, type Ragdoll } from "../src/game/Ragdoll.ts";
 
-/** Test measurements on a ragdoll's nodes: lowest contact point, and standing span. */
-const ragdollFloor = (rd: Ragdoll) => Math.min(...rd.nodes.map((n) => n.y - n.radius));
-const ragdollSpan = (rd: Ragdoll) => Math.max(...rd.nodes.map((n) => n.y)) - Math.min(...rd.nodes.map((n) => n.y));
 
 function assert(ok: unknown, message = "assertion failed"): asserts ok {
   if (!ok) throw new Error(String(message));
@@ -200,54 +196,8 @@ Deno.test("a hypnosis is broken by arcane magic and the label reads for the HUD"
 });
 
 // --------------------------------------------------------------------- ragdoll
-
-Deno.test("a thrown body becomes a ragdoll and settles on the ground", () => {
-  const rd = createRagdoll({ x: 0, y: 12, z: 0, height: 1.7, vx: 6, vy: 2, vz: -3 });
-  assert(rd.nodes.length >= 8, "a ragdoll needs a body's worth of nodes");
-  assert(rd.links.length >= 8, "and the links that hold it together");
-  assert(!rd.settled, "it starts in the air");
-  let steps = 0;
-  while (!rd.settled && steps < 2000) { stepRagdoll(rd, 1 / 60, 0); steps++; }
-  assert(rd.settled, `the ragdoll must settle, energy=${rd.energy}`);
-  assert(ragdollFloor(rd) > -0.5, `no node may sink through the floor, floor=${ragdollFloor(rd)}`);
-  assert(ragdollFloor(rd) < 0.5, `the body should be resting on the ground, floor=${ragdollFloor(rd)}`);
-  assert(steps < 1500, `settling should not take forever, took ${steps} steps`);
-});
-
-Deno.test("a settled ragdoll is flatter than it is tall", () => {
-  const rd = createRagdoll({ x: 0, y: 8, z: 0, height: 1.7 });
-  for (let i = 0; i < 3000 && !rd.settled; i++) stepRagdoll(rd, 1 / 60, 0);
-  assert(rd.settled, `ragdoll never settled (energy=${rd.energy})`);
-  const span = ragdollSpan(rd);
-  assert(span < 1.7, `a collapsed body should be shorter than standing height, span=${span.toFixed(2)}`);
-});
-
-Deno.test("the ragdoll stays finite and bounded even with a huge first step", () => {
-  const rd = createRagdoll({ x: 0, y: 6, z: 0, height: 1.7, vx: 40, vy: 0, vz: 40 });
-  for (let i = 0; i < 400; i++) stepRagdoll(rd, 1 / 5, 0);
-  for (const n of rd.nodes) {
-    assert(Number.isFinite(n.x) && Number.isFinite(n.y) && Number.isFinite(n.z), "nodes must stay finite");
-    assert(Math.abs(n.x) < 500 && Math.abs(n.z) < 500, "a long frame must not fling the body away");
-  }
-});
-
-Deno.test("the ragdoll centre tracks the body's fall", () => {
-  const rd = createRagdoll({ x: 0, y: 20, z: 0, height: 1.7 });
-  const before = ragdollCentre(rd).y;
-  for (let i = 0; i < 60; i++) stepRagdoll(rd, 1 / 60, 0);
-  assert(ragdollCentre(rd).y < before, "the centre of mass must fall");
-});
-
-Deno.test("links hold their rest length within a tolerance once settled", () => {
-  const rd = createRagdoll({ x: 0, y: 10, z: 0, height: 1.7 });
-  for (let i = 0; i < 3000 && !rd.settled; i++) stepRagdoll(rd, 1 / 60, 0);
-  assert(rd.settled, `ragdoll never settled (energy=${rd.energy})`);
-  for (const l of rd.links) {
-    const A = rd.nodes[l.a], B = rd.nodes[l.b];
-    const d = Math.hypot(A.x - B.x, A.y - B.y, A.z - B.z);
-    assert(d < l.rest * 2.5, `link ${l.a}-${l.b} stretched to ${d.toFixed(2)} from ${l.rest.toFixed(2)}`);
-  }
-});
+// The particle ragdoll (src/game/Ragdoll.ts) was retired in wave 3: ring-outs now drive the
+// real skinned body (src/physics/ragdoll/**, tests/ragdoll_*_test.ts).
 
 // ----------------------------------------------------------------------------
 // Reconstructed: this file previously held the two tests below and was

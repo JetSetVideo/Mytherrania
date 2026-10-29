@@ -31,7 +31,9 @@ function charge(st: ArenaState, body: ReturnType<typeof bodyFromStats>, speed: n
 
 Deno.test("ARENA: a body WALKED past the outline (x written directly) is still stopped by the wall", () => {
   const st = arena();
-  const b = createBody(5.6, 0.5, 0); b.radius = 0.5;
+  // Lane R (V02): the wall now has thickness (0.35 m) and the body its radius, so the free
+  // region ends at R − 0.175 − r = 5.325 m; the old start at x = 5.6 was already INSIDE the wall.
+  const b = createBody(5.2, 0.5, 0); b.radius = 0.5;
   // The engine's walk/lunge moves x before the physics step: put the body outside.
   const prev = { x: b.x, z: b.z };
   b.x = 6.4;

@@ -1,0 +1,27 @@
+--- a/src/engine/Engine.ts
++++ b/src/engine/Engine.ts
+@@ -661,12 +661,12 @@
+     const floorY = (x: number, z: number) => (this.#terrainMesh && field ? this.#terrainMesh.floorHeightAt(x, z) : 0);
+     // Wall: one box per outline segment, height and colour from the config. A
+     // tougher wall reads darker, so resistance is visible before anyone hits it.
+-    // The material is transparent-capable so the camera-occlusion fade can drop a
+-    // blocking wall's alpha instead of hiding the viewed character behind it.
++    // The material is OPAQUE and shared: the camera-occlusion system (lane O) swaps a
++    // transparent fade variant onto a blocking segment only while it fades.
+     this.#wallMeshes = [];
+     if (this.#arenaState.walled) {
+       const tough = Math.min(1, cfg.wallResistance / 9000);
+-      const wallMat = new THREE.MeshLambertMaterial({ color: new THREE.Color().setHSL(0.55, 0.25, 0.55 - 0.3 * tough), transparent: true, opacity: 1 });
++      const wallMat = new THREE.MeshLambertMaterial({ color: new THREE.Color().setHSL(0.55, 0.25, 0.55 - 0.3 * tough) });
+       // The wall stands on the terrain rim: span from the lowest rim point to wallHeight
+       // above the highest, so no gap opens under it where the rim dips.
+       let rimLo = Infinity, rimHi = -Infinity;
+@@ -675,7 +675,7 @@
+       for (let i = 0; i < pts.length; i++) {
+         const a = pts[i], b = pts[(i + 1) % pts.length];
+         const len = Math.hypot(b.x - a.x, b.z - a.z);
+-        const seg = new THREE.Mesh(new THREE.BoxGeometry(len + 0.05, wallSpan, 0.35), wallMat.clone());
++        const seg = new THREE.Mesh(new THREE.BoxGeometry(len + 0.05, wallSpan, 0.35), wallMat);
+         seg.position.set((a.x + b.x) / 2, rimLo + wallSpan / 2, (a.z + b.z) / 2);
+         seg.rotation.y = -Math.atan2(b.z - a.z, b.x - a.x);
+         seg.name = "arena-wall";
