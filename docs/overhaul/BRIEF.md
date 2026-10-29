@@ -127,3 +127,16 @@ User request (voice-transcribed), decoded:
 | W09 | **Hitboxes from the body's shape and skeleton**; damage by hit location (body part). |
 
 Contract: `src/combat/contracts.ts` (written by the parent). Lanes: **U** menu/HUD/settings, **W** weapons, **X** collision/impact. Same rules as wave 1 (own files only; engine patches in the handoff; real outputs only).
+
+---
+
+## Wave 3 (2026-10-29) — camera occlusion, walls, ring-out, ragdoll, surroundings
+
+| Id | Requirement |
+|----|-------------|
+| V01 | Camera: every object between the camera and the viewed character becomes transparent (props, walls, trees, the other fighter if it hides the subject; terrain that blocks the view must not hide the character either). |
+| V02 | Walls stop (or bounce) a body pushed against them. Verified bugs: the wall test uses the body CENTRE crossing the outline (radius and wall thickness ignored), the push-back normal is radial `atan2(z,x)` instead of the wall segment's normal (wrong on hexagons/diamonds/ovals), and it is a single-frame point test (fast knockback can tunnel). |
+| V03 | Ring-out = ELIMINATION (victory condition): a body ejected outside the arena is eliminated (the other fighter wins, reason "ringout") and enters a ragdoll state of its REAL body (the skinned rig's bones), seeded with its current pose, velocities and impact, with the Skeleton's joint limits applied and its remaining strength/stamina giving muscle tone that controls/limits the fall. Today: ring-out returns the body to the ring with fall damage, and the "ragdoll" is a separate particle stick figure. |
+| V04 | Richer surroundings around/under the arena: water (still to waves), grass/hills, magma, clouds, tree tops, etc., chosen from the arena/place parameters; what a falling body meets has consequences (splash/sink, burn, crash through branches, fall forever). |
+
+Contract: `src/world/biomes/contracts.ts`. Lanes: **O** occlusion, **R** walls + ring-out + ragdoll, **S** surroundings.
