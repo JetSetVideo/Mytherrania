@@ -60,3 +60,14 @@ Parent-owned. One row per requirement; "verified" means the parent re-ran it, no
 | W05/W08/W09 collision + impact | **shipped** `0a2fc6a` | Hitboxes: human 50 capsules 99% coverage. X2 harness: plain attack 24/24 up to the engage distance, 0/24 at 3 m. Live 20 s (real GPU): longsword 17/17 contacts (12 hit, 2 crit, 3 miss); dagger 30 contacts of 37 swings but 15 grazes + 11 misses. Parent balance fix: Impact damage = efficiency vs the weapon kind's AVERAGE contact × the class armour law; probe `tools/balance_probe.ts`: archetype DPS spread 1.83 → ~1.33 per armour level (staff +15–20 %, flail −10 % outliers). |
 
 Open (wave 2): head hits dominate slashes live (11/17 head on a longsword); daggers/spears graze at body range (point speed); skills land 50–58 % at 1.2–2.0 m and are cut short on contact; off-hand does not grip two-handed hafts; up to 8 cm blade overlap when guards interlock; bow has no projectile; arena-harness balance re-run needed with geometric combat.
+
+## Wave 3 — occlusion, walls, ring-out, ragdoll, surroundings (2026-10-29) — `7c75c63`
+
+| Req | Evidence (parent-run, real GPU via Playwright) |
+|-----|-----------------------------------------------|
+| V02 walls | Walled hexagon 34 m, player held S (backwards) 9 s: stopped at r = 16.384 m and stayed there exactly for 5.6 s of pushing (no jitter, no pass), wallHits held 1 / breached 0. Lane R: 40 m/s from 64 directions on all 8 shapes, never inside the wall. |
+| V03 ring-out + ragdoll | Open 34 m arena: walking off the edge → winner opponent, reason "ringout", result "…threw Sir Aldric out of the arena in 4.3s". Ragdoll flag true at ring-out; 0.1–1.7 ms/frame. Hills: body lands ~3.7 m below the rim; icy water: drops 12 m, sinks ~0.7 m/s; magma: floats (buoyancy 1.1). Zoomed vision: the real cel-shaded body, sprawled (a first unzoomed read said "stick figure" — a misread at distance). |
+| V04 surroundings | Live: canopy, hills, void, clouds, magma, meadow (+ water in the ring-out run), 2–5 draw calls each, no errors. Blind vision: magma ✓, meadow ✓, canopy ✗ and clouds ✗ (both read as "water" at gameplay distance/fog). |
+| V01 occlusion | 105 occluders registered; orbit sweep: 1–2 blocking objects detected and faded at blocking angles, 0 at clear ones; vision: the wall in front of the camera rendered semi-transparent, the player fully visible. Not shown live: the rival dithered over the player (the debug orbit clamps to the player's side). |
+
+Open (wave 3): canopy and cloud seas read as water — need contrast/shape work; the ring's pale-cyan ice band reads as a water moat in every biome shot (lane E paint); splash/burn/branch FX not done; a KO does not ragdoll yet (one line); feet/toes welded rigid in the ragdoll; magma floats (contract said "slow sink"); on an open arena with flush outside ground, stepping off loses the match — watch the AI.
