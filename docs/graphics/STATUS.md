@@ -66,6 +66,47 @@ building 0.51 (looping 1), lull 0.25 (looping 1: the quiet before the storm), st
 (straightness 1), clearing 0.59. Drawn cloud cover tracks the requested cover within 0.03 for all six
 planar types. Storm sky vision review: 7/10 (was 3/10 "stone mosaic" before the rim/darkness fix).
 
+## Wave G2 — equations refined + situational events (2026-10-29)
+
+**Equations (lane E, `docs/graphics/lane-E.md`):** the world equations are now continuous and
+total. A Lipschitz probe (25 inputs × 6 seeds × 2000 steps) found **9 true discontinuities** before
+(frozen ←T 100 % of range, summerness ←latitude 48.5 %, wetness ←T 41 %, albedo, GI, apparent
+temperature, saturation, ambient, scene EV) and **0** after. Hard `step`/`select`/`floor` remain
+only where a quantity is discrete by nature (Beaufort display number, precipitation kind). Handover
+between weather regimes is C2 (smootherstep) with per-pair durations; inputs are periodic (hour,
+day) or clamped, NaN/±∞ safe; `step(1e6 s)` 45.9 → 0.19 ms. New couplings: surface (radiative)
+temperature → frost; wind disperses fog; storm towers raise gusts; rain evaporation cools via the
+wet bulb; washed-out air after rain clears the sky; heat shimmer = hot × dry × sun × calm; frost and
+snow raise albedo → GI and scene brightness.
+
+**Situational events (`src/world/events/WorldEvents.ts`, maths in `src/core/Fuzzy.ts`):** 16
+events (golden hour, blue hour, rainbow, 22° halo, the calm before the storm, thunderstorm,
+lightning strike, fog bank, frost, heat shimmer, snowfall, moonrise, the moons meet, starry night, the
+sun breaks through, gale). Each = fuzzy score (C2 ramps/windows, product t-norm AND, probabilistic
+OR) → Schmitt gate (no flicker) → attack/hold/release envelope shaped by smootherstep (fades start
+and end with zero slope; dt clamped so a returning tab fades rather than snaps). Effects compose
+order-independently: multipliers as ∏(1 + k·e), tints as a normalised weighted mean.
+Wired to: sky (double rainbow at 42°/51° around the antisolar point with Alexander's band, 22° halo
+with red inner edge around the sun or the bright moon, star and moon-glow boosts), post composite
+(grade tint, heat shimmer on far pixels only, snowfall, wind slant of rain/snow), toon materials
+(frost / snow on up-facing surfaces, smooth value-noise drifts), fog distance, exposure,
+saturation, audio (thunder after distance / 343 m/s, near = crack, far = rumble), HUD (most
+important live event replaces the day phase).
+
+**Rates at real game speed** (1 day = 24 min, Greywall lat 48, 60 spring days, drawn clouds):
+golden hour 93, blue hour 87, moonrise 52, lightning strikes 42, starry night 25, halo 9, sun breaks
+through 7, thunderstorm 5, lull 5, gale 5, frost 2, rainbow 2 (tightened from 129 in 90 days: needs
+showery weather and a sun clearly out). Tested (`tests/world_events_test.ts`).
+
+**Vision QA of staged events** (`PROBE_ONLY=events`): frost 8/10, halo 7/10, rainbow 5.5–6/10
+(visible, red outside; secondary bow too faint to read), snowfall 5/10 (round flakes, ground dusted;
+wind slant weak in a still), heat shimmer subtle in a still (it is a motion effect).
+
+**Found and fixed along the way:** the climate's statistical `sunOcclusion` never lets the sun out
+during rain (median 0.85) so rainbows/sun-breaks could never happen — the events take the DRAWN sun
+occlusion; smootherstep rounds to 1 + 1e-15 just below 1 (clamped, tested); events lingered across
+time jumps (reset on place/clock jumps); debugView `skyAim` is not sticky across calls.
+
 ## Honest gaps
 
 - Ray tracing is screen-space only (nothing off screen is reflected); WebGPU/hardware RT not used.
@@ -79,4 +120,8 @@ planar types. Storm sky vision review: 7/10 (was 3/10 "stone mosaic" before the 
   right after, so it is harmless, but the warning is still printed once per faded material.
 - Vision reviews disagree between rounds on shadows/AO; the pixel stats in this doc are the arbiter.
 - Not verified by a human: the look in a real (non-headless) browser, at a real 4K display, by ear
-  (thunder has no sound yet), on battery.
+  (thunder is synthesised noise, never listened to), on battery.
+- Events are scored from the arena's sun occlusion; a rainbow is drawn wherever the antisolar point
+  is, even if the shower is elsewhere. Lightning strikes are distance-estimated from the flash's
+  sky direction and the cloud base, not from a simulated position.
+- setPlace is still a teleport for temperature/humidity (events reset on purpose).

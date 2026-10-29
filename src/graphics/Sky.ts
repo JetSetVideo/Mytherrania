@@ -37,10 +37,34 @@ const fragment = /* glsl */ `
   uniform vec3 uMoonColor[2];
   uniform vec4 uMoonParam[2]; // phase angle (rad), angular radius (rad), brightness, illumination
   uniform vec4 uClouds[16];
+  // Situational events (WorldEvents): rainbow, 22-deg halo around uHaloDir, star boost, moon glow.
+  uniform float uRainbow, uHalo, uStarBoost, uMoonGlow;
+  uniform vec3 uHaloDir;
   varying vec3 vDir;
   ${CLOUD_GLSL}
 
   float lum(vec3 c) { return dot(c, vec3(0.2126, 0.7152, 0.0722)); }
+
+  // Spectral ramp, t = 0 violet .. 1 red (a cel-friendly 6-hue approximation of the visible band).
+  vec3 spectrum(float t) {
+    t = clamp(t, 0.0, 1.0);
+    vec3 c = clamp(vec3(abs(t * 6.0 - 4.5) - 1.0, 2.0 - abs(t * 6.0 - 3.0), 2.0 - abs(t * 6.0 - 1.5)), 0.0, 1.0);
+    return mix(c, vec3(0.6, 0.2, 1.0), smoothstep(0.12, 0.0, t));
+  }
+  // Rainbow around the antisolar point A = -sunDir: primary bow at 40.6..42.4 deg (violet inside,
+  // red outside), secondary at 50.4..53.5 deg with the order reversed and ~40 % as bright; the sky
+  // INSIDE the primary is brighter (Alexander's band outside is darker). Theta in radians.
+  vec3 rainbow(vec3 d, float h) {
+    float th = acos(clamp(dot(d, -uSunDir), -1.0, 1.0));
+    float p = (th - 0.7086) / (0.7400 - 0.7086);
+    float s = (th - 0.8796) / (0.9337 - 0.8796);
+    float pw = smoothstep(-0.15, 0.1, p) * (1.0 - smoothstep(0.9, 1.15, p));
+    float sw = smoothstep(-0.15, 0.1, s) * (1.0 - smoothstep(0.9, 1.15, s));
+    vec3 c = spectrum(p) * pw + spectrum(1.0 - s) * sw * 0.4;
+    c += vec3(0.08) * (1.0 - smoothstep(0.66, 0.72, th));            // bright inside the bow
+    c -= vec3(0.05) * smoothstep(0.74, 0.76, th) * (1.0 - smoothstep(0.86, 0.88, th)); // Alexander's dark band
+    return c * smoothstep(0.0, 0.06, h);
+  }
 
   // One moon: returns premultiplied colour in rgb and coverage in a.
   vec4 moon(vec3 d, vec3 m, vec3 tint, vec4 prm, float seed) {
@@ -105,7 +129,7 @@ const fragment = /* glsl */ `
     float sr = 0.06 + 0.1 * cHash(sc + 21.0);
     float star = step(0.985, cHash(sc)) * (1.0 - smoothstep(sr * 0.4, sr, length(sf))) * smoothstep(0.0, 0.15, h);
     star *= 0.6 + 0.4 * sin(uTime * 2.0 + cHash(sc + 3.1) * 40.0);
-    col += vec3(star) * uStars;
+    col += vec3(star) * uStars * (1.0 + 0.9 * uStarBoost);
 
     // Sun disc, limb-darkened.
     float sunR = 0.022;
@@ -119,7 +143,7 @@ const fragment = /* glsl */ `
     for (int i = 0; i < 2; i++) {
       vec3 m = uMoonDir[i];
       vec4 prm = uMoonParam[i];
-      col += uMoonColor[i] * pow(max(dot(d, m), 0.0), 900.0 * (0.02 / max(prm.y, 0.004))) * 0.12 * prm.w * step(-0.03, m.y);
+      col += uMoonColor[i] * pow(max(dot(d, m), 0.0), 900.0 * (0.02 / max(prm.y, 0.004)) / (1.0 + 2.0 * uMoonGlow)) * (0.12 + 0.2 * uMoonGlow) * prm.w * step(-0.03, m.y);
       vec4 mc = moon(d, m, uMoonColor[i], prm, float(i) * 13.7);
       col = col * (1.0 - mc.a) + mc.rgb;
     }
@@ -177,6 +201,22 @@ const fragment = /* glsl */ `
       }
     }
 
+    // Events drawn in front of the cloud deck (light phenomena happen in the rain / ice in front).
+    // The bow both adds its spectrum and tints the sky behind it (a readable cel bow, not a ghost).
+    if (uRainbow > 0.001) {
+      vec3 rb = rainbow(d, h) * uRainbow;
+      col = col * (1.0 + 0.9 * rb) + rb * 0.22;
+    }
+    if (uHalo > 0.001) {
+      float ha = acos(clamp(dot(d, uHaloDir), -1.0, 1.0));
+      // Ice-crystal minimum deviation: sharp red inner edge at 21.6 deg, white body fading out to ~24 deg,
+      // and the sky INSIDE the ring darker (no light is refracted below the minimum deviation).
+      float vis = uHalo * step(0.0, uHaloDir.y + 0.05);
+      float inner = exp(-pow((ha - 0.3770) / 0.0045, 2.0));
+      float body = smoothstep(0.372, 0.381, ha) * exp(-max(ha - 0.381, 0.0) / 0.022);
+      col *= 1.0 - 0.12 * vis * (1.0 - smoothstep(0.30, 0.375, ha)) * smoothstep(0.02, 0.06, ha);
+      col += (vec3(0.95, 0.42, 0.18) * inner * 0.5 + vec3(0.92, 0.95, 1.0) * body * 0.4) * vis;
+    }
     // Weather veils: rain greys the sky and thickens the horizon; fog lifts the horizon colour.
     col = mix(col, vec3(lum(col)) * 0.75, uRain * 0.55);
     col = mix(col, mix(uHorizon, vec3(lum(uHorizon)), 0.4) * 0.8, uRain * (1.0 - smoothstep(0.0, 0.3, h)) * 0.6);
@@ -189,6 +229,15 @@ const fragment = /* glsl */ `
 `;
 
 /** Climate-side inputs of the sky (all optional: a missing climate keeps the clear default). */
+/** Event-driven sky layers (WorldEvents effects), all 0..1. */
+export interface SkyEvents {
+  rainbow: number;
+  halo: number;
+  haloDir: Vec3;
+  stars: number;
+  moonGlow: number;
+}
+
 export interface SkyInputs {
   /** CloudField.packCloudLayers output (64 floats). */
   clouds: Float32Array;
@@ -198,6 +247,7 @@ export interface SkyInputs {
   fog: number;
   lightning: number;
   lightningDir: Vec3;
+  events?: SkyEvents;
 }
 
 /**
@@ -241,6 +291,11 @@ export function createSky(opts: SkyOptions = {}): SkyRig {
     uMoonColor: { value: [new THREE.Color(0.86, 0.9, 1), new THREE.Color(1, 0.82, 0.66)] },
     uMoonParam: { value: [new THREE.Vector4(Math.PI, 0.03, 0.5, 1), new THREE.Vector4(Math.PI, 0.02, 0.3, 1)] },
     uClouds: { value: Array.from({ length: 16 }, () => new THREE.Vector4()) },
+    uRainbow: { value: 0 },
+    uHalo: { value: 0 },
+    uHaloDir: { value: new THREE.Vector3(0, 1, 0) },
+    uStarBoost: { value: 0 },
+    uMoonGlow: { value: 0 },
   };
   const segments = opts.segments ?? 64;
   const mesh = new THREE.Mesh(new THREE.SphereGeometry(radius, segments, Math.max(12, segments >> 1)), skyMaterial(uniforms, opts.octaves ?? 4));
@@ -276,6 +331,12 @@ export function createSky(opts: SkyOptions = {}): SkyRig {
         uniforms.uRain.value = inputs.rain;
         uniforms.uFog.value = inputs.fog;
         uniforms.uLightning.value = inputs.lightning;
+        const ev = inputs.events;
+        uniforms.uRainbow.value = ev?.rainbow ?? 0;
+        uniforms.uHalo.value = ev?.halo ?? 0;
+        if (ev) (uniforms.uHaloDir.value as THREE.Vector3).set(...ev.haloDir);
+        uniforms.uStarBoost.value = ev?.stars ?? 0;
+        uniforms.uMoonGlow.value = ev?.moonGlow ?? 0;
         (uniforms.uLightningDir.value as THREE.Vector3).set(...inputs.lightningDir);
         let cover = 0;
         for (let l = 0; l < 4; l++) cover = 1 - (1 - cover) * (1 - inputs.clouds[l * 16] * inputs.clouds[l * 16 + 1] * 0.8);

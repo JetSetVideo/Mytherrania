@@ -22,6 +22,8 @@ export const TOON_WEIGHTS = [0.42, 0.33, 0.25] as const;
  */
 export const toonLighting = {
   uToonKey: { value: 1 },
+  /** 0..1 frost / settled snow on up-facing surfaces (WorldEvents frost, WorldVars snowCover). */
+  uFrost: { value: 0 },
 };
 
 export interface ToonOptions {
@@ -47,6 +49,13 @@ vToonNormal = normalize(mat3(modelMatrix) * objectNormal);
 function fragmentDecl(detail: boolean): string {
   return /* glsl */ `
 uniform float uToonKey;
+uniform float uFrost;
+float frostHash(vec2 i) { return fract(sin(dot(i, vec2(12.9898, 78.233))) * 43758.5453); }
+float frostNoise(vec2 p) {
+  vec2 i = floor(p), f = fract(p);
+  f = f * f * (3.0 - 2.0 * f);
+  return mix(mix(frostHash(i), frostHash(i + vec2(1.0, 0.0)), f.x), mix(frostHash(i + vec2(0.0, 1.0)), frostHash(i + 1.0), f.x), f.y);
+}
 varying vec3 vToonWorld;
 varying vec3 vToonNormal;
 ${detail ? `
@@ -79,6 +88,19 @@ const DETAIL_ALBEDO = /* glsl */ `
 }
 `;
 
+/** Frost / settled snow: up-facing surfaces whiten, a noisy edge on slopes (cel-stepped). */
+const FROST_ALBEDO = /* glsl */ `
+if (uFrost > 0.001) {
+  float up = smoothstep(0.35, 0.8, normalize(vToonNormal).y);
+  // Two octaves of smooth value noise (blobby drifts, no square cells), cel-stepped with a thin AA edge.
+  vec2 p = vToonWorld.xz;
+  float n = 0.65 * frostNoise(p * 0.9) + 0.35 * frostNoise(p * 3.7 + 17.0);
+  float th = 1.0 - uFrost * up;
+  float cover = smoothstep(th - 0.03, th + 0.03, n * (0.55 + 0.45 * up) + 0.25 * up);
+  diffuseColor.rgb = mix(diffuseColor.rgb, vec3(0.86, 0.9, 0.96), cover * 0.85);
+}
+`;
+
 const BAND_DIRECT = /* glsl */ `
 {
   float alb = max(dot(diffuseColor.rgb, vec3(0.2126, 0.7152, 0.0722)), 1e-4);
@@ -91,7 +113,7 @@ const BAND_DIRECT = /* glsl */ `
 /** Make `material` a toon Lambert (idempotent per material). Returns it for chaining. */
 export function toonify(material: THREE.MeshLambertMaterial, opts: ToonOptions = {}): THREE.MeshLambertMaterial {
   const detail = opts.detail ?? null;
-  const uniforms: Record<string, THREE.IUniform> = { uToonKey: toonLighting.uToonKey };
+  const uniforms: Record<string, THREE.IUniform> = { uToonKey: toonLighting.uToonKey, uFrost: toonLighting.uFrost };
   if (detail) {
     uniforms.uDetail = { value: detail };
     uniforms.uDetailScale = { value: opts.detailScale ?? 4 };
@@ -104,7 +126,7 @@ export function toonify(material: THREE.MeshLambertMaterial, opts: ToonOptions =
       .replace("#include <common>", `#include <common>\n${VERTEX_DECL}`)
       .replace("#include <project_vertex>", `#include <project_vertex>\n${VERTEX_BODY}`);
     let fs = shader.fragmentShader.replace("#include <common>", `#include <common>\n${fragmentDecl(!!detail)}`);
-    if (detail) fs = fs.replace("#include <color_fragment>", `#include <color_fragment>\n${DETAIL_ALBEDO}`);
+    fs = fs.replace("#include <color_fragment>", `#include <color_fragment>\n${detail ? DETAIL_ALBEDO : ""}\n${FROST_ALBEDO}`);
     fs = fs.replace("#include <lights_fragment_end>", `#include <lights_fragment_end>\n${BAND_DIRECT}`);
     shader.fragmentShader = fs;
   };

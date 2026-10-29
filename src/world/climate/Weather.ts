@@ -10,18 +10,26 @@
 //    clear/fair -> building -> lull -> storm -> clearing -> fair/clear.
 //  - Dwell times are in GAME hours: reality base x ICONIC multiplier (G18): clear, lull and storm
 //    are stretched (>= 1.5x), building/clearing are short transitions, and the handover between
-//    two regimes is brief (HANDOVER_H).
+//    two regimes is brief and PAIR-SPECIFIC (handoverHours: building -> lull snaps shut, storm ->
+//    clearing and clearing -> fair/clear unwind slower), blended by smootherstep (C2: no kink in the
+//    target's velocity or acceleration at either end).
 //  - Each regime has a profile (cloud layers, rain, fog, thunder, offsets); the live state damps
 //    toward the blended profile (high cloud responds fastest: cirrus arrives first).
 //  - Lightning is a Poisson process at thunderPerMinute in REAL time; a flash decays in ~0.3 s.
 //  - The sea state is a smooth function of the continuous storm-cycle position (seaStateAt).
+//  - Couplings (lane E): falling rain/snow evaporates toward the wet bulb (cools the air AND raises
+//    its humidity, rainEvaporation); precipitation phase follows the wet bulb; radiation fog burns
+//    off with the SUN's elevation (polar day/night aware), not the clock hour; the normals are read
+//    at the fractional day so nothing steps at midnight.
+//  - Total: NaN / negative / infinite dt or clock values are ignored (treated as 0 / last valid);
+//    a jump longer than MAX_STEP_H game hours is simulated as MAX_STEP_H (weather memory is shorter).
 
 import {
   CLOUD_LAYERS, type CloudLayerState, type SeaState, type Vec3, WEATHER_REGIMES, type WeatherRegime, type WeatherState,
 } from "./contracts.ts";
-import { clamp, clamp01, damp, dampAngle, lerp, lerpAngle, rng32, smoothstep } from "../../core/MathCore.ts";
+import { clamp, clamp01, damp, dampAngle, lerp, lerpAngle, rng32, smootherstep, smoothstep } from "../../core/MathCore.ts";
 import { diurnalAt, type DiurnalState, type MonthNormals, normalsAt, type PlaceClimate, placeClimate } from "./RealClimate.ts";
-import { magnusDewPointC, WORLD_COEFFICIENTS as K } from "./WorldVars.ts";
+import { magnusDewPointC, magnusSatVapourHPa, stullWetBulbC, WORLD_COEFFICIENTS as K } from "./WorldVars.ts";
 
 // ---------------------------------------------------------------- dwell (G18)
 
@@ -35,8 +43,38 @@ export const ICONIC_DWELL_MUL: Readonly<Record<WeatherRegime, number>> = {
 };
 /** Iconic regimes (WeatherState.iconic while settled in one). */
 export const ICONIC_REGIMES: ReadonlySet<WeatherRegime> = new Set<WeatherRegime>(["clear", "lull", "storm"]);
-/** Duration of the handover between two regimes, game hours (brief). */
+/** Default duration of the handover between two regimes, game hours (brief). */
 export const HANDOVER_H = 0.3;
+/**
+ * Pair-specific handover durations, game hours ("from>to"; others use HANDOVER_H). Kept short so
+ * G18 holds (the transitions pass quickly) but shaped by the physics of each change: a gust front
+ * arrives fast (building -> lull -> storm), an anvil drifts off and a sky dries out slowly.
+ */
+export const HANDOVER_PAIR_H: Readonly<Record<string, number>> = {
+  "building>lull": 0.12,   // the wind drops almost at once: the quiet before the storm
+  "lull>storm": 0.18,      // the gust front / first downpour
+  "storm>clearing": 0.45,  // the anvil drifts off, rain eases
+  "clearing>fair": 0.5,    // showers die, cumulus flattens
+  "clearing>clear": 0.55,  // the sky dries out completely
+  "fair>overcast": 0.5,    // a stratus deck spreads
+  "overcast>fair": 0.45,   // the deck breaks up
+  "clear>fair": 0.35,
+  "fair>clear": 0.4,
+  "fair>building": 0.25, "clear>building": 0.25, "overcast>building": 0.25,
+  "building>overcast": 0.35, "overcast>clearing": 0.35, "clear>overcast": 0.5,
+};
+/** Handover duration from `a` to `b`, game hours. */
+export function handoverHours(a: WeatherRegime, b: WeatherRegime): number {
+  return HANDOVER_PAIR_H[`${a}>${b}`] ?? HANDOVER_H;
+}
+/** Handover blend weight for progress x in [0, 1]: smootherstep (C2; zero velocity AND acceleration at both ends). */
+export function handoverBlend(x: number): number {
+  return smootherstep(0, 1, x);
+}
+/** Longest game-time step simulated in one go (larger jumps are a time skip: weather memory ~1.5 days). */
+export const MAX_STEP_H = 72;
+/** Share of the gap to the wet bulb that full-intensity precipitation closes (evaporative cooling). */
+export const RAIN_COOL_SHARE = 0.3;
 /** Each drawn dwell is mean x U(1 - DWELL_JITTER, 1 + DWELL_JITTER). */
 export const DWELL_JITTER = 0.4;
 
@@ -136,6 +174,74 @@ export function seaStateAt(s: number, windDirRad: number, wind01 = 0.5, out?: Se
   return o;
 }
 
+// ---------------------------------------------------------------- couplings (lane E)
+
+export interface AirState { temperatureC: number; relativeHumidity: number }
+
+/**
+ * Evaporation of falling precipitation (intensity 0..1). The air moves a share
+ * f = RAIN_COOL_SHARE x intensity of the way to its wet bulb Tw along the psychrometric line: the
+ * temperature drops toward Tw and the dew point rises toward Tw (Tw itself is conserved), so rain
+ * both COOLS the air and RAISES its humidity, RH' = e_s(Td') / e_s(T') >= RH. Continuous and
+ * monotone in the intensity; intensity 0 returns the air unchanged.
+ */
+export function rainEvaporation(temperatureC: number, relativeHumidity: number, intensity: number, out: AirState = { temperatureC: 0, relativeHumidity: 0 }): AirState {
+  const T = Number.isFinite(temperatureC) ? temperatureC : 15;
+  const rh = clamp(relativeHumidity, 0.02, 1);
+  const f = RAIN_COOL_SHARE * clamp01(intensity);
+  const td = Math.min(T, magnusDewPointC(T, rh));
+  const tw = stullWetBulbC(T, rh);
+  const t2 = T + f * (tw - T), td2 = Math.min(t2, td + f * (tw - td));
+  out.temperatureC = t2;
+  out.relativeHumidity = f > 0 ? clamp(magnusSatVapourHPa(td2) / magnusSatVapourHPa(t2), rh, 1) : rh;
+  return out;
+}
+
+/**
+ * Sun elevation, deg — Environment.solarPosition's law. `dayOfYear` may be fractional (pass
+ * doy + (hour - 12) / 24 for a declination that is continuous across midnight and exact at noon).
+ */
+export function sunElevationDeg(dayOfYear: number, hour: number, latitude: number): number {
+  const D = Math.PI / 180;
+  const decl = 23.44 * D * Math.sin(2 * Math.PI * (284 + dayOfYear) / 365);
+  const lat = clamp(latitude, -90, 90) * D, h = (hour - 12) * 15 * D;
+  const s = Math.sin(lat) * Math.sin(decl) + Math.cos(lat) * Math.cos(decl) * Math.cos(h);
+  return Math.asin(clamp(s, -1, 1)) / D;
+}
+
+/** Radiation-fog burn-off 0..1: the sun must climb (3 -> 20 deg) and cloud shades it. Polar-day/night aware. */
+export function fogBurnOff(sunElevDeg: number, cloudCover: number): number {
+  return smoothstep(3, 20, sunElevDeg) * (1 - 0.6 * clamp01(cloudCover));
+}
+
+/** Smooth max(x, 0) = (x + hypot(x, eps)) / 2: C-infinity, within eps/2 of max(x, 0). */
+export function softFloor(x: number, eps: number): number {
+  return 0.5 * (x + Math.hypot(x, eps));
+}
+/** C1 soft upper cap (quadratic knee of half-width k): the same law as WorldVars' kneeCap. */
+export function softCap(x: number, cap: number, k: number): number {
+  const d = Math.max(0, k - Math.abs(x - cap));
+  return Math.min(x, cap) - (d * d) / (4 * k);
+}
+/**
+ * Rain washout of aerosols as a time process (below-cloud scavenging):
+ *   dL/dt = (L_season - L) / tau_recover - k_wash * precip * L,
+ * integrated exactly per step for constant precip. Instantaneous washout (load ~ exp(-k rain))
+ * made a light shower BRIGHTEN the sun beam (cleaner air outweighed the rain curtain); as a state,
+ * the air is crisp AFTER the rain and the haze returns over the next day.
+ */
+export const WASHOUT = { perHour: 1.5, recoverH: 18 } as const;
+
+/** Wind floor smoothing, m/s (calm air reads ~0.25 m/s, never a kinked 0). */
+export const WIND_FLOOR_EPS = 0.5;
+/** Relative-humidity knee half-width below saturation. */
+export const RH_KNEE = 0.03;
+
+/** Cloud drift speed at altitude (m) for a 10 m wind: neutral power law v (z / 10)^(1/7) — wind speeds the clouds up. */
+export function layerDriftSpeedMs(windMs: number, altitudeM: number): number {
+  return Math.max(0, windMs) * Math.pow(Math.max(10, altitudeM) / 10, SHEAR_EXPONENT);
+}
+
 // ---------------------------------------------------------------- anomalies (OU)
 
 /** OU parameters: game-hour tick, mean reversion (1/h, ~1.5-day synoptic scale), stationary std. */
@@ -200,12 +306,14 @@ export interface WeatherSim {
   readonly cyclePos: number;
   /** Ground snow cover 0..1 (accumulates with snowfall, melts above 0 C). */
   readonly groundSnow: number;
-  /** Background aerosol of the place/season 0..1. */
+  /** Aerosol load 0..1: the place/season background after rain washout (recovers over ~WASHOUT.recoverH). */
   readonly aerosol: number;
   readonly place: PlaceClimate;
   readonly normals: MonthNormals;
   /** Game hours left in the current settled regime (Infinity when pinned). */
   readonly remainingH: number;
+  /** Duration of the current (or last) handover, game hours = handoverHours(regime, nextRegime). */
+  readonly handoverH: number;
   /** Advance by game hours (regimes, anomalies, smoothing) and real seconds (lightning). */
   step(dtGameH: number, dtRealS: number, dayOfYear: number, hour: number): WeatherState;
   setPlace(placeId: string, latitude: number): void;
@@ -237,21 +345,24 @@ export function createWeather(opts: WeatherOptions): WeatherSim {
   const rng = rng32(opts.seed ^ 0x5eed1e55);
   const anomRng = rng32((opts.seed + 0x9e3779b9) ^ 0x0a0a0a0a);
   const flashRng = rng32((opts.seed * 2654435761) ^ 0x1f1a5);
-  let place = placeClimate(opts.placeId, opts.latitude);
-  let latitude = opts.latitude;
-  let normalsDay = Math.floor(opts.dayOfYear);
-  const normals = normalsAt(place, normalsDay);
+  let latitude = Number.isFinite(opts.latitude) ? clamp(opts.latitude, -90, 90) : 0;
+  let place = placeClimate(opts.placeId, latitude);
+  let lastDay = Number.isFinite(opts.dayOfYear) ? opts.dayOfYear : 1;
+  let lastHour = Number.isFinite(opts.hour) ? opts.hour : 12;
+  const normals = normalsAt(place, lastDay + lastHour / 24);
+  const air: AirState = { temperatureC: 0, relativeHumidity: 0 };
+  let aerosol = normals.aerosol;
   const diurnal: DiurnalState = { temperatureC: 0, relativeHumidity: 0, dewPointC: 0, windMs: 0 };
 
-  const anomTarget = new Float64Array(5), anom = new Float64Array(5);
-  for (let i = 0; i < 5; i++) { anomTarget[i] = SYNOPTIC.std[ANOM_KEYS[i]] * gauss(anomRng); anom[i] = anomTarget[i]; }
+  const anomTarget = new Float64Array(5), anom1 = new Float64Array(5), anom = new Float64Array(5);
+  for (let i = 0; i < 5; i++) { anomTarget[i] = SYNOPTIC.std[ANOM_KEYS[i]] * gauss(anomRng); anom1[i] = anom[i] = anomTarget[i]; }
   let tickAcc = 0;
 
   // initial regime from climatology (settled, partway through its dwell)
   const cf0 = normals.cloudFraction;
   let regime: WeatherRegime = pickWeighted({ clear: 1.2 * (1 - cf0), fair: 1, overcast: 1.2 * cf0, building: 0, lull: 0, storm: 0, clearing: 0 }, rng());
   let next: WeatherRegime = regime;
-  let transition = 0, handingOver = false;
+  let transition = 0, handingOver = false, handoverH = HANDOVER_H;
   let remaining = meanDwellHours(regime) * rng();
   let pinned: WeatherRegime | null = null;
 
@@ -277,23 +388,23 @@ export function createWeather(opts: WeatherOptions): WeatherSim {
     let left = dtH;
     while (left > 0 && pinned === null) {
       if (handingOver) {
-        const need = (1 - transition) * HANDOVER_H;
+        const need = (1 - transition) * handoverH;
         if (left >= need) {
           left -= need;
           regime = next; transition = 0; handingOver = false;
           remaining = drawDwell(regime);
-        } else { transition += left / HANDOVER_H; left = 0; }
+        } else { transition += left / handoverH; left = 0; }
       } else if (left >= remaining) {
         left -= remaining; remaining = 0;
         next = pickWeighted(transitionWeights(regime, normals), rng());
-        handingOver = true; transition = 0;
+        handingOver = true; transition = 0; handoverH = handoverHours(regime, next);
       } else { remaining -= left; left = 0; }
     }
   }
 
   function computeTargets(): void {
     const a = FLAT[regime], b = FLAT[next];
-    const t = handingOver ? smoothstep(0, 1, transition) : 0;
+    const t = handingOver ? handoverBlend(transition) : 0;
     for (let i = 0; i < N_FIELDS; i++) tgt[i] = lerp(a[i], b[i], t);
     // fair-weather cloud amounts follow the place's climatology
     const cfScale = lerp(1, 0.6 + 0.8 * normals.cloudFraction, tgt[I_CLIM]);
@@ -307,25 +418,44 @@ export function createWeather(opts: WeatherOptions): WeatherSim {
     computeTargets();
     cur.set(tgt);
     cycle = cycleTarget;
-    anom.set(anomTarget);
+    anom.set(anomTarget); anom1.set(anomTarget);
   }
 
-  function ouTicks(dtH: number): void {
-    tickAcc += dtH;
+  /**
+   * Synoptic anomalies: the OU target is redrawn every tick (exact OU discretisation); the live
+   * anomaly follows it through a CRITICALLY DAMPED two-stage filter (x1' = L (u - x1), x2' = L (x1 - x2)),
+   * integrated EXACTLY segment by segment between ticks:
+   *   x1(t) = u + (x1_0 - u) e^-Lt,  x2(t) = u + ((x2_0 - u) + L t (x1_0 - u)) e^-Lt.
+   * One stage (the old damp) has a velocity jump at every tick (C0: the temperature visibly kinks
+   * every 15 game minutes); two stages are C1, and the exact segments keep it frame-step independent.
+   */
+  function advanceAnomalies(dtH: number): void {
     const D = SYNOPTIC.tickH;
     const decay = Math.exp(-SYNOPTIC.thetaPerH * D), kick = Math.sqrt(1 - decay * decay);
-    let n = 0;
-    while (tickAcc >= D && n < 10000) {
-      tickAcc -= D; n++;
-      for (let i = 0; i < 5; i++) anomTarget[i] = anomTarget[i] * decay + SYNOPTIC.std[ANOM_KEYS[i]] * kick * gauss(anomRng);
+    let left = dtH;
+    while (left > 0) {
+      const seg = Math.min(left, D - tickAcc);
+      const e = Math.exp(-ANOM_LAMBDA * seg), Lt = ANOM_LAMBDA * seg;
+      for (let i = 0; i < 5; i++) {
+        const u = anomTarget[i], d1 = anom1[i] - u, d2 = anom[i] - u;
+        anom1[i] = u + d1 * e;
+        anom[i] = u + (d2 + Lt * d1) * e;
+      }
+      tickAcc += seg; left -= seg;
+      if (D - tickAcc <= 1e-9) {
+        tickAcc = 0;
+        for (let i = 0; i < 5; i++) anomTarget[i] = anomTarget[i] * decay + SYNOPTIC.std[ANOM_KEYS[i]] * kick * gauss(anomRng);
+      }
     }
   }
 
-  let lastDay = opts.dayOfYear, lastHour = opts.hour;
+
   function derive(dtGameH: number, dtRealS: number, dayOfYear: number, hour: number): void {
-    lastDay = dayOfYear; lastHour = hour;
-    const d = Math.floor(dayOfYear);
-    if (d !== normalsDay) { normalsDay = d; normalsAt(place, d, normals); }
+    if (Number.isFinite(dayOfYear)) lastDay = dayOfYear;
+    if (Number.isFinite(hour)) lastHour = hour;
+    // fractional day: the normals (and the sunrise they shape) glide instead of stepping at midnight
+    const dayF = lastDay + lastHour / 24;
+    normalsAt(place, dayF, normals);
     // clouds
     let clear = 1;
     for (let i = 0; i < 4; i++) {
@@ -337,23 +467,34 @@ export function createWeather(opts: WeatherOptions): WeatherSim {
     }
     const cloudCover = 1 - clear;
     // thermodynamics
-    diurnalAt(normals, hour, dayOfYear, latitude, 1 - 0.6 * cloudCover, diurnal);
-    const T = diurnal.temperatureC + anom[0] + cur[I_DT];
-    const RH = clamp(diurnal.relativeHumidity + anom[2] + cur[I_DRH], 0.05, 1);
+    diurnalAt(normals, lastHour, dayF, latitude, 1 - 0.6 * cloudCover, diurnal);
     const P = normals.pressureHPa + anom[1] + cur[I_DP];
-    const wind = Math.max(0, diurnal.windMs + anom[3] + cur[I_DWIND]);
+    const wind = softFloor(diurnal.windMs + anom[3] + cur[I_DWIND], WIND_FLOOR_EPS); // no kink when the air goes calm
     const windDir = place.prevailingWindDirRad + anom[4];
     const storminess = clamp01(cur[I_STORM]);
     // precipitation: drizzle/showers scale with the place's wet days, storms do not
     const wetScale = clamp(normals.precipDays / 10, 0.2, 1.2);
     const precip = clamp01(cur[I_PRECIP] * lerp(wetScale, 1, storminess));
-    const snowFrac = smoothstep(2.0, -0.5, T); // precipitation falls as snow below ~1 C
+    // falling precipitation evaporates toward the wet bulb: cooler AND more humid air
+    rainEvaporation(diurnal.temperatureC + anom[0] + cur[I_DT], diurnal.relativeHumidity + anom[2] + cur[I_DRH], precip, air);
+    const T = air.temperatureC;
+    const RH = clamp(softCap(air.relativeHumidity, 1, RH_KNEE), 0.05, 1); // eases into saturation (no kink at RH 1)
+    // phase by the wet bulb (dry air lets snow reach the ground at a few degrees above 0 C)
+    const snowFrac = smoothstep(1.5, -0.5, stullWetBulbC(T, RH));
     const rain = precip * (1 - snowFrac), snow = precip * snowFrac;
     const calm = 1 - smoothstep(1.5, 5, wind);
-    // radiation fog: near-saturated, calm air under a clear-ish night sky; the sun burns it off by midday
-    const daytime = smoothstep(9, 12, hour) * (1 - smoothstep(18, 21, hour));
-    const radiationFog = 0.6 * smoothstep(0.96, 1.0, RH) * calm * calm * (1 - 0.5 * cloudCover) * (1 - 0.8 * daytime);
+    // radiation fog: near-saturated, calm air under a clear-ish sky; the SUN burns it off (its elevation,
+    // not the clock: a polar-night fog persists all day, a midsummer-night sun at 63 N starts early)
+    const burn = fogBurnOff(sunElevationDeg(lastDay + (lastHour - 12) / 24, lastHour, latitude), cloudCover);
+    // (RH band 0.93..1: the old 0.96..1 band let a 0.001 RH wobble swing the fog by 4 %)
+    const radiationFog = 0.6 * smoothstep(0.93, 1.0, RH) * calm * calm * (1 - 0.5 * cloudCover) * (1 - 0.85 * burn);
     const fog = clamp01(Math.max(cur[I_FOG], radiationFog));
+    // aerosol washout (exact for constant precipitation over the step) and recovery toward the season's load
+    {
+      const a = 1 / WASHOUT.recoverH, b = WASHOUT.perHour * precip;
+      const inf = (a * normals.aerosol) / (a + b);
+      aerosol = clamp01(inf + (aerosol - inf) * Math.exp(-(a + b) * dtGameH));
+    }
     // ground snow: accumulates with snowfall, melts above 0 C and in rain
     groundSnow = clamp01(groundSnow + dtGameH * (0.25 * snow - 0.03 * Math.max(0, T) - 0.05 * rain));
     // lightning: Poisson in real time, exponential flash decay
@@ -373,13 +514,13 @@ export function createWeather(opts: WeatherOptions): WeatherSim {
     for (let i = 0; i < 4; i++) {
       const L = layers[i];
       L.altitudeM = alts[i];
-      const speed = wind * Math.pow(alts[i] / 10, SHEAR_EXPONENT);
+      const speed = layerDriftSpeedMs(wind, alts[i]);
       const dir = windDir + LAYER_VEER[i];
       L.driftX = speed * Math.cos(dir); L.driftZ = speed * Math.sin(dir);
       L.darkness = clamp01(cur[I_DARK] * darkShare[i] + 0.15 * L.density * L.coverage);
     }
     // rough Koschmieder estimate (Climate overwrites it with the world equation, which adds humidity growth)
-    const beta = K.betaRayleighKm + (normals.aerosol * K.aerosolTauRef) / K.aerosolScaleKm + K.betaFogKm * Math.pow(fog, 1.5) +
+    const beta = K.betaRayleighKm + (aerosol * K.aerosolTauRef) / K.aerosolScaleKm + K.betaFogKm * Math.pow(fog, 1.5) +
       K.betaRainKm * rain + K.betaSnowKm * snow;
 
     state.regime = regime; state.nextRegime = next; state.transition = handingOver ? transition : 0;
@@ -401,33 +542,35 @@ export function createWeather(opts: WeatherOptions): WeatherSim {
     get state() { return state as WeatherState; },
     get cyclePos() { return cycle; },
     get groundSnow() { return groundSnow; },
-    get aerosol() { return normals.aerosol; },
+    get aerosol() { return aerosol; },
     get place() { return place; },
     get normals() { return normals; },
     get remainingH() { return pinned !== null ? Infinity : remaining; },
+    get handoverH() { return handoverH; },
     step(dtGameH: number, dtRealS: number, dayOfYear: number, hour: number): WeatherState {
-      const dt = Math.max(0, dtGameH);
+      // total: NaN / negative / infinite -> 0; a huge jump is simulated as MAX_STEP_H (a time skip)
+      const dt = dtGameH > 0 && Number.isFinite(dtGameH) ? Math.min(dtGameH, MAX_STEP_H) : 0;
+      const dtR = dtRealS > 0 && Number.isFinite(dtRealS) ? dtRealS : 0;
       advanceRegime(dt);
-      ouTicks(dt);
+      advanceAnomalies(dt);
       computeTargets();
       for (let i = 0; i < N_FIELDS; i++) cur[i] = damp(cur[i], tgt[i], LAMBDAS[i], dt);
       cycle = dampAngle(cycle * 2 * Math.PI, cycleTarget * 2 * Math.PI, SCALAR_LAMBDA, dt) / (2 * Math.PI);
       cycle -= Math.floor(cycle);
-      for (let i = 0; i < 5; i++) anom[i] = damp(anom[i], anomTarget[i], ANOM_LAMBDA, dt);
-      derive(dt, dtRealS, dayOfYear, hour);
+      derive(dt, dtR, dayOfYear, hour);
       return state as WeatherState;
     },
     setPlace(placeId: string, lat: number) {
-      place = placeClimate(placeId, lat);
-      latitude = lat;
-      normalsAt(place, normalsDay, normals);
+      if (Number.isFinite(lat)) latitude = clamp(lat, -90, 90);
+      place = placeClimate(placeId, latitude);
+      normalsAt(place, lastDay + lastHour / 24, normals); // a handover in flight continues with the new normals
     },
     pin(r: WeatherRegime | null) {
       if (r === null) {
         if (pinned !== null) { pinned = null; remaining = drawDwell(regime); }
         return;
       }
-      pinned = r; regime = r; next = r; transition = 0; handingOver = false;
+      pinned = r; regime = r; next = r; transition = 0; handingOver = false; handoverH = HANDOVER_H;
       snap();
       derive(0, 0, lastDay, lastHour);
     },

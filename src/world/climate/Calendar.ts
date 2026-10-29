@@ -40,8 +40,13 @@ export const MONTH_START_DAYS: readonly number[] = (() => {
   return out;
 })();
 
-/** Wrap a (possibly out-of-range, fractional) day of year into 1..365, carrying whole years. */
+/**
+ * Wrap a (possibly out-of-range, fractional) day of year into 1..365, carrying whole years.
+ * Total: a non-finite day reads as day 1, a non-finite year as year 0.
+ */
 export function normalizeDay(dayOfYear: number, year: number): { dayOfYear: number; year: number } {
+  if (!Number.isFinite(year)) year = 0;
+  if (!Number.isFinite(dayOfYear)) return { dayOfYear: 1, year };
   const d0 = Math.floor(dayOfYear) - 1;
   const carry = Math.floor(d0 / DAYS_PER_YEAR);
   return { dayOfYear: d0 - carry * DAYS_PER_YEAR + 1, year: year + carry };

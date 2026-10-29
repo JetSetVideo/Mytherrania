@@ -225,6 +225,11 @@ uniform float uRain;
 uniform float uLightning;
 uniform float uTime;
 uniform vec2 uResolution;
+// Situational events: grade tint, heat shimmer, snowfall, wind slant of the streaks.
+uniform vec3 uTint;
+uniform float uShimmer;
+uniform float uSnow;
+uniform float uSlant;
 ${CLOUD_GLSL}
 float edgeZ(vec2 uv) { return -viewPos(uv).z; }
 float cloudShadowAt(vec3 world) {
@@ -237,7 +242,17 @@ float cloudShadowAt(vec3 world) {
   return 1.0 - s;
 }
 void main() {
-  vec4 sc = texture2D(tScene, vUv);
+  vec2 suv = vUv;
+  // Heat shimmer: far, low pixels wobble horizontally (two incommensurate sines, rising with time);
+  // weighted by distance so the fighters stay crisp.
+  if (uShimmer > 0.001) {
+    float zf = -viewPos(vUv).z;
+    float far = smoothstep(12.0, 45.0, zf) * (1.0 - step(0.999999, rawDepth(vUv)) * 0.6);
+    float w = sin(vUv.y * 420.0 - uTime * 7.0) + 0.6 * sin(vUv.y * 911.0 + uTime * 11.3 + vUv.x * 37.0);
+    suv.x += w * 0.0028 * uShimmer * far;
+    suv.y += sin(vUv.x * 260.0 + uTime * 5.1) * 0.0009 * uShimmer * far;
+  }
+  vec4 sc = texture2D(tScene, suv);
   vec3 col = sc.rgb;
   float d = rawDepth(vUv);
   bool sky = d >= 0.999999;
@@ -279,7 +294,7 @@ void main() {
     vec2 px = vUv * uResolution / max(uResolution.y, 1.0);
     for (int l = 0; l < 2; l++) {
       float s = l == 0 ? 90.0 : 150.0;
-      vec2 q = vec2(px.x * s + px.y * s * 0.18, px.y * s * 0.06 + uTime * (l == 0 ? 2.6 : 3.4));
+      vec2 q = vec2(px.x * s + px.y * s * (0.18 + 0.9 * uSlant), px.y * s * 0.06 + uTime * (l == 0 ? 2.6 : 3.4));
       float colId = floor(q.x);
       float h = cHash(vec2(colId, float(l) * 17.0));
       float drop = fract(q.y + h * 7.0);
@@ -287,7 +302,28 @@ void main() {
       col = mix(col, vec3(0.75, 0.8, 0.88), streak * uRain * (l == 0 ? 0.22 : 0.14) * step(0.45, h));
     }
   }
+  // Snow: soft round flakes on three parallax layers, drifting with the wind and swaying.
+  if (uSnow > 0.01) {
+    vec2 px = vUv * uResolution / max(uResolution.y, 1.0);
+    for (int l = 0; l < 3; l++) {
+      float s = l == 0 ? 9.0 : l == 1 ? 15.0 : 24.0;
+      float sp = l == 0 ? 0.11 : l == 1 ? 0.08 : 0.06;
+      vec2 q = px * s + vec2(uTime * (0.25 + 1.2 * uSlant) * float(l + 1) * 0.6, uTime * sp * s);
+      vec2 cell = floor(q);
+      float h = cHash(cell + float(l) * 31.0);
+      // Centre kept >= r + sway from the cell border so no flake is ever clipped into a square.
+      vec2 c = vec2(0.5 + 0.22 * sin(uTime * 1.3 + h * 40.0), 0.25 + 0.5 * fract(h * 7.3));
+      float r = (l == 0 ? 0.09 : 0.07) * (0.6 + 0.4 * h);
+      // Wind streaks the flake along its motion (motion blur): stretch the distance metric.
+      vec2 dv = fract(q) - c;
+      vec2 wdir = normalize(vec2(0.25 + 1.2 * uSlant, -0.6));
+      float along = dot(dv, wdir), across = dot(dv, vec2(-wdir.y, wdir.x));
+      float flake = 1.0 - smoothstep(r * 0.5, r, length(vec2(along / (1.0 + 3.0 * uSlant), across)));
+      col = mix(col, vec3(0.93, 0.95, 1.0), flake * uSnow * step(0.55, fract(h * 13.1)) * (l == 0 ? 0.85 : 0.6));
+    }
+  }
   col += vec3(0.75, 0.82, 1.0) * uLightning * 0.35;
+  col *= uTint;
   col *= uExposure;
   float l = dot(col, vec3(0.2126, 0.7152, 0.0722));
   col = max(mix(vec3(l), col, uSaturation), 0.0);

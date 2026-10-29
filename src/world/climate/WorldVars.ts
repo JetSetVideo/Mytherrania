@@ -5,8 +5,17 @@
 // Sources: "real"    = generated from real-world climate (RealClimate -> Weather);
 //          "input"   = clock / place / sky geometry (Calendar, TimeWarp, Environment, Moons);
 //          "derived" = written by exactly one equation below.
-// Every derived value is clamped to its declared [min, max]; a missing input takes its `def`.
+// Every derived value is clamped to its declared [min, max]; a missing or NaN input takes its
+// `def`, +-Infinity clamps to the bound, and the PERIODIC inputs (hour, dayOfYear) wrap instead of
+// clamping, so the table is TOTAL: any input record gives finite, in-range outputs.
 // The equation graph is topologically sorted at module load (a cycle throws, naming it).
+//
+// Lane E (continuity): no continuous quantity goes through step/floor/select/sign any more — those
+// ops remain only where the output is legitimately discrete (beaufort, precipKind: display codes)
+// or where the discrete factor is multiplied by something that vanishes at the switch (the
+// hemisphere factor sign(lat) * smoothstep(0, band, |lat|)). Regime-like switches (frozen, felt
+// temperature) are smooth fractions over a declared band. tests/climate_continuity_test.ts sweeps
+// every input and bisects every large move to prove it.
 
 import type { Expr, WorldEquation, WorldVarDef } from "./contracts.ts";
 import { compileExpr, type CompiledExpr, exprRefs, X } from "./Expr.ts";
@@ -22,11 +31,11 @@ const derived = (id: string, unit: string, min: number, max: number, def: number
 /** Every world variable. */
 export const WORLD_VARS: readonly WorldVarDef[] = [
   // ---- real-world weather (RealClimate normals + Weather anomalies/regimes)
-  real("temperatureC", "degC", -45, 50, 15, "air temperature at 2 m"),
+  real("temperatureC", "degC", -60, 55, 15, "air temperature at 2 m"),
   real("relativeHumidity", "0..1", 0.02, 1, 0.6, "relative humidity"),
   real("pressureHPa", "hPa", 940, 1060, 1013.25, "mean-sea-level pressure"),
-  real("windSpeedMs", "m/s", 0, 40, 3, "10 m mean wind speed"),
-  real("gustMs", "m/s", 0, 60, 5, "10 m gust speed"),
+  real("windSpeedMs", "m/s", 0, 60, 3, "10 m mean wind speed"),
+  real("gustMs", "m/s", 0, 80, 5, "10 m gust speed"),
   real("rain", "0..1", 0, 1, 0, "rain intensity"),
   real("snow", "0..1", 0, 1, 0, "snowfall intensity"),
   real("fog", "0..1", 0, 1, 0, "ground fog / mist density"),
@@ -36,11 +45,11 @@ export const WORLD_VARS: readonly WorldVarDef[] = [
   real("cloudTowering", "0..1", 0, 1, 0, "towering layer coverage (cumulonimbus)"),
   real("storminess", "0..1", 0, 1, 0, "continuous position in the storm cycle"),
   real("lightning", "0..1", 0, 1, 0, "current lightning flash brightness"),
-  real("aerosolBase", "0..1", 0, 1, 0.3, "background aerosol load of the place/season (dust, haze)"),
+  real("aerosolBase", "0..1", 0, 1, 0.3, "aerosol load of the place/season after rain washout (Weather state: scavenged by rain, recovers over ~18 h)"),
   real("snowCover", "0..1", 0, 1, 0, "ground snow cover"),
   // ---- clock / place / sky geometry
-  input("hour", "h", 0, 24, 12, "local solar hour"),
-  input("dayOfYear", "day", 1, 365, 172, "day of year (drives solar declination)"),
+  input("hour", "h", 0, 24, 12, "local solar hour (PERIODIC: wraps mod 24)"),
+  input("dayOfYear", "day", 0.5, 365.5, 172, "fractional day of year, noon = integer (PERIODIC: wraps mod 365; drives declination)"),
   input("latitude", "deg", -90, 90, 48, "place latitude, + north"),
   input("sunElevationDeg", "deg", -90, 90, 45, "sun elevation above the horizon"),
   input("moonIlunBrightness", "0..1", 0, 1, 0, "Ilun light: illumination x extinction x above horizon"),
@@ -49,25 +58,30 @@ export const WORLD_VARS: readonly WorldVarDef[] = [
   input("moonVeshIllumination", "0..1", 0, 1, 0.5, "Vesh lit fraction (phase)"),
   input("groundAlbedo", "0..1", 0.05, 0.6, 0.2, "snow-free ground albedo of the place"),
   // ---- derived physics
-  derived("tempK", "K", 228, 324, 288, "absolute temperature"),
-  derived("satVapourHPa", "hPa", 0, 130, 17, "saturation vapour pressure (Magnus)"),
-  derived("vapourHPa", "hPa", 0, 130, 10, "actual vapour pressure"),
+  derived("tempK", "K", 213, 329, 288, "absolute temperature"),
+  derived("satVapourHPa", "hPa", 0, 170, 17, "saturation vapour pressure (Magnus)"),
+  derived("vapourHPa", "hPa", 0, 170, 10, "actual vapour pressure"),
   derived("magnusGamma", "1", -25, 3, 0, "Magnus gamma = ln(RH) + aT/(b+T)"),
-  derived("dewPointC", "degC", -70, 50, 8, "dew point (inverse Magnus)"),
-  derived("dewSpreadC", "K", 0, 80, 7, "temperature - dew point"),
+  derived("dewPointC", "degC", -90, 55, 8, "dew point (inverse Magnus)"),
+  derived("dewSpreadC", "K", 0, 100, 7, "temperature - dew point"),
+  derived("wetBulbC", "degC", -90, 55, 10, "psychrometric wet-bulb (Stull 2011), held in [dew point, T]"),
   derived("cloudBaseM", "m", 0, 4000, 900, "lifting condensation level ~ 125 m/K x spread"),
-  derived("virtualTempK", "K", 228, 340, 289, "virtual temperature (moist air buoyancy)"),
-  derived("airDensity", "kg/m3", 0.9, 1.6, 1.22, "ideal gas: p / (R_d T_v)"),
-  derived("absoluteHumidity", "g/m3", 0, 100, 9, "water vapour density e / (R_v T)"),
-  derived("windEffectiveMs", "m/s", 0, 60, 3, "mean wind with gust excess in quadrature"),
-  derived("dynamicPressurePa", "Pa", 0, 2500, 6, "q = rho v^2 / 2 (force on foliage)"),
-  derived("beaufort", "B", 0, 12, 2, "Beaufort number B = (v/0.836)^(2/3)"),
-  derived("windChillC", "degC", -80, 50, 15, "Environment Canada wind chill"),
-  derived("humidexC", "degC", -50, 80, 15, "humidex T + 5/9 (e - 10)"),
-  derived("apparentTempC", "degC", -80, 80, 15, "wind chill when cold, humidex when warm"),
-  derived("frozen", "0/1", 0, 1, 0, "1 when the surface is below freezing"),
+  derived("virtualTempK", "K", 213, 360, 289, "virtual temperature (moist air buoyancy)"),
+  derived("airDensity", "kg/m3", 0.85, 1.8, 1.22, "ideal gas: p / (R_d T_v)"),
+  derived("absoluteHumidity", "g/m3", 0, 120, 9, "water vapour density e / (R_v T)"),
+  derived("gustEffMs", "m/s", 0, 90, 5, "gust incl. cumulonimbus outflow: max(gust, wind + k storm towers)"),
+  derived("windEffectiveMs", "m/s", 0, 90, 3, "RMS wind: sqrt((1 - k^2) v^2 + k^2 gust^2)"),
+  derived("dynamicPressurePa", "Pa", 0, 8000, 6, "q = rho v^2 / 2 (force on foliage)"),
+  derived("beaufortF", "B", 0, 12, 2, "continuous Beaufort number B = (v/0.836)^(2/3) (for equations)"),
+  derived("beaufort", "B", 0, 12, 2, "Beaufort force, rounded (DISPLAY only: discrete)"),
+  derived("windChillC", "degC", -120, 55, 15, "Environment Canada wind chill"),
+  derived("humidexC", "degC", -60, 140, 15, "humidex T + 5/9 (e - 10)"),
+  derived("apparentTempC", "degC", -120, 140, 15, "felt temperature: smooth blend wind chill / air / humidex"),
+  derived("surfaceTempC", "degC", -70, 55, 15, "ground surface: air minus clear-calm-night radiative cooling"),
+  derived("frozen", "0..1", 0, 1, 0, "frozen fraction of the surface (smooth over a 1.5 K band)"),
   derived("declinationDeg", "deg", -23.5, 23.5, 0, "solar declination (same law as Environment)"),
   derived("seasonPhase", "0..1", 0, 1, 0, "fraction of the year since the spring equinox"),
+  derived("hemisphere", "-1..1", -1, 1, 1, "smooth hemisphere sign: 0 at the equator (no thermal seasons)"),
   derived("summerness", "0..1", 0, 1, 0.5, "0 midwinter .. 1 midsummer for this hemisphere"),
   derived("dayLengthHours", "h", 0, 24, 12, "sunrise equation: cos w0 = -tan(lat) tan(decl)"),
   derived("noonElevationDeg", "deg", -90, 90, 50, "90 - |lat - decl|"),
@@ -75,7 +89,8 @@ export const WORLD_VARS: readonly WorldVarDef[] = [
   derived("daylight", "0..1", 0, 1, 1, "civil daylight factor"),
   derived("golden", "0..1", 0, 1, 0, "golden/blue hour factor"),
   derived("airMass", "1", 1, 40, 1.4, "Kasten-Young relative optical air mass"),
-  derived("aerosolLoad", "0..1.6", 0, 1.6, 0.3, "aerosol after rain washout and wind-lifted dust"),
+  derived("fogEff", "0..1", 0, 1, 0, "fog after wind dispersal: fog / (1 + (u / u_lift)^2)"),
+  derived("aerosolLoad", "0..1.6", 0, 1.6, 0.3, "aerosol incl. wind-lifted dust"),
   derived("hygroGrowth", "1", 1, 3, 1.2, "Hanel hygroscopic growth (1-RH)^-gamma"),
   derived("aerosolTau", "1", 0, 6, 0.1, "aerosol (+fog) optical depth at 550 nm"),
   derived("rayleighShare", "0..1", 0, 1, 0.5, "Rayleigh share of the total scattering optical depth"),
@@ -87,11 +102,14 @@ export const WORLD_VARS: readonly WorldVarDef[] = [
   derived("moonLight", "0..1", 0, 1, 0, "combined moonlight of Ilun and Vesh"),
   derived("albedoEff", "0..1", 0, 0.9, 0.2, "ground albedo with snow, darkened when wet"),
   derived("dewDeposition", "0..1", 0, 1, 0, "dew/frost on calm clear nights near dawn"),
+  derived("frostDeposit", "0..1", 0, 1, 0, "hoar frost: the frozen share of the deposition"),
   derived("dryingRate", "1", 0, 20, 1, "evaporation ~ (e_s - e)(1 + k u) x sun"),
   derived("sceneLuminance", "rel", 0.0001, 4, 1, "relative scene luminance"),
   derived("sceneEv", "EV", -14, 2.1, 0, "log2 scene luminance"),
   derived("visibilityKm", "km", 0.03, 80, 30, "Koschmieder V = 3.912 / beta_ext"),
   derived("tideRangeM", "m", 0, 6, 1.5, "spring/neap tide range from both moons' phases"),
+  derived("heatShimmer", "0..1", 0, 1, 0, "heat haze: hot x dry x strong sun x calm"),
+  derived("precipKind", "code", 0, 2, 0, "0 dry, 1 rain, 2 snow (DISPLAY/event code: discrete)"),
   // ---- render variables read by the parent (RENDER_VARS; ranges from the contract)
   derived("render.exposure", "x", 0.6, 1.6, 1, "scene exposure multiplier (eye adaptation)"),
   derived("render.saturation", "x", 0, 1.6, 1, "colour saturation multiplier"),
@@ -122,7 +140,7 @@ export const WORLD_COEFFICIENTS: Readonly<Record<string, number>> = {
   rVapour: 461.5,          // specific gas constant of water vapour, J/(kg K)
   epsilon: 0.622,          // R_d / R_v
   // wind
-  gustWeight: 0.5,         // share of the gust excess felt by foliage (quadrature)
+  gustWeight: 0.5,         // gusts carry k^2 = 25 % of the felt dynamic pressure (RMS wind)
   beaufortK: 0.836,        // Beaufort scale: v = 0.836 B^(3/2) m/s
   swayRefPa: 138,          // dynamic pressure of a 15 m/s wind at rho 1.225 -> full sway
   wcA: 13.12, wcB: 0.6215, wcC: 11.37, wcD: 0.3965, wcExp: 0.16, // wind chill (km/h form)
@@ -130,7 +148,17 @@ export const WORLD_COEFFICIENTS: Readonly<Record<string, number>> = {
   windChillMaxC: 10,       // wind chill defined at or below 10 degC
   humidexK: 0.5555,        // humidex 5/9 per hPa above 10 hPa
   humidexMinC: 20,         // humidex used at or above 20 degC
-  freezeC: 0.5,            // surface freezes below ~0.5 degC air temperature
+  freezeC: 0.5,            // surface freezes below ~0.5 degC (centre of the freezing band)
+  freezeBandC: 1.5,        // frozen fraction ramps over 1.5 K of SURFACE temperature (patchy ice, no pop)
+  apparentBandC: 5,        // felt temperature blends over 5 K below windChillMaxC / above humidexMinC
+  radCoolMaxC: 4,          // clear, calm night: the ground radiates ~4 K below the air (inversion)
+  radCoolCalmMs: 5,        // wind above ~5 m/s mixes the surface layer: no radiative inversion
+  hemiBandDeg: 15,         // seasons fade out within 15 deg of the equator (no thermal seasons there)
+  fogLiftMs: 7,            // fog halves at 7 m/s of effective wind: turbulence lifts it into stratus
+  outflowGustMs: 12,       // cumulonimbus downdraft outflow adds up to ~12 m/s to the gusts
+  // Stull (2011) wet-bulb fit, RH in %: Tw = T atan(a (RH + b)^1/2) + atan(T + RH) - atan(RH - c)
+  //   + d RH^3/2 atan(e RH) - f
+  stullA: 0.151977, stullB: 8.313659, stullC: 1.676331, stullD: 0.00391838, stullE: 0.023101, stullF: 4.686035,
   // astronomy (same as Environment.solarPosition)
   obliquityDeg: 23.44,     // axial tilt
   declOffsetDay: 284,      // declination phase offset (Cooper 1969)
@@ -149,7 +177,6 @@ export const WORLD_COEFFICIENTS: Readonly<Record<string, number>> = {
   angstrom: 1.3,           // Angstrom exponent of continental aerosol, tau ~ lambda^-1.3
   aerosolTauRef: 0.25,     // aerosol optical depth at aerosol load 1, dry air
   hanelGamma: 0.3,         // Hanel growth exponent: tau ~ (1 - RH)^-gamma
-  washout: 2.2,            // rain scavenging: load ~ exp(-k rain)
   dustLift: 0.6,           // extra dust lifted by strong dry wind
   dustWindMs: 7,           // dust lift starts at ~7 m/s (saltation threshold region)
   fogTau: 2.0,             // fog optical depth contribution at fog 1
@@ -191,18 +218,42 @@ export const WORLD_COEFFICIENTS: Readonly<Record<string, number>> = {
   windDry: 0.15,           // Dalton: evaporation ~ (1 + k u)
   dryBase: 0.4,            // drying at night relative to full sun
   dewPeakHour: 5.5,        // dew deposition peaks just before sunrise
+  dewBurnDeg: 12,          // the sun burns dew/frost off as it climbs to ~12 deg
+  frostAlbedoShare: 0.35,  // hoar frost whitens ~1/3 as much as a snow cover
   giSun: 0.6, giSky: 0.25, giRefAlbedo: 0.2, giAlbedoExp: 0.7,
   moonWashout: 0.7,        // bright moonlight hides faint stars
   streakBase: 0.6,         // rain streaks visible without wind
   flashBase: 0.6, flashDaySuppress: 0.7,
   fogFarFrac: 0.3,         // fogFar = 30 % of meteorological visibility (game scale)
+  // soft caps (C1 quadratic knee of half-width k around the cap, see kneeCap): an output that the
+  // sim actually drives into its bound must not kink there (velocity jump = a visible "stop")
+  fogFarCapM: 6000, fogFarKneeM: 1000, // fog wall never beyond 6 km
+  visCapKm: 80, visKneeKm: 10,         // meteorological visibility tops out at 80 km
+  exposureCap: 1.6, exposureKnee: 0.1, // contract maximum of render.exposure
+  turbidityCap: 10, turbidityKnee: 1,  // contract maximum of render.turbidity
+  swayKnee: 0.15,                      // render.windSway approaches 1 smoothly
+  horizonSoftDeg: 0.5,     // air mass: elevation floored at the horizon by a smooth max (no kink at sunrise)
   fogNearClear: 0.35, fogNearFog: 0.02,
   tideBase: 0.4, tideIlun: 1.6, tideVesh: 0.7, // tide range, m
+  shimmerLoC: 26, shimmerHiC: 40, // heat shimmer grows from 26 to 40 degC air temperature
+  shimmerCalmMs: 6,        // wind above ~6 m/s mixes the superadiabatic surface layer away
+  shimmerHaze: 0.25,       // heat shimmer's share of render.haze
+  precipMin: 0.02,         // precipitation below this reads as dry (display code)
 };
 
 const { v, c, add, sub, mul, div, mod, pow, neg, abs, sign, min, max, clamp: cl, sqrt, exp, log, sin, cos, tan, atan2, floor, fract, hypot, mix, step, smoothstep, select } = X;
 const T = v("temperatureC"), RH = v("relativeHumidity"), E = v("sunElevationDeg");
 const eq = (id: string, out: string, expr: Expr, why: string): WorldEquation => ({ id, out, expr, why });
+/**
+ * C1 soft upper cap: x below cap - k, EXACTLY cap above cap + k, a quadratic knee between
+ *   min(x, cap) - max(0, k - |x - cap|)^2 / 4k
+ * (value and slope continuous at both knee ends; slope 1 -> 0). Replaces a hard min/clamp where
+ * the simulation really reaches the bound, so the output eases into it instead of stopping dead.
+ */
+const kneeCap = (x: Expr, cap: Expr, k: Expr): Expr =>
+  sub(min(x, cap), div(pow(max(0, sub(k, abs(sub(x, cap)))), 2), mul(4, k)));
+/** Smooth max(x, 0): (x + hypot(x, eps)) / 2 — C-infinity, within eps/2 of max(x, 0). */
+const softPos = (x: Expr, eps: Expr): Expr => mul(0.5, add(x, hypot(x, eps)));
 /** Optical depth at wavelength `lam` from a 550 nm depth: tau * (550 / lam)^k. */
 const atLambda = (tau550: Expr, lamC: string, k: Expr) => mul(tau550, pow(div(c("lambdaRefNm"), c(lamC)), k));
 
@@ -218,6 +269,14 @@ export const WORLD_EQUATIONS: readonly WorldEquation[] = [
   eq("dewPoint", "dewPointC", div(mul(c("magnusB"), v("magnusGamma")), sub(c("magnusA"), v("magnusGamma"))),
     "inverse Magnus: Td = b gamma / (a - gamma)"),
   eq("dewSpread", "dewSpreadC", max(0, sub(T, v("dewPointC"))), "dew-point depression drives cloud base, dew and haze"),
+  eq("wetBulb", "wetBulbC", (() => {
+    const rh = mul(RH, 100);
+    const atan = (x: Expr) => atan2(x, 1);
+    const stull = add(
+      mul(T, atan(mul(c("stullA"), sqrt(add(rh, c("stullB")))))), atan(add(T, rh)), neg(atan(sub(rh, c("stullC")))),
+      mul(c("stullD"), pow(rh, 1.5), atan(mul(c("stullE"), rh))), neg(c("stullF")));
+    return cl(stull, v("dewPointC"), T); // the fit leaves its validity box at the extremes: Td <= Tw <= T always
+  })(), "Stull (2011) wet bulb: evaporating rain cools the air toward it (Weather applies it), snow below ~0.5 C Tw"),
   eq("cloudBase", "cloudBaseM", mul(c("lclMPerK"), v("dewSpreadC")), "Espy: LCL rises ~125 m per K of dew-point spread"),
   eq("virtualTemp", "virtualTempK",
     div(v("tempK"), sub(1, mul(div(v("vapourHPa"), v("pressureHPa")), sub(1, c("epsilon"))))),
@@ -227,30 +286,43 @@ export const WORLD_EQUATIONS: readonly WorldEquation[] = [
   eq("absoluteHumidity", "absoluteHumidity", mul(div(mul(v("vapourHPa"), 100), mul(c("rVapour"), v("tempK"))), 1000),
     "water vapour density e / (R_v T), g/m3"),
   // ---- wind
+  eq("gustEff", "gustEffMs", max(v("gustMs"), add(v("windSpeedMs"), mul(c("outflowGustMs"), v("storminess"), v("cloudTowering")))),
+    "storm proximity: cumulonimbus downdraft outflow gusts grow with storminess x tower cover"),
   eq("windEffective", "windEffectiveMs",
-    hypot(v("windSpeedMs"), mul(c("gustWeight"), max(0, sub(v("gustMs"), v("windSpeedMs"))))),
-    "gust excess adds in quadrature to the mean wind felt by foliage"),
+    sqrt(mix(pow(v("windSpeedMs"), 2), pow(v("gustEffMs"), 2), pow(c("gustWeight"), 2))),
+    "RMS wind felt by foliage: v^2 averaged over gusts (share k^2) — monotone in both the mean wind and the gust (the old hypot(w, k(g - w)) fell as w rose)"),
   eq("dynamicPressure", "dynamicPressurePa", mul(0.5, v("airDensity"), pow(v("windEffectiveMs"), 2)),
     "dynamic pressure q = rho v^2 / 2 is the force that bends plants"),
-  eq("beaufort", "beaufort", floor(add(pow(div(v("windSpeedMs"), c("beaufortK")), 2 / 3), 0.5)),
-    "Beaufort empirical scale v = 0.836 B^1.5, rounded"),
+  eq("beaufortF", "beaufortF", min(12, pow(div(v("windSpeedMs"), c("beaufortK")), 2 / 3)),
+    "Beaufort empirical scale v = 0.836 B^1.5, inverted and kept continuous for equations"),
+  eq("beaufort", "beaufort", floor(add(v("beaufortF"), 0.5)),
+    "DISPLAY only: Beaufort force rounded to the nearest integer (discrete by definition)"),
   eq("windChill", "windChillC", (() => {
     const vk = pow(max(mul(v("windSpeedMs"), c("msToKmh")), 4.8), c("wcExp"));
     return add(c("wcA"), mul(c("wcB"), T), neg(mul(c("wcC"), vk)), mul(c("wcD"), T, vk));
   })(), "Environment Canada wind chill (T <= 10 C, V >= 4.8 km/h)"),
   eq("humidex", "humidexC", add(T, mul(c("humidexK"), sub(v("vapourHPa"), 10))), "Environment Canada humidex"),
-  eq("apparentTemp", "apparentTempC",
-    select(step(T, c("windChillMaxC")), v("windChillC"), select(step(c("humidexMinC"), T), v("humidexC"), T)),
-    "felt temperature: wind chill when cold, humidex when hot, air temperature between"),
-  eq("frozen", "frozen", sub(1, step(c("freezeC"), T)), "surfaces freeze below ~0.5 C"),
+  eq("apparentTemp", "apparentTempC", (() => {
+    const wChill = sub(1, smoothstep(sub(c("windChillMaxC"), c("apparentBandC")), c("windChillMaxC"), T));
+    const wHumid = smoothstep(c("humidexMinC"), add(c("humidexMinC"), c("apparentBandC")), T);
+    return add(T, mul(wChill, sub(v("windChillC"), T)), mul(wHumid, sub(v("humidexC"), T)));
+  })(), "felt temperature: wind chill when cold, humidex when hot, blended smoothly over 5 K so it never jumps"),
+  eq("surfaceTemp", "surfaceTempC",
+    sub(T, mul(c("radCoolMaxC"), sub(1, v("cloudCover")), sub(1, v("daylight")), sub(1, smoothstep(0, c("radCoolCalmMs"), v("windSpeedMs"))))),
+    "clear calm nights: longwave loss cools the ground below the air (cloud returns longwave, wind mixes it away)"),
+  eq("frozen", "frozen",
+    sub(1, smoothstep(sub(c("freezeC"), mul(0.5, c("freezeBandC"))), add(c("freezeC"), mul(0.5, c("freezeBandC"))), v("surfaceTempC"))),
+    "the surface freezes over a 1.5 K band of SURFACE temperature (patchy ice first; frost on clear nights at T_air ~ 3 C)"),
   // ---- astronomy / season
   eq("declination", "declinationDeg",
     mul(c("obliquityDeg"), sin(div(mul(c("twoPi"), add(c("declOffsetDay"), v("dayOfYear"))), c("daysPerYear")))),
     "Cooper declination, the same law as Environment.solarPosition"),
   eq("seasonPhase", "seasonPhase", div(mod(sub(v("dayOfYear"), c("springEquinoxDay")), c("daysPerYear")), c("daysPerYear")),
     "cyclic position in the year since the spring equinox"),
-  eq("summerness", "summerness", cl(add(0.5, mul(0.5, sign(v("latitude")), sin(mul(c("twoPi"), v("seasonPhase"))))), 0, 1),
-    "the seasons are mirrored in the southern hemisphere"),
+  eq("hemisphere", "hemisphere", mul(sign(v("latitude")), smoothstep(0, c("hemiBandDeg"), abs(v("latitude")))),
+    "seasons mirror across the equator; sign() is multiplied by a factor that vanishes at 0, so no jump"),
+  eq("summerness", "summerness", cl(add(0.5, mul(0.5, v("hemisphere"), sin(mul(c("twoPi"), v("seasonPhase"))))), 0, 1),
+    "the seasons are mirrored in the southern hemisphere and fade out at the equator"),
   eq("dayLength", "dayLengthHours", (() => {
     const x = cl(neg(mul(tan(mul(v("latitude"), c("degToRad"))), tan(mul(v("declinationDeg"), c("degToRad"))))), -1, 1);
     const acos = atan2(sqrt(sub(1, mul(x, x))), x); // acos(x) = atan2(sqrt(1 - x^2), x)
@@ -260,17 +332,19 @@ export const WORLD_EQUATIONS: readonly WorldEquation[] = [
   eq("sunAltRad", "sunAltRad", mul(E, c("degToRad")), "radians for the trigonometry"),
   eq("daylight", "daylight", smoothstep(-6, 8, E), "civil twilight (-6 deg) to full daylight"),
   eq("golden", "golden", mul(smoothstep(-6, -1, E), sub(1, smoothstep(4, 12, E))), "blue + golden hour window"),
-  eq("airMass", "airMass",
-    div(1, add(sin(max(v("sunAltRad"), 0)), mul(c("kastenA"), pow(add(max(E, 0), c("kastenB")), c("kastenC"))))),
-    "Kasten air mass 1/(sin h + 0.15 (h + 3.885)^-1.253), h >= 0"),
+  eq("airMass", "airMass", (() => {
+    const h = softPos(E, c("horizonSoftDeg")); // smooth max(E, 0): no kink as the sun crosses the horizon
+    return div(1, add(sin(mul(h, c("degToRad"))), mul(c("kastenA"), pow(add(h, c("kastenB")), c("kastenC")))));
+  })(), "Kasten air mass 1/(sin h + 0.15 (h + 3.885)^-1.253), h = smooth max(elevation, 0)"),
   // ---- aerosols, scattering, turbidity
+  eq("fogEff", "fogEff", div(v("fog"), add(1, pow(div(v("windEffectiveMs"), c("fogLiftMs")), 2))),
+    "wind lowers fog: turbulent mixing lifts it into stratus (halved at 7 m/s)"),
   eq("aerosolLoad", "aerosolLoad",
-    mul(v("aerosolBase"), exp(neg(mul(c("washout"), v("rain")))),
-      add(1, mul(c("dustLift"), smoothstep(c("dustWindMs"), mul(2, c("dustWindMs")), v("windSpeedMs")), sub(1, RH)))),
-    "rain washes aerosols out; strong dry wind lifts dust"),
+    mul(v("aerosolBase"), add(1, mul(c("dustLift"), smoothstep(c("dustWindMs"), mul(2, c("dustWindMs")), v("windSpeedMs")), sub(1, RH)))),
+    "strong dry wind lifts dust (rain washout is a TIME process: Weather scavenges aerosolBase during rain, it recovers over hours)"),
   eq("hygroGrowth", "hygroGrowth", pow(max(sub(1, RH), 0.05), neg(c("hanelGamma"))),
     "Hanel: humid air swells hygroscopic aerosols, tau ~ (1 - RH)^-gamma"),
-  eq("aerosolTau", "aerosolTau", add(mul(c("aerosolTauRef"), v("aerosolLoad"), v("hygroGrowth")), mul(c("fogTau"), v("fog"))),
+  eq("aerosolTau", "aerosolTau", add(mul(c("aerosolTauRef"), v("aerosolLoad"), v("hygroGrowth")), mul(c("fogTau"), v("fogEff"))),
     "aerosol + fog droplet optical depth at 550 nm"),
   eq("rayleighShare", "rayleighShare", div(c("rayleighTau550"), add(c("rayleighTau550"), v("aerosolTau"))),
     "blue Rayleigh sky vs white Mie sky"),
@@ -294,20 +368,23 @@ export const WORLD_EQUATIONS: readonly WorldEquation[] = [
     "the two moons' light adds"),
   // ---- surface
   eq("dewDeposition", "dewDeposition",
-    mul(smoothstep(3, 0.5, v("dewSpreadC")), sub(1, v("cloudCover")), sub(1, smoothstep(1, 4, v("windSpeedMs"))),
-      max(0, cos(mul(c("twoPi"), sub(fract(div(v("hour"), 24)), div(c("dewPeakHour"), 24)))))),
-    "radiative cooling on calm clear nights deposits dew, peaking before dawn"),
+    mul(smoothstep(2, -1, sub(v("surfaceTempC"), v("dewPointC"))),
+      max(0, cos(mul(c("twoPi"), sub(fract(div(v("hour"), 24)), div(c("dewPeakHour"), 24))))),
+      sub(1, smoothstep(0, c("dewBurnDeg"), E))),
+    "dew forms where the radiatively cooled ground reaches the dew point (clear calm nights), peaks before dawn, the sun burns it off"),
+  eq("frostDeposit", "frostDeposit", mul(v("dewDeposition"), v("frozen")), "below freezing the deposition is hoar frost"),
   eq("dryingRate", "dryingRate",
     mul(c("dryRate"), sub(v("satVapourHPa"), v("vapourHPa")), add(1, mul(c("windDry"), v("windEffectiveMs"))),
       add(c("dryBase"), mul(v("daylight"), max(0, sin(v("sunAltRad")))))),
     "Dalton evaporation: vapour-pressure deficit x (1 + k u), faster in sun"),
   eq("wetness", "render.wetness",
-    mul(add(mul(c("rainWet"), v("rain")), mul(c("fogWet"), v("fog")), v("dewDeposition"), mul(c("meltWet"), v("snowCover"), sub(1, v("frozen")))),
+    mul(add(mul(c("rainWet"), v("rain")), mul(c("fogWet"), v("fogEff")), v("dewDeposition"), mul(c("meltWet"), v("snowCover"), sub(1, v("frozen")))),
       exp(neg(mul(v("dryingRate"), sub(1, v("rain"))))), mix(1, c("iceWet"), v("frozen"))),
     "rain/fog/dew/melt wet the ground; warm dry wind dries it; ice is half as glossy"),
   eq("albedoEff", "albedoEff",
-    mul(mix(v("groundAlbedo"), c("snowAlbedo"), v("snowCover")), sub(1, mul(c("wetDarken"), v("render.wetness")))),
-    "snow brightens, water darkens the ground"),
+    mul(mix(v("groundAlbedo"), c("snowAlbedo"), sub(1, mul(sub(1, v("snowCover")), sub(1, mul(c("frostAlbedoShare"), v("frostDeposit")))))),
+      sub(1, mul(c("wetDarken"), v("render.wetness")))),
+    "snow and hoar frost brighten (union of covers), water darkens the ground"),
   // ---- light
   eq("sunMul", "render.sunMul",
     mul(c("sunPeak"), smoothstep(-1, 3, E), v("sunTransmittance"), sub(1, v("sunOcclusion")), sub(1, mul(c("rainDim"), v("rain")))),
@@ -320,7 +397,7 @@ export const WORLD_EQUATIONS: readonly WorldEquation[] = [
       add(c("albedoLumBase"), mul(c("albedoLumGain"), v("albedoEff"))))),
     "sun + sky dome + moons + lightning + starlight, lifted by bright ground"),
   eq("sceneEv", "sceneEv", div(log(v("sceneLuminance")), Math.LN2), "photographic EV is log2 of luminance"),
-  eq("exposure", "render.exposure", sub(1, mul(c("exposureSlope"), v("sceneEv"))),
+  eq("exposure", "render.exposure", kneeCap(sub(1, mul(c("exposureSlope"), v("sceneEv"))), c("exposureCap"), c("exposureKnee")),
     "partial eye adaptation: darker scenes are exposed up, flashes down"),
   eq("ambientMul", "render.ambientMul",
     add(c("ambNight"),
@@ -333,25 +410,34 @@ export const WORLD_EQUATIONS: readonly WorldEquation[] = [
     "one bounce scales with the light received and the ground's albedo (snow bounces most)"),
   eq("saturation", "render.saturation",
     add(mul(mix(c("satNight"), 1, v("daylight")), add(c("satBase"), mul(c("satSky"), v("rayleighShare"), sub(1, v("cloudCover")))),
-      sub(1, mul(c("satFogLoss"), v("fog"))), sub(1, mul(c("satRainLoss"), v("rain"))),
+      sub(1, mul(c("satFogLoss"), v("fogEff"))), sub(1, mul(c("satRainLoss"), v("rain"))),
       mix(c("satSeasonLo"), 1, v("summerness"))),
       mul(c("satGolden"), v("golden"), v("sunWarmth"))),
     "blue Rayleigh skies saturate, fog/rain/night desaturate, golden light warms"),
   // ---- visibility, haze, fog
   eq("visibility", "visibilityKm",
-    div(c("koschmieder"), add(c("betaRayleighKm"), div(v("aerosolTau"), c("aerosolScaleKm")),
-      mul(c("betaFogKm"), pow(v("fog"), 1.5)), mul(c("betaRainKm"), v("rain")), mul(c("betaSnowKm"), v("snow")))),
+    kneeCap(div(c("koschmieder"), add(c("betaRayleighKm"), div(v("aerosolTau"), c("aerosolScaleKm")),
+      mul(c("betaFogKm"), pow(v("fogEff"), 1.5)), mul(c("betaRainKm"), v("rain")), mul(c("betaSnowKm"), v("snow")))),
+      c("visCapKm"), c("visKneeKm")),
     "Koschmieder V = 3.912 / beta_ext (air + aerosol + fog + rain + snow)"),
-  eq("haze", "render.haze", sub(1, exp(neg(div(c("hazeRefKm"), v("visibilityKm"))))), "aerial perspective over a reference distance"),
-  eq("fogFar", "render.fogFar", mul(v("visibilityKm"), 1000, c("fogFarFrac")), "the fog wall sits at a share of the visibility"),
-  eq("fogNear", "render.fogNear", mul(v("render.fogFar"), mix(c("fogNearClear"), c("fogNearFog"), max(v("fog"), mul(0.5, v("rain"))))),
+  eq("heatShimmer", "heatShimmer",
+    mul(smoothstep(c("shimmerLoC"), c("shimmerHiC"), T), sub(1, smoothstep(0.25, 0.6, RH)),
+      div(mul(v("render.sunMul"), max(0, sin(v("sunAltRad")))), c("sunPeak")), sub(1, smoothstep(1, c("shimmerCalmMs"), v("windSpeedMs")))),
+    "heat haze: a superadiabatic surface layer needs heat, dry air, strong insolation and calm"),
+  eq("haze", "render.haze",
+    sub(1, mul(exp(neg(div(c("hazeRefKm"), v("visibilityKm")))), sub(1, mul(c("shimmerHaze"), v("heatShimmer"))))),
+    "aerial perspective over a reference distance, united with the shimmer of a hot calm day (stays < 1 smoothly)"),
+  eq("fogFar", "render.fogFar", kneeCap(mul(v("visibilityKm"), 1000, c("fogFarFrac")), c("fogFarCapM"), c("fogFarKneeM")),
+    "the fog wall sits at a share of the visibility, easing into its 6 km cap"),
+  eq("fogNear", "render.fogNear", mul(v("render.fogFar"), mix(c("fogNearClear"), c("fogNearFog"), max(v("fogEff"), mul(0.5, v("rain"))))),
     "fog/rain pull the fog start toward the camera"),
   eq("turbidity", "render.turbidity",
-    add(1, div(add(v("aerosolTau"), mul(c("waterVapourTau"), v("absoluteHumidity"))), c("rayleighTau550"))),
+    kneeCap(add(1, div(add(v("aerosolTau"), mul(c("waterVapourTau"), v("absoluteHumidity"))), c("rayleighTau550"))),
+      c("turbidityCap"), c("turbidityKnee")),
     "Linke turbidity = total / Rayleigh optical depth"),
   // ---- motion, shadows, sky
-  eq("windSway", "render.windSway", add(sqrt(div(v("dynamicPressurePa"), c("swayRefPa"))), mul(0.1, v("storminess"))),
-    "sway amplitude ~ sqrt(q / q_ref) (bending ~ force)"),
+  eq("windSway", "render.windSway", kneeCap(add(sqrt(div(v("dynamicPressurePa"), c("swayRefPa"))), mul(0.1, v("storminess"))), 1, c("swayKnee")),
+    "sway amplitude ~ sqrt(q / q_ref) (bending ~ force), easing into full sway"),
   eq("cloudShadow", "render.cloudShadow",
     mul(add(mul(c("shadowLow"), v("cloudLow")), mul(c("shadowMid"), v("cloudMid")), mul(c("shadowHigh"), v("cloudHigh")), mul(c("shadowTower"), v("cloudTowering"))),
       smoothstep(0, 12, E), sub(1, smoothstep(c("overcastShadowLo"), 1, v("cloudCover")))),
@@ -371,6 +457,8 @@ export const WORLD_EQUATIONS: readonly WorldEquation[] = [
     add(c("tideBase"), mul(c("tideIlun"), abs(sub(1, mul(2, v("moonIlunIllumination"))))),
       mul(c("tideVesh"), abs(sub(1, mul(2, v("moonVeshIllumination")))))),
     "spring tides at new and full (|cos phase| = |1 - 2 illumination|), neap at quarters"),
+  eq("precipKind", "precipKind", select(step(c("precipMin"), add(v("rain"), v("snow"))), add(1, step(v("rain"), v("snow"))), 0),
+    "DISPLAY/event code 0 dry / 1 rain / 2 snow: discrete by definition (equations use rain and snow themselves)"),
 ];
 
 // ---------------------------------------------------------------- validation + topological order
@@ -429,6 +517,24 @@ const STEPS: readonly Step[] = WORLD_ORDER.map((e) => {
 });
 const NON_DERIVED: readonly WorldVarDef[] = WORLD_VARS.filter((d) => d.source !== "derived");
 
+/** Inputs that are angles on a circle: they wrap into [min, min + period) instead of clamping. */
+export const PERIODIC_INPUTS: Readonly<Record<string, number>> = { hour: 24, dayOfYear: 365 };
+
+/**
+ * An input as the equations see it: missing or NaN -> `def`; periodic -> wrapped (a non-finite
+ * periodic value -> `def`); otherwise clamped to [min, max] (so +-Infinity lands on a bound).
+ */
+export function sanitizeInput(d: WorldVarDef, x: number | undefined): number {
+  if (x === undefined || Number.isNaN(x)) return d.def;
+  const period = PERIODIC_INPUTS[d.id];
+  if (period !== undefined) {
+    if (!Number.isFinite(x)) return d.def;
+    const r = (x - d.min) % period;
+    return d.min + (r < 0 ? r + period : r);
+  }
+  return clamp(x, d.min, d.max);
+}
+
 /**
  * Evaluate the world into `out` (reused across frames: no per-call allocation). Inputs are clamped
  * to their declared range; a missing input takes `def`; derived outputs are clamped to theirs.
@@ -436,8 +542,7 @@ const NON_DERIVED: readonly WorldVarDef[] = WORLD_VARS.filter((d) => d.source !=
 export function evaluateWorldInto(inputs: Readonly<Record<string, number>>, out: Record<string, number>): Record<string, number> {
   for (let i = 0; i < NON_DERIVED.length; i++) {
     const d = NON_DERIVED[i];
-    const x = inputs[d.id];
-    out[d.id] = x === undefined ? d.def : clamp(x, d.min, d.max);
+    out[d.id] = sanitizeInput(d, inputs[d.id]);
   }
   for (let i = 0; i < STEPS.length; i++) {
     const s = STEPS[i];
@@ -462,4 +567,13 @@ export function magnusDewPointC(temperatureC: number, relativeHumidity: number):
 export function magnusSatVapourHPa(temperatureC: number): number {
   const k = WORLD_COEFFICIENTS;
   return k.magnusE0 * Math.exp((k.magnusA * temperatureC) / (k.magnusB + temperatureC));
+}
+
+/** Stull (2011) wet-bulb temperature, degC, held in [dew point, T] — the same law as the `wetBulb` equation. */
+export function stullWetBulbC(temperatureC: number, relativeHumidity: number): number {
+  const k = WORLD_COEFFICIENTS, T = temperatureC;
+  const RH = clamp(relativeHumidity, 0.02, 1), rh = 100 * RH;
+  const tw = T * Math.atan(k.stullA * Math.sqrt(rh + k.stullB)) + Math.atan(T + rh) - Math.atan(rh - k.stullC) +
+    k.stullD * Math.pow(rh, 1.5) * Math.atan(k.stullE * rh) - k.stullF;
+  return clamp(tw, Math.min(T, magnusDewPointC(T, RH)), T);
 }

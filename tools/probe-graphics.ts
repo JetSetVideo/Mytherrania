@@ -61,6 +61,8 @@ async function shot(name: string, note: string, bench = false) {
   const s = await snap();
   const b = bench ? await eng("benchRender", 20) : null;
   manifest.push({ name, note, bench: b, graphics: s.graphics, climate: s.climate });
+  const ev = s.climate?.events;
+  if (ev) console.log(`    events ${ev.active.join(",") || "-"} ${JSON.stringify(ev.intensity)}`);
   const g = s.graphics;
   console.log(`  ${name.padEnd(34)} ${g.pipeline.outputWidth}x${g.pipeline.outputHeight} scene ${g.pipeline.sceneWidth}x${g.pipeline.sceneHeight} passes ${g.pipeline.passes} draws ${g.drawCalls} tris ${g.triangles}${b ? ` bench ${b.msPerFrame} ms` : ""}${g.brokenPrograms.length ? ` BROKEN ${g.brokenPrograms.length}` : ""}`);
   for (const bp of g.brokenPrograms) console.log(`    ! ${bp}`);
@@ -119,6 +121,29 @@ try {
       await shot(`weather-${regime}`, `regime ${regime} pinned, 15h day 200`);
     }
     await eng("debugView", { regime: null });
+  }
+  if (want("events")) {
+    // Each situational event staged by patching the event scorer's inputs on top of a pinned sky
+    // (the climate keeps running underneath), held ~6 s so the envelopes reach full intensity.
+    await eng("debugView", { settings: { graphics: "high", resolution: "1080p", ssao: "auto", gi: "auto", rayTracing: "auto" } });
+    const stages: [string, Record<string, unknown>, Record<string, unknown>][] = [
+      ["rainbow", { hour: hourAtElevation(34, 12, false), dayOfYear: 200, regime: "clearing", skyAim: "antisun" }, { rain: 0.3, sunCloud: 0 }],
+      ["halo", { hour: hourAtElevation(34, 28, false), dayOfYear: 200, regime: "fair", skyAim: "sun" }, { highCover: 0.75, highDensity: 0.3, cloudCover: 0.5, sunCloud: 0.1 }],
+      ["frost", { hour: 7.5, dayOfYear: 20, regime: "clear" }, { frozen: 1, dewDeposition: 0.4, sunElevDeg: 3 }],
+      ["snowfall", { hour: 13, dayOfYear: 20, regime: "overcast" }, { snow: 0.7, windMs: 9, gustMs: 16 }],
+      ["heat-shimmer", { hour: 14, dayOfYear: 200, regime: "clear" }, { temperatureC: 39, relativeHumidity: 0.2, windMs: 1, cloudCover: 0 }],
+      ["thunderstorm", { hour: 15, dayOfYear: 200, regime: "storm" }, {}],
+      ["lull", { hour: 15, dayOfYear: 200, regime: "lull" }, {}],
+      ["fog-bank", { hour: 8, dayOfYear: 300, regime: "overcast" }, { fog: 0.85 }],
+    ];
+    for (const [tag, view, patch] of stages) {
+      await eng("debugView", { ...view, eventPatch: patch });
+      await page.waitForTimeout(2500);
+      // debugView's skyAim is not sticky: pass it again with the settle call.
+      await eng("debugView", { eventsSettle: 40, skyAim: view.skyAim ?? null });
+      await shot(`event-${tag}`, `event ${tag}: ${JSON.stringify(view)} patch ${JSON.stringify(patch)}`);
+    }
+    await eng("debugView", { eventPatch: null, skyAim: null, regime: null });
   }
   if (want("times")) {
     const sp = await snap();

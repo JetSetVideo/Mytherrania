@@ -166,7 +166,7 @@ function catmullRom(p0: number, p1: number, p2: number, p3: number, t: number): 
 
 /** Normals at `dayOfYear` (1..365, fractional ok, wraps): periodic Catmull-Rom between mid-months. */
 export function normalsAt(place: PlaceClimate, dayOfYear: number, out: MonthNormals = {} as MonthNormals): MonthNormals {
-  const d = ((((dayOfYear - 1) % 365) + 365) % 365) + 1;
+  const d = ((((dayOfYear - 1) % 365) + 365) % 365) + 1 || 1; // non-finite day -> day 1 (total)
   // segment [i, i+1] with mid(i) <= d < mid(i+1) (cyclic)
   let i = 11;
   for (let k = 0; k < 12; k++) if (d >= MONTH_MID_DAYS[k]) i = k;
@@ -212,7 +212,7 @@ export function sunriseHour(dayOfYear: number, latitude: number): number {
  * cosine up and a half cosine down, so its daily mean is exactly 0.5 and T averages tMean.
  */
 export function diurnalShape(hour: number, sunrise: number): number {
-  const h = ((hour % 24) + 24) % 24;
+  const h = ((hour % 24) + 24) % 24 || 0; // non-finite hour -> midnight (total)
   const tMax = DIURNAL.tMaxHour;
   if (h >= sunrise && h <= tMax) return 0.5 - 0.5 * Math.cos(Math.PI * (h - sunrise) / (tMax - sunrise));
   const since = h > tMax ? h - tMax : h + 24 - tMax; // hours since the maximum
@@ -242,6 +242,6 @@ export function diurnalAt(
   out.temperatureC = t;
   out.relativeHumidity = clamp(e / magnusSatVapourHPa(t), 0.05, 1);
   out.dewPointC = Math.min(dew, t);
-  out.windMs = n.windMs * (1 + DIURNAL.windAmp * Math.cos(2 * Math.PI * (hour - DIURNAL.windPeakHour) / 24));
+  out.windMs = n.windMs * (1 + DIURNAL.windAmp * Math.cos(2 * Math.PI * ((Number.isFinite(hour) ? hour : 0) - DIURNAL.windPeakHour) / 24));
   return out;
 }

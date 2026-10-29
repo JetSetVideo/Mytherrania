@@ -87,6 +87,44 @@ export class AudioManager {
     osc.onended = () => { osc.disconnect(); env.disconnect(); };
   }
 
+  /**
+   * Thunder: `delayS` after now (the flash-to-bang gap, distance / 343 m/s), a low-passed noise burst
+   * with a sharp crack (near strikes: high cutoff, short attack) and a long rumble (far strikes: low
+   * cutoff, slow swell). `loudness` 0..1 ~ 1 / distance.
+   */
+  playThunder(delayS: number, loudness: number) {
+    if (!this.#ctx || !this.#gain || this.#volume <= 0 || this.#disposed) return;
+    const ctx = this.#ctx;
+    const near = Math.max(0, Math.min(1, Number.isFinite(loudness) ? loudness : 0));
+    if (near <= 0.01) return;
+    const dur = 2.2 + 2.5 * (1 - near);
+    const len = Math.floor(ctx.sampleRate * dur);
+    const buf = ctx.createBuffer(1, len, ctx.sampleRate);
+    const data = buf.getChannelData(0);
+    // Brown-ish noise (integrated white noise, leaky) with slow amplitude roll for the rumble.
+    let b = 0;
+    for (let k = 0; k < len; k++) {
+      b = 0.985 * b + 0.15 * (Math.random() * 2 - 1);
+      const t = k / ctx.sampleRate;
+      data[k] = b * (0.65 + 0.35 * Math.sin(t * 5.3 + Math.sin(t * 1.7) * 2));
+    }
+    const src = ctx.createBufferSource();
+    src.buffer = buf;
+    const lp = ctx.createBiquadFilter();
+    lp.type = "lowpass";
+    lp.frequency.value = 180 + 1400 * near * near;
+    const env = ctx.createGain();
+    const t0 = ctx.currentTime + Math.max(0, Math.min(45, Number.isFinite(delayS) ? delayS : 0));
+    const peak = 0.05 + 0.45 * near;
+    env.gain.setValueAtTime(0.0001, t0);
+    env.gain.exponentialRampToValueAtTime(peak, t0 + 0.02 + 0.5 * (1 - near));
+    env.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+    src.connect(lp).connect(env).connect(this.#gain);
+    src.start(t0);
+    src.stop(t0 + dur + 0.05);
+    src.onended = () => { src.disconnect(); lp.disconnect(); env.disconnect(); };
+  }
+
   dispose() {
     this.#disposed = true;
     if (this.#gain) { this.#gain.disconnect(); this.#gain = null; }

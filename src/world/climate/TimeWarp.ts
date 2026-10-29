@@ -169,14 +169,32 @@ export interface WarpedClock {
   moment(): DayMoment;
 }
 
-/** Create a warped clock. `dayLengthSeconds` defaults to DEFAULT_DAY_LENGTH_S; 0 freezes it. */
+/** Shortest accepted positive day length, real seconds (a smaller positive value is raised to it). */
+export const MIN_DAY_LENGTH_S = 1e-3;
+
+/** A day length as the clock uses it: <= 0 or non-finite -> 0 (frozen); else >= MIN_DAY_LENGTH_S. */
+export function sanitizeDayLength(seconds: number): number {
+  return seconds > 0 && Number.isFinite(seconds) ? Math.max(MIN_DAY_LENGTH_S, seconds) : 0;
+}
+
+/** Split an hour into whole days carried and an hour in [0, 24): -1 -> (-1 day, 23), 25 -> (+1 day, 1). Non-finite -> (0, 0). */
+export function splitHour(hour: number): { carryDays: number; hour: number } {
+  if (!Number.isFinite(hour)) return { carryDays: 0, hour: 0 };
+  const carryDays = Math.floor(hour / 24);
+  const h = hour - carryDays * 24;
+  return { carryDays, hour: h >= 24 ? 0 : h };
+}
+
+/** Create a warped clock. `dayLengthSeconds` defaults to DEFAULT_DAY_LENGTH_S; 0 freezes it. Total over NaN/Infinity inputs. */
 export function createWarpedClock(opts: WarpedClockOptions): WarpedClock {
-  const start = normalizeDay(opts.dayOfYear, opts.year);
-  let year = start.year, day = start.dayOfYear, latitude = opts.latitude;
-  let dayLength = Math.max(0, opts.dayLengthSeconds ?? DEFAULT_DAY_LENGTH_S);
+  const h0 = splitHour(opts.hour);
+  const start = normalizeDay((Number.isFinite(opts.dayOfYear) ? opts.dayOfYear : 1) + h0.carryDays, opts.year);
+  let year = start.year, day = start.dayOfYear;
+  let latitude = Number.isFinite(opts.latitude) ? Math.min(90, Math.max(-90, opts.latitude)) : 0;
+  let dayLength = sanitizeDayLength(opts.dayLengthSeconds ?? DEFAULT_DAY_LENGTH_S);
   let blueSky = 1;
   const table = buildDayTable(day, latitude, blueSky);
-  let hour = Math.min(24, Math.max(0, opts.hour));
+  let hour = h0.hour;
   let s = phaseAtHour(table, hour);
 
   const sampleIndex = () => Math.min(DAY_TABLE_SAMPLES - 1, Math.floor(hour / (24 / DAY_TABLE_SAMPLES)));
@@ -192,13 +210,14 @@ export function createWarpedClock(opts: WarpedClockOptions): WarpedClock {
     get maxElevDeg() { return table.maxElevDeg; },
     get table() { return table; },
     advance(dt: number): number {
-      if (!(dayLength > 0) || !(dt > 0)) return 0;
+      if (!(dayLength > 0) || !(dt > 0) || !Number.isFinite(dt)) return 0;
       const before = hour;
-      let days = 0;
       s += dt / dayLength;
-      while (s >= 1) {
-        s -= 1; days++;
-        const n = normalizeDay(day + 1, year);
+      // whole days at once (a 1e6 s step on a 1e-3 s day is 1e9 days: never loop per day)
+      const days = s >= 1 ? Math.floor(s) : 0;
+      if (days > 0) {
+        s -= days;
+        const n = normalizeDay(day + days, year);
         day = n.dayOfYear; year = n.year;
         buildDayTable(day, latitude, blueSky, table);
       }
@@ -206,20 +225,22 @@ export function createWarpedClock(opts: WarpedClockOptions): WarpedClock {
       return days * 24 + hour - before;
     },
     set(d: number, h: number, y?: number) {
-      const n = normalizeDay(d, y ?? year);
+      const sh = Number.isFinite(h) ? splitHour(h) : { carryDays: 0, hour };
+      const n = normalizeDay((Number.isFinite(d) ? d : day) + sh.carryDays, y !== undefined && Number.isFinite(y) ? y : year);
       day = n.dayOfYear; year = n.year;
-      hour = Math.min(24, Math.max(0, h));
-      if (hour >= 24) hour = 0;
+      hour = sh.hour;
       buildDayTable(day, latitude, blueSky, table);
       s = phaseAtHour(table, hour);
     },
     setLatitude(lat: number) {
-      latitude = lat;
+      if (!Number.isFinite(lat)) return;
+      latitude = Math.min(90, Math.max(-90, lat));
       buildDayTable(day, latitude, blueSky, table);
       s = phaseAtHour(table, hour);
     },
-    setDayLength(seconds: number) { dayLength = Math.max(0, seconds); },
+    setDayLength(seconds: number) { dayLength = sanitizeDayLength(seconds); },
     setBlueSky(b: number) {
+      if (!Number.isFinite(b)) return;
       const q = Math.round(Math.min(1, Math.max(0, b)) * 10) / 10;
       if (q === blueSky) return;
       blueSky = q;

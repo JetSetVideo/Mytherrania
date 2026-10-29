@@ -103,11 +103,18 @@ const trans = [0, 0, 0];
 /** Update one moon in place. */
 export function updateMoon(def: MoonDef, st: MoonState, year: number, dayOfYear: number, hour: number, latitude: number, aerosolTau = DEFAULT_AEROSOL_TAU): MoonState {
   const m = st as Mutable<MoonState>;
+  // total: non-finite inputs fall back to neutral values instead of poisoning the state
+  if (!Number.isFinite(year)) year = 0;
+  if (!Number.isFinite(dayOfYear)) dayOfYear = 1;
+  if (!Number.isFinite(hour)) hour = 0;
+  latitude = Number.isFinite(latitude) ? Math.max(-90, Math.min(90, latitude)) : 0;
+  if (!(aerosolTau >= 0) || !Number.isFinite(aerosolTau)) aerosolTau = DEFAULT_AEROSOL_TAU;
   const days = absoluteDays(year, dayOfYear, hour);
   const phase = moonPhase(def, days);
   const elong = 2 * Math.PI * phase;
-  // Sun's ecliptic longitude in Environment's declination law (L = 0 at the spring equinox).
-  const Ls = 2 * Math.PI * (284 + dayOfYear) / 365;
+  // Sun's ecliptic longitude in Environment's declination law (L = 0 at the spring equinox), at the
+  // FRACTIONAL day (exact at noon, continuous across midnight: the moon no longer steps ~1 deg daily).
+  const Ls = 2 * Math.PI * (284 + dayOfYear + (hour - 12) / 24) / 365;
   const Lm = Ls + elong;
   const node = -2 * Math.PI * days / def.nodeDays;
   const decl = Math.asin(Math.sin(K.obliquityDeg * D) * Math.sin(Lm)) + def.inclinationDeg * D * Math.sin(Lm - node);

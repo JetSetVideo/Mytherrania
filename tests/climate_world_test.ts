@@ -149,7 +149,8 @@ Deno.test("world: variables interact across groups in the physical direction", (
   assert(w({ rain: 0.8, temperatureC: -8 })["render.wetness"] < w({ rain: 0.8 })["render.wetness"], "ice is less glossy");
   assert(w({ relativeHumidity: 0.95 })["render.haze"] > b["render.haze"], "humid aerosols swell -> haze");
   assert(w({ fog: 0.8 })["render.fogFar"] < 200, "fog pulls the fog wall in");
-  assert(w({ rain: 1 })["render.turbidity"] < b["render.turbidity"], "rain washout cleans the sky");
+  // rain washout is a Weather state since lane E (it lowers aerosolBase over time; see climate_couplings_test)
+  assert(w({ aerosolBase: 0.05 })["render.turbidity"] < w({ aerosolBase: 0.5 })["render.turbidity"], "washed-out air is a cleaner sky");
   assert(w({ snowCover: 1 })["render.giStrength"] > b["render.giStrength"], "snow bounces light");
   assert(w({ cloudTowering: 0.8 })["render.cloudShadow"] > b["render.cloudShadow"], "towers cast shadows");
   assert(w({ sunElevationDeg: -2 })["render.cloudShadow"] === 0, "no cloud shadow without sun");

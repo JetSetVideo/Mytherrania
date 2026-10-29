@@ -8,7 +8,10 @@
 //      rate, 24 game hours per DEFAULT_DAY_LENGTH_S real seconds); lightning decays on REAL time;
 //   3. sun from solarPosition(dayOfYear, hour, latitude); moons in place;
 //   4. evaluateWorldInto(all inputs) -> vars (every WORLD_VARS id, RENDER_VARS included);
-//   5. weather.dewPointC / visibilityKm are taken from the equations (single source of truth).
+//   5. weather.dewPointC / visibilityKm / fog are taken from the equations (single source of truth;
+//      fog after the world's wind dispersal).
+// Total (lane E): NaN / Infinity options and arguments fall back to safe values; the world sees
+// the FRACTIONAL day of year (doy + (hour - 12) / 24: exact at noon, continuous at midnight).
 // The frame and its nested objects are reused and mutated each step (no per-frame garbage beyond
 // solarPosition's small result).
 
@@ -28,10 +31,11 @@ type Mut<T> = { -readonly [P in keyof T]: T[P] };
 /** Create the climate simulation. */
 export function createClimate(opts: ClimateOptions): ClimateSim {
   const dayLength0 = opts.dayLengthSeconds ?? DEFAULT_DAY_LENGTH_S;
-  let latitude = opts.latitude;
+  let latitude = Number.isFinite(opts.latitude) ? Math.max(-90, Math.min(90, opts.latitude)) : 0;
   let place = placeClimate(opts.placeId, latitude);
   const clock = createWarpedClock({ year: opts.year, dayOfYear: opts.dayOfYear, hour: opts.hour, latitude, dayLengthSeconds: dayLength0 });
-  const weather = createWeather({ placeId: opts.placeId, latitude, seed: opts.seed, dayOfYear: clock.dayOfYear, hour: clock.hour });
+  const seed = Number.isFinite(opts.seed) ? opts.seed : 0;
+  const weather = createWeather({ placeId: opts.placeId, latitude, seed, dayOfYear: clock.dayOfYear, hour: clock.hour });
   const moons = createMoonStates();
   const inputs: Record<string, number> = {};
   const vars: Record<string, number> = {};
@@ -68,7 +72,7 @@ export function createClimate(opts: ClimateOptions): ClimateSim {
     inputs.aerosolBase = weather.aerosol;
     inputs.snowCover = weather.groundSnow;
     inputs.hour = hour;
-    inputs.dayOfYear = doy;
+    inputs.dayOfYear = doy + (hour - 12) / 24;
     inputs.latitude = latitude;
     inputs.sunElevationDeg = sunDeg;
     inputs.moonIlunBrightness = moons[0].brightness;
@@ -81,6 +85,7 @@ export function createClimate(opts: ClimateOptions): ClimateSim {
     const wm = w as Mut<typeof w>;
     wm.dewPointC = vars.dewPointC;
     wm.visibilityKm = vars.visibilityKm;
+    wm.fog = vars.fogEff;
 
     // blue-sky midday dwell follows the sky's clearness (quantised inside the clock)
     clock.setBlueSky((1 - w.cloudCover) * (1 - w.rain) * (1 - w.fog));
@@ -99,6 +104,7 @@ export function createClimate(opts: ClimateOptions): ClimateSim {
   }
 
   compute(0, 0);
+  compute(0, 0); // second pass: the moons now see this frame's aerosol depth (no pop on the first step)
 
   return {
     step(dt: number): ClimateFrame {
@@ -112,10 +118,10 @@ export function createClimate(opts: ClimateOptions): ClimateSim {
       compute(0, 0);
     },
     setPlace(placeId: string, lat: number) {
-      latitude = lat;
-      place = placeClimate(placeId, lat);
-      clock.setLatitude(lat);
-      weather.setPlace(placeId, lat);
+      if (Number.isFinite(lat)) latitude = Math.max(-90, Math.min(90, lat));
+      place = placeClimate(placeId, latitude);
+      clock.setLatitude(latitude);
+      weather.setPlace(placeId, latitude);
       compute(0, 0);
     },
     pinRegime(regime: WeatherRegime | null) {

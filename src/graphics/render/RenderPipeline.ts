@@ -32,6 +32,11 @@ export interface PostFrame {
   zenith: THREE.Color;
   /** The sky's packed cloud layers (CloudField.packCloudLayers), shared by reference. */
   clouds: Float32Array;
+  /** Situational events (WorldEvents effects): linear grade tint, heat shimmer, snowfall, wind slant. */
+  tint: THREE.Color;
+  shimmer: number;
+  snow: number;
+  slant: number;
 }
 
 /** What the last frame cost and how it was configured (snapshot / QA). */
@@ -139,6 +144,7 @@ export class RenderPipeline {
       uInkColor: { value: INK.clone() }, uInk: { value: 0.85 }, uInkScale: { value: 1 },
       uExposure: { value: 1 }, uSaturation: { value: 1 }, uRain: { value: 0 }, uLightning: { value: 0 }, uTime: { value: 0 },
       uResolution: { value: new THREE.Vector2(1, 1) },
+      uTint: { value: new THREE.Color(1, 1, 1) }, uShimmer: { value: 0 }, uSnow: { value: 0 }, uSlant: { value: 0 },
     }, {
       USE_EFFECTS: q.aoSamples > 0 || q.gi || q.contactSteps > 0 ? 1 : 0, USE_SSR: q.ssrSteps > 0 ? 1 : 0, USE_INK: q.inkEdges ? 1 : 0,
       CLOUD_OCTAVES: Math.max(2, Math.min(4, q.skyOctaves - 1)),
@@ -265,6 +271,10 @@ export class RenderPipeline {
     u.uRain.value = f.rain;
     u.uLightning.value = f.lightning;
     u.uTime.value = f.time % 1000;
+    (u.uTint.value as THREE.Color).copy(f.tint);
+    u.uShimmer.value = f.shimmer;
+    u.uSnow.value = f.snow;
+    u.uSlant.value = f.slant;
     (u.uResolution.value as THREE.Vector2).set(this.#outW, this.#outH);
     this.#fullscreen(c, null);
     passes += 1;
