@@ -136,12 +136,15 @@ void main() {
     * (1.0 - smoothstep(0.0, 2.5 + 6.0 * uAgitation, shore)) * (0.2 + 0.8 * uAgitation);
   float foam = clamp(max(crest, max(lap, bands)) * smoothstep(0.3, 0.62, breakup + 0.3 * lap), 0.0, 1.0);
   col = mix(col, bLambert(uFoam, vec3(0.0, 1.0, 0.0)), foam);
+  // Reflectivity mask for the post pipeline's ray-marched reflections: alpha = 1 - mask.
+  float reflMask = 0.7 * (1.0 - foam);
   if (uIce > 0.5) {
     float floe = smoothstep(0.6, 0.64, bFbm(vWorld.xz * 0.05 + vec2(3.1, 7.7))) * smoothstep(2.0, 6.0, shore);
     vec3 ice = bLambert(vec3(0.72, 0.84, 0.92), normalize(vN + vec3(0.0, 2.0, 0.0)));
     col = mix(col, ice, floe);
+    reflMask *= 1.0 - floe;
   }
-  gl_FragColor = vec4(col, 1.0);
+  gl_FragColor = vec4(col, 1.0 - reflMask);
   ${FRAG_END}
 }
 `;

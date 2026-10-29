@@ -124,29 +124,55 @@ function phaseOf(elevationDeg: number, hour: number): DayPhase {
 }
 
 /**
+ * What the live climate (src/world/climate) overrides in the sky model (wave G). Every field is
+ * the climate's value for this frame:
+ *   cloudCover     total cover (union of the four layers), replaces place.cloudiness
+ *   sunOcclusion   cloud optical cover along the sun ray (CloudField.cloudOcclusionAt, = what is drawn)
+ *   overcast       0..1 how grey the sky is (rain + storminess): zenith/horizon desaturate toward
+ *                  their luminance and darken by up to 35%
+ *   moons          the two moons (direction + elevation) and the light they cast (0..1 each)
+ */
+export interface ClimateOverrides {
+  cloudCover: number;
+  sunOcclusion: number;
+  overcast: number;
+  moons: readonly [Celestial, Celestial];
+  moonLight: readonly [number, number];
+}
+
+const grey = (c: Rgb, k: number, dark: number): Rgb => {
+  const l = 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
+  return [(c[0] + (l - c[0]) * k) * (1 - dark), (c[1] + (l - c[1]) * k) * (1 - dark), (c[2] + (l - c[2]) * k) * (1 - dark)];
+};
+
+/**
  * Sky colour model. d = day factor, tw = twilight Gaussian around the horizon,
  * n = night factor. Rayleigh-like reddening of the sun as it nears the horizon.
+ * With `climate` the cover, the sun's cloud occlusion, the greying and the moons come from it.
  */
-export function environmentAt(hour: number, dayOfYear: number, place: Place, time = 0): EnvironmentState {
+export function environmentAt(hour: number, dayOfYear: number, place: Place, time = 0, climate?: ClimateOverrides): EnvironmentState {
   const sun = solarPosition(dayOfYear, hour, place.latitude);
-  const moons = moonPositions(hour, dayOfYear);
+  const moons = climate ? climate.moons : moonPositions(hour, dayOfYear);
   const e = sun.elevation / DEG;
   const d = smoothstep(-4, 12, e);
   const tw = Math.exp(-(((e - 1) / 7) ** 2));
   const n = 1 - smoothstep(-16, -3, e);
 
-  const zenith = mix([0.015, 0.025, 0.07], [0.16, 0.40, 0.85], d);
+  const oc = climate ? clamp01(climate.overcast) : 0;
+  const zenith = grey(mix([0.015, 0.025, 0.07], [0.16, 0.40, 0.85], d), 0.75 * oc, 0.35 * oc);
   const horizonBase = mix([0.04, 0.05, 0.11], [0.62, 0.79, 0.96], d);
-  const horizon: Rgb = [
+  const horizon: Rgb = grey([
     clamp01(horizonBase[0] + tw * 0.62), clamp01(horizonBase[1] + tw * 0.26), clamp01(horizonBase[2] + tw * 0.02),
-  ];
+  ], 0.6 * oc, 0.25 * oc);
   const sunColor: Rgb = [1, clamp01(0.96 - 0.45 * tw), clamp01(0.88 - 0.7 * tw)];
 
-  const cloudCover = clamp01(place.cloudiness);
-  const sunOcclusion = cloudDensity(sun.dir, time, cloudCover, place.wind);
+  const cloudCover = clamp01(climate ? climate.cloudCover : place.cloudiness);
+  const sunOcclusion = climate ? clamp01(climate.sunOcclusion) : cloudDensity(sun.dir, time, cloudCover, place.wind);
   const rawSun = Math.pow(Math.max(0, Math.sin(sun.elevation)), 0.55) * 1.35;
   const sunIntensity = rawSun * (1 - 0.65 * sunOcclusion);
-  const moonUp = Math.max(0, Math.sin(moons[0].elevation)) + 0.6 * Math.max(0, Math.sin(moons[1].elevation));
+  const moonUp = climate
+    ? climate.moonLight[0] + 0.6 * climate.moonLight[1]
+    : Math.max(0, Math.sin(moons[0].elevation)) + 0.6 * Math.max(0, Math.sin(moons[1].elevation));
   const moonIntensity = n * 0.22 * Math.min(1, moonUp);
   const amb = 0.16 + 0.42 * d * (1 - 0.3 * sunOcclusion);
   const ambientColor: Rgb = mix([amb * 0.42, amb * 0.6, amb * 1.3], [amb, amb * 0.96, amb * 0.9], d);

@@ -7,7 +7,7 @@
 
 // @deno-types="@types/three"
 import * as THREE from "three";
-import { celLighting } from "../shaders/CelShader.ts";
+import { CEL_LIGHT_GLSL, celUniforms } from "../shaders/CelShader.ts";
 
 /** Ink colour of every cel outline in the game (CelShader.ts). */
 export const INK_COLOR = "#172128";
@@ -34,10 +34,15 @@ const vertex = /* glsl */ `
   varying vec3 viewPos;
   varying vec3 vColor;
   varying float vSpecular;
+  varying vec3 vWorld;
+  varying vec3 vWorldN;
   void main() {
     viewNormal = normalize(normalMatrix * normal);
     viewLight = normalize((viewMatrix * vec4(lightDirection, 0.0)).xyz);
-    vec4 mv = modelViewMatrix * vec4(position, 1.0);
+    vec4 world = modelMatrix * vec4(position, 1.0);
+    vWorld = world.xyz;
+    vWorldN = normalize(mat3(modelMatrix) * normal);
+    vec4 mv = viewMatrix * world;
     viewPos = mv.xyz;
     vColor = aColor;
     vSpecular = aSpecular;
@@ -45,25 +50,20 @@ const vertex = /* glsl */ `
   }
 `;
 
-// Bands, rim and specular are copied from CelShader.ts (keep them in step).
+// Bands, shadow, hemisphere ambient, rim and specular: the shared CelShader chunk.
 const fragment = /* glsl */ `
-  uniform vec3 lightColor;
-  uniform vec3 ambientColor;
+  #include <packing>
+  ${CEL_LIGHT_GLSL}
   varying vec3 viewNormal;
   varying vec3 viewLight;
   varying vec3 viewPos;
   varying vec3 vColor;
   varying float vSpecular;
+  varying vec3 vWorld;
+  varying vec3 vWorldN;
   void main() {
-    vec3 n = normalize(viewNormal);
-    vec3 l = normalize(viewLight);
-    float diffuse = max(dot(n, l), 0.0);
-    float band = 0.27 * step(0.25, diffuse) + 0.35 * step(0.65, diffuse);
-    float rim = pow(1.0 - max(n.z, 0.0), 3.0) * 0.25;
-    vec3 view = normalize(-viewPos);
-    float spec = vSpecular > 0.0 ? pow(max(dot(reflect(-l, n), view), 0.0), 22.0) * vSpecular : 0.0;
-    vec3 lit = ambientColor * 1.15 + lightColor * band + rim * (lightColor + ambientColor);
-    gl_FragColor = vec4(vColor * lit + lightColor * spec, 1.0);
+    vec3 c = celShade(vColor, normalize(viewNormal), normalize(viewLight), viewPos, vWorld, vWorldN, vSpecular);
+    gl_FragColor = vec4(c, 1.0);
     #include <tonemapping_fragment>
     #include <colorspace_fragment>
   }
@@ -93,11 +93,7 @@ const outlineFragment = /* glsl */ `
 /** Cel surface material driven by vertex colour + vertex specular (shares celLighting). */
 export function createWeaponCelMaterial(): THREE.ShaderMaterial {
   const m = new THREE.ShaderMaterial({
-    uniforms: {
-      lightDirection: celLighting.lightDirection,
-      lightColor: celLighting.lightColor,
-      ambientColor: celLighting.ambientColor,
-    },
+    uniforms: celUniforms({}),
     vertexShader: vertex,
     fragmentShader: fragment,
     side: THREE.FrontSide,

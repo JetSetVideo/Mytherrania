@@ -1,5 +1,5 @@
-// Cel shading for SKINNED meshes (lane A, R03): the same look as CelShader.ts (two light
-// bands, rim, metal-only specular, #172128 ink hull of 0.035 m), but the vertex stage runs
+// Cel shading for SKINNED meshes (lane A, R03): the same look as CelShader.ts (anti-aliased light
+// bands, received shadow, hemisphere ambient, rim, metal-only specular, #172128 ink hull of 0.035 m), but the vertex stage runs
 // three.js's skinning chunks so a THREE.SkinnedMesh deforms with its bones. three.js turns
 // USE_SKINNING on by itself for a SkinnedMesh (WebGLPrograms: `skinning: object.isSkinnedMesh`)
 // and declares skinIndex/skinWeight; the shader only has to include the chunks.
@@ -13,7 +13,7 @@
 
 // @deno-types="@types/three"
 import * as THREE from "three";
-import { celLighting } from "./CelShader.ts";
+import { CEL_LIGHT_GLSL, celUniforms } from "./CelShader.ts";
 
 /** Ink colour and hull width of the outline, identical to CelShader.createCelMesh. */
 export const CEL_INK = "#172128";
@@ -27,6 +27,8 @@ const skinnedCelVertex = /* glsl */ `
   varying vec3 viewLight;
   varying vec3 viewPos;
   varying vec3 vPaint;
+  varying vec3 vWorld;
+  varying vec3 vWorldN;
   void main() {
     #ifdef USE_COLOR
       vPaint = color;      // linear RGB from paintVertices; skinning never touches it
@@ -40,33 +42,30 @@ const skinnedCelVertex = /* glsl */ `
     #include <skinning_vertex>
     viewNormal = normalize(normalMatrix * objectNormal);
     viewLight = normalize((viewMatrix * vec4(lightDirection, 0.0)).xyz);
-    vec4 mv = modelViewMatrix * vec4(transformed, 1.0);
+    vec4 world = modelMatrix * vec4(transformed, 1.0);
+    vWorld = world.xyz;
+    vWorldN = normalize(mat3(modelMatrix) * objectNormal);
+    vec4 mv = viewMatrix * world;
     viewPos = mv.xyz;
     gl_Position = projectionMatrix * mv;
   }
 `;
 
-// Same bands as CelShader.celFragment: 0.27·step(0.25, n·l) + 0.35·step(0.65, n·l), rim
-// (1 − n_z)³·0.25, Phong specular ^22 only when uSpecular > 0.
+// The shared CelShader lighting (bands, received shadow, hemisphere ambient, rim, metal specular).
 const skinnedCelFragment = /* glsl */ `
+  #include <packing>
   uniform vec3 baseColor;
-  uniform vec3 lightColor;
-  uniform vec3 ambientColor;
   uniform float uSpecular;
+  ${CEL_LIGHT_GLSL}
   varying vec3 viewNormal;
   varying vec3 viewLight;
   varying vec3 viewPos;
   varying vec3 vPaint;
+  varying vec3 vWorld;
+  varying vec3 vWorldN;
   void main() {
-    vec3 n = normalize(viewNormal);
-    vec3 l = normalize(viewLight);
-    float diffuse = max(dot(n, l), 0.0);
-    float band = 0.27 * step(0.25, diffuse) + 0.35 * step(0.65, diffuse);
-    float rim = pow(1.0 - max(n.z, 0.0), 3.0) * 0.25;
-    vec3 view = normalize(-viewPos);
-    float spec = uSpecular > 0.0 ? pow(max(dot(reflect(-l, n), view), 0.0), 22.0) * uSpecular : 0.0;
-    vec3 lit = ambientColor * 1.15 + lightColor * band + rim * (lightColor + ambientColor);
-    gl_FragColor = vec4(baseColor * vPaint * lit + lightColor * spec, 1.0);
+    vec3 c = celShade(baseColor * vPaint, normalize(viewNormal), normalize(viewLight), viewPos, vWorld, vWorldN, uSpecular);
+    gl_FragColor = vec4(c, 1.0);
     #include <tonemapping_fragment>
     #include <colorspace_fragment>
   }
@@ -115,13 +114,7 @@ export interface CelSkinnedOptions {
 /** The cel surface material for a SkinnedMesh (uniforms shared with CelShader's lighting). */
 export function createCelSkinnedSurfaceMaterial(color: THREE.ColorRepresentation, opts: CelSkinnedOptions = {}): THREE.ShaderMaterial {
   return new THREE.ShaderMaterial({
-    uniforms: {
-      baseColor: { value: new THREE.Color(color) },
-      lightDirection: celLighting.lightDirection,
-      lightColor: celLighting.lightColor,
-      ambientColor: celLighting.ambientColor,
-      uSpecular: { value: opts.specular ?? 0 },
-    },
+    uniforms: celUniforms({ baseColor: { value: new THREE.Color(color) }, uSpecular: { value: opts.specular ?? 0 } }),
     vertexShader: skinnedCelVertex,
     fragmentShader: skinnedCelFragment,
     side: THREE.FrontSide,

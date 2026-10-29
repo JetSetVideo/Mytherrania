@@ -77,6 +77,8 @@ export interface Wave {
   /** Rest radius where the resolution fade starts / ends, m (Infinity = never fades). */
   fadeStart: number;
   fadeEnd: number;
+  /** This wave's seeded position in the directional spread, -1..1 (0 for the wind wave). */
+  spreadUnit?: number;
 }
 
 /** A complete wave train: what physics and the shader both evaluate. */
@@ -131,19 +133,86 @@ export function deriveWaves(agitation: number, windAngle: number, seed: number, 
     const wavelength = Math.max(minWavelength, peakWavelength * Math.pow(SPECTRUM_RATIO, i));
     const k = (2 * Math.PI) / wavelength;
     const amplitude = steepness / WAVE_COUNT / k;
-    const spread = i === 0 ? 0 : DIRECTIONAL_SPREAD * (2 * rng() - 1);
-    const heading = windAngle + spread;
+    const unit = i === 0 ? 0 : 2 * rng() - 1;
+    const heading = windAngle + DIRECTIONAL_SPREAD * unit;
     const phase0 = 2 * Math.PI * rng();
     const fadeEnd = Number.isFinite(segments) ? (wavelength * segments) / (VERTICES_PER_WAVELENGTH * 2 * Math.PI) : Infinity;
     waves.push({
       dirX: Math.cos(heading), dirZ: Math.sin(heading), k, wavelength, amplitude,
       omega: speedScale * Math.sqrt(g * k), phase0, sharpness: 1,
-      fadeStart: FADE_START_FRACTION * fadeEnd, fadeEnd,
+      fadeStart: FADE_START_FRACTION * fadeEnd, fadeEnd, spreadUnit: unit,
     });
     totalSteepness += k * amplitude;
     maxElevation += amplitude;
   }
   return { waves, agitation: a, peakWavelength, totalSteepness, maxElevation };
+}
+
+// ------------------------------------------------------------------ the storm cycle (G15)
+//
+// The weather's sea state (climate contracts: agitation, sinusoidality, looping, straightness)
+// reshapes a train LIVE without touching its wavelengths, frequencies or phases, so the surface
+// never pops: only amplitudes, trochoid sharpness and headings move, and the engine eases those.
+//   energy      e = agitation                                       (0 still .. 1 storm)
+//   sharpness   Q = clamp(0.15 + 0.85 * looping - 0.1 * sinusoidality, 0.05, 1)
+//               sinusoidal swell -> Q near 0.15 (round crests); looping seas -> Q -> 1 (sharp
+//               trochoid crests whose particle orbits close into loops)
+//   spread      DIRECTIONAL_SPREAD * (1 + 0.9 looping) * (1 - 0.92 straightness)   rad
+//               crossing seas while looping; long-crested, wind-aligned lines in the storm
+//   peakShare   share of the steepness in the longest wave: 1/N (equal bands) .. 0.7 (straight swell)
+//               = 1/N + (0.7 - 1/N) * straightness
+// The steepness budget S = e * STORM_STEEPNESS_FRACTION * BREAKING_STEEPNESS is split by weight:
+// wave 0 gets peakShare, the rest share 1 - peakShare equally; A_i = S w_i / k_i, so the inversion
+// stays a contraction (sum Q k A <= S < 1).
+
+/** A train's live shape (see the header above). */
+export interface SeaShape {
+  energy: number;
+  sharpness: number;
+  spread: number;
+  peakShare: number;
+}
+
+/** Sea-state -> shape (pure; every input clamped to 0..1). */
+export function seaShape(sea: { agitation: number; sinusoidality: number; looping: number; straightness: number }): SeaShape {
+  const c = (v: number) => Math.max(0, Math.min(1, Number.isFinite(v) ? v : 0));
+  const looping = c(sea.looping), straight = c(sea.straightness), sinus = c(sea.sinusoidality);
+  return {
+    energy: c(sea.agitation),
+    sharpness: Math.max(0.05, Math.min(1, 0.15 + 0.85 * looping - 0.1 * sinus)),
+    spread: DIRECTIONAL_SPREAD * (1 + 0.9 * looping) * (1 - 0.92 * straight),
+    peakShare: 1 / WAVE_COUNT + (0.7 - 1 / WAVE_COUNT) * straight,
+  };
+}
+
+/**
+ * Write `base` reshaped by `shape` into `out` (same wave count; wavelengths, omegas, phases and fade
+ * radii copied from base). `windAngle` is the live wind heading. Allocation-free once `out` exists.
+ */
+export function reshapeWaves(base: WaveTrain, shape: SeaShape, windAngle: number, out: WaveTrain, steepnessScale = 1): WaveTrain {
+  const n = base.waves.length;
+  const S = Math.max(0, Math.min(1, shape.energy)) * STORM_STEEPNESS_FRACTION * BREAKING_STEEPNESS * steepnessScale;
+  const rest = n > 1 ? (1 - shape.peakShare) / (n - 1) : 0;
+  let total = 0, maxElev = 0;
+  for (let i = 0; i < n; i++) {
+    const b = base.waves[i];
+    const w = out.waves[i] ?? (out.waves[i] = { ...b });
+    const weight = i === 0 ? (n > 1 ? shape.peakShare : 1) : rest;
+    const heading = windAngle + shape.spread * (b.spreadUnit ?? 0);
+    w.dirX = Math.cos(heading); w.dirZ = Math.sin(heading);
+    w.k = b.k; w.wavelength = b.wavelength; w.omega = b.omega; w.phase0 = b.phase0;
+    w.fadeStart = b.fadeStart; w.fadeEnd = b.fadeEnd; w.spreadUnit = b.spreadUnit;
+    w.amplitude = (S * weight) / b.k;
+    w.sharpness = shape.sharpness;
+    total += w.k * w.amplitude;
+    maxElev += w.amplitude;
+  }
+  out.waves.length = n;
+  out.agitation = Math.max(0, Math.min(1, shape.energy));
+  out.peakWavelength = base.peakWavelength;
+  out.totalSteepness = total;
+  out.maxElevation = maxElev;
+  return out;
 }
 
 /** Phase of every wave at time t, rad, wrapped to [0, 2 pi) in double precision (the shader gets these as uniforms). */
@@ -219,7 +288,7 @@ export function waveHeightAt(train: WaveTrain, x: number, z: number, t: number):
  *   uWaveA[i] = (dirX, dirZ, k, amplitude)     uWaveB[i] = (sharpness, fadeStart, fadeEnd, 0)
  * Infinity fade radii are written as 1e9 (GLSL has no Infinity literal). Returns the two arrays.
  */
-export function packWaveUniforms(train: WaveTrain, outA = new Float32Array(WAVE_COUNT * 4), outB = new Float32Array(WAVE_COUNT * 4)): { a: Float32Array; b: Float32Array } {
+export function packWaveUniforms(train: WaveTrain, outA: Float32Array<ArrayBuffer> = new Float32Array(WAVE_COUNT * 4), outB: Float32Array<ArrayBuffer> = new Float32Array(WAVE_COUNT * 4)): { a: Float32Array<ArrayBuffer>; b: Float32Array<ArrayBuffer> } {
   outA.fill(0);
   outB.fill(0);
   const finite = (v: number) => (Number.isFinite(v) ? v : 1e9);

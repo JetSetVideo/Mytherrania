@@ -14,7 +14,7 @@ import {
   MAX_HILL_SLOPE, MEDIA, pickWeighted, SURROUND_SEGMENTS, SURROUNDINGS_EXTENT, WATER_LOST_DEPTH, WIND_FOR_STORM,
 } from "./BiomeTables.ts";
 import type { BiomeSpec, Medium, Surroundings } from "./contracts.ts";
-import { deriveWaves, minResolvableWavelength, waveHeightAt, type WaveTrain } from "./Waves.ts";
+import { deriveWaves, minResolvableWavelength, reshapeWaves, waveHeightAt, type SeaShape, type WaveTrain } from "./Waves.ts";
 
 export type { BiomeKind, BiomeSpec, Medium, Surroundings } from "./contracts.ts";
 
@@ -178,6 +178,13 @@ export interface BiomeSurroundings extends Surroundings {
   cloudLayers: number[];
   /** Polar mesh bearings the wave fade was derived for. */
   segments: number;
+  /**
+   * G15: reshape the live wave train in place from the storm-cycle sea state (Waves.reshapeWaves on
+   * a full-agitation base train: wavelengths, frequencies and phases never change, so nothing pops).
+   * Physics (surfaceAt) and the shader (SurroundingsMesh.update repacks) read the same train. No-op
+   * for kinds without waves.
+   */
+  retune(shape: SeaShape, windAngle: number): void;
 }
 
 /**
@@ -253,12 +260,16 @@ export function createSurroundings(spec: BiomeSpec, field: Heightfield | null, r
   const segments = SURROUND_SEGMENTS;
   const windAngle = spec.windAngle ?? CLOUD_DRIFT_ANGLE;
   let waves: WaveTrain | null = null;
+  let wavesBase: WaveTrain | null = null;
+  const magmaKind = spec.kind === "magma";
   if (spec.kind === "water" || spec.kind === "magma") {
-    const magma = spec.kind === "magma";
-    waves = deriveWaves(spec.agitation ?? 0, windAngle, spec.seed, {
+    const options = {
       minWavelength: minResolvableWavelength(WAVE_RESOLVED_RADII * R, segments), segments,
-      speedScale: magma ? MAGMA_SPEED_SCALE : 1, steepnessScale: magma ? MAGMA_STEEPNESS_SCALE : 1,
-    });
+      speedScale: magmaKind ? MAGMA_SPEED_SCALE : 1, steepnessScale: magmaKind ? MAGMA_STEEPNESS_SCALE : 1,
+    };
+    waves = deriveWaves(spec.agitation ?? 0, windAngle, spec.seed, options);
+    // The storm-cycle base: the same seed at full agitation (its wavelengths are the ones a storm needs).
+    wavesBase = deriveWaves(1, windAngle, spec.seed, options);
   }
   // Hills / meadow far relief: y = edgeY + relief * ramp(r) * shape(x, z). The slope budget tan(MAX_HILL_SLOPE)
   // is split SHAPE_SLOPE_SHARE / (1 - share) between the shape and the ramp, worst case:
@@ -366,6 +377,10 @@ export function createSurroundings(spec: BiomeSpec, field: Heightfield | null, r
     killPlaneY,
     ringRadius: R, waves, crowns, crownCount, crownZone: [crownZoneInner, crownZoneOuter], carpetY, groundY,
     nearRadius, edgeY, cloudLayers, segments,
+    retune(shape: SeaShape, angle: number) {
+      if (!waves || !wavesBase) return;
+      reshapeWaves(wavesBase, shape, angle, waves, magmaKind ? MAGMA_STEEPNESS_SCALE : 1);
+    },
   };
 }
 

@@ -76,7 +76,8 @@ Deno.test("skinned cel shaders run three's skinning chunks and read paint withou
   }
   assert(!/attribute\s+vec3\s+color/.test(CEL_SKINNED_SHADERS.surfaceVertex), "color must not be redeclared");
   assert(/#ifdef USE_COLOR[\s\S]*vPaint = color/.test(CEL_SKINNED_SHADERS.surfaceVertex), "paint varying under USE_COLOR");
-  assert(CEL_SKINNED_SHADERS.surfaceFragment.includes("baseColor * vPaint * lit"), "paint multiplies the base colour");
+  assert(CEL_SKINNED_SHADERS.surfaceFragment.includes("celShade(baseColor * vPaint,"), "paint multiplies the base colour (before the shared cel lighting)");
+  assert(CEL_SKINNED_SHADERS.surfaceFragment.includes("celShadow(") || CEL_SKINNED_SHADERS.surfaceFragment.includes("uShadowMap"), "skinned bodies receive the key light's shadow (G10)");
   // A two-bone skeleton binds both meshes; a painted geometry gets a white base.
   const b0 = new THREE.Bone(), b1 = new THREE.Bone();
   b0.add(b1); b1.position.y = 1; b0.updateMatrixWorld(true);

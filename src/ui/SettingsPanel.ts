@@ -19,6 +19,7 @@
  * attributes only.
  */
 import { icon, type IconName } from "./Icons.ts";
+import { GRAPHICS_PRESETS, RESOLUTION_LABEL, RESOLUTIONS, type EffectToggle, type GraphicsPreset, type ResolutionChoice } from "../graphics/render/Quality.ts";
 
 // ------------------------------------------------------------------------------ model (pure)
 
@@ -34,6 +35,9 @@ export type MinimapChoice = "overview" | "follow" | "heading";
 export type EffectsLevel = "low" | "normal" | "high";
 /** Render quality: picks the render pixel budget (see {@link pixelBudgetFor}). */
 export type QualityChoice = "auto" | "high" | "low";
+/** How fast the world clock runs (G12): real seconds per game day, see {@link TIME_FLOW_DAY_SECONDS}. */
+export type TimeFlow = "frozen" | "slow" | "normal" | "fast" | "realtime";
+export type { EffectToggle, GraphicsPreset, ResolutionChoice };
 
 /** Every persistent option. Units are given per field. */
 export interface GameSettings {
@@ -55,8 +59,18 @@ export interface GameSettings {
   effects: EffectsLevel;
   /** Show the control legend at the bottom of the screen. */
   showHints: boolean;
-  /** Render quality (pixel budget). */
+  /** Render quality (pixel budget of the Auto resolution). */
   quality: QualityChoice;
+  /** Output resolution (G01): Auto or a 16:9-named height up to 2160p (4K). */
+  resolution: ResolutionChoice;
+  /** Graphics preset (G02-G10): sets SSAO, GI, ray tracing, shadows, MSAA, sky and polygon detail. */
+  graphics: GraphicsPreset;
+  /** Per-effect overrides of the preset. */
+  ssao: EffectToggle;
+  gi: EffectToggle;
+  rayTracing: EffectToggle;
+  /** World clock speed (G12/G18). */
+  timeFlow: TimeFlow;
   /** Master volume, 0 (mute) .. 1 (full). */
   volume: number;
 }
@@ -99,6 +113,12 @@ export const SETTINGS_SCHEMA: Readonly<Record<keyof GameSettings, SettingRule>> 
   effects: { kind: "enum", values: ["low", "normal", "high"], def: "normal" },
   showHints: { kind: "bool", def: true },
   quality: { kind: "enum", values: ["auto", "high", "low"], def: "auto" },
+  resolution: { kind: "enum", values: RESOLUTIONS, def: "auto" },
+  graphics: { kind: "enum", values: GRAPHICS_PRESETS, def: "high" },
+  ssao: { kind: "enum", values: ["auto", "on", "off"], def: "auto" },
+  gi: { kind: "enum", values: ["auto", "on", "off"], def: "auto" },
+  rayTracing: { kind: "enum", values: ["auto", "on", "off"], def: "auto" },
+  timeFlow: { kind: "enum", values: ["normal", "slow", "fast", "realtime", "frozen"], def: "normal" },
   volume: { kind: "number", min: 0, max: 1, step: 0.05, def: 0.75 },
 };
 
@@ -197,6 +217,14 @@ export const PIXEL_BUDGETS: Readonly<Record<QualityChoice, number>> = {
   auto: 4_000_000,
   high: 3840 * 2160,
   low: 1280 * 720,
+};
+
+/**
+ * Real seconds per game day for each time flow (G12): normal 24 min (a game hour per real minute,
+ * so a 2-3 minute duel sees the light move), slow 2 h, fast 4 min, realtime 24 h, frozen 0.
+ */
+export const TIME_FLOW_DAY_SECONDS: Readonly<Record<TimeFlow, number>> = {
+  frozen: 0, slow: 7200, normal: 1440, fast: 240, realtime: 86400,
 };
 
 /** Pixel budget (device pixels) for a quality choice. */
@@ -651,8 +679,20 @@ export class SettingsPanel {
     ]);
     this.#select(display, "sel-effects", "Effects", "effects", [["low", "Low"], ["normal", "Normal"], ["high", "High"]]);
     this.#check(display, "chk-hints", "Show control hints", "showHints");
-    this.#select(display, "sel-quality", "Quality", "quality", [
+    this.#select(display, "sel-resolution", "Resolution", "resolution", RESOLUTIONS.map((r) => [r, RESOLUTION_LABEL[r]] as [string, string]));
+    this.#select(display, "sel-quality", "Auto resolution budget", "quality", [
       ["auto", "Auto (4 Mpx)"], ["high", "High (4K)"], ["low", "Low (720p)"],
+    ]);
+
+    const graphics = this.#section(grid, "graphics", "Graphics");
+    this.#select(graphics, "sel-graphics", "Preset", "graphics", [["low", "Low"], ["medium", "Medium"], ["high", "High"], ["ultra", "Ultra"]]);
+    const toggle: [string, string][] = [["auto", "Preset"], ["on", "On"], ["off", "Off"]];
+    this.#select(graphics, "sel-ssao", "Ambient occlusion (SSAO)", "ssao", toggle);
+    this.#select(graphics, "sel-gi", "Global illumination", "gi", toggle);
+    this.#select(graphics, "sel-raytracing", "Ray tracing (screen-space)", "rayTracing", toggle);
+    this.#select(graphics, "sel-timeflow", "Time of day", "timeFlow", [
+      ["normal", "Flows (1 day = 24 min)"], ["slow", "Slow (1 day = 2 h)"], ["fast", "Fast (1 day = 4 min)"],
+      ["realtime", "Real time"], ["frozen", "Frozen"],
     ]);
 
     const audio = this.#section(grid, "audio", "Audio");

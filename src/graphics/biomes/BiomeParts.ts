@@ -39,6 +39,10 @@ export interface PartContext {
   apronTuck: number;
   /** Written by buildLiquid: the wave phase uniform update() refreshes. */
   wavePhase?: THREE.Vector4;
+  /** Written by buildLiquid: the packed train uniforms and the agitation uniform syncWaves() rewrites (G15). */
+  waveA?: Float32Array<ArrayBuffer>;
+  waveB?: Float32Array<ArrayBuffer>;
+  waveAgitation?: { value: number };
 }
 
 /** Waterline radius of the rock column as a multiple of the rim: the shore foam is drawn there. */
@@ -108,6 +112,9 @@ export function buildLiquid(ctx: PartContext, magma: boolean) {
   const geometry = polarGridGeometry(radii, SURROUND_SEGMENTS);
   const packed = packWaveUniforms(train);
   ctx.wavePhase = new THREE.Vector4();
+  ctx.waveA = packed.a;
+  ctx.waveB = packed.b;
+  ctx.waveAgitation = { value: train.agitation };
   const shore = new Float32Array(RIM_SAMPLES);
   for (let i = 0; i < RIM_SAMPLES; i++) shore[i] = ctx.rimArray[i] * WATERLINE_FLARE;
   const common = {
@@ -123,7 +130,7 @@ export function buildLiquid(ctx: PartContext, magma: boolean) {
     const p = waterPalette(s.spec);
     material = biomeMaterial(ctx, LIQUID_VERTEX, WATER_FRAGMENT, {
       ...common, uDeep: { value: v3(p.deep) }, uShallow: { value: v3(p.shallow) }, uFoam: { value: v3(p.foam) },
-      uAgitation: { value: train.agitation }, uIce: { value: p.ice },
+      uAgitation: ctx.waveAgitation, uIce: { value: p.ice },
     });
   }
   addPart(ctx, magma ? "magma" : "water", geometry, material);

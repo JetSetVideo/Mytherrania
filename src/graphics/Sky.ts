@@ -1,13 +1,23 @@
 // @deno-types="@types/three"
 import * as THREE from "three";
 import type { EnvironmentState } from "./Environment.ts";
+import type { MoonState, Vec3 } from "../world/climate/contracts.ts";
+import { CLOUD_GLSL } from "./sky/CloudField.ts";
 
-// Procedural sky dome driven entirely by EnvironmentState: Rayleigh-style
-// zenith/horizon gradient, Mie glow around the sun, a sun disc, two moon discs,
-// a hashed star field fading with the night factor and fbm clouds that drift
-// with the place's wind and are tinted by the current sun colour. The fbm is
-// the same function as Environment.cloudDensity, so the CPU-side sun occlusion
-// (which dims the DirectionalLight) matches what the player sees.
+// Procedural sky dome (G11 skybox, G13 moons, G14 clouds). Driven by EnvironmentState (sun, sky
+// colours) plus the climate frame (moons, cloud layers, rain, lightning):
+//   gradient   horizon -> zenith on 1 - exp(-k h), k falling with turbidity (hazy skies keep a
+//              wide pale band); a Mie halo around the sun whose width grows with turbidity.
+//   sun        limb-darkened disc I = 1 - 0.6 (1 - sqrt(1 - r^2)), veiled (never erased) by cloud.
+//   moons      two lit spheres: the terminator is drawn from each moon's PHASE (light vector
+//              L = (sin phi, 0, -cos phi) in the disc frame, phi = 2 pi phase), two cel bands, maria
+//              from noise, earthshine on the dark side, coloured by the moon's sky colour (redder
+//              near the horizon, from the climate model), with a halo.
+//   clouds     four layers (CloudField): high -> mid -> low planes, then the towering cumulonimbus
+//              wall; each is CEL-SHADED: light = thickness toward the sun, quantised into the
+//              type's bands with anti-aliased steps, a silver lining near the sun, a soft ink rim.
+//   weather    rain greys and veils the horizon; lightning lights the clouds near the strike and
+//              draws a jagged bolt; stars fade under cloud.
 
 const vertex = /* glsl */ `
   varying vec3 vDir;
@@ -20,113 +30,252 @@ const vertex = /* glsl */ `
 `;
 
 const fragment = /* glsl */ `
-  uniform vec3 uZenith, uHorizon, uSunDir, uSunColor, uMoon1, uMoon2;
-  uniform float uTime, uStars, uCover, uWind, uSunVis;
+  uniform vec3 uZenith, uHorizon, uSunDir, uSunColor;
+  uniform float uTime, uStars, uSunVis, uTurbidity, uRain, uFog, uLightning;
+  uniform vec3 uLightningDir;
+  uniform vec3 uMoonDir[2];
+  uniform vec3 uMoonColor[2];
+  uniform vec4 uMoonParam[2]; // phase angle (rad), angular radius (rad), brightness, illumination
+  uniform vec4 uClouds[16];
   varying vec3 vDir;
+  ${CLOUD_GLSL}
 
-  float hash(vec2 p) { return fract(sin(p.x * 127.1 + p.y * 311.7) * 43758.5453); }
-  float vnoise(vec2 p) {
-    vec2 i = floor(p), f = fract(p);
-    vec2 u = f * f * (3.0 - 2.0 * f);
-    float a = hash(i), b = hash(i + vec2(1.0, 0.0)), c = hash(i + vec2(0.0, 1.0)), d = hash(i + vec2(1.0, 1.0));
-    return a + (b - a) * u.x + (c - a) * u.y + (a - b - c + d) * u.x * u.y;
+  float lum(vec3 c) { return dot(c, vec3(0.2126, 0.7152, 0.0722)); }
+
+  // One moon: returns premultiplied colour in rgb and coverage in a.
+  vec4 moon(vec3 d, vec3 m, vec3 tint, vec4 prm, float seed) {
+    float r = prm.y;
+    vec3 right = normalize(cross(m, abs(m.y) > 0.98 ? vec3(1.0, 0.0, 0.0) : vec3(0.0, 1.0, 0.0)));
+    vec3 up = cross(right, m);
+    vec3 o = d - m * dot(d, m);
+    float x = dot(o, right) / r, y = dot(o, up) / r;
+    float r2 = x * x + y * y;
+    float facing = step(0.0, dot(d, m));
+    float aa = 2.5 * fwidth(sqrt(r2)) + 1e-4;
+    float cover = (1.0 - smoothstep(1.0 - aa, 1.0, sqrt(r2))) * facing * step(-0.03, m.y);
+    if (cover <= 0.0) return vec4(0.0);
+    float z = sqrt(max(0.0, 1.0 - r2));
+    vec3 L = vec3(sin(prm.x), 0.0, -cos(prm.x));
+    float ndl = dot(vec3(x, y, z), L);
+    float lit = smoothstep(-0.04, 0.04, ndl) * (0.78 + 0.22 * smoothstep(0.35, 0.45, ndl));
+    float maria = smoothstep(0.52, 0.66, cNoise(vec2(x, y) * 2.3 + seed));
+    float albedo = 0.92 - 0.28 * maria;
+    vec3 c = tint * albedo * (lit * (0.9 + 0.6 * prm.z) + 0.05);
+    return vec4(c * cover, cover);
   }
-  float fbm(vec2 p) {
-    float v = 0.0, amp = 0.5;
-    for (int i = 0; i < 4; i++) { v += amp * vnoise(p); p *= 2.03; amp *= 0.5; }
-    return v;
+
+  vec3 celCloud(float dens, float toward, float bands, vec4 A, vec3 d, float cs) {
+    // light: denser toward the sun = more self-shadow; thick types darken overall.
+    float l = clamp(0.66 + (dens - toward) * 2.4 - A.w * 0.3 * dens, 0.0, 1.0);
+    float fb = l * bands;
+    float lq = (floor(fb) + smoothstep(0.42, 0.58, fract(fb))) / bands;
+    float day = uSunVis;
+    vec3 moonLit = (uMoonColor[0] * uMoonParam[0].z + uMoonColor[1] * uMoonParam[1].z) * 0.35;
+    vec3 lit = mix(moonLit + uZenith * 0.6 + 0.02, uSunColor * 1.02 + uHorizon * 0.12, day);
+    vec3 shade = mix(uZenith * 0.75 + uHorizon * 0.25, vec3(lum(uHorizon)) * 0.9, 0.35) * mix(0.55, 0.75, day);
+    shade *= 1.0 - 0.72 * A.z;
+    vec3 c = mix(shade, lit, lq);
+    c += uSunColor * pow(cs, 14.0) * (1.0 - smoothstep(0.1, 0.6, dens)) * 0.75 * day;
+    float flash = uLightning * (0.25 + 0.75 * pow(max(dot(d, uLightningDir), 0.0), 8.0));
+    c += vec3(0.82, 0.86, 1.0) * flash * 1.6;
+    return c;
   }
 
   void main() {
     vec3 d = normalize(vDir);
     float h = d.y;
-    // Gradient: exponential falloff from horizon to zenith; below the horizon a darker haze.
-    float t = 1.0 - exp(-max(h, 0.0) * 3.2);
-    vec3 col = mix(uHorizon, uZenith, t);
-    col = mix(col, uHorizon * 0.9, smoothstep(0.0, -0.25, h));
-
-    // Sun: Mie forward-scatter halo + hard disc.
+    float hz = max(h, 0.0);
+    float turb = clamp((uTurbidity - 1.0) / 9.0, 0.0, 1.0);
+    float k = mix(4.2, 1.6, turb);
+    vec3 col = mix(uHorizon, uZenith, 1.0 - exp(-hz * k));
+    col = mix(col, uHorizon * 0.85, smoothstep(0.0, -0.25, h));
     float cs = max(dot(d, uSunDir), 0.0);
-    // Halo kept below white so the disc edge stays visible.
-    col += uSunColor * (pow(cs, 6.0) * 0.18 + pow(cs, 60.0) * 0.22) * uSunVis;
-    float disc = smoothstep(0.99955, 0.99970, cs);
-    col = mix(col, vec3(1.0, 0.97, 0.86) * 2.2, disc * uSunVis);
+    float mieW = mix(10.0, 3.0, turb);
+    col += uSunColor * (pow(cs, mieW) * mix(0.12, 0.3, turb) + pow(cs, 64.0) * 0.22) * uSunVis;
 
-    // Two moons: pale discs, the second smaller and warmer.
-    float m1 = smoothstep(0.9975, 0.9980, dot(d, uMoon1)) * step(-0.02, uMoon1.y);
-    float m2 = smoothstep(0.9986, 0.9990, dot(d, uMoon2)) * step(-0.02, uMoon2.y);
-    col += vec3(0.5, 0.55, 0.7) * pow(max(dot(d, uMoon1), 0.0), 300.0) * 0.25 * uStars;
-    col = mix(col, vec3(0.86, 0.90, 1.0), m1 * (0.35 + 0.65 * uStars));
-    col = mix(col, vec3(1.0, 0.82, 0.66), m2 * (0.35 + 0.65 * uStars));
-
-    // Stars: hashed cells on a direction grid, twinkling, only above the horizon.
+    // Stars.
     vec2 sg = vec2(atan(d.z, d.x) * 120.0, d.y * 120.0);
     vec2 sc = floor(sg);
-    vec2 sf = fract(sg) - 0.5 - (vec2(hash(sc + 7.0), hash(sc + 13.0)) - 0.5) * 0.6;
-    float sr = 0.06 + 0.1 * hash(sc + 21.0);
-    float star = step(0.985, hash(sc)) * (1.0 - smoothstep(sr * 0.4, sr, length(sf))) * smoothstep(0.0, 0.15, h);
-    star *= 0.6 + 0.4 * sin(uTime * 2.0 + hash(sc + 3.1) * 40.0);
+    vec2 sf = fract(sg) - 0.5 - (vec2(cHash(sc + 7.0), cHash(sc + 13.0)) - 0.5) * 0.6;
+    float sr = 0.06 + 0.1 * cHash(sc + 21.0);
+    float star = step(0.985, cHash(sc)) * (1.0 - smoothstep(sr * 0.4, sr, length(sf))) * smoothstep(0.0, 0.15, h);
+    star *= 0.6 + 0.4 * sin(uTime * 2.0 + cHash(sc + 3.1) * 40.0);
     col += vec3(star) * uStars;
 
-    // Clouds (same projection as Environment.cloudDensity).
-    if (h > 0.02) {
-      float k = 1.0 / (h + 0.15);
-      float n = fbm(vec2(d.x * k * 2.2 + uTime * uWind, d.z * k * 2.2 + uTime * uWind * 0.6));
-      float lo = 0.62 - 0.35 * uCover;
-      float c = smoothstep(lo, lo + 0.22, n);
-      // Lit by the sun colour by day, by the zenith colour at night; silver lining near the sun.
-      vec3 lit = mix(uZenith * 1.4 + 0.05, uSunColor * 0.95 + uHorizon * 0.15, uSunVis);
-      vec3 cloudCol = lit * (0.72 + 0.22 * n) + uSunColor * pow(cs, 24.0) * 0.28 * uSunVis;
-      col = mix(col, cloudCol, c * smoothstep(0.02, 0.06, h) * 0.95);
-      // Sun disc punches through thin cloud (attenuated, never erased): a veiled but sharp edge.
-      col = mix(col, vec3(1.0, 0.97, 0.86) * 2.0, disc * uSunVis * (1.0 - 0.7 * c));
+    // Sun disc, limb-darkened.
+    float sunR = 0.022;
+    float sd = length(d - uSunDir) / sunR;
+    float disc = (1.0 - smoothstep(0.92, 1.0, sd)) * step(0.0, dot(d, uSunDir));
+    float limb = 1.0 - 0.6 * (1.0 - sqrt(max(0.0, 1.0 - min(sd, 1.0) * min(sd, 1.0))));
+    vec3 sunDisc = mix(uSunColor, vec3(1.0, 0.97, 0.88), 0.6) * 2.4 * limb;
+    col = mix(col, sunDisc, disc * uSunVis);
+
+    // Moons and their halos (behind the clouds).
+    for (int i = 0; i < 2; i++) {
+      vec3 m = uMoonDir[i];
+      vec4 prm = uMoonParam[i];
+      col += uMoonColor[i] * pow(max(dot(d, m), 0.0), 900.0 * (0.02 / max(prm.y, 0.004))) * 0.22 * prm.w * step(-0.03, m.y);
+      vec4 mc = moon(d, m, uMoonColor[i], prm, float(i) * 13.7);
+      col = col * (1.0 - mc.a) + mc.rgb;
     }
+
+    // Lightning bolt: a jagged line from the storm's base down to the horizon at the strike azimuth.
+    if (uLightning > 0.25) {
+      vec3 L = normalize(vec3(uLightningDir.x, 0.0, uLightningDir.z));
+      vec3 side = normalize(cross(L, vec3(0.0, 1.0, 0.0)));
+      float x = dot(d, side);
+      float y = h;
+      float top = max(uLightningDir.y, 0.05);
+      float seed = floor(uTime * 7.0);
+      float path = (cNoise(vec2(y * 9.0, seed)) - 0.5) * 0.08 + (cNoise(vec2(y * 37.0, seed + 3.0)) - 0.5) * 0.02;
+      float inBand = step(0.0, y) * (1.0 - smoothstep(top - 0.01, top, y)) * step(0.0, dot(d, L));
+      float bolt = exp(-abs(x - path) / 0.0022) * inBand;
+      col += vec3(0.9, 0.93, 1.0) * bolt * uLightning * 3.0;
+    }
+
+    // Clouds: high -> mid -> low planes, then the towering wall in front.
+    if (h > -0.02) {
+      float fade = smoothstep(0.0, 0.05, h);
+      for (int l = 2; l >= 0; l--) {
+        vec4 A = uClouds[l * 4];
+        vec4 T = uClouds[l * 4 + 3];
+        if (T.w < 0.5) continue;
+        vec2 uv = cloudSkyUv(l, d);
+        float dens = cloudPlaneDensity(l, uv);
+        if (dens < 0.002) continue;
+        float toward = cloudPlaneDensity(l, uv + normalize(uSunDir.xz + 1e-4) * 0.07);
+        vec3 cc = celCloud(dens, toward, T.y, A, d, cs);
+        float edge = dens / max(A.y, 0.01);
+        float rim = smoothstep(0.08, 0.16, edge) * (1.0 - smoothstep(0.18, 0.3, edge));
+        cc = mix(cc, cc * 0.55, rim * 0.5);
+        float alpha = clamp(dens * mix(0.8, 1.15, A.w), 0.0, 1.0) * fade;
+        col = mix(col, cc, alpha);
+        col = mix(col, sunDisc, disc * uSunVis * (1.0 - min(1.0, A.w * 1.4 * dens)) * alpha * 0.85);
+      }
+      vec4 TA = uClouds[12];
+      if (uClouds[15].w > 0.5) {
+        float dens = cloudToweringDensity(d);
+        if (dens > 0.002) {
+          float toward = cloudToweringDensity(normalize(d + uSunDir * 0.06));
+          vec3 cc = celCloud(dens, toward, uClouds[15].y, TA, d, cs);
+          cc *= mix(0.55, 1.0, smoothstep(0.0, 0.22, h));
+          float edge = dens / max(TA.y, 0.01);
+          float rim = smoothstep(0.08, 0.16, edge) * (1.0 - smoothstep(0.18, 0.3, edge));
+          cc = mix(cc, cc * 0.5, rim * 0.5);
+          col = mix(col, cc, clamp(dens * 1.1, 0.0, 1.0));
+        }
+      }
+    }
+
+    // Weather veils: rain greys the sky and thickens the horizon; fog lifts the horizon colour.
+    col = mix(col, vec3(lum(col)) * 0.75, uRain * 0.55);
+    col = mix(col, mix(uHorizon, vec3(lum(uHorizon)), 0.4) * 0.8, uRain * (1.0 - smoothstep(0.0, 0.3, h)) * 0.6);
+    col = mix(col, uHorizon, uFog * (1.0 - smoothstep(-0.05, 0.35, h)) * 0.8);
+    col += vec3(0.6, 0.66, 0.8) * uLightning * 0.18;
     gl_FragColor = vec4(col, 1.0);
     #include <tonemapping_fragment>
     #include <colorspace_fragment>
   }
 `;
 
-export interface SkyRig {
-  mesh: THREE.Mesh;
-  apply(env: EnvironmentState, time: number): void;
+/** Climate-side inputs of the sky (all optional: a missing climate keeps the clear default). */
+export interface SkyInputs {
+  /** CloudField.packCloudLayers output (64 floats). */
+  clouds: Float32Array;
+  moons: readonly MoonState[];
+  turbidity: number;
+  rain: number;
+  fog: number;
+  lightning: number;
+  lightningDir: Vec3;
 }
 
-export function createSky(radius = 90): SkyRig {
-  const uniforms = {
+export interface SkyRig {
+  mesh: THREE.Mesh;
+  apply(env: EnvironmentState, time: number, inputs?: SkyInputs): void;
+  /** Rebuild the dome for a new polygon budget / octave count (quality change). */
+  setDetail(segments: number, octaves: number): void;
+}
+
+export interface SkyOptions { radius?: number; segments?: number; octaves?: number }
+
+function skyMaterial(uniforms: Record<string, THREE.IUniform>, octaves: number): THREE.ShaderMaterial {
+  return new THREE.ShaderMaterial({
+    uniforms, vertexShader: vertex, fragmentShader: fragment, side: THREE.BackSide, depthWrite: false,
+    defines: { CLOUD_OCTAVES: Math.max(2, Math.min(5, Math.round(octaves))) },
+  });
+}
+
+export function createSky(opts: SkyOptions = {}): SkyRig {
+  const radius = opts.radius ?? 90;
+  const uniforms: Record<string, THREE.IUniform> = {
     uZenith: { value: new THREE.Color() },
     uHorizon: { value: new THREE.Color() },
     uSunColor: { value: new THREE.Color() },
     uSunDir: { value: new THREE.Vector3(0, 1, 0) },
-    uMoon1: { value: new THREE.Vector3(0, -1, 0) },
-    uMoon2: { value: new THREE.Vector3(0, -1, 0) },
     uTime: { value: 0 },
     uStars: { value: 0 },
-    uCover: { value: 0.4 },
-    uWind: { value: 0.01 },
     uSunVis: { value: 1 },
+    uTurbidity: { value: 2.5 },
+    uRain: { value: 0 },
+    uFog: { value: 0 },
+    uLightning: { value: 0 },
+    uLightningDir: { value: new THREE.Vector3(1, 0.2, 0).normalize() },
+    uMoonDir: { value: [new THREE.Vector3(0, -1, 0), new THREE.Vector3(0, -1, 0)] },
+    uMoonColor: { value: [new THREE.Color(0.86, 0.9, 1), new THREE.Color(1, 0.82, 0.66)] },
+    uMoonParam: { value: [new THREE.Vector4(Math.PI, 0.03, 0.5, 1), new THREE.Vector4(Math.PI, 0.02, 0.3, 1)] },
+    uClouds: { value: Array.from({ length: 16 }, () => new THREE.Vector4()) },
   };
-  const mesh = new THREE.Mesh(
-    new THREE.SphereGeometry(radius, 48, 24),
-    new THREE.ShaderMaterial({ uniforms, vertexShader: vertex, fragmentShader: fragment, side: THREE.BackSide, depthWrite: false }),
-  );
+  const segments = opts.segments ?? 64;
+  const mesh = new THREE.Mesh(new THREE.SphereGeometry(radius, segments, Math.max(12, segments >> 1)), skyMaterial(uniforms, opts.octaves ?? 4));
   mesh.name = "sky";
   mesh.frustumCulled = false;
   mesh.renderOrder = -1;
+  let detail = `${segments}/${opts.octaves ?? 4}`;
   return {
     mesh,
-    apply(env, time) {
-      uniforms.uZenith.value.setRGB(...env.zenith);
-      uniforms.uHorizon.value.setRGB(...env.horizon);
-      uniforms.uSunColor.value.setRGB(...env.sunColor);
-      uniforms.uSunDir.value.set(...env.sun.dir);
-      uniforms.uMoon1.value.set(...env.moons[0].dir);
-      uniforms.uMoon2.value.set(...env.moons[1].dir);
-      uniforms.uTime.value = time;
-      uniforms.uStars.value = env.starAlpha;
-      uniforms.uCover.value = env.cloudCover;
-      uniforms.uWind.value = env.place.wind;
+    setDetail(seg, oct) {
+      const key = `${seg}/${oct}`;
+      if (key === detail) return;
+      detail = key;
+      mesh.geometry.dispose();
+      mesh.geometry = new THREE.SphereGeometry(radius, seg, Math.max(12, seg >> 1));
+      (mesh.material as THREE.Material).dispose();
+      mesh.material = skyMaterial(uniforms, oct);
+    },
+    apply(env, time, inputs) {
+      (uniforms.uZenith.value as THREE.Color).setRGB(...env.zenith);
+      (uniforms.uHorizon.value as THREE.Color).setRGB(...env.horizon);
+      (uniforms.uSunColor.value as THREE.Color).setRGB(...env.sunColor);
+      (uniforms.uSunDir.value as THREE.Vector3).set(...env.sun.dir);
+      uniforms.uTime.value = time % 3600;
       uniforms.uSunVis.value = Math.max(0, Math.min(1, env.sun.dir[1] * 6 + 0.3));
+      const dirs = uniforms.uMoonDir.value as THREE.Vector3[];
+      const cols = uniforms.uMoonColor.value as THREE.Color[];
+      const prms = uniforms.uMoonParam.value as THREE.Vector4[];
+      if (inputs) {
+        const cv = uniforms.uClouds.value as THREE.Vector4[];
+        for (let i = 0; i < 16; i++) cv[i].fromArray(inputs.clouds, i * 4);
+        uniforms.uTurbidity.value = inputs.turbidity;
+        uniforms.uRain.value = inputs.rain;
+        uniforms.uFog.value = inputs.fog;
+        uniforms.uLightning.value = inputs.lightning;
+        (uniforms.uLightningDir.value as THREE.Vector3).set(...inputs.lightningDir);
+        let cover = 0;
+        for (let l = 0; l < 4; l++) cover = 1 - (1 - cover) * (1 - inputs.clouds[l * 16] * inputs.clouds[l * 16 + 1] * 0.8);
+        uniforms.uStars.value = env.starAlpha * (1 - 0.85 * cover);
+        for (let i = 0; i < 2; i++) {
+          const m = inputs.moons[i];
+          if (!m) continue;
+          dirs[i].set(...m.dir);
+          cols[i].setRGB(...m.skyColor);
+          prms[i].set(2 * Math.PI * m.phase, m.angularRadius, m.brightness, m.illumination);
+        }
+      } else {
+        uniforms.uStars.value = env.starAlpha;
+        dirs[0].set(...env.moons[0].dir);
+        dirs[1].set(...env.moons[1].dir);
+      }
     },
   };
 }

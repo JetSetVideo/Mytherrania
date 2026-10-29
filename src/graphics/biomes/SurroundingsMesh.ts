@@ -14,7 +14,7 @@ import * as THREE from "three";
 import { createSurroundings, isBiomeSurroundings, type BiomeSurroundings } from "../../world/biomes/Biomes.ts";
 import { CLOUD_DRIFT_ANGLE } from "../../world/biomes/BiomeTables.ts";
 import type { Surroundings } from "../../world/biomes/contracts.ts";
-import { WAVE_COUNT, wavePhasesAt } from "../../world/biomes/Waves.ts";
+import { packWaveUniforms, WAVE_COUNT, wavePhasesAt } from "../../world/biomes/Waves.ts";
 import { geometryTriangles } from "./BiomeGeometry.ts";
 import { buildCanopy, buildClouds, buildLand, buildLiquid, buildVoid, type PartContext, type SharedUniforms } from "./BiomeParts.ts";
 
@@ -72,6 +72,8 @@ export interface SurroundingsMesh {
   stats: SurroundingsMeshStats;
   /** Per-frame: time (s, the physics clock), sun direction (toward the sun), ambient (AmbientLight colour x intensity). Uniform writes only. */
   update(t: number, sunDir: { x: number; y: number; z: number }, ambient: RgbInput, light?: SurroundingsLight): void;
+  /** G15: re-upload the wave train after BiomeSurroundings.retune (packs into the live uniform arrays). */
+  syncWaves(): void;
   /** Free every geometry and material. */
   dispose(): void;
 }
@@ -158,6 +160,11 @@ export function buildSurroundingsMesh(surroundings: Surroundings, opts: Surround
         wavePhasesAt(s.waves, t, phases);
         ctx.wavePhase.set(phases[0], phases[1], phases[2], phases[3]);
       }
+    },
+    syncWaves() {
+      if (!s.waves || !ctx.waveA || !ctx.waveB) return;
+      packWaveUniforms(s.waves, ctx.waveA, ctx.waveB);
+      if (ctx.waveAgitation) ctx.waveAgitation.value = s.waves.agitation;
     },
     dispose() {
       group.traverse((o) => {
