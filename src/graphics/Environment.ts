@@ -155,7 +155,8 @@ export function environmentAt(hour: number, dayOfYear: number, place: Place, tim
   const moons = climate ? climate.moons : moonPositions(hour, dayOfYear);
   const e = sun.elevation / DEG;
   const d = smoothstep(-4, 12, e);
-  const tw = Math.exp(-(((e - 1) / 7) ** 2));
+  // Twilight warmth: a Gaussian around the horizon, widened from 7 to 10 deg (G18: golden hour lasts).
+  const tw = Math.exp(-(((e - 1) / 10) ** 2));
   const n = 1 - smoothstep(-16, -3, e);
 
   const oc = climate ? clamp01(climate.overcast) : 0;
@@ -164,17 +165,19 @@ export function environmentAt(hour: number, dayOfYear: number, place: Place, tim
   const horizon: Rgb = grey([
     clamp01(horizonBase[0] + tw * 0.62), clamp01(horizonBase[1] + tw * 0.26), clamp01(horizonBase[2] + tw * 0.02),
   ], 0.6 * oc, 0.25 * oc);
-  const sunColor: Rgb = [1, clamp01(0.96 - 0.45 * tw), clamp01(0.88 - 0.7 * tw)];
+  const sunColor: Rgb = [1, clamp01(0.96 - 0.5 * tw), clamp01(0.88 - 0.78 * tw)];
 
   const cloudCover = clamp01(climate ? climate.cloudCover : place.cloudiness);
   const sunOcclusion = climate ? clamp01(climate.sunOcclusion) : cloudDensity(sun.dir, time, cloudCover, place.wind);
-  const rawSun = Math.pow(Math.max(0, Math.sin(sun.elevation)), 0.55) * 1.35;
+  // Exponent 0.4 (was 0.55): a low sun keeps a strong, readable key — the golden hour is lit, not dim.
+  const rawSun = Math.pow(Math.max(0, Math.sin(sun.elevation)), 0.4) * 1.35;
   const sunIntensity = rawSun * (1 - 0.65 * sunOcclusion);
   const moonUp = climate
     ? climate.moonLight[0] + 0.6 * climate.moonLight[1]
     : Math.max(0, Math.sin(moons[0].elevation)) + 0.6 * Math.max(0, Math.sin(moons[1].elevation));
   const moonIntensity = n * 0.22 * Math.min(1, moonUp);
-  const amb = 0.16 + 0.42 * d * (1 - 0.3 * sunOcclusion);
+  // Night floor 0.21 (was 0.16): a moonless night must stay readable for play, never pitch black.
+  const amb = 0.21 + 0.37 * d * (1 - 0.3 * sunOcclusion);
   const ambientColor: Rgb = mix([amb * 0.42, amb * 0.6, amb * 1.3], [amb, amb * 0.96, amb * 0.9], d);
 
   return {

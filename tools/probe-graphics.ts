@@ -5,6 +5,35 @@
 //   deno task build && deno run -A tools/probe-graphics.ts [outDir]
 import { chromium } from "playwright";
 import { serveAsset } from "./serve.ts";
+import { createClimate } from "../src/world/climate/Climate.ts";
+import { PLACES, solarPosition } from "../src/graphics/Environment.ts";
+
+/** Hour (day 200) when the sun crosses `elevDeg` (rising before noon, setting after), for a latitude. */
+function hourAtElevation(lat: number, elevDeg: number, rising: boolean): number {
+  let best = 12, err = 1e9;
+  for (let h = rising ? 0 : 12; h < (rising ? 12 : 24); h += 0.02) {
+    const e = solarPosition(200, h, lat).elevation * 57.2958;
+    if (Math.abs(e - elevDeg) < err) { err = Math.abs(e - elevDeg); best = h; }
+  }
+  return Math.round(best * 100) / 100;
+}
+
+/** A night when both moons are high and close enough to share one frame (searched on the climate model). */
+function twoMoonNight(placeIdx: number, year: number): { day: number; hour: number; sepDeg: number } {
+  const pl = PLACES[placeIdx];
+  const c = createClimate({ placeId: pl.id, latitude: pl.latitude, seed: 1, year, dayOfYear: 200, hour: 0, dayLengthSeconds: 0 });
+  let best = { day: 200, hour: 0, sepDeg: 999 };
+  for (let day = 200; day < 260; day++) for (let h = 0; h < 24; h += 0.25) {
+    if (solarPosition(day, h, pl.latitude).elevation * 57.3 > -10) continue;
+    c.setClock(day, h, year);
+    const [a, b] = c.step(0.001).moons;
+    if (a.dir[1] < 0.3 || b.dir[1] < 0.3 || a.illumination < 0.3) continue;
+    const sep = Math.acos(Math.min(1, a.dir[0] * b.dir[0] + a.dir[1] * b.dir[1] + a.dir[2] * b.dir[2])) * 57.3;
+    // Both in one frame but clearly apart (8..35 deg): two discs, not one.
+    if (sep >= 8 && sep <= 35 && Math.abs(sep - 18) < Math.abs(best.sepDeg - 18)) best = { day, hour: h, sepDeg: sep };
+  }
+  return best;
+}
 
 const OUT = Deno.args[0] ?? "artifacts/qa-graphics";
 await Deno.mkdir(OUT, { recursive: true });
@@ -50,7 +79,9 @@ try {
   await page.waitForTimeout(300);
   await page.click('[data-action="begin"]');
   await page.waitForTimeout(900);
-  await eng("debugView", { freeze: true, camera: "third", firstPerson: false, hour: 16, dayOfYear: 200, regime: "fair" });
+  // The fight stays frozen at its opening pose for every shot; the climate keeps running (climateLive).
+  // Pin the place (Verdant Hills, lat 34) so runs are comparable.
+  await eng("debugView", { freeze: true, climateLive: true, camera: "third", firstPerson: false, hour: 16, dayOfYear: 200, regime: "fair", place: 2 });
 
   if (want("presets")) {
     for (const preset of ["low", "medium", "high", "ultra"]) {
@@ -71,26 +102,44 @@ try {
       await shot(`fx-${tag}`, `high, 1080p, effects ${tag}`, true);
     }
   }
+  if (want("ab")) {
+    // A/B of the far field: the same storm frame drawn without the post pipeline (low) and with it (high).
+    for (const [regime, preset] of [["fair", "low"], ["fair", "high"], ["storm", "low"], ["storm", "high"]] as const) {
+      await eng("debugView", { settings: { graphics: preset, resolution: "1080p" }, regime, hour: 15, dayOfYear: 200 });
+      await page.waitForTimeout(2500);
+      await shot(`ab-${regime}-${preset}`, `${regime} drawn with the ${preset} preset (A/B)`);
+    }
+    await eng("debugView", { settings: { graphics: "high" } });
+  }
   if (want("weather")) {
     await eng("debugView", { settings: { graphics: "high", resolution: "1080p", ssao: "auto", gi: "auto", rayTracing: "auto" } });
     for (const regime of ["clear", "fair", "overcast", "building", "lull", "storm", "clearing"]) {
-      await eng("debugView", { regime, freeze: false, hour: 15, dayOfYear: 200 });
-      await page.waitForTimeout(1500);
-      await eng("debugView", { freeze: true });
+      await eng("debugView", { regime, hour: 15, dayOfYear: 200 });
+      await page.waitForTimeout(2500);
       await shot(`weather-${regime}`, `regime ${regime} pinned, 15h day 200`);
     }
     await eng("debugView", { regime: null });
   }
   if (want("times")) {
-    for (const [h, tag] of [[5.6, "dawn"], [7.2, "golden-morning"], [12.5, "noon"], [18.4, "golden-evening"], [19.6, "dusk"], [23.5, "night"]] as const) {
-      await eng("debugView", { hour: h, dayOfYear: 200, regime: "fair", freeze: false });
-      await page.waitForTimeout(800);
-      await eng("debugView", { freeze: true });
+    const sp = await snap();
+    const lat = PLACES.find((p) => p.name === sp.world?.place)?.latitude ?? 34;
+    const times: [number, string][] = [
+      [hourAtElevation(lat, -4, true), "dawn"], [hourAtElevation(lat, 6, true), "golden-morning"], [12.5, "noon"],
+      [hourAtElevation(lat, 8, false), "golden-evening"], [hourAtElevation(lat, -3, false), "dusk"], [23.5, "night"],
+    ];
+    for (const [h, tag] of times) {
+      await eng("debugView", { hour: h, dayOfYear: 200, regime: "fair" });
+      await page.waitForTimeout(1200);
       await shot(`time-${tag}`, `${h}h day 200, fair`);
     }
-    await eng("debugView", { hour: 23.5, dayOfYear: 200, regime: "clear", skyAim: "moons", freeze: true });
-    await shot("sky-moons", "camera aimed between the moons, 23.5h, clear");
-    await eng("debugView", { hour: 16, dayOfYear: 200, regime: "storm", skyAim: "sun", freeze: true });
+    const s0 = await snap();
+    const placeIdx = Math.max(0, PLACES.findIndex((p) => p.name === s0.world?.place));
+    const tm = twoMoonNight(placeIdx, new Date().getFullYear());
+    await eng("debugView", { hour: tm.hour, dayOfYear: tm.day, regime: "clear", skyAim: "moons" });
+    await page.waitForTimeout(1200);
+    await shot("sky-moons", `camera between the moons: day ${tm.day} ${tm.hour}h, separation ${tm.sepDeg.toFixed(1)} deg, clear`);
+    await eng("debugView", { hour: 16, dayOfYear: 200, regime: "storm", skyAim: "sun" });
+    await page.waitForTimeout(2500);
     await shot("sky-storm-sun", "camera at the sun, storm");
     await eng("debugView", { skyAim: null, regime: null });
   }

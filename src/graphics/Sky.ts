@@ -60,13 +60,17 @@ const fragment = /* glsl */ `
     float lit = smoothstep(-0.04, 0.04, ndl) * (0.78 + 0.22 * smoothstep(0.35, 0.45, ndl));
     float maria = smoothstep(0.52, 0.66, cNoise(vec2(x, y) * 2.3 + seed));
     float albedo = 0.92 - 0.28 * maria;
-    vec3 c = tint * albedo * (lit * (0.9 + 0.6 * prm.z) + 0.05);
+    // Kept below 1 so tone mapping does not bleach the moon's own hue (amber Vesh stays amber).
+    vec3 sat = max(mix(vec3(lum(tint)), tint, 1.7), 0.0);
+    vec3 c = sat * albedo * (lit * (0.62 + 0.25 * prm.z) + 0.035);
     return vec4(c * cover, cover);
   }
 
   vec3 celCloud(float dens, float toward, float bands, vec4 A, vec3 d, float cs) {
-    // light: denser toward the sun = more self-shadow; thick types darken overall.
-    float l = clamp(0.66 + (dens - toward) * 2.4 - A.w * 0.3 * dens, 0.0, 1.0);
+    // light: denser toward the sun = more self-shadow; thick types darken overall. The self-shadow
+    // term fades as the sky closes over (no direct sun to cast it) and storm bases (darkness) sink.
+    float direct = uSunVis * (1.0 - 0.8 * A.z);
+    float l = clamp(0.66 + (dens - toward) * 2.4 * direct - A.w * 0.3 * dens - 0.45 * A.z, 0.0, 1.0);
     float fb = l * bands;
     float lq = (floor(fb) + smoothstep(0.42, 0.58, fract(fb))) / bands;
     float day = uSunVis;
@@ -74,6 +78,7 @@ const fragment = /* glsl */ `
     vec3 lit = mix(moonLit + uZenith * 0.6 + 0.02, uSunColor * 1.02 + uHorizon * 0.12, day);
     vec3 shade = mix(uZenith * 0.75 + uHorizon * 0.25, vec3(lum(uHorizon)) * 0.9, 0.35) * mix(0.55, 0.75, day);
     shade *= 1.0 - 0.72 * A.z;
+    lit *= 1.0 - 0.62 * A.z;
     vec3 c = mix(shade, lit, lq);
     c += uSunColor * pow(cs, 14.0) * (1.0 - smoothstep(0.1, 0.6, dens)) * 0.75 * day;
     float flash = uLightning * (0.25 + 0.75 * pow(max(dot(d, uLightningDir), 0.0), 8.0));
@@ -114,7 +119,7 @@ const fragment = /* glsl */ `
     for (int i = 0; i < 2; i++) {
       vec3 m = uMoonDir[i];
       vec4 prm = uMoonParam[i];
-      col += uMoonColor[i] * pow(max(dot(d, m), 0.0), 900.0 * (0.02 / max(prm.y, 0.004))) * 0.22 * prm.w * step(-0.03, m.y);
+      col += uMoonColor[i] * pow(max(dot(d, m), 0.0), 900.0 * (0.02 / max(prm.y, 0.004))) * 0.12 * prm.w * step(-0.03, m.y);
       vec4 mc = moon(d, m, uMoonColor[i], prm, float(i) * 13.7);
       col = col * (1.0 - mc.a) + mc.rgb;
     }
@@ -145,9 +150,12 @@ const fragment = /* glsl */ `
         if (dens < 0.002) continue;
         float toward = cloudPlaneDensity(l, uv + normalize(uSunDir.xz + 1e-4) * 0.07);
         vec3 cc = celCloud(dens, toward, T.y, A, d, cs);
+        // Ink rim on the cloud's OUTER edge only (where sky shows through), and only on heaped types;
+        // full-cover sheets draw none, so an overcast deck never turns into a mosaic of outlines.
         float edge = dens / max(A.y, 0.01);
         float rim = smoothstep(0.08, 0.16, edge) * (1.0 - smoothstep(0.18, 0.3, edge));
-        cc = mix(cc, cc * 0.55, rim * 0.5);
+        rim *= smoothstep(0.3, 0.7, uClouds[l * 4 + 2].y) * (1.0 - smoothstep(0.55, 0.85, A.x));
+        cc = mix(cc, cc * 0.7, rim * 0.6);
         float alpha = clamp(dens * mix(0.8, 1.15, A.w), 0.0, 1.0) * fade;
         col = mix(col, cc, alpha);
         col = mix(col, sunDisc, disc * uSunVis * (1.0 - min(1.0, A.w * 1.4 * dens)) * alpha * 0.85);
@@ -158,10 +166,12 @@ const fragment = /* glsl */ `
         if (dens > 0.002) {
           float toward = cloudToweringDensity(normalize(d + uSunDir * 0.06));
           vec3 cc = celCloud(dens, toward, uClouds[15].y, TA, d, cs);
-          cc *= mix(0.55, 1.0, smoothstep(0.0, 0.22, h));
+          // Vertical development: a near-black rain base, lit flanks, a bright anvil top.
+          float top = mix(0.18, 0.55, TA.x);
+          cc *= mix(0.4, 1.15, smoothstep(0.0, top, h));
           float edge = dens / max(TA.y, 0.01);
           float rim = smoothstep(0.08, 0.16, edge) * (1.0 - smoothstep(0.18, 0.3, edge));
-          cc = mix(cc, cc * 0.5, rim * 0.5);
+          cc = mix(cc, cc * 0.65, rim * 0.5);
           col = mix(col, cc, clamp(dens * 1.1, 0.0, 1.0));
         }
       }
@@ -189,6 +199,12 @@ export interface SkyInputs {
   lightning: number;
   lightningDir: Vec3;
 }
+
+/**
+ * Moons are drawn larger than their angular size (Ilun 0.6 deg, Vesh 0.32 deg): at a 50 deg field of
+ * view a 0.6 deg disc is ~12 px across, too small to read a phase. x2.4 -> ~30 px / ~16 px radius.
+ */
+export const MOON_DISPLAY_SCALE = 2.4;
 
 export interface SkyRig {
   mesh: THREE.Mesh;
@@ -269,7 +285,7 @@ export function createSky(opts: SkyOptions = {}): SkyRig {
           if (!m) continue;
           dirs[i].set(...m.dir);
           cols[i].setRGB(...m.skyColor);
-          prms[i].set(2 * Math.PI * m.phase, m.angularRadius, m.brightness, m.illumination);
+          prms[i].set(2 * Math.PI * m.phase, m.angularRadius * MOON_DISPLAY_SCALE, m.brightness, m.illumination);
         }
       } else {
         uniforms.uStars.value = env.starAlpha;

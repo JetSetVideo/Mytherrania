@@ -49,11 +49,6 @@ export function outputPixelRatio(choice: ResolutionChoice, cssW: number, cssH: n
   return Math.max(PIXEL_RATIO_MIN, Math.min(PIXEL_RATIO_MAX, r));
 }
 
-/** The drawing-buffer size the ratio produces (what three's setPixelRatio + setSize yield). */
-export function outputSize(choice: ResolutionChoice, cssW: number, cssH: number, dpr: number, budget: number): { width: number; height: number; ratio: number } {
-  const ratio = outputPixelRatio(choice, cssW, cssH, dpr, budget);
-  return { width: Math.floor(cssW * ratio), height: Math.floor(cssH * ratio), ratio };
-}
 
 /** Graphics presets. */
 export const GRAPHICS_PRESETS = ["low", "medium", "high", "ultra"] as const;

@@ -21,14 +21,12 @@
 //   towering      cumulonimbus is not a plane: it is a cylinder of heaps rising from the horizon
 //                 (azimuth x elevation), thinning with height, so storm cells read as walls.
 // Pure module apart from the GLSL string: no THREE, no DOM.
-import { CLOUD_LAYERS, CLOUD_SHAPES, LAYER_TYPES, type CloudLayerState, type CloudShape } from "../../world/climate/contracts.ts";
+import { CLOUD_SHAPES, LAYER_TYPES, type CloudLayerState, type CloudShape } from "../../world/climate/contracts.ts";
 
 /** Projection gain per layer (higher layers: more, smaller-looking features per degree). */
 export const LAYER_K: Readonly<Record<string, number>> = { low: 1.5, mid: 2.4, high: 3.8, towering: 1 };
 /** Horizon bend of the sky planes. */
 export const LAYER_CURVE = 0.12;
-/** Ground metres per sky-plane unit for cloud SHADOWS (a 120 m effective cloud height). */
-export const SHADOW_PLANE_METRES = 120;
 /** Drift offsets wrap here (sky-plane units) so float precision never degrades. */
 export const DRIFT_WRAP = 4096;
 /** Floats per layer in the packed uniform block (4 vec4). */
@@ -203,12 +201,15 @@ float cloudToweringDensity(vec3 d) {
   if (T.w < 0.5 || d.y < -0.02) return 0.0;
   float az = atan(d.z, d.x);
   float h = max(d.y, 0.0);
-  vec3 p = vec3(cos(az) * 3.2, h * 5.5, sin(az) * 3.2) / max(S.x, 0.05) + vec3(B.x, 0.0, B.y) * 0.15;
+  vec3 p = vec3(cos(az) * 3.2, h * 3.2, sin(az) * 3.2) / max(S.x, 0.05) + vec3(B.x, 0.0, B.y) * 0.15;
   float n = cFbm3(p);
   float billow = 1.0 - abs(2.0 * cFbm3(p * 1.9 + 4.7) - 1.0);
   n = mix(n, n * 0.55 + billow * 0.55 - 0.04, S.y);
   // Height profile: the tower narrows with height, the anvil flares near its top.
-  float top = mix(0.18, 0.55, A.x);
+  // Separate cells: each tower's height varies with azimuth (a few towers around the horizon,
+  // merging into a wall only near full coverage), and its body is stretched vertically.
+  float tower = smoothstep(0.25, 0.75, cNoise(vec2(az * 1.9 + B.x * 0.02, 7.3)) + (A.x - 0.5) * 0.9);
+  float top = mix(0.18, 0.55, A.x) * mix(0.35, 1.0, tower);
   float anvil = smoothstep(top * 0.7, top, h) * (1.0 - smoothstep(top, top + 0.08, h));
   float profile = (1.0 - smoothstep(0.0, top, h)) * 0.9 + anvil * 0.55;
   float lo = T.z + (1.0 - profile) * 2.6;
@@ -302,6 +303,3 @@ export function cloudOcclusionAt(packed: Float32Array, dir: readonly [number, nu
   }
   return Math.max(0, Math.min(1, 1 - clear));
 }
-
-/** Number of layers (the contract's CLOUD_LAYERS), exported for the shaders' array sizes. */
-export const CLOUD_LAYER_COUNT = CLOUD_LAYERS.length;

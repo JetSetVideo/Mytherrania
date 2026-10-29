@@ -1,7 +1,7 @@
 // Wave G render model: resolution presets, quality presets/overrides, dynamic resolution,
 // the cloud field (CPU twin of the sky GLSL) and the storm-cycle wave shapes.
 import {
-  createDynRes, DYNRES_MIN_SCALE, GRAPHICS_PRESETS, outputPixelRatio, outputSize, PIXEL_RATIO_MAX, RENDER_PRESETS,
+  createDynRes, DYNRES_MIN_SCALE, GRAPHICS_PRESETS, outputPixelRatio, PIXEL_RATIO_MAX, RENDER_PRESETS,
   RESOLUTION_HEIGHT, RESOLUTIONS, resolveQuality, stepDynRes,
 } from "../src/graphics/render/Quality.ts";
 import { cloudFbm, cloudOcclusionAt, coverageThreshold, FLOATS_PER_LAYER, layerShape, packCloudLayers, planeDensityAt, advanceDrift } from "../src/graphics/sky/CloudField.ts";
@@ -11,6 +11,12 @@ import { COMPOSITE_FRAGMENT, EFFECTS_FRAGMENT, SSR_FRAGMENT } from "../src/graph
 import { CEL_LIGHT_GLSL } from "../src/graphics/shaders/CelShader.ts";
 
 function assert(ok: unknown, m = "assertion failed"): asserts ok { if (!ok) throw new Error(m); }
+
+/** The drawing-buffer size three produces from setPixelRatio(ratio) + setSize(cssW, cssH). */
+function outputSize(choice: Parameters<typeof outputPixelRatio>[0], cssW: number, cssH: number, dpr: number, budget: number) {
+  const ratio = outputPixelRatio(choice, cssW, cssH, dpr, budget);
+  return { width: Math.floor(cssW * ratio), height: Math.floor(cssH * ratio), ratio };
+}
 
 Deno.test("G01: every fixed resolution renders exactly its row count; 2160p is 4K UHD on a 16:9 window", () => {
   assert(RESOLUTIONS.includes("2160p") && RESOLUTIONS.includes("720p") && RESOLUTIONS.includes("1080p"), "usual presets present");
