@@ -16,14 +16,15 @@
 //   8. Root      gait-owned legs: IK ride height; skill/KO/air-owned legs: lowest sole on the floor.
 //   9. Guard     lift the root if any heel / ball / toe tip of the final pose is below the ground.
 
-import { clamp, damp, lerp, smoothstep } from "../../core/MathCore.ts";
-import { trackOffset } from "../AnimationCurve.ts";
+import { clamp, damp, lerp, smoothstep, wrapAngle } from "../../core/MathCore.ts";
+import { type FourPhaseProfile, fourPhasePeakRate, styledTrackOffset, trackOffset } from "../AnimationCurve.ts";
 import type { SkillAnimation } from "../Skills.ts";
 import {
   ankleFromBall, type GroundHeightFn, type GroundSample, type LegJointLimits, newLegSolution, pelvisDropFor, sampleGround,
   smoothMax, smoothMin, solveLegInPelvis, type TwoBoneChain,
 } from "./FootIK.ts";
 import { Gait, type GaitParams } from "./Gait.ts";
+import type { LiveState, MotionStyle } from "./MotionStyle.ts";
 import { makeMask, MASK_FULL, MASK_LOWER, MASK_UPPER, PoseBlender } from "./PoseBlend.ts";
 import { AIR_POSE, ATTACK_POSE, BREATH_UNIT, GUARD_POSE, HIT_OFFSETS, KO_POSE, poseArray } from "./Poses.ts";
 import {
@@ -124,6 +125,19 @@ export interface AnimatorParams {
   maxJointSpeed: number;
   /** Largest dt (s) one update integrates; longer frames are clamped (hitches, tab switches). */
   maxStep: number;
+  /**
+   * Lane M ball pivot. The legs have no yaw joint, so when the body turns over a planted foot
+   * (a swing's aim + trunk twist, circling a rival) the foot turns with it about its ball and the
+   * heel SWEEPS the floor (measured 28-71 mm per stance in swings). A fighter pivots on the ball
+   * with the heel up: the planted foot rolls onto its ball by pivotPitch (rad, toe-down) as the
+   * yaw since touchdown grows from pivotStart to pivotFull (rad, smoothstep); the roll eases in at
+   * pivotRise and out at pivotFall (1/s). 0.14 rad lifts a 0.2 m foot's heel ~2.8 cm.
+   */
+  pivotPitch: number;
+  pivotStart: number;
+  pivotFull: number;
+  pivotRise: number;
+  pivotFall: number;
   /** A root jump longer than this (m) in one frame re-plants the feet (respawn, teleport). */
   teleportDistance: number;
 }
@@ -173,6 +187,11 @@ export const DEFAULT_ANIMATOR: AnimatorParams = {
   maxJointSpeed: Number.NaN,
   maxStep: 1 / 15,
   teleportDistance: 1.5,
+  pivotPitch: 0.14,
+  pivotStart: 0.004,
+  pivotFull: 0.04,
+  pivotRise: 40,
+  pivotFall: 12,
 };
 
 /** What the engine tells the animator each frame. World metres / radians / seconds. */
@@ -198,6 +217,12 @@ export interface AnimatorInput {
    * the pop guard does not delay it (trusted in proportion to the attack layer's weight).
    */
   attackPose?: Float64Array | null;
+  /**
+   * Lane M: 0..1 leg drive of the swing playing this frame (SwingDriver.legDrive): the legs LEAD a
+   * strike — the pelvis sinks into the planted feet (knees bend, feet stay latched) ahead of the
+   * arm. Scaled by the style's crouch; 0 / absent = no drive (today's behaviour).
+   */
+  attackDrive?: number;
   block: boolean;
   ko: boolean;
   /** Combat-ready guard stance (fight phase, opponent near). */
@@ -260,6 +285,14 @@ const D3 = new Float64Array(3);
 const FK3 = newLegFK3();
 const GS_LAND: GroundSample = { height: 0, slopePitch: 0 };
 const GS_BODY: GroundSample = { height: 0, slopePitch: 0 };
+/** Share of a styled skill track's time-to-peak the counter-move takes (the strike gets the rest). */
+export const SKILL_ANTICIPATION_SHARE = 0.3;
+/**
+ * Styled skill curves' main strike stays under this share of the joint speed limit: the rest is
+ * headroom for the wobble and the chain-lead time warp (up to ~1.3× on the leading joints).
+ */
+export const SKILL_SPEED_SHARE = 0.65;
+const PR4: FourPhaseProfile = { anticipation: 0, anticipationShare: 0, hold: 0, overshoot: 0, settle: 0 };
 
 /** Layer indices inside the animator's blender. */
 export const LAYER = { loco: 0, air: 1, guard: 2, attack: 3, skill: 4, ko: 5, hit: 6, balance: 7, breath: 8 } as const;
@@ -306,6 +339,14 @@ export class Animator {
   #sinR = 0;
   #cosR = 1;
   #lateral = 0;
+  /** Lane M: the gait's own stride parameters (the style scales them), the guard pose, pivots. */
+  readonly #strideA0: number;
+  readonly #strideB0: number;
+  readonly #guardBase: Float64Array;
+  readonly #plantYaw = new Float64Array(2);
+  readonly #wasPlanted = [true, true];
+  readonly #pivot = new Float64Array(2);
+  #breathPh = 0;
 
   constructor(geometry: LegGeometry, limits: JointLimitTable, params: Partial<AnimatorParams> = {}) {
     this.geometry = geometry;
@@ -323,6 +364,9 @@ export class Animator {
       kneeMin: limits.min[lj.knee] + LEG_MARGIN, kneeMax: limits.max[lj.knee],
     }));
     this.gait = new Gait(geometry, p.gait);
+    this.#strideA0 = this.gait.params.strideAtRest;
+    this.#strideB0 = this.gait.params.strideGain;
+    this.#guardBase = poseArray(GUARD_POSE, limits, "override");
     hipPivot(geometry, 0, 0, HIP2);
     this.#hipRestZ = HIP2[1];
     const B = this.blender = new PoseBlender(limits, p.popSmoothTime);
@@ -362,10 +406,25 @@ export class Animator {
   /** Leg length L (m). */
   get legLength(): number { return this.#L; }
 
+  #style: MotionStyle | null = null;
+  #stepsStyle = false;
+  /** Lane M: the fighter's motion style (null = today's motion). */
+  get style(): MotionStyle | null { return this.#style; }
+  /** Lane M: use a motion style (MotionStyle.ts); null restores the unstyled motion. */
+  setStyle(style: MotionStyle | null): void {
+    this.#style = style;
+    this.#stepsStyle = style ? style.claim(this) : false;
+  }
+  /** Lane M: this frame's live state (hp / stamina / mana / exhaustion), smoothed by the style. */
+  setLive(live: Readonly<LiveState>): void { this.#style?.setLive(live); }
+
   /** Re-plant both feet under the hips and drop the filter history (spawn, round reset, teleport). */
   reset(x: number, z: number, yaw: number): void {
     this.gait.reset(x, z, yaw, this.params.guardStagger * this.#L * this.#stance);
     this.blender.resetFilter();
+    this.#plantYaw[0] = this.#plantYaw[1] = yaw;
+    this.#wasPlanted[0] = this.#wasPlanted[1] = true;
+    this.#pivot[0] = this.#pivot[1] = 0;
     this.#lastX = x; this.#lastZ = z; this.#hasLast = true;
     this.#primed = false;
   }
@@ -377,6 +436,14 @@ export class Animator {
     if (this.#hasLast && Math.hypot(inp.x - this.#lastX, inp.z - this.#lastZ) > p.teleportDistance) this.reset(inp.x, inp.z, inp.yaw);
     this.#lastX = inp.x; this.#lastZ = inp.z; this.#hasLast = true;
     this.#time += h;
+    // Lane M: the style's live smoothing (when this animator steps it) and its coefficients.
+    const st = this.#style;
+    if (st && this.#stepsStyle) st.step(h);
+    const e = st ? st.eff : null;
+    if (e) {
+      this.gait.params.strideAtRest = this.#strideA0 * e.strideScale;
+      this.gait.params.strideGain = this.#strideB0 * e.strideScale;
+    }
 
     // 1. Gait.
     this.#stance = damp(this.#stance, inp.engaged || inp.block ? 1 : 0, 4, h);
@@ -405,6 +472,15 @@ export class Animator {
     B.setTarget(LAYER.breath, inp.ko ? 0 : 1 - m);
     B.stepWeights(h);
     if (skill) this.#fillSkill(skill, inp.skillProgress, h);
+    if (e) {
+      // Styled guard: shoulders lowered by fatigue, elbows tucked when hurt (both arms).
+      const gv = B.values(LAYER.guard), gb = this.#guardBase;
+      for (let i = 0; i < 2; i++) {
+        const aj = ARM_JOINTS[i];
+        gv[aj.shoulder] = clamp(gb[aj.shoulder] + e.guardDrop, lim.min[aj.shoulder], lim.max[aj.shoulder]);
+        gv[aj.elbow] = clamp(gb[aj.elbow] - e.guardTuck, lim.min[aj.elbow], lim.max[aj.elbow]);
+      }
+    }
     // A swing curve replaces the attack layer's values while it plays; the last curve values stay
     // while the layer fades out (no pop), and a later legacy attack restores ATTACK_POSE.
     if (inp.attackPose) { B.values(LAYER.attack).set(inp.attackPose); this.#attackDynamic = true; }
@@ -430,9 +506,17 @@ export class Animator {
       -p.leanBackMax, Math.max(0, p.leanMax - lean),
     );
     const bal = B.values(LAYER.balance);
-    bal[SPINE] = accLean;
-    bal[ABD] = counter * accLean;
-    const breath = p.breathAmplitude * Math.sin(2 * Math.PI * p.breathRate * this.#time);
+    // Lane M: the style's hunch (injury, fatigue, race) rides on the balance layer like a lean.
+    const hunch = e ? e.hunch : 0;
+    bal[SPINE] = accLean + hunch;
+    bal[ABD] = counter * (accLean + hunch);
+    let breath: number;
+    if (e) {
+      // Integrated phase: a breathing rate that changes with fatigue must not jump the phase.
+      this.#breathPh += 2 * Math.PI * e.breathRate * h;
+      if (this.#breathPh > 2 * Math.PI) this.#breathPh -= 2 * Math.PI;
+      breath = e.breathAmp * Math.sin(this.#breathPh + st!.breathPhase);
+    } else breath = p.breathAmplitude * Math.sin(2 * Math.PI * p.breathRate * this.#time);
     const br = B.values(LAYER.breath);
     for (let j = 0; j < JOINT_COUNT; j++) br[j] = this.#breathUnit[j] * breath;
     B.evaluateJoint(SPINE, h, angles);
@@ -455,10 +539,13 @@ export class Animator {
     const baseRootY = inp.rootY ?? groundBody + this.#soleDepth;
     const exactRatio = 1 - p.reachMargin - p.softness;
     const rideMoving = Math.min(p.rideRun, exactRatio - Math.abs(sh.bobAmplitude) / L - 0.004);
-    const ride = lerp(lerp(p.rideStand, rideMoving, m), p.rideGuard, B.weight(LAYER.guard));
+    let ride = lerp(lerp(p.rideStand, rideMoving, m), p.rideGuard, B.weight(LAYER.guard));
+    // Lane M: the style's stance height, and the strike's leg drive — the pelvis sinks into the
+    // planted feet ahead of the arm (the IK bends the knees; the feet stay latched).
+    if (e) ride = Math.min(ride + e.crouch - e.legDrive * clamp(inp.attackDrive ?? 0, 0, 1), exactRatio - Math.abs(sh.bobAmplitude) / L - 0.004);
     let rootY = groundBody + g.soleOffset + L * ride + this.gait.bob - HIP2[0];
     const auth = B.baseAuthority(LEG_JOINTS[0].hip);
-    const roll = this.gait.roll * auth;
+    const roll = this.gait.roll * auth * (e ? e.sway : 1);
     const totalRoll = roll + (inp.externalRoll ?? 0);
     const fx = Math.sin(inp.yaw), fz = Math.cos(inp.yaw);
     const exactLimit = g.thigh + g.shin - this.#chain.reachMargin - this.#chain.softness;
@@ -466,6 +553,15 @@ export class Animator {
     // Reach radius of a swinging foot about its rest spot: 1.25·L·sin(θmax) (the gait's landing cap).
     const swingRadius = 1.25 * L * Math.sin(this.gait.params.maxStanceAngle) + p.swingRadiusSoftness * L;
     let drop = 0;
+    // Ball pivot (AnimatorParams.pivotPitch): heel up while the body has turned over a planted foot.
+    for (let i = 0; i < 2; i++) {
+      const f = this.gait.feet[i];
+      if (f.planted && !this.#wasPlanted[i]) this.#plantYaw[i] = inp.yaw;
+      this.#wasPlanted[i] = f.planted;
+      const turned = f.planted ? Math.abs(wrapAngle(inp.yaw - this.#plantYaw[i])) : 0;
+      const want = p.pivotPitch * smoothstep(p.pivotStart, p.pivotFull, turned);
+      this.#pivot[i] = damp(this.#pivot[i], want, want > this.#pivot[i] ? p.pivotRise : p.pivotFall, h);
+    }
     for (let i = 0; i < 2; i++) {
       const f = this.gait.feet[i], gs = this.#ground[i];
       sampleGround(inp.groundHeight, f.x, f.z, fx, fz, 0.5 * (g.ballForward + g.heelBack), gs);
@@ -486,7 +582,7 @@ export class Animator {
       this.#ballX[i] = P2[0];
       this.#ballZ[i] = P2[1];
       this.#ballY[i] = gs.height + f.lift;
-      this.#pitch[i] = f.pitch - gs.slopePitch;
+      this.#pitch[i] = f.pitch - gs.slopePitch + this.#pivot[i];
       // Weight of this foot in the reach test: 1 planted; a swing fades its lift-off spot out over
       // its first quarter and fades its LANDING spot in over its last 40% (anticipation), so the
       // pelvis never jumps at lift-off or touchdown. The same weight drives the IK chain softness
@@ -566,19 +662,20 @@ export class Animator {
 
     // 6. Arms counter-swing with the OPPOSITE thigh; neck + head cancel the trunk pitch.
     const meanThigh = 0.5 * (this.#thigh[0] + this.#thigh[1]);
-    const armGain = lerp(p.armGainWalk, p.armGainRun, run) * m;
+    const armGain = lerp(p.armGainWalk, p.armGainRun, run) * m * (e ? e.armSwing : 1);
     const elbowBend = lerp(p.elbowBendWalk, p.elbowBendRun, run) * m;
     for (let i = 0; i < 2; i++) {
       const aj = ARM_JOINTS[i];
       const swing = this.#thigh[1 - i] - meanThigh;
-      loco[aj.shoulder] = rest[aj.shoulder] - armGain * swing;
+      // Per body part: the style's seeded per-joint amplitude (each arm swings a little differently).
+      loco[aj.shoulder] = rest[aj.shoulder] - armGain * swing * (st ? st.jointAmp[aj.shoulder] : 1);
       loco[aj.elbow] = rest[aj.elbow] - elbowBend - 0.25 * armGain * Math.abs(swing);
     }
     // Gaze stabilisation: the neck hangs off the SPINE pivot (Humanoid's tree and lane A's), so
     // the head's world pitch is spine + neck + head; cancel headStabilise of the chest (spine)
     // pitch only — the abdomen turns the pelvis, not the head.
     const chestPitch = angles[SPINE];
-    loco[NECK] = rest[NECK] - 0.5 * p.headStabilise * chestPitch;
+    loco[NECK] = rest[NECK] - 0.5 * p.headStabilise * chestPitch + (e ? e.headDrop : 0);
     loco[HEAD] = rest[HEAD] - 0.5 * p.headStabilise * chestPitch;
 
     // 7. Everything else through the layers.
@@ -694,14 +791,40 @@ export class Animator {
     const lim = this.limits, vals = this.blender.values(LAYER.skill), mask = this.blender.mask(LAYER.skill);
     const t = clamp(progress, 0, 1);
     this.#skillAnimated.fill(0);
+    const st = this.#style;
     for (let k = 0; k < skill.tracks.length; k++) {
       const tr = skill.tracks[k];
       const j = JOINT_INDEX[tr.joint];
       if (j === undefined) continue;
-      vals[j] = clamp(lim.rest[j] + trackOffset(tr, t), lim.min[j], lim.max[j]);
+      vals[j] = clamp(lim.rest[j] + (st ? this.#styledTrack(st, skill, tr, j, t) : trackOffset(tr, t)), lim.min[j], lim.max[j]);
       this.#skillAnimated[j] = 1;
     }
     const follow = 1 - Math.exp(-this.params.skillMaskLambda * h);
     for (let j = 0; j < JOINT_COUNT; j++) mask[j] += (this.#skillAnimated[j] - mask[j]) * follow;
+  }
+
+  /**
+   * Lane M: a skill track through the four-phase envelope (AnimationCurve.fourPhaseImpulse) at its
+   * chain-led time: the weapon shoulder is the reference (it peaks ON hitAt), joints nearer the
+   * feet lead by (3 − depth)·chainLag, the elbow trails; the lead ramps in over the first 35 % and
+   * out over the last 30 % (t stays monotonic). Amplitude × the style's per-joint jitter. The
+   * counter-move is shortened (then dropped) when the strike would outrun SKILL_SPEED_SHARE of the
+   * joint speed limit.
+   */
+  #styledTrack(st: MotionStyle, skill: SkillAnimation, tr: SkillAnimation["tracks"][number], j: number, t: number): number {
+    const e = st.eff, D = Math.max(0.05, skill.duration);
+    PR4.hold = e.holdTime / D; PR4.settle = e.settleTime / D; PR4.overshoot = e.overshoot;
+    PR4.anticipation = e.anticipation; PR4.anticipationShare = SKILL_ANTICIPATION_SHARE;
+    const amp = st.jointAmp[j], om = SKILL_SPEED_SHARE * this.blender.maxJointSpeed;
+    const A = Math.abs(tr.amplitude) * amp, p = Math.min(0.95, Math.max(0.05, tr.peak));
+    if (A * fourPhasePeakRate(p, PR4) / D > om) {
+      // (1 + ant)(π/2)·A / ((1 − x)·p·D) = om  ->  x; without room for a counter-move, none.
+      const x = 1 - (1 + PR4.anticipation) * (Math.PI / 2) * A / (p * D * om);
+      if (x >= 0.05) PR4.anticipationShare = x;
+      else { PR4.anticipation = 0; PR4.anticipationShare = 0; }
+    }
+    const lead = st.jointLead(j) - 2 * e.chainLag;
+    const ramp = smoothstep(0, 0.35, t) * (1 - smoothstep(0.7, 1, t));
+    return styledTrackOffset(tr, clamp(t + (lead / D) * ramp, 0, 1), PR4, amp);
   }
 }

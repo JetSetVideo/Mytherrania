@@ -1,0 +1,24 @@
+{
+ "errors": [],
+ "report": [
+  {
+   "race": "human",
+   "subrace": "nomad",
+   "pools": [
+    0.2,
+    0.3,
+    0.03
+   ],
+   "weapon": "Light Obsidian Longsword",
+   "kind": "slash",
+   "phases": {
+    "windup": 0.22214267108202856,
+    "strike": 0.23255437894680772,
+    "hold": 0.08126500877454425,
+    "recover": 0.3396920598609062,
+    "settle": 0.22657533290130102,
+    "contactAt": 0.3650719495279239
+   }
+  }
+ ]
+}

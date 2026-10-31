@@ -122,6 +122,15 @@ try {
     }
     await eng("debugView", { regime: null });
   }
+  if (want("hud")) {
+    // The fighter panels with the player's pools part-spent (and stamina exhausted).
+    await eng("debugView", { freeze: true, hour: 14, dayOfYear: 200, regime: "fair" });
+    await eng("debugWorld", { pools: { hp: 0.62, mana: 0.35, stamina: 0.08, exhausted: true } });
+    await page.waitForTimeout(600);
+    await shot("hud-panels", "player pools at 62 % / 35 % / 8 % exhausted; opponent full");
+    const txt = await page.evaluate(() => [...document.querySelectorAll(".fighter-panel")].map((e) => (e as HTMLElement).innerText.replace(/\n/g, " | ")));
+    console.log(`    panels: ${JSON.stringify(txt)}`);
+  }
   if (want("events")) {
     // Each situational event staged by patching the event scorer's inputs on top of a pinned sky
     // (the climate keeps running underneath), held ~6 s so the envelopes reach full intensity.

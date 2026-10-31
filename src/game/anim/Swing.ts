@@ -29,6 +29,7 @@
 //                  visibly stops at the body), then the arm recovers from THAT pose to guard.
 
 import { clamp, clamp01, easeInOutCubic, lerp, smoothstep, smootherstep } from "../../core/MathCore.ts";
+import { hermite, recoveryCurve, strikeProgress } from "../AnimationCurve.ts";
 import type { DamageKind, WeaponClass } from "../../combat/contracts.ts";
 import type { JointName } from "../Skeleton.ts";
 import { JOINT_COUNT, JOINT_INDEX, type JointLimitTable } from "./Rig.ts";
@@ -133,8 +134,11 @@ export function swingKindOf(mix: Record<DamageKind, number>, weaponClass: Weapon
   return "slash";
 }
 
-/** Phase durations of one swing, s. */
-export interface SwingTiming { windup: number; strike: number; recover: number }
+/**
+ * Phase durations of one swing, s. Lane M (styled swings) adds the hit `hold` after the strike
+ * and the `settle` hold at guard after the recovery; absent = 0 (today's three-phase swing).
+ */
+export interface SwingTiming { windup: number; strike: number; recover: number; hold?: number; settle?: number }
 
 /** Strike-phase clamp, s: fast enough to read as a blow, slow enough for the joint speed limit. */
 export const STRIKE_MIN = 0.12, STRIKE_MAX = 0.5;
@@ -176,7 +180,7 @@ export function swingTiming(strike: number, cooldown: number): SwingTiming {
 }
 
 /** Total length of a timing, s. */
-export function swingDuration(t: SwingTiming): number { return t.windup + t.strike + t.recover; }
+export function swingDuration(t: SwingTiming): number { return t.windup + t.strike + t.recover + (t.hold ?? 0) + (t.settle ?? 0); }
 
 /**
  * The strike window in SECONDS since the press: from `lead` (the shape's windowLead) of the way
@@ -185,6 +189,9 @@ export function swingDuration(t: SwingTiming): number { return t.windup + t.stri
  */
 export const WINDOW_TRAIL = 0.25;
 export function swingWindow(t: SwingTiming, lead = 0.9): { start: number; end: number } {
+  // A styled swing brakes to rest at the follow-through and holds there: the blade cuts until the
+  // end of the hold (it is still at the target line's far side), never during the recovery.
+  if (t.hold !== undefined) return { start: lead * t.windup, end: t.windup + t.strike + t.hold };
   return { start: lead * t.windup, end: t.windup + t.strike + WINDOW_TRAIL * t.recover };
 }
 
@@ -296,13 +303,18 @@ export function sampleSwing(shape: SwingShape, t: SwingTiming, clock: number, ou
  * the right arm when the weapon is held with two hands), the chest lean split spine 1 : abdomen ½,
  * the neck and head countering the lean so the eyes stay on the target. Clamped into `lim`.
  */
-export function swingPose(s: SwingKey, twoHanded: boolean, lim: JointLimitTable, out: Float64Array): Float64Array {
+export function swingPose(
+  s: SwingKey, twoHanded: boolean, lim: JointLimitTable, out: Float64Array, offArm: { shoulder: number; elbow: number } | null = null,
+  mirrorBias: { shoulder: number; elbow: number } | null = null,
+): Float64Array {
   for (let j = 0; j < JOINT_COUNT; j++) out[j] = lim.rest[j];
   const set = (n: JointName, v: number) => { const j = JOINT_INDEX[n]; out[j] = clamp(v, lim.min[j], lim.max[j]); };
-  for (const [n, v] of Object.entries(GUARD_POSE) as [JointName, number][]) set(n, v);
+  for (const n in GUARD_POSE) set(n as JointName, GUARD_POSE[n as JointName]!);
+  // Lane M: the styled guard of the free arm (lowered when tired, tucked when hurt).
+  if (offArm) { set("shoulderL", (GUARD_POSE.shoulderL ?? 0) + offArm.shoulder); set("elbowL", (GUARD_POSE.elbowL ?? 0) + offArm.elbow); }
   set("shoulderR", s.shoulder);
   set("elbowR", s.elbow);
-  if (twoHanded) { set("shoulderL", s.shoulder); set("elbowL", s.elbow); }
+  if (twoHanded) { set("shoulderL", s.shoulder + (mirrorBias ? mirrorBias.shoulder : 0)); set("elbowL", s.elbow + (mirrorBias ? mirrorBias.elbow : 0)); }
   set("spine", s.lean);
   set("abdomen", 0.5 * s.lean);
   set("neck", -0.5 * s.lean);
@@ -417,6 +429,192 @@ export function aimYawForLine(line: AimLine, distance: number, lateral = 0): num
 /** Seconds a contact freezes the swing at the contact pose before the arm recovers. */
 export const CONTACT_HOLD = 0.1;
 
+// ─── Lane M: four-phase styled swings ──────────────────────────────────────────────────────────
+//
+//   wind-up   guard -> cocked key (Hermite ease, peak rate 1.5): the counter-move, AWAY from the strike
+//   strike    cocked -> contact -> follow-through on strikeProgress: accelerating INTO the
+//             contact, peak speed AT the contact, braking to rest at the follow-through
+//   hold      the follow-through pose holds (`hold` s): the blow reads
+//   recovery  follow-through -> guard on recoveryCurve (slow, weighted, a damped overshoot)
+//   settle    guard holds (`settle` s), then the swing hands back to idle
+// The strike path is piecewise linear in key space THROUGH the contact key (the unstyled path's
+// pose at the contact fraction), so a deeper wind-up or a longer follow-through never moves the
+// contact pose — the reach, the sweet distance and the aim line stay what lane X2 measured.
+// Kinetic chain: every DOF is sampled at clock + lead·smoothstep(0, windup, clock), leads
+// growing toward the body (twist > lean > shoulder > elbow > blade = 0): proximal joints get
+// there first and the blade arrives last, exactly on the contact.
+
+/** Swing DOFs in a fixed order (SwingProfile.lead). */
+export const SWING_DOFS = ["shoulder", "elbow", "blade", "roll", "lean", "twist"] as const;
+/** Chain depth of each swing DOF (MotionStyle vocabulary: pelvis 1 … wrist/weapon 5). */
+export const SWING_DOF_DEPTH: Readonly<Record<(typeof SWING_DOFS)[number], number>> = {
+  twist: 1, lean: 2, shoulder: 3, elbow: 4, blade: 5, roll: 5,
+};
+/** Shortest hold / settle a styled timing shrinks to when the cooldown is tight, s. */
+export const HOLD_MIN = 0.03, SETTLE_MIN = 0.03;
+/** Peak / mean speed of strikeProgress is 2 (a smootherstep's is 15/8): mean-to-peak 1/2. */
+export const STYLED_MEAN_TO_PEAK = 0.5;
+
+/** Phase scales of a styled swing (MotionStyle.eff satisfies it). */
+export interface PhaseScales { windupTime: number; strikeTime: number; recoverTime: number; holdTime: number; settleTime: number }
+
+/**
+ * Styled phase durations, s. The strike keeps the weapon's PEAK speed under the new profile
+ * (strike × MEAN_TO_PEAK / STYLED_MEAN_TO_PEAK), times the style's strike scale, floored at
+ * `minStrike` (the animator's joint speed limit) and clamped to [STRIKE_MIN, STRIKE_MAX]. Wind-up
+ * and recovery follow swingTiming's rules × the style; when everything exceeds COOLDOWN_SHARE of
+ * the cooldown, wind-up, recovery, hold and settle shrink together toward their minima.
+ */
+export function styledSwingTiming(
+  strike: number, cooldown: number, sc: PhaseScales, minStrike = 0, overrun = 0, minWindup = WINDUP_MIN, minRecover = RECOVER_MIN, tailFree = true,
+): SwingTiming {
+  const s0 = clamp(Number.isFinite(strike) ? strike : 0.2, STRIKE_MIN, STRIKE_MAX);
+  const s = clamp(Math.max(s0 * (MEAN_TO_PEAK / STYLED_MEAN_TO_PEAK) * sc.strikeTime, minStrike), STRIKE_MIN, STRIKE_MAX);
+  // Speed-safe floors (the caller derives them from the joint speed limit): a squeezed wind-up or
+  // recovery must not outrun the animator's limiter, which would clip the curve into a lag.
+  const wMin = Math.max(WINDUP_MIN, Number.isFinite(minWindup) ? minWindup : 0), rMin = Math.max(RECOVER_MIN, Number.isFinite(minRecover) ? minRecover : 0);
+  let windup = Math.max(wMin, (WINDUP_BASE + WINDUP_RATIO * s0) * sc.windupTime), recover = Math.max(rMin, (RECOVER_BASE + RECOVER_RATIO * s0) * sc.recoverTime);
+  let hold = Math.max(HOLD_MIN, sc.holdTime), settle = Math.max(SETTLE_MIN, sc.settleTime);
+  // `overrun` (≥ 0): the share a TIRED or HURT fighter's swing may outlast the cooldown by
+  // (MotionStyle.swingOverrun) — the next blow then waits for this one (Engine gates on active).
+  // Only the BLOW (wind-up + strike + hold) must fit the cooldown budget: the recovery and the
+  // settle are an interruptible tail (SwingPlayer.begin chains the next wind-up from wherever the
+  // recovery has got to), so a heavy weapon keeps a heavy recovery without lowering the attack rate.
+  const cap = Number.isFinite(cooldown) && cooldown > 0 ? COOLDOWN_SHARE * cooldown * (1 + clamp(Number.isFinite(overrun) ? overrun : 0, 0, 1)) : Infinity;
+  // `tailFree` false (hand-path thrusts, whose recovery is already light): the whole swing shares
+  // the budget as before — a thrust's longer pull-back draws the hand into the chest (ork −3.7 mm).
+  const spare = cap - s;
+  const soft = tailFree ? windup + hold : windup + recover + hold + settle;
+  const mins = tailFree ? wMin + HOLD_MIN : wMin + rMin + HOLD_MIN + SETTLE_MIN;
+  if (spare < soft) {
+    const k = clamp((spare - mins) / Math.max(1e-6, soft - mins), 0, 1);
+    windup = wMin + k * (windup - wMin);
+    hold = HOLD_MIN + k * (hold - HOLD_MIN);
+    if (!tailFree) {
+      recover = rMin + k * (recover - rMin);
+      settle = SETTLE_MIN + k * (settle - SETTLE_MIN);
+    }
+  }
+  return { windup, strike: s, recover: Math.max(recover, rMin), hold, settle };
+}
+
+/**
+ * Strike fraction u (0..1, geometry) at which the blade meets a target at the sweet distance:
+ * where the sweet spot is farthest forward inside the torso band (the same search as
+ * sweetDistance). 0.5 when the band is never crossed.
+ */
+export function contactFraction(shape: SwingShape, arm: ArmGeometry, tip: number): number {
+  const k: SwingKey = { ...GUARD_KEY }, p: [number, number] = [0, 0];
+  let best = -Infinity, at = 0.5;
+  for (let i = 0; i <= 4 * REACH_SAMPLES; i++) {
+    const u = i / (4 * REACH_SAMPLES);
+    strikeKeyAt(shape, arm, u, k);
+    bladePoint(arm, k, SWEET_SHARE * tip, p);
+    if (p[1] >= TORSO_BAND[0] && p[1] <= TORSO_BAND[1] && p[0] > best) { best = p[0]; at = u; }
+  }
+  return at;
+}
+
+/** Everything a styled swing needs beyond its shape and timing (SwingDriver fills it at the press). */
+export interface SwingProfile {
+  /** Guard key the swing leaves from and returns to (the styled guard; live, may change per frame). */
+  guard: SwingKey;
+  /** Cocked key, contact key, follow-through key (styled; written at the press). */
+  windup: SwingKey;
+  contactKey: SwingKey;
+  strike: SwingKey;
+  /** Hand path points for hand-path shapes (forward, up m): windup, contact, strike; null = arc keys. */
+  hand: Float64Array | null;
+  /** Strike-time fraction of the contact: peak speed and the contact pose (strikeProgress). */
+  contact: number;
+  /** Damped recovery overshoot, share of the recovery travel. */
+  overshoot: number;
+  /** Seconds a contact freezes the swing (replaces CONTACT_HOLD). */
+  contactHold: number;
+  /** Lead of each DOF ahead of the blade, s (SWING_DOFS order). */
+  lead: Float64Array;
+  /** Lead of the legs ahead of the blade, s. */
+  legLead: number;
+  /**
+   * Chained press: the swing starts from `from` (the previous swing's pose mid-recovery) instead
+   * of the guard, with the previous swing's blend weight and leg drive fading out over the wind-up.
+   */
+  chained: boolean;
+  from: SwingKey;
+  fromWeight: number;
+  fromLeg: number;
+}
+
+/** A fresh profile (neutral: no chain lead, no overshoot). */
+export function newSwingProfile(): SwingProfile {
+  return {
+    guard: { ...GUARD_KEY }, windup: { ...GUARD_KEY }, contactKey: { ...GUARD_KEY }, strike: { ...GUARD_KEY },
+    hand: null, contact: 0.5, overshoot: 0, contactHold: CONTACT_HOLD, lead: new Float64Array(SWING_DOFS.length), legLead: 0,
+    chained: false, from: { ...GUARD_KEY }, fromWeight: 0, fromLeg: 0,
+  };
+}
+
+const SK_TMP: SwingKey = { ...GUARD_KEY };
+
+/**
+ * The styled swing's key at `c` seconds after the press, for ALL DOFs at the same clock (the
+ * chain lead is applied by sampleStyledSwing). Writes `out`.
+ */
+export function styledKeyAt(t: SwingTiming, pr: SwingProfile, c: number, out: SwingKey, arm: ArmGeometry | null = null): SwingKey {
+  const w1 = t.windup, s1 = w1 + t.strike, h1 = s1 + (t.hold ?? 0), r1 = h1 + t.recover;
+  if (c < w1) { mixKey(pr.chained ? pr.from : pr.guard, pr.windup, hermite(c / Math.max(1e-6, w1)), out); return out; }
+  if (c < s1) {
+    const cc = pr.contact, u = strikeProgress((c - w1) / Math.max(1e-6, t.strike), cc);
+    const before = u < cc, v = before ? u / cc : (u - cc) / (1 - cc);
+    if (before) mixKey(pr.windup, pr.contactKey, v, out); else mixKey(pr.contactKey, pr.strike, v, out);
+    if (pr.hand && arm) {
+      const H = pr.hand, i0 = before ? 0 : 2, i1 = before ? 2 : 4;
+      armIK(arm, lerp(H[i0], H[i1], v), lerp(H[i0 + 1], H[i1 + 1], v), IK_OUT);
+      out.shoulder = IK_OUT.shoulder - out.lean; out.elbow = IK_OUT.elbow;
+    }
+    return out;
+  }
+  if (c < h1) { Object.assign(out, pr.strike); return out; }
+  if (c < r1) { mixKey(pr.strike, pr.guard, recoveryCurve(clamp01((c - h1) / Math.max(1e-6, t.recover)), pr.overshoot), out); return out; }
+  Object.assign(out, pr.guard);
+  return out;
+}
+
+/**
+ * Styled swing sample at `clock` s after the press: each DOF at its own chain-led clock
+ * (module section comment), the step and the weight on the blade's clock. The weight rises over
+ * the first half of the wind-up and falls over the settle (over the second half of the recovery
+ * when there is no settle).
+ */
+export function sampleStyledSwing(t: SwingTiming, pr: SwingProfile, clock: number, out: SwingSample, arm: ArmGeometry | null = null): SwingSample {
+  const c = Math.max(0, clock), w1 = t.windup, s1 = w1 + t.strike, h1 = s1 + (t.hold ?? 0), r1 = h1 + t.recover, end = r1 + (t.settle ?? 0);
+  const ramp = smoothstep(0, w1, c);
+  for (let d = 0; d < SWING_DOFS.length; d++) {
+    styledKeyAt(t, pr, c + pr.lead[d] * ramp, SK_TMP, arm);
+    const k = SWING_DOFS[d];
+    out[k] = SK_TMP[k];
+  }
+  out.step = smoothstep(0, s1, c);
+  // The weight (aim yaw, grip, choke) eases out over the recovery AND the settle: the body turns
+  // back with the arm instead of whipping round in a short settle (measured 131 °/s velocity
+  // jumps of the rig yaw with a settle-only fade).
+  const rise = smoothstep(0, 0.5 * w1, c);
+  out.weight = c >= end ? 0 : (pr.chained ? pr.fromWeight + (1 - pr.fromWeight) * rise : rise) * (1 - smoothstep(h1 + 0.3 * t.recover, end, c));
+  return out;
+}
+
+/**
+ * Leg drive 0..1 of a styled swing at `clock` (the legs LEAD): sinks over the wind-up into the
+ * strike, peaks legLead before the contact, releases over the first 85 % of the recovery.
+ */
+export function styledLegDrive(t: SwingTiming, pr: SwingProfile, clock: number): number {
+  const c = Math.max(0, clock), w1 = t.windup, s1 = w1 + t.strike, h1 = s1 + (t.hold ?? 0);
+  const cl = c + pr.legLead * smoothstep(0, w1, c);
+  const drive = smoothstep(0.15 * w1, w1 + pr.contact * t.strike, cl) * (1 - smoothstep(h1, h1 + 0.85 * t.recover, cl));
+  // A chained press: the previous swing's leg drive fades over the wind-up instead of dropping to 0.
+  return pr.chained ? Math.max(drive, pr.fromLeg * (1 - smoothstep(0, w1, c))) : drive;
+}
+
 /**
  * One fighter's swing clock (pure state machine). begin() on the press; advance(dt) every frame;
  * freeze(u) on a contact; sample() gives the DOFs. After a freeze the swing holds CONTACT_HOLD s at
@@ -439,11 +637,13 @@ export class SwingPlayer {
   frozenAt: number | null = null;
   hold = 0;
   rebound = 0;
+  /** Lane M: the styled four-phase profile of this swing (null = the three-phase swing). */
+  profile: SwingProfile | null = null;
   readonly #a = newSwingSample();
 
-  /** Start a swing. */
-  begin(shape: SwingShape, timing: SwingTiming, stepDistance: number, aimYaw: number, twoHanded: boolean, arm: ArmGeometry | null = null): void {
-    this.shape = shape; this.timing = timing; this.arm = arm;
+  /** Start a swing (`profile`: lane M four-phase styling, see sampleStyledSwing). */
+  begin(shape: SwingShape, timing: SwingTiming, stepDistance: number, aimYaw: number, twoHanded: boolean, arm: ArmGeometry | null = null, profile: SwingProfile | null = null): void {
+    this.shape = shape; this.timing = timing; this.arm = arm; this.profile = profile;
     this.stepDistance = stepDistance; this.aimYaw = aimYaw; this.twoHanded = twoHanded;
     this.clock = 0; this.prevClock = 0; this.active = true;
     this.frozenAt = null; this.hold = 0; this.rebound = 0;
@@ -452,6 +652,16 @@ export class SwingPlayer {
   /** Stop at once (KO, an interrupting stagger). */
   cancel(): void { this.active = false; this.frozenAt = null; }
 
+  /**
+   * True once the blow is over (in the recovery or the settle, or a contact's hold has elapsed):
+   * the next press may chain from here (begin captures the current pose).
+   */
+  recovering(): boolean {
+    if (!this.active) return false;
+    if (this.frozenAt !== null) return this.hold <= 0;
+    return this.clock >= this.timing.windup + this.timing.strike + (this.profile ? this.timing.hold ?? 0 : 0);
+  }
+
   /** Advance by dt; returns false once the swing is over. */
   advance(dt: number): boolean {
     if (!this.active) return false;
@@ -459,7 +669,7 @@ export class SwingPlayer {
     if (this.frozenAt !== null) {
       if (this.hold > 0) this.hold = Math.max(0, this.hold - dt);
       else this.rebound += dt;
-      if (this.hold <= 0 && this.rebound >= this.timing.recover) this.active = false;
+      if (this.hold <= 0 && this.rebound >= this.timing.recover + (this.profile ? this.timing.settle ?? 0 : 0)) this.active = false;
       return this.active;
     }
     this.clock += dt;
@@ -477,20 +687,26 @@ export class SwingPlayer {
   /** A contact at fraction u (0..1) of the last advance: freeze there. Returns the frozen clock. */
   freeze(u: number): number {
     const c = lerp(this.prevClock, this.clock, clamp01(u));
-    this.frozenAt = c; this.clock = c; this.prevClock = c; this.hold = CONTACT_HOLD; this.rebound = 0;
+    this.frozenAt = c; this.clock = c; this.prevClock = c; this.hold = this.profile ? this.profile.contactHold : CONTACT_HOLD; this.rebound = 0;
     return c;
   }
 
   /** The swing's DOFs now. */
   sample(out: SwingSample): SwingSample {
-    if (this.frozenAt === null) return sampleSwing(this.shape, this.timing, this.clock, out, this.arm);
-    sampleSwing(this.shape, this.timing, this.frozenAt, this.#a, this.arm);
+    const pr = this.profile;
+    if (this.frozenAt === null) return pr ? sampleStyledSwing(this.timing, pr, this.clock, out, this.arm) : sampleSwing(this.shape, this.timing, this.clock, out, this.arm);
+    if (pr) sampleStyledSwing(this.timing, pr, this.frozenAt, this.#a, this.arm);
+    else sampleSwing(this.shape, this.timing, this.frozenAt, this.#a, this.arm);
     if (this.hold > 0 || this.rebound <= 0) { Object.assign(out, this.#a); return out; }
-    // Rebound: from the contact pose back to guard, eased like a normal recover.
+    // Rebound: from the contact pose back to guard, eased like a normal recover (styled: the
+    // heavy recovery with its damped overshoot).
     const v = clamp01(this.rebound / Math.max(1e-6, this.timing.recover));
-    mixKey(this.#a, GUARD_KEY, easeInOutCubic(v), out);
+    mixKey(this.#a, pr ? pr.guard : GUARD_KEY, pr ? recoveryCurve(v, pr.overshoot) : easeInOutCubic(v), out);
     out.step = this.#a.step;
-    out.weight = this.#a.weight * (1 - smoothstep(0.5, 1, v));
+    const settle = this.timing.settle ?? 0;
+    out.weight = this.#a.weight * (pr && settle > 0.02
+      ? 1 - smoothstep(this.timing.recover, this.timing.recover + settle, this.rebound)
+      : 1 - smoothstep(0.5, 1, v));
     return out;
   }
 }

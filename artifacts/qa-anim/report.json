@@ -1,0 +1,65 @@
+{
+ "errors": [],
+ "report": [
+  {
+   "race": "human",
+   "subrace": "nomad",
+   "pools": null,
+   "weapon": "Light Obsidian Longsword",
+   "kind": "slash",
+   "phases": {
+    "windup": 0.1937756487927093,
+    "strike": 0.2196901117675606,
+    "hold": 0.06286056075318966,
+    "recover": 0.25314971337284153,
+    "settle": 0.12160839270099356,
+    "contactAt": 0.33407545410959905
+   }
+  },
+  {
+   "race": "elf",
+   "subrace": "wood",
+   "pools": null,
+   "weapon": "Light Obsidian Longsword",
+   "kind": "slash",
+   "phases": {
+    "windup": 0.17194352502711685,
+    "strike": 0.20142354143279562,
+    "hold": 0.05188567815537759,
+    "recover": 0.24532511365402448,
+    "settle": 0.10089190351274765,
+    "contactAt": 0.2978332384226141
+   }
+  },
+  {
+   "race": "dwarf",
+   "subrace": "mountain",
+   "pools": null,
+   "weapon": "Light Obsidian Longsword",
+   "kind": "slash",
+   "phases": {
+    "windup": 0.21909006019692628,
+    "strike": 0.2369343467528564,
+    "hold": 0.06972667995464354,
+    "recover": 0.30394168980128344,
+    "settle": 0.1506528057620827,
+    "contactAt": 0.3673859039138571
+   }
+  },
+  {
+   "race": "ork",
+   "subrace": "ironhide",
+   "pools": null,
+   "weapon": "Light Obsidian Longsword",
+   "kind": "slash",
+   "phases": {
+    "windup": 0.23309492739249313,
+    "strike": 0.23367059094340892,
+    "hold": 0.07389583897946765,
+    "recover": 0.28734538482102073,
+    "settle": 0.12809402166785275,
+    "contactAt": 0.38554900617737886
+   }
+  }
+ ]
+}

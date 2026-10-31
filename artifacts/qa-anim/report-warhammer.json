@@ -1,0 +1,35 @@
+{
+ "errors": [],
+ "report": [
+  {
+   "race": "dwarf",
+   "subrace": "forge",
+   "pools": null,
+   "weapon": "Light Silver Warhammer",
+   "kind": "chop",
+   "phases": {
+    "windup": 0.4104874536712075,
+    "strike": 0.5,
+    "hold": 0.08746440776862682,
+    "recover": 0.5429458442710842,
+    "settle": 0.14937718866412592,
+    "contactAt": 0.7312745654319972
+   }
+  },
+  {
+   "race": "ork",
+   "subrace": "bloodfang",
+   "pools": null,
+   "weapon": "Silver Warhammer",
+   "kind": "chop",
+   "phases": {
+    "windup": 0.4031513295233445,
+    "strike": 0.5,
+    "hold": 0.09188348489085946,
+    "recover": 0.5128851977037658,
+    "settle": 0.12364113201275936,
+    "contactAt": 0.7328562922945188
+   }
+  }
+ ]
+}

@@ -23,13 +23,15 @@ export interface RigPlacement {
 export interface FootWorld {
   ballX: number; ballY: number; ballZ: number;
   heelX: number; heelY: number; heelZ: number;
+  /** Toe tip on the sole (Rig.legFK3 toe), world m. */
+  toeX: number; toeY: number; toeZ: number;
   /** Toe-down pitch of the sole in the rig frame, rad. */
   pitch: number;
 }
 
 /** A zeroed FootWorld to reuse. */
 export function newFootWorld(): FootWorld {
-  return { ballX: 0, ballY: 0, ballZ: 0, heelX: 0, heelY: 0, heelZ: 0, pitch: 0 };
+  return { ballX: 0, ballY: 0, ballZ: 0, heelX: 0, heelY: 0, heelZ: 0, toeX: 0, toeY: 0, toeZ: 0, pitch: 0 };
 }
 
 const FK: LegFK3 = newLegFK3();
@@ -59,6 +61,8 @@ export function footWorld(
   out.ballX = W[0]; out.ballY = W[1]; out.ballZ = W[2];
   toWorld(r, FK.heel[0], FK.heel[1], FK.heel[2], W);
   out.heelX = W[0]; out.heelY = W[1]; out.heelZ = W[2];
+  toWorld(r, FK.toe[0], FK.toe[1], FK.toe[2], W);
+  out.toeX = W[0]; out.toeY = W[1]; out.toeZ = W[2];
   out.pitch = Math.atan2(FK.heel[1] - FK.ball[1], FK.ball[2] - FK.heel[2]);
   return out;
 }
@@ -111,5 +115,78 @@ export class DriftTracker {
       this.perStepBall.push(this.#max[0]);
     }
     this.#active = false;
+  }
+}
+
+/**
+ * Loop-seam and pop measures of a joint-angle stream (lane M). Feed every frame's angles (rad);
+ * then:
+ *   velocity jump  |θ_f - 2θ_{f-1} + θ_{f-2}| / dt (rad/s): how much the angular velocity changed
+ *                  in one frame. A smooth curve gives α·dt (small, -> 0 with the frame rate); a pop
+ *                  or a velocity discontinuity gives a value that does NOT shrink with dt.
+ *   cycle seam     at each wrap of a cyclic phase (gait phase 1 -> 0), the pose AT phase 0 is
+ *                  interpolated between the two frames that bracket it; the seam is the largest
+ *                  joint difference between consecutive cycles' wrap poses (rad) — what a looping
+ *                  clip calls the seam: the end of a cycle must be the start of the next.
+ * `background()` is the p95 velocity jump over every frame, the scale a seam is judged against.
+ */
+export class SeamTracker {
+  readonly joints: number;
+  /** Per wrap after the first: max joint |pose(wrap k) - pose(wrap k-1)|, rad. */
+  readonly cycleSeams: number[] = [];
+  /** Per wrap: max joint velocity jump on the wrap frame, rad/s. */
+  readonly wrapVelJumps: number[] = [];
+  /** Every frame's max joint velocity jump (from the 3rd frame), rad/s. */
+  readonly velJumps: number[] = [];
+  readonly #p1: Float64Array;
+  readonly #p2: Float64Array;
+  readonly #wrapPose: Float64Array;
+  #hasWrap = false;
+  #frames = 0;
+  #lastPhase = Number.NaN;
+  #lastJump = 0;
+  constructor(joints: number) {
+    this.joints = joints;
+    this.#p1 = new Float64Array(joints);
+    this.#p2 = new Float64Array(joints);
+    this.#wrapPose = new Float64Array(joints);
+  }
+
+  /** Max joint velocity jump of the LAST sampled frame, rad/s (0 before the 3rd frame). */
+  get lastJump(): number { return this.#lastJump; }
+
+  /** Feed one frame. `phase` (0..1, optional) marks cycle wraps where it drops by more than 0.5. */
+  sample(angles: ArrayLike<number>, dt: number, phase = Number.NaN): void {
+    const n = this.joints;
+    let jump = 0;
+    if (this.#frames >= 2 && dt > 0) {
+      for (let j = 0; j < n; j++) jump = Math.max(jump, Math.abs(angles[j] - 2 * this.#p1[j] + this.#p2[j]) / dt);
+      this.velJumps.push(jump);
+    }
+    this.#lastJump = jump;
+    if (this.#frames >= 1 && Number.isFinite(phase) && Number.isFinite(this.#lastPhase) && phase < this.#lastPhase - 0.5) {
+      // Fraction of the frame at which the phase crossed 1 (unwrapped: last -> phase + 1).
+      const u = (1 - this.#lastPhase) / Math.max(1e-9, phase + 1 - this.#lastPhase);
+      let seam = 0;
+      for (let j = 0; j < n; j++) {
+        const v = this.#p1[j] + (angles[j] - this.#p1[j]) * u;
+        if (this.#hasWrap) seam = Math.max(seam, Math.abs(v - this.#wrapPose[j]));
+        this.#wrapPose[j] = v;
+      }
+      if (this.#hasWrap) this.cycleSeams.push(seam);
+      this.#hasWrap = true;
+      if (this.#frames >= 2) this.wrapVelJumps.push(jump);
+    }
+    this.#p2.set(this.#p1);
+    for (let j = 0; j < n; j++) this.#p1[j] = angles[j];
+    this.#lastPhase = phase;
+    this.#frames++;
+  }
+
+  /** p-quantile (default 0.95) of the per-frame velocity jumps, rad/s. */
+  background(q = 0.95): number {
+    if (this.velJumps.length === 0) return 0;
+    const s = [...this.velJumps].sort((a, b) => a - b);
+    return s[Math.min(s.length - 1, Math.floor(q * (s.length - 1)))];
   }
 }

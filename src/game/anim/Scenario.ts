@@ -12,8 +12,24 @@ import { lungeAt } from "../AnimationCurve.ts";
 import type { SkillAnimation } from "../Skills.ts";
 import type { Animator, AnimatorOutput } from "./Animator.ts";
 import type { GroundHeightFn } from "./FootIK.ts";
-import { DriftTracker, footWorld, newFootWorld, type RigPlacement } from "./Measure.ts";
+import { DriftTracker, footWorld, newFootWorld, type RigPlacement, SeamTracker } from "./Measure.ts";
 import { JOINT_COUNT, LEG_JOINTS, type Side, standingSoleDepth } from "./Rig.ts";
+
+/**
+ * What a scenario needs from a weapon-swing runtime (combat/SwingDriver satisfies it): started at
+ * a segment's first frame, advanced every frame BEFORE the animator, its step moves the body
+ * along the facing and its yaw turns the rig (Engine.#updatePose does the same).
+ */
+export interface SwingLike {
+  readonly active: boolean;
+  begin(distance: number, cooldown: number, variant?: number): void;
+  advance(dt: number): void;
+  attackPose(): Float64Array | null;
+  takeStep(): number;
+  yaw(): number;
+  /** Optional lane M leg drive 0..1 (AnimatorInput.attackDrive). */
+  legDrive?(): number;
+}
 
 /** One segment of a scripted run. */
 export interface ScenarioSegment {
@@ -34,6 +50,8 @@ export interface ScenarioSegment {
   grounded?: boolean;
   /** A skill started at the segment's first frame; its lunge moves the body like the engine does. */
   skill?: SkillAnimation;
+  /** A weapon swing started at the segment's first frame against a target `distance` m ahead. */
+  swing?: { driver: SwingLike; distance: number; cooldown: number; variant?: number };
   label?: string;
 }
 
@@ -51,6 +69,8 @@ export interface ScenarioOptions {
   yaw0?: number;
   /** Optional per-frame hook (time in s, the animator's output, the rig placement). */
   onFrame?: (t: number, out: AnimatorOutput, rig: RigPlacement) => void;
+  /** Optional hook before each animator update (time in s): set live stats, styles, … */
+  beforeFrame?: (t: number, an: Animator) => void;
 }
 
 /** What a run measured. Units: rad, rad/s, m. */
@@ -79,6 +99,14 @@ export interface ScenarioResult {
   finalAngles: Float64Array;
   /** Joint-frames the blender's angular speed limit shortened during this run. */
   speedLimited: number;
+  /** Lowest sole point (heel, ball, toe tip of either foot) above the ground over the run, m (< 0 = under the floor). */
+  soleMin: number;
+  /** Largest |Δθ| / dt per joint over the run, rad/s. */
+  peakSpeed: Float64Array;
+  /** Velocity jumps, gait-cycle seams (SeamTracker over the final angles and the gait phase). */
+  seams: SeamTracker;
+  /** Per swing that ended: time (s) and the largest velocity jump (rad/s) in the 4 frames after its end. */
+  swingEnds: { t: number; velJump: number }[];
 }
 
 const FLAT: GroundHeightFn = () => 0;
@@ -128,8 +156,10 @@ export function runScenario(an: Animator, segs: readonly ScenarioSegment[], opt:
     frames: total, dt, jointSpeed: new Float64Array(Math.max(0, total - 1) * JOINT_COUNT),
     maxStep: new Float64Array(JOINT_COUNT), limitViolations: 0, drift: [], driftBall: [], soleError: [],
     gaitPlantedFrames: 0, honestPlantedFrames: 0, speedLimited: 0, pelvisDrop: [],
-    finalAngles: new Float64Array(JOINT_COUNT),
+    finalAngles: new Float64Array(JOINT_COUNT), soleMin: Infinity, peakSpeed: new Float64Array(JOINT_COUNT),
+    seams: new SeamTracker(JOINT_COUNT), swingEnds: [],
   };
+  let swingSeg = -1, swingWas = false, endWatch = -1, endT = 0, endJump = 0, lastRigYaw = yaw;
   const prev = new Float64Array(JOINT_COUNT);
   const trackers = [new DriftTracker(), new DriftTracker()];
   const fw = newFootWorld();
@@ -145,6 +175,26 @@ export function runScenario(an: Animator, segs: readonly ScenarioSegment[], opt:
     x += Math.sin(dir) * speed * dt;
     z += Math.cos(dir) * speed * dt;
     yaw += (s.turnRate ?? 0) * dt;
+    // A weapon swing: begin on the segment's first frame, advance before the animator, step the
+    // body toward the target (along the facing) and turn the rig by its aim + twist yaw.
+    const drv = s.swing?.driver ?? null;
+    if (s.swing && swingSeg !== seg) { swingSeg = seg; s.swing.driver.begin(s.swing.distance, s.swing.cooldown, s.swing.variant ?? 0); }
+    let st = 0;
+    if (drv) {
+      drv.advance(dt);
+      st = drv.takeStep();
+      x += Math.sin(yaw) * st;
+      z += Math.cos(yaw) * st;
+    }
+    const rigYaw = yaw + (drv ? drv.yaw() : 0);
+    // With a swing the engine MEASURES the speed from positions (locomotion + step-in) and the
+    // travel direction relative to the rig's (aimed) yaw: Engine.#updatePose.
+    let speedIn = speed, dirIn = s.moveDirLocal ?? 0;
+    if (drv) {
+      const vx = Math.sin(dir) * speed + Math.sin(yaw) * st / dt, vz = Math.cos(dir) * speed + Math.cos(yaw) * st / dt;
+      speedIn = Math.hypot(vx, vz);
+      if (speedIn > 1e-3) { const d = Math.atan2(vx, vz) - rigYaw; dirIn = Math.atan2(Math.sin(d), Math.cos(d)); } else dirIn = 0;
+    }
     // A skill: progress = elapsed / duration; its lunge moves the body along the facing.
     let skill: SkillAnimation | null = null, progress = 0;
     if (s.skill && sinceSeg < s.skill.duration) {
@@ -155,12 +205,16 @@ export function runScenario(an: Animator, segs: readonly ScenarioSegment[], opt:
       z += Math.cos(yaw) * step;
     }
     const gy = ground(x, z);
+    opt.beforeFrame?.(t, an);
     const out = an.update(dt, {
-      x, z, yaw, rootY: gy + soleDepth, speed, moveDirLocal: s.moveDirLocal ?? 0, turnRate: s.turnRate ?? 0,
-      grounded: s.grounded ?? true, hit: !!s.hit, attack: !!s.attack, block: !!s.block, ko: !!s.ko,
+      x, z, yaw: rigYaw, rootY: gy + soleDepth, speed: speedIn, moveDirLocal: dirIn,
+      turnRate: f > 0 ? (rigYaw - lastRigYaw) / dt : s.turnRate ?? 0,
+      grounded: s.grounded ?? true, hit: !!s.hit, attack: !!s.attack || (drv ? drv.active : false), block: !!s.block, ko: !!s.ko,
+      attackPose: drv ? drv.attackPose() : null, attackDrive: drv?.legDrive ? drv.legDrive() : 0,
       engaged: !!s.engaged, skill, skillProgress: progress, groundHeight: ground,
     });
-    rig.x = x; rig.z = z; rig.yaw = yaw; rig.y = gy + soleDepth + out.rootOffsetY;
+    lastRigYaw = rigYaw;
+    rig.x = x; rig.z = z; rig.yaw = rigYaw; rig.y = gy + soleDepth + out.rootOffsetY;
     rig.roll = out.rootRoll; rig.lateral = out.rootOffsetLateral;
     opt.onFrame?.(t, out, rig);
     const a = out.angles, lim = an.limits;
@@ -170,9 +224,18 @@ export function runScenario(an: Animator, segs: readonly ScenarioSegment[], opt:
         const d = Math.abs(a[j] - prev[j]);
         res.jointSpeed[(f - 1) * JOINT_COUNT + j] = d / dt;
         if (d > res.maxStep[j]) res.maxStep[j] = d;
+        if (d / dt > res.peakSpeed[j]) res.peakSpeed[j] = d / dt;
       }
     }
     prev.set(a);
+    res.seams.sample(a, dt, an.gait.moving > 0.5 && !skill && !(drv && drv.active) ? out.phase : Number.NaN);
+    const swinging = drv ? drv.active : false;
+    if (swingWas && !swinging) { endWatch = 4; endT = t; endJump = 0; }
+    swingWas = swinging;
+    if (endWatch > 0) {
+      endJump = Math.max(endJump, res.seams.lastJump);
+      if (--endWatch === 0) res.swingEnds.push({ t: endT, velJump: endJump });
+    }
     res.pelvisDrop.push(out.pelvisDrop);
     for (let i = 0 as Side; i < 2; i = (i + 1) as Side) {
       footWorld(an.geometry, a, i, rig, fw, out.hipRoll[i], out.ankleRoll[i]);
@@ -183,6 +246,7 @@ export function runScenario(an: Animator, segs: readonly ScenarioSegment[], opt:
         if (planted) res.honestPlantedFrames++;
       }
       trackers[i].sample(planted, fw, gb, gh);
+      res.soleMin = Math.min(res.soleMin, fw.ballY - gb, fw.heelY - gh, fw.toeY - ground(fw.toeX, fw.toeZ));
       if (planted) res.soleError.push(Math.min(Math.abs(fw.ballY - gb), Math.abs(fw.heelY - gh)));
     }
   }
