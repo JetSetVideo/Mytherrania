@@ -1,0 +1,4352 @@
+{
+  "source": "synthetic (seed 20261031, rng32)",
+  "note": "artifacts/battle-corpus.json present but holds no full records (only a digest + 40-row summary sample); synthesised a reproducible corpus instead; 5000 records generated deterministically from seed 20261031",
+  "recordCount": 5000,
+  "elapsedMs": 36.3,
+  "seed": 20261031,
+  "keyVars": [
+    "duration",
+    "gapDistance",
+    "dominance",
+    "damageShare",
+    "pace",
+    "spread"
+  ],
+  "spread": {
+    "duration": {
+      "n": 5000,
+      "min": 25.022,
+      "p20": 44.635,
+      "median": 73.543,
+      "p80": 102.818,
+      "max": 319.903,
+      "mean": 77.549,
+      "sd": 41.401
+    },
+    "gapDistance": {
+      "n": 5000,
+      "min": 0.583,
+      "p20": 2.799,
+      "median": 3.999,
+      "p80": 5.042,
+      "max": 8.241,
+      "mean": 3.965,
+      "sd": 1.304
+    },
+    "dominance": {
+      "n": 5000,
+      "min": 0,
+      "p20": 0.573,
+      "median": 0.709,
+      "p80": 0.852,
+      "max": 0.95,
+      "mean": 0.69,
+      "sd": 0.193
+    },
+    "damageShare": {
+      "n": 5000,
+      "min": 0,
+      "p20": 0.145,
+      "median": 0.419,
+      "p80": 0.704,
+      "max": 0.9,
+      "mean": 0.424,
+      "sd": 0.269
+    },
+    "pace": {
+      "n": 5000,
+      "min": 0.346,
+      "p20": 0.464,
+      "median": 0.638,
+      "p80": 0.8,
+      "max": 0.959,
+      "mean": 0.635,
+      "sd": 0.16
+    },
+    "spread": {
+      "n": 5000,
+      "min": 0,
+      "p20": 0.059,
+      "median": 0.138,
+      "p80": 0.267,
+      "max": 0.764,
+      "mean": 0.165,
+      "sd": 0.125
+    }
+  },
+  "pca": {
+    "explainedVarianceRatio": [
+      0.311789,
+      0.197632,
+      0.174267,
+      0.159047,
+      0.135512,
+      0.021754
+    ],
+    "loadings": [
+      [
+        -0.0103,
+        0.0351,
+        0.7064,
+        0.7065,
+        -0.0056,
+        0.0226
+      ],
+      [
+        -0.0009,
+        0.7016,
+        -0.0317,
+        -0.0251,
+        0.0797,
+        0.7069
+      ],
+      [
+        0.7086,
+        0.0595,
+        0.001,
+        0.0001,
+        -0.7027,
+        0.0211
+      ],
+      [
+        0.7044,
+        -0.0971,
+        0.004,
+        0.016,
+        0.7027,
+        0.0187
+      ],
+      [
+        -0.0387,
+        -0.7025,
+        0.0024,
+        0.0087,
+        -0.0773,
+        0.7063
+      ],
+      [
+        0.0054,
+        -0.0007,
+        0.7071,
+        -0.7071,
+        0.0065,
+        0.0065
+      ]
+    ]
+  },
+  "plainFlags": [
+    {
+      "index": 4527,
+      "variable": "duration",
+      "z": 5.854
+    },
+    {
+      "index": 1237,
+      "variable": "duration",
+      "z": 5.846
+    },
+    {
+      "index": 738,
+      "variable": "duration",
+      "z": 5.841
+    },
+    {
+      "index": 3579,
+      "variable": "duration",
+      "z": 5.827
+    },
+    {
+      "index": 4713,
+      "variable": "duration",
+      "z": 5.806
+    },
+    {
+      "index": 3546,
+      "variable": "duration",
+      "z": 5.788
+    },
+    {
+      "index": 864,
+      "variable": "duration",
+      "z": 5.78
+    },
+    {
+      "index": 3959,
+      "variable": "duration",
+      "z": 5.755
+    },
+    {
+      "index": 2301,
+      "variable": "duration",
+      "z": 5.755
+    },
+    {
+      "index": 3126,
+      "variable": "duration",
+      "z": 5.755
+    },
+    {
+      "index": 3417,
+      "variable": "duration",
+      "z": 5.727
+    },
+    {
+      "index": 339,
+      "variable": "duration",
+      "z": 5.668
+    },
+    {
+      "index": 4761,
+      "variable": "duration",
+      "z": 5.636
+    },
+    {
+      "index": 4016,
+      "variable": "duration",
+      "z": 5.592
+    },
+    {
+      "index": 1303,
+      "variable": "duration",
+      "z": 5.577
+    },
+    {
+      "index": 3407,
+      "variable": "duration",
+      "z": 5.553
+    },
+    {
+      "index": 468,
+      "variable": "duration",
+      "z": 5.523
+    },
+    {
+      "index": 2918,
+      "variable": "duration",
+      "z": 5.476
+    },
+    {
+      "index": 278,
+      "variable": "duration",
+      "z": 5.454
+    },
+    {
+      "index": 2103,
+      "variable": "duration",
+      "z": 5.415
+    },
+    {
+      "index": 3645,
+      "variable": "duration",
+      "z": 5.403
+    },
+    {
+      "index": 2686,
+      "variable": "duration",
+      "z": 5.383
+    },
+    {
+      "index": 1629,
+      "variable": "duration",
+      "z": 5.347
+    },
+    {
+      "index": 1091,
+      "variable": "duration",
+      "z": 5.335
+    },
+    {
+      "index": 2361,
+      "variable": "duration",
+      "z": 5.316
+    },
+    {
+      "index": 2635,
+      "variable": "duration",
+      "z": 5.286
+    },
+    {
+      "index": 4158,
+      "variable": "duration",
+      "z": 5.282
+    },
+    {
+      "index": 3708,
+      "variable": "duration",
+      "z": 5.251
+    },
+    {
+      "index": 253,
+      "variable": "duration",
+      "z": 5.231
+    },
+    {
+      "index": 1573,
+      "variable": "duration",
+      "z": 5.228
+    },
+    {
+      "index": 3239,
+      "variable": "duration",
+      "z": 5.213
+    },
+    {
+      "index": 2831,
+      "variable": "duration",
+      "z": 5.186
+    },
+    {
+      "index": 2758,
+      "variable": "duration",
+      "z": 5.155
+    },
+    {
+      "index": 2414,
+      "variable": "duration",
+      "z": 5.154
+    },
+    {
+      "index": 976,
+      "variable": "duration",
+      "z": 5.15
+    },
+    {
+      "index": 1952,
+      "variable": "duration",
+      "z": 4.956
+    },
+    {
+      "index": 3824,
+      "variable": "duration",
+      "z": 4.954
+    },
+    {
+      "index": 2679,
+      "variable": "duration",
+      "z": 4.934
+    },
+    {
+      "index": 1010,
+      "variable": "duration",
+      "z": 4.931
+    },
+    {
+      "index": 3527,
+      "variable": "duration",
+      "z": 4.93
+    },
+    {
+      "index": 3457,
+      "variable": "duration",
+      "z": 4.921
+    },
+    {
+      "index": 1207,
+      "variable": "duration",
+      "z": 4.905
+    },
+    {
+      "index": 3558,
+      "variable": "duration",
+      "z": 4.902
+    },
+    {
+      "index": 2741,
+      "variable": "duration",
+      "z": 4.835
+    },
+    {
+      "index": 3766,
+      "variable": "duration",
+      "z": 4.827
+    },
+    {
+      "index": 4292,
+      "variable": "duration",
+      "z": 4.795
+    },
+    {
+      "index": 533,
+      "variable": "spread",
+      "z": 4.791
+    },
+    {
+      "index": 1696,
+      "variable": "duration",
+      "z": 4.781
+    },
+    {
+      "index": 2229,
+      "variable": "duration",
+      "z": 4.772
+    },
+    {
+      "index": 2559,
+      "variable": "duration",
+      "z": 4.772
+    },
+    {
+      "index": 2064,
+      "variable": "duration",
+      "z": 4.756
+    },
+    {
+      "index": 494,
+      "variable": "duration",
+      "z": 4.738
+    },
+    {
+      "index": 2345,
+      "variable": "duration",
+      "z": 4.677
+    },
+    {
+      "index": 3134,
+      "variable": "duration",
+      "z": 4.667
+    },
+    {
+      "index": 206,
+      "variable": "duration",
+      "z": 4.659
+    },
+    {
+      "index": 4034,
+      "variable": "duration",
+      "z": 4.645
+    },
+    {
+      "index": 1615,
+      "variable": "spread",
+      "z": 4.608
+    },
+    {
+      "index": 2230,
+      "variable": "duration",
+      "z": 4.585
+    },
+    {
+      "index": 4372,
+      "variable": "duration",
+      "z": 4.581
+    },
+    {
+      "index": 2418,
+      "variable": "duration",
+      "z": 4.521
+    },
+    {
+      "index": 2548,
+      "variable": "duration",
+      "z": 4.507
+    },
+    {
+      "index": 3169,
+      "variable": "duration",
+      "z": 4.489
+    },
+    {
+      "index": 4353,
+      "variable": "duration",
+      "z": 4.48
+    },
+    {
+      "index": 601,
+      "variable": "duration",
+      "z": 4.444
+    },
+    {
+      "index": 1238,
+      "variable": "duration",
+      "z": 4.444
+    },
+    {
+      "index": 4833,
+      "variable": "duration",
+      "z": 4.436
+    },
+    {
+      "index": 642,
+      "variable": "duration",
+      "z": 4.425
+    },
+    {
+      "index": 934,
+      "variable": "duration",
+      "z": 4.414
+    },
+    {
+      "index": 503,
+      "variable": "duration",
+      "z": 4.381
+    },
+    {
+      "index": 2481,
+      "variable": "spread",
+      "z": 4.344
+    },
+    {
+      "index": 2406,
+      "variable": "duration",
+      "z": 4.308
+    },
+    {
+      "index": 4275,
+      "variable": "duration",
+      "z": 4.296
+    },
+    {
+      "index": 391,
+      "variable": "duration",
+      "z": 4.272
+    },
+    {
+      "index": 4968,
+      "variable": "duration",
+      "z": 4.248
+    },
+    {
+      "index": 544,
+      "variable": "duration",
+      "z": 4.237
+    },
+    {
+      "index": 1390,
+      "variable": "duration",
+      "z": 4.237
+    },
+    {
+      "index": 2144,
+      "variable": "duration",
+      "z": 4.233
+    },
+    {
+      "index": 564,
+      "variable": "spread",
+      "z": 4.233
+    },
+    {
+      "index": 156,
+      "variable": "spread",
+      "z": 4.221
+    },
+    {
+      "index": 931,
+      "variable": "duration",
+      "z": 4.203
+    },
+    {
+      "index": 1742,
+      "variable": "duration",
+      "z": 4.148
+    },
+    {
+      "index": 368,
+      "variable": "duration",
+      "z": 4.148
+    },
+    {
+      "index": 1143,
+      "variable": "duration",
+      "z": 4.113
+    },
+    {
+      "index": 419,
+      "variable": "duration",
+      "z": 4.084
+    },
+    {
+      "index": 92,
+      "variable": "duration",
+      "z": 4.063
+    },
+    {
+      "index": 712,
+      "variable": "duration",
+      "z": 4.063
+    },
+    {
+      "index": 600,
+      "variable": "duration",
+      "z": 4.041
+    },
+    {
+      "index": 3803,
+      "variable": "spread",
+      "z": 4.015
+    },
+    {
+      "index": 4248,
+      "variable": "spread",
+      "z": 4.015
+    },
+    {
+      "index": 733,
+      "variable": "duration",
+      "z": 3.989
+    },
+    {
+      "index": 2292,
+      "variable": "duration",
+      "z": 3.957
+    },
+    {
+      "index": 2631,
+      "variable": "duration",
+      "z": 3.954
+    },
+    {
+      "index": 1930,
+      "variable": "duration",
+      "z": 3.949
+    },
+    {
+      "index": 4877,
+      "variable": "duration",
+      "z": 3.923
+    },
+    {
+      "index": 2863,
+      "variable": "duration",
+      "z": 3.921
+    },
+    {
+      "index": 520,
+      "variable": "duration",
+      "z": 3.902
+    },
+    {
+      "index": 3755,
+      "variable": "duration",
+      "z": 3.895
+    },
+    {
+      "index": 3927,
+      "variable": "duration",
+      "z": 3.895
+    },
+    {
+      "index": 4747,
+      "variable": "duration",
+      "z": 3.894
+    },
+    {
+      "index": 706,
+      "variable": "spread",
+      "z": 3.834
+    },
+    {
+      "index": 3857,
+      "variable": "duration",
+      "z": 3.827
+    },
+    {
+      "index": 3350,
+      "variable": "spread",
+      "z": 3.825
+    },
+    {
+      "index": 582,
+      "variable": "spread",
+      "z": 3.814
+    },
+    {
+      "index": 784,
+      "variable": "spread",
+      "z": 3.814
+    },
+    {
+      "index": 3437,
+      "variable": "duration",
+      "z": 3.809
+    },
+    {
+      "index": 621,
+      "variable": "duration",
+      "z": 3.787
+    },
+    {
+      "index": 195,
+      "variable": "duration",
+      "z": 3.785
+    },
+    {
+      "index": 3952,
+      "variable": "duration",
+      "z": 3.781
+    },
+    {
+      "index": 4459,
+      "variable": "duration",
+      "z": 3.742
+    },
+    {
+      "index": 631,
+      "variable": "duration",
+      "z": 3.736
+    },
+    {
+      "index": 1895,
+      "variable": "duration",
+      "z": 3.721
+    },
+    {
+      "index": 3867,
+      "variable": "duration",
+      "z": 3.706
+    },
+    {
+      "index": 3535,
+      "variable": "duration",
+      "z": 3.669
+    },
+    {
+      "index": 3881,
+      "variable": "duration",
+      "z": 3.66
+    },
+    {
+      "index": 2379,
+      "variable": "duration",
+      "z": 3.651
+    },
+    {
+      "index": 2332,
+      "variable": "spread",
+      "z": 3.647
+    },
+    {
+      "index": 4427,
+      "variable": "spread",
+      "z": 3.647
+    },
+    {
+      "index": 3304,
+      "variable": "duration",
+      "z": 3.641
+    },
+    {
+      "index": 3061,
+      "variable": "spread",
+      "z": 3.627
+    },
+    {
+      "index": 3825,
+      "variable": "spread",
+      "z": 3.627
+    },
+    {
+      "index": 3823,
+      "variable": "duration",
+      "z": 3.626
+    },
+    {
+      "index": 3663,
+      "variable": "duration",
+      "z": 3.614
+    },
+    {
+      "index": 3113,
+      "variable": "spread",
+      "z": 3.605
+    },
+    {
+      "index": 4654,
+      "variable": "duration",
+      "z": 3.595
+    },
+    {
+      "index": 3195,
+      "variable": "spread",
+      "z": 3.58
+    },
+    {
+      "index": 11,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 23,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 52,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 53,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 63,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 104,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 115,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 161,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 167,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 198,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 202,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 214,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 215,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 239,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 247,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 252,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 270,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 326,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 352,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 365,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 379,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 433,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 475,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 488,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 515,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 528,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 578,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 615,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 669,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 677,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 679,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 751,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 781,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 803,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 805,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 816,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 817,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 833,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 862,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 865,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 875,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 886,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 900,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 967,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 989,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 1005,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 1042,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 1069,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 1090,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 1095,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 1102,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 1124,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 1170,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 1199,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 1242,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 1312,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 1325,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 1374,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 1380,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 1398,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 1399,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 1405,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 1409,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 1424,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 1428,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 1431,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 1449,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 1496,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 1536,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 1552,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 1558,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 1574,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 1627,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 1633,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 1658,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 1659,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 1726,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 1825,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 1850,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 1856,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 1876,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 1880,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 1921,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 1922,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 1925,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 1937,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 1982,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 2005,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 2016,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 2053,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 2058,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 2091,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 2117,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 2212,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 2225,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 2248,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 2250,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 2269,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 2281,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 2285,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 2302,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 2403,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 2427,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 2449,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 2528,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 2529,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 2552,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 2600,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 2613,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 2670,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 2713,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 2739,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 2747,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 2775,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 2848,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 2875,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 2914,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 2925,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 2966,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 3045,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 3108,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 3183,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 3185,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 3218,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 3233,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 3252,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 3259,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 3270,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 3272,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 3276,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 3300,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 3303,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 3324,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 3374,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 3431,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 3460,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 3468,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 3514,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 3541,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 3548,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 3574,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 3581,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 3603,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 3616,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 3626,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 3630,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 3635,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 3672,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 3730,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 3752,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 3759,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 3782,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 3838,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 3866,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 3889,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 3903,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 3922,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 3951,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 3958,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 3975,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 3980,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 3992,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 4026,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 4050,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 4058,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 4059,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 4100,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 4136,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 4151,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 4169,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 4184,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 4185,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 4205,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 4251,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 4268,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 4282,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 4299,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 4390,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 4391,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 4404,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 4407,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 4448,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 4498,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 4503,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 4575,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 4598,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 4630,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 4675,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 4686,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 4710,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 4715,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 4733,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 4738,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 4775,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 4783,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 4785,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 4788,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 4812,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 4816,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 4825,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 4842,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 4845,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 4858,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 4945,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 4958,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 4960,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 4962,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 4974,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 4975,
+      "variable": "dominance",
+      "z": -3.568
+    },
+    {
+      "index": 2823,
+      "variable": "duration",
+      "z": 3.557
+    },
+    {
+      "index": 4876,
+      "variable": "duration",
+      "z": 3.54
+    },
+    {
+      "index": 4651,
+      "variable": "duration",
+      "z": 3.539
+    },
+    {
+      "index": 3860,
+      "variable": "spread",
+      "z": 3.519
+    },
+    {
+      "index": 3940,
+      "variable": "duration",
+      "z": 3.515
+    },
+    {
+      "index": 263,
+      "variable": "spread",
+      "z": 3.454
+    },
+    {
+      "index": 1757,
+      "variable": "spread",
+      "z": 3.454
+    },
+    {
+      "index": 2949,
+      "variable": "duration",
+      "z": 3.429
+    },
+    {
+      "index": 2369,
+      "variable": "duration",
+      "z": 3.425
+    },
+    {
+      "index": 1404,
+      "variable": "spread",
+      "z": 3.423
+    },
+    {
+      "index": 3343,
+      "variable": "spread",
+      "z": 3.423
+    },
+    {
+      "index": 4824,
+      "variable": "spread",
+      "z": 3.359
+    },
+    {
+      "index": 1906,
+      "variable": "spread",
+      "z": 3.348
+    },
+    {
+      "index": 3610,
+      "variable": "spread",
+      "z": 3.348
+    },
+    {
+      "index": 1572,
+      "variable": "spread",
+      "z": 3.327
+    },
+    {
+      "index": 1367,
+      "variable": "duration",
+      "z": 3.32
+    },
+    {
+      "index": 257,
+      "variable": "spread",
+      "z": 3.292
+    },
+    {
+      "index": 1657,
+      "variable": "spread",
+      "z": 3.292
+    },
+    {
+      "index": 1662,
+      "variable": "spread",
+      "z": 3.292
+    },
+    {
+      "index": 3175,
+      "variable": "spread",
+      "z": 3.292
+    },
+    {
+      "index": 2727,
+      "variable": "gapDistance",
+      "z": 3.28
+    },
+    {
+      "index": 3025,
+      "variable": "duration",
+      "z": 3.267
+    },
+    {
+      "index": 4265,
+      "variable": "duration",
+      "z": 3.257
+    },
+    {
+      "index": 3146,
+      "variable": "spread",
+      "z": 3.253
+    },
+    {
+      "index": 3378,
+      "variable": "spread",
+      "z": 3.253
+    },
+    {
+      "index": 2083,
+      "variable": "duration",
+      "z": 3.218
+    },
+    {
+      "index": 4314,
+      "variable": "duration",
+      "z": 3.208
+    },
+    {
+      "index": 4615,
+      "variable": "duration",
+      "z": 3.207
+    },
+    {
+      "index": 4180,
+      "variable": "duration",
+      "z": 3.207
+    },
+    {
+      "index": 1949,
+      "variable": "duration",
+      "z": 3.203
+    },
+    {
+      "index": 772,
+      "variable": "duration",
+      "z": 3.2
+    },
+    {
+      "index": 1834,
+      "variable": "duration",
+      "z": 3.193
+    },
+    {
+      "index": 4976,
+      "variable": "duration",
+      "z": 3.18
+    },
+    {
+      "index": 1369,
+      "variable": "gapDistance",
+      "z": 3.175
+    },
+    {
+      "index": 3885,
+      "variable": "duration",
+      "z": 3.156
+    },
+    {
+      "index": 4047,
+      "variable": "duration",
+      "z": 3.144
+    },
+    {
+      "index": 2170,
+      "variable": "spread",
+      "z": 3.141
+    },
+    {
+      "index": 2752,
+      "variable": "spread",
+      "z": 3.141
+    },
+    {
+      "index": 4223,
+      "variable": "spread",
+      "z": 3.141
+    },
+    {
+      "index": 3675,
+      "variable": "gapDistance",
+      "z": 3.128
+    },
+    {
+      "index": 765,
+      "variable": "spread",
+      "z": 3.107
+    },
+    {
+      "index": 3835,
+      "variable": "duration",
+      "z": 3.103
+    },
+    {
+      "index": 3734,
+      "variable": "spread",
+      "z": 3.096
+    },
+    {
+      "index": 4635,
+      "variable": "spread",
+      "z": 3.096
+    },
+    {
+      "index": 2571,
+      "variable": "duration",
+      "z": 3.083
+    },
+    {
+      "index": 1063,
+      "variable": "duration",
+      "z": 3.081
+    },
+    {
+      "index": 3481,
+      "variable": "gapDistance",
+      "z": 3.076
+    },
+    {
+      "index": 1228,
+      "variable": "duration",
+      "z": 3.057
+    },
+    {
+      "index": 113,
+      "variable": "gapDistance",
+      "z": 3.056
+    },
+    {
+      "index": 3309,
+      "variable": "gapDistance",
+      "z": 3.047
+    },
+    {
+      "index": 1682,
+      "variable": "duration",
+      "z": 3.047
+    },
+    {
+      "index": 1792,
+      "variable": "spread",
+      "z": 3.045
+    },
+    {
+      "index": 2121,
+      "variable": "spread",
+      "z": 3.045
+    },
+    {
+      "index": 1769,
+      "variable": "gapDistance",
+      "z": 3.011
+    }
+  ],
+  "robustFlags": [
+    {
+      "index": 4527,
+      "variable": "duration",
+      "z": 6.828
+    },
+    {
+      "index": 1237,
+      "variable": "duration",
+      "z": 6.818
+    },
+    {
+      "index": 738,
+      "variable": "duration",
+      "z": 6.813
+    },
+    {
+      "index": 3579,
+      "variable": "duration",
+      "z": 6.797
+    },
+    {
+      "index": 4713,
+      "variable": "duration",
+      "z": 6.773
+    },
+    {
+      "index": 3546,
+      "variable": "duration",
+      "z": 6.752
+    },
+    {
+      "index": 864,
+      "variable": "duration",
+      "z": 6.744
+    },
+    {
+      "index": 3959,
+      "variable": "duration",
+      "z": 6.714
+    },
+    {
+      "index": 2301,
+      "variable": "duration",
+      "z": 6.714
+    },
+    {
+      "index": 3126,
+      "variable": "duration",
+      "z": 6.714
+    },
+    {
+      "index": 3417,
+      "variable": "duration",
+      "z": 6.682
+    },
+    {
+      "index": 339,
+      "variable": "duration",
+      "z": 6.614
+    },
+    {
+      "index": 4761,
+      "variable": "duration",
+      "z": 6.578
+    },
+    {
+      "index": 4016,
+      "variable": "duration",
+      "z": 6.527
+    },
+    {
+      "index": 1303,
+      "variable": "duration",
+      "z": 6.51
+    },
+    {
+      "index": 3407,
+      "variable": "duration",
+      "z": 6.482
+    },
+    {
+      "index": 468,
+      "variable": "duration",
+      "z": 6.448
+    },
+    {
+      "index": 2918,
+      "variable": "duration",
+      "z": 6.395
+    },
+    {
+      "index": 278,
+      "variable": "duration",
+      "z": 6.369
+    },
+    {
+      "index": 2103,
+      "variable": "duration",
+      "z": 6.324
+    },
+    {
+      "index": 3645,
+      "variable": "duration",
+      "z": 6.311
+    },
+    {
+      "index": 2686,
+      "variable": "duration",
+      "z": 6.287
+    },
+    {
+      "index": 1629,
+      "variable": "duration",
+      "z": 6.247
+    },
+    {
+      "index": 1091,
+      "variable": "duration",
+      "z": 6.232
+    },
+    {
+      "index": 2361,
+      "variable": "duration",
+      "z": 6.211
+    },
+    {
+      "index": 2635,
+      "variable": "duration",
+      "z": 6.176
+    },
+    {
+      "index": 4158,
+      "variable": "duration",
+      "z": 6.171
+    },
+    {
+      "index": 3708,
+      "variable": "duration",
+      "z": 6.136
+    },
+    {
+      "index": 253,
+      "variable": "duration",
+      "z": 6.113
+    },
+    {
+      "index": 1573,
+      "variable": "duration",
+      "z": 6.109
+    },
+    {
+      "index": 3239,
+      "variable": "duration",
+      "z": 6.093
+    },
+    {
+      "index": 2831,
+      "variable": "duration",
+      "z": 6.062
+    },
+    {
+      "index": 2758,
+      "variable": "duration",
+      "z": 6.026
+    },
+    {
+      "index": 2414,
+      "variable": "duration",
+      "z": 6.025
+    },
+    {
+      "index": 976,
+      "variable": "duration",
+      "z": 6.02
+    },
+    {
+      "index": 1952,
+      "variable": "duration",
+      "z": 5.797
+    },
+    {
+      "index": 3824,
+      "variable": "duration",
+      "z": 5.796
+    },
+    {
+      "index": 2679,
+      "variable": "duration",
+      "z": 5.773
+    },
+    {
+      "index": 1010,
+      "variable": "duration",
+      "z": 5.769
+    },
+    {
+      "index": 3527,
+      "variable": "duration",
+      "z": 5.768
+    },
+    {
+      "index": 3457,
+      "variable": "duration",
+      "z": 5.758
+    },
+    {
+      "index": 1207,
+      "variable": "duration",
+      "z": 5.739
+    },
+    {
+      "index": 3558,
+      "variable": "duration",
+      "z": 5.736
+    },
+    {
+      "index": 2741,
+      "variable": "duration",
+      "z": 5.659
+    },
+    {
+      "index": 3766,
+      "variable": "duration",
+      "z": 5.65
+    },
+    {
+      "index": 4292,
+      "variable": "duration",
+      "z": 5.612
+    },
+    {
+      "index": 1696,
+      "variable": "duration",
+      "z": 5.597
+    },
+    {
+      "index": 2229,
+      "variable": "duration",
+      "z": 5.587
+    },
+    {
+      "index": 2559,
+      "variable": "duration",
+      "z": 5.587
+    },
+    {
+      "index": 2064,
+      "variable": "duration",
+      "z": 5.568
+    },
+    {
+      "index": 494,
+      "variable": "duration",
+      "z": 5.547
+    },
+    {
+      "index": 2345,
+      "variable": "duration",
+      "z": 5.478
+    },
+    {
+      "index": 3134,
+      "variable": "duration",
+      "z": 5.466
+    },
+    {
+      "index": 206,
+      "variable": "duration",
+      "z": 5.457
+    },
+    {
+      "index": 533,
+      "variable": "spread",
+      "z": 5.449
+    },
+    {
+      "index": 4034,
+      "variable": "duration",
+      "z": 5.441
+    },
+    {
+      "index": 2230,
+      "variable": "duration",
+      "z": 5.372
+    },
+    {
+      "index": 4372,
+      "variable": "duration",
+      "z": 5.368
+    },
+    {
+      "index": 2418,
+      "variable": "duration",
+      "z": 5.299
+    },
+    {
+      "index": 2548,
+      "variable": "duration",
+      "z": 5.282
+    },
+    {
+      "index": 3169,
+      "variable": "duration",
+      "z": 5.262
+    },
+    {
+      "index": 4353,
+      "variable": "duration",
+      "z": 5.252
+    },
+    {
+      "index": 1615,
+      "variable": "spread",
+      "z": 5.249
+    },
+    {
+      "index": 601,
+      "variable": "duration",
+      "z": 5.211
+    },
+    {
+      "index": 1238,
+      "variable": "duration",
+      "z": 5.21
+    },
+    {
+      "index": 4833,
+      "variable": "duration",
+      "z": 5.2
+    },
+    {
+      "index": 642,
+      "variable": "duration",
+      "z": 5.189
+    },
+    {
+      "index": 934,
+      "variable": "duration",
+      "z": 5.175
+    },
+    {
+      "index": 503,
+      "variable": "duration",
+      "z": 5.138
+    },
+    {
+      "index": 2406,
+      "variable": "duration",
+      "z": 5.054
+    },
+    {
+      "index": 4275,
+      "variable": "duration",
+      "z": 5.04
+    },
+    {
+      "index": 391,
+      "variable": "duration",
+      "z": 5.012
+    },
+    {
+      "index": 4968,
+      "variable": "duration",
+      "z": 4.985
+    },
+    {
+      "index": 544,
+      "variable": "duration",
+      "z": 4.973
+    },
+    {
+      "index": 1390,
+      "variable": "duration",
+      "z": 4.973
+    },
+    {
+      "index": 2144,
+      "variable": "duration",
+      "z": 4.968
+    },
+    {
+      "index": 2481,
+      "variable": "spread",
+      "z": 4.962
+    },
+    {
+      "index": 931,
+      "variable": "duration",
+      "z": 4.933
+    },
+    {
+      "index": 1742,
+      "variable": "duration",
+      "z": 4.871
+    },
+    {
+      "index": 368,
+      "variable": "duration",
+      "z": 4.87
+    },
+    {
+      "index": 564,
+      "variable": "spread",
+      "z": 4.841
+    },
+    {
+      "index": 1143,
+      "variable": "duration",
+      "z": 4.831
+    },
+    {
+      "index": 156,
+      "variable": "spread",
+      "z": 4.828
+    },
+    {
+      "index": 419,
+      "variable": "duration",
+      "z": 4.797
+    },
+    {
+      "index": 92,
+      "variable": "duration",
+      "z": 4.773
+    },
+    {
+      "index": 712,
+      "variable": "duration",
+      "z": 4.773
+    },
+    {
+      "index": 600,
+      "variable": "duration",
+      "z": 4.748
+    },
+    {
+      "index": 733,
+      "variable": "duration",
+      "z": 4.688
+    },
+    {
+      "index": 2292,
+      "variable": "duration",
+      "z": 4.651
+    },
+    {
+      "index": 2631,
+      "variable": "duration",
+      "z": 4.648
+    },
+    {
+      "index": 1930,
+      "variable": "duration",
+      "z": 4.642
+    },
+    {
+      "index": 4877,
+      "variable": "duration",
+      "z": 4.613
+    },
+    {
+      "index": 2863,
+      "variable": "duration",
+      "z": 4.61
+    },
+    {
+      "index": 3803,
+      "variable": "spread",
+      "z": 4.604
+    },
+    {
+      "index": 4248,
+      "variable": "spread",
+      "z": 4.604
+    },
+    {
+      "index": 520,
+      "variable": "duration",
+      "z": 4.588
+    },
+    {
+      "index": 3755,
+      "variable": "duration",
+      "z": 4.58
+    },
+    {
+      "index": 3927,
+      "variable": "duration",
+      "z": 4.58
+    },
+    {
+      "index": 4747,
+      "variable": "duration",
+      "z": 4.579
+    },
+    {
+      "index": 3857,
+      "variable": "duration",
+      "z": 4.502
+    },
+    {
+      "index": 3437,
+      "variable": "duration",
+      "z": 4.482
+    },
+    {
+      "index": 621,
+      "variable": "duration",
+      "z": 4.456
+    },
+    {
+      "index": 195,
+      "variable": "duration",
+      "z": 4.453
+    },
+    {
+      "index": 3952,
+      "variable": "duration",
+      "z": 4.449
+    },
+    {
+      "index": 706,
+      "variable": "spread",
+      "z": 4.408
+    },
+    {
+      "index": 4459,
+      "variable": "duration",
+      "z": 4.405
+    },
+    {
+      "index": 631,
+      "variable": "duration",
+      "z": 4.398
+    },
+    {
+      "index": 3350,
+      "variable": "spread",
+      "z": 4.397
+    },
+    {
+      "index": 582,
+      "variable": "spread",
+      "z": 4.385
+    },
+    {
+      "index": 784,
+      "variable": "spread",
+      "z": 4.385
+    },
+    {
+      "index": 1895,
+      "variable": "duration",
+      "z": 4.381
+    },
+    {
+      "index": 3867,
+      "variable": "duration",
+      "z": 4.364
+    },
+    {
+      "index": 3535,
+      "variable": "duration",
+      "z": 4.321
+    },
+    {
+      "index": 3881,
+      "variable": "duration",
+      "z": 4.31
+    },
+    {
+      "index": 2379,
+      "variable": "duration",
+      "z": 4.301
+    },
+    {
+      "index": 3304,
+      "variable": "duration",
+      "z": 4.289
+    },
+    {
+      "index": 3823,
+      "variable": "duration",
+      "z": 4.272
+    },
+    {
+      "index": 3663,
+      "variable": "duration",
+      "z": 4.258
+    },
+    {
+      "index": 4654,
+      "variable": "duration",
+      "z": 4.236
+    },
+    {
+      "index": 2332,
+      "variable": "spread",
+      "z": 4.204
+    },
+    {
+      "index": 4427,
+      "variable": "spread",
+      "z": 4.204
+    },
+    {
+      "index": 2823,
+      "variable": "duration",
+      "z": 4.193
+    },
+    {
+      "index": 3061,
+      "variable": "spread",
+      "z": 4.182
+    },
+    {
+      "index": 3825,
+      "variable": "spread",
+      "z": 4.182
+    },
+    {
+      "index": 4876,
+      "variable": "duration",
+      "z": 4.173
+    },
+    {
+      "index": 4651,
+      "variable": "duration",
+      "z": 4.172
+    },
+    {
+      "index": 3113,
+      "variable": "spread",
+      "z": 4.158
+    },
+    {
+      "index": 3940,
+      "variable": "duration",
+      "z": 4.144
+    },
+    {
+      "index": 3195,
+      "variable": "spread",
+      "z": 4.13
+    },
+    {
+      "index": 11,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 23,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 52,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 53,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 63,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 104,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 115,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 161,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 167,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 198,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 202,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 214,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 215,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 239,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 247,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 252,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 270,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 326,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 352,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 365,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 379,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 433,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 475,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 488,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 515,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 528,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 578,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 615,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 669,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 677,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 679,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 751,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 781,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 803,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 805,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 816,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 817,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 833,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 862,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 865,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 875,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 886,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 900,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 967,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 989,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 1005,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 1042,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 1069,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 1090,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 1095,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 1102,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 1124,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 1170,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 1199,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 1242,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 1312,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 1325,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 1374,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 1380,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 1398,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 1399,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 1405,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 1409,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 1424,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 1428,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 1431,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 1449,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 1496,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 1536,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 1552,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 1558,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 1574,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 1627,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 1633,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 1658,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 1659,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 1726,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 1825,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 1850,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 1856,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 1876,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 1880,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 1921,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 1922,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 1925,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 1937,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 1982,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 2005,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 2016,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 2053,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 2058,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 2091,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 2117,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 2212,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 2225,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 2248,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 2250,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 2269,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 2281,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 2285,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 2302,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 2403,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 2427,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 2449,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 2528,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 2529,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 2552,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 2600,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 2613,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 2670,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 2713,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 2739,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 2747,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 2775,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 2848,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 2875,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 2914,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 2925,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 2966,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 3045,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 3108,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 3183,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 3185,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 3218,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 3233,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 3252,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 3259,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 3270,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 3272,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 3276,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 3300,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 3303,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 3324,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 3374,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 3431,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 3460,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 3468,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 3514,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 3541,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 3548,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 3574,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 3581,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 3603,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 3616,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 3626,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 3630,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 3635,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 3672,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 3730,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 3752,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 3759,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 3782,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 3838,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 3866,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 3889,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 3903,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 3922,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 3951,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 3958,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 3975,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 3980,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 3992,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 4026,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 4050,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 4058,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 4059,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 4100,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 4136,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 4151,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 4169,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 4184,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 4185,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 4205,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 4251,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 4268,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 4282,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 4299,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 4390,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 4391,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 4404,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 4407,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 4448,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 4498,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 4503,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 4575,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 4598,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 4630,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 4675,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 4686,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 4710,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 4715,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 4733,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 4738,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 4775,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 4783,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 4785,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 4788,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 4812,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 4816,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 4825,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 4842,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 4845,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 4858,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 4945,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 4958,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 4960,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 4962,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 4974,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 4975,
+      "variable": "dominance",
+      "z": -4.083
+    },
+    {
+      "index": 3860,
+      "variable": "spread",
+      "z": 4.064
+    },
+    {
+      "index": 2949,
+      "variable": "duration",
+      "z": 4.045
+    },
+    {
+      "index": 2369,
+      "variable": "duration",
+      "z": 4.041
+    },
+    {
+      "index": 263,
+      "variable": "spread",
+      "z": 3.993
+    },
+    {
+      "index": 1757,
+      "variable": "spread",
+      "z": 3.993
+    },
+    {
+      "index": 1404,
+      "variable": "spread",
+      "z": 3.959
+    },
+    {
+      "index": 3343,
+      "variable": "spread",
+      "z": 3.959
+    },
+    {
+      "index": 1367,
+      "variable": "duration",
+      "z": 3.921
+    },
+    {
+      "index": 4824,
+      "variable": "spread",
+      "z": 3.89
+    },
+    {
+      "index": 1906,
+      "variable": "spread",
+      "z": 3.879
+    },
+    {
+      "index": 3610,
+      "variable": "spread",
+      "z": 3.879
+    },
+    {
+      "index": 3025,
+      "variable": "duration",
+      "z": 3.86
+    },
+    {
+      "index": 1572,
+      "variable": "spread",
+      "z": 3.855
+    },
+    {
+      "index": 4265,
+      "variable": "duration",
+      "z": 3.848
+    },
+    {
+      "index": 257,
+      "variable": "spread",
+      "z": 3.817
+    },
+    {
+      "index": 1657,
+      "variable": "spread",
+      "z": 3.817
+    },
+    {
+      "index": 1662,
+      "variable": "spread",
+      "z": 3.817
+    },
+    {
+      "index": 3175,
+      "variable": "spread",
+      "z": 3.817
+    },
+    {
+      "index": 2083,
+      "variable": "duration",
+      "z": 3.803
+    },
+    {
+      "index": 4314,
+      "variable": "duration",
+      "z": 3.792
+    },
+    {
+      "index": 4615,
+      "variable": "duration",
+      "z": 3.791
+    },
+    {
+      "index": 4180,
+      "variable": "duration",
+      "z": 3.79
+    },
+    {
+      "index": 1949,
+      "variable": "duration",
+      "z": 3.786
+    },
+    {
+      "index": 772,
+      "variable": "duration",
+      "z": 3.783
+    },
+    {
+      "index": 1834,
+      "variable": "duration",
+      "z": 3.775
+    },
+    {
+      "index": 3146,
+      "variable": "spread",
+      "z": 3.775
+    },
+    {
+      "index": 3378,
+      "variable": "spread",
+      "z": 3.775
+    },
+    {
+      "index": 4976,
+      "variable": "duration",
+      "z": 3.76
+    },
+    {
+      "index": 3885,
+      "variable": "duration",
+      "z": 3.732
+    },
+    {
+      "index": 4047,
+      "variable": "duration",
+      "z": 3.718
+    },
+    {
+      "index": 3835,
+      "variable": "duration",
+      "z": 3.671
+    },
+    {
+      "index": 2170,
+      "variable": "spread",
+      "z": 3.653
+    },
+    {
+      "index": 2752,
+      "variable": "spread",
+      "z": 3.653
+    },
+    {
+      "index": 4223,
+      "variable": "spread",
+      "z": 3.653
+    },
+    {
+      "index": 2571,
+      "variable": "duration",
+      "z": 3.648
+    },
+    {
+      "index": 1063,
+      "variable": "duration",
+      "z": 3.646
+    },
+    {
+      "index": 1228,
+      "variable": "duration",
+      "z": 3.619
+    },
+    {
+      "index": 765,
+      "variable": "spread",
+      "z": 3.616
+    },
+    {
+      "index": 1682,
+      "variable": "duration",
+      "z": 3.607
+    },
+    {
+      "index": 3734,
+      "variable": "spread",
+      "z": 3.603
+    },
+    {
+      "index": 4635,
+      "variable": "spread",
+      "z": 3.603
+    },
+    {
+      "index": 1792,
+      "variable": "spread",
+      "z": 3.549
+    },
+    {
+      "index": 2121,
+      "variable": "spread",
+      "z": 3.549
+    },
+    {
+      "index": 1594,
+      "variable": "duration",
+      "z": 3.53
+    },
+    {
+      "index": 192,
+      "variable": "duration",
+      "z": 3.514
+    },
+    {
+      "index": 4537,
+      "variable": "duration",
+      "z": 3.505
+    },
+    {
+      "index": 2899,
+      "variable": "spread",
+      "z": 3.499
+    },
+    {
+      "index": 4869,
+      "variable": "spread",
+      "z": 3.499
+    },
+    {
+      "index": 2555,
+      "variable": "spread",
+      "z": 3.488
+    },
+    {
+      "index": 3323,
+      "variable": "spread",
+      "z": 3.488
+    },
+    {
+      "index": 4376,
+      "variable": "spread",
+      "z": 3.488
+    },
+    {
+      "index": 4550,
+      "variable": "spread",
+      "z": 3.488
+    },
+    {
+      "index": 452,
+      "variable": "duration",
+      "z": 3.475
+    },
+    {
+      "index": 2709,
+      "variable": "duration",
+      "z": 3.464
+    },
+    {
+      "index": 4467,
+      "variable": "duration",
+      "z": 3.456
+    },
+    {
+      "index": 317,
+      "variable": "spread",
+      "z": 3.42
+    },
+    {
+      "index": 4898,
+      "variable": "duration",
+      "z": 3.42
+    },
+    {
+      "index": 675,
+      "variable": "duration",
+      "z": 3.411
+    },
+    {
+      "index": 1923,
+      "variable": "spread",
+      "z": 3.382
+    },
+    {
+      "index": 4032,
+      "variable": "spread",
+      "z": 3.382
+    },
+    {
+      "index": 1535,
+      "variable": "spread",
+      "z": 3.354
+    },
+    {
+      "index": 1995,
+      "variable": "spread",
+      "z": 3.354
+    },
+    {
+      "index": 4846,
+      "variable": "duration",
+      "z": 3.341
+    },
+    {
+      "index": 1281,
+      "variable": "duration",
+      "z": 3.318
+    },
+    {
+      "index": 398,
+      "variable": "spread",
+      "z": 3.314
+    },
+    {
+      "index": 439,
+      "variable": "spread",
+      "z": 3.314
+    },
+    {
+      "index": 663,
+      "variable": "spread",
+      "z": 3.314
+    },
+    {
+      "index": 2305,
+      "variable": "spread",
+      "z": 3.314
+    },
+    {
+      "index": 4242,
+      "variable": "spread",
+      "z": 3.314
+    },
+    {
+      "index": 464,
+      "variable": "spread",
+      "z": 3.238
+    },
+    {
+      "index": 573,
+      "variable": "spread",
+      "z": 3.238
+    },
+    {
+      "index": 1229,
+      "variable": "spread",
+      "z": 3.238
+    },
+    {
+      "index": 1617,
+      "variable": "spread",
+      "z": 3.238
+    },
+    {
+      "index": 2943,
+      "variable": "spread",
+      "z": 3.238
+    },
+    {
+      "index": 4518,
+      "variable": "spread",
+      "z": 3.238
+    },
+    {
+      "index": 2727,
+      "variable": "gapDistance",
+      "z": 3.236
+    },
+    {
+      "index": 463,
+      "variable": "spread",
+      "z": 3.227
+    },
+    {
+      "index": 510,
+      "variable": "spread",
+      "z": 3.227
+    },
+    {
+      "index": 1117,
+      "variable": "spread",
+      "z": 3.227
+    },
+    {
+      "index": 1208,
+      "variable": "spread",
+      "z": 3.227
+    },
+    {
+      "index": 2828,
+      "variable": "spread",
+      "z": 3.227
+    },
+    {
+      "index": 4729,
+      "variable": "duration",
+      "z": 3.224
+    },
+    {
+      "index": 2788,
+      "variable": "duration",
+      "z": 3.206
+    },
+    {
+      "index": 1319,
+      "variable": "duration",
+      "z": 3.192
+    },
+    {
+      "index": 587,
+      "variable": "spread",
+      "z": 3.153
+    },
+    {
+      "index": 1286,
+      "variable": "spread",
+      "z": 3.153
+    },
+    {
+      "index": 2416,
+      "variable": "spread",
+      "z": 3.153
+    },
+    {
+      "index": 3406,
+      "variable": "spread",
+      "z": 3.153
+    },
+    {
+      "index": 3492,
+      "variable": "spread",
+      "z": 3.153
+    },
+    {
+      "index": 4035,
+      "variable": "spread",
+      "z": 3.153
+    },
+    {
+      "index": 4852,
+      "variable": "spread",
+      "z": 3.153
+    },
+    {
+      "index": 140,
+      "variable": "duration",
+      "z": 3.149
+    },
+    {
+      "index": 1369,
+      "variable": "gapDistance",
+      "z": 3.131
+    },
+    {
+      "index": 3675,
+      "variable": "gapDistance",
+      "z": 3.085
+    },
+    {
+      "index": 719,
+      "variable": "spread",
+      "z": 3.082
+    },
+    {
+      "index": 3385,
+      "variable": "spread",
+      "z": 3.082
+    },
+    {
+      "index": 4236,
+      "variable": "spread",
+      "z": 3.082
+    },
+    {
+      "index": 4787,
+      "variable": "spread",
+      "z": 3.082
+    },
+    {
+      "index": 2176,
+      "variable": "duration",
+      "z": 3.076
+    },
+    {
+      "index": 20,
+      "variable": "spread",
+      "z": 3.071
+    },
+    {
+      "index": 1093,
+      "variable": "spread",
+      "z": 3.071
+    },
+    {
+      "index": 1467,
+      "variable": "spread",
+      "z": 3.071
+    },
+    {
+      "index": 1879,
+      "variable": "spread",
+      "z": 3.071
+    },
+    {
+      "index": 3099,
+      "variable": "spread",
+      "z": 3.071
+    },
+    {
+      "index": 4092,
+      "variable": "spread",
+      "z": 3.071
+    },
+    {
+      "index": 4773,
+      "variable": "duration",
+      "z": 3.036
+    },
+    {
+      "index": 3481,
+      "variable": "gapDistance",
+      "z": 3.033
+    },
+    {
+      "index": 901,
+      "variable": "duration",
+      "z": 3.025
+    },
+    {
+      "index": 138,
+      "variable": "spread",
+      "z": 3.021
+    },
+    {
+      "index": 113,
+      "variable": "gapDistance",
+      "z": 3.012
+    },
+    {
+      "index": 3309,
+      "variable": "gapDistance",
+      "z": 3.004
+    },
+    {
+      "index": 2417,
+      "variable": "spread",
+      "z": 3.003
+    },
+    {
+      "index": 3420,
+      "variable": "spread",
+      "z": 3.003
+    },
+    {
+      "index": 3667,
+      "variable": "spread",
+      "z": 3.003
+    },
+    {
+      "index": 4441,
+      "variable": "spread",
+      "z": 3.003
+    }
+  ],
+  "nearestNeighbour": {
+    "focusIndex": 4527,
+    "meanDistance": 1.9687,
+    "nearestIndex": 4527
+  },
+  "conclusion": "most exceptional match: #4527 (319.9s, ends \"timed\"): its duration sits 5.85 z from the corpus centre; mean distance to its 5 nearest neighbours is 1.969"
+}

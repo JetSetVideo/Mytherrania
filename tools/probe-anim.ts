@@ -7,7 +7,7 @@
 //   ANIM_RACES="human:nomad,ork:ironhide" to pick races; ANIM_POOLS="0.2,0.3,0.05" (hp, mana,
 //   stamina fractions; stamina < 0.1 also sets exhausted) to photograph a tired/hurt fighter.
 import { chromium } from "playwright";
-import { encodeBase64 } from "jsr:@std/encoding@1/base64";
+import { encodeBase64 } from "@std/encoding/base64";
 import { serveAsset } from "./serve.ts";
 
 const OUT = Deno.args[0] ?? "artifacts/qa-anim";

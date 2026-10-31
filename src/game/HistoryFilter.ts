@@ -31,6 +31,15 @@ export interface MatchRecord {
   opponentRace: string;
   playerClass: string;
   opponentClass: string;
+  /**
+   * W-H telemetry, present on new records only. The two numbers the History UI sorts by; a
+   * legacy record leaves them undefined and sorts as a zero gap (never a crash).
+   */
+  statGap?: { distance?: number; dominance?: number };
+  /** The match's generation block (W-H); absent on legacy records. */
+  generation?: { id?: string };
+  /** True when the match hit the time-limit cap with nobody KO'd (a tie, BRIEF 1.4). */
+  tie?: boolean;
 }
 
 /** How a match ended. */
@@ -40,7 +49,7 @@ export type EndReason = "ko" | "endurance" | "domination" | "sudden-death";
 export type Outcome = "any" | "win" | "loss" | "draw";
 
 /** Ordering applied to the surviving rows. */
-export type SortKey = "newest" | "longest" | "most-damage";
+export type SortKey = "newest" | "longest" | "most-damage" | "fastest" | "biggest-gap" | "widest-margin";
 
 /**
  * A history search. Every field is optional: an empty query `{}` returns the
@@ -84,6 +93,9 @@ const SORTS: Record<SortKey, (a: MatchRecord, b: MatchRecord) => number> = {
   newest: () => 0,
   longest: (a, b) => b.durationS - a.durationS,
   "most-damage": (a, b) => b.damageDealt - a.damageDealt,
+  fastest: (a, b) => a.durationS - b.durationS,
+  "biggest-gap": (a, b) => (b.statGap?.distance ?? 0) - (a.statGap?.distance ?? 0),
+  "widest-margin": (a, b) => (b.statGap?.dominance ?? 0) - (a.statGap?.dominance ?? 0),
 };
 
 /** Player-perspective result of one match. */

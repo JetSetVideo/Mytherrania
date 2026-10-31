@@ -705,6 +705,50 @@ clipping at 390–1920 px. Status: LIVE (vision-verified at 390 px and 900 px).
 
 ---
 
+## 11A. Wave H — ancestry hierarchy, hair physics, match telemetry, corpus data science
+
+Added 2026-10-31. The prompt asked for a hierarchy over every subrace with body-part ratios, a
+per-ancestry look (skin creases, hair, brows, beards, tusks, ears, skull), hair that reacts to
+weather and strikes with mass bound to length and curl, generations logged so the trainers learn
+from played matches, a 3-minute match limit that ends as a tie with the stat difference recorded,
+History highlights (fastest match, biggest discrepancy), a generated spectator match with a stat
+point budget and techniques that follow the stats, and a bounded data-science pass over the corpus.
+
+| # | Requirement | Where | Status |
+| --- | --- | --- | --- |
+| HA1 | 16 ancestry nodes (4 races + their 12 subraces); all 13 metrics ranked; the four races strictly ordered 1..4 per metric | `artifacts/design/ancestry.json`, `src/game/Ancestry.ts` | LIVE |
+| HA2 | The look follows the hierarchy: elf never bald, ork baldest, dwarf always bearded, ork chin-only with two up tusks, elf a thin moustache only, dwarf biggest brows, elf brow tips past the face, heavier dwarf/ork skulls | `Ancestry.ts` + `src/graphics/Humanoid.ts` | LIVE |
+| HA3 | Hair/beard/brow secondary motion: a damped spring whose mass comes from the level's length and curl; wind from the climate, impulse from the head's own velocity; behind 200 sub-steps so a stalled frame cannot explode it | `src/game/anim/SecondaryMotion.ts` | LIVE |
+| HD1 | A hard match limit (default 180 s, clamped [30, 240]); at the limit nobody wins — the verdict is `time-limit` with `winner: null`; a KO outranks the clock | `src/game/MatchControl.ts`, `WinConditions.ts`, `Engine.#checkElimination` | LIVE |
+| HD2 | Every record carries `limitS`, `tie`, a `StatGap` (per-stat raw difference, pooled-sd z, Euclidean distance, damage share, dominance in [0,1]) and a `GenerationBlock` | `src/game/MatchHistory.ts`, `Engine.#recordMatch` | LIVE |
+| HD3 | The History page and the record layer agree on the fastest decided match and the widest gap (two implementations, one contract) | `src/ui/HistoryView.ts` vs `MatchHistory.highlights` | LIVE |
+| HE1 | A spectated match is generated: random levels, a stat point budget spent by role, techniques that follow the spent stats, an arena size — all from one seed | `src/game/SpectateGen.ts`, `Engine.onSpectate` | LIVE |
+| HF1 | The corpus compresses to six key variables, standardises NaN-free, measures spread (p20/median/p80), flags special games on both a plain and a robust (median+MAD) z, and runs PCA; 5 000 records in ~36 ms | `src/balance/CorpusMath.ts`, `tools/data-science.ts` | LIVE |
+| HX1 | A generated budget cannot leave the balance window: `statDelta` + the `applyRaceBonus` clamps bound every generated fighter | `Engine.#applySpend` | LIVE |
+
+**Equations.**
+
+- Hair mass: `Hairstep x″ = −(k/m)·x − (c/m)·x′ + F/m`, with `F = windGain · wind_body · (1 − 0.7·wetness)`
+  and `m` from the ancestry's `hairPhysics.massKg`, which rises with length and curl. Semi-implicit
+  integration at a 1/200 s sub-step; `dt` clamped to `MAX_STEP_SECONDS`.
+- Time limit: `hostile = sinceStart − (friendly + neutral)`; `hostile ≥ limitS ⇒ { over: true, winner: null, reason: "time-limit" }`.
+  The truce is never charged against the limit, so a 3-minute match is 3 minutes of fighting.
+- Stat gap: `distance = ‖z‖₂` over the six primaries with a pooled sd floored at 0.5 points, so a
+  mirror match is exactly 0 and no pair is ever infinite; `dominance` blends `distance` and
+  `damageShare = |dealt_a − dealt_b| / max(1, dealt_a + dealt_b)` into [0, 1].
+- Budget → stats: the spent primaries go through `statDelta` (the race bonus path) and are clamped
+  to `maxHealth ∈ [30, 60]·HEALTH_SCALE`, `attackPower ∈ [5, 14]·DAMAGE_SCALE`, `armor ∈ [1, 8]`,
+  `attackInterval ∈ [0.5, 1.5]` s.
+
+**Pins:** `tests/spec_test.ts` HA1, HA2, HA3, HD1, HD2, HD3, HE1, HF1, HX1 (see
+`docs/ancestry/BRIEF.md` for the lane contract and each lane's own test file).
+
+**OPEN in Wave H:** the stat-unlocked techniques beyond a class's own three are recorded on the
+card and shown in the menu but are not yet bound to extra HUD input slots, so combat still runs
+the class's three skills; the spectator card's arena size is clamped into the live arena band;
+the hair solver is wired into the rig transform but its visual weight has not been judged in a
+browser screenshot at gameplay distance (see the wave's verification log).
+
 ## 12. Traceability — every prompt to its requirements
 
 | Prompt (date, gist) | Requirements |
@@ -720,6 +764,7 @@ clipping at 390–1920 px. Status: LIVE (vision-verified at 390 px and 900 px).
 | Reduce `else`, leaderboard in History, 4 archetypes, per-AI profile cards, selection tables | §6.2.1, §6.2.3, §8 |
 | Responsive UI, high-responsiveness input, Player_ID profiles, race hero + sub-species + birthsign preview, secondary stats, creation telemetry | §2.5–2.6, §8 |
 | 3D models: separate shapes, all-angle shots, 33-vertex spine back, race/subrace expansion, hair/beards/tusks, facial morph loop, animation tensor bounds, menu expansion | §2.5, §4.2.3–4.2.4, §11.1, §11.4–11.5 |
+| Ancestry hierarchy over every subrace with body-part ratios, per-ancestry look, hair physics bound to length and curl, generations logged for training, a 3-minute limit that ends as a tie with the stat difference recorded, History highlights, generated spectator matches with a stat budget, a bounded corpus data-science pass | §11A, `docs/ancestry/BRIEF.md` |
 
 **Statuses in one line.** LIVE: races, physics, skills, shaped arenas with walls, truce, senses,
 fog + minimap, statuses, items, environment, adaptive AI + telemetry + Elo leaderboard, stance

@@ -279,6 +279,9 @@ export function buildSkinnedHumanoid(
     skin: cel.surface,
     outline: cel.outline,
     timing: cached ? { anatomyMs: 0, polygonizeMs: 0, sampleMs: 0, meshBrushMs: 0, statsMs: 0, totalMs: 0, corners: 0 } : body.timing,
+    // Wave H: the movable hair/beard masses, so the engine's SecondaryMotion can drive them with
+    // the weather's wind and the head's own motion. Empty when the ancestry has no such mass.
+    secondaryMasses: face.secondary,
     setEffect(strength: number, time: number): void { weaponMesh.setEffect(strength, time); },
     setGrip(pitch: number, roll: number): void { grip.rotation.x = pitch; grip.rotation.z = roll; },
     update(sk: GameSkeleton, dt: number): void {

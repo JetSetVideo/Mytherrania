@@ -5,7 +5,9 @@
 // the instant-battle harness can sample across them and the digest can report
 // how often each decides a fight. Pure module: no Three.js, no DOM.
 
-export type WinConditionKind = "ko" | "sudden-death" | "first-blood" | "endurance" | "domination";
+import { MATCH_TIME_LIMIT_S } from "./MatchControl.ts";
+
+export type WinConditionKind = "ko" | "sudden-death" | "first-blood" | "endurance" | "domination" | "time-limit";
 
 /**
  * Why a match ended: a rolled condition, or a RING-OUT (V03, src/game/RingOut.ts) — like
@@ -16,6 +18,16 @@ export type WinReasonKind = WinConditionKind | "ringout";
 /** The verdict for a ring-out: the other fighter (index 0 = A/player, 1 = B/opponent) wins. */
 export function ringOutVerdict(loser: 0 | 1): WinVerdict {
   return { over: true, winner: loser === 0 ? 1 : 0, reason: "ringout" };
+}
+
+/**
+ * The time-limit verdict: at or past `limitS` seconds of hostility with nobody
+ * KO'd, the bout is a TIE — nobody wins (`winner: null`), reason "time-limit".
+ * Before the limit the fight is still live, reported with the same reason so the
+ * caller can tell the clock is what will eventually end it.
+ */
+export function timeLimitVerdict(limitS: number, hostileTime: number): WinVerdict {
+  return { over: hostileTime >= limitS, winner: null, reason: "time-limit" };
 }
 
 export interface WinCondition {
@@ -79,17 +91,28 @@ export function rollWinCondition(rng: () => number, params?: Partial<WinParams>)
 /**
  * Evaluate the rolled condition against the fight state. Death by hp ≤ 0 always
  * wins regardless of the rolled condition — it is the one rule every match shares.
+ *
+ * The clock (`limitS`, default MATCH_TIME_LIMIT_S) outranks a rolled condition but
+ * never outranks death: a KO at any time wins, and at/past the limit nobody wins
+ * even if an endurance or domination condition would otherwise have fired. The
+ * engine passes the resolved limit; the default keeps the cap on if it is omitted.
  */
-export function evaluateWin(cond: WinCondition, p: WinParams, s: FightState): WinVerdict {
+export function evaluateWin(cond: WinCondition, p: WinParams, s: FightState, limitS: number = MATCH_TIME_LIMIT_S): WinVerdict {
   const deadA = s.hpA <= 0;
   const deadB = s.hpB <= 0;
   if (deadA && deadB) return { over: true, winner: null, reason: "ko" };
   if (deadB) return { over: true, winner: 0, reason: "ko" };
   if (deadA) return { over: true, winner: 1, reason: "ko" };
 
+  // Past the cap the clock has called it: a tie, no matter the rolled condition.
+  if (s.hostileTime >= limitS) return { over: true, winner: null, reason: "time-limit" };
+
   switch (cond.kind) {
     case "ko":
       return { over: false, winner: null, reason: "ko" };
+    case "time-limit":
+      // Not a rolled condition; reached only while the clock is still running.
+      return { over: false, winner: null, reason: "time-limit" };
     case "sudden-death":
       // Before the deadline nobody wins on this condition; after it, the first
       // hit decides — which the caller detects as the next hp change. Here we only

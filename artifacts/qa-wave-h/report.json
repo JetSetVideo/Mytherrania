@@ -1,0 +1,142 @@
+{
+  "lore": {
+    "panelPresent": true,
+    "elfHasSkinHairBeard": true,
+    "orkMentionsTusks": true,
+    "orkMentionsChin": true,
+    "elfMentionsThinMoustache": true,
+    "panelsDiffer": true,
+    "orkExcerpt": "Greenhide\n      Born in the Blood Marshes: the plainest green hide and the barest chin.\n      Skin\n        crease\n        joint, knuckle, neck, brow · crease strength 40%\n      Hair\n        \n        short · curl 65% · bald chance 55%\n      Beard\n        chin (optional)\n      Tusks\n        2 · up\n   ",
+    "elfExcerpt": "High Elf\n      Star-touched scholars of Elun-Dar, taller even than their kin, with a haughtier brow.\n      Skin\n        crease\n        under-eye, cheek-fold, neck, joint · crease strength 60%\n      Hair\n        \n        verylong · curl 15% · bald chance 0%\n      Beard\n        moustache-thin (optiona"
+  },
+  "tie": {
+    "limitApplied": 30,
+    "hostileAtEnd": 30,
+    "decided": true,
+    "winner": null,
+    "endReason": null,
+    "storedReason": "time-limit",
+    "storedTie": true,
+    "storedLimitS": 30,
+    "statGapDistance": 2.086135649966093,
+    "dominance": 0.21405785088366247,
+    "damageShare": 0.017954472587367747,
+    "generationId": "GEN-8E3A8B",
+    "generationBudget": 138,
+    "generationTechniques": [
+      "warrior-dash",
+      "warrior-crushing-blow",
+      "warrior-bulwark",
+      "necro-bone-armor",
+      "priest-smite",
+      "barbarian-skullsplitter",
+      "mage-arcane-nova"
+    ],
+    "generationAncestry": [
+      "elf/high",
+      "human/imperial"
+    ],
+    "winnerAncestry": [
+      "elf/high",
+      "human/imperial"
+    ],
+    "fightHp": [
+      41622,
+      40950
+    ],
+    "resultTitle": "Draw — time limit"
+  },
+  "hair": {
+    "masses": 5,
+    "samples": [
+      {
+        "windMs": 4.5,
+        "wetness": 0,
+        "magnitude": 0.0731
+      },
+      {
+        "windMs": 12,
+        "wetness": 0.9,
+        "magnitude": 0.0749
+      },
+      {
+        "windMs": 12,
+        "wetness": 0.9,
+        "magnitude": 0.0735
+      },
+      {
+        "windMs": 3.69,
+        "wetness": 0.02,
+        "magnitude": 0.0627
+      }
+    ],
+    "maxMagnitude": 0.0749,
+    "minMagnitude": 0.0627,
+    "boundedUnderOneMetre": true,
+    "settledInStorm": true,
+    "dryCalmestIsSmallest": true,
+    "soakedResistsStrongerWind": true,
+    "offsetsAtStorm": [
+      [
+        0.013822025257309944,
+        -0.000002436710035873414,
+        -0.024420479352824646
+      ],
+      [
+        0.0167110698265657,
+        -0.000002534137274941265,
+        -0.029523547250982544
+      ],
+      [
+        0.012001168396345052,
+        -0.000002610994574217889,
+        -0.021205086614634792
+      ],
+      [
+        0.016775756363753766,
+        -0.0000030365824861371495,
+        -0.02963957951458851
+      ],
+      [
+        0.021603468196751355,
+        -0.000002990251127999025,
+        -0.03816602589926888
+      ]
+    ],
+    "offsetsAtLull": [
+      [
+        0.010712802300767307,
+        0.000005956253787766677,
+        -0.019899974741897797
+      ],
+      [
+        0.012909985346741142,
+        0.000006171478888202854,
+        -0.023983346760150997
+      ],
+      [
+        0.008839116685741898,
+        0.000006394999099881891,
+        -0.0164165028656609
+      ],
+      [
+        0.014023189450818594,
+        0.00000735752165347002,
+        -0.0260433914269323
+      ],
+      [
+        0.01810261168706893,
+        0.0000072944476683720504,
+        -0.03362961066440352
+      ]
+    ]
+  },
+  "spectateCard": {
+    "text": "Spectator card GEN-8E3A8B\n      \n        Level 1172 stat points\n        Level 1066 stat points\n      \n      38 m arenaseed 2446750274\n      warrior-dash · warrior-crushing-blow · warrior-bulwark · necro-bone-armor · priest-smite · barbarian-skullsplitter · mage-arcane-nova",
+    "hasLevels": true,
+    "hasBudget": true,
+    "hasArena": true
+  },
+  "errors": [],
+  "at": "2026-10-31T12:02:53.145Z"
+}

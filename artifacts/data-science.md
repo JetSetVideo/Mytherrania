@@ -1005,3 +1005,61 @@ rather than failing, so the gap stays visible.
   (the `match-length` select is rendered but not yet read by the engine).
 - Map pickups / power-ups with attributes and interactions.
 - Deeper neural-net thresholds and the pass-a-threshold equations.
+
+## Pass 27 — Wave H: the ancestry hierarchy, hair physics, match telemetry and corpus data science (2026-10-31)
+
+Gate: 0 type errors | **1201/1201 tests** (144 files) | lint 1 error, pre-existing on HEAD
+(`tools/probe-anim.ts:10`, the `jsr:@std/encoding` import added by the previous commit) |
+build 1 697 366 B | `tools/probe-wave-h.ts` in real Chrome: 0 page errors.
+
+The prompt asked for a hierarchy over every subrace with body-part ratios, a per-ancestry look, hair
+that reacts to weather and strikes with mass bound to its size, generations logged for the trainers, a
+three-minute match limit that ends as a tie with the stat difference recorded, History highlights, a
+generated spectator match with a stat budget, and a bounded data-science pass. Built as seven parallel
+lanes with disjoint file ownership against a frozen contract (`docs/ancestry/BRIEF.md`), integrated and
+measured by the parent. Evidence: `artifacts/ancestry/VERIFICATION.md`.
+
+### What is new
+||Module|What it is|
+|---|---|---|
+|Ancestry|`src/game/Ancestry.ts` + `artifacts/design/ancestry.json`|16 nodes (4 races + 12 subraces), 13 ranked metrics each, and a complete look spec (skin base/range/crease + zones, hair length/styles/colours/curl/density/baldChance, brow, beard mode, tusks, ears, skull, hair physics)|
+|Hair physics|`src/game/anim/SecondaryMotion.ts`|a damped spring per movable mass: `a = (windGain·wind_body·flutter − HEAD_DRAG·v_head)/m − (k/m)x − (c/m)v`, semi-implicit at a 1/200 s sub-step, `dt` clamped to `MAX_STEP_SECONDS`|
+|Spectator generation|`src/game/SpectateGen.ts`|random levels, a budget spent by calling, techniques from the spent stats, an arena size — one seed, one card|
+|Match telemetry|`MatchControl.ts`, `WinConditions.ts`, `MatchHistory.ts`|`MATCH_TIME_LIMIT_S = 180` (clamped [30, 240]), `timeLimitVerdict` (a tie, never a win), `StatGap`, `GenerationBlock`, `highlights`|
+|Corpus maths|`src/balance/CorpusMath.ts`, `tools/data-science.ts`|six key variables, z-scores, Euclidean + diagonal-covariance Mahalanobis, PCA by power iteration, plain AND robust (median+MAD) outlier flags, k-NN placement|
+|UI|`src/ui/HistoryView.ts` + `Menu.ts`/`UiTree.ts`|history sort orders (`fastest`, `biggest-gap`, `widest-margin`, `generation`), row badges, the highlights strip, the spectator card panel, and an ancestry lore panel that reads the hierarchy|
+
+### Measured live (`tools/probe-wave-h.ts`, `artifacts/qa-wave-h/report.json`)
+- **The ancestry panel reads the hierarchy** and differs race to race. Live DOM, high elf: `crease /
+  under-eye, cheek-fold, neck, joint · crease strength 60%`, `verylong · curl 15% · bald chance 0%`, beard
+  `moustache-thin`. Greenhide ork: `joint, knuckle, neck, brow · 40%`, `short · curl 65% · bald chance 55%`,
+  beard `chin (optional)`, tusks `2 · up`.
+- **A generated spectator card**: `GEN-17A40B`, level 4 with 30 stat points against level 15 with 96, an
+  81 m arena, and seven techniques unlocked from the spent stats.
+- **The bell is a tie**: hostile time 30.01 s at a 30 s limit, `winner null`, stored `reason "time-limit"`,
+  `tie true`, `statGap 2.09σ`, `dominance 0.21`, `generation GEN-8E3A8B`, ancestry `["elf/high",
+  "human/imperial"]`, result screen `Draw — time limit`. (An earlier run on different builds: `4.85σ`,
+  `dominance 0.53`.)
+- **Hair physics, in the game**: 5 movable masses per fighter. Wind 4.50 m/s dry → 7.31 cm; wind 12.00 m/s
+  soaked (wetness 0.90) → 7.49 cm, settling to 7.35 cm within 4 s; wind 3.69 m/s → 6.27 cm. The mass moves
+  with the wind, settles, and a soaked mass resists a 2.7× stronger wind.
+
+### Two mismatches found by printing the live inputs and outputs side by side
+1. **The movable hair masses were attached to the wrong rig.** The engine renders
+   `buildSkinnedHumanoid`; the nodes had been added only to `buildHumanoid`, so `masses` read 0 and the
+   solver never ran. Now returned through `FaceRig.secondary` → `HumanoidRig.secondaryMasses`.
+2. **A unit mismatch pinned every mass against the clamp.** `hairPhysics.stiffness` was on a 0.25–0.85
+   scale while the solver's default is 120 and equilibrium is `x = windGain·wind/k`, so a 5 m/s breeze
+   asked for a 7 m displacement and the offsets saturated at the 1 m box. The 16 stiffness values were
+   rescaled ×200 and `damp` set from a 0.5 damping ratio (`c = √(k·m)`); both orderings were verified
+   pairwise before and after (0 violations), and equilibrium displacement is now 2–7.5 cm at 8 m/s.
+
+Neither was visible in a screenshot or in a unit test — the first needed the live object graph, the second
+needed the solver's own input printed next to its output.
+
+### Honest gaps
+The stat-unlocked techniques beyond a class's three are recorded, shown on the card and logged, but not yet
+bound to HUD input slots; the brows are morph-driven rather than solver-driven (two writers on one node is
+the bug the tensor work already hit); the spectator card's size is clamped into the live arena band; no
+frame-cost measurement of the solver was taken this wave; the hair's 6–7 cm was not judged by eye at
+gameplay distance.

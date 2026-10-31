@@ -502,3 +502,75 @@ canvas{display:block}
   .skill-kind{display:none}
 }
 @media(prefers-reduced-motion:reduce){.skill-sweep,.screen-back .back-icon{transition:none}}
+
+/* Wave H (H-G): the History highlights strip, the row badges, the spectator card and the
+   ancestry lore panel. DESIGN.md items 2-8: the ink/panel/text palette, the 4px spacing
+   scale, a 6px radius, a 3px coral focus ring, four breakpoints (<=767 / 768-1023 /
+   1024-1439 / >=1440), solid panels and no blur. Widths that vary per element are set
+   through CSSOM (Menu.ts), never as an inline style attribute — the server CSP
+   (style-src 'self') blocks style="" in innerHTML. */
+
+/* History: the summary strip naming the fastest decided match, the widest gap, ties, timeouts. */
+.history-highlights{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:4px 0 8px}
+.hl{display:flex;flex-direction:column;gap:2px;padding:8px 10px;background:#202d35;border:1px solid #4f8490;border-radius:6px;min-width:0}
+.hl-label{font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:#b9c9c8}
+.hl-value{font-size:15px;color:#dfaa55;font-weight:700;overflow-wrap:anywhere}
+.history-highlights .hl:empty{display:none}
+
+/* History: the sort control, tinted like the panel it sits in. */
+.history-sort{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:4px 0 8px;font-size:13px;color:#b9c9c8}
+.history-sort select{min-height:36px;max-width:100%;padding:4px 8px;font:inherit;font-size:13px;color:#fff3cf;background:#172128;border:2px solid #b9c9c8;border-radius:6px;cursor:pointer}
+.history-sort select:focus-visible{outline:3px solid #ef7455;outline-offset:2px}
+
+/* History: the per-row badges (TIE / TIMEOUT / generation id / GAP / MARGIN). */
+.history-badge{display:inline-block;margin:2px 4px 0 0;padding:1px 7px;font-size:11px;font-weight:700;letter-spacing:.03em;color:#fff3cf;background:#172128;border:1px solid #4f8490;border-radius:6px;white-space:nowrap}
+.history-badge[data-badge="TIE"]{background:#ef7455;border-color:#ef7455;color:#172128}
+.history-badge[data-badge="TIMEOUT"]{background:#dfaa55;border-color:#dfaa55;color:#172128}
+.history-badge[data-badge="generation"]{border-color:#a06cd5;color:#e6ccff}
+.history-badge[data-badge="gap"]{border-color:#4f8490;color:#cfe3ff}
+.history-badge[data-badge="margin"]{border-color:#a9ce7c;color:#d7efc0}
+
+/* Spectator / match-setup card: levels, budgets, techniques and arena from the generator. */
+.spectate-card{display:flex;flex-direction:column;gap:8px;margin-top:8px;padding:12px;text-align:left;background:rgba(20,28,34,.62);border:1px solid #4f8490;border-left:3px solid #a06cd5;border-radius:6px}
+.spectate-card[hidden]{display:none}
+.spectate-card .sp-head{display:flex;align-items:baseline;gap:8px;margin:0;font-size:14px;letter-spacing:.04em;text-transform:uppercase;color:#b9c9c8}
+.spectate-card .sp-gen{font-size:11px;color:#e6ccff;letter-spacing:.05em}
+.spectate-card .sp-empty{margin:0;color:#b9c9c8;font-style:italic;font-size:13px}
+.sp-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.sp-fighter{display:flex;flex-direction:column;gap:2px;padding:8px 10px;background:#202d35;border:1px solid #6b5a3e;border-radius:6px;min-width:0}
+.sp-fighter b{font-size:16px;color:#dfaa55}
+.sp-fighter span{font-size:12px;color:#b9c9c8}
+.sp-meta{display:flex;flex-wrap:wrap;gap:6px;font-size:12px;color:#b9c9c8}
+.sp-meta .sp-tag{padding:2px 8px;background:#172128;border:1px solid #4f8490;border-radius:6px;color:#dfaa55}
+.sp-techniques{font-size:12px;color:#a9ce7c;overflow-wrap:anywhere}
+.sp-techniques:empty{display:none}
+
+/* Ancestry lore panel (in the creator's Ancestry panel): the hierarchy facts for the pick. */
+.ancestry-lore{display:flex;flex-direction:column;gap:8px;margin-top:10px;padding:12px;text-align:left;background:rgba(20,28,34,.62);border:1px solid #82b970;border-left:3px solid #82b970;border-radius:6px}
+.ancestry-lore.hidden{display:none}
+.ancestry-lore .anc-name{font-family:'Cinzel','Trajan Pro','Palatino Linotype','Palatino','Book Antiqua',Georgia,serif;font-size:20px;color:#fff3cf;margin:0}
+.ancestry-lore .anc-line{font-size:13px;color:#b9c9c8;font-style:italic;margin:0}
+.ancestry-lore .anc-unavailable{font-size:13px;color:#b9c9c8;font-style:italic;margin:0}
+.anc-block{display:flex;flex-direction:column;gap:4px}
+.anc-block-label{font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:#dfaa55}
+.anc-swatches{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.anc-swatch{width:24px;height:24px;border-radius:6px;border:2px solid rgba(255,255,255,.25);flex:none}
+.anc-swatch.anc-crease{border-color:#ef7455}
+.anc-swatch.is-cream{border-color:#dfaa55}
+.anc-note{font-size:12px;color:#b9c9c8}
+.anc-ranks{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:4px 14px}
+.anc-rank{display:flex;justify-content:space-between;gap:8px;font-size:12px;color:#fff3cf;border-bottom:1px solid rgba(130,185,112,.22);padding:1px 0}
+.anc-rank b{color:#a9ce7c;font-weight:700}
+
+@media(max-width:767px){
+  .history-highlights{grid-template-columns:1fr 1fr}
+  .sp-row{grid-template-columns:1fr}
+}
+@media(min-width:1024px) and (max-width:1439px){
+  .history-highlights{grid-template-columns:repeat(4,minmax(0,1fr))}
+}
+@media(min-width:1440px){
+  .history-highlights{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .history-badge{font-size:12px}
+}
+

@@ -22,7 +22,8 @@
 
 import { ratioValue, resolvePartAxis } from "../../game/RaceGenes.ts";
 import { RACE_SILHOUETTE, raceSilhouette } from "../../game/BodyProfile.ts";
-import { raceBuild } from "../../game/RaceAppearance.ts";
+import { HAIR_LENGTH_M, nameSeed, raceBuild } from "../../game/RaceAppearance.ts";
+import { ancestryOf, type AncestryNode, type BeardSpec } from "../../game/Ancestry.ts";
 import { clamp } from "../../core/MathCore.ts";
 import type { BodySpec } from "./contracts.ts";
 
@@ -232,7 +233,117 @@ export function proportionsFor(spec: BodySpec): BodyProportions {
     spec, race, headsTall, head: h, girth: G, muscle, y,
     thigh, shin, foot, ankleHeight, upperArm, foreArm, hand,
     halfWidth, halfDepth, radius,
-    earScale: build.earMul, underbite: build.underbite,
+    // Ear length now comes from the ancestry hierarchy (Ancestry.ears.lengthMul), not the older
+    // RaceAppearance build flag, so the hierarchy drives the live rig. The values coincide at
+    // race level, so this is the same ear on screen and one fewer place to keep in sync.
+    earScale: ancestryOf(race, spec.subrace).ears.lengthMul, underbite: build.underbite,
     surfaceArea, cell,
   };
+}
+
+// ---------------------------------------------------------------------------------------------
+// Ancestry look helpers (lane H-B). The numbers behind "ancestry is visible, not cosmetic": the
+// hair colour/curl/bald draw, the brow dimensions, the beard mode and the ear length. Pure —
+// no Three.js — so the legacy rig (graphics/Humanoid.ts) and the skinned rig (body/FaceParts.ts)
+// both read the SAME numbers from here instead of each re-deriving them.
+
+/** The effective beard mode: mode none|chin|moustache-thin|moustache|full from Ancestry.beard. */
+export type BeardMode = BeardSpec["mode"];
+
+/** A stable character-look seed from its visual identity (no Math.random anywhere). */
+export function lookSeed(a: { race?: string; subrace?: string | null; body: string; hair?: string; eyes: string }): number {
+  return nameSeed(`${a.race ?? "human"}|${a.subrace ?? ""}|${a.body}|${a.hair ?? ""}|${a.eyes}`);
+}
+
+/** A deterministic [0,1) hash of a seed (same seed -> same value). */
+function seedUnit(seed: number): number {
+  let h = Math.imul((seed | 0) ^ 0x27d4eb2d, 0x165667b1) >>> 0;
+  h ^= h >>> 15;
+  h = Math.imul(h, 0x2c1b3c6d) >>> 0;
+  h = (h ^ (h >>> 12)) >>> 0; // >>> 0: a JS XOR yields a SIGNED 32-bit int, which would go negative
+  return h / 0x100000000;
+}
+
+/** The hair colour this character draws from its ancestry's palette (first tone = most common). */
+export function hairColourFor(node: AncestryNode, seed: number): string {
+  const colors = node.hair.colors;
+  if (colors.length === 0) return node.skin.base;
+  // Offset the seed so the colour draw is independent of the bald/curl draws.
+  let h = Math.imul((seed | 0) ^ 0x9e3779b9, 0x85ebca6b) >>> 0;
+  h = (h ^ (h >>> 13)) >>> 0; // keep it unsigned, or a negative modulo indexes the palette backwards
+  return colors[h % colors.length];
+}
+
+/**
+ * Whether this character is bald. `baldChance === 0` is respected EXACTLY: an ancestry that can
+ * never be bald (the elf) is never bald on any seed, not merely unlikely. A positive chance is a
+ * deterministic draw from the seed, so a given character is always the same.
+ */
+export function isBald(node: AncestryNode, seed: number): boolean {
+  if (node.hair.baldChance <= 0) return false;
+  return seedUnit(seed ^ 0x5bd1e995) < node.hair.baldChance;
+}
+
+/**
+ * The beard this character actually grows. `allowed === false` is never (whatever the character
+ * says); `required === true` always grows it; otherwise the character's own flag decides.
+ */
+export function beardModeFor(node: AncestryNode, wantsBeard: boolean): BeardMode {
+  const b = node.beard;
+  if (!b.allowed || b.mode === "none") return "none";
+  if (b.required) return b.mode;
+  return wantsBeard ? b.mode : "none";
+}
+
+/** Hair length in metres for this head size (the ancestry's length tier scaled to the skull). */
+export function hairLengthM(node: AncestryNode, headR: number): number {
+  return HAIR_LENGTH_M[node.hair.length] * (headR / 0.18);
+}
+
+/** The shape a hair fall takes: curl widens the mass and SHORTENS it, density thickens it. */
+export interface HairFall { drop: number; topRadius: number; botRadius: number; lobes: number }
+
+/**
+ * A hair fall's dimensions. Higher `curl` coils the mass: it grows WIDER (more air held) and
+ * SHORTER (a coiled fall hangs less far), and `density` thickens the tube. Used so a curly
+ * ancestry's fall reads as a wider, shorter mass than a straight one of the same length.
+ */
+export function hairFall(curl: number, density: number, lengthM: number, headR: number): HairFall {
+  const c = clamp(curl, 0, 1), d = clamp(density, 0, 1);
+  const drop = Math.min(lengthM, 0.62 * (headR / 0.18)) * (1 - 0.45 * c) * (0.72 + 0.4 * d);
+  const thick = 0.6 + 0.7 * d;
+  const widen = 1 + 0.6 * c;
+  return {
+    drop: Math.max(0, drop),
+    topRadius: headR * 0.72 * thick * widen,
+    botRadius: headR * 0.4 * thick * widen,
+    lobes: Math.round(3 + 5 * c), // a coiled fall gets more lobes; a straight one stays a smooth tube
+  };
+}
+
+/** Ear height in metres: the ancestry's lengthMul on the skull unit. */
+export function earLengthM(node: AncestryNode, headR: number): number {
+  return headR * 0.4 * node.ears.lengthMul;
+}
+
+/** Brow dimensions in metres plus the outward reach of the tip past the skull radius. */
+export interface BrowDims { width: number; thickness: number; depth: number; tipPast: number; outerTipX: number }
+
+/**
+ * The brow's box, from Ancestry.brow: `length` scales the span, `thickness` the bar's height,
+ * `prominence` bulges it off the face, and `tipPastFace` runs the OUTER tip beyond the skull
+ * radius (`outerTipX > eyeX + width/2` by exactly `tipPast`), which is what the elf needs.
+ */
+export function browDims(node: AncestryNode, headR: number, eyeX: number): BrowDims {
+  const b = node.brow;
+  const width = headR * (0.3 + 0.6 * b.length);
+  const thickness = headR * (0.05 + 0.15 * b.thickness);
+  const depth = headR * (0.02 + 0.06 * (1 - b.prominence));
+  const tipPast = headR * 0.6 * b.tipPastFace;
+  return { width, thickness, depth, tipPast, outerTipX: eyeX + width / 2 + tipPast };
+}
+
+/** Tusk dimensions: how many lower tusks and how far they protrude (metres) for this skull. */
+export function tuskDims(node: AncestryNode, headR: number): { count: number; protrusion: number; length: number } {
+  return { count: node.tusk.count, protrusion: node.tusk.protrusion * headR, length: headR * (0.3 + 0.6 * node.tusk.protrusion) };
 }

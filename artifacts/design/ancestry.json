@@ -1,0 +1,1439 @@
+{
+  "version": 1,
+  "units": "rank 1 = most of the metric (4 = least); hairPhysics.massKg in kg at stature 1.0; skin/hair colours #rrggbb; brow/ear/skull factors dimensionless",
+  "note": "The ancestry hierarchy: 4 race nodes and 12 subrace nodes. Ranks are a strict 1..4 ordering across the 4 race nodes for every metric. A subrace node copies its race's ranks and shifts at most two metrics by +/-1, staying in [1,4].",
+  "statures": {
+    "human": 1.0,
+    "elf": 1.05,
+    "dwarf": 0.8,
+    "ork": 1.12
+  },
+  "nodes": {
+    "human": {
+      "id": "human",
+      "name": "Human",
+      "race": "human",
+      "parent": null,
+      "ranks": {
+        "height": 3,
+        "thinness": 2,
+        "legLength": 2,
+        "armLength": 2,
+        "shoulderWidth": 3,
+        "torsoMass": 3,
+        "skullProminence": 3,
+        "browProminence": 2,
+        "hairLength": 2,
+        "beardCoverage": 2,
+        "earLength": 2,
+        "tuskProtrusion": 3,
+        "skinDepth": 1
+      },
+      "skin": {
+        "base": "#c98a63",
+        "range": [
+          "#8a5a3c",
+          "#b07a52",
+          "#d9a97e",
+          "#f0d6bf"
+        ],
+        "crease": "#6b4130",
+        "creaseStrength": 0.35,
+        "zones": [
+          "neck",
+          "joint",
+          "knuckle",
+          "brow"
+        ]
+      },
+      "hair": {
+        "length": "medium",
+        "styles": [
+          "crop",
+          "bob",
+          "topknot",
+          "flowing"
+        ],
+        "colors": [
+          "#1a1a1a",
+          "#3a2a1a",
+          "#6a4a2a",
+          "#a87a4a",
+          "#d8b87a",
+          "#e8d8a8"
+        ],
+        "curl": 0.5,
+        "density": 0.6,
+        "baldChance": 0.25
+      },
+      "brow": {
+        "length": 0.6,
+        "thickness": 0.45,
+        "prominence": 0.55,
+        "tipPastFace": 0.2
+      },
+      "beard": {
+        "mode": "full",
+        "coverage": 0.8,
+        "lengthMul": 1.2,
+        "required": false,
+        "allowed": true
+      },
+      "tusk": {
+        "count": 0,
+        "protrusion": 0,
+        "direction": "out"
+      },
+      "ears": {
+        "lengthMul": 1.0,
+        "pointed": 0.1,
+        "droop": 0.15
+      },
+      "skull": {
+        "massMul": 1.0,
+        "browRidge": 0.25,
+        "jawWidth": 0.5
+      },
+      "hairPhysics": {
+        "massKg": 0.15,
+        "stiffness": 120.0,
+        "damp": 4.24,
+        "windGain": 0.6
+      },
+      "lore": "The youngest race: middling in every proportion, brown to white in skin and dark to blond in hair."
+    },
+    "elf": {
+      "id": "elf",
+      "name": "Elf",
+      "race": "elf",
+      "parent": null,
+      "ranks": {
+        "height": 1,
+        "thinness": 1,
+        "legLength": 1,
+        "armLength": 1,
+        "shoulderWidth": 4,
+        "torsoMass": 4,
+        "skullProminence": 4,
+        "browProminence": 3,
+        "hairLength": 1,
+        "beardCoverage": 4,
+        "earLength": 1,
+        "tuskProtrusion": 4,
+        "skinDepth": 4
+      },
+      "skin": {
+        "base": "#e8e2dc",
+        "range": [
+          "#efe8e2",
+          "#e2dae4",
+          "#d6d0dd",
+          "#eae2dc"
+        ],
+        "crease": "#2f3d63",
+        "creaseStrength": 0.6,
+        "zones": [
+          "under-eye",
+          "cheek-fold",
+          "neck",
+          "joint"
+        ]
+      },
+      "hair": {
+        "length": "verylong",
+        "styles": [
+          "flowing",
+          "braided",
+          "bob"
+        ],
+        "colors": [
+          "#3a4a5a",
+          "#4f7a6a",
+          "#5a8a80",
+          "#b06a2a",
+          "#c87a3a"
+        ],
+        "curl": 0.15,
+        "density": 0.5,
+        "baldChance": 0.0
+      },
+      "brow": {
+        "length": 0.9,
+        "thickness": 0.15,
+        "prominence": 0.35,
+        "tipPastFace": 0.55
+      },
+      "beard": {
+        "mode": "moustache-thin",
+        "coverage": 0.15,
+        "lengthMul": 0.2,
+        "required": false,
+        "allowed": true
+      },
+      "tusk": {
+        "count": 0,
+        "protrusion": 0,
+        "direction": "out"
+      },
+      "ears": {
+        "lengthMul": 1.9,
+        "pointed": 0.9,
+        "droop": 0.05
+      },
+      "skull": {
+        "massMul": 0.95,
+        "browRidge": 0.15,
+        "jawWidth": 0.4
+      },
+      "hairPhysics": {
+        "massKg": 0.7,
+        "stiffness": 50.0,
+        "damp": 5.92,
+        "windGain": 0.39
+      },
+      "lore": "The First Children: tallest and thinnest, legs and arms long past the trunk, with creases that darken blue where the skin folds."
+    },
+    "dwarf": {
+      "id": "dwarf",
+      "name": "Dwarf",
+      "race": "dwarf",
+      "parent": null,
+      "ranks": {
+        "height": 4,
+        "thinness": 4,
+        "legLength": 4,
+        "armLength": 4,
+        "shoulderWidth": 1,
+        "torsoMass": 1,
+        "skullProminence": 1,
+        "browProminence": 1,
+        "hairLength": 4,
+        "beardCoverage": 1,
+        "earLength": 3,
+        "tuskProtrusion": 2,
+        "skinDepth": 3
+      },
+      "skin": {
+        "base": "#c58a5a",
+        "range": [
+          "#a86a42",
+          "#c58a5a",
+          "#d9a878",
+          "#e8c8a0"
+        ],
+        "crease": "#4a2f22",
+        "creaseStrength": 0.45,
+        "zones": [
+          "joint",
+          "knuckle",
+          "neck"
+        ]
+      },
+      "hair": {
+        "length": "short",
+        "styles": [
+          "crop",
+          "braided",
+          "wild"
+        ],
+        "colors": [
+          "#2a1a12",
+          "#4a3020",
+          "#8a5a34",
+          "#b08a5a",
+          "#c8a878"
+        ],
+        "curl": 0.35,
+        "density": 0.85,
+        "baldChance": 0.2
+      },
+      "brow": {
+        "length": 0.65,
+        "thickness": 0.75,
+        "prominence": 0.85,
+        "tipPastFace": 0.25
+      },
+      "beard": {
+        "mode": "full",
+        "coverage": 0.72,
+        "lengthMul": 1.6,
+        "required": true,
+        "allowed": true
+      },
+      "tusk": {
+        "count": 0,
+        "protrusion": 0.06,
+        "direction": "up"
+      },
+      "ears": {
+        "lengthMul": 0.9,
+        "pointed": 0.05,
+        "droop": 0.1
+      },
+      "skull": {
+        "massMul": 1.15,
+        "browRidge": 0.7,
+        "jawWidth": 0.62
+      },
+      "hairPhysics": {
+        "massKg": 0.05,
+        "stiffness": 170.0,
+        "damp": 2.92,
+        "windGain": 0.51
+      },
+      "lore": "Stone-born: shortest and broadest, a heavy trunk on short legs, and a beard that never leaves the jaw."
+    },
+    "ork": {
+      "id": "ork",
+      "name": "Ork",
+      "race": "ork",
+      "parent": null,
+      "ranks": {
+        "height": 2,
+        "thinness": 3,
+        "legLength": 3,
+        "armLength": 3,
+        "shoulderWidth": 2,
+        "torsoMass": 2,
+        "skullProminence": 2,
+        "browProminence": 4,
+        "hairLength": 3,
+        "beardCoverage": 3,
+        "earLength": 4,
+        "tuskProtrusion": 1,
+        "skinDepth": 2
+      },
+      "skin": {
+        "base": "#7fae4e",
+        "range": [
+          "#7fae4e",
+          "#93c05a",
+          "#5f8f3e",
+          "#8a6a9e",
+          "#a086b0"
+        ],
+        "crease": "#33421f",
+        "creaseStrength": 0.4,
+        "zones": [
+          "joint",
+          "knuckle",
+          "neck",
+          "brow"
+        ]
+      },
+      "hair": {
+        "length": "short",
+        "styles": [
+          "mohawk",
+          "shaved",
+          "wild"
+        ],
+        "colors": [
+          "#1a1a1a",
+          "#2a3420",
+          "#4a5a30"
+        ],
+        "curl": 0.7,
+        "density": 0.5,
+        "baldChance": 0.55
+      },
+      "brow": {
+        "length": 0.35,
+        "thickness": 0.25,
+        "prominence": 0.15,
+        "tipPastFace": 0.1
+      },
+      "beard": {
+        "mode": "chin",
+        "coverage": 0.35,
+        "lengthMul": 0.7,
+        "required": false,
+        "allowed": true
+      },
+      "tusk": {
+        "count": 2,
+        "protrusion": 0.35,
+        "direction": "up"
+      },
+      "ears": {
+        "lengthMul": 0.8,
+        "pointed": 0.15,
+        "droop": 0.05
+      },
+      "skull": {
+        "massMul": 1.12,
+        "browRidge": 0.65,
+        "jawWidth": 0.85
+      },
+      "hairPhysics": {
+        "massKg": 0.05,
+        "stiffness": 170.0,
+        "damp": 2.92,
+        "windGain": 0.72
+      },
+      "lore": "War-forged: taller than a human and built broad, tusked from below, hide running green to purple."
+    },
+    "imperial": {
+      "id": "imperial",
+      "name": "Imperial",
+      "race": "human",
+      "parent": "human",
+      "ranks": {
+        "height": 2,
+        "thinness": 2,
+        "legLength": 2,
+        "armLength": 2,
+        "shoulderWidth": 3,
+        "torsoMass": 3,
+        "skullProminence": 3,
+        "browProminence": 2,
+        "hairLength": 2,
+        "beardCoverage": 2,
+        "earLength": 2,
+        "tuskProtrusion": 3,
+        "skinDepth": 1
+      },
+      "skin": {
+        "base": "#d99a70",
+        "range": [
+          "#9a6644",
+          "#c08a5e",
+          "#e0b088",
+          "#f2dcc4"
+        ],
+        "crease": "#6b4130",
+        "creaseStrength": 0.35,
+        "zones": [
+          "neck",
+          "joint",
+          "knuckle",
+          "brow"
+        ]
+      },
+      "hair": {
+        "length": "medium",
+        "styles": [
+          "crop",
+          "bob",
+          "topknot"
+        ],
+        "colors": [
+          "#121212",
+          "#3a2a1a",
+          "#7a5a34",
+          "#c0a070",
+          "#e0d0a8"
+        ],
+        "curl": 0.2,
+        "density": 0.6,
+        "baldChance": 0.2
+      },
+      "brow": {
+        "length": 0.6,
+        "thickness": 0.45,
+        "prominence": 0.55,
+        "tipPastFace": 0.22
+      },
+      "beard": {
+        "mode": "full",
+        "coverage": 0.78,
+        "lengthMul": 1.2,
+        "required": false,
+        "allowed": true
+      },
+      "tusk": {
+        "count": 0,
+        "protrusion": 0,
+        "direction": "out"
+      },
+      "ears": {
+        "lengthMul": 1.0,
+        "pointed": 0.1,
+        "droop": 0.15
+      },
+      "skull": {
+        "massMul": 1.0,
+        "browRidge": 0.25,
+        "jawWidth": 0.5
+      },
+      "hairPhysics": {
+        "massKg": 0.15,
+        "stiffness": 120.0,
+        "damp": 4.24,
+        "windGain": 0.42
+      },
+      "lore": "Doctrine and drill from the Golden Citadel give the imperial a taller, straighter stance."
+    },
+    "nomad": {
+      "id": "nomad",
+      "name": "Nomad",
+      "race": "human",
+      "parent": "human",
+      "ranks": {
+        "height": 3,
+        "thinness": 2,
+        "legLength": 1,
+        "armLength": 2,
+        "shoulderWidth": 3,
+        "torsoMass": 3,
+        "skullProminence": 3,
+        "browProminence": 2,
+        "hairLength": 1,
+        "beardCoverage": 2,
+        "earLength": 2,
+        "tuskProtrusion": 3,
+        "skinDepth": 1
+      },
+      "skin": {
+        "base": "#c08050",
+        "range": [
+          "#8a5a3c",
+          "#a87048",
+          "#cf9a70",
+          "#e8c8a8"
+        ],
+        "crease": "#6b4130",
+        "creaseStrength": 0.35,
+        "zones": [
+          "neck",
+          "joint",
+          "knuckle",
+          "brow"
+        ]
+      },
+      "hair": {
+        "length": "long",
+        "styles": [
+          "flowing",
+          "bob",
+          "topknot"
+        ],
+        "colors": [
+          "#1a1a1a",
+          "#4a3020",
+          "#8a6a3a",
+          "#c8a870",
+          "#e8d8a8"
+        ],
+        "curl": 0.75,
+        "density": 0.55,
+        "baldChance": 0.2
+      },
+      "brow": {
+        "length": 0.55,
+        "thickness": 0.42,
+        "prominence": 0.5,
+        "tipPastFace": 0.2
+      },
+      "beard": {
+        "mode": "full",
+        "coverage": 0.83,
+        "lengthMul": 1.3,
+        "required": false,
+        "allowed": true
+      },
+      "tusk": {
+        "count": 0,
+        "protrusion": 0,
+        "direction": "out"
+      },
+      "ears": {
+        "lengthMul": 1.0,
+        "pointed": 0.1,
+        "droop": 0.15
+      },
+      "skull": {
+        "massMul": 1.0,
+        "browRidge": 0.25,
+        "jawWidth": 0.48
+      },
+      "hairPhysics": {
+        "massKg": 0.4,
+        "stiffness": 80.0,
+        "damp": 5.66,
+        "windGain": 0.75
+      },
+      "lore": "Wind-walkers of the Sunken Plains: lean legs and a long, windswept mane."
+    },
+    "islander": {
+      "id": "islander",
+      "name": "Islander",
+      "race": "human",
+      "parent": "human",
+      "ranks": {
+        "height": 3,
+        "thinness": 1,
+        "legLength": 2,
+        "armLength": 2,
+        "shoulderWidth": 3,
+        "torsoMass": 4,
+        "skullProminence": 3,
+        "browProminence": 2,
+        "hairLength": 2,
+        "beardCoverage": 2,
+        "earLength": 2,
+        "tuskProtrusion": 3,
+        "skinDepth": 1
+      },
+      "skin": {
+        "base": "#c07a52",
+        "range": [
+          "#7e4f34",
+          "#a86a44",
+          "#d69a6c",
+          "#ecd0b0"
+        ],
+        "crease": "#6b4130",
+        "creaseStrength": 0.35,
+        "zones": [
+          "neck",
+          "joint",
+          "knuckle"
+        ]
+      },
+      "hair": {
+        "length": "medium",
+        "styles": [
+          "crop",
+          "bob",
+          "wild"
+        ],
+        "colors": [
+          "#1a1a1a",
+          "#2a2018",
+          "#5a4030",
+          "#9a7a4a",
+          "#d0b888"
+        ],
+        "curl": 0.6,
+        "density": 0.65,
+        "baldChance": 0.3
+      },
+      "brow": {
+        "length": 0.6,
+        "thickness": 0.45,
+        "prominence": 0.55,
+        "tipPastFace": 0.2
+      },
+      "beard": {
+        "mode": "moustache",
+        "coverage": 0.4,
+        "lengthMul": 0.8,
+        "required": false,
+        "allowed": true
+      },
+      "tusk": {
+        "count": 0,
+        "protrusion": 0,
+        "direction": "out"
+      },
+      "ears": {
+        "lengthMul": 1.0,
+        "pointed": 0.12,
+        "droop": 0.15
+      },
+      "skull": {
+        "massMul": 1.0,
+        "browRidge": 0.25,
+        "jawWidth": 0.5
+      },
+      "hairPhysics": {
+        "massKg": 0.15,
+        "stiffness": 120.0,
+        "damp": 4.24,
+        "windGain": 0.66
+      },
+      "lore": "Tideborn of the Sapphire Archipelago: a lighter, slender frame hardened by salt."
+    },
+    "high": {
+      "id": "high",
+      "name": "High Elf",
+      "race": "elf",
+      "parent": "elf",
+      "ranks": {
+        "height": 1,
+        "thinness": 1,
+        "legLength": 1,
+        "armLength": 1,
+        "shoulderWidth": 4,
+        "torsoMass": 4,
+        "skullProminence": 4,
+        "browProminence": 2,
+        "hairLength": 1,
+        "beardCoverage": 4,
+        "earLength": 1,
+        "tuskProtrusion": 4,
+        "skinDepth": 4
+      },
+      "skin": {
+        "base": "#f0eae4",
+        "range": [
+          "#f4eee8",
+          "#eae2e8",
+          "#e0d8e2"
+        ],
+        "crease": "#2f3d63",
+        "creaseStrength": 0.6,
+        "zones": [
+          "under-eye",
+          "cheek-fold",
+          "neck",
+          "joint"
+        ]
+      },
+      "hair": {
+        "length": "verylong",
+        "styles": [
+          "flowing",
+          "braided"
+        ],
+        "colors": [
+          "#4a5a6a",
+          "#5f8f80",
+          "#b87a3a",
+          "#d0a060"
+        ],
+        "curl": 0.15,
+        "density": 0.5,
+        "baldChance": 0.0
+      },
+      "brow": {
+        "length": 0.9,
+        "thickness": 0.15,
+        "prominence": 0.4,
+        "tipPastFace": 0.58
+      },
+      "beard": {
+        "mode": "moustache-thin",
+        "coverage": 0.12,
+        "lengthMul": 0.15,
+        "required": false,
+        "allowed": true
+      },
+      "tusk": {
+        "count": 0,
+        "protrusion": 0,
+        "direction": "out"
+      },
+      "ears": {
+        "lengthMul": 2.0,
+        "pointed": 0.95,
+        "droop": 0.05
+      },
+      "skull": {
+        "massMul": 0.95,
+        "browRidge": 0.15,
+        "jawWidth": 0.4
+      },
+      "hairPhysics": {
+        "massKg": 0.7,
+        "stiffness": 50.0,
+        "damp": 5.92,
+        "windGain": 0.39
+      },
+      "lore": "Star-touched scholars of Elun-Dar, taller even than their kin, with a haughtier brow."
+    },
+    "wood": {
+      "id": "wood",
+      "name": "Wood Elf",
+      "race": "elf",
+      "parent": "elf",
+      "ranks": {
+        "height": 1,
+        "thinness": 1,
+        "legLength": 1,
+        "armLength": 1,
+        "shoulderWidth": 4,
+        "torsoMass": 3,
+        "skullProminence": 4,
+        "browProminence": 3,
+        "hairLength": 1,
+        "beardCoverage": 4,
+        "earLength": 1,
+        "tuskProtrusion": 4,
+        "skinDepth": 3
+      },
+      "skin": {
+        "base": "#dcd8cc",
+        "range": [
+          "#e2dcd0",
+          "#d2ccbe",
+          "#c8c2b4"
+        ],
+        "crease": "#2f3d63",
+        "creaseStrength": 0.6,
+        "zones": [
+          "under-eye",
+          "cheek-fold",
+          "neck",
+          "joint"
+        ]
+      },
+      "hair": {
+        "length": "long",
+        "styles": [
+          "braided",
+          "bob",
+          "wild"
+        ],
+        "colors": [
+          "#3a5a4a",
+          "#4f7a5a",
+          "#a06a2a",
+          "#c08a4a"
+        ],
+        "curl": 0.3,
+        "density": 0.55,
+        "baldChance": 0.0
+      },
+      "brow": {
+        "length": 0.88,
+        "thickness": 0.15,
+        "prominence": 0.35,
+        "tipPastFace": 0.55
+      },
+      "beard": {
+        "mode": "moustache-thin",
+        "coverage": 0.15,
+        "lengthMul": 0.2,
+        "required": false,
+        "allowed": true
+      },
+      "tusk": {
+        "count": 0,
+        "protrusion": 0,
+        "direction": "out"
+      },
+      "ears": {
+        "lengthMul": 1.9,
+        "pointed": 0.9,
+        "droop": 0.05
+      },
+      "skull": {
+        "massMul": 0.97,
+        "browRidge": 0.18,
+        "jawWidth": 0.42
+      },
+      "hairPhysics": {
+        "massKg": 0.4,
+        "stiffness": 80.0,
+        "damp": 5.66,
+        "windGain": 0.48
+      },
+      "lore": "Silent guardians of the Elderwood: a touch more mass and greener skin than the halls of Elun-Dar."
+    },
+    "dark": {
+      "id": "dark",
+      "name": "Dark Elf",
+      "race": "elf",
+      "parent": "elf",
+      "ranks": {
+        "height": 1,
+        "thinness": 1,
+        "legLength": 1,
+        "armLength": 1,
+        "shoulderWidth": 4,
+        "torsoMass": 4,
+        "skullProminence": 4,
+        "browProminence": 3,
+        "hairLength": 1,
+        "beardCoverage": 4,
+        "earLength": 1,
+        "tuskProtrusion": 4,
+        "skinDepth": 3
+      },
+      "skin": {
+        "base": "#cdc0d6",
+        "range": [
+          "#b8a8c8",
+          "#cbbcd8",
+          "#ddd2e4"
+        ],
+        "crease": "#2f3d63",
+        "creaseStrength": 0.6,
+        "zones": [
+          "under-eye",
+          "cheek-fold",
+          "neck",
+          "joint"
+        ]
+      },
+      "hair": {
+        "length": "long",
+        "styles": [
+          "flowing",
+          "braided",
+          "bob"
+        ],
+        "colors": [
+          "#2a2a3a",
+          "#3a4a5a",
+          "#7a3a2a",
+          "#a85a3a"
+        ],
+        "curl": 0.2,
+        "density": 0.5,
+        "baldChance": 0.0
+      },
+      "brow": {
+        "length": 0.9,
+        "thickness": 0.15,
+        "prominence": 0.35,
+        "tipPastFace": 0.55
+      },
+      "beard": {
+        "mode": "moustache-thin",
+        "coverage": 0.15,
+        "lengthMul": 0.2,
+        "required": false,
+        "allowed": true
+      },
+      "tusk": {
+        "count": 0,
+        "protrusion": 0,
+        "direction": "out"
+      },
+      "ears": {
+        "lengthMul": 1.85,
+        "pointed": 0.9,
+        "droop": 0.05
+      },
+      "skull": {
+        "massMul": 0.95,
+        "browRidge": 0.15,
+        "jawWidth": 0.4
+      },
+      "hairPhysics": {
+        "massKg": 0.4,
+        "stiffness": 80.0,
+        "damp": 5.66,
+        "windGain": 0.42
+      },
+      "lore": "Exiles of the Obsidian Halls, whose pale skin runs to lavender shadow."
+    },
+    "mountain": {
+      "id": "mountain",
+      "name": "Mountain",
+      "race": "dwarf",
+      "parent": "dwarf",
+      "ranks": {
+        "height": 3,
+        "thinness": 4,
+        "legLength": 3,
+        "armLength": 4,
+        "shoulderWidth": 1,
+        "torsoMass": 1,
+        "skullProminence": 1,
+        "browProminence": 1,
+        "hairLength": 4,
+        "beardCoverage": 1,
+        "earLength": 3,
+        "tuskProtrusion": 2,
+        "skinDepth": 3
+      },
+      "skin": {
+        "base": "#c8905e",
+        "range": [
+          "#a86a42",
+          "#c58a5a",
+          "#dcac80"
+        ],
+        "crease": "#4a2f22",
+        "creaseStrength": 0.45,
+        "zones": [
+          "joint",
+          "knuckle",
+          "neck"
+        ]
+      },
+      "hair": {
+        "length": "short",
+        "styles": [
+          "braided",
+          "crop"
+        ],
+        "colors": [
+          "#2a1a12",
+          "#4a3020",
+          "#8a5a34",
+          "#b08a5a"
+        ],
+        "curl": 0.3,
+        "density": 0.85,
+        "baldChance": 0.2
+      },
+      "brow": {
+        "length": 0.65,
+        "thickness": 0.75,
+        "prominence": 0.85,
+        "tipPastFace": 0.25
+      },
+      "beard": {
+        "mode": "full",
+        "coverage": 0.7,
+        "lengthMul": 1.7,
+        "required": true,
+        "allowed": true
+      },
+      "tusk": {
+        "count": 0,
+        "protrusion": 0.06,
+        "direction": "up"
+      },
+      "ears": {
+        "lengthMul": 0.88,
+        "pointed": 0.05,
+        "droop": 0.1
+      },
+      "skull": {
+        "massMul": 1.15,
+        "browRidge": 0.72,
+        "jawWidth": 0.62
+      },
+      "hairPhysics": {
+        "massKg": 0.05,
+        "stiffness": 170.0,
+        "damp": 2.92,
+        "windGain": 0.48
+      },
+      "lore": "Stone-boned clans of the Iron Reach, the tallest and longest-legged of dwarf-kind."
+    },
+    "forge": {
+      "id": "forge",
+      "name": "Forge",
+      "race": "dwarf",
+      "parent": "dwarf",
+      "ranks": {
+        "height": 4,
+        "thinness": 4,
+        "legLength": 4,
+        "armLength": 3,
+        "shoulderWidth": 1,
+        "torsoMass": 1,
+        "skullProminence": 1,
+        "browProminence": 1,
+        "hairLength": 4,
+        "beardCoverage": 1,
+        "earLength": 3,
+        "tuskProtrusion": 2,
+        "skinDepth": 2
+      },
+      "skin": {
+        "base": "#b87a4c",
+        "range": [
+          "#96603a",
+          "#b87a4c",
+          "#d09a6a",
+          "#e0b088"
+        ],
+        "crease": "#4a2f22",
+        "creaseStrength": 0.45,
+        "zones": [
+          "joint",
+          "knuckle",
+          "neck"
+        ]
+      },
+      "hair": {
+        "length": "short",
+        "styles": [
+          "crop",
+          "wild"
+        ],
+        "colors": [
+          "#1a1210",
+          "#3a2018",
+          "#7a3a20",
+          "#b06030",
+          "#c88850"
+        ],
+        "curl": 0.45,
+        "density": 0.85,
+        "baldChance": 0.15
+      },
+      "brow": {
+        "length": 0.62,
+        "thickness": 0.72,
+        "prominence": 0.82,
+        "tipPastFace": 0.25
+      },
+      "beard": {
+        "mode": "full",
+        "coverage": 0.75,
+        "lengthMul": 1.6,
+        "required": true,
+        "allowed": true
+      },
+      "tusk": {
+        "count": 0,
+        "protrusion": 0.06,
+        "direction": "up"
+      },
+      "ears": {
+        "lengthMul": 0.9,
+        "pointed": 0.05,
+        "droop": 0.1
+      },
+      "skull": {
+        "massMul": 1.1,
+        "browRidge": 0.7,
+        "jawWidth": 0.62
+      },
+      "hairPhysics": {
+        "massKg": 0.05,
+        "stiffness": 170.0,
+        "damp": 2.92,
+        "windGain": 0.57
+      },
+      "lore": "Rune-smiths of Khaz-Barad: smith's arms and smoke-darkened skin."
+    },
+    "deep": {
+      "id": "deep",
+      "name": "Deep",
+      "race": "dwarf",
+      "parent": "dwarf",
+      "ranks": {
+        "height": 4,
+        "thinness": 4,
+        "legLength": 4,
+        "armLength": 4,
+        "shoulderWidth": 1,
+        "torsoMass": 1,
+        "skullProminence": 1,
+        "browProminence": 1,
+        "hairLength": 4,
+        "beardCoverage": 1,
+        "earLength": 3,
+        "tuskProtrusion": 2,
+        "skinDepth": 4
+      },
+      "skin": {
+        "base": "#c0a078",
+        "range": [
+          "#a8886a",
+          "#c0a078",
+          "#d8c0a0"
+        ],
+        "crease": "#4a2f22",
+        "creaseStrength": 0.45,
+        "zones": [
+          "joint",
+          "knuckle",
+          "neck"
+        ]
+      },
+      "hair": {
+        "length": "short",
+        "styles": [
+          "braided",
+          "wild"
+        ],
+        "colors": [
+          "#4a3a28",
+          "#6a5038",
+          "#9a8058",
+          "#b8a888"
+        ],
+        "curl": 0.2,
+        "density": 0.8,
+        "baldChance": 0.25
+      },
+      "brow": {
+        "length": 0.65,
+        "thickness": 0.75,
+        "prominence": 0.85,
+        "tipPastFace": 0.25
+      },
+      "beard": {
+        "mode": "full",
+        "coverage": 0.7,
+        "lengthMul": 1.65,
+        "required": true,
+        "allowed": true
+      },
+      "tusk": {
+        "count": 0,
+        "protrusion": 0.06,
+        "direction": "up"
+      },
+      "ears": {
+        "lengthMul": 0.92,
+        "pointed": 0.05,
+        "droop": 0.1
+      },
+      "skull": {
+        "massMul": 1.15,
+        "browRidge": 0.7,
+        "jawWidth": 0.6
+      },
+      "hairPhysics": {
+        "massKg": 0.05,
+        "stiffness": 170.0,
+        "damp": 2.92,
+        "windGain": 0.42
+      },
+      "lore": "Delvers of the Rootways, pale from a life without light."
+    },
+    "greenhide": {
+      "id": "greenhide",
+      "name": "Greenhide",
+      "race": "ork",
+      "parent": "ork",
+      "ranks": {
+        "height": 2,
+        "thinness": 3,
+        "legLength": 3,
+        "armLength": 3,
+        "shoulderWidth": 2,
+        "torsoMass": 2,
+        "skullProminence": 2,
+        "browProminence": 4,
+        "hairLength": 3,
+        "beardCoverage": 4,
+        "earLength": 4,
+        "tuskProtrusion": 1,
+        "skinDepth": 1
+      },
+      "skin": {
+        "base": "#8ac054",
+        "range": [
+          "#7fae4e",
+          "#93c05a",
+          "#6a9a44"
+        ],
+        "crease": "#33421f",
+        "creaseStrength": 0.4,
+        "zones": [
+          "joint",
+          "knuckle",
+          "neck",
+          "brow"
+        ]
+      },
+      "hair": {
+        "length": "short",
+        "styles": [
+          "mohawk",
+          "wild"
+        ],
+        "colors": [
+          "#1a1a1a",
+          "#243018",
+          "#3a4a24"
+        ],
+        "curl": 0.65,
+        "density": 0.5,
+        "baldChance": 0.55
+      },
+      "brow": {
+        "length": 0.35,
+        "thickness": 0.25,
+        "prominence": 0.15,
+        "tipPastFace": 0.1
+      },
+      "beard": {
+        "mode": "chin",
+        "coverage": 0.3,
+        "lengthMul": 0.6,
+        "required": false,
+        "allowed": true
+      },
+      "tusk": {
+        "count": 2,
+        "protrusion": 0.3,
+        "direction": "up"
+      },
+      "ears": {
+        "lengthMul": 0.8,
+        "pointed": 0.15,
+        "droop": 0.05
+      },
+      "skull": {
+        "massMul": 1.12,
+        "browRidge": 0.65,
+        "jawWidth": 0.85
+      },
+      "hairPhysics": {
+        "massKg": 0.05,
+        "stiffness": 170.0,
+        "damp": 2.92,
+        "windGain": 0.69
+      },
+      "lore": "Born in the Blood Marshes: the plainest green hide and the barest chin."
+    },
+    "ironhide": {
+      "id": "ironhide",
+      "name": "Ironhide",
+      "race": "ork",
+      "parent": "ork",
+      "ranks": {
+        "height": 2,
+        "thinness": 3,
+        "legLength": 3,
+        "armLength": 3,
+        "shoulderWidth": 2,
+        "torsoMass": 1,
+        "skullProminence": 2,
+        "browProminence": 3,
+        "hairLength": 3,
+        "beardCoverage": 3,
+        "earLength": 4,
+        "tuskProtrusion": 1,
+        "skinDepth": 2
+      },
+      "skin": {
+        "base": "#6f9a48",
+        "range": [
+          "#5f8f3e",
+          "#6f9a48",
+          "#82a860"
+        ],
+        "crease": "#33421f",
+        "creaseStrength": 0.4,
+        "zones": [
+          "joint",
+          "knuckle",
+          "neck",
+          "brow"
+        ]
+      },
+      "hair": {
+        "length": "short",
+        "styles": [
+          "shaved",
+          "mohawk"
+        ],
+        "colors": [
+          "#101010",
+          "#20281a",
+          "#384428"
+        ],
+        "curl": 0.75,
+        "density": 0.55,
+        "baldChance": 0.5
+      },
+      "brow": {
+        "length": 0.4,
+        "thickness": 0.3,
+        "prominence": 0.25,
+        "tipPastFace": 0.12
+      },
+      "beard": {
+        "mode": "chin",
+        "coverage": 0.35,
+        "lengthMul": 0.7,
+        "required": false,
+        "allowed": true
+      },
+      "tusk": {
+        "count": 2,
+        "protrusion": 0.32,
+        "direction": "up"
+      },
+      "ears": {
+        "lengthMul": 0.78,
+        "pointed": 0.15,
+        "droop": 0.05
+      },
+      "skull": {
+        "massMul": 1.14,
+        "browRidge": 0.68,
+        "jawWidth": 0.88
+      },
+      "hairPhysics": {
+        "massKg": 0.05,
+        "stiffness": 170.0,
+        "damp": 2.92,
+        "windGain": 0.75
+      },
+      "lore": "War-forged in the Slag Pits: the heaviest trunk and a ridged, armoured skull."
+    },
+    "bloodfang": {
+      "id": "bloodfang",
+      "name": "Bloodfang",
+      "race": "ork",
+      "parent": "ork",
+      "ranks": {
+        "height": 2,
+        "thinness": 3,
+        "legLength": 2,
+        "armLength": 2,
+        "shoulderWidth": 2,
+        "torsoMass": 2,
+        "skullProminence": 2,
+        "browProminence": 4,
+        "hairLength": 3,
+        "beardCoverage": 3,
+        "earLength": 4,
+        "tuskProtrusion": 1,
+        "skinDepth": 2
+      },
+      "skin": {
+        "base": "#86b258",
+        "range": [
+          "#7fae4e",
+          "#86b258",
+          "#98c068"
+        ],
+        "crease": "#33421f",
+        "creaseStrength": 0.4,
+        "zones": [
+          "joint",
+          "knuckle",
+          "neck",
+          "brow"
+        ]
+      },
+      "hair": {
+        "length": "short",
+        "styles": [
+          "mohawk",
+          "wild"
+        ],
+        "colors": [
+          "#1a1a1a",
+          "#302018",
+          "#503018"
+        ],
+        "curl": 0.8,
+        "density": 0.45,
+        "baldChance": 0.6
+      },
+      "brow": {
+        "length": 0.35,
+        "thickness": 0.25,
+        "prominence": 0.15,
+        "tipPastFace": 0.1
+      },
+      "beard": {
+        "mode": "chin",
+        "coverage": 0.4,
+        "lengthMul": 0.8,
+        "required": false,
+        "allowed": true
+      },
+      "tusk": {
+        "count": 2,
+        "protrusion": 0.45,
+        "direction": "up"
+      },
+      "ears": {
+        "lengthMul": 0.82,
+        "pointed": 0.2,
+        "droop": 0.05
+      },
+      "skull": {
+        "massMul": 1.1,
+        "browRidge": 0.62,
+        "jawWidth": 0.82
+      },
+      "hairPhysics": {
+        "massKg": 0.05,
+        "stiffness": 170.0,
+        "damp": 2.92,
+        "windGain": 0.78
+      },
+      "lore": "Swift killers of the Red Steppe: long limbs for a charge and tusks to match."
+    }
+  }
+}

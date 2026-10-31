@@ -140,6 +140,14 @@ export const UI_TREE: UiScreen[] = [
           { id: "race", label: "Race", hint: "The four peoples.", controls: [c("race-table", "Race", "Pick the people; the hero panel previews it.", "always", "player", 2)] },
           { id: "subrace", label: "Sub-species", hint: "A nation within the people.", controls: [c("subrace-table", "Sub-species", "Nested under the chosen race.", "always", "player", 1)] },
           { id: "hero", label: "Hero preview", hint: "Primary and secondary stats for the pick.", controls: [c("race-hero", "Preview", "Primary left, secondary right.", "always", "player", 2)] },
+          { id: "lore", label: "Ancestry lore", hint: "What the hierarchy says about the pick: skin, hair, beard, tusks, ranks.", controls: [
+            c("ancestry-lore", "Lore", "The race and sub-species name with its one-line lore.", "always", "player", 1),
+            c("ancestry-skin", "Skin", "Skin tone swatches and the crease colour.", "always", "player", 1),
+            c("ancestry-hair", "Hair", "Hair colours drawn from the ancestry.", "always", "player", 1),
+            c("ancestry-beard", "Beard", "How much growth the ancestry allows or requires.", "always", "player", 0),
+            c("ancestry-tusk", "Tusks", "Tusk count and direction for the ancestry.", "always", "player", 0),
+            c("ancestry-ranks", "Ranks", "This ancestry's metric ranks against the other races.", "always", "player", 1),
+          ] },
         ],
       },
       {
@@ -171,6 +179,15 @@ export const UI_TREE: UiScreen[] = [
         groups: [
           { id: "rival", label: "Rival", hint: "The AI you face.", controls: [c("menu-opponent", "Rival", "Pick the opponent's calling.", "always", "opponent", 1)] },
           { id: "terms", label: "Match terms", hint: "Length and win condition.", controls: [c("match-length", "Length", "Shorter matches gather data faster.", "always", "system", 1), c("win-condition", "Win condition", "One condition is rolled per match.", "always", "system", 0)] },
+          { id: "spectate", label: "Spectator card", hint: "The generated AI-vs-AI card, when the engine hands one over.", controls: [
+            c("spectate-card", "Card", "The spectator card: levels, budgets, techniques and arena.", "spectate", "system", 1),
+            c("spectate-level-a", "Level A", "Fighter A's generated level.", "spectate", "system", 0),
+            c("spectate-level-b", "Level B", "Fighter B's generated level.", "spectate", "system", 0),
+            c("spectate-budget-a", "Budget A", "Stat points spent on fighter A.", "spectate", "system", 0),
+            c("spectate-budget-b", "Budget B", "Stat points spent on fighter B.", "spectate", "system", 0),
+            c("spectate-techniques", "Techniques", "The technique ids the spent stats unlocked.", "spectate", "system", 0),
+            c("spectate-arena", "Arena", "The generated arena's size in metres.", "spectate", "system", 0),
+          ] },
         ],
       },
       {
@@ -229,7 +246,7 @@ export const UI_TREE: UiScreen[] = [
           { id: "who", label: "Fighter", hint: "By name or id.", controls: [c("filter-name", "Name", "Substring match on either fighter.", "always", "system", 2)] },
           { id: "what", label: "Outcome", hint: "Who won, and how.", controls: [c("filter-outcome", "Outcome", "Win, loss or draw.", "always", "system", 1), c("filter-reason", "Ending", "KO, endurance, domination, sudden death.", "always", "system", 1)] },
           { id: "who2", label: "Ancestry", hint: "Race and calling.", controls: [c("filter-race", "Race", "Either fighter's race.", "always", "system", 1), c("filter-class", "Class", "Either fighter's calling.", "always", "system", 1)] },
-          { id: "sort", label: "Order", hint: "How the rows are arranged.", controls: [c("filter-sort", "Sort", "Newest, longest, most damage.", "always", "system", 0)] },
+          { id: "sort", label: "Order", hint: "How the rows are arranged.", controls: [c("filter-sort", "Sort", "Newest, fastest, biggest stat gap, widest margin, generation.", "always", "system", 0)] },
         ],
       },
       {
@@ -239,7 +256,8 @@ export const UI_TREE: UiScreen[] = [
         colour: "ocean",
         groups: [
           { id: "summary", label: "Summary", hint: "Totals across the filtered set.", controls: [c("history-summary", "Summary", "Matches, win rate, average length.", "always", "system", 2)] },
-          { id: "list", label: "Matches", hint: "One row per fight.", controls: [c("history-list", "Matches", "Click a row for the full detail.", "always", "system", 2)] },
+          { id: "highlights", label: "Highlights", hint: "The standout matches at a glance.", controls: [c("history-highlights", "Highlights", "Fastest decided match, widest stat gap, ties and timeouts.", "always", "system", 1)] },
+          { id: "list", label: "Matches", hint: "One row per fight.", controls: [c("history-list", "Matches", "Click a row for the full detail.", "always", "system", 2), c("history-badge", "Row badges", "TIE, TIMEOUT, generation id, stat gap and margin, shown when the record carries them.", "always", "system", 1)] },
         ],
       },
       {

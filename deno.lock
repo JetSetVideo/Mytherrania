@@ -2,6 +2,7 @@
   "version": "5",
   "specifiers": {
     "jsr:@std/encoding@1": "1.0.11",
+    "jsr:@std/encoding@1.0.11": "1.0.11",
     "npm:@types/three@0.180.0": "0.180.0",
     "npm:playwright@1.49": "1.49.1",
     "npm:playwright@1.52.0": "1.52.0",
@@ -100,6 +101,7 @@
   },
   "workspace": {
     "dependencies": [
+      "jsr:@std/encoding@1.0.11",
       "npm:@types/three@0.180.0",
       "npm:playwright@1.56.1",
       "npm:three@0.180.0"

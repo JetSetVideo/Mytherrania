@@ -87,3 +87,27 @@ export function stepTime(dt: number, speedId: string): number {
 export function effectiveDuration(durationS: number, speedId: string): number {
   return durationS / resolveSpeed(speedId).timeScale;
 }
+
+/**
+ * The brief's match time limit: a fight that runs to the cap with nobody KO'd
+ * is a TIE, not a win. 180 s is the spoken "3 minutes maximum a match".
+ */
+export const MATCH_TIME_LIMIT_S = 180;
+
+/** Hard ceiling for a configured limit (the brief's "4 minutes maximum"). */
+export const MATCH_TIME_LIMIT_MAX_S = 240;
+
+/** Floor for a configured limit: below this a bout cannot resolve. */
+export const MATCH_TIME_LIMIT_MIN_S = 30;
+
+/**
+ * The seconds a match may run before the clock calls it a tie.
+ *
+ * A non-finite or absent input falls back to MATCH_TIME_LIMIT_S: a NaN config
+ * from storage or a bad menu value must never reach the history as a NaN limit.
+ * Anything else is clamped into [MATCH_TIME_LIMIT_MIN_S, MATCH_TIME_LIMIT_MAX_S].
+ */
+export function resolveTimeLimit(configured?: number): number {
+  if (configured === undefined || !Number.isFinite(configured)) return MATCH_TIME_LIMIT_S;
+  return Math.max(MATCH_TIME_LIMIT_MIN_S, Math.min(MATCH_TIME_LIMIT_MAX_S, configured));
+}

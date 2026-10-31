@@ -4,11 +4,14 @@ import { RACES, raceById, computeRaceStats, type RaceDef } from "../game/Races.t
 import { BIRTHSIGNS } from "../game/Birthsight.ts";
 import { secondaryPreview } from "../game/SecondaryStats.ts";
 import { ALL_SKILLS, skillsForClass, type Skill } from "../game/Skills.ts";
-import type { HistorySummary, MatchRecord, Rate } from "../game/MatchHistory.ts";
+import type { HistorySummary, MatchRecord, Rate, WinReason } from "../game/MatchHistory.ts";
+import { ancestryOf, rankOf, METRICS, type AncestryNode } from "../game/Ancestry.ts";
+import type { SpectateCard } from "../game/SpectateGen.ts";
 import { objectSize, RING_SHAPES, type ArenaConfig, type ObjectKind } from "../game/ArenaConfig.ts";
 import { surfaceFor } from "../game/Terrain.ts";
 import { weaponForClass } from "../game/Weapon.ts";
 import { COLOUR_HEX, screenPanels, type ScreenId } from "./UiTree.ts";
+import { HISTORY_SORTS, HISTORY_SORT_LABEL, highlightSummary, rowBadges, sortHistory, type HistoryRowLike, type HistorySort } from "./HistoryView.ts";
 import { NavStack } from "./NavStack.ts";
 import { birthsignIcon, icon } from "./Icons.ts";
 import { ancestryView, initialAncestry, nextHeaderIndex, selectSubrace, toggleRace, type AncestryState } from "./AncestryState.ts";
@@ -144,6 +147,52 @@ const esc = (v: unknown) => String(v).replace(/[&<>"']/g, (c) => ({ "&": "&amp;"
 const num = (v: unknown) => (typeof v === "number" && Number.isFinite(v) ? String(v) : esc(v ?? "—"));
 const pct = (v: number) => `${Math.round(v * 1000) / 10}%`;
 
+/**
+ * A History row (H-G): the structural shape HistoryView sorts and badges, plus the source
+ * record (for the cells) and a display label (for the summary strip). Extra fields are fine —
+ * HistoryRowLike is structural.
+ */
+interface HistoryUiRow extends HistoryRowLike {
+  label: string;
+  record: MatchRecord;
+}
+
+/**
+ * Map a MatchHistory end reason onto the UI's reason union. Only "time-limit" drives a badge
+ * (TIMEOUT); the rest collapse to the four legacy reasons so an old record still reads.
+ */
+const HISTORY_END: Readonly<Record<WinReason, HistoryRowLike["endReason"]>> = {
+  ko: "ko",
+  "ring-out": "ko",
+  ringout: "ko",
+  timed: "time-limit",
+  koth: "domination",
+  forfeit: "sudden-death",
+  "time-limit": "time-limit",
+};
+
+/** Adapt a match record to the History UI row (telemetry fields are all optional — H-D back-compat). */
+function historyRow(r: MatchRecord): HistoryUiRow {
+  const [a, b] = r.fighters;
+  return {
+    record: r,
+    label: `${a.name} v ${b.name}`,
+    durationS: r.duration,
+    endReason: HISTORY_END[r.reason],
+    statGap: { distance: r.statGap?.distance, dominance: r.margin ?? r.statGap?.dominance },
+    generation: r.generation ? { id: r.generation.id } : undefined,
+    tie: r.tie,
+  };
+}
+
+/** The CSS class a badge string maps to (TIE / TIMEOUT / generation / gap / margin). */
+const badgeKind = (b: string): string =>
+  b === "TIE" ? "TIE" : b === "TIMEOUT" ? "TIMEOUT" : b.startsWith("GEN-") ? "generation" : b.startsWith("GAP") ? "gap" : "margin";
+
+/** A row's badges (H-G). An empty list for a legacy row, so it renders exactly as before. */
+const badgeHtml = (row: HistoryRowLike): string =>
+  rowBadges(row).map((b) => `<span class="history-badge" data-key="history-badge" data-badge="${badgeKind(b)}">${esc(b)}</span>`).join("");
+
 export class Menu {
   #root: HTMLDivElement;
   #player: CharacterProfile = PRESETS[0];
@@ -159,6 +208,21 @@ export class Menu {
   #arena: Partial<ArenaConfig> = {};
   /** Ancestry accordion: which race box is open and which race + sub-species are chosen (W01). */
   #ancestry: AncestryState = initialAncestry(RACES, PRESETS[0].race, PRESETS[0].subrace);
+  /** The generated spectator card the engine last handed over (H-E); null until one arrives. */
+  #spectateCard: SpectateCard | null = null;
+  /** The technique ids the spectator card's spent stats unlocked (H-E), shown beside the card. */
+  #spectateTechniques: string[] = [];
+  /** The History page's current order (H-G); the sort control changes it live. */
+  #historySort: HistorySort = "newest";
+  /** The last History view + leaderboard, kept so a sort change re-renders without fresh data. */
+  #history: { view: HistoryView; leaderboard: LeaderRow[] } | null = null;
+
+  /** Show the engine's generated spectator card (H-E), or clear it with null. */
+  setSpectateCard(card: SpectateCard | null, techniques: string[] = []): void {
+    this.#spectateCard = card;
+    this.#spectateTechniques = techniques;
+    this.#renderSpectateCard();
+  }
 
   /** The arena the player asked for (applied to the next match only). */
   arenaChoice(): Partial<ArenaConfig> {
@@ -257,6 +321,7 @@ export class Menu {
           <label class="field">Name <input id="creator-name" type="text" value="${esc(this.#player.name)}"></label>
           <div class="ancestry-list" id="ancestry-list">${RACES.map((r) => this.#raceBoxHtml(r)).join("")}</div>
           <div id="race-detail" class="race-detail"></div>
+          <div id="ancestry-lore" class="ancestry-lore"></div>
         </section>
 
         <section class="ui-panel" data-panel="calling" data-colour="sand">
@@ -317,6 +382,7 @@ export class Menu {
               <option value="0.25">Blitz (quarter health)</option>
             </select>
           </label>
+          <section class="spectate-card" id="spectate-card"></section>
         </section>
 
         <section class="ui-panel" data-panel="arena" data-colour="positive">
@@ -484,6 +550,7 @@ export class Menu {
 
     this.#syncCreatorUI();
     this.#wireTabs();
+    this.#renderSpectateCard();
   }
 
   /**
@@ -557,6 +624,77 @@ export class Menu {
         btn.classList.add("selected");
         this.#refreshSecondary();
       }));
+    this.#renderAncestryLore();
+  }
+
+  /**
+   * The ancestry lore panel (H-G): what the hierarchy (H-A's `ancestryOf`/`rankOf`) says about
+   * the selected race/sub-species — name, lore line, skin swatches + crease colour, hair
+   * colours, beard mode, tusk count, and this race's metric ranks against the other races.
+   * Swatch fills go through CSSOM (the server CSP blocks inline `style=""`).
+   */
+  #renderAncestryLore(): void {
+    const el = this.#root.querySelector<HTMLElement>("#ancestry-lore");
+    if (!el) return;
+    const node: AncestryNode = ancestryOf(this.#player.race, this.#player.subrace);
+    const swatch = (col: string, cls = "") => `<span class="anc-swatch ${cls}" data-colour="${esc(col)}" title="${esc(col)}"></span>`;
+    const swatches = (cols: readonly string[]) => cols.map((c) => swatch(c)).join("");
+    const ranks = METRICS.map((m) => {
+      const order = rankOf(m);
+      const rank = node.ranks[m] || order.findIndex((o) => o.id === node.race) + 1;
+      return `<div class="anc-rank" title="${esc(order.map((o) => o.id).join(" › "))}"><span>${esc(m)}</span><b>${rank}/4</b></div>`;
+    }).join("");
+    const beard = node.beard.required ? "required" : node.beard.allowed ? "optional" : "never";
+    el.innerHTML = `
+      <h4 class="anc-name">${esc(node.name)}</h4>
+      <p class="anc-line">${esc(node.lore)}</p>
+      <div class="anc-block" id="ancestry-skin"><span class="anc-block-label">Skin</span>
+        <div class="anc-swatches">${swatches(node.skin.range)}<span class="anc-note">crease</span>${swatch(node.skin.crease, "anc-crease")}</div>
+        <span class="anc-note">${esc(node.skin.zones.join(", "))} · crease strength ${pct(node.skin.creaseStrength)}</span></div>
+      <div class="anc-block" id="ancestry-hair"><span class="anc-block-label">Hair</span>
+        <div class="anc-swatches">${swatches(node.hair.colors)}</div>
+        <span class="anc-note">${esc(node.hair.length)} · curl ${pct(node.hair.curl)} · bald chance ${pct(node.hair.baldChance)}</span></div>
+      <div class="anc-block" id="ancestry-beard"><span class="anc-block-label">Beard</span>
+        <span class="anc-note">${esc(node.beard.mode)} (${beard})</span></div>
+      <div class="anc-block" id="ancestry-tusk"><span class="anc-block-label">Tusks</span>
+        <span class="anc-note">${node.tusk.count === 0 ? "none" : `${node.tusk.count} · ${esc(node.tusk.direction)}`}</span></div>
+      <div class="anc-block" id="ancestry-ranks"><span class="anc-block-label">Ranks vs the other races</span>
+        <div class="anc-ranks">${ranks}</div></div>`;
+    el.querySelectorAll<HTMLElement>(".anc-swatch").forEach((s) => { s.style.background = s.dataset.colour ?? "transparent"; });
+  }
+
+  /**
+   * The spectator card (H-E): both fighters' generated levels and stat budgets, the technique
+   * ids the spent stats unlocked, and the arena size. The panel always exists (so the UI-tree
+   * probe finds it) and shows a placeholder until the engine hands a card over.
+   */
+  #renderSpectateCard(): void {
+    const el = this.#root.querySelector<HTMLElement>("#spectate-card");
+    if (!el) return;
+    const card = this.#spectateCard;
+    if (!card) {
+      // Keep the keyed elements in the DOM even before a card arrives, so the UI-tree probe
+      // still finds them; the values read as em-dashes until the engine hands one over.
+      el.innerHTML = `
+        <h4 class="sp-head">Spectator card <span class="sp-gen">—</span></h4>
+        <div class="sp-row">
+          <div class="sp-fighter"><b id="spectate-level-a">Level —</b><span id="spectate-budget-a">— stat points</span></div>
+          <div class="sp-fighter"><b id="spectate-level-b">Level —</b><span id="spectate-budget-b">— stat points</span></div>
+        </div>
+        <div class="sp-meta"><span class="sp-tag" id="spectate-arena">— m arena</span></div>
+        <p class="sp-techniques" id="spectate-techniques"></p>
+        <p class="sp-empty">No generated card yet: start a spectate match and the generator's levels, budgets, techniques and arena appear here.</p>`;
+      return;
+    }
+    const techs = this.#spectateTechniques;
+    el.innerHTML = `
+      <h4 class="sp-head">Spectator card <span class="sp-gen">${esc(card.generationId)}</span></h4>
+      <div class="sp-row">
+        <div class="sp-fighter"><b id="spectate-level-a">Level ${num(card.levelA)}</b><span id="spectate-budget-a">${num(card.budgetA)} stat points</span></div>
+        <div class="sp-fighter"><b id="spectate-level-b">Level ${num(card.levelB)}</b><span id="spectate-budget-b">${num(card.budgetB)} stat points</span></div>
+      </div>
+      <div class="sp-meta"><span class="sp-tag" id="spectate-arena">${Math.round(card.arenaSize)} m arena</span><span class="sp-tag">seed ${num(card.seed)}</span></div>
+      <p class="sp-techniques" id="spectate-techniques">${techs.length ? esc(techs.join(" · ")) : ""}</p>`;
   }
 
   /** The secondary-stat rows (sub-species + birth-sign deltas) for the hero column. */
@@ -653,6 +791,7 @@ export class Menu {
       if (next.race !== prev.race && race) this.#renderRaceDetail(race);
       else this.#refreshSecondary();
     }
+    this.#renderAncestryLore();
     this.#syncAncestry();
   }
 
@@ -746,8 +885,42 @@ export class Menu {
     }
   }
 
-  #renderHistory({ list, summary: s }: HistoryView, leaderboard: LeaderRow[]) {
-    const body = this.#root.querySelector<HTMLElement>("#digest-body")!;
+  #renderHistory(view: HistoryView, leaderboard: LeaderRow[]) {
+    this.#history = { view, leaderboard };
+    this.#renderHistoryBody();
+  }
+
+  /** The History page's sort control (H-G), built from HistoryView's orders. */
+  #historySortHtml(): string {
+    const opts = HISTORY_SORTS.map((s) => `<option value="${s}"${s === this.#historySort ? " selected" : ""}>${esc(HISTORY_SORT_LABEL[s])}</option>`).join("");
+    return `<div class="history-sort"><label for="filter-sort">Order</label><select id="filter-sort">${opts}</select></div>`;
+  }
+
+  /** The History summary strip (H-G): fastest decided match, widest stat gap, ties and timeouts. */
+  #highlightsHtml(rows: HistoryUiRow[]): string {
+    const lines = highlightSummary(rows, (r) => r.label)
+      .map((l) => `<div class="hl" data-hl="${l.id}"><span class="hl-label">${esc(l.label)}</span><b class="hl-value">${esc(l.value)}</b></div>`).join("");
+    return `<div class="history-highlights" id="history-highlights">${lines}</div>`;
+  }
+
+  /** Re-wire the sort control after a (re)render: a change re-draws the page in the new order. */
+  #wireHistoryControls(): void {
+    const sel = this.#root.querySelector<HTMLSelectElement>("#filter-sort");
+    if (!sel) return;
+    sel.addEventListener("change", () => {
+      this.#historySort = sel.value as HistorySort;
+      this.#renderHistoryBody();
+    });
+  }
+
+  /** Draw the History page from the cached view: board, highlights, sort control and rows. */
+  #renderHistoryBody() {
+    const body = this.#root.querySelector<HTMLElement>("#digest-body");
+    if (!body || !this.#history) return;
+    const { view: { list, summary: s }, leaderboard } = this.#history;
+    const uiRows = sortHistory(list.map(historyRow), this.#historySort);
+    const strip = this.#highlightsHtml(list.map(historyRow));
+    const sortBar = this.#historySortHtml();
     // The AI leaderboard always renders when bots are ranked, even before any
     // recorded match (a spectate fight registers the ladder but a stalled or
     // in-progress one may not have produced a record yet).
@@ -770,7 +943,8 @@ export class Menu {
       }));
     };
     if (!s.matches) {
-      body.innerHTML = `${board}<p class="empty">No matches recorded yet. Fight or spectate a duel: every match is saved here with who, when, where, how, stats, AI and result.</p>`;
+      body.innerHTML = `${board}${sortBar}${strip}<p class="empty">No matches recorded yet. Fight or spectate a duel: every match is saved here with who, when, where, how, stats, AI and result.</p>`;
+      this.#wireHistoryControls();
       wireBoard();
       return;
     }
@@ -781,19 +955,22 @@ export class Menu {
       ${rows.map((r) => `<tr><td>${esc(r.key)}</td><td>${r.games}</td><td>${r.wins}</td><td>${pct(r.rate)}</td><td>${pct(r.lo)}–${pct(r.hi)}</td>
         <td class="bar-col"><span class="ci-track"><span class="ci-range" data-lo="${r.lo}" data-hi="${r.hi}"></span><span class="ci-point" data-at="${r.rate}"></span></span></td></tr>`).join("")}</table>`;
     const counts = (o: Record<string, number>) => Object.entries(o).map(([k, v]) => `<span class="chip">${esc(k)} <b>${v}</b></span>`).join("");
-    const rows = [...list].reverse().slice(0, 60).map((r) => {
+    const rows = uiRows.slice(0, 60).map((row) => {
+      const r = row.record;
       const [a, b] = r.fighters;
       const who = (f: typeof a, i: number) => `<span class="${r.winner === i ? "won" : "lost"}">${esc(f.name)}</span><small>${esc(f.race)} ${esc(f.className)} · ${esc(f.weapon)} · ${f.controller === "human" ? "Player" : "AI tree"}</small>`;
       return `<tr><td>#${num(r.id)}<small>${esc(r.at.slice(0, 16).replace("T", " "))}</small><small>in-world ${String(Math.floor(r.hour)).padStart(2, "0")}:${String(Math.round((r.hour % 1) * 60) % 60).padStart(2, "0")}</small></td>
         <td>${who(a, 0)}</td><td>${who(b, 1)}</td>
         <td>${esc(r.place)}<small>${esc(r.arena)} · ${esc(r.phase)} ${String(Math.floor(r.hour)).padStart(2, "0")}h</small></td>
-        <td>${esc(r.reason)}<small>${num(r.duration)}s · 1st: ${esc(r.firstStrike ?? "—")}</small></td>
+        <td>${esc(r.reason)}<small>${num(r.duration)}s · 1st: ${esc(r.firstStrike ?? "—")}</small><span class="history-badges">${badgeHtml(row)}</span></td>
         <td>${num(a.dealt)}/${num(b.dealt)}<small>${num(a.hits)}/${num(b.hits)} hits</small></td>
         <td>V${num(a.stats.vitality)} R${num(a.stats.resilience)} W${num(a.stats.willpower)} Rx${num(a.stats.reflex)} S${num(a.stats.strength)} I${num(a.stats.intelligence)}<small>vs V${num(b.stats.vitality)} R${num(b.stats.resilience)} W${num(b.stats.willpower)} Rx${num(b.stats.reflex)} S${num(b.stats.strength)} I${num(b.stats.intelligence)}</small></td></tr>`;
     }).join("");
     body.innerHTML = `
       ${board}
-      <div class="kpis">
+      ${sortBar}
+      ${strip}
+      <div class="kpis" id="history-summary">
         <div><b>${s.matches}</b><span>${s.matches === 1 ? "match" : "matches"}</span></div>
         <div><b>${d.mean.toFixed(1)}s</b><span>mean (median ${d.median.toFixed(1)}s, sd ${d.sd.toFixed(1)})</span></div>
         <div><b>${pct(s.firstStrikeWinRate.rate)}</b><span>first-strike wins (n=${s.firstStrikeWinRate.n})</span></div>
@@ -801,7 +978,7 @@ export class Menu {
       <div class="chips">${counts(s.reasons)}${counts(s.byPhase)}${counts(s.byPlace)}</div>
       ${rateTable("By Race", s.byRace)}${rateTable("By Class", s.byClass)}${rateTable("By Weapon", s.byWeapon)}${rateTable("By Controller", s.byController)}
       <h3 class="digest-subhead">Matches (newest first) <small class="scroll-hint">scroll ↔ ↕</small></h3>
-      <div class="table-scroll"><table class="digest-table match-table"><tr><th>When</th><th>Fighter A</th><th>Fighter B</th><th>Where</th><th>How</th><th>Dmg A/B</th><th>Stats A vs B</th></tr>${rows}</table></div>`;
+      <div class="table-scroll" id="history-list"><table class="digest-table match-table"><tr><th>When</th><th>Fighter A</th><th>Fighter B</th><th>Where</th><th>How</th><th>Dmg A/B</th><th>Stats A vs B</th></tr>${rows}</table></div>`;
     // CSP forbids inline style attributes; position the bars through CSSOM instead.
     body.querySelectorAll<HTMLElement>(".ci-range").forEach((el) => {
       const lo = Number(el.dataset.lo), hi = Number(el.dataset.hi);
@@ -809,6 +986,7 @@ export class Menu {
       el.style.width = `${Math.max(0.5, (hi - lo) * 100)}%`;
     });
     body.querySelectorAll<HTMLElement>(".ci-point").forEach((el) => { el.style.left = `${Number(el.dataset.at) * 100}%`; });
+    this.#wireHistoryControls();
     // Leaderboard rows open the fighter's profile card.
     wireBoard();
     }

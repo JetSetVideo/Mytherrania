@@ -71,7 +71,16 @@ const celVertex = /* glsl */ `
   varying vec3 viewPos;
   varying vec3 vWorld;
   varying vec3 vWorldN;
+  varying vec3 vColor;
   void main() {
+    // Per-vertex tint (H-B skin creases): three.js emits USE_COLOR and declares
+    // attribute vec3 color itself when the material sets vertexColors, so it is never
+    // redeclared here. 1.0 when the attribute is absent, so the base colour is unchanged.
+    #ifdef USE_COLOR
+      vColor = color;
+    #else
+      vColor = vec3(1.0);
+    #endif
     viewNormal = normalize(normalMatrix * normal);
     viewLight = normalize((viewMatrix * vec4(lightDirection, 0.0)).xyz);
     vec4 world = modelMatrix * vec4(position, 1.0);
@@ -93,8 +102,9 @@ const celFragment = /* glsl */ `
   varying vec3 viewPos;
   varying vec3 vWorld;
   varying vec3 vWorldN;
+  varying vec3 vColor;
   void main() {
-    vec3 c = celShade(baseColor, normalize(viewNormal), normalize(viewLight), viewPos, vWorld, vWorldN, uSpecular);
+    vec3 c = celShade(baseColor * vColor, normalize(viewNormal), normalize(viewLight), viewPos, vWorld, vWorldN, uSpecular);
     gl_FragColor = vec4(c, 1.0);
     #include <tonemapping_fragment>
     #include <colorspace_fragment>
@@ -147,26 +157,38 @@ export function celUniforms(extra: Record<string, THREE.IUniform>): Record<strin
 /** How shiny a surface is. Metal gets a specular highlight; flesh and cloth do not. */
 export const SPECULAR_METAL = 0.85;
 
-function surfaceMaterial(color: THREE.ColorRepresentation, specular: number): THREE.ShaderMaterial {
+function surfaceMaterial(color: THREE.ColorRepresentation, specular: number, vertexColors = false): THREE.ShaderMaterial {
   return new THREE.ShaderMaterial({
     uniforms: celUniforms({ baseColor: { value: new THREE.Color(color) }, uSpecular: { value: specular } }),
     vertexShader: celVertex,
     fragmentShader: celFragment,
     side: THREE.FrontSide,
+    vertexColors,
   });
+}
+
+/** Options of a static cel mesh (H-B: the skin-crease vertex-colour route). */
+export interface CelMeshOptions {
+  /** Multiply the base colour by the geometry's `color` attribute (per-vertex skin creases). */
+  vertexColors?: boolean;
 }
 
 /**
  * Static cel surface and inverted hull. Geometry is borrowed, never cloned.
  * Dispose each returned mesh's material and dispose the shared geometry once.
  * Normals and the world-space light are both transformed into view space.
+ * With `vertexColors` the surface multiplies `baseColor` by the geometry's `color`
+ * attribute — pass a WHITE base and let the vertex colours carry the skin tone so a
+ * crease can darken a junction per-vertex instead of needing a second mesh (and a
+ * second ink outline) inside one pivot.
  */
 export function createCelMesh(
   geometry: THREE.BufferGeometry,
   color: THREE.ColorRepresentation,
   specular = 0,
+  opts: CelMeshOptions = {},
 ): THREE.Group {
-  const surface = new THREE.Mesh(geometry, surfaceMaterial(color, specular));
+  const surface = new THREE.Mesh(geometry, surfaceMaterial(color, specular, opts.vertexColors ?? false));
   surface.name = "cel-surface";
   const outline = new THREE.Mesh(geometry, new THREE.ShaderMaterial({
     uniforms: {
