@@ -7,6 +7,7 @@
 // negative, and regen is frame-rate independent (scaled by dt).
 
 import type { CombatStats } from "./Stats.ts";
+import { raceAffinity } from "./Races.ts";
 
 export type ResourceKind = "mana" | "stamina";
 
@@ -30,18 +31,71 @@ export interface ResourceState {
  *   mana    <- intelligence
  *   stamina <- vitality
  * Regen is per second; `regenResources` applies it against dt.
+ *
+ * Wave J: regeneration is no longer one flat number. It is computed from the fighter:
+ *   manaRegen    = 1.2 · manaFlow(race, sub-race) · f(willpower)  · gear
+ *   staminaRegen = 5.0 · endurance(race, sub-race) · f(resilience) · gear
+ *   f(s) = clamp(1 + 0.03 · (s − 5), 0.7, 1.6)       gear = 1 + 0.1 · quality (0..1)
+ * Class and level enter through the primaries (willpower, resilience) the stats carry. Mana was
+ * 3 /s flat: a 20-mana power every 6.7 s from regen alone, a full low-INT pool back in 16 s, so a
+ * caster never ran dry inside a 180 s match. At 1.2 /s a human warrior (WIL 5, max 72) refills
+ * from empty in 60 s — one third of the match limit — and a power costs ~17 s of regen.
  */
 const RESOURCE_TABLE: Record<ResourceKind, {
   stat: keyof CombatStats;
   base: number;
   perPoint: number;
   regenPerSecond: number;
+  /** The primary that scales regen (the pool's "recovery" stat). */
+  regenStat: keyof CombatStats;
 }> = {
-  mana: { stat: "intelligence", base: 40, perPoint: 8, regenPerSecond: 3 },
-  stamina: { stat: "vitality", base: 50, perPoint: 6, regenPerSecond: 5 },
+  mana: { stat: "intelligence", base: 40, perPoint: 8, regenPerSecond: 1.2, regenStat: "willpower" },
+  stamina: { stat: "vitality", base: 50, perPoint: 6, regenPerSecond: 5, regenStat: "resilience" },
 };
 
-const RESOURCE_KINDS: ResourceKind[] = ["mana", "stamina"];
+/** Mana regen per second before Wave J (flat, every fighter): kept for the before/after tables. */
+export const LEGACY_MANA_REGEN = 3;
+/** Regen gained per point of the recovery stat above/below 5, and its clamp. */
+export const REGEN_PER_POINT = 0.03;
+export const REGEN_STAT_CLAMP: readonly [number, number] = [0.7, 1.6];
+/** Regen bonus of the best gear (quality 1); quality 0 adds nothing. */
+export const GEAR_REGEN_BONUS = 0.1;
+
+/** Who the pools belong to: ancestry and gear. Absent = a human with no gear bonus. */
+export interface ResourceContext {
+  race?: string | null;
+  subrace?: string | null;
+  /** Gear quality 0..1. */
+  gear?: number;
+}
+
+/** The pool maxima and regen rates a fighter gets (the numbers createResources uses). */
+export interface ResourceRates {
+  manaMax: number;
+  manaRegen: number;
+  staminaMax: number;
+  staminaRegen: number;
+}
+
+function recovery(stat: number): number {
+  const v = Number.isFinite(stat) ? stat : 5;
+  return Math.max(REGEN_STAT_CLAMP[0], Math.min(REGEN_STAT_CLAMP[1], 1 + REGEN_PER_POINT * (v - 5)));
+}
+
+/** Pool maxima and regen for a stat block and its owner (pure, total). */
+export function resourceRates(stats: CombatStats, ctx: ResourceContext = {}): ResourceRates {
+  const aff = raceAffinity(ctx.race ?? "human", ctx.subrace ?? null);
+  const q = Number.isFinite(ctx.gear) ? Math.max(0, Math.min(1, ctx.gear!)) : 0;
+  const gear = 1 + GEAR_REGEN_BONUS * q;
+  const regen = (kind: ResourceKind, flow: number) =>
+    RESOURCE_TABLE[kind].regenPerSecond * flow * recovery(stats[RESOURCE_TABLE[kind].regenStat]) * gear;
+  return {
+    manaMax: resourceMax("mana", stats),
+    manaRegen: regen("mana", aff.manaFlow),
+    staminaMax: resourceMax("stamina", stats),
+    staminaRegen: regen("stamina", aff.endurance),
+  };
+}
 
 /** Stamina regen multiplier while exhausted (heavy, but non-zero — you do recover). */
 export const EXHAUST_REGEN_MUL = 0.35;
@@ -59,15 +113,18 @@ function resourceMax(kind: ResourceKind, stats: CombatStats): number {
   return spec.base + finite(stats[spec.stat]) * spec.perPoint;
 }
 
-/** Build a full resource state from a combat-stat block. */
-export function createResources(stats: CombatStats): ResourceState {
-  const pools = Object.fromEntries(
-    RESOURCE_KINDS.map((kind) => {
-      const max = resourceMax(kind, stats);
-      return [kind, { current: max, max, regenPerSecond: RESOURCE_TABLE[kind].regenPerSecond }];
-    }),
-  ) as Record<ResourceKind, ResourcePool>;
-  return { mana: pools.mana, stamina: pools.stamina, exhausted: false };
+/**
+ * Build a full resource state from a combat-stat block and (Wave J) its owner: race, sub-race
+ * and gear set the regen rates (resourceRates). Without a context the fighter reads as a human
+ * with no gear bonus, so an un-wired caller still gets the lowered mana regen.
+ */
+export function createResources(stats: CombatStats, ctx: ResourceContext = {}): ResourceState {
+  const r = resourceRates(stats, ctx);
+  return {
+    mana: { current: r.manaMax, max: r.manaMax, regenPerSecond: r.manaRegen },
+    stamina: { current: r.staminaMax, max: r.staminaMax, regenPerSecond: r.staminaRegen },
+    exhausted: false,
+  };
 }
 
 /**

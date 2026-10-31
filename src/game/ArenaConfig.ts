@@ -36,7 +36,7 @@ export const PARAMS: ParamSpec[] = [
   { key: "walls", category: "space", min: 0, max: 1, def: 1, unit: "bool", note: "solid perimeter that blocks movement and bounces bodies" },
   { key: "wallChance", category: "space", min: 0, max: 1, def: 0.9, unit: "0..1", note: "how often a generated arena has walls at all; the brief asks for 90%" },
   { key: "wallResistance", category: "space", min: 100, max: 20000, def: 2200, unit: "N s", note: "momentum a wall absorbs before it is breached; heavy fast bodies break through" },
-  { key: "wallHeight", category: "space", min: 0.4, max: 14, def: 2.4, unit: "m", note: "how tall the perimeter wall stands" },
+  { key: "wallHeight", category: "space", min: 0.4, max: 14, def: 0.9, unit: "m", note: "BASE height of the perimeter wall (the wall plan's baseHeight, src/game/arena/walls.ts): the rules scale it per segment; wave J lowered the random roll from 1.4..6 m to mostly 0.4..1.6 m" },
   { key: "wallBounce", category: "space", min: 0, max: 1, def: 0.3, unit: "0..1", note: "restitution of the wall material; 0 deadens, 1 is a trampoline" },
   { key: "ceiling", category: "space", min: 0, max: 30, def: 0, unit: "m", note: "0 = open sky; >0 caps the field and traps thrown bodies" },
   { key: "pitDepth", category: "space", min: 0, max: 40, def: 10, unit: "m", note: "how far below the rim a ringed-out body falls before landing" },
@@ -91,6 +91,27 @@ export const PARAMS: ParamSpec[] = [
   // --- objects -----------------------------------------------------------
   { key: "objects", category: "ground", min: 0, max: 40, def: 0, unit: "count", note: "props scattered on the ring: pillars, ramps, crates, rocks, arches" },
   { key: "objectSpread", category: "ground", min: 0, max: 1, def: 0.75, unit: "0..1", note: "how far out the props are placed; 0 hugs the centre" },
+  // --- wall rules (wave J, src/game/arena/walls.ts) -----------------------
+  { key: "wallRule", category: "space", min: 0, max: 7, def: 2, unit: "enum", note: "primary wall rule: 0 none, 1 low, 2 full, 3 ruin, 4 battlement, 5 gates, 6 half, 7 towers (WALL_RULE_KINDS order)" },
+  { key: "wallRule2", category: "space", min: -1, max: 7, def: -1, unit: "enum", note: "second rule combined with the first (same enum); -1 = no second rule" },
+  { key: "wallRule3", category: "space", min: -1, max: 7, def: -1, unit: "enum", note: "third rule (same enum); -1 = none; ignored when wallRule2 is -1" },
+  { key: "wallMix", category: "space", min: 0, max: 0.9, def: 0.4, unit: "0..1", note: "weight of the secondary rules (split evenly between them); the primary keeps 1 - mix" },
+  { key: "wallCombine", category: "space", min: 0, max: 3, def: 0, unit: "enum", note: "how rules combine per angle: 0 blend (weighted mean), 1 max, 2 min, 3 sectors (each rule owns an arc sized by its weight)" },
+  { key: "wallTall", category: "space", min: 0.6, max: 3.5, def: 2.4, unit: "m", note: "peak height of the tall parts (towers, merlons); 3.5 m is the tallest wall any rule builds" },
+  { key: "wallLow", category: "space", min: 0.3, max: 0.9, def: 0.45, unit: "m", note: "height of the knee-high curb (low rule, crenels, the wall between towers); under 0.6 m a knocked body trips over it" },
+  { key: "wallGap", category: "space", min: 0, max: 0.9, def: 0.35, unit: "0..1", note: "ruin rule: the noise cut, i.e. roughly the share of the rim that has fallen" },
+  { key: "wallGate", category: "space", min: 15, max: 120, def: 30, unit: "deg", note: "gates rule: angular width of each opening (15 deg = two segments, so a 32-ray digest always sees it)" },
+  { key: "wallPeriod", category: "space", min: 4, max: 12, def: 6, unit: "segments", note: "battlement rule: merlon + crenel period, snapped to a divisor of the 48 segments (4, 6, 8, 12)" },
+  { key: "wallTowers", category: "space", min: 2, max: 12, def: 4, unit: "count", note: "towers rule: number of tall towers spaced evenly round the rim" },
+  { key: "wallArc", category: "space", min: 30, max: 300, def: 180, unit: "deg", note: "half rule: span of the walled arc" },
+  { key: "wallArcCentre", category: "space", min: -180, max: 180, def: 0, unit: "deg", note: "half rule: centre of the walled arc relative to the gate direction (perpendicular to the spawn line)" },
+  // --- symmetry and start zones (wave J, src/game/arena/symmetry.ts, spawns.ts) ---
+  { key: "symmetry", category: "space", min: 0, max: 4, def: 0, unit: "enum", note: "map symmetry: 0 none, 1 mirror (one axis), 2 mirror2 (two perpendicular axes), 3 point (central), 4 rotational" },
+  { key: "symmetryOrder", category: "space", min: 1, max: 6, def: 1, unit: "count", note: "rotational order: 3..6 for rotational maps (1 none/mirror, 2 mirror2/point)" },
+  { key: "symmetryAxis", category: "space", min: 0, max: 180, def: 0, unit: "deg", note: "mirror axis bearing (CCW from +x); the phase of the pattern for point/rotational maps; snapped to the outline's own axes" },
+  { key: "spawnAngle", category: "population", min: 0, max: 360, def: 180, unit: "deg", note: "bearing of seat 0's start zone on an asymmetric map (180 = -x, the engine's old player spot); symmetric maps derive it from the axis" },
+  { key: "spawnDistance", category: "population", min: 1, max: 30, def: 2.5, unit: "m", note: "start zone centre's distance from the arena centre, capped at 0.4 x the smallest ring radius" },
+  { key: "spawnZone", category: "population", min: 0.5, max: 6, def: 1.5, unit: "m", note: "radius of each seat's start area; capped at 0.25 x the smallest ring radius" },
 ];
 
 export const PARAM_BY_KEY: Record<string, ParamSpec> = Object.fromEntries(PARAMS.map((p) => [p.key, p]));
@@ -116,6 +137,13 @@ export interface ArenaConfig {
   outsideGround: number; outsideCollision: number; outsideHeight: number; outsideFriction: number;
   glider: number; glideSpeed: number; glideSink: number; updraft: number; glideFuel: number; gliderPads: number;
   objects: number; objectSpread: number;
+  // Wall rules (wave J)
+  wallRule: number; wallRule2: number; wallRule3: number; wallMix: number; wallCombine: number;
+  wallTall: number; wallLow: number; wallGap: number; wallGate: number; wallPeriod: number; wallTowers: number;
+  wallArc: number; wallArcCentre: number;
+  // Symmetry and start zones (wave J)
+  symmetry: number; symmetryOrder: number; symmetryAxis: number;
+  spawnAngle: number; spawnDistance: number; spawnZone: number;
 }
 
 export const DEFAULT_ARENA: ArenaConfig = Object.fromEntries(
@@ -189,6 +217,34 @@ export function ringRadiusAt(cfg: ArenaConfig, angle: number): number {
       return apothem / Math.cos(a - seg / 2);
     }
   }
+}
+
+/**
+ * The outline's OWN symmetry group (wave J): the rotations and mirror axes that map the ring
+ * onto itself. A map symmetry must be a subgroup of this, or the props/walls/terrain would be
+ * symmetric while the edge they sit on is not.
+ *   circle (and an oval/diamond of aspect 1 that is a circle/square): continuous / D4
+ *   regular n-gon: rotations by 360/n, mirror axes at k·180/n − rotation (vertices and edge midpoints)
+ *   oval, diamond (aspect ≠ 1): rotation order 2, axes at −rotation and −rotation + 90
+ * `axesDeg` are bearings in [0, 180) (CCW from +x). `rotOrder` 0 means continuous (any order).
+ */
+export interface RingSymmetry { rotOrder: number; axesDeg: number[]; continuous: boolean }
+
+export function ringSymmetry(cfg: ArenaConfig): RingSymmetry {
+  const shape = shapeOf(cfg);
+  const norm = (d: number) => ((d % 180) + 180) % 180;
+  const rot = Number.isFinite(cfg.rotation) ? cfg.rotation : 0;
+  const unit = Math.abs(cfg.aspect - 1) < 1e-9;
+  if (shape === "circle" || (shape === "oval" && unit)) return { rotOrder: 0, axesDeg: [], continuous: true };
+  let n: number;
+  if (shape === "oval") n = 2;
+  else if (shape === "diamond") n = unit ? 4 : 2;
+  else n = SHAPE_SIDES[shape];
+  // An n-gon has n axes every 180/n deg; the D2 shapes have 2 axes (0 and 90), the square-diamond 4.
+  const axes: number[] = [];
+  const count = shape === "oval" || shape === "diamond" ? (unit ? 4 : 2) : n;
+  for (let k = 0; k < count; k++) axes.push(norm((k * 180) / count - rot));
+  return { rotOrder: n, axesDeg: axes, continuous: false };
 }
 
 /** Is a world point inside the ring outline? */
@@ -301,7 +357,8 @@ export function randomArena(rng: () => number, over: Partial<ArenaConfig> = {}):
     ? { size: pick(6, 14), walls: 0, pitDepth: pick(14, 40), rimHeight: 0.2, wind: pick(0, 0.3) }
     // field: the standard arena, possibly with platforms
     : { size: pick(14, 120), walls: 1, ceiling: 0, platforms: Math.round(pick(0, 8)), wind: pick(0, 0.6) };
-  return makeArena({
+  const kind: "closet" | "pit" | "field" = roll < 0.3 ? "closet" : roll < 0.65 ? "pit" : "field";
+  const base: Partial<ArenaConfig> = {
     ...preset,
     hour: pick(0, 24),
     cloud: pick(0, 1),
@@ -330,8 +387,110 @@ export function randomArena(rng: () => number, over: Partial<ArenaConfig> = {}):
     walls: walled ? 1 : 0,
     wallChance: 0.9,
     wallResistance: pick(900, 9000),
-    wallHeight: pick(1.4, 6),
-    wallBounce: pick(0.1, 0.55),
-    ...over,
-  });
+    // The old wallHeight draw (1.4..6 m) is consumed and discarded so wallBounce keeps its
+    // value per seed; the height now comes from rollWaveJ (wallHeight = the plan's base).
+    wallBounce: (rng(), pick(0.1, 0.55)),
+  };
+  // Wave J: drastically lower, rule-combined walls, a symmetry roll and start zones. They draw
+  // from their OWN stream (one draw from this one, after every legacy draw), so every legacy
+  // value above keeps its per-seed value.
+  const wave = rollWaveJ(waveJStream(rng), kind, { shape: base.shape!, aspect: base.aspect!, rotation: base.rotation! });
+  return makeArena({ ...base, ...wave, ...over });
+}
+
+/** A child stream for the wave J rolls: one draw from the parent, then an independent generator. */
+function waveJStream(rng: () => number): () => number {
+  let a = (Math.floor(rng() * 4294967296) ^ 0x9e3779b9) >>> 0;
+  return () => {
+    a = (a + 0x6d2b79f5) >>> 0;
+    let t = a;
+    t = Math.imul(t ^ (t >>> 15), t | 1);
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+/** Rule index draws (WALL_RULE_KINDS order: none low full ruin battlement gates half towers). */
+const RULE_WEIGHTS_FIELD = [0.1, 0.19, 0.1, 0.15, 0.1, 0.12, 0.08, 0.16];
+/** Pits are ledges over a drop: their rims are mostly open or curbed. */
+const RULE_WEIGHTS_PIT = [0.26, 0.23, 0.02, 0.2, 0.04, 0.12, 0.07, 0.06];
+
+function weighted(rng: () => number, w: readonly number[]): number {
+  const total = w.reduce((a, b) => a + b, 0);
+  let u = rng() * total;
+  for (let i = 0; i < w.length; i++) { u -= w[i]; if (u < 0) return i; }
+  return w.length - 1;
+}
+
+/** Shapes whose outline admits each symmetry (circle always does). */
+const SYMMETRY_SHAPES: Record<string, number[]> = {
+  mirror: [0, 1, 2, 3, 4, 5, 6, 7],
+  mirror2: [0, 2, 4, 5, 6, 7],
+  point: [0, 2, 4, 5, 6, 7],
+  r3: [0, 1, 4],
+  r4: [0, 2, 5],
+  r5: [0, 3],
+  r6: [0, 4],
+};
+
+/**
+ * The wave J part of a random arena:
+ *   walls  base height 0.4 + 1.2·u^1.5 m (median ≈ 0.82 m; closets 0.8..1.6 m, always a full wall);
+ *          1 rule 45%, 2 rules 40%, 3 rules 15%; combine blend 30 / max 25 / min 20 / sectors 25%
+ *          (15 / 45 / 10 / 30% when a rule is towers or battlement, so their tall parts survive);
+ *          tall parts (towers, merlons) 1.6..3.5 m, curb 0.3..0.9 m.
+ *   symmetry  none 40%, mirror 20%, mirror2 10%, point 15%, rotational 15% (order 3..6 uniform).
+ *          The outline is made compatible: an incompatible shape is replaced by a compatible
+ *          one, the mirror axis is snapped to the 3.75° segment lattice and the outline rotated so
+ *          one of its own axes lies on it (aspect forced to 1 for rotational orders above 2).
+ *   spawns    seat 0 bearing uniform, start-zone distance 2.5..5 m, zone radius 1..2.5 m.
+ */
+function rollWaveJ(rng: () => number, kind: "closet" | "pit" | "field", outline: { shape: number; aspect: number; rotation: number }): Partial<ArenaConfig> {
+  const pick = (a: number, b: number) => a + rng() * (b - a);
+  const out: Partial<ArenaConfig> = {};
+  // ---- walls
+  if (kind === "closet") {
+    Object.assign(out, { wallHeight: pick(0.8, 1.6), wallRule: 2, wallRule2: -1, wallRule3: -1, wallMix: 0, wallCombine: 0 });
+  } else {
+    const w = kind === "pit" ? RULE_WEIGHTS_PIT : RULE_WEIGHTS_FIELD;
+    const nRules = rng() < 0.45 ? 1 : rng() < 0.727 ? 2 : 3;
+    out.wallHeight = 0.4 + 1.2 * Math.pow(rng(), 1.5);
+    out.wallRule = weighted(rng, w);
+    out.wallRule2 = nRules >= 2 ? weighted(rng, w) : -1;
+    out.wallRule3 = nRules >= 3 ? weighted(rng, w) : -1;
+    out.wallMix = pick(0.2, 0.6);
+    // Tall parts (towers 7, battlement 4) survive a max or a sector, not a blend or a min: a plan
+    // holding one combines max/sectors more often so the occasional tall part is really there.
+    const tallRule = [out.wallRule, out.wallRule2, out.wallRule3].some((k) => k === 4 || k === 7);
+    out.wallCombine = weighted(rng, tallRule ? [0.15, 0.45, 0.1, 0.3] : [0.3, 0.25, 0.2, 0.25]);
+  }
+  out.wallTall = pick(1.6, 3.5);
+  out.wallLow = pick(0.3, 0.9);
+  out.wallGap = pick(0.15, 0.7);
+  out.wallGate = pick(15, 60);
+  out.wallPeriod = [4, 6, 8, 12][Math.floor(rng() * 4) % 4];
+  out.wallTowers = 2 + Math.floor(rng() * 7);
+  out.wallArc = pick(90, 270);
+  out.wallArcCentre = pick(-180, 180);
+  // ---- symmetry
+  const s = weighted(rng, [0.4, 0.2, 0.1, 0.15, 0.15]);
+  const order = s === 4 ? 3 + Math.floor(rng() * 4) % 4 : s === 2 || s === 3 ? 2 : 1;
+  const axisStep = 3.75; // half a wall segment (360 / 48 / 2): reflections then map segments onto segments
+  const axis = (Math.floor(rng() * 48) % 48) * axisStep;
+  let { shape, aspect, rotation } = outline;
+  if (s > 0) {
+    const key = s === 1 ? "mirror" : s === 2 ? "mirror2" : s === 3 ? "point" : `r${order}`;
+    const ok = SYMMETRY_SHAPES[key];
+    if (!ok.includes(shape)) shape = ok[Math.floor(rng() * ok.length) % ok.length];
+    // Rotational orders above 2 need a regular outline: an oval/diamond only has order 2.
+    if (s === 4) aspect = 1;
+    // Put one of the outline's own axes on the map axis (axes sit at k·180/n − rotation).
+    if (shape !== 0) rotation = ((-axis % 360) + 360) % 360;
+  }
+  Object.assign(out, { shape, aspect, rotation, symmetry: s, symmetryOrder: order, symmetryAxis: axis });
+  // ---- start zones
+  out.spawnAngle = pick(0, 360);
+  out.spawnDistance = pick(2.5, 5);
+  out.spawnZone = pick(1, 2.5);
+  return out;
 }

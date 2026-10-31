@@ -141,6 +141,29 @@ export function createStats(name: ClassName): CombatStats {
   return { ...PRESETS[name] };
 }
 
+/**
+ * Wave J: what a LEVEL is worth by itself. Before this a level was only a stat-point budget, and
+ * points spent in intelligence/willpower move no combat stat (statDelta), so a level-20 mage was a
+ * level-1 mage; the budget is also clamped into the 30–60 k HP / 500–1 400 power window, so even a
+ * strength build stopped growing by level ~8. A level now grows health and attack power by
+ * LEVEL_GROWTH per level ON TOP of that window (level 20 = ×1.57 each), so progression is real for
+ * every build. Level is clamped to [1, LEVEL_CAP] (SpectateGen.MAX_LEVEL, pinned in a test).
+ */
+export const LEVEL_GROWTH = 0.03;
+export const LEVEL_CAP = 20;
+
+/** The pool/power multiplier of a level: 1 + LEVEL_GROWTH · (level − 1), level clamped. */
+export function levelScale(level: number): number {
+  const l = Number.isFinite(level) ? Math.max(1, Math.min(LEVEL_CAP, Math.round(level))) : 1;
+  return 1 + LEVEL_GROWTH * (l - 1);
+}
+
+/** Scale a stat block's health and attack power by its level (pure; level 1 is the identity). */
+export function applyLevel(stats: CombatStats, level: number): CombatStats {
+  const k = levelScale(level);
+  return { ...stats, maxHealth: stats.maxHealth * k, attackPower: stats.attackPower * k };
+}
+
 // Per-hit damage spread. Without it a duel is a step function: whichever class
 // has slightly more DPS wins essentially always, so no win-rate band can exist.
 // The spread makes near-equal archetypes genuinely uncertain (48-52%).

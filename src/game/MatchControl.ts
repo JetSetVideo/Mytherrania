@@ -111,3 +111,18 @@ export function resolveTimeLimit(configured?: number): number {
   if (configured === undefined || !Number.isFinite(configured)) return MATCH_TIME_LIMIT_S;
   return Math.max(MATCH_TIME_LIMIT_MIN_S, Math.min(MATCH_TIME_LIMIT_MAX_S, configured));
 }
+
+/**
+ * Wave J: the judge's decision at the bell, the alternative to Wave H's plain tie. Before this a
+ * bout that reached the limit was a draw whatever the health bars said, so a strong fighter that
+ * had taken a weak one to 5 % but not finished it "drew". The judge awards the bout to the side
+ * with the larger health FRACTION when the gap exceeds `margin` (default 5 points); a closer
+ * finish stays a tie. Pure and total: non-finite fractions read as 0.
+ */
+export const JUDGE_MARGIN = 0.05;
+export function judgeTimeLimit(hpFracA: number, hpFracB: number, margin: number = JUDGE_MARGIN): 0 | 1 | null {
+  const a = Number.isFinite(hpFracA) ? hpFracA : 0, b = Number.isFinite(hpFracB) ? hpFracB : 0;
+  const m = Number.isFinite(margin) ? Math.max(0, margin) : JUDGE_MARGIN;
+  if (Math.abs(a - b) <= m) return null;
+  return a > b ? 0 : 1;
+}

@@ -1,0 +1,6 @@
+engine: strong won 57549/57600 (losses 51: {"ringout":34,"time":17}) in 112 s
+   losses by size m: 2:33 3:1 5:0 8:8 14:9 25:0 60:0 120:0 320:0
+   losses by wall:   none:1 low:3 full:9 ruin:9 battlement:1 gates:2 half:25 towers:1
+waveJ: strong won 57596/57600 (losses 4: {"time":4}) in 84 s
+   losses by size m: 2:0 3:0 5:0 8:1 14:3 25:0 60:0 120:0 320:0
+   losses by wall:   none:0 low:0 full:1 ruin:0 battlement:1 gates:1 half:1 towers:0

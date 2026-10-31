@@ -1,0 +1,14 @@
+engine               51099/51200 {"ringout":73,"time":25,"ko":3} 49 s
+engine+levelGrowth   51151/51200 {"ringout":29,"time":20} 36 s
+engine+kbFloor       51162/51200 {"time":26,"ko":2,"ringout":10} 53 s
+engine+relMeter      51120/51200 {"ringout":56,"time":23,"ko":1} 51 s
+engine+massPush      51116/51200 {"ringout":57,"time":25,"ko":2} 51 s
+engine+judge         51124/51200 {"ringout":73,"ko":3} 52 s
+waveJ                51197/51200 {"time":3} 37 s
+waveJ-levelGrowth    51189/51200 {"ko":2,"time":3,"ringout":6} 50 s
+waveJ-kbFloor        51181/51200 {"ringout":16,"time":3} 36 s
+waveJ-relMeter       51197/51200 {"time":2,"ringout":1} 37 s
+waveJ-massPush       51196/51200 {"time":3,"ringout":1} 38 s
+waveJ-judge          51179/51200 {"time":21} 39 s
+waveJ+poise          51194/51200 {"time":6} 37 s
+waveJ+walkGuard      51197/51200 {"time":3} 38 s

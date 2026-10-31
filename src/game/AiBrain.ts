@@ -14,6 +14,8 @@
 import { decide, defaultTree, type CombatView, type Decision, type TreeNode } from "./DecisionTree.ts";
 import { NeuralPolicy, toFeatures } from "../balance/NeuralPolicy.ts";
 import type { TelemetryDigest } from "./AiStats.ts";
+import type { ArenaDigest } from "./arena/contracts.ts";
+import type { Skill } from "./Skills.ts";
 
 export type BrainMode = "tree" | "neural" | "hybrid";
 
@@ -51,7 +53,11 @@ export class Brain {
   #tree: TreeNode;
   #policy: NeuralPolicy | null;
 
-  constructor(mode: BrainMode = "hybrid", personality?: Partial<Personality>, policy: NeuralPolicy | null = null) {
+  /**
+   * `tree` (Wave J, optional): the tree to walk — e.g. DecisionTree.edgeAwareTree() for a bot fed
+   * the arena digest features. Default defaultTree(), so existing callers are unchanged.
+   */
+  constructor(mode: BrainMode = "hybrid", personality?: Partial<Personality>, policy: NeuralPolicy | null = null, tree?: TreeNode) {
     this.mode = mode;
     this.personality = {
       engageRange: personality?.engageRange ?? 1.6,
@@ -59,7 +65,7 @@ export class Brain {
       aggression: personality?.aggression ?? 0.3,
       neuralTrust: personality?.neuralTrust ?? 0.4,
     };
-    this.#tree = defaultTree();
+    this.#tree = tree ?? defaultTree();
     this.#policy = policy;
   }
 
@@ -188,4 +194,82 @@ export function executeAction(action: Decision, ctx: ActionContext): boolean {
     return true;
   }
   return false; // wait
+}
+
+// ---------------------------------------------------------------------------
+// Wave J: edge play from the arena digest (StrategyLevel "full").
+// ---------------------------------------------------------------------------
+
+/**
+ * Where a "full"-strategy fighter wants to stand: on the far side of the enemy from the enemy's
+ * nearest OPEN rim point, at `standoff` metres, so every blow throws the enemy toward the open edge
+ * (the knockback line runs attacker -> defender). Null when the arena has no open edge. The target
+ * is pulled inside the rim by `margin` so the fighter never steers itself onto its own edge.
+ */
+export function edgePlayTarget(
+  d: Pick<ArenaDigest, "rim" | "open">,
+  enemy: { x: number; z: number },
+  standoff: number,
+  margin = 1,
+): { x: number; z: number } | null {
+  const n = d.rim.length;
+  let ox = 0, oz = 0, best = Infinity;
+  for (let i = 0; i < n; i++) {
+    if ((d.open[i] ?? 0) < 0.5) continue;
+    const a = (i / n) * Math.PI * 2;
+    const px = Math.cos(a) * d.rim[i], pz = Math.sin(a) * d.rim[i];
+    const dist = Math.hypot(px - enemy.x, pz - enemy.z);
+    if (dist < best) { best = dist; ox = px; oz = pz; }
+  }
+  if (!Number.isFinite(best) || best < 1e-9) return null;
+  const ux = (ox - enemy.x) / best, uz = (oz - enemy.z) / best;
+  let tx = enemy.x - ux * standoff, tz = enemy.z - uz * standoff;
+  // Keep the target inside the rim (bearing-wise) by `margin`.
+  const r = Math.hypot(tx, tz);
+  if (r > 1e-9) {
+    const a = Math.atan2(tz, tx);
+    const k = Math.round((((a % (Math.PI * 2)) + Math.PI * 2) % (Math.PI * 2)) / (Math.PI * 2 / n)) % n;
+    const lim = Math.max(0, (d.rim[k] ?? r) - margin);
+    if (r > lim) { tx *= lim / r; tz *= lim / r; }
+  }
+  return Number.isFinite(tx) && Number.isFinite(tz) ? { x: tx, z: tz } : null;
+}
+
+/**
+ * The strafe sign (+1 = the ACTIONS "flank" direction, right-hand of the enemy vector) that circles
+ * self around the enemy toward `target`. 0 when already there (within 0.3 m).
+ */
+export function strafeToward(self: { x: number; z: number }, enemy: { x: number; z: number }, target: { x: number; z: number }): -1 | 0 | 1 {
+  if (Math.hypot(target.x - self.x, target.z - self.z) < 0.3) return 0;
+  const dirX = enemy.x - self.x, dirZ = enemy.z - self.z;
+  // Flank moves along (-dirZ, dirX); project the wanted displacement on it.
+  const along = (target.x - self.x) * -dirZ + (target.z - self.z) * dirX;
+  return along >= 0 ? 1 : -1;
+}
+
+/**
+ * Is a technique sensible to start here? A skill whose animation LUNGES BACKWARD (Archer "Rolling
+ * Shot": lunge −2.6 m; "Piercing Shot" −0.4 m) carries its user away from the enemy, along the very
+ * line a blow would throw it:
+ *   - with the back to an OPEN edge closer than the roll (+ a 0.35 m footprint) it is a
+ *     self-ring-out (needs the digest features; absent = not checked);
+ *   - ending out of the user's own reach it only widens the gap. chooseAiSkill picks "dash" as its
+ *     gap-closer when far, and the Archer's dash IS the backward roll: the live AI archer rolls away
+ *     every 3.5 s and never closes (measured in the headless sim: 0 hits in 180 s).
+ * A stance that SLOWS its user (payload.speedMul < 1, e.g. Archer "Steady Aim" ×0.4) started out
+ * of reach only slows the approach against a longer weapon; it waits until in reach.
+ * A forward or zero lunge without a slowing stance is always sensible.
+ */
+export function sensibleSkill(
+  skill: Pick<Skill, "animation" | "payload">,
+  view: Pick<CombatView, "openBehind" | "rimBehind" | "distance" | "selfReach">,
+): boolean {
+  if ((skill.payload.speedMul ?? 1) < 1 && view.distance > view.selfReach) return false;
+  const lunge = skill.animation.lunge;
+  if (!(lunge < 0)) return true;
+  // A backward lunge that ends out of the user's own reach only opens the gap (a melee-armed
+  // archer rolled 2.6 m away from a target it could hit, then could not close against a longer weapon).
+  if (view.distance - lunge > view.selfReach) return false;
+  if (view.openBehind === undefined || view.rimBehind === undefined) return true;
+  return !(view.openBehind >= 0.5 && -lunge + 0.35 >= view.rimBehind);
 }
