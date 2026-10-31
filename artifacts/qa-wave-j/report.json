@@ -1,0 +1,2061 @@
+{
+  "port": 58823,
+  "phases": [
+    "shots",
+    "speed",
+    "fidelity",
+    "invariant"
+  ],
+  "matches": [
+    {
+      "name": "towers-rot4",
+      "shape": "circle",
+      "size": 40,
+      "walls": {
+        "rules": [
+          "towers"
+        ],
+        "combine": "blend",
+        "base": 0.8447395816445351,
+        "coverage": 1,
+        "mean": 1.087288038254095,
+        "max": 2.8603051560465245,
+        "openSegments": 0,
+        "segments": 48,
+        "meshes": 52
+      },
+      "symmetry": {
+        "kind": "rotational",
+        "order": 4,
+        "axisDeg": 82.5
+      },
+      "spawns": {
+        "spawns": [
+          {
+            "x": 0.5328,
+            "z": 4.0468,
+            "yaw": -3.0107
+          },
+          {
+            "x": -0.5328,
+            "z": -4.0468,
+            "yaw": 0.1309
+          }
+        ],
+        "zones": [
+          {
+            "x": 0.5328,
+            "z": 4.0468,
+            "r": 2.0563
+          },
+          {
+            "x": -0.5328,
+            "z": -4.0468,
+            "r": 2.0563
+          }
+        ],
+        "fair": true
+      },
+      "seatRadii": [
+        4.082,
+        4.082
+      ],
+      "fair": true,
+      "digest": {
+        "openFraction": 0,
+        "open": "00000000000000000000000000000000",
+        "wallHeight": [
+          0.7327,
+          0.7327,
+          0.7327,
+          0.7327,
+          0.7327,
+          0.7327,
+          0.7327,
+          2.8603,
+          0.7327,
+          0.7327,
+          0.7327,
+          0.7327,
+          0.7327,
+          0.7327,
+          0.7327,
+          2.8603,
+          0.7327,
+          0.7327,
+          0.7327,
+          0.7327,
+          0.7327,
+          0.7327,
+          0.7327,
+          2.8603,
+          0.7327,
+          0.7327,
+          0.7327,
+          0.7327,
+          0.7327,
+          0.7327,
+          0.7327,
+          2.8603
+        ],
+        "outsideDrop": 3.1828,
+        "ringOutFatal": false,
+        "props": 12,
+        "terrain": {
+          "min": -0.6903,
+          "max": 1.2775,
+          "mean": 0.0852,
+          "slope": 0.1472
+        }
+      },
+      "wallMeshes": 52,
+      "propsPlaced": 12
+    },
+    {
+      "name": "battlement-mirror",
+      "shape": "square",
+      "size": 38,
+      "walls": {
+        "rules": [
+          "battlement"
+        ],
+        "combine": "min",
+        "base": 1.5341575155824518,
+        "coverage": 0.5000000000000003,
+        "mean": 1.0724300541076819,
+        "max": 1.644860108215362,
+        "openSegments": 0,
+        "segments": 48,
+        "meshes": 20
+      },
+      "symmetry": {
+        "kind": "mirror",
+        "order": 1,
+        "axisDeg": 123.75
+      },
+      "spawns": {
+        "spawns": [
+          {
+            "x": -2.5413,
+            "z": -1.6981,
+            "yaw": 0.9817
+          },
+          {
+            "x": 2.5413,
+            "z": 1.6981,
+            "yaw": -2.1598
+          }
+        ],
+        "zones": [
+          {
+            "x": -2.5413,
+            "z": -1.6981,
+            "r": 1.9448
+          },
+          {
+            "x": 2.5413,
+            "z": 1.6981,
+            "r": 1.9448
+          }
+        ],
+        "fair": true
+      },
+      "seatRadii": [
+        3.056,
+        3.056
+      ],
+      "fair": true,
+      "digest": {
+        "openFraction": 0.5,
+        "open": "11001110110001101100110011000100",
+        "wallHeight": [
+          0.5,
+          0.5,
+          1.6449,
+          1.6449,
+          0.5,
+          0.5,
+          0.5,
+          1.6449,
+          0.5,
+          0.5,
+          1.6449,
+          1.6449,
+          1.6449,
+          0.5,
+          0.5,
+          1.6449,
+          0.5,
+          0.5,
+          1.6449,
+          1.6449,
+          0.5,
+          0.5,
+          1.6449,
+          1.6449,
+          0.5,
+          0.5,
+          1.6449,
+          1.6449,
+          1.6449,
+          0.5,
+          1.6449,
+          1.6449
+        ],
+        "outsideDrop": 2.0182,
+        "ringOutFatal": false,
+        "props": 9,
+        "terrain": {
+          "min": -1.8866,
+          "max": 1.0667,
+          "mean": -0.3326,
+          "slope": 0.198
+        }
+      },
+      "wallMeshes": 20,
+      "propsPlaced": 9
+    },
+    {
+      "name": "gates-point",
+      "shape": "octagon",
+      "size": 42,
+      "walls": {
+        "rules": [
+          "gates"
+        ],
+        "combine": "min",
+        "base": 1.021070404601565,
+        "coverage": 0.7916666666666667,
+        "mean": 0.8083474036429062,
+        "max": 1.021070404601565,
+        "openSegments": 10,
+        "segments": 48,
+        "meshes": 10
+      },
+      "symmetry": {
+        "kind": "point",
+        "order": 2,
+        "axisDeg": 65.1123
+      },
+      "spawns": {
+        "spawns": [
+          {
+            "x": 1.9233,
+            "z": 4.1457,
+            "yaw": -2.7072
+          },
+          {
+            "x": -1.9233,
+            "z": -4.1457,
+            "yaw": 0.4344
+          }
+        ],
+        "zones": [
+          {
+            "x": 1.9233,
+            "z": 4.1457,
+            "r": 1.2073
+          },
+          {
+            "x": -1.9233,
+            "z": -4.1457,
+            "r": 1.2073
+          }
+        ],
+        "fair": true
+      },
+      "seatRadii": [
+        4.57,
+        4.57
+      ],
+      "fair": true,
+      "digest": {
+        "openFraction": 0.1875,
+        "open": "00000000000001110000000000000111",
+        "wallHeight": [
+          1.0211,
+          1.0211,
+          1.0211,
+          1.0211,
+          1.0211,
+          1.0211,
+          1.0211,
+          1.0211,
+          1.0211,
+          1.0211,
+          1.0211,
+          1.0211,
+          1.0211,
+          0,
+          0,
+          0,
+          1.0211,
+          1.0211,
+          1.0211,
+          1.0211,
+          1.0211,
+          1.0211,
+          1.0211,
+          1.0211,
+          1.0211,
+          1.0211,
+          1.0211,
+          1.0211,
+          1.0211,
+          0,
+          0,
+          0
+        ],
+        "outsideDrop": 1.8865,
+        "ringOutFatal": false,
+        "props": 10,
+        "terrain": {
+          "min": -1.8006,
+          "max": 0.7993,
+          "mean": -0.5655,
+          "slope": 0.2082
+        }
+      },
+      "wallMeshes": 10,
+      "propsPlaced": 10
+    },
+    {
+      "name": "ruin-mirror2",
+      "shape": "circle",
+      "size": 44,
+      "walls": {
+        "rules": [
+          "ruin"
+        ],
+        "combine": "max",
+        "base": 0.4005144845942395,
+        "coverage": 0,
+        "mean": 0.17084755513716726,
+        "max": 0.3666786574296716,
+        "openSegments": 18,
+        "segments": 48,
+        "meshes": 40
+      },
+      "symmetry": {
+        "kind": "mirror2",
+        "order": 2,
+        "axisDeg": 33.75
+      },
+      "spawns": {
+        "spawns": [
+          {
+            "x": -2.4437,
+            "z": 3.6572,
+            "yaw": 2.5525
+          },
+          {
+            "x": 2.4437,
+            "z": -3.6572,
+            "yaw": -0.589
+          }
+        ],
+        "zones": [
+          {
+            "x": -2.4437,
+            "z": 3.6572,
+            "r": 2.1269
+          },
+          {
+            "x": 2.4437,
+            "z": -3.6572,
+            "r": 2.1269
+          }
+        ],
+        "fair": true
+      },
+      "seatRadii": [
+        4.398,
+        4.398
+      ],
+      "fair": true,
+      "digest": {
+        "openFraction": 1,
+        "open": "11111111111111111111111111111111",
+        "wallHeight": [
+          0.3643,
+          0.3667,
+          0.2491,
+          0.1989,
+          0.3165,
+          0.3667,
+          0.3643,
+          0.2106,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0.2106,
+          0.3643,
+          0.3667,
+          0.2491,
+          0.1989,
+          0.3165,
+          0.3667,
+          0.2987,
+          0.2106,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0.145,
+          0.2106
+        ],
+        "outsideDrop": 2.176,
+        "ringOutFatal": false,
+        "props": 10,
+        "terrain": {
+          "min": -2.3171,
+          "max": 0.7487,
+          "mean": -0.4325,
+          "slope": 0.1848
+        }
+      },
+      "wallMeshes": 40,
+      "propsPlaced": 10
+    },
+    {
+      "name": "low+towers-rot3",
+      "shape": "triangle",
+      "size": 40,
+      "walls": {
+        "rules": [
+          "low",
+          "towers"
+        ],
+        "combine": "max",
+        "base": 0.4164138085859989,
+        "coverage": 0.24999999999999986,
+        "mean": 0.9260520221316255,
+        "max": 2.257668658765033,
+        "openSegments": 0,
+        "segments": 48,
+        "meshes": 15
+      },
+      "symmetry": {
+        "kind": "rotational",
+        "order": 3,
+        "axisDeg": 44.3413
+      },
+      "spawns": {
+        "spawns": [
+          {
+            "x": 1.9165,
+            "z": 1.8729,
+            "yaw": -1.8211
+          },
+          {
+            "x": -2.5803,
+            "z": 0.7233,
+            "yaw": 1.3205
+          }
+        ],
+        "zones": [
+          {
+            "x": 1.9165,
+            "z": 1.8729,
+            "r": 1.8894
+          },
+          {
+            "x": -2.5803,
+            "z": 0.7233,
+            "r": 1.8894
+          }
+        ],
+        "fair": true
+      },
+      "seatRadii": [
+        2.68,
+        2.68
+      ],
+      "fair": true,
+      "digest": {
+        "openFraction": 0.7813,
+        "open": "11110111101111101111011110111100",
+        "wallHeight": [
+          0.4822,
+          0.4822,
+          0.4822,
+          0.4822,
+          2.2577,
+          0.4822,
+          0.4822,
+          0.4822,
+          0.4822,
+          2.2577,
+          0.4822,
+          0.4822,
+          0.4822,
+          0.4822,
+          0.4822,
+          2.2577,
+          0.4822,
+          0.4822,
+          0.4822,
+          0.4822,
+          2.2577,
+          0.4822,
+          0.4822,
+          0.4822,
+          0.4822,
+          2.2577,
+          0.4822,
+          0.4822,
+          0.4822,
+          0.4822,
+          2.2577,
+          2.2577
+        ],
+        "outsideDrop": 5.4068,
+        "ringOutFatal": false,
+        "props": 9,
+        "terrain": {
+          "min": -0.3011,
+          "max": 1.5504,
+          "mean": 0.6921,
+          "slope": 0.1885
+        }
+      },
+      "wallMeshes": 15,
+      "propsPlaced": 9
+    },
+    {
+      "name": "half-none",
+      "shape": "hexagon",
+      "size": 36,
+      "walls": {
+        "rules": [
+          "half"
+        ],
+        "combine": "min",
+        "base": 0.45615047578321477,
+        "coverage": 0,
+        "mean": 0.22807523789160733,
+        "max": 0.45615047578321477,
+        "openSegments": 24,
+        "segments": 48,
+        "meshes": 3
+      },
+      "symmetry": {
+        "kind": "none",
+        "order": 1,
+        "axisDeg": 0
+      },
+      "spawns": {
+        "spawns": [
+          {
+            "x": -2.2327,
+            "z": -1.5767,
+            "yaw": 0.9559
+          },
+          {
+            "x": 2.2327,
+            "z": 1.5767,
+            "yaw": -2.1857
+          }
+        ],
+        "zones": [
+          {
+            "x": -2.2327,
+            "z": -1.5767,
+            "r": 1.3018
+          },
+          {
+            "x": 2.2327,
+            "z": 1.5767,
+            "r": 1.3018
+          }
+        ],
+        "fair": false
+      },
+      "seatRadii": [
+        2.733,
+        2.733
+      ],
+      "fair": false,
+      "digest": {
+        "openFraction": 1,
+        "open": "11111111111111111111111111111111",
+        "wallHeight": [
+          0.4562,
+          0.4562,
+          0.4562,
+          0.4562,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0.4562,
+          0.4562,
+          0.4562,
+          0.4562,
+          0.4562,
+          0.4562,
+          0.4562,
+          0.4562,
+          0.4562,
+          0.4562,
+          0.4562,
+          0.4562
+        ],
+        "outsideDrop": 2.5211,
+        "ringOutFatal": false,
+        "props": 3,
+        "terrain": {
+          "min": -4.5372,
+          "max": 2.3514,
+          "mean": 0.4215,
+          "slope": 0.2764
+        }
+      },
+      "wallMeshes": 3,
+      "propsPlaced": 3
+    }
+  ],
+  "screenshots": [
+    "artifacts/qa-wave-j/arena-towers-rot4.png",
+    "artifacts/qa-wave-j/arena-battlement-mirror.png",
+    "artifacts/qa-wave-j/arena-gates-point.png",
+    "artifacts/qa-wave-j/arena-ruin-mirror2.png",
+    "artifacts/qa-wave-j/arena-low+towers-rot3.png",
+    "artifacts/qa-wave-j/arena-half-none.png",
+    "artifacts/qa-wave-j/hud-speed-control.png"
+  ],
+  "speeds": [
+    {
+      "id": "half",
+      "timeScale": 0.5,
+      "simS": 2,
+      "realS": 4,
+      "effective": 0.5,
+      "clockAdvance": 2,
+      "substepsPerFrame": 1.01,
+      "cappedFrames": 0,
+      "frames": 240,
+      "stepMs": 0.524,
+      "otherMs": 0.855,
+      "readout": "½×",
+      "buttonPressed": "true",
+      "frameCpu": {
+        "n": 240,
+        "mean": 1.5025000055631001,
+        "p50": 1.4000000953674316,
+        "p95": 2.200000047683716,
+        "p99": 2.700000047683716,
+        "max": 2.8999998569488525,
+        "headroomMs": 13.9
+      }
+    },
+    {
+      "id": "normal",
+      "timeScale": 1,
+      "simS": 4.017,
+      "realS": 4.017,
+      "effective": 1,
+      "clockAdvance": 4.02,
+      "substepsPerFrame": 1.49,
+      "cappedFrames": 0,
+      "frames": 241,
+      "stepMs": 0.696,
+      "otherMs": 0.898,
+      "readout": "1×",
+      "buttonPressed": "true",
+      "frameCpu": {
+        "n": 240,
+        "mean": 2.189999994635582,
+        "p50": 1.8000001907348633,
+        "p95": 3.8999998569488525,
+        "p99": 9.700000047683716,
+        "max": 14.800000190734863,
+        "headroomMs": 6.9
+      }
+    },
+    {
+      "id": "double",
+      "timeScale": 2,
+      "simS": 8.032,
+      "realS": 4.016,
+      "effective": 2,
+      "clockAdvance": 8.03,
+      "substepsPerFrame": 2.54,
+      "cappedFrames": 0,
+      "frames": 241,
+      "stepMs": 0.523,
+      "otherMs": 0.853,
+      "readout": "2×",
+      "buttonPressed": "true",
+      "frameCpu": {
+        "n": 240,
+        "mean": 2.126249994834264,
+        "p50": 2,
+        "p95": 3,
+        "p99": 4.200000047683716,
+        "max": 4.8999998569488525,
+        "headroomMs": 12.4
+      }
+    },
+    {
+      "id": "quad",
+      "timeScale": 4,
+      "simS": 16.065,
+      "realS": 4.016,
+      "effective": 4,
+      "clockAdvance": 16.06,
+      "substepsPerFrame": 4.46,
+      "cappedFrames": 0,
+      "frames": 241,
+      "stepMs": 0.393,
+      "otherMs": 0.867,
+      "readout": "4×",
+      "buttonPressed": "true",
+      "frameCpu": {
+        "n": 240,
+        "mean": 2.618750006953875,
+        "p50": 2.4000000953674316,
+        "p95": 4.099999904632568,
+        "p99": 4.700000047683716,
+        "max": 5.200000047683716,
+        "headroomMs": 11.9
+      }
+    },
+    {
+      "id": "eight",
+      "timeScale": 8,
+      "simS": 32.006,
+      "realS": 4.001,
+      "effective": 8,
+      "clockAdvance": 32.01,
+      "substepsPerFrame": 8.49,
+      "cappedFrames": 0,
+      "frames": 240,
+      "stepMs": 0.28,
+      "otherMs": 0.958,
+      "readout": "8×",
+      "buttonPressed": "true",
+      "frameCpu": {
+        "n": 240,
+        "mean": 3.486666661500931,
+        "p50": 3.200000047683716,
+        "p95": 4.799999952316284,
+        "p99": 6.200000047683716,
+        "max": 22.700000047683716,
+        "headroomMs": 10.4
+      }
+    }
+  ],
+  "speedKeys": {
+    "afterBracketLeft": "quad",
+    "afterBracketRight": "eight",
+    "persisted": "eight"
+  },
+  "fidelity": {
+    "n": 32,
+    "played": 32,
+    "errors": [],
+    "winnerAgreement": 0.813,
+    "durationRatio": {
+      "min": 0.54,
+      "median": 1.07,
+      "max": 4.83
+    },
+    "reasons": {
+      "headless": {
+        "ringout": 9,
+        "ko": 22,
+        "time": 1
+      },
+      "engine": {
+        "ringout": 10,
+        "ko": 22
+      }
+    },
+    "effectiveSpeedAtEight": [
+      7.405,
+      7.537,
+      7.429,
+      7.366,
+      7.936,
+      7.967,
+      7.825,
+      7.944,
+      7.966,
+      7.967,
+      7.895,
+      7.726,
+      7.944,
+      7.947,
+      7.758,
+      7.806,
+      7.459,
+      7.523,
+      7.407,
+      7.384,
+      7.969,
+      7.937,
+      7.856,
+      7.787,
+      7.942,
+      7.917,
+      7.833,
+      7.881,
+      7.916,
+      7.943,
+      7.925,
+      7.901
+    ],
+    "realSecondsPerMatch": [
+      2,
+      2.2,
+      2.1,
+      2,
+      9.7,
+      18,
+      4.2,
+      10.9,
+      17.3,
+      17.7,
+      6.5,
+      3.2,
+      11.1,
+      11.4,
+      3.5,
+      4.1,
+      2,
+      2.3,
+      2,
+      1.8,
+      18.8,
+      9.9,
+      5.1,
+      3.8,
+      10.8,
+      7.8,
+      4.5,
+      5.9,
+      7.9,
+      10.8,
+      8.6,
+      6.7
+    ],
+    "cells": {
+      "corner:max-vs-max|small-open": {
+        "n": 2,
+        "winnerAgree": 0,
+        "durationRatio": [
+          0.54,
+          0.74
+        ],
+        "headless": [
+          "1/ringout/12.5",
+          "1/ringout/10.23"
+        ],
+        "engine": [
+          "0/ringout/6.773",
+          "0/ringout/7.553"
+        ]
+      },
+      "corner:min-vs-min|small-open": {
+        "n": 2,
+        "winnerAgree": 1,
+        "durationRatio": [
+          1.07,
+          0.79
+        ],
+        "headless": [
+          "0/ringout/8.27",
+          "1/ringout/10.9"
+        ],
+        "engine": [
+          "1/ringout/8.825",
+          "1/ringout/8.593"
+        ]
+      },
+      "corner:max-vs-min|small-open": {
+        "n": 2,
+        "winnerAgree": 2,
+        "durationRatio": [
+          1.1,
+          1.05
+        ],
+        "headless": [
+          "0/ringout/6.4",
+          "0/ringout/6.47"
+        ],
+        "engine": [
+          "0/ringout/7.034",
+          "0/ringout/6.777"
+        ]
+      },
+      "corner:min-vs-max|small-open": {
+        "n": 2,
+        "winnerAgree": 2,
+        "durationRatio": [
+          1,
+          1
+        ],
+        "headless": [
+          "1/ringout/6.5",
+          "1/ringout/6.53"
+        ],
+        "engine": [
+          "1/ringout/6.504",
+          "1/ringout/6.498"
+        ]
+      },
+      "corner:max-vs-max|small-walled": {
+        "n": 2,
+        "winnerAgree": 0,
+        "durationRatio": [
+          0.85,
+          2.59
+        ],
+        "headless": [
+          "0/ko/79.97",
+          "0/ko/54.1"
+        ],
+        "engine": [
+          "1/ko/67.671",
+          "1/ko/140.288"
+        ]
+      },
+      "corner:min-vs-min|small-walled": {
+        "n": 2,
+        "winnerAgree": 1,
+        "durationRatio": [
+          1.92,
+          0.85
+        ],
+        "headless": [
+          "0/ko/69.3",
+          "1/ko/83.2"
+        ],
+        "engine": [
+          "0/ko/133.37",
+          "0/ringout/70.969"
+        ]
+      },
+      "corner:max-vs-min|small-walled": {
+        "n": 2,
+        "winnerAgree": 2,
+        "durationRatio": [
+          1.67,
+          2.29
+        ],
+        "headless": [
+          "0/ko/14.63",
+          "0/ko/13.1"
+        ],
+        "engine": [
+          "0/ko/24.493",
+          "0/ringout/29.996"
+        ]
+      },
+      "corner:min-vs-max|small-walled": {
+        "n": 2,
+        "winnerAgree": 2,
+        "durationRatio": [
+          4.83,
+          1.27
+        ],
+        "headless": [
+          "1/ko/16.27",
+          "1/ko/16.27"
+        ],
+        "engine": [
+          "1/ko/78.66",
+          "1/ko/20.69"
+        ]
+      },
+      "corner:max-vs-max|large-open": {
+        "n": 2,
+        "winnerAgree": 2,
+        "durationRatio": [
+          1.23,
+          1.73
+        ],
+        "headless": [
+          "0/ringout/104.5",
+          "1/ko/43.8"
+        ],
+        "engine": [
+          "0/ko/128.085",
+          "1/ko/75.876"
+        ]
+      },
+      "corner:min-vs-min|large-open": {
+        "n": 2,
+        "winnerAgree": 2,
+        "durationRatio": [
+          0.71,
+          0.7
+        ],
+        "headless": [
+          "0/time/186.03",
+          "1/ko/74.5"
+        ],
+        "engine": [
+          "0/ko/131.724",
+          "1/ko/52.282"
+        ]
+      },
+      "corner:max-vs-min|large-open": {
+        "n": 2,
+        "winnerAgree": 2,
+        "durationRatio": [
+          1.36,
+          0.98
+        ],
+        "headless": [
+          "0/ko/30.33",
+          "0/ko/26.23"
+        ],
+        "engine": [
+          "0/ko/41.393",
+          "0/ko/25.654"
+        ]
+      },
+      "corner:min-vs-max|large-open": {
+        "n": 2,
+        "winnerAgree": 2,
+        "durationRatio": [
+          0.9,
+          1.85
+        ],
+        "headless": [
+          "1/ko/17.03",
+          "1/ko/19.6"
+        ],
+        "engine": [
+          "1/ko/15.407",
+          "1/ko/36.211"
+        ]
+      },
+      "corner:max-vs-max|large-walled": {
+        "n": 2,
+        "winnerAgree": 2,
+        "durationRatio": [
+          0.74,
+          0.68
+        ],
+        "headless": [
+          "1/ko/105.87",
+          "1/ko/76.63"
+        ],
+        "engine": [
+          "1/ko/78.514",
+          "1/ko/52.033"
+        ]
+      },
+      "corner:min-vs-min|large-walled": {
+        "n": 2,
+        "winnerAgree": 2,
+        "durationRatio": [
+          1.28,
+          0.6
+        ],
+        "headless": [
+          "1/ko/64.03",
+          "0/ko/126.2"
+        ],
+        "engine": [
+          "1/ko/82.03",
+          "0/ko/76.058"
+        ]
+      },
+      "corner:max-vs-min|large-walled": {
+        "n": 2,
+        "winnerAgree": 2,
+        "durationRatio": [
+          1,
+          3.42
+        ],
+        "headless": [
+          "0/ko/17.63",
+          "0/ko/16.93"
+        ],
+        "engine": [
+          "0/ko/17.565",
+          "0/ko/57.983"
+        ]
+      },
+      "corner:min-vs-max|large-walled": {
+        "n": 2,
+        "winnerAgree": 2,
+        "durationRatio": [
+          1.29,
+          2.16
+        ],
+        "headless": [
+          "1/ko/17.13",
+          "1/ko/20.37"
+        ],
+        "engine": [
+          "1/ko/22.1",
+          "1/ko/43.987"
+        ]
+      }
+    }
+  },
+  "invariant": {
+    "n": 28,
+    "played": 28,
+    "strongWins": 28,
+    "strongLosses": 0,
+    "ties": 0,
+    "byReason": {
+      "strong:ringout": 10,
+      "strong:ko": 18
+    },
+    "headlessStrongWins": 28,
+    "rows": [
+      {
+        "design": "corner:max-vs-min|sweep-3m-none",
+        "size": 3,
+        "strongSeat": 0,
+        "engine": {
+          "winner": 0,
+          "reason": "ringout",
+          "duration": 7.061,
+          "hpFrac": [
+            1,
+            0.8939
+          ],
+          "hits": [
+            2,
+            0
+          ],
+          "swings": [
+            3,
+            1
+          ],
+          "wallHits": [
+            0,
+            0
+          ]
+        },
+        "strongWonEngine": true,
+        "strongWonHeadless": true,
+        "headlessReason": "ringout",
+        "maxHp": [
+          94200,
+          60000
+        ]
+      },
+      {
+        "design": "corner:min-vs-max|sweep-3m-none",
+        "size": 3,
+        "strongSeat": 1,
+        "engine": {
+          "winner": 1,
+          "reason": "ringout",
+          "duration": 7.891,
+          "hpFrac": [
+            0.9652,
+            0.999
+          ],
+          "hits": [
+            2,
+            2
+          ],
+          "swings": [
+            3,
+            4
+          ],
+          "wallHits": [
+            0,
+            0
+          ]
+        },
+        "strongWonEngine": true,
+        "strongWonHeadless": true,
+        "headlessReason": "ringout",
+        "maxHp": [
+          60000,
+          94200
+        ]
+      },
+      {
+        "design": "corner:max-vs-min|sweep-8m-none",
+        "size": 8,
+        "strongSeat": 0,
+        "engine": {
+          "winner": 0,
+          "reason": "ringout",
+          "duration": 6.913,
+          "hpFrac": [
+            1,
+            0.804
+          ],
+          "hits": [
+            2,
+            0
+          ],
+          "swings": [
+            3,
+            1
+          ],
+          "wallHits": [
+            0,
+            0
+          ]
+        },
+        "strongWonEngine": true,
+        "strongWonHeadless": true,
+        "headlessReason": "ringout",
+        "maxHp": [
+          98910,
+          43995
+        ]
+      },
+      {
+        "design": "corner:min-vs-max|sweep-8m-none",
+        "size": 8,
+        "strongSeat": 1,
+        "engine": {
+          "winner": 1,
+          "reason": "ringout",
+          "duration": 16.852,
+          "hpFrac": [
+            0.0367,
+            0.9886
+          ],
+          "hits": [
+            3,
+            8
+          ],
+          "swings": [
+            6,
+            17
+          ],
+          "wallHits": [
+            0,
+            0
+          ]
+        },
+        "strongWonEngine": true,
+        "strongWonHeadless": true,
+        "headlessReason": "ringout",
+        "maxHp": [
+          40595,
+          97026
+        ]
+      },
+      {
+        "design": "corner:max-vs-min|sweep-25m-none",
+        "size": 25.00000000000001,
+        "strongSeat": 0,
+        "engine": {
+          "winner": 0,
+          "reason": "ringout",
+          "duration": 47.675,
+          "hpFrac": [
+            0.9713,
+            0.005
+          ],
+          "hits": [
+            32,
+            12
+          ],
+          "swings": [
+            62,
+            32
+          ],
+          "wallHits": [
+            0,
+            0
+          ]
+        },
+        "strongWonEngine": true,
+        "strongWonHeadless": true,
+        "headlessReason": "ringout",
+        "maxHp": [
+          91374,
+          46850
+        ]
+      },
+      {
+        "design": "corner:min-vs-max|sweep-25m-none",
+        "size": 25.00000000000001,
+        "strongSeat": 1,
+        "engine": {
+          "winner": 1,
+          "reason": "ko",
+          "duration": 26.132,
+          "hpFrac": [
+            0,
+            0.999
+          ],
+          "hits": [
+            3,
+            18
+          ],
+          "swings": [
+            21,
+            28
+          ],
+          "wallHits": [
+            0,
+            0
+          ]
+        },
+        "strongWonEngine": true,
+        "strongWonHeadless": true,
+        "headlessReason": "ringout",
+        "maxHp": [
+          57090,
+          91374
+        ]
+      },
+      {
+        "design": "corner:max-vs-min|sweep-120m-none",
+        "size": 120,
+        "strongSeat": 0,
+        "engine": {
+          "winner": 0,
+          "reason": "ko",
+          "duration": 26.145,
+          "hpFrac": [
+            1,
+            0
+          ],
+          "hits": [
+            12,
+            4
+          ],
+          "swings": [
+            22,
+            10
+          ],
+          "wallHits": [
+            0,
+            0
+          ]
+        },
+        "strongWonEngine": true,
+        "strongWonHeadless": true,
+        "headlessReason": "ko",
+        "maxHp": [
+          100794,
+          49193
+        ]
+      },
+      {
+        "design": "corner:min-vs-max|sweep-120m-none",
+        "size": 120,
+        "strongSeat": 1,
+        "engine": {
+          "winner": 1,
+          "reason": "ringout",
+          "duration": 38.872,
+          "hpFrac": [
+            0.0893,
+            0.9805
+          ],
+          "hits": [
+            7,
+            17
+          ],
+          "swings": [
+            18,
+            38
+          ],
+          "wallHits": [
+            0,
+            0
+          ]
+        },
+        "strongWonEngine": true,
+        "strongWonHeadless": true,
+        "headlessReason": "ko",
+        "maxHp": [
+          48143,
+          94200
+        ]
+      },
+      {
+        "design": "corner:max-vs-min|sweep-3m-low",
+        "size": 3,
+        "strongSeat": 0,
+        "engine": {
+          "winner": 0,
+          "reason": "ko",
+          "duration": 20.097,
+          "hpFrac": [
+            0.9611,
+            0
+          ],
+          "hits": [
+            7,
+            7
+          ],
+          "swings": [
+            15,
+            10
+          ],
+          "wallHits": [
+            0,
+            0
+          ]
+        },
+        "strongWonEngine": true,
+        "strongWonHeadless": true,
+        "headlessReason": "ringout",
+        "maxHp": [
+          100794,
+          33174
+        ]
+      },
+      {
+        "design": "corner:min-vs-max|sweep-3m-low",
+        "size": 3,
+        "strongSeat": 1,
+        "engine": {
+          "winner": 1,
+          "reason": "ko",
+          "duration": 29.239,
+          "hpFrac": [
+            0,
+            0.9152
+          ],
+          "hits": [
+            6,
+            18
+          ],
+          "swings": [
+            12,
+            30
+          ],
+          "wallHits": [
+            0,
+            0
+          ]
+        },
+        "strongWonEngine": true,
+        "strongWonHeadless": true,
+        "headlessReason": "ringout",
+        "maxHp": [
+          44415,
+          91374
+        ]
+      },
+      {
+        "design": "corner:max-vs-min|sweep-8m-low",
+        "size": 8,
+        "strongSeat": 0,
+        "engine": {
+          "winner": 0,
+          "reason": "ko",
+          "duration": 18.897,
+          "hpFrac": [
+            0.9875,
+            0
+          ],
+          "hits": [
+            16,
+            3
+          ],
+          "swings": [
+            20,
+            6
+          ],
+          "wallHits": [
+            0,
+            0
+          ]
+        },
+        "strongWonEngine": true,
+        "strongWonHeadless": true,
+        "headlessReason": "ringout",
+        "maxHp": [
+          98910,
+          60000
+        ]
+      },
+      {
+        "design": "corner:min-vs-max|sweep-8m-low",
+        "size": 8,
+        "strongSeat": 1,
+        "engine": {
+          "winner": 1,
+          "reason": "ko",
+          "duration": 28.443,
+          "hpFrac": [
+            0,
+            0.9626
+          ],
+          "hits": [
+            8,
+            16
+          ],
+          "swings": [
+            12,
+            28
+          ],
+          "wallHits": [
+            0,
+            0
+          ]
+        },
+        "strongWonEngine": true,
+        "strongWonHeadless": true,
+        "headlessReason": "ringout",
+        "maxHp": [
+          60000,
+          98910
+        ]
+      },
+      {
+        "design": "corner:max-vs-min|sweep-25m-low",
+        "size": 25.00000000000001,
+        "strongSeat": 0,
+        "engine": {
+          "winner": 0,
+          "reason": "ringout",
+          "duration": 49.16,
+          "hpFrac": [
+            0.9422,
+            0.3886
+          ],
+          "hits": [
+            31,
+            10
+          ],
+          "swings": [
+            66,
+            25
+          ],
+          "wallHits": [
+            0,
+            0
+          ]
+        },
+        "strongWonEngine": true,
+        "strongWonHeadless": true,
+        "headlessReason": "ringout",
+        "maxHp": [
+          100794,
+          60000
+        ]
+      },
+      {
+        "design": "corner:min-vs-max|sweep-25m-low",
+        "size": 25.00000000000001,
+        "strongSeat": 1,
+        "engine": {
+          "winner": 1,
+          "reason": "ko",
+          "duration": 21.306,
+          "hpFrac": [
+            0,
+            0.9794
+          ],
+          "hits": [
+            8,
+            11
+          ],
+          "swings": [
+            16,
+            19
+          ],
+          "wallHits": [
+            0,
+            0
+          ]
+        },
+        "strongWonEngine": true,
+        "strongWonHeadless": true,
+        "headlessReason": "ko",
+        "maxHp": [
+          43365,
+          100794
+        ]
+      },
+      {
+        "design": "corner:max-vs-min|sweep-120m-low",
+        "size": 120,
+        "strongSeat": 0,
+        "engine": {
+          "winner": 0,
+          "reason": "ko",
+          "duration": 31.403,
+          "hpFrac": [
+            0.973,
+            0
+          ],
+          "hits": [
+            24,
+            8
+          ],
+          "swings": [
+            55,
+            17
+          ],
+          "wallHits": [
+            0,
+            0
+          ]
+        },
+        "strongWonEngine": true,
+        "strongWonHeadless": true,
+        "headlessReason": "ringout",
+        "maxHp": [
+          91374,
+          58905
+        ]
+      },
+      {
+        "design": "corner:min-vs-max|sweep-120m-low",
+        "size": 120,
+        "strongSeat": 1,
+        "engine": {
+          "winner": 1,
+          "reason": "ko",
+          "duration": 22.78,
+          "hpFrac": [
+            0,
+            0.9944
+          ],
+          "hits": [
+            6,
+            27
+          ],
+          "swings": [
+            16,
+            45
+          ],
+          "wallHits": [
+            0,
+            0
+          ]
+        },
+        "strongWonEngine": true,
+        "strongWonHeadless": true,
+        "headlessReason": "ko",
+        "maxHp": [
+          41432,
+          103620
+        ]
+      },
+      {
+        "design": "corner:max-vs-min|sweep-3m-full",
+        "size": 3,
+        "strongSeat": 0,
+        "engine": {
+          "winner": 0,
+          "reason": "ko",
+          "duration": 14.144,
+          "hpFrac": [
+            0.9806,
+            0
+          ],
+          "hits": [
+            14,
+            4
+          ],
+          "swings": [
+            14,
+            11
+          ],
+          "wallHits": [
+            0,
+            2
+          ]
+        },
+        "strongWonEngine": true,
+        "strongWonHeadless": true,
+        "headlessReason": "ko",
+        "maxHp": [
+          91374,
+          44415
+        ]
+      },
+      {
+        "design": "corner:min-vs-max|sweep-3m-full",
+        "size": 3,
+        "strongSeat": 1,
+        "engine": {
+          "winner": 1,
+          "reason": "ko",
+          "duration": 17.31,
+          "hpFrac": [
+            0,
+            0.9928
+          ],
+          "hits": [
+            3,
+            8
+          ],
+          "swings": [
+            7,
+            13
+          ],
+          "wallHits": [
+            0,
+            0
+          ]
+        },
+        "strongWonEngine": true,
+        "strongWonHeadless": true,
+        "headlessReason": "ko",
+        "maxHp": [
+          46250,
+          91374
+        ]
+      },
+      {
+        "design": "corner:max-vs-min|sweep-8m-full",
+        "size": 8,
+        "strongSeat": 0,
+        "engine": {
+          "winner": 0,
+          "reason": "ko",
+          "duration": 21.516,
+          "hpFrac": [
+            0.9909,
+            0
+          ],
+          "hits": [
+            12,
+            8
+          ],
+          "swings": [
+            18,
+            9
+          ],
+          "wallHits": [
+            0,
+            0
+          ]
+        },
+        "strongWonEngine": true,
+        "strongWonHeadless": true,
+        "headlessReason": "ko",
+        "maxHp": [
+          100794,
+          38364
+        ]
+      },
+      {
+        "design": "corner:min-vs-max|sweep-8m-full",
+        "size": 8,
+        "strongSeat": 1,
+        "engine": {
+          "winner": 1,
+          "reason": "ringout",
+          "duration": 11.483,
+          "hpFrac": [
+            0.2764,
+            1
+          ],
+          "hits": [
+            1,
+            7
+          ],
+          "swings": [
+            3,
+            7
+          ],
+          "wallHits": [
+            0,
+            0
+          ]
+        },
+        "strongWonEngine": true,
+        "strongWonHeadless": true,
+        "headlessReason": "ko",
+        "maxHp": [
+          38364,
+          98910
+        ]
+      },
+      {
+        "design": "corner:max-vs-min|sweep-25m-full",
+        "size": 25.00000000000001,
+        "strongSeat": 0,
+        "engine": {
+          "winner": 0,
+          "reason": "ko",
+          "duration": 23.596,
+          "hpFrac": [
+            1,
+            0
+          ],
+          "hits": [
+            17,
+            2
+          ],
+          "swings": [
+            28,
+            7
+          ],
+          "wallHits": [
+            0,
+            0
+          ]
+        },
+        "strongWonEngine": true,
+        "strongWonHeadless": true,
+        "headlessReason": "ko",
+        "maxHp": [
+          91374,
+          49060
+        ]
+      },
+      {
+        "design": "corner:min-vs-max|sweep-25m-full",
+        "size": 25.00000000000001,
+        "strongSeat": 1,
+        "engine": {
+          "winner": 1,
+          "reason": "ko",
+          "duration": 16.345,
+          "hpFrac": [
+            0,
+            0.9825
+          ],
+          "hits": [
+            2,
+            7
+          ],
+          "swings": [
+            6,
+            10
+          ],
+          "wallHits": [
+            2,
+            0
+          ]
+        },
+        "strongWonEngine": true,
+        "strongWonHeadless": true,
+        "headlessReason": "ko",
+        "maxHp": [
+          33174,
+          91374
+        ]
+      },
+      {
+        "design": "corner:max-vs-min|sweep-120m-full",
+        "size": 120,
+        "strongSeat": 0,
+        "engine": {
+          "winner": 0,
+          "reason": "ko",
+          "duration": 28.279,
+          "hpFrac": [
+            0.9522,
+            0
+          ],
+          "hits": [
+            32,
+            3
+          ],
+          "swings": [
+            61,
+            13
+          ],
+          "wallHits": [
+            0,
+            0
+          ]
+        },
+        "strongWonEngine": true,
+        "strongWonHeadless": true,
+        "headlessReason": "ko",
+        "maxHp": [
+          94200,
+          52323
+        ]
+      },
+      {
+        "design": "corner:min-vs-max|sweep-120m-full",
+        "size": 120,
+        "strongSeat": 1,
+        "engine": {
+          "winner": 1,
+          "reason": "ko",
+          "duration": 34.186,
+          "hpFrac": [
+            0,
+            0.9472
+          ],
+          "hits": [
+            9,
+            19
+          ],
+          "swings": [
+            17,
+            46
+          ],
+          "wallHits": [
+            0,
+            0
+          ]
+        },
+        "strongWonEngine": true,
+        "strongWonHeadless": true,
+        "headlessReason": "ko",
+        "maxHp": [
+          40838,
+          97026
+        ]
+      },
+      {
+        "design": "corner:max-vs-min|sweep-3m-ruin",
+        "size": 3,
+        "strongSeat": 0,
+        "engine": {
+          "winner": 0,
+          "reason": "ringout",
+          "duration": 14.779,
+          "hpFrac": [
+            0.9789,
+            0.668
+          ],
+          "hits": [
+            6,
+            7
+          ],
+          "swings": [
+            16,
+            14
+          ],
+          "wallHits": [
+            0,
+            0
+          ]
+        },
+        "strongWonEngine": true,
+        "strongWonHeadless": true,
+        "headlessReason": "ringout",
+        "maxHp": [
+          91374,
+          55908
+        ]
+      },
+      {
+        "design": "corner:min-vs-max|sweep-3m-ruin",
+        "size": 3,
+        "strongSeat": 1,
+        "engine": {
+          "winner": 1,
+          "reason": "ringout",
+          "duration": 10.327,
+          "hpFrac": [
+            0.5423,
+            0.9827
+          ],
+          "hits": [
+            1,
+            5
+          ],
+          "swings": [
+            3,
+            6
+          ],
+          "wallHits": [
+            0,
+            0
+          ]
+        },
+        "strongWonEngine": true,
+        "strongWonHeadless": true,
+        "headlessReason": "ko",
+        "maxHp": [
+          35838,
+          100794
+        ]
+      },
+      {
+        "design": "corner:max-vs-min|sweep-8m-ruin",
+        "size": 8,
+        "strongSeat": 0,
+        "engine": {
+          "winner": 0,
+          "reason": "ko",
+          "duration": 20.082,
+          "hpFrac": [
+            1,
+            0
+          ],
+          "hits": [
+            12,
+            4
+          ],
+          "swings": [
+            18,
+            10
+          ],
+          "wallHits": [
+            0,
+            0
+          ]
+        },
+        "strongWonEngine": true,
+        "strongWonHeadless": true,
+        "headlessReason": "ringout",
+        "maxHp": [
+          94200,
+          44850
+        ]
+      },
+      {
+        "design": "corner:min-vs-max|sweep-8m-ruin",
+        "size": 8,
+        "strongSeat": 1,
+        "engine": {
+          "winner": 1,
+          "reason": "ko",
+          "duration": 11.196,
+          "hpFrac": [
+            0,
+            1
+          ],
+          "hits": [
+            0,
+            7
+          ],
+          "swings": [
+            2,
+            8
+          ],
+          "wallHits": [
+            0,
+            0
+          ]
+        },
+        "strongWonEngine": true,
+        "strongWonHeadless": true,
+        "headlessReason": "ko",
+        "maxHp": [
+          49193,
+          91374
+        ]
+      }
+    ]
+  },
+  "pageErrors": [],
+  "consoleErrors": [],
+  "consoleErrorsKnown405": 0
+}

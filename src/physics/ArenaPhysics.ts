@@ -13,6 +13,8 @@ import { settleOnFloor, type FloorContact } from "../world/TerrainGround.ts";
 import {
   createSweep, reflectVelocity, sweepCircleWall, WALL_CONTACT_SLOP, WALL_SKIN, wallOverlap, wallPolygonOf, type WallOverlap,
 } from "./WallCollision.ts";
+import { WALL_BLOCK_HEIGHT, type WallPlan } from "../game/arena/contracts.ts";
+import { segmentIndexAt } from "../game/arena/walls.ts";
 
 /** Gravity used for every free body in the arena, m/s². */
 export const ARENA_GRAVITY = 24;
@@ -40,6 +42,52 @@ export interface ArenaState {
   passing?: Set<KinematicBody>;
   /** Approach speed (m/s) under which a new wall contact is a lean, not a blow. Default WALL_IMPACT_SPEED. */
   wallImpactSpeed?: number;
+  /**
+   * Wave J: the per-segment wall plan (src/game/arena/walls.ts). Present = the wall's HEIGHT,
+   * RESISTANCE and BOUNCE are read per segment at the contact's bearing (an opening has height 0);
+   * absent = the legacy single wall at cfg.wallHeight. The collision SHAPE stays the outline polygon.
+   */
+  wallPlan?: WallPlan;
+  /** Wave J: integrity per plan segment (1 intact, 0 breached = an opening). `integrity` is their minimum. */
+  segIntegrity?: Float64Array;
+}
+
+/** Wave J: a hard knock at least this fast topples a body over a wall below its centre of mass, m/s. */
+export const KNOCK_OVER_SPEED = 6;
+/** Wave J: a wall at least this tall is above a standing body's centre of mass (≈ 0.55 × 1.75 m), m. */
+export const COM_HEIGHT = 0.95;
+/** Speed a body keeps tripping over a curb / toppling over a mid wall. */
+export const TRIP_KEEP = 0.7, TOPPLE_KEEP = 0.6;
+
+/** One wall segment as the collision reads it (reused: the step allocates nothing). */
+export interface SegView { k: number; height: number; resistance: number; bounce: number; integrity: number }
+const SEG: SegView = { k: -1, height: 0, resistance: 0, bounce: 0, integrity: 1 };
+
+/**
+ * The wall at bearing `angle` (rad): the plan's segment (height 0 when it is an opening or its
+ * integrity is spent) or, without a plan, the legacy single wall. Fills and returns `out`.
+ */
+export function wallAt(st: ArenaState, angle: number, out: SegView = SEG): SegView {
+  const plan = st.wallPlan;
+  if (plan && plan.segments.length > 0) {
+    const k = segmentIndexAt(plan, angle);
+    const s = plan.segments[k];
+    const integ = st.segIntegrity ? st.segIntegrity[k] : st.integrity;
+    out.k = k; out.integrity = integ;
+    out.height = integ > 0 ? s.height : 0;
+    out.resistance = s.resistance; out.bounce = s.bounce;
+  } else {
+    out.k = -1; out.integrity = st.integrity;
+    out.height = st.integrity > 0 ? st.cfg.wallHeight : 0;
+    out.resistance = st.cfg.wallResistance; out.bounce = st.cfg.wallBounce;
+  }
+  return out;
+}
+
+/** Wall height (m above the rim) at the bearing of (x, z), 0 = no wall there (Wave J). */
+export function wallHeightAtXZ(st: ArenaState, x: number, z: number): number {
+  if (!st.walled) return 0;
+  return wallAt(st, Math.atan2(z, x)).height;
 }
 
 /** What happened to a body this step, for the engine to turn into damage and FX. */
@@ -74,9 +122,14 @@ export const WALL_MAX_SLIDES = 4;
  * full wallBounce; a blow near the breach threshold is soaked up by the deforming wall.
  */
 export function wallRestitution(cfg: ArenaConfig, mass: number, approachSpeed: number, integrity: number): number {
-  const eff = cfg.wallResistance * Math.max(0, integrity);
+  return restitutionOf(cfg.wallResistance, cfg.wallBounce, mass, approachSpeed, integrity);
+}
+
+/** wallRestitution for explicit resistance / bounce (a Wave J plan segment's own values). */
+export function restitutionOf(resistance: number, bounce: number, mass: number, approachSpeed: number, integrity: number): number {
+  const eff = resistance * Math.max(0, integrity);
   if (eff <= 0) return 0;
-  return cfg.wallBounce * (1 - Math.min(1, (mass * approachSpeed) / eff));
+  return bounce * (1 - Math.min(1, (mass * approachSpeed) / eff));
 }
 
 /** Reused per-step scratch (the step allocates nothing unless a blow is reported). */
@@ -120,7 +173,8 @@ export function stepArenaBody(
   let wall: ArenaStep["wall"] = null;
   let wallContact = false;
 
-  const wallUp = st.walled && st.integrity > 0;
+  // With a plan, integrity is per segment (a breach opens one segment, not the whole wall).
+  const wallUp = st.walled && (st.wallPlan ? true : st.integrity > 0);
   const poly = wallUp ? wallPolygonOf(cfg) : null;
   if (poly) {
     if (st.passing?.has(b)) {
@@ -134,17 +188,37 @@ export function stepArenaBody(
         // The wall stands on the rim of the terrain: "low enough" is measured from the rim.
         const yAt = iter === 0 ? y0 + (b.y - y0) * SWEEP.t : b.y;
         const rimY = st.floorAt ? st.floorAt(SWEEP.x * 0.98, SWEEP.z * 0.98) : 0;
-        if (yAt - b.radius >= rimY + cfg.wallHeight) break; // over the top
-        wallContact = true;
+        // Wave J: the wall at the contact's bearing (per plan segment). An opening (height 0, or a
+        // segment already breached) is no wall: a straight path leaves a convex outline once.
+        const seg = wallAt(st, Math.atan2(SWEEP.z, SWEEP.x));
+        if (seg.height <= 0) break;
+        if (yAt - b.radius >= rimY + seg.height) break; // over the top
         const nx = SWEEP.nx, nz = SWEEP.nz;
         const fresh = SWEEP.startGap > WALL_CONTACT_SLOP;
         const toward = SWEEP.side === "inner" ? outwardSpeed : -outwardSpeed;
         const approach = Math.max(toward, -(b.vx * nx + b.vz * nz));
+        const blow = fresh && !wall && approach >= (st.wallImpactSpeed ?? WALL_IMPACT_SPEED);
+        // Wave J: a low wall does not hold a blow. Under WALL_BLOCK_HEIGHT (a curb) a blow TRIPS the
+        // body over it; under the centre of mass a hard knock TOPPLES it over. A lean slides as before.
+        if (st.wallPlan && SWEEP.side === "inner" && (
+          (blow && seg.height < WALL_BLOCK_HEIGHT) || (fresh && !wall && seg.height < COM_HEIGHT && approach >= KNOCK_OVER_SPEED)
+        )) {
+          const keep = seg.height < WALL_BLOCK_HEIGHT ? TRIP_KEEP : TOPPLE_KEEP;
+          b.vx *= keep; b.vz *= keep;
+          (st.passing ??= new Set()).add(b);
+          break; // over it, along the path
+        }
+        wallContact = true;
         let e = 0;
-        if (fresh && !wall && approach >= (st.wallImpactSpeed ?? WALL_IMPACT_SPEED)) {
-          const before = st.integrity;
-          const hit = hitWall(phys, approach, wallFor(cfg), before);
-          st.integrity = hit.wallIntegrity;
+        if (blow) {
+          const before = seg.integrity;
+          const hit = hitWall(phys, approach, seg.k >= 0 ? { resistance: seg.resistance, height: seg.height, restitution: seg.bounce } : wallFor(cfg), before);
+          if (seg.k >= 0 && st.segIntegrity) {
+            st.segIntegrity[seg.k] = hit.wallIntegrity;
+            let m = 1;
+            for (let i = 0; i < st.segIntegrity.length; i++) m = Math.min(m, st.segIntegrity[i]);
+            st.integrity = m;
+          } else st.integrity = hit.wallIntegrity;
           wall = { breached: hit.breached, selfDamage: hit.selfDamage, speed: approach, nx, nz };
           if (hit.breached) {
             // Breaking through costs speed in proportion to the wall that was in the way.
@@ -153,7 +227,7 @@ export function stepArenaBody(
             (st.passing ??= new Set()).add(b);
             break; // carries on along its path
           }
-          e = wallRestitution(cfg, totalMass(phys), approach, before);
+          e = restitutionOf(seg.resistance, seg.bounce, totalMass(phys), approach, before);
         }
         // Stop at the face, bounce (blow) or stop the normal motion (lean), slide the rest.
         VEL.vx = b.vx; VEL.vz = b.vz;
@@ -225,7 +299,9 @@ export function stepArenaBody(
   b.vz *= damping;
 
   // Final guard: nothing (props, the floor's undo) may leave the body inside the wall band.
-  if (poly && !st.passing?.has(b) && b.y - b.radius < (st.floorAt ? st.floorAt(b.x * 0.98, b.z * 0.98) : 0) + cfg.wallHeight) {
+  // Wave J: the band's height is the wall's at the body's bearing (0 at an opening: no guard).
+  const guardH = poly ? wallAt(st, Math.atan2(b.z, b.x)).height : 0;
+  if (poly && guardH > 0 && !st.passing?.has(b) && b.y - b.radius < (st.floorAt ? st.floorAt(b.x * 0.98, b.z * 0.98) : 0) + guardH) {
     for (let k = 0; k < WALL_MAX_SLIDES && wallOverlap(poly, contactRadius, b.x, b.z, OVERLAP); k++) {
       b.x += OVERLAP.nx * (OVERLAP.depth + WALL_SKIN);
       b.z += OVERLAP.nz * (OVERLAP.depth + WALL_SKIN);

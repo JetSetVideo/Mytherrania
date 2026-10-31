@@ -52,7 +52,11 @@ export function symmetryFitsRing(ring: RingSymmetry, sym: SymmetrySpec): boolean
 /** The ring axis nearest to `deg` (optionally one whose perpendicular is also an axis). */
 function nearestAxis(ring: RingSymmetry, deg: number, needPerp: boolean): number | null {
   let best: number | null = null, bd = Infinity;
-  for (const a of ring.axesDeg) {
+  // Prefer the outline's axes that lie on the wall-segment lattice (the walls can only mirror
+  // exactly about those); fall back to any axis when none does.
+  const onLattice = (a: number) => { const m = ((a % AXIS_STEP_DEG) + AXIS_STEP_DEG) % AXIS_STEP_DEG; return m < 1e-6 || AXIS_STEP_DEG - m < 1e-6; };
+  const pool = ring.axesDeg.some(onLattice) ? ring.axesDeg.filter(onLattice) : ring.axesDeg;
+  for (const a of pool) {
     if (needPerp && !ring.axesDeg.some((x) => axisDistance(x, a + 90) < 1e-6)) continue;
     const d = axisDistance(a, deg);
     if (d < bd) { bd = d; best = a; }

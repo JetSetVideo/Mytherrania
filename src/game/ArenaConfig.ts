@@ -344,6 +344,25 @@ export function placeObjects(cfg: ArenaConfig, rng: () => number): ArenaObject[]
  * reproducible generation. Named presets are blended in so "random" still lands on
  * playable spaces rather than absurd corners of the parameter space.
  */
+/** Half a wall segment, deg (360 / 48 / 2): mirror axes on this lattice map the 48 wall segments onto themselves. */
+export const SYMMETRY_LATTICE_DEG = 3.75;
+
+/**
+ * A symmetric arena's outline must have one of its own mirror axes ON the wall-segment lattice, or
+ * the 48 wall segments cannot be mirrored onto each other (measured: 28 % of off-lattice mirror
+ * plans were asymmetric by up to 3 m). rollWaveJ aligns it, but an override merged after the roll
+ * (a menu choice, a batch condition, a QA nextArena) undoes that — so snap here, after the merge:
+ * rotate the outline by at most half a lattice step (≤ 1.875°) so the axis at −rotation is on it.
+ */
+export function snapSymmetryRotation(cfg: ArenaConfig): ArenaConfig {
+  if (!(cfg.symmetry >= 1) || shapeOf(cfg) === "circle") return cfg;
+  const rot = Number.isFinite(cfg.rotation) ? cfg.rotation : 0;
+  const L = SYMMETRY_LATTICE_DEG;
+  const r = ((rot % L) + L) % L;
+  const snapped = r <= L / 2 ? rot - r : rot + (L - r);
+  return { ...cfg, rotation: ((snapped % 360) + 360) % 360 };
+}
+
 export function randomArena(rng: () => number, over: Partial<ArenaConfig> = {}): ArenaConfig {
   const pick = (a: number, b: number) => a + rng() * (b - a);
   const roll = rng();
@@ -395,7 +414,7 @@ export function randomArena(rng: () => number, over: Partial<ArenaConfig> = {}):
   // from their OWN stream (one draw from this one, after every legacy draw), so every legacy
   // value above keeps its per-seed value.
   const wave = rollWaveJ(waveJStream(rng), kind, { shape: base.shape!, aspect: base.aspect!, rotation: base.rotation! });
-  return makeArena({ ...base, ...wave, ...over });
+  return snapSymmetryRotation(makeArena({ ...base, ...wave, ...over }));
 }
 
 /** A child stream for the wave J rolls: one draw from the parent, then an independent generator. */

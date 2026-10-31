@@ -177,3 +177,29 @@ Deno.test("spawns on generated terrain: flat, level with each other (fair maps),
   }
   assert(fairChecked >= 4, `fair terrain maps checked: ${fairChecked}`);
 });
+
+Deno.test("symmetry: overrides merged after the roll still give exactly symmetric walls (axis snapped to the segment lattice)", async () => {
+  const { randomArena } = await import("../src/game/ArenaConfig.ts");
+  const { seededRng } = await import("../src/game/Items.ts");
+  const { symmetryFor, symmetryImages } = await import("../src/game/arena/symmetry.ts");
+  const { wallPlanFor } = await import("../src/game/arena/walls.ts");
+  let checked = 0, worst = 0;
+  for (let s = 0; s < 1500; s++) {
+    // The override (as a menu choice / batch condition / QA nextArena does) replaces the rolled symmetry.
+    const cfg = randomArena(seededRng(s), { walls: 1, symmetry: 1 + (s % 4), symmetryOrder: 3 + (s % 4) });
+    const sym = symmetryFor(cfg);
+    if (sym.kind === "none" || (sym.kind === "rotational" && 48 % sym.order !== 0)) continue;
+    const plan = wallPlanFor(cfg, s * 7919, sym);
+    for (const sg of plan.segments) {
+      const mid = (sg.a0 + sg.a1) / 2;
+      for (const { x, z } of symmetryImages(sym, Math.cos(mid), Math.sin(mid))) {
+        const t = ((Math.atan2(z, x) % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI);
+        const img = plan.segments.find((q) => t >= q.a0 - 1e-9 && t < q.a1 + 1e-9)!;
+        worst = Math.max(worst, Math.abs(img.height - sg.height));
+      }
+    }
+    checked++;
+  }
+  if (checked < 800) throw new Error(`only ${checked} symmetric plans checked`);
+  if (worst > 1e-9) throw new Error(`wall plan asymmetry ${worst} m (before the fix: up to 3.0 m on off-lattice mirror axes)`);
+});

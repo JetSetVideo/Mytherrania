@@ -48,9 +48,25 @@ export interface MinimapWorld {
   outline: readonly GroundPoint[];
   /** True when the perimeter wall exists (ArenaState.walled). */
   walled: boolean;
+  /**
+   * Wave J: the wall height (m) on each outline edge i → i+1 (the plan's segment at the edge's
+   * mid bearing; 0 = an opening). Absent = one uniform wall (`walled`) as before. Below
+   * MINIMAP_CURB_HEIGHT an edge is drawn as the dashed ring-out edge, below MINIMAP_WALL_HEIGHT as a
+   * thin curb, at or above MINIMAP_TOWER_HEIGHT as a thick tower line.
+   */
+  edgeHeights?: readonly number[] | null;
   props: readonly MinimapProp[];
   /** ArenaConfig.size, metres across; bounds the map extent together with the outline. */
   size: number;
+}
+
+/** Wave J edge classes for `edgeHeights`, m: under CURB = open, under WALL = curb (trips a knocked body), TOWER = tall. */
+export const MINIMAP_CURB_HEIGHT = 0.05, MINIMAP_WALL_HEIGHT = 0.6, MINIMAP_TOWER_HEIGHT = 2;
+/** Edge class of a wall height: 0 open, 1 curb, 2 wall, 3 tower. */
+export function edgeClass(h: number): 0 | 1 | 2 | 3 {
+  if (!(h >= MINIMAP_CURB_HEIGHT)) return 0;
+  if (h < MINIMAP_WALL_HEIGHT) return 1;
+  return h >= MINIMAP_TOWER_HEIGHT ? 3 : 2;
 }
 
 /** What changes per tick. Build once with createMinimapView() and mutate it — no per-tick allocation. */
@@ -226,6 +242,9 @@ export class Minimap {
   // The ring outline (x0, z0, x1, z1, …), redrawn above the fog every tick so the arena's shape always reads.
   #outlineXZ = new Float64Array(0);
   #walled = false;
+  /** Wave J: per-edge class (edgeClass), or empty for the legacy uniform ring. */
+  #edgeCls = new Uint8Array(0);
+  readonly #pt2: MapPoint = { x: 0, y: 0 };
   // Cached ghost-age label (rebuilt only when the whole seconds change).
   #ghostAgeShown = -1;
   #ghostAgeText = "";
@@ -329,6 +348,10 @@ export class Minimap {
       this.#outlineXZ[2 * i + 1] = world.outline[i].z;
     }
     this.#walled = world.walled;
+    const eh = world.edgeHeights;
+    this.#edgeCls = eh && eh.length === world.outline.length
+      ? Uint8Array.from(eh, (h) => (world.walled ? edgeClass(h) : 0))
+      : new Uint8Array(0);
     const E = Math.max(this.#ringRadius, world.size / 2) * (1 + EXTENT_MARGIN);
     this.#extent = E;
     const o = this.#opts;
@@ -368,7 +391,10 @@ export class Minimap {
     sctx.fill("evenodd");
     // 3. The perimeter: a solid stone wall, or a dashed coral ring-out edge.
     sctx.lineJoin = "round";
-    if (world.walled) {
+    if (this.#edgeCls.length > 0) {
+      // Wave J: per-edge wall classes (gaps dashed, curbs thin, towers thick).
+      this.#strokeEdges(sctx, (i, out) => { out.x = (world.outline[i].x + E) * k; out.y = (world.outline[i].z + E) * k; return out; }, unit * 1.25, 1.9);
+    } else if (world.walled) {
       sctx.beginPath();
       this.#tracePolygon(sctx, world.outline, E, k);
       sctx.strokeStyle = MAP_COLOURS.wallShadow;
@@ -468,10 +494,61 @@ export class Minimap {
     st.scaleBarMetres = this.#overlays.scaleBarMetres;
   }
 
+  /**
+   * Wave J: stroke the ring edge by edge class — runs of equal class share one path: an opening is
+   * the dashed coral ring-out edge, a curb a thin stone line, a wall the full line over its shadow,
+   * a tower a thicker one. `at(i, out)` maps outline point i to canvas pixels; `u` scales widths.
+   */
+  #strokeEdges(ctx: MapContext2D, at: (i: number, out: MapPoint) => MapPoint, u: number, shadow: number): void {
+    const cls = this.#edgeCls, n = cls.length;
+    if (n === 0) return;
+    // Start a run at an edge whose class differs from its predecessor (or at 0 when uniform).
+    let start = 0;
+    for (let i = 0; i < n; i++) if (cls[i] !== cls[(i + n - 1) % n]) { start = i; break; }
+    ctx.lineJoin = "round";
+    ctx.lineCap = "butt";
+    let i = 0;
+    while (i < n) {
+      const c = cls[(start + i) % n];
+      let j = i;
+      while (j < n && cls[(start + j) % n] === c) j++;
+      // Path through points start+i .. start+j (edges i..j-1).
+      ctx.beginPath();
+      for (let q = i; q <= j; q++) {
+        const p = at((start + q) % n, this.#pt2);
+        if (q === i) ctx.moveTo(p.x, p.y); else ctx.lineTo(p.x, p.y);
+      }
+      if (c === 0) {
+        this.#dashPath[0] = 5 * u;
+        this.#dashPath[1] = 3.5 * u;
+        ctx.setLineDash(this.#dashPath);
+        ctx.strokeStyle = MAP_COLOURS.edgeUnwalled;
+        ctx.lineWidth = WALL_CSS_PX * 0.8 * u;
+        ctx.stroke();
+        ctx.setLineDash(this.#noDash);
+      } else {
+        const w = c === 1 ? 0.45 : c === 3 ? 1.35 : 0.75;
+        if (c >= 2) {
+          ctx.strokeStyle = MAP_COLOURS.wallShadow;
+          ctx.lineWidth = WALL_CSS_PX * w * shadow * u;
+          ctx.stroke();
+        }
+        ctx.strokeStyle = MAP_COLOURS.wall;
+        ctx.lineWidth = WALL_CSS_PX * w * u;
+        ctx.stroke();
+      }
+      i = j;
+    }
+  }
+
   /** The ring edge above the fog: a solid stone line when walled, a dashed coral ring-out edge when not. */
   #drawRing(ctx: MapContext2D, f: MapFrame, u: number): void {
     const xz = this.#outlineXZ, pt = this.#pt;
     if (xz.length < 6) return;
+    if (this.#edgeCls.length * 2 === xz.length) {
+      this.#strokeEdges(ctx, (i, out) => worldToMap(f, xz[2 * i], xz[2 * i + 1], out), u, 1.6);
+      return;
+    }
     ctx.beginPath();
     for (let i = 0; i < xz.length; i += 2) {
       worldToMap(f, xz[i], xz[i + 1], pt);
