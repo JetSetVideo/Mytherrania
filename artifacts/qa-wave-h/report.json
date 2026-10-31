@@ -13,23 +13,22 @@
     "limitApplied": 30,
     "hostileAtEnd": 30,
     "decided": true,
-    "winner": null,
-    "endReason": null,
+    "winner": "opponent",
+    "endReason": "time-limit",
     "storedReason": "time-limit",
-    "storedTie": true,
+    "storedTie": false,
     "storedLimitS": 30,
-    "statGapDistance": 2.086135649966093,
-    "dominance": 0.21405785088366247,
-    "damageShare": 0.017954472587367747,
-    "generationId": "GEN-8E3A8B",
-    "generationBudget": 138,
+    "statGapDistance": 4.738099750501856,
+    "dominance": 0.6106893301573375,
+    "damageShare": 0.6090707419275326,
+    "generationId": "GEN-C0A555",
+    "generationBudget": 84,
     "generationTechniques": [
       "warrior-dash",
       "warrior-crushing-blow",
       "warrior-bulwark",
-      "necro-bone-armor",
-      "priest-smite",
       "barbarian-skullsplitter",
+      "priest-smite",
       "mage-arcane-nova"
     ],
     "generationAncestry": [
@@ -41,102 +40,102 @@
       "human/imperial"
     ],
     "fightHp": [
-      41622,
-      40950
+      4871,
+      33449
     ],
-    "resultTitle": "Draw — time limit"
+    "resultTitle": "Ser Vail wins on points"
   },
   "hair": {
     "masses": 5,
     "samples": [
       {
-        "windMs": 4.5,
+        "windMs": 1.48,
         "wetness": 0,
-        "magnitude": 0.0731
+        "magnitude": 0.0241
       },
       {
-        "windMs": 12,
+        "windMs": 8.9,
         "wetness": 0.9,
-        "magnitude": 0.0749
+        "magnitude": 0.0548
       },
       {
-        "windMs": 12,
+        "windMs": 8.88,
         "wetness": 0.9,
-        "magnitude": 0.0735
+        "magnitude": 0.0549
       },
       {
-        "windMs": 3.69,
-        "wetness": 0.02,
-        "magnitude": 0.0627
+        "windMs": 0.52,
+        "wetness": 0.01,
+        "magnitude": 0.0088
       }
     ],
-    "maxMagnitude": 0.0749,
-    "minMagnitude": 0.0627,
+    "maxMagnitude": 0.0549,
+    "minMagnitude": 0.0088,
     "boundedUnderOneMetre": true,
     "settledInStorm": true,
     "dryCalmestIsSmallest": true,
-    "soakedResistsStrongerWind": true,
+    "soakedResistsStrongerWind": false,
     "offsetsAtStorm": [
       [
-        0.013822025257309944,
-        -0.000002436710035873414,
-        -0.024420479352824646
+        0.020853328395976596,
+        0.0000032941665720134615,
+        -0.00016780221977049498
       ],
       [
-        0.0167110698265657,
-        -0.000002534137274941265,
-        -0.029523547250982544
+        0.02519779975969249,
+        0.000003388828715162456,
+        -0.00020197646514927213
       ],
       [
-        0.012001168396345052,
-        -0.000002610994574217889,
-        -0.021205086614634792
+        0.01887729815203737,
+        0.0000035147530589357257,
+        -0.00015264389998622841
       ],
       [
-        0.016775756363753766,
-        -0.0000030365824861371495,
-        -0.02963957951458851
+        0.02433162951788014,
+        0.00000389240171102034,
+        -0.00019601960076201256
       ],
       [
-        0.021603468196751355,
-        -0.000002990251127999025,
-        -0.03816602589926888
+        0.03141451409568393,
+        0.000003983232396063899,
+        -0.0002514848228061753
       ]
     ],
     "offsetsAtLull": [
       [
-        0.010712802300767307,
-        0.000005956253787766677,
-        -0.019899974741897797
+        0.0031680949056542753,
+        -0.000003839993461997506,
+        -0.000016389965752925152
       ],
       [
-        0.012909985346741142,
-        0.000006171478888202854,
-        -0.023983346760150997
+        0.003811676094638612,
+        -0.000003969305404622961,
+        -0.000021133845640900518
       ],
       [
-        0.008839116685741898,
-        0.000006394999099881891,
-        -0.0164165028656609
+        0.0027968924269370426,
+        -0.00000406411299671151,
+        -0.000012907783000771288
       ],
       [
-        0.014023189450818594,
-        0.00000735752165347002,
-        -0.0260433914269323
+        0.004054893584008844,
+        -0.000004752642608887725,
+        -0.00002135142571319314
       ],
       [
-        0.01810261168706893,
-        0.0000072944476683720504,
-        -0.03362961066440352
+        0.005328357485819197,
+        -0.000004648389183050032,
+        -0.00003145487179362662
       ]
     ]
   },
   "spectateCard": {
-    "text": "Spectator card GEN-8E3A8B\n      \n        Level 1172 stat points\n        Level 1066 stat points\n      \n      38 m arenaseed 2446750274\n      warrior-dash · warrior-crushing-blow · warrior-bulwark · necro-bone-armor · priest-smite · barbarian-skullsplitter · mage-arcane-nova",
+    "text": "Spectator card GEN-C0A555\n      \n        Level 112 stat points\n        Level 1172 stat points\n      \n      69 m arenaseed 2470308471\n      warrior-dash · warrior-crushing-blow · warrior-bulwark · barbarian-skullsplitter · priest-smite · mage-arcane-nova",
     "hasLevels": true,
     "hasBudget": true,
     "hasArena": true
   },
   "errors": [],
-  "at": "2026-10-31T12:02:53.145Z"
+  "at": "2026-10-31T18:35:31.373Z"
 }

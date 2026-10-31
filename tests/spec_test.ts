@@ -26,6 +26,12 @@ import { footHeight, materialUnder, seatingY, skirtFor } from "../src/graphics/G
 import { canClash, clashStrength, detectClash, segSegClosest } from "../src/combat/Clash.ts";
 import { ClashSparks, DEFAULT_MAX_SPARKS, SPARKS_PER_BURST } from "../src/graphics/fx/ClashSparks.ts";
 import { EffectsGovernor, percentile, summarise } from "../src/game/FrameBudget.ts";
+// Wave L (creation and menu components: étendards, the dice roll and its sheet, closed trees).
+import { raceBanner } from "../src/ui/RaceBanners.ts";
+import { creatorSheet, rollProfile } from "../src/ui/CreatorRoll.ts";
+import { DISCLOSURE_STORAGE_KEY, decodeDisclosure, encodeDisclosure, groupKey, initialDisclosure, isOpen, toggleGroup } from "../src/ui/Disclosure.ts";
+import { defaultOpenGroups, UI_TREE } from "../src/ui/UiTree.ts";
+import { RACES } from "../src/game/Races.ts";
 import { stunDuration } from "../src/physics/SmashPhysics.ts";
 import { DEFAULT_TIMING, truceSeconds } from "../src/game/Disposition.ts";
 import { HAIR_LENGTH_M, raceBuild, RACE_BUILDS } from "../src/game/RaceAppearance.ts";
@@ -734,4 +740,74 @@ Deno.test("SPEC KK3: the card's bars are written through CSSOM, never an inline 
   assert(!/style="/.test(inspect), "no inline style attribute in the inspect card's markup");
   assert(inspect.includes("inspect-bar-seg") && inspect.includes("barLabel("), "the squares and the label are both rendered");
   assert(inspect.includes("--bar-colour") && inspect.includes("style.width"), "widths and colours go through CSSOM");
+});
+
+
+// ------------------------------------------------- Wave L: the creation and menu components
+
+Deno.test("SPEC LL1: every race and every sub-species flies its own standard, drawn without a style attribute", () => {
+  const sigs = new Map<string, string>();
+  for (const r of RACES) {
+    const mine = raceBanner(r.id);
+    assert(mine.length > 200, `${r.id} has a standard`);
+    assert(!/style=/.test(mine), `${r.id}: no inline style attribute (the page CSP blocks it)`);
+    assert(mine.includes('viewBox="0 0 96 120"'), `${r.id}: a 4:5 hanging field`);
+    sigs.set(r.id, mine);
+    for (const sub of r.subspecies) {
+      const banner = raceBanner(r.id, sub.id);
+      assert(banner.length > 200, `${r.id}/${sub.id} has its own standard`);
+      assert(banner !== mine, `${r.id}/${sub.id} is differenced from its own race (cadency)`);
+      sigs.set(`${r.id}/${sub.id}`, banner);
+    }
+  }
+  assert(new Set(sigs.values()).size === sigs.size, `all ${sigs.size} standards are distinct`);
+  assert(raceBanner("nobody") === "", "an unknown race draws nothing rather than a broken glyph");
+});
+
+Deno.test("SPEC LL2: the options are CLOSED trees on arrival, with the one entry group open", () => {
+  const open = defaultOpenGroups();
+  assert(open.length === 1 && open[0] === "title/start/modes", `exactly the entry group starts open (got ${open.join(", ")})`);
+  const state = initialDisclosure(UI_TREE);
+  const selectGroups = UI_TREE.find((s) => s.id === "select")!.panels.flatMap((p) => p.groups.map((g) => groupKey("select", p.id, g.id)));
+  assert(selectGroups.length >= 10, `the Creator has its groups (${selectGroups.length})`);
+  assert(selectGroups.every((k) => !isOpen(state, k)), "every Creator group starts closed");
+  const oneOpen = toggleGroup(state, "select/ancestry/race");
+  assert(isOpen(oneOpen, "select/ancestry/race") && !isOpen(state, "select/ancestry/race"), "toggling opens it without mutating the previous state");
+  const round = decodeDisclosure(encodeDisclosure(oneOpen), UI_TREE);
+  assert(isOpen(round, "select/ancestry/race"), "an open group survives the storage round-trip");
+  const fallback = decodeDisclosure("{not json", UI_TREE);
+  assert(!isOpen(fallback, "select/ancestry/race") && isOpen(fallback, "title/start/modes"), "a corrupt payload falls back to the initial state");
+  assert(DISCLOSURE_STORAGE_KEY === "mytherrania-ui-open", "the key the renderer persists under");
+});
+
+Deno.test("SPEC LL3: the dice rolls a legal fighter and the sheet shows the game's own numbers", async () => {
+  const { createStats, HEALTH_SCALE } = await import("../src/game/Stats.ts");
+  const { applySecondary } = await import("../src/game/SecondaryStats.ts");
+  const rolls = Array.from({ length: 24 }, (_, i) => rollProfile(() => ((i + 1) * 0.0417) % 1));
+  for (const rolled of rolls) {
+    const p = rolled.profile;
+    assert(RACES.some((r) => r.id === p.race), `the rolled race exists (${p.race})`);
+    assert(CLASSES.includes(p.className), `the rolled class exists (${p.className})`);
+    assert(p.subrace === null || p.subrace !== "", "a roll may leave the sub-species open for the player");
+    const sheet = creatorSheet(p);
+    assert(sheet.primary.length === 6 && sheet.derived.length >= 4, "the sheet carries the primaries and the derived numbers");
+    const row = sheet.derived.find((r) => r.label === "Max Health");
+    assert(row !== undefined, "the sheet shows the health pool");
+    const live = applySecondary(applyRaceBonus(createStats(p.className), p.race, p.subrace, p.birthsign), p.subrace, p.birthsign).maxHealth;
+    const shown = Number(row!.value.replace(/\s/g, ""));
+    assert(Number.isFinite(shown) && Math.abs(shown - live) / live < 0.02, `Max Health ${row!.value} is the live pool (${Math.round(live)})`);
+    assert(live >= 30 * HEALTH_SCALE * 0.5 && live <= 60 * HEALTH_SCALE * 2, "and it sits in the pool band, not a hard-coded number");
+  }
+});
+
+Deno.test("SPEC LL4: the Creator's dice button, preview canvas and the engine's live model are wired (text pin)", async () => {
+  const menu = await Deno.readTextFile(new URL("../src/ui/Menu.ts", import.meta.url));
+  const engine = await Deno.readTextFile(new URL("../src/engine/Engine.ts", import.meta.url));
+  assert(menu.includes('data-action="dice"') && menu.includes("dice-btn-rocky") && menu.includes('icon("dice"'), "the purple rocky dice button is in the markup with the dice icon");
+  assert(menu.includes('id="creator-preview"'), "the Creator carries the preview canvas");
+  assert(/<canvas[^>]*id="creator-preview"/.test(menu) || /creator-preview[^>]*canvas/.test(menu), "and it is a canvas, not a placeholder");
+  assert(menu.includes("creatorSheet(") && menu.includes("opt-group"), "the sheet and the closed trees are rendered");
+  assert(menu.includes("#persistDisclosure") || menu.includes("encodeDisclosure("), "the open state is persisted through the pure model");
+  assert(engine.includes("new PreviewScene("), "the engine stands the live model on that canvas");
+  assert(engine.includes("onRoll:"), "and follows the menu's roll hook");
 });

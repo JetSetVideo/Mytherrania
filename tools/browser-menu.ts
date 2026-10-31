@@ -29,7 +29,8 @@ try {
   await page.screenshot({ path: "artifacts/menu/creator.png" });
 
   // Random generate a character, then pick a class and an NPC opponent
-  await page.click('[data-action="random"]');
+  // Wave L renamed the roll button: the Random button became the purple rocky dice button.
+  await page.click('[data-action="dice"]');
   await page.waitForTimeout(200);
   await page.selectOption("#creator-class", "Assassin");
   await page.selectOption("#menu-opponent", { label: "Nyra (Assassin)" });

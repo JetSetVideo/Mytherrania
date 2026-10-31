@@ -1,0 +1,178 @@
+{
+  "standard": {
+    "width": 96,
+    "height": 120,
+    "ratio": "4:5"
+  },
+  "table": [
+    {
+      "race": "human",
+      "charge": "crown",
+      "palette": {
+        "field": "#c98a63",
+        "charge": "#6b4130",
+        "trim": "#b5762e"
+      },
+      "subraces": [
+        {
+          "sub": "imperial",
+          "charge": "crown",
+          "palette": {
+            "field": "#d99a70",
+            "charge": "#6b4130",
+            "trim": "#d98e37"
+          },
+          "cadency": "saltire"
+        },
+        {
+          "sub": "nomad",
+          "charge": "crown",
+          "palette": {
+            "field": "#c08050",
+            "charge": "#6b4130",
+            "trim": "#915e25"
+          },
+          "cadency": "bordure"
+        },
+        {
+          "sub": "islander",
+          "charge": "sun",
+          "palette": {
+            "field": "#c07a52",
+            "charge": "#6b4130",
+            "trim": "#9f6828"
+          },
+          "cadency": "chief"
+        }
+      ]
+    },
+    {
+      "race": "elf",
+      "charge": "laurel",
+      "palette": {
+        "field": "#e8e2dc",
+        "charge": "#2f3d63",
+        "trim": "#5b7c99"
+      },
+      "subraces": [
+        {
+          "sub": "high",
+          "charge": "star",
+          "palette": {
+            "field": "#f0eae4",
+            "charge": "#2f3d63",
+            "trim": "#49637a"
+          },
+          "cadency": "saltire"
+        },
+        {
+          "sub": "wood",
+          "charge": "laurel",
+          "palette": {
+            "field": "#dcd8cc",
+            "charge": "#2f3d63",
+            "trim": "#6d95b8"
+          },
+          "cadency": "fess"
+        },
+        {
+          "sub": "dark",
+          "charge": "star",
+          "palette": {
+            "field": "#cdc0d6",
+            "charge": "#2f3d63",
+            "trim": "#577793"
+          },
+          "cadency": "chevron"
+        }
+      ]
+    },
+    {
+      "race": "dwarf",
+      "charge": "hammer",
+      "palette": {
+        "field": "#c58a5a",
+        "charge": "#4a2f22",
+        "trim": "#6f7378"
+      },
+      "subraces": [
+        {
+          "sub": "mountain",
+          "charge": "hammer",
+          "palette": {
+            "field": "#c8905e",
+            "charge": "#4a2f22",
+            "trim": "#858a90"
+          },
+          "cadency": "pile"
+        },
+        {
+          "sub": "forge",
+          "charge": "hammer",
+          "palette": {
+            "field": "#b87a4c",
+            "charge": "#4a2f22",
+            "trim": "#595c60"
+          },
+          "cadency": "chief"
+        },
+        {
+          "sub": "deep",
+          "charge": "anvil",
+          "palette": {
+            "field": "#c0a078",
+            "charge": "#4a2f22",
+            "trim": "#858a90"
+          },
+          "cadency": "fess"
+        }
+      ]
+    },
+    {
+      "race": "ork",
+      "charge": "tusk",
+      "palette": {
+        "field": "#7fae4e",
+        "charge": "#33421f",
+        "trim": "#7c6a9e"
+      },
+      "subraces": [
+        {
+          "sub": "greenhide",
+          "charge": "tusk",
+          "palette": {
+            "field": "#8ac054",
+            "charge": "#33421f",
+            "trim": "#6d5d8b"
+          },
+          "cadency": "bend"
+        },
+        {
+          "sub": "ironhide",
+          "charge": "skull",
+          "palette": {
+            "field": "#6f9a48",
+            "charge": "#33421f",
+            "trim": "#6d5d8b"
+          },
+          "cadency": "pile"
+        },
+        {
+          "sub": "bloodfang",
+          "charge": "skull",
+          "palette": {
+            "field": "#86b258",
+            "charge": "#33421f",
+            "trim": "#776698"
+          },
+          "cadency": "chief"
+        }
+      ]
+    }
+  ],
+  "distinctness": {
+    "total": 16,
+    "unique": 16,
+    "duplicates": 0
+  }
+}

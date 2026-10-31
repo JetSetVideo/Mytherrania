@@ -1161,3 +1161,44 @@ increase the cost of mana a little by 20 % or so"* — so the pass is a before/a
    called their work "Wave J"; the paired session's had already shipped, so this wave was renumbered
    K, its lane reports renamed `artifacts/messages-K*.md`, and its brief/spec sections renamed with
    it. Nothing in the code depended on the label, but the docs would have pointed at the wrong wave.
+
+## Pass 30 — Wave L: heraldry, a rolled fighter you can see, and what a UI rewrite breaks elsewhere
+
+The ask was design work ("improve the components … races and sub-races should have icons like étendards …
+a purple rocky dice button … options in closed trees"), so this pass records what was MEASURED and, more
+usefully, the two failure modes a UI rewrite of shared markup produces in this repo.
+
+| claim | measured |
+| --- | --- |
+| distinct standards | 16 (4 races + 12 sub-species), all distinct as strings, 0 duplicates; cadency from an FNV-1a hash of the sub-species id |
+| on-screen standards | race boxes 4/4 carrying one, sub-species chips 12/12 |
+| dice button | 122 x 48 px, border `#a06cd5`, background `#2a2338`, 3 box-shadow steps, dice icon present |
+| the model follows one roll | build key `Sir Aldric\|human\|imperial\|Warrior` -> `Ash\|...\|sword`, 10 896 triangles, live |
+| the sheet is the game's maths | Max Health 24 375 = `applyRaceBonus(createStats(...))` + `applySecondary`, within 2 % of the live pool |
+| closed trees | 18 groups, 1 open on arrival (`title/start/modes`), every header counts its options |
+| frame budget with a second WebGL context live | spectate p99 3.8 ms of 16.6 (headroom 12.8) |
+| full gate | 1388 passed / 0 failed, lint 488 files, build 1 782 828 B |
+
+**Lessons recorded.**
+
+1. **A UI rewrite of shared markup silently invalidates the PROBES of earlier waves, and only the probes
+   catch it.** Wave L moved `data-race-box` from the race toggle button to a wrapper card, so the delegated
+   click no longer resolved to a `.race-toggle`; the Wave H ancestry lore panel then showed the *previous*
+   race's lore and three of that wave's six claims went false (panelsDiffer, orkMentionsChin,
+   elfMentionsThinMoustache). The unit suite stayed green throughout — 1384 tests — because no test clicked
+   a card. Lesson: when a wave rewrites markup that an earlier wave's probe drives by SELECTOR, re-run those
+   probes before committing, and treat their booleans as part of the gate.
+2. **A delegated click handler must accept every node its own markup actually exposes.** The fix was not to
+   move the attribute back but to make the box resolve through its own toggle, so the whole card is one
+   target — which is also the better interaction. A clickable wrapper around a button is a trap unless the
+   handler is told about it.
+3. **The stall the user describes is a MEASUREMENT before it is a behaviour.** "They move but they don't
+   really move, they don't serve each other" is not rateable by eye across thousands of matches, so Wave M
+   names it (`standoffMaxS`, `dryStreak.maxS`, the distance bands) before touching the decision tree.
+4. **A live model is cheaper than a portrait here, and more honest.** The offscreen one-shot portrait
+   (`renderPortrait`) still draws the OLD `buildHumanoid` body — a picture of a fighter the game no longer
+   renders. Standing the real skinned rig on a small canvas costs one context and 3.8 ms p99 in spectate,
+   and it cannot drift from the arena because it runs the same build path.
+5. **Machine-read colour is not taste.** The dice button's stone treatment was verified as three shadow
+   steps and the right violet border; whether it *looks* like struck stone is a judgement no test in this
+   repo can make, and the wave says so rather than implying it was judged.

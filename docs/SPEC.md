@@ -803,6 +803,21 @@ headless batch back end — and released it at 15:53 UTC. See `artifacts/tuning/
 the headless frame numbers are a lab sample; `floating: 0` bounds the seating error at the sampled rim
 rather than proving it away between samples.
 
+## 11D. Wave L — creation and menu components: étendards, the dice roll, the live model, closed trees
+
+Added 2026-10-31. The prompt asked for the components from the main page to the panel before launching a game
+to be improved, for the races AND sub-species to carry icons "like étendards", for the character generator to
+show the model and its statistics after clicking a purple rocky dice button that refreshes the Creator step,
+and for the options to live in visibly closed trees. (The last sentence of the ask is cut off in the
+transcript; the decode and the flag are in `docs/creation/BRIEF.md`.)
+
+| # | Requirement | Where | Status |
+| --- | --- | --- | --- |
+| LA1 | Every race and every sub-species flies its own heraldic standard: one charge per race (elf laurel/star, human crown/sun, dwarf hammer/anvil, ork tusk/skull), a cadency mark per sub-species chosen deterministically from its id, all 16 distinct, drawn with presentation attributes only (no inline style), and readable at chip size | `src/ui/RaceBanners.ts` (`raceBanner`, `bannerCharge`, `bannerPalette`), `src/ui/Icons.ts` (`dice`, `chevron-down`) | LIVE |
+| LB1 | The generator rolls a complete LEGAL fighter (race + a sub-species of that race, class, a weapon legal for the class, palette, birthsign, appearance; seeded, so a seed reproduces it) and its stat sheet is computed with the game's own maths (`createStats` → `applyRaceBonus` → `applySecondary` → `applyLevel`), never a private copy | `src/ui/CreatorRoll.ts` (`rollProfile`, `creatorSheet`) | LIVE |
+| LC1 | The options are CLOSED trees: every group renders as a native disclosure, closed on arrival except the single entry group, each header showing its option count, and the open set persists (a corrupt payload falls back to the initial state) | `src/ui/UiTree.ts` (`UiGroup.defaultOpen`, `defaultOpenGroups`), `src/ui/Disclosure.ts` | LIVE |
+| LD1 | One purple rocky dice button (dice icon, violet-on-ink struck-stone treatment, CSS only) rolls a fighter and refreshes the whole Creator step, and the rolled fighter's **model** (a live render built by the same path the arena uses) and **statistics** are shown beside it | `src/ui/Menu.ts` (`rollCreator`, `#refreshCreator`, `data-panel="preview"`), `src/graphics/PreviewScene.ts`, `Engine.#updateCreatorPreview` | LIVE |
+
 ## 12. Traceability — every prompt to its requirements
 
 | Prompt (date, gist) | Requirements |
@@ -821,6 +836,7 @@ rather than proving it away between samples.
 | Ancestry hierarchy over every subrace with body-part ratios, per-ancestry look, hair physics bound to length and curl, generations logged for training, a 3-minute limit that ends as a tie with the stat difference recorded, History highlights, generated spectator matches with a stat budget, a bounded corpus data-science pass | §11A, `docs/ancestry/BRIEF.md` |
 | Spectator camera whose angle stays, a custom blob cursor, click-to-inspect stat sheets and object cards, props floating above the map, a ground-fill layer that closes terrain seams, particles where two weapons collide, and the 60 FPS budget kept | §11B, `docs/spectator/BRIEF.md` |
 | Damage that answers impact, halved health pools and attack power, mana 20 % dearer, stat bars with the numbers inside and squares across, and three named attacks re-animated | §11C, `docs/tuning/BRIEF.md` |
+| Éendards for every race and sub-species, a purple rocky dice that rolls a fighter and shows its model and statistics, the options as closed trees, and the whole title → Create path polished | §11D, `docs/creation/BRIEF.md` |
 
 **Statuses in one line.** LIVE: races, physics, skills, shaped arenas with walls, truce, senses,
 fog + minimap, statuses, items, environment, adaptive AI + telemetry + Elo leaderboard, stance

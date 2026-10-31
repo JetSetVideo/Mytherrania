@@ -1,5 +1,5 @@
 import { CLASSES, type ClassName } from "../game/Stats.ts";
-import { NPCS, PALETTES, PRESETS, randomProfile, type CharacterProfile } from "../game/Characters.ts";
+import { NPCS, PALETTES, PRESETS, type CharacterProfile } from "../game/Characters.ts";
 import { RACES, raceById, computeRaceStats, type RaceDef } from "../game/Races.ts";
 import { BIRTHSIGNS } from "../game/Birthsight.ts";
 import { secondaryPreview } from "../game/SecondaryStats.ts";
@@ -10,12 +10,15 @@ import type { SpectateCard } from "../game/SpectateGen.ts";
 import { objectSize, RING_SHAPES, type ArenaConfig, type ObjectKind } from "../game/ArenaConfig.ts";
 import { surfaceFor } from "../game/Terrain.ts";
 import { weaponForClass } from "../game/Weapon.ts";
-import { COLOUR_HEX, screenPanels, type ScreenId } from "./UiTree.ts";
+import { COLOUR_HEX, screenPanels, UI_TREE, type ScreenId, type UiGroup, type UiPanel } from "./UiTree.ts";
 import { HISTORY_SORTS, HISTORY_SORT_LABEL, highlightSummary, rowBadges, sortHistory, type HistoryRowLike, type HistorySort } from "./HistoryView.ts";
 import { NavStack } from "./NavStack.ts";
 import { birthsignIcon, icon } from "./Icons.ts";
 import { ancestryView, initialAncestry, nextHeaderIndex, selectSubrace, toggleRace, type AncestryState } from "./AncestryState.ts";
 import { weaponMenuOptions } from "../game/weapons/Loadout.ts";
+import { raceBanner } from "./RaceBanners.ts";
+import { creatorSheet, rollProfile, type CreatorSheet, type SheetRow } from "./CreatorRoll.ts";
+import { DISCLOSURE_STORAGE_KEY, decodeDisclosure, encodeDisclosure, groupKey, initialDisclosure, isOpen, openGroup, type DisclosureState } from "./Disclosure.ts";
 
 /** Largest arena (m across) the live engine builds; the creator's size slider tops out here. */
 export const LIVE_ARENA_MAX = 120;
@@ -115,6 +118,12 @@ export interface MenuCallbacks {
   onProfile?(playerId: string): void;
   /** The title's Settings button: open the settings panel over the menu. */
   onSettings?(): void;
+  /**
+   * A complete fighter was rolled by the Creator's dice (L-B's `rollProfile`); the engine draws
+   * its 3D model into `#creator-preview`. Fired AFTER the whole Creator step has been refreshed,
+   * so a listener reading the DOM sees the rolled race/class/sign/sheet already in place.
+   */
+  onRoll?(profile: CharacterProfile): void;
 }
 
 export interface SheetData {
@@ -193,6 +202,107 @@ const badgeKind = (b: string): string =>
 const badgeHtml = (row: HistoryRowLike): string =>
   rowBadges(row).map((b) => `<span class="history-badge" data-key="history-badge" data-badge="${badgeKind(b)}">${esc(b)}</span>`).join("");
 
+/* ── Pure render helpers (L-D) ────────────────────────────────────────────────────────────
+   The markup below is built by these functions so it can be unit-tested without a DOM. The page
+   runs under `style-src 'self'`, which BLOCKS any `style="…"` attribute (a previous wave's History
+   bars rendered empty because of it), so every one of these strings carries classes and SVG
+   presentation attributes only — never an inline style. */
+
+/**
+ * mulberry32 — a 32-bit seeded PRNG (pure). The dice needs randomness tests can replay: the same
+ * seed must yield the same fighter, which is exactly why the roll never touches `Math.random`.
+ * Each call returns a value in [0, 1).
+ */
+export function mulberry32(seed: number): () => number {
+  let a = seed >>> 0;
+  return () => {
+    a = (a + 0x6d2b79f5) | 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+/** Pluralised option count for an opt-group header: "1 option" / "N options". */
+export function optionCount(n: number): string {
+  return `${n} ${n === 1 ? "option" : "options"}`;
+}
+
+/** The inputs to {@link optGroupHtml}: one tree group's identity, colour, size and open state. */
+export interface OptGroupSpec {
+  screen: string;
+  panel: string;
+  id: string;
+  label: string;
+  hint: string;
+  colour: string;
+  /** How many controls the group owns (the header's "N options"). */
+  count: number;
+  /** Open on this visit (from Disclosure); the native `<details>` default is CLOSED. */
+  open: boolean;
+  /** Optional leading glyph (an icon or a race banner `<svg>`), inside `.opt-glyph`. */
+  glyph?: string;
+  /** The group's controls, already rendered. */
+  body: string;
+}
+
+/**
+ * One option group as a native `<details>` closed tree (L-C's renderer contract). Native
+ * `<details>` is used deliberately: keyboard and screen-reader behaviour come for free, and
+ * "closed" is the element's OWN default, so the visual default and the accessibility default
+ * cannot drift apart.
+ */
+export function optGroupHtml(g: OptGroupSpec): string {
+  const key = groupKey(g.screen, g.panel, g.id);
+  const open = g.open ? " open" : "";
+  return `<details class="opt-group" data-group="${esc(key)}" data-colour="${esc(g.colour)}"${open}>` +
+    `<summary class="opt-head">` +
+    `<span class="opt-glyph" aria-hidden="true">${g.glyph ?? ""}</span>` +
+    `<span class="opt-label">${esc(g.label)}</span>` +
+    `<span class="opt-count">${esc(optionCount(g.count))}</span>` +
+    `<span class="opt-hint">${esc(g.hint)}</span>` +
+    `<span class="opt-chevron" aria-hidden="true">${icon("chevron-down", "opt-chevron-svg")}</span>` +
+    `</summary><div class="opt-body">${g.body}</div></details>`;
+}
+
+/** The purple, rocky dice button. Icon + label, classes only — no inline style attribute. */
+export function diceButtonHtml(): string {
+  return `<button type="button" class="dice-btn dice-btn-rocky" data-action="dice"` +
+    ` title="Roll a complete random fighter and refresh the Creator step">` +
+    `${icon("dice", "dice-glyph")}<span class="dice-label">Roll</span></button>`;
+}
+
+/** One sheet row: label, value, and the WHY hint when the source carries one. */
+function sheetRowHtml(r: SheetRow): string {
+  return `<div class="sheet-row"><span class="sheet-row-label">${esc(r.label)}</span>` +
+    `<b class="sheet-row-value">${esc(r.value)}</b>` +
+    (r.hint ? `<span class="sheet-row-hint">${esc(r.hint)}</span>` : "") + `</div>`;
+}
+
+/** One sheet column: a heading and its rows. */
+function sheetColHtml(title: string, rows: SheetRow[]): string {
+  return `<div class="sheet-col"><h4 class="sheet-col-head">${esc(title)}</h4>${rows.map(sheetRowHtml).join("")}</div>`;
+}
+
+/**
+ * The rolled fighter's stat sheet as HTML (L-B's {@link CreatorSheet}): the identity line and three
+ * columns — the six attributes, the derived combat numbers, and the modifiers. Every label and
+ * value comes from `creatorSheet`, which reads the real game maths.
+ */
+export function creatorSheetHtml(sheet: CreatorSheet): string {
+  const sub = sheet.subraceLabel && sheet.subraceLabel !== "—" ? ` · ${esc(sheet.subraceLabel)}` : "";
+  return `<div class="sheet-ident">` +
+    `<b class="sheet-name">${esc(sheet.name)}</b>` +
+    `<span class="sheet-meta">${esc(sheet.raceLabel)}${sub} · ${esc(sheet.className)}</span>` +
+    `<span class="sheet-meta">${esc(sheet.weaponLabel)} · sign ${esc(sheet.signLabel)}</span>` +
+    `</div>` +
+    `<div class="sheet-cols">` +
+    sheetColHtml("Attributes", sheet.primary) +
+    sheetColHtml("Derived", sheet.derived) +
+    sheetColHtml("Modifiers", sheet.secondary) +
+    `</div>`;
+}
+
 export class Menu {
   #root: HTMLDivElement;
   #player: CharacterProfile = PRESETS[0];
@@ -216,6 +326,10 @@ export class Menu {
   #historySort: HistorySort = "newest";
   /** The last History view + leaderboard, kept so a sort change re-renders without fresh data. */
   #history: { view: HistoryView; leaderboard: LeaderRow[] } | null = null;
+  /** Which option groups are open (L-C's `Disclosure`); every group is CLOSED unless remembered. */
+  #disclosure: DisclosureState = initialDisclosure(UI_TREE);
+  /** Mixed into the seed so two dice clicks within one millisecond never roll the same fighter. */
+  #rollCount = 0;
 
   /** Show the engine's generated spectator card (H-E), or clear it with null. */
   setSpectateCard(card: SpectateCard | null, techniques: string[] = []): void {
@@ -233,7 +347,26 @@ export class Menu {
     this.#root = document.createElement("div");
     this.#root.id = "menu";
     document.body.appendChild(this.#root);
+    // The remembered open/closed state of every option group (L-C), read once; a corrupt or
+    // absent payload decodes to the initial state and never throws.
+    this.#disclosure = decodeDisclosure(this.#readStoredDisclosure(), UI_TREE);
     this.#render(callbacks);
+  }
+
+  /** The stored disclosure payload, or null when storage is unavailable (private mode, CSP). */
+  #readStoredDisclosure(): string | null {
+    try {
+      return globalThis.localStorage?.getItem(DISCLOSURE_STORAGE_KEY) ?? null;
+    } catch {
+      return null;
+    }
+  }
+
+  /** Persist the open/closed state; a blocked storage write is not an error worth surfacing. */
+  #persistDisclosure(): void {
+    try {
+      globalThis.localStorage?.setItem(DISCLOSURE_STORAGE_KEY, encodeDisclosure(this.#disclosure));
+    } catch { /* storage disabled: the trees still work, they just will not be remembered */ }
   }
 
   get visible(): boolean { return this.#visible; }
@@ -295,6 +428,162 @@ export class Menu {
     }));
   }
 
+  /** The title screen's one panel: its groups are closed trees (modes open, the entry paths). */
+  #titlePanelHtml(): string {
+    const panel = screenPanels("title")[0];
+    if (!panel) return "";
+    return `<section class="ui-panel ui-panel-title" data-panel="${esc(panel.id)}" data-colour="${esc(panel.colour)}">` +
+      panel.groups.map((g) => this.#optGroup("title", panel.id, panel.colour, g)).join("") +
+      `</section>`;
+  }
+
+  /** One select-screen panel: a headed section whose groups are closed trees, in tree order. */
+  #panelHtml(panel: UiPanel): string {
+    return `<section class="ui-panel" data-panel="${esc(panel.id)}" data-colour="${esc(panel.colour)}">` +
+      `<h3 class="panel-head"><span class="dot"></span>${esc(panel.label)}<span class="panel-hint">${esc(panel.hint)}</span></h3>` +
+      panel.groups.map((g) => this.#optGroup("select", panel.id, panel.colour, g)).join("") +
+      `</section>`;
+  }
+
+  /** One tree group as an opt-group `<details>`: glyph, count, hint and the group's controls. */
+  #optGroup(screen: ScreenId, panelId: string, colour: string, g: UiGroup): string {
+    return optGroupHtml({
+      screen,
+      panel: panelId,
+      id: g.id,
+      label: g.label,
+      hint: g.hint,
+      colour,
+      count: g.controls.length,
+      open: isOpen(this.#disclosure, groupKey(screen, panelId, g.id)),
+      glyph: this.#groupGlyph(panelId, g.id),
+      body: this.#groupBody(panelId, g.id),
+    });
+  }
+
+  /**
+   * The preview panel: the shape the parent draws the rolled fighter's MODEL into
+   * (`#creator-preview`, written by the engine — this panel never draws into it) and the stat
+   * sheet (`#creator-sheet`, from L-B's `creatorSheet`). Pinned (`data-pinned`): it is not a
+   * tab, so it stays visible under whichever Creator panel is open.
+   */
+  #previewPanelHtml(): string {
+    return `<section class="ui-panel ui-panel-preview" data-panel="preview" data-colour="violet" data-pinned>` +
+      `<h3 class="panel-head"><span class="dot"></span>Preview<span class="panel-hint">The rolled fighter: the model above the sheet below.</span></h3>` +
+      `<div class="preview-grid">` +
+      `<div class="preview-stage">` +
+      `<canvas id="creator-preview" width="360" height="440" class="preview-canvas" role="img" aria-label="3D preview of the rolled fighter"></canvas>` +
+      `<p class="preview-hint">The model is the fighter the dice rolled — the engine draws it here.</p></div>` +
+      `<div class="preview-stats">` +
+      diceButtonHtml() +
+      `<div class="creator-row">${PRESETS.map((p, i) => `<button class="menu-btn menu-btn-sm" data-preset="${i}">${p.name}</button>`).join("")}</div>` +
+      `<h4 class="group-head">Palette</h4>` +
+      `<div class="palettes">${Object.entries(PALETTES).map(([name]) =>
+        `<button class="palette-chip palette-${name}" data-palette="${name}" title="${name}" aria-pressed="false"></button>`).join("")}</div>` +
+      `<div id="creator-sheet" class="creator-sheet"></div>` +
+      `</div></div></section>`;
+  }
+
+  /** An opt-group's leading glyph: an étendard where the ancestry appears, an icon elsewhere. */
+  #groupGlyph(panelId: string, groupId: string): string {
+    switch (`${panelId}/${groupId}`) {
+      case "ancestry/race": return raceBanner(this.#player.race, null, "opt-banner");
+      case "ancestry/subrace": return raceBanner(this.#player.race, this.#player.subrace, "opt-banner");
+      case "ancestry/hero": return icon("defense", "opt-icon");
+      case "ancestry/lore": return icon("flag", "opt-icon");
+      case "calling/class": return icon("power", "opt-icon");
+      case "calling/weapon": return icon("dash", "opt-icon");
+      case "calling/skills": return icon("flame", "opt-icon");
+      case "sign/birthsign": return birthsignIcon(this.#player.birthsign, "opt-icon");
+      case "sign/secondary": return icon("storm", "opt-icon");
+      case "opponent/rival": return icon("close", "opt-icon");
+      case "opponent/terms": return icon("gear", "opt-icon");
+      case "opponent/spectate": return icon("play", "opt-icon");
+      case "opponent/inspect": return icon("play", "opt-icon");
+      case "arena/field": return icon("mountain", "opt-icon");
+      case "arena/walls": return icon("defense", "opt-icon");
+      case "arena/pickups": return icon("flame", "opt-icon");
+      case "start/profiles": return icon("flag", "opt-icon");
+      case "start/modes": return icon("play", "opt-icon");
+      default: return "";
+    }
+  }
+
+  /** The controls of one opt-group. The panel id disambiguates the shared group ids. */
+  #groupBody(panelId: string, groupId: string): string {
+    switch (`${panelId}/${groupId}`) {
+      case "start/profiles":
+        return `<div id="profile-picker" class="profile-picker"></div>`;
+      case "start/modes":
+        return `<div class="title-modes">` +
+          `<button class="menu-btn" data-action="start">⚔ Fight</button>` +
+          `<button class="menu-btn menu-btn-alt" data-action="digest">📋 History</button>` +
+          `<button class="menu-btn menu-btn-alt" data-action="spectate">👁 Spectate</button>` +
+          `<button class="menu-btn menu-btn-alt" data-action="settings" title="Keyboard layout, mouse, camera, display, sound">${icon("gear", "menu-btn-icon")}Settings</button>` +
+          `</div>`;
+      case "ancestry/race":
+        return `<label class="field">Name <input id="creator-name" type="text" value="${esc(this.#player.name)}"></label>` +
+          `<div class="ancestry-list" id="ancestry-list">${RACES.map((r) => this.#raceBoxHtml(r)).join("")}</div>`;
+      case "ancestry/subrace":
+        return `<p class="opt-note">Sub-species open inside each race box above — pick the nation within the people.</p>`;
+      case "ancestry/hero":
+        return `<div id="race-detail" class="race-detail"></div>`;
+      case "ancestry/lore":
+        return `<div id="ancestry-lore" class="ancestry-lore"></div>`;
+      case "calling/class":
+        return `<table class="pick-table" id="class-table"><tbody>${CLASSES.map(c => `
+              <tr class="pick-row" data-class="${c}" data-selected="${c === this.#player.className}">
+                <td class="pick-name">${c}</td>
+                <td class="pick-hint">${weaponForClass(c).name}</td>
+              </tr>`).join("")}</tbody></table>`;
+      case "calling/weapon":
+        return `<table class="pick-table" id="weapon-table"><tbody>${weaponMenuOptions().map(o => `
+              <tr class="pick-row" data-weapon="${esc(o.value)}" data-selected="${(o.value || undefined) === this.#player.weaponType || (o.value === "" && !this.#player.weaponType)}">
+                <td class="pick-name">${esc(o.label)}</td>
+                <td class="pick-hint">${esc(o.hint)}</td>
+              </tr>`).join("")}</tbody></table>`;
+      case "calling/skills":
+        return `<div id="class-skills" class="class-skills"></div>`;
+      case "sign/birthsign":
+        return `<table class="pick-table" id="birthsign-table"><tbody>${BIRTHSIGNS.map(b => `
+              <tr class="pick-row" data-birthsign="${b.id}" data-selected="${b.id === this.#player.birthsign}">
+                <td class="pick-name"><span class="sign-label">${birthsignIcon(b.id, "sign-icon")}<span>${esc(b.name)}</span></span></td>
+                <td class="pick-hint">${b.lore}</td>
+              </tr>`).join("")}</tbody></table>`;
+      case "sign/secondary":
+        return `<div id="hero-secondary-sign" class="secondary-rows">${this.#secondaryRows()}</div>`;
+      case "opponent/rival":
+        return `<label class="field">Opponent<select id="menu-opponent">` +
+          `${NPCS.map(n => `<option value="npc:${n.name}">${n.name} (${n.className})</option>`).join("")}` +
+          `${CLASSES.map(c => `<option value="class:${c}">${c}</option>`).join("")}</select></label>`;
+      case "opponent/terms":
+        return `<label class="field">Match length<select id="match-length">` +
+          `<option value="1">Standard</option><option value="0.5">Short (half health)</option><option value="0.25">Blitz (quarter health)</option>` +
+          `</select></label>`;
+      case "opponent/spectate":
+        return `<section class="spectate-card" id="spectate-card"></section>`;
+      case "opponent/inspect":
+        return `<p class="opt-note">The inspect overlay (cursor, fighter and object cards) appears over a spectator match.</p>`;
+      case "arena/field":
+        return `<div class="arena-pick">` +
+          `<label>Ring shape<select id="arena-shape"><option value="">Random</option>` +
+          `${RING_SHAPES.map((s, i) => `<option value="${i}">${s}</option>`).join("")}</select></label>` +
+          `<label>Size <output id="arena-size-out">random</output>` +
+          `<input id="arena-size" type="range" min="${ARENA_SLIDER_RANDOM}" max="${LIVE_ARENA_MAX}" step="${ARENA_SIZE_STEP}" value="${ARENA_SLIDER_RANDOM}" aria-describedby="arena-size-hint">` +
+          `<small id="arena-size-hint" class="field-hint">Far left = random. Fixed sizes run ${LIVE_ARENA_MIN}–${LIVE_ARENA_MAX} m.</small></label></div>`;
+      case "arena/walls":
+        return `<div class="arena-pick">` +
+          `<label>Wall<select id="arena-walls"><option value="">Random (90% walled)</option>` +
+          `<option value="1">Always</option><option value="0">Never</option></select></label>` +
+          `<label>Wall resistance <output id="arena-res-out">random</output>` +
+          `<input id="arena-res" type="range" min="0" max="9000" step="100" value="0"></label></div>`;
+      case "arena/pickups":
+        return `<p class="opt-note">Pickups and power-ups are generated with the arena.</p>`;
+      default:
+        return "";
+    }
+  }
+
   #render(cb: MenuCallbacks) {
     this.#cb = cb;
     const root = this.#root;
@@ -302,11 +591,7 @@ export class Menu {
       <div class="menu-screen" data-screen="title">
         <h1 class="menu-title">MYTHERRANIA</h1>
         <p class="menu-sub">Cel-shaded arena combat</p>
-        <div id="profile-picker" class="profile-picker"></div>
-        <button class="menu-btn" data-action="start">⚔ Fight</button>
-        <button class="menu-btn menu-btn-alt" data-action="digest">📋 History</button>
-        <button class="menu-btn menu-btn-alt" data-action="spectate">👁 Spectate</button>
-        <button class="menu-btn menu-btn-alt" data-action="settings" title="Keyboard layout, mouse, camera, display, sound">${icon("gear", "menu-btn-icon")}Settings</button>
+        ${this.#titlePanelHtml()}
       </div>
 
       <div class="menu-screen" data-screen="select">${this.#backBar()}
@@ -316,100 +601,9 @@ export class Menu {
         </header>
         <nav class="panel-tabs" data-tabs="select"></nav>
 
-        <section class="ui-panel" data-panel="ancestry" data-colour="grass">
-          <h3 class="panel-head"><span class="dot"></span>Ancestry<span class="panel-hint">Click a race to open it, then pick its sub-species. They drive the body, hair, beard and tusks.</span></h3>
-          <label class="field">Name <input id="creator-name" type="text" value="${esc(this.#player.name)}"></label>
-          <div class="ancestry-list" id="ancestry-list">${RACES.map((r) => this.#raceBoxHtml(r)).join("")}</div>
-          <div id="race-detail" class="race-detail"></div>
-          <div id="ancestry-lore" class="ancestry-lore"></div>
-        </section>
+        ${screenPanels("select").map((p) => this.#panelHtml(p)).join("")}
 
-        <section class="ui-panel" data-panel="calling" data-colour="sand">
-          <h3 class="panel-head"><span class="dot"></span>Calling<span class="panel-hint">The class and the three techniques it brings.</span></h3>
-          <table class="pick-table" id="class-table">
-            <tbody>${CLASSES.map(c => `
-              <tr class="pick-row" data-class="${c}" data-selected="${c === this.#player.className}">
-                <td class="pick-name">${c}</td>
-                <td class="pick-hint">${weaponForClass(c).name}</td>
-              </tr>`).join("")}
-            </tbody>
-          </table>
-          <div id="class-skills" class="class-skills"></div>
-          <h4 class="group-head">Weapon</h4>
-          <table class="pick-table" id="weapon-table">
-            <tbody>${weaponMenuOptions().map(o => `
-              <tr class="pick-row" data-weapon="${esc(o.value)}" data-selected="${(o.value || undefined) === this.#player.weaponType || (o.value === "" && !this.#player.weaponType)}">
-                <td class="pick-name">${esc(o.label)}</td>
-                <td class="pick-hint">${esc(o.hint)}</td>
-              </tr>`).join("")}
-            </tbody>
-          </table>
-          <h4 class="group-head">Palette</h4>
-          <div class="palettes">${Object.entries(PALETTES).map(([name]) =>
-            `<button class="palette-chip palette-${name}" data-palette="${name}" title="${name}"></button>`).join("")}</div>
-          <div class="creator-row">
-            <button class="menu-btn menu-btn-sm" data-action="random">Random</button>
-            ${PRESETS.map((p, i) => `<button class="menu-btn menu-btn-sm" data-preset="${i}">${p.name}</button>`).join("")}
-          </div>
-        </section>
-
-        <section class="ui-panel" data-panel="sign" data-colour="violet">
-          <h3 class="panel-head"><span class="dot"></span>Star sign<span class="panel-hint">The birthsign stacks additively on the sub-species.</span></h3>
-          <table class="pick-table" id="birthsign-table">
-            <tbody>${BIRTHSIGNS.map(b => `
-              <tr class="pick-row" data-birthsign="${b.id}" data-selected="${b.id === this.#player.birthsign}">
-                <td class="pick-name"><span class="sign-label">${birthsignIcon(b.id, "sign-icon")}<span>${esc(b.name)}</span></span></td>
-                <td class="pick-hint">${b.lore}</td>
-              </tr>`).join("")}
-            </tbody>
-          </table>
-          <h4 class="group-head">Secondary stats</h4>
-          <div id="hero-secondary" class="secondary-rows"></div>
-        </section>
-
-        <section class="ui-panel" data-panel="opponent" data-colour="ocean">
-          <h3 class="panel-head"><span class="dot"></span>Opponent<span class="panel-hint">Who you face, and the terms of the match.</span></h3>
-          <label class="field">Opponent
-            <select id="menu-opponent">
-              ${NPCS.map(n => `<option value="npc:${n.name}">${n.name} (${n.className})</option>`).join("")}
-              ${CLASSES.map(c => `<option value="class:${c}">${c}</option>`).join("")}
-            </select>
-          </label>
-          <label class="field">Match length
-            <select id="match-length">
-              <option value="1">Standard</option>
-              <option value="0.5">Short (half health)</option>
-              <option value="0.25">Blitz (quarter health)</option>
-            </select>
-          </label>
-          <section class="spectate-card" id="spectate-card"></section>
-        </section>
-
-        <section class="ui-panel" data-panel="arena" data-colour="positive">
-          <h3 class="panel-head"><span class="dot"></span>Arena<span class="panel-hint">Shape, walls, props and pickups.</span></h3>
-          <div class="arena-pick">
-            <label>Ring shape
-              <select id="arena-shape">
-                <option value="">Random</option>
-                ${RING_SHAPES.map((s, i) => `<option value="${i}">${s}</option>`).join("")}
-              </select>
-            </label>
-            <label>Size <output id="arena-size-out">random</output>
-              <input id="arena-size" type="range" min="${ARENA_SLIDER_RANDOM}" max="${LIVE_ARENA_MAX}" step="${ARENA_SIZE_STEP}" value="${ARENA_SLIDER_RANDOM}" aria-describedby="arena-size-hint">
-              <small id="arena-size-hint" class="field-hint">Far left = random. Fixed sizes run ${LIVE_ARENA_MIN}–${LIVE_ARENA_MAX} m.</small>
-            </label>
-            <label>Wall
-              <select id="arena-walls">
-                <option value="">Random (90% walled)</option>
-                <option value="1">Always</option>
-                <option value="0">Never</option>
-              </select>
-            </label>
-            <label>Wall resistance <output id="arena-res-out">random</output>
-              <input id="arena-res" type="range" min="0" max="9000" step="100" value="0">
-            </label>
-          </div>
-        </section>
+        ${this.#previewPanelHtml()}
 
         <button class="menu-btn menu-btn-primary" data-action="begin">Enter the ring</button>
       </div>
@@ -493,12 +687,20 @@ export class Menu {
     // Ancestry accordion (W01): a race header opens its box in place (the others close) and
     // selects the race; a sub-species chip inside the box selects both. Arrow keys / Home /
     // End move between the race headers; Enter / Space toggle (native button behaviour).
+    //
+    // Wave L: the race CARDS became heraldic boxes (a banner, a name, a trait, a chevron) wrapped
+    // around the toggle button, so a click can land on the box itself (its padding, its heading, its
+    // banner) instead of the button. That click is a click on the race: resolving it through the box's
+    // own toggle keeps the whole card one target, and without it the race never changed (the Wave H
+    // lore probe read the previous race's panel and called it a difference).
     const list = root.querySelector<HTMLElement>("#ancestry-list")!;
+    const toggleFromBox = (el: Element | null): HTMLElement | null =>
+      el?.closest?.<HTMLElement>(".race-toggle") ?? el?.closest?.<HTMLElement>("[data-race-box]")?.querySelector<HTMLElement>(".race-toggle") ?? null;
     list.addEventListener("click", (e) => {
       const target = e.target as Element | null;
       const chip = target?.closest?.<HTMLElement>(".subrace-chip");
       if (chip) { this.#setAncestry(selectSubrace(this.#ancestry, chip.dataset.race!, chip.dataset.subrace!, RACES)); return; }
-      const head = target?.closest?.<HTMLElement>(".race-toggle");
+      const head = toggleFromBox(target);
       if (head) this.#setAncestry(toggleRace(this.#ancestry, head.dataset.race!, RACES));
     });
     list.addEventListener("keydown", (e) => {
@@ -511,15 +713,23 @@ export class Menu {
       heads[next].focus();
     });
 
-    // Random / presets
-    root.querySelector('[data-action="random"]')!.addEventListener("click", () => {
-      this.#player = randomProfile(Math.random);
-      this.#syncCreatorUI();
-    });
+    // The dice (purple, rocky): one click rolls a complete fighter and refreshes the Creator step.
+    // A legacy `data-action="random"` control, if one survives, rolls through the same path.
+    root.querySelector('[data-action="dice"]')?.addEventListener("click", () => this.rollCreator());
+    root.querySelector('[data-action="random"]')?.addEventListener("click", () => this.rollCreator());
     root.querySelectorAll("[data-preset]").forEach(btn => btn.addEventListener("click", () => {
       this.#player = { ...PRESETS[parseInt((btn as HTMLElement).dataset.preset!)] };
       this.#syncCreatorUI();
     }));
+
+    // Option groups (L-C): a native <details> toggle writes straight back through Disclosure and
+    // localStorage, so the closed-by-default trees remember what was opened.
+    root.querySelectorAll<HTMLDetailsElement>("details.opt-group").forEach((d) => {
+      d.addEventListener("toggle", () => {
+        this.#disclosure = openGroup(this.#disclosure, d.dataset.group ?? "", d.open);
+        this.#persistDisclosure();
+      });
+    });
 
     // Opponent
     root.querySelector("#menu-opponent")!.addEventListener("change", e => {
@@ -571,7 +781,11 @@ export class Menu {
         if (panel) tab.style.setProperty("--tab", COLOUR_HEX[panel.colour]);
       });
       const show = (id: string) => {
-        for (const panel of this.#root.querySelectorAll<HTMLElement>(`[data-panel]`)) {
+        // Scope to THIS screen's panels: the title screen also carries `data-panel` sections, and
+        // a pinned panel (the Creator preview) is never tab-controlled, so it must stay visible.
+        const scope = nav.closest<HTMLElement>(".menu-screen") ?? this.#root;
+        for (const panel of scope.querySelectorAll<HTMLElement>(`[data-panel]`)) {
+          if (panel.hasAttribute("data-pinned")) continue;
           panel.hidden = panel.dataset.panel !== id;
         }
         for (const tab of nav.querySelectorAll<HTMLElement>("[data-tab]")) {
@@ -608,7 +822,7 @@ export class Menu {
             ${statRow("Intelligence", stats.intelligence)}
           </div>
           <div class="race-hero-col"><h4>Secondary (sub-species + sign)</h4>
-            <div id="hero-secondary">${this.#secondaryRows()}</div>
+            <div id="hero-secondary" class="secondary-rows">${this.#secondaryRows()}</div>
           </div>
         </div>
         <div class="sign-row"><strong>Birth Sign:</strong>
@@ -718,10 +932,10 @@ export class Menu {
       </div>`;
   }
 
-  /** Re-render the secondary column + preview when sub-species or sign changes. */
+  /** Re-render every secondary column + the sign preview when the sub-species or sign changes. */
   #refreshSecondary(): void {
-    const col = this.#root.querySelector("#hero-secondary");
-    if (col) col.innerHTML = this.#secondaryRows();
+    const rows = this.#secondaryRows();
+    this.#root.querySelectorAll<HTMLElement>(".secondary-rows").forEach((col) => { col.innerHTML = rows; });
     const prev = this.#root.querySelector("#birthsign-preview");
     if (prev) prev.innerHTML = this.#birthsignPreview();
   }
@@ -736,6 +950,25 @@ export class Menu {
     if (crumb) crumb.textContent = this.#nav.trail().map((s) => SCREEN_LABEL[s]).join("  ›  ");
   }
 
+  /**
+   * Roll a COMPLETE fighter and refresh the whole Creator step in one call: name, the race box +
+   * sub-species chips + `#race-detail` + `#ancestry-lore`, the class/weapon/birthsign tables, the
+   * palette chips, `#hero-secondary`, the stat sheet (`#creator-sheet`) — then fire the parent's
+   * `onRoll` hook so the engine can re-seat the 3D preview. `seed` is for tests and the parent;
+   * the dice omits it and a fresh seed is mixed on every click (never `Math.random`).
+   */
+  rollCreator(seed?: number): void {
+    this.#refreshCreator(seed);
+  }
+
+  #refreshCreator(seed?: number): void {
+    const mixed = seed ?? ((Date.now() ^ (this.#rollCount++ * 0x9e3779b9)) >>> 0);
+    const rolled = rollProfile(mulberry32(mixed));
+    this.#player = rolled.profile;
+    this.#syncCreatorUI();
+    this.#cb.onRoll?.(rolled.profile);
+  }
+
   #syncCreatorUI() {
     (this.#root.querySelector("#creator-name") as HTMLInputElement).value = this.#player.name;
     // Highlight the matching class and weapon rows in the tables.
@@ -746,6 +979,15 @@ export class Menu {
       const w = (r as HTMLElement).dataset.weapon ?? "";
       r.setAttribute("data-selected", String((w || undefined) === this.#player.weaponType || (w === "" && !this.#player.weaponType)));
     });
+    // Birthsign table + palette chips: a roll or preset must visibly move the selection.
+    this.#root.querySelectorAll("#birthsign-table .pick-row").forEach(r => {
+      r.setAttribute("data-selected", String((r as HTMLElement).dataset.birthsign === this.#player.birthsign));
+    });
+    this.#root.querySelectorAll(".palette-chip").forEach(c => {
+      const on = (c as HTMLElement).dataset.palette === this.#player.palette;
+      c.classList.toggle("selected", on);
+      c.setAttribute("aria-pressed", String(on));
+    });
     this.#renderClassSkills(this.#player.className);
     // Ancestry: open the profile's race box with its sub-species chosen (a missing or foreign
     // sub-species falls back to the race's first, so the highlight is the real selection).
@@ -754,6 +996,32 @@ export class Menu {
     this.#syncAncestry();
     const race = raceById(this.#player.race);
     if (race) this.#renderRaceDetail(race);
+    // The rolled fighter's stat sheet (real game maths) and the ancestry group étendards.
+    this.#renderCreatorSheet();
+    this.#refreshGroupGlyphs();
+  }
+
+  /** Draw the rolled fighter's stat sheet from L-B's `creatorSheet` (the real game maths). */
+  #renderCreatorSheet(): void {
+    const el = this.#root.querySelector<HTMLElement>("#creator-sheet");
+    if (!el) return;
+    el.innerHTML = creatorSheetHtml(creatorSheet(this.#player));
+  }
+
+  /**
+   * Re-banner the group glyphs after a roll: the ancestry trees show the rolled race's standard,
+   * and the birthsign tree its sign icon. Glyphs are baked at render time, so a roll must redraw
+   * them by hand (CSSOM/`innerHTML` once per roll, never per frame).
+   */
+  #refreshGroupGlyphs(): void {
+    const glyph = (key: string): HTMLElement | null =>
+      this.#root.querySelector<HTMLElement>(`details.opt-group[data-group="${key}"] .opt-glyph`);
+    const race = glyph("select/ancestry/race");
+    if (race) race.innerHTML = raceBanner(this.#player.race, null, "opt-banner");
+    const sub = glyph("select/ancestry/subrace");
+    if (sub) sub.innerHTML = raceBanner(this.#player.race, this.#player.subrace, "opt-banner");
+    const sign = this.#root.querySelector<HTMLElement>('details.opt-group[data-group="select/sign/birthsign"] .opt-glyph');
+    if (sign) sign.innerHTML = birthsignIcon(this.#player.birthsign, "opt-icon");
   }
 
   /** One race box of the Ancestry accordion: header button + collapsible sub-species region. */
@@ -763,14 +1031,15 @@ export class Menu {
               <h4 class="race-box-head">
                 <button type="button" class="race-card race-toggle" id="race-toggle-${esc(r.id)}" data-race="${esc(r.id)}"
                   aria-expanded="false" aria-controls="race-panel-${esc(r.id)}">
+                  <span class="race-box-banner" aria-hidden="true">${raceBanner(r.id, null, "race-banner")}</span>
                   <span class="race-box-text"><strong class="race-box-name" data-race-label>${esc(r.name)}</strong><small class="race-box-trait">${esc(r.traits[0] ?? "")}</small></span>
-                  ${icon("chevron-left", "race-box-chevron")}
+                  ${icon("chevron-down", "race-box-chevron")}
                 </button>
               </h4>
               <div class="race-box-body" id="race-panel-${esc(r.id)}" role="region" aria-labelledby="race-toggle-${esc(r.id)}">
                 <div class="race-box-inner">
                   <div class="subrace-row" role="group" aria-label="Sub-species of ${esc(r.name)}">${r.subspecies.map((s) =>
-                    `<button type="button" class="subrace-chip" data-race="${esc(r.id)}" data-subrace="${esc(s.id)}" aria-pressed="false" title="${esc(s.desc)}">${esc(s.name)}</button>`).join("")}</div>
+                    `<button type="button" class="subrace-chip" data-race="${esc(r.id)}" data-subrace="${esc(s.id)}" aria-pressed="false" title="${esc(s.desc)}"><span class="subrace-banner" aria-hidden="true">${raceBanner(r.id, s.id, "subrace-banner-svg")}</span><span class="subrace-name">${esc(s.name)}</span></button>`).join("")}</div>
                   <p class="subrace-desc" data-subrace-desc></p>
                 </div>
               </div>

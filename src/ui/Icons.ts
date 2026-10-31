@@ -20,8 +20,8 @@ export const ICON_GRID = 24;
 /** Names of every icon this module can draw. */
 export type IconName =
   | "serpent" | "mountain" | "flame" | "moon" | "storm" | "void"
-  | "chevron-left"
-  | "dash" | "power" | "defense"
+  | "chevron-left" | "chevron-down"
+  | "dash" | "power" | "defense" | "dice"
   | "gear" | "flag" | "play" | "restart" | "home" | "close";
 
 /**
@@ -37,9 +37,12 @@ export type IconName =
  *   centres r apart, so successive rings sit 2r = 4.8 units apart — about 2.7 stroke widths,
  *   which keeps the turns separate at 18 px instead of merging into a disc.
  * - chevron-left: the Back arrow.
+ * - chevron-down: the closed-tree disclosure marker (a downward chevron); chevron-left is its left twin.
  * - dash: three staggered speed lines with an arrowhead (a movement burst).
  * - power: an eight-point impact star (outer radius 9.5, inner 4.4, about the centre).
  * - defense: a heater shield.
+ * - dice: a five-pip die — a rounded 17-unit square face (3.5..20.5) with five solid pips of
+ *   radius 1.6 units on the corners and the centre, so it reads as a die at 20 px.
  * - gear: the Settings cog — eight teeth (tip radius 9.6, root radius 7.4, each tip 21 deg wide)
  *   around a hub circle of radius 3.2, all centred on (12, 12).
  * - flag: a white flag (Give up) — a pole on the left with a waving cloth.
@@ -67,12 +70,21 @@ const PATHS: Record<IconName, string> = {
     `<path d="M9.6 13.2a2.4 2.4 0 0 1 4.8 0 4.8 4.8 0 0 1-9.6 0 7.2 7.2 0 0 1 14.4 0"/>`,
   "chevron-left":
     `<path d="M15 5.5 8.5 12l6.5 6.5"/>`,
+  "chevron-down":
+    `<path d="M5.5 9 12 15.5 18.5 9"/>`,
   dash:
     `<path d="M2.5 12H14"/><path d="M5.5 7.5H10"/><path d="M3.5 16.5H9"/><path d="M13.5 6.5 19.5 12l-6 5.5"/>`,
   power:
     `<path d="M12 2.5 13.7 7.9 18.7 5.3 16.1 10.3 21.5 12 16.1 13.7 18.7 18.7 13.7 16.1 12 21.5 10.3 16.1 5.3 18.7 7.9 13.7 2.5 12 7.9 10.3 5.3 5.3 10.3 7.9z"/>`,
   defense:
     `<path d="M12 2.8 19.5 5.7v5.6c0 4.6-3.1 8.2-7.5 10.2-4.4-2-7.5-5.6-7.5-10.2V5.7z"/>`,
+  dice:
+    `<rect x="3.5" y="3.5" width="17" height="17" rx="3"/>` +
+    `<circle cx="8.5" cy="8.5" r="1.6" fill="currentColor" stroke="none"/>` +
+    `<circle cx="15.5" cy="8.5" r="1.6" fill="currentColor" stroke="none"/>` +
+    `<circle cx="12" cy="12" r="1.6" fill="currentColor" stroke="none"/>` +
+    `<circle cx="8.5" cy="15.5" r="1.6" fill="currentColor" stroke="none"/>` +
+    `<circle cx="15.5" cy="15.5" r="1.6" fill="currentColor" stroke="none"/>`,
   gear:
     `<path d="M9.8 4.9 10.3 2.6 13.7 2.6 14.2 4.9 15.5 5.5 17.4 4.1 19.9 6.6 18.5 8.5 19.1 9.8 21.4 10.3 21.4 13.7 19.1 14.2 18.5 15.5 19.9 17.4 17.4 19.9 15.5 18.5 14.2 19.1 13.7 21.4 10.3 21.4 9.8 19.1 8.5 18.5 6.6 19.9 4.1 17.4 5.5 15.5 4.9 14.2 2.6 13.7 2.6 10.3 4.9 9.8 5.5 8.5 4.1 6.6 6.6 4.1 8.5 5.5z"/>` +
     `<circle cx="12" cy="12" r="3.2"/>`,

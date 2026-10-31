@@ -58,6 +58,10 @@ export interface UiGroup {
   label: string;
   hint: string;
   controls: UiControl[];
+  /** Render this group's disclosure OPEN on a first visit. Absent means false: every
+   *  option group is a CLOSED tree unless it is deliberately marked, so the visual
+   *  default (closed) and the native <details> default cannot drift apart. */
+  defaultOpen?: boolean;
 }
 
 /** A panel: one tab, one colour code, one or more groups. */
@@ -113,6 +117,7 @@ export const UI_TREE: UiScreen[] = [
             id: "modes",
             label: "Modes",
             hint: "How the next match is played.",
+            defaultOpen: true,
             controls: [
               c("btn-fight", "Fight", "You against one AI.", "always", "player", 2),
               c("btn-spectate", "Spectate", "AI against AI, with a speed control.", "always", "system", 2),
@@ -354,4 +359,24 @@ export function treeSize(): { screens: number; panels: number; groups: number; c
     }
   }
   return { screens: UI_TREE.length, panels, groups, controls };
+}
+
+/**
+ * The `screen/panel/group` keys of every group the tree marks `defaultOpen`.
+ *
+ * Exactly ONE group is open on a first visit — `title/start/modes` — because the entry
+ * paths (Fight / Spectate / …) must never hide behind a closed tree; every other option
+ * group starts closed. The key string is built here, with the same `${screen}/${panel}/${group}`
+ * shape `Disclosure.groupKey` produces, so the tree stays the single source of the marked set.
+ */
+export function defaultOpenGroups(): string[] {
+  const out: string[] = [];
+  for (const s of UI_TREE) {
+    for (const p of s.panels) {
+      for (const g of p.groups) {
+        if (g.defaultOpen) out.push(`${s.id}/${p.id}/${g.id}`);
+      }
+    }
+  }
+  return out;
 }

@@ -1,0 +1,88 @@
+{
+  "title": {
+    "visible": true,
+    "heading": "MYTHERRANIA",
+    "buttons": [
+      "HeroWarrior",
+      "⚔ Fight",
+      "📋 History",
+      "👁 Spectate",
+      "Settings"
+    ]
+  },
+  "banners": {
+    "raceCount": 4,
+    "racesWithStandard": 4,
+    "subraceCount": 12,
+    "subracesWithStandard": 12,
+    "distinctRaceStandards": 4,
+    "subraceStandardsPresent": true
+  },
+  "trees": {
+    "groups": 18,
+    "openOnArrival": 1,
+    "openKeys": [
+      "title/start/modes"
+    ],
+    "everyHeaderHasCount": true,
+    "summaryTags": 18
+  },
+  "dice": {
+    "button": {
+      "present": true,
+      "hasDiceIcon": true,
+      "width": 122,
+      "height": 48,
+      "colour": "rgb(243, 230, 255)",
+      "background": "rgb(42, 35, 56)",
+      "border": "rgb(160, 108, 213)",
+      "shadowSteps": 3,
+      "backgroundImage": "none"
+    },
+    "modelBefore": "Sir Aldric|human|imperial|Warrior||1.8000|90.0000|#172128|mountain",
+    "modelAfter": "Ash|human|imperial|Warrior|sword|1.7315|59.1222|#c0a070|serpent",
+    "modelFollowedRoll": true,
+    "previewLive": true,
+    "triangles": 10896,
+    "sheetRowsBefore": 16,
+    "sheetRowsAfter": 16,
+    "sheetSample": "AshHuman · Imperial · WarriorLongsword · sign The SerpentAttributesVitality7Resilience9Willpower6Reflex7Strength8Intelligence6DerivedMax Health24 375Attack Power374≈ 314 a blow vs. an even foeAttack Interval1.08 sArmour4",
+    "selectionBefore": {
+      "race": "",
+      "cls": "Warrior",
+      "name": "Sir Aldric"
+    },
+    "selectionAfter": {
+      "race": "",
+      "cls": "Warrior",
+      "name": "Ash"
+    },
+    "creatorRefreshed": true,
+    "rollChangedSomething": true
+  },
+  "viewports": {
+    "390x844": {
+      "clipped": [],
+      "shot": "artifacts/qa-wave-l/03-select-390.png"
+    },
+    "820x1180": {
+      "clipped": [],
+      "shot": "artifacts/qa-wave-l/03-select-820.png"
+    },
+    "1280x800": {
+      "clipped": [],
+      "shot": "artifacts/qa-wave-l/03-select-1280.png"
+    },
+    "1920x1080": {
+      "clipped": [],
+      "shot": "artifacts/qa-wave-l/03-select-1920.png"
+    }
+  },
+  "frame": {
+    "n": 90,
+    "p50": 16.7,
+    "p99": 17.4,
+    "g": true
+  },
+  "errors": []
+}

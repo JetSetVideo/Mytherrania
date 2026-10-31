@@ -1,91 +1,70 @@
 {
   "day": {
     "cpuMs": {
-      "n": 241,
-      "mean": 2.404,
-      "p50": 2.1,
-      "p95": 3.6,
-      "p99": 5.2,
-      "max": 7.7
+      "n": 240,
+      "mean": 2.072,
+      "p50": 2,
+      "p95": 2.6,
+      "p99": 3.2,
+      "max": 3.5
     },
     "frameGapMs": {
-      "n": 241,
-      "mean": 16.666,
+      "n": 240,
+      "mean": 16.735,
       "p50": 16.7,
       "p95": 16.8,
       "p99": 16.8,
-      "max": 16.8
+      "max": 33.3
     },
-    "gpuMs": {
-      "n": 242,
-      "mean": 5.932,
-      "p50": 5.498,
-      "p95": 9.959,
-      "p99": 13.096,
-      "max": 13.954
-    },
-    "cpuHeadroomMsP99": 11.4,
-    "polygons": 21184,
+    "gpuMs": null,
+    "cpuHeadroomMsP99": 13.4,
+    "polygons": 21176,
     "phase": "day"
   },
   "night": {
     "cpuMs": {
       "n": 240,
-      "mean": 2.165,
+      "mean": 2.315,
       "p50": 2,
-      "p95": 3.2,
-      "p99": 4.4,
-      "max": 12.6
+      "p95": 3.3,
+      "p99": 8.8,
+      "max": 15.5
     },
     "frameGapMs": {
       "n": 240,
       "mean": 16.666,
       "p50": 16.7,
-      "p95": 16.8,
+      "p95": 16.7,
       "p99": 16.8,
       "max": 16.8
     },
-    "gpuMs": {
-      "n": 240,
-      "mean": 4.987,
-      "p50": 4.271,
-      "p95": 9.932,
-      "p99": 12.087,
-      "max": 12.563
-    },
-    "cpuHeadroomMsP99": 12.2,
-    "polygons": 21184,
+    "gpuMs": null,
+    "cpuHeadroomMsP99": 7.8,
+    "polygons": 21176,
     "phase": "night"
   },
   "spectate": {
     "cpuMs": {
-      "n": 241,
-      "mean": 2.153,
+      "n": 240,
+      "mean": 2.139,
       "p50": 2,
-      "p95": 3.2,
-      "p99": 4.8,
-      "max": 5.1
+      "p95": 3,
+      "p99": 3.8,
+      "max": 4.1
     },
     "frameGapMs": {
-      "n": 241,
-      "mean": 16.666,
+      "n": 240,
+      "mean": 16.665,
       "p50": 16.7,
-      "p95": 16.8,
+      "p95": 16.7,
       "p99": 16.8,
       "max": 16.8
     },
-    "gpuMs": {
-      "n": 241,
-      "mean": 5.271,
-      "p50": 4.818,
-      "p95": 9.353,
-      "p99": 11.191,
-      "max": 12.442
-    },
-    "cpuHeadroomMsP99": 11.8,
-    "polygons": 21184,
+    "gpuMs": null,
+    "cpuHeadroomMsP99": 12.8,
+    "polygons": 21176,
     "phase": "night",
-    "freeCamera": false,
+    "freeCamera": true,
     "effects": false
   },
   "environment": {

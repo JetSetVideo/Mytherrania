@@ -693,3 +693,122 @@ body.myth-cursor-on,body.myth-cursor-on *{cursor:none}
   .myth-cursor-blob,.inspect-card .inspect-bar-fill,.inspect-card .inspect-bar-seg-fill,.fp-seg-fill,.fp-pot{transition:none}
 }
 
+/* Wave L (L-D): the polished creator/menu components — the closed option trees, the purple rocky
+   dice, the étendards, and the preview panel the engine draws the rolled fighter's model into.
+   DESIGN.md items 2–8/17: ink/panel/text palette, the 4px spacing scale, a 6px radius, a 3px
+   coral focus ring, four breakpoints (≤767 / 768–1023 / 1024–1439 / ≥1440), solid panels, no blur.
+   No rule here sets a width or colour inline; the JS never writes a style="…" attribute (the page
+   CSP is style-src 'self'). */
+
+/* ── Closed option trees (L-C's renderer contract) ─────────────────────────────────────────────
+   Every panel group is a native <details> closed by default; the summary is the 44px+ header with
+   the group's glyph, label, option count and one-line WHY. The native marker is hidden and a
+   chevron stands in, rotated by CSS on [open]. */
+.opt-group{border:1px solid rgba(185,201,200,.16);border-left:3px solid var(--opt,#dfaa55);border-radius:6px;background:rgba(10,14,18,.28);overflow:hidden}
+.opt-group[data-colour="grass"]{--opt:#82b970}
+.opt-group[data-colour="sand"]{--opt:#dfaa55}
+.opt-group[data-colour="ocean"]{--opt:#4f8490}
+.opt-group[data-colour="coral"]{--opt:#ef7455}
+.opt-group[data-colour="positive"]{--opt:#a9ce7c}
+.opt-group[data-colour="violet"]{--opt:#a06cd5}
+.opt-group[data-colour="ink"]{--opt:#202d35}
+.opt-head{display:flex;align-items:center;gap:10px;min-height:44px;padding:8px 12px;cursor:pointer;list-style:none;font-size:14px;font-weight:700;letter-spacing:.03em;color:#fff3cf;background:rgba(32,45,53,.6);transition:background-color .12s ease-out}
+.opt-head::-webkit-details-marker{display:none}
+.opt-head:hover{background:#2a3a44}
+.opt-head:focus-visible{outline:3px solid #ef7455;outline-offset:-3px}
+.opt-glyph{display:inline-flex;align-items:center;justify-content:center;flex:none;width:32px;height:32px}
+.opt-glyph .opt-icon{width:20px;height:20px;color:#dfaa55}
+.opt-banner{width:26px;height:32px;border-radius:3px;box-shadow:0 1px 3px rgba(0,0,0,.5)}
+.opt-label{flex:none;white-space:nowrap}
+.opt-count{flex:none;font-size:11px;font-weight:400;letter-spacing:.02em;color:#b9c9c8;background:#172128;border:1px solid #4f8490;border-radius:10px;padding:1px 8px}
+.opt-hint{flex:1;min-width:0;font-size:12px;font-weight:400;color:#b9c9c8;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.opt-chevron{flex:none;display:inline-flex}
+.opt-chevron-svg{width:18px;height:18px;color:#b9c9c8;transition:transform .2s cubic-bezier(.2,.7,.2,1)}
+.opt-group[open]>summary .opt-chevron-svg{transform:rotate(180deg)}
+.opt-body{display:flex;flex-direction:column;gap:10px;padding:12px}
+.opt-note{margin:0;font-size:13px;font-style:italic;color:#b9c9c8}
+
+/* ── The dice (purple / rocky) ──────────────────────────────────────────────────────────────────
+   A struck-stone face: violet trim on ink, bevelled with inset shadows, with a diagonal crack
+   drawn by a pseudo-element gradient (CSS only — never an inline style). 48px tall, so it clears
+   the 44px touch target on every breakpoint. */
+.dice-btn{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  min-height:48px;min-width:44px;padding:10px 20px;font:inherit;font-size:15px;font-weight:700;letter-spacing:.04em;
+  color:#f3e6ff;cursor:pointer;touch-action:manipulation;border-radius:6px}
+.dice-btn .dice-glyph{width:24px;height:24px;color:#f3e6ff}
+.dice-btn .dice-label{text-transform:uppercase}
+/* The stone face itself: violet trim on ink, bevelled with inset shadows, with a diagonal crack
+   drawn by a pseudo-element gradient. This is what "rocky" means; the base above is layout only. */
+.dice-btn.dice-btn-rocky{background:#2a2338;border:2px solid #a06cd5;
+  box-shadow:inset 2px 2px 0 rgba(255,255,255,.14),inset -3px -3px 0 rgba(0,0,0,.55),0 3px 10px rgba(0,0,0,.5)}
+.dice-btn.dice-btn-rocky::after{content:"";position:absolute;inset:3px;border-radius:4px;pointer-events:none;
+  background:linear-gradient(115deg,transparent 46%,rgba(160,108,213,.5) 47%,rgba(160,108,213,.5) 49%,transparent 50%)}
+.dice-btn.dice-btn-rocky:hover{background:#3a2f52;border-color:#c79bf0}
+.dice-btn.dice-btn-rocky:active{transform:translateY(1px);box-shadow:inset 3px 3px 0 rgba(0,0,0,.55),inset -2px -2px 0 rgba(255,255,255,.1)}
+.dice-btn:focus-visible{outline:3px solid #ef7455;outline-offset:2px}
+.dice-btn[disabled]{opacity:.45;cursor:not-allowed;transform:none}
+
+/* ── Étendards (L-A) on the race boxes and sub-species chips ────────────────────────────────────
+   The race header flies a 56px standard; each sub-species chip carries its own 32px differenced
+   standard. Selected/open states share the coral accent the accordion already uses. */
+.race-box-banner{display:inline-flex;flex:none;width:34px;height:42px;border-radius:3px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.5)}
+.race-banner{display:block;width:100%;height:100%}
+.race-box.selected .race-box-banner{box-shadow:0 0 0 2px #ef7455}
+.subrace-chip{display:inline-flex;align-items:center;gap:6px}
+.subrace-banner{display:inline-flex;flex:none;width:22px;height:26px;border-radius:2px;overflow:hidden}
+.subrace-banner-svg{display:block;width:100%;height:100%}
+.subrace-name{white-space:nowrap}
+/* chevron-down now points down when open and right when closed (was the left chevron). */
+.race-box-chevron{transform:rotate(-90deg)}
+.race-box.expanded .race-box-chevron{transform:rotate(0deg)}
+
+/* ── The preview panel: the model (engine-drawn canvas) beside the stat sheet ─────────────────── */
+.ui-panel-preview{--panel:#a06cd5}
+.preview-grid{display:grid;grid-template-columns:minmax(0,360px) minmax(0,1fr);gap:16px;align-items:start}
+.preview-stage{display:flex;flex-direction:column;gap:8px;align-items:center;padding:10px;background:#0b1014;border:1px solid #4f8490;border-radius:6px}
+.preview-canvas{width:100%;max-width:360px;height:auto;border-radius:6px;background:#101820}
+.preview-hint{margin:0;font-size:12px;font-style:italic;color:#b9c9c8;text-align:center}
+.preview-stats{display:flex;flex-direction:column;gap:10px;min-width:0}
+/* The dice is a button, not a banner: it sizes to its content instead of stretching the column. */
+.preview-stats .dice-btn{align-self:flex-start}
+.creator-sheet{display:flex;flex-direction:column;gap:10px}
+.sheet-ident{display:flex;flex-direction:column;gap:2px}
+.sheet-name{font-family:'Cinzel','Trajan Pro','Palatino Linotype','Palatino',Georgia,serif;font-size:20px;color:#fff3cf}
+.sheet-meta{font-size:12px;color:#dfcfa5}
+.sheet-cols{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.sheet-col{display:flex;flex-direction:column;gap:4px;min-width:0;padding:8px 10px;background:rgba(0,0,0,.3);border:1px solid #6b5a3e;border-radius:6px}
+.sheet-col-head{margin:0 0 2px;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:#dfaa55}
+.sheet-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:baseline;padding:1px 0;font-size:12px;color:#fff3cf;border-bottom:1px solid rgba(155,114,207,.16)}
+.sheet-row-label{color:#b9c9c8;overflow-wrap:anywhere}
+.sheet-row-value{color:#a9ce7c;font-variant-numeric:tabular-nums}
+.sheet-row-hint{grid-column:1/-1;font-size:10px;color:#8fa8ad}
+
+/* ── Title screen panel + mode buttons ────────────────────────────────────────────────────────── */
+.ui-panel-title{gap:12px}
+.title-modes{display:flex;flex-direction:column;gap:10px;align-items:stretch}
+.title-modes .menu-btn{width:100%}
+
+/* ── Hit targets & layout per breakpoint: nothing clips, nothing under 44px on touch ──────────── */
+.palette-chip{width:44px;height:44px}
+@media(max-width:767px){
+  .preview-grid{grid-template-columns:1fr}
+  .sheet-cols{grid-template-columns:1fr}
+  .opt-hint{display:none}
+  .subrace-chip{min-height:44px}
+  .title-modes .menu-btn{padding:12px 24px;font-size:18px}
+}
+@media(min-width:768px) and (max-width:1023px){
+  .sheet-cols{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(min-width:1024px) and (max-width:1439px){
+  .sheet-cols{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media(min-width:1440px){
+  .preview-grid{grid-template-columns:minmax(0,420px) minmax(0,1fr)}
+  .sheet-cols{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .sheet-col-head{font-size:12px}
+}
+@media(prefers-reduced-motion:reduce){
+  .opt-chevron-svg,.opt-head{transition:none}
+}
+
