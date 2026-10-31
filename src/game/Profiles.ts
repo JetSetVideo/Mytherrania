@@ -49,6 +49,12 @@ export interface Profile {
   telemetry: ProfileTelemetry;
   /** When the profile was created (ISO). */
   createdAt: string;
+  /**
+   * Wave P: the GENERATION SEED this fighter came from, when it was generated rather than hand-built.
+   * The id stays the identity; the seed is the idea — recorded so the generation system (and a network
+   * trained on its outputs) can find the same fighter again, and so a profile is discoverable by seed.
+   */
+  seed?: number;
 }
 
 /** Deterministic 32-bit hash so a profile id is reproducible from a seed. */
@@ -73,6 +79,8 @@ export function createProfile(seed: number, name: string, className: ClassName):
     keybindings: { ...DEFAULT_KEYBINDINGS },
     telemetry: { matches: 0, wins: 0, losses: 0, damageDealt: 0, favouriteClass: null },
     createdAt: new Date().toISOString(),
+    // The seed the id was hashed from: recorded, so the same idea is reproducible and discoverable.
+    seed,
   };
 }
 

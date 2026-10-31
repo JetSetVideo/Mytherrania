@@ -1,5 +1,6 @@
 // @deno-types="@types/three"
 import * as THREE from "three";
+import { INK_BASE_WIDTH, INK_GLSL, INK_UNIFORM_DEFAULTS } from "./Ink.ts";
 
 // Cel shading (G05, G10). Every cel surface — rigid parts here, skinned bodies (CelSkinned.ts) and
 // weapons (WeaponMaterial.ts) — shades through ONE GLSL function, CEL_LIGHT_GLSL, on ONE shared set
@@ -21,6 +22,7 @@ export const CEL_BAND_WEIGHTS = [0.3, 0.32] as const;
 
 /** Shared lighting chunk: uniforms + celShade(). Needs `#include <packing>` before it. */
 export const CEL_LIGHT_GLSL = /* glsl */ `
+${INK_GLSL}
 uniform vec3 lightColor;
 uniform vec3 ambientColor;
 uniform vec3 uSkyTint;
@@ -60,7 +62,12 @@ vec3 celShade(vec3 base, vec3 n, vec3 l, vec3 viewPos, vec3 world, vec3 worldN, 
     float s = pow(max(dot(reflect(-l, n), view), 0.0), 22.0);
     spec = (smoothstep(0.42, 0.52, s) * 0.85 + s * 0.15) * specular * sh;
   }
-  return base * (amb + lightColor * band + rim * (lightColor * mix(0.4, 1.0, sh) + ambientColor)) + lightColor * spec;
+  // Manga equation (lane P-A): the flat shade tone darkens the shaded bands while the lit band stays
+  // a FULL surface — "shades and full surfaces". mr.y is the band's tone in [shadeTone, 1].
+  vec3 mr = mangaRamp(ndl);
+  float litFrac = clamp(band / 0.62, 0.0, 1.0); // 0.62 = CEL_BAND_WEIGHTS[0] + CEL_BAND_WEIGHTS[1]
+  vec3 shadedBase = mix(base * mr.y, base, litFrac);
+  return shadedBase * (amb + lightColor * band + rim * (lightColor * mix(0.4, 1.0, sh) + ambientColor)) + lightColor * spec;
 }
 `;
 
@@ -111,12 +118,23 @@ const celFragment = /* glsl */ `
   }
 `;
 
+// Inverted hull whose extrusion is the VARIABLE ink mark (lane P-A): the vertex runs the pure law
+// from Ink.ts (declared here via INK_GLSL) with its constants on the shared cel uniforms, so a
+// silhouette edge is fully marked while a lit, camera-facing surface collapses the hull to zero.
+// `outlineWidth` is the per-mesh BASE width (default INK_BASE_WIDTH); the mark can never exceed uInkMaxWidth.
 const outlineVertex = /* glsl */ `
   uniform float outlineWidth;
+  uniform vec3 lightDirection;
+  uniform float uIsFace;
+  uniform float uMaterialInk;
+  ${INK_GLSL}
   void main() {
     vec4 viewPosition = modelViewMatrix * vec4(position, 1.0);
-    vec3 viewNormal = normalize(normalMatrix * normal);
-    viewPosition.xyz += viewNormal * outlineWidth;
+    vec3 n = normalize(normalMatrix * normal);
+    vec3 lightView = normalize((viewMatrix * vec4(lightDirection, 0.0)).xyz);
+    float strength = inkStrength(n, lightView, viewPosition.xyz, uIsFace, uMaterialInk);
+    float w = inkWidth(strength, outlineWidth, 1.0);
+    viewPosition.xyz += n * w;
     gl_Position = projectionMatrix * viewPosition;
   }
 `;
@@ -134,6 +152,10 @@ const outlineFragment = /* glsl */ `
  * Lighting shared by every cel surface (parent → children). The Engine writes the
  * current sun/moon direction, colour, ambient, hemisphere tints and the key light's shadow map
  * here once per frame; all cel materials reference these same uniform objects.
+ *
+ * The ink/manga constant uniforms (lane P-A) ride along: their values come from
+ * Ink.INK_UNIFORM_DEFAULTS, so the shaders read the law's numbers as uniforms, never as a second
+ * copy typed into GLSL.
  */
 export const celLighting = {
   lightDirection: { value: new THREE.Vector3(-0.45, 1, 0.65).normalize() },
@@ -147,6 +169,7 @@ export const celLighting = {
   uShadowMatrix: { value: new THREE.Matrix4() },
   uShadowOn: { value: 0 },
   uShadowTexel: { value: 1 / 2048 },
+  ...Object.fromEntries(Object.entries(INK_UNIFORM_DEFAULTS).map(([k, v]) => [k, { value: v }])) as Record<string, THREE.IUniform>,
 };
 
 /** The uniform record every cel surface material starts from (shared objects, never copies). */
@@ -171,6 +194,12 @@ function surfaceMaterial(color: THREE.ColorRepresentation, specular: number, ver
 export interface CelMeshOptions {
   /** Multiply the base colour by the geometry's `color` attribute (per-vertex skin creases). */
   vertexColors?: boolean;
+  /** True when this geometry is a face: the ink law suppresses the mark on a front-facing face. */
+  isFace?: boolean;
+  /** Per-mesh ink multiplier in [0, 1] (0 mutes the outline). */
+  materialInk?: number;
+  /** Base hull width in metres (default INK_BASE_WIDTH). The mark is capped at Ink.INK_MAX_WIDTH. */
+  outlineWidth?: number;
 }
 
 /**
@@ -191,10 +220,12 @@ export function createCelMesh(
   const surface = new THREE.Mesh(geometry, surfaceMaterial(color, specular, opts.vertexColors ?? false));
   surface.name = "cel-surface";
   const outline = new THREE.Mesh(geometry, new THREE.ShaderMaterial({
-    uniforms: {
+    uniforms: celUniforms({
       inkColor: { value: new THREE.Color("#172128") },
-      outlineWidth: { value: 0.035 },
-    },
+      outlineWidth: { value: opts.outlineWidth ?? INK_BASE_WIDTH },
+      uIsFace: { value: opts.isFace ? 1 : 0 },
+      uMaterialInk: { value: opts.materialInk ?? 1 },
+    }),
     vertexShader: outlineVertex,
     fragmentShader: outlineFragment,
     side: THREE.BackSide,

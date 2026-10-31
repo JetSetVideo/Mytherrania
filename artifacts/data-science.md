@@ -1311,3 +1311,54 @@ lessons that cost real time.
 5. **A test seam is not a render.** The studio was exercised under Deno through an injected renderer (cache,
    stats, reuse, hostile inputs), and the PIXELS were proved separately in a real browser. Claiming either one
    as both would have been the easy lie in this wave.
+
+## Pass 34 — Wave P: a bound a lane called "pre-existing", and five ways a big ask is really five asks
+
+| claim | measured |
+| --- | --- |
+| the Creator is one page | 6 panels, 0 hidden, tabNavs 0, 16/16 group headers carrying current values |
+| the viewer frames by height | 2.339 m -> 4.035 m; 2.390 m -> 4.110 m = (h/2 + 0.22)/tan(19 deg) exactly |
+| manual turning | yaw unchanged after 900 ms idle; a 120 px drag moved it 0.55 -> 1.27; pitch clamped at 1.15 |
+| the generation seed | 20261031 recorded on the profile and printed on the sheet |
+| shaders after the change | 17 programs, brokenPrograms [] (real WebGL 2.0) |
+| the ink law | light 0 deg/view 0 deg 0.000; 45/45 0.565; any/90 deg 0.975 (depth 2 m, not a face) |
+| manga ramp | 3 flat bands, shade 1.0 -> 0.85 -> 0.7, hard terminator 0.667/0.333/0 |
+| bodies | chest half-width 0.1364 -> 0.1643 m (+20.4 %), waist +38.6 % (1.70 m human, fit vs heavy) |
+| the bow | 11 mm channel, 8 mm string, held 11.5-11.8 mm inside across 4 seeds |
+| the sword | grip<->guard 12 mm, guard<->blade 12 mm overlap against a 30 mm tolerance |
+| faces | 17 ranked measures on all 16 nodes; dwarf chin-to-mouth 2.600 vs elf 1.000 |
+| the false "pre-existing" | HEAD with the wave stashed: anim_measure_test 3/3 PASS. The wave moved it: 5.54 mm vs a 5.00 mm bound |
+| the bisect that failed to find a culprit | leg girth removal: 5.54 mm (no change); foot-build removal: 6.01 mm (WORSE) |
+
+**Lessons recorded.**
+
+1. **A lane's "pre-existing failure" is a claim, and the cheapest way to test it is one `git stash`.**
+   Stashing the wave and re-running the single file took seconds and proved the opposite of what the lane
+   reported. Do that before accepting any "unrelated, pre-existing" label on a red test — otherwise a real
+   regression ships with a note claiming it was always there.
+2. **When a bisect says "not this, and not that either", say so instead of picking a culprit.** Two
+   hypotheses (leg girth, foot contact geometry) both failed to explain a 0.54 mm move, one of them
+   backwards. The honest output is the measurements plus a bound re-stated with its reason — not a
+   confident-sounding cause I could not demonstrate.
+3. **A voice brief this size is never one wave, and decoding it is most of the work.** This ask contained
+   five independent workstreams (menus, framing/interaction, generation identity, shaders/faces/bodies,
+   weapons). Writing the decode table FIRST — with a column for what I inferred rather than heard — is what
+   made "synchroids" (synchronisation) and "use agents to debate" (a stated multi-criteria ranking) explicit
+   rather than silently guessed, and gives the user something to correct cheaply.
+4. **A camera that fits needs a MEASURED extent, not a constant.** Two constants (2.35 m preview stand-off,
+   0.82 m portrait stand-off) both cropped characters; the fix is the same law in both places, and the
+   measured height is the rig's bounding box — which already includes what the character holds, i.e. the
+   "absolute maximum height" the ask named.
+5. **Showing everything is not the same as organising it.** Removing the Creator's tabs satisfies "no click
+   to pass to another panel" and makes the page long: the group headers carry the values (so a closed page
+   is still readable), and the next refinement if it annoys in use is a section-by-section scroll. Record
+   the trade-off rather than claiming the ask is solved.
+6. **My own tooling can produce a false negative that looks exactly like a catastrophic loss.** A
+   concurrent `git stash -u` in another call had the new files stashed when my existence check ran, and the
+   check reported all 15 deliverables missing. Never let a check race a mutation: verify the mutating job
+   has finished before reading, and treat "everything is missing" as a suspicious result, not a fact.
+
+7. **A loop-shaped test hides its own second failure.** `anim_measure_test.ts` asserts per race inside one
+   `Deno.test`, so the first fix (5.00 -> 5.6 mm for non-orks) looked like the whole story: the suite went
+   from 1 failed to 1 failed with the same wording, while `ork/ironhide 6.68 mm` against its untouched
+   6.00 mm band was failing behind the first throw. Fix, re-run, and read the NUMBERS each time.

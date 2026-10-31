@@ -4,7 +4,11 @@
 // the per-seat projection the report is built from, the report's own invariants on real telemetry,
 // and the two wires (the engine feeding the accumulator and the reading page's batch button) whose
 // absence is invisible in a unit test but obvious in the game.
-import { assert } from "jsr:@std/assert@1";
+// The repo's own tests carry a local assert rather than a remote import: the jsr specifier tripped
+// `no-import-prefix` in `deno lint` (measured) and the JSR module is not in this repo's import map.
+function assert(ok: unknown, m = "assertion failed"): asserts ok {
+  if (!ok) throw new Error(m);
+}
 import { CIRCLING_M, createTelemetry, STRIKING_M, telemetryForSeat, telemetrySummary } from "../src/game/FightTelemetry.ts";
 import { buildReport, REPORT_BYTE_CAP, STRATEGY_IDS } from "../src/game/MatchReport.ts";
 import { batchPlan, batchProgress, batchSummary, BATCH_SIZES } from "../src/ui/BatchPanel.ts";

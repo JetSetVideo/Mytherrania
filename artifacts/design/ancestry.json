@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "units": "rank 1 = most of the metric (4 = least); hairPhysics.massKg in kg at stature 1.0; skin/hair colours #rrggbb; brow/ear/skull factors dimensionless",
-  "note": "The ancestry hierarchy: 4 race nodes and 12 subrace nodes. Ranks are a strict 1..4 ordering across the 4 race nodes for every metric. A subrace node copies its race's ranks and shifts at most two metrics by +/-1, staying in [1,4].",
+  "units": "rank 1 = most of the metric; body `ranks` are 1..4 across the 4 race nodes; `face` metrics are a rank 1..16 across ALL 16 nodes (units per metric in src/game/Ancestry.ts FACE_UNITS: chin/mouth/nose/eye/ear/skull/jaw/cheek/brow in mm, earAngle in degrees); hairPhysics.massKg in kg at stature 1.0; hair.lightness 0..1 mean palette lightness; beard.fullness 0..1 composite of coverage x lengthMul; skin/hair colours #rrggbb; brow/ear/skull factors dimensionless",
+  "note": "The ancestry hierarchy: 4 race nodes and 12 subrace nodes. Body `ranks` are a strict 1..4 ordering across the 4 race nodes for every metric; a subrace copies its race's ranks and shifts at most two metrics by +/-1, staying in [1,4]. The additive `face` block ranks each facial measure 1..16 across ALL 16 nodes (rank 1 = the most), so the facial hierarchy is a single ranking over races and subraces together.",
   "statures": {
     "human": 1.0,
     "elf": 1.05,
@@ -64,7 +64,8 @@
         ],
         "curl": 0.5,
         "density": 0.6,
-        "baldChance": 0.25
+        "baldChance": 0.25,
+        "lightness": 0.55
       },
       "brow": {
         "length": 0.6,
@@ -77,7 +78,8 @@
         "coverage": 0.8,
         "lengthMul": 1.2,
         "required": false,
-        "allowed": true
+        "allowed": true,
+        "fullness": 0.7
       },
       "tusk": {
         "count": 0,
@@ -100,7 +102,26 @@
         "damp": 4.24,
         "windGain": 0.6
       },
-      "lore": "The youngest race: middling in every proportion, brown to white in skin and dark to blond in hair."
+      "lore": "The youngest race: middling in every proportion, brown to white in skin and dark to blond in hair.",
+      "face": {
+        "chinHeight": 12,
+        "chinLength": 12,
+        "mouthWidth": 8,
+        "noseLength": 8,
+        "noseWidth": 12,
+        "eyeSpacing": 8,
+        "eyeHeight": 8,
+        "eyeSize": 4,
+        "earSize": 8,
+        "earAngle": 8,
+        "browProminence": 12,
+        "browThickness": 12,
+        "foreheadHeight": 8,
+        "skullWidth": 12,
+        "skullDepth": 12,
+        "jawWidth": 12,
+        "cheekHeight": 12
+      }
     },
     "elf": {
       "id": "elf",
@@ -155,7 +176,8 @@
         ],
         "curl": 0.15,
         "density": 0.5,
-        "baldChance": 0.0
+        "baldChance": 0.0,
+        "lightness": 0.8
       },
       "brow": {
         "length": 0.9,
@@ -168,7 +190,8 @@
         "coverage": 0.15,
         "lengthMul": 0.2,
         "required": false,
-        "allowed": true
+        "allowed": true,
+        "fullness": 0.15
       },
       "tusk": {
         "count": 0,
@@ -191,7 +214,26 @@
         "damp": 5.92,
         "windGain": 0.39
       },
-      "lore": "The First Children: tallest and thinnest, legs and arms long past the trunk, with creases that darken blue where the skin folds."
+      "lore": "The First Children: tallest and thinnest, legs and arms long past the trunk, with creases that darken blue where the skin folds.",
+      "face": {
+        "chinHeight": 16,
+        "chinLength": 16,
+        "mouthWidth": 16,
+        "noseLength": 4,
+        "noseWidth": 16,
+        "eyeSpacing": 16,
+        "eyeHeight": 4,
+        "eyeSize": 8,
+        "earSize": 4,
+        "earAngle": 4,
+        "browProminence": 16,
+        "browThickness": 16,
+        "foreheadHeight": 4,
+        "skullWidth": 16,
+        "skullDepth": 16,
+        "jawWidth": 16,
+        "cheekHeight": 16
+      }
     },
     "dwarf": {
       "id": "dwarf",
@@ -245,7 +287,8 @@
         ],
         "curl": 0.35,
         "density": 0.85,
-        "baldChance": 0.2
+        "baldChance": 0.2,
+        "lightness": 0.36
       },
       "brow": {
         "length": 0.65,
@@ -258,7 +301,8 @@
         "coverage": 0.72,
         "lengthMul": 1.6,
         "required": true,
-        "allowed": true
+        "allowed": true,
+        "fullness": 0.95
       },
       "tusk": {
         "count": 0,
@@ -281,7 +325,26 @@
         "damp": 2.92,
         "windGain": 0.51
       },
-      "lore": "Stone-born: shortest and broadest, a heavy trunk on short legs, and a beard that never leaves the jaw."
+      "lore": "Stone-born: shortest and broadest, a heavy trunk on short legs, and a beard that never leaves the jaw.",
+      "face": {
+        "chinHeight": 4,
+        "chinLength": 4,
+        "mouthWidth": 12,
+        "noseLength": 16,
+        "noseWidth": 4,
+        "eyeSpacing": 12,
+        "eyeHeight": 16,
+        "eyeSize": 16,
+        "earSize": 12,
+        "earAngle": 16,
+        "browProminence": 4,
+        "browThickness": 4,
+        "foreheadHeight": 16,
+        "skullWidth": 4,
+        "skullDepth": 8,
+        "jawWidth": 8,
+        "cheekHeight": 4
+      }
     },
     "ork": {
       "id": "ork",
@@ -335,7 +398,8 @@
         ],
         "curl": 0.7,
         "density": 0.5,
-        "baldChance": 0.55
+        "baldChance": 0.55,
+        "lightness": 0.2
       },
       "brow": {
         "length": 0.35,
@@ -348,7 +412,8 @@
         "coverage": 0.35,
         "lengthMul": 0.7,
         "required": false,
-        "allowed": true
+        "allowed": true,
+        "fullness": 0.35
       },
       "tusk": {
         "count": 2,
@@ -371,7 +436,26 @@
         "damp": 2.92,
         "windGain": 0.72
       },
-      "lore": "War-forged: taller than a human and built broad, tusked from below, hide running green to purple."
+      "lore": "War-forged: taller than a human and built broad, tusked from below, hide running green to purple.",
+      "face": {
+        "chinHeight": 8,
+        "chinLength": 8,
+        "mouthWidth": 4,
+        "noseLength": 12,
+        "noseWidth": 8,
+        "eyeSpacing": 4,
+        "eyeHeight": 12,
+        "eyeSize": 12,
+        "earSize": 16,
+        "earAngle": 12,
+        "browProminence": 8,
+        "browThickness": 8,
+        "foreheadHeight": 12,
+        "skullWidth": 8,
+        "skullDepth": 4,
+        "jawWidth": 4,
+        "cheekHeight": 8
+      }
     },
     "imperial": {
       "id": "imperial",
@@ -426,7 +510,8 @@
         ],
         "curl": 0.2,
         "density": 0.6,
-        "baldChance": 0.2
+        "baldChance": 0.2,
+        "lightness": 0.52
       },
       "brow": {
         "length": 0.6,
@@ -439,7 +524,8 @@
         "coverage": 0.78,
         "lengthMul": 1.2,
         "required": false,
-        "allowed": true
+        "allowed": true,
+        "fullness": 0.68
       },
       "tusk": {
         "count": 0,
@@ -462,7 +548,26 @@
         "damp": 4.24,
         "windGain": 0.42
       },
-      "lore": "Doctrine and drill from the Golden Citadel give the imperial a taller, straighter stance."
+      "lore": "Doctrine and drill from the Golden Citadel give the imperial a taller, straighter stance.",
+      "face": {
+        "chinHeight": 9,
+        "chinLength": 9,
+        "mouthWidth": 5,
+        "noseLength": 5,
+        "noseWidth": 9,
+        "eyeSpacing": 5,
+        "eyeHeight": 5,
+        "eyeSize": 1,
+        "earSize": 5,
+        "earAngle": 5,
+        "browProminence": 9,
+        "browThickness": 9,
+        "foreheadHeight": 5,
+        "skullWidth": 9,
+        "skullDepth": 9,
+        "jawWidth": 9,
+        "cheekHeight": 9
+      }
     },
     "nomad": {
       "id": "nomad",
@@ -517,7 +622,8 @@
         ],
         "curl": 0.75,
         "density": 0.55,
-        "baldChance": 0.2
+        "baldChance": 0.2,
+        "lightness": 0.58
       },
       "brow": {
         "length": 0.55,
@@ -530,7 +636,8 @@
         "coverage": 0.83,
         "lengthMul": 1.3,
         "required": false,
-        "allowed": true
+        "allowed": true,
+        "fullness": 0.74
       },
       "tusk": {
         "count": 0,
@@ -553,7 +660,26 @@
         "damp": 5.66,
         "windGain": 0.75
       },
-      "lore": "Wind-walkers of the Sunken Plains: lean legs and a long, windswept mane."
+      "lore": "Wind-walkers of the Sunken Plains: lean legs and a long, windswept mane.",
+      "face": {
+        "chinHeight": 10,
+        "chinLength": 10,
+        "mouthWidth": 6,
+        "noseLength": 6,
+        "noseWidth": 10,
+        "eyeSpacing": 6,
+        "eyeHeight": 6,
+        "eyeSize": 2,
+        "earSize": 6,
+        "earAngle": 6,
+        "browProminence": 10,
+        "browThickness": 10,
+        "foreheadHeight": 6,
+        "skullWidth": 10,
+        "skullDepth": 10,
+        "jawWidth": 10,
+        "cheekHeight": 10
+      }
     },
     "islander": {
       "id": "islander",
@@ -607,7 +733,8 @@
         ],
         "curl": 0.6,
         "density": 0.65,
-        "baldChance": 0.3
+        "baldChance": 0.3,
+        "lightness": 0.5
       },
       "brow": {
         "length": 0.6,
@@ -620,7 +747,8 @@
         "coverage": 0.4,
         "lengthMul": 0.8,
         "required": false,
-        "allowed": true
+        "allowed": true,
+        "fullness": 0.4
       },
       "tusk": {
         "count": 0,
@@ -643,7 +771,26 @@
         "damp": 4.24,
         "windGain": 0.66
       },
-      "lore": "Tideborn of the Sapphire Archipelago: a lighter, slender frame hardened by salt."
+      "lore": "Tideborn of the Sapphire Archipelago: a lighter, slender frame hardened by salt.",
+      "face": {
+        "chinHeight": 11,
+        "chinLength": 11,
+        "mouthWidth": 7,
+        "noseLength": 7,
+        "noseWidth": 11,
+        "eyeSpacing": 7,
+        "eyeHeight": 7,
+        "eyeSize": 3,
+        "earSize": 7,
+        "earAngle": 7,
+        "browProminence": 11,
+        "browThickness": 11,
+        "foreheadHeight": 7,
+        "skullWidth": 11,
+        "skullDepth": 11,
+        "jawWidth": 11,
+        "cheekHeight": 11
+      }
     },
     "high": {
       "id": "high",
@@ -695,7 +842,8 @@
         ],
         "curl": 0.15,
         "density": 0.5,
-        "baldChance": 0.0
+        "baldChance": 0.0,
+        "lightness": 0.82
       },
       "brow": {
         "length": 0.9,
@@ -708,7 +856,8 @@
         "coverage": 0.12,
         "lengthMul": 0.15,
         "required": false,
-        "allowed": true
+        "allowed": true,
+        "fullness": 0.12
       },
       "tusk": {
         "count": 0,
@@ -731,7 +880,26 @@
         "damp": 5.92,
         "windGain": 0.39
       },
-      "lore": "Star-touched scholars of Elun-Dar, taller even than their kin, with a haughtier brow."
+      "lore": "Star-touched scholars of Elun-Dar, taller even than their kin, with a haughtier brow.",
+      "face": {
+        "chinHeight": 13,
+        "chinLength": 13,
+        "mouthWidth": 13,
+        "noseLength": 1,
+        "noseWidth": 13,
+        "eyeSpacing": 13,
+        "eyeHeight": 1,
+        "eyeSize": 5,
+        "earSize": 1,
+        "earAngle": 1,
+        "browProminence": 13,
+        "browThickness": 13,
+        "foreheadHeight": 1,
+        "skullWidth": 13,
+        "skullDepth": 13,
+        "jawWidth": 13,
+        "cheekHeight": 13
+      }
     },
     "wood": {
       "id": "wood",
@@ -784,7 +952,8 @@
         ],
         "curl": 0.3,
         "density": 0.55,
-        "baldChance": 0.0
+        "baldChance": 0.0,
+        "lightness": 0.78
       },
       "brow": {
         "length": 0.88,
@@ -797,7 +966,8 @@
         "coverage": 0.15,
         "lengthMul": 0.2,
         "required": false,
-        "allowed": true
+        "allowed": true,
+        "fullness": 0.15
       },
       "tusk": {
         "count": 0,
@@ -820,7 +990,26 @@
         "damp": 5.66,
         "windGain": 0.48
       },
-      "lore": "Silent guardians of the Elderwood: a touch more mass and greener skin than the halls of Elun-Dar."
+      "lore": "Silent guardians of the Elderwood: a touch more mass and greener skin than the halls of Elun-Dar.",
+      "face": {
+        "chinHeight": 14,
+        "chinLength": 14,
+        "mouthWidth": 14,
+        "noseLength": 2,
+        "noseWidth": 14,
+        "eyeSpacing": 14,
+        "eyeHeight": 2,
+        "eyeSize": 6,
+        "earSize": 2,
+        "earAngle": 2,
+        "browProminence": 14,
+        "browThickness": 14,
+        "foreheadHeight": 2,
+        "skullWidth": 14,
+        "skullDepth": 14,
+        "jawWidth": 14,
+        "cheekHeight": 14
+      }
     },
     "dark": {
       "id": "dark",
@@ -873,7 +1062,8 @@
         ],
         "curl": 0.2,
         "density": 0.5,
-        "baldChance": 0.0
+        "baldChance": 0.0,
+        "lightness": 0.66
       },
       "brow": {
         "length": 0.9,
@@ -886,7 +1076,8 @@
         "coverage": 0.15,
         "lengthMul": 0.2,
         "required": false,
-        "allowed": true
+        "allowed": true,
+        "fullness": 0.15
       },
       "tusk": {
         "count": 0,
@@ -909,7 +1100,26 @@
         "damp": 5.66,
         "windGain": 0.42
       },
-      "lore": "Exiles of the Obsidian Halls, whose pale skin runs to lavender shadow."
+      "lore": "Exiles of the Obsidian Halls, whose pale skin runs to lavender shadow.",
+      "face": {
+        "chinHeight": 15,
+        "chinLength": 15,
+        "mouthWidth": 15,
+        "noseLength": 3,
+        "noseWidth": 15,
+        "eyeSpacing": 15,
+        "eyeHeight": 3,
+        "eyeSize": 7,
+        "earSize": 3,
+        "earAngle": 3,
+        "browProminence": 15,
+        "browThickness": 15,
+        "foreheadHeight": 3,
+        "skullWidth": 15,
+        "skullDepth": 15,
+        "jawWidth": 15,
+        "cheekHeight": 15
+      }
     },
     "mountain": {
       "id": "mountain",
@@ -960,7 +1170,8 @@
         ],
         "curl": 0.3,
         "density": 0.85,
-        "baldChance": 0.2
+        "baldChance": 0.2,
+        "lightness": 0.34
       },
       "brow": {
         "length": 0.65,
@@ -973,7 +1184,8 @@
         "coverage": 0.7,
         "lengthMul": 1.7,
         "required": true,
-        "allowed": true
+        "allowed": true,
+        "fullness": 0.94
       },
       "tusk": {
         "count": 0,
@@ -996,7 +1208,26 @@
         "damp": 2.92,
         "windGain": 0.48
       },
-      "lore": "Stone-boned clans of the Iron Reach, the tallest and longest-legged of dwarf-kind."
+      "lore": "Stone-boned clans of the Iron Reach, the tallest and longest-legged of dwarf-kind.",
+      "face": {
+        "chinHeight": 1,
+        "chinLength": 1,
+        "mouthWidth": 9,
+        "noseLength": 13,
+        "noseWidth": 1,
+        "eyeSpacing": 9,
+        "eyeHeight": 13,
+        "eyeSize": 13,
+        "earSize": 9,
+        "earAngle": 13,
+        "browProminence": 1,
+        "browThickness": 1,
+        "foreheadHeight": 13,
+        "skullWidth": 1,
+        "skullDepth": 5,
+        "jawWidth": 5,
+        "cheekHeight": 1
+      }
     },
     "forge": {
       "id": "forge",
@@ -1049,7 +1280,8 @@
         ],
         "curl": 0.45,
         "density": 0.85,
-        "baldChance": 0.15
+        "baldChance": 0.15,
+        "lightness": 0.33
       },
       "brow": {
         "length": 0.62,
@@ -1062,7 +1294,8 @@
         "coverage": 0.75,
         "lengthMul": 1.6,
         "required": true,
-        "allowed": true
+        "allowed": true,
+        "fullness": 0.92
       },
       "tusk": {
         "count": 0,
@@ -1085,7 +1318,26 @@
         "damp": 2.92,
         "windGain": 0.57
       },
-      "lore": "Rune-smiths of Khaz-Barad: smith's arms and smoke-darkened skin."
+      "lore": "Rune-smiths of Khaz-Barad: smith's arms and smoke-darkened skin.",
+      "face": {
+        "chinHeight": 2,
+        "chinLength": 2,
+        "mouthWidth": 10,
+        "noseLength": 14,
+        "noseWidth": 2,
+        "eyeSpacing": 10,
+        "eyeHeight": 14,
+        "eyeSize": 14,
+        "earSize": 10,
+        "earAngle": 14,
+        "browProminence": 2,
+        "browThickness": 2,
+        "foreheadHeight": 14,
+        "skullWidth": 2,
+        "skullDepth": 6,
+        "jawWidth": 6,
+        "cheekHeight": 2
+      }
     },
     "deep": {
       "id": "deep",
@@ -1136,7 +1388,8 @@
         ],
         "curl": 0.2,
         "density": 0.8,
-        "baldChance": 0.25
+        "baldChance": 0.25,
+        "lightness": 0.4
       },
       "brow": {
         "length": 0.65,
@@ -1149,7 +1402,8 @@
         "coverage": 0.7,
         "lengthMul": 1.65,
         "required": true,
-        "allowed": true
+        "allowed": true,
+        "fullness": 0.9
       },
       "tusk": {
         "count": 0,
@@ -1172,7 +1426,26 @@
         "damp": 2.92,
         "windGain": 0.42
       },
-      "lore": "Delvers of the Rootways, pale from a life without light."
+      "lore": "Delvers of the Rootways, pale from a life without light.",
+      "face": {
+        "chinHeight": 3,
+        "chinLength": 3,
+        "mouthWidth": 11,
+        "noseLength": 15,
+        "noseWidth": 3,
+        "eyeSpacing": 11,
+        "eyeHeight": 15,
+        "eyeSize": 15,
+        "earSize": 11,
+        "earAngle": 15,
+        "browProminence": 3,
+        "browThickness": 3,
+        "foreheadHeight": 15,
+        "skullWidth": 3,
+        "skullDepth": 7,
+        "jawWidth": 7,
+        "cheekHeight": 3
+      }
     },
     "greenhide": {
       "id": "greenhide",
@@ -1223,7 +1496,8 @@
         ],
         "curl": 0.65,
         "density": 0.5,
-        "baldChance": 0.55
+        "baldChance": 0.55,
+        "lightness": 0.18
       },
       "brow": {
         "length": 0.35,
@@ -1236,7 +1510,8 @@
         "coverage": 0.3,
         "lengthMul": 0.6,
         "required": false,
-        "allowed": true
+        "allowed": true,
+        "fullness": 0.3
       },
       "tusk": {
         "count": 2,
@@ -1259,7 +1534,26 @@
         "damp": 2.92,
         "windGain": 0.69
       },
-      "lore": "Born in the Blood Marshes: the plainest green hide and the barest chin."
+      "lore": "Born in the Blood Marshes: the plainest green hide and the barest chin.",
+      "face": {
+        "chinHeight": 7,
+        "chinLength": 7,
+        "mouthWidth": 3,
+        "noseLength": 11,
+        "noseWidth": 7,
+        "eyeSpacing": 3,
+        "eyeHeight": 11,
+        "eyeSize": 11,
+        "earSize": 15,
+        "earAngle": 11,
+        "browProminence": 7,
+        "browThickness": 7,
+        "foreheadHeight": 11,
+        "skullWidth": 7,
+        "skullDepth": 3,
+        "jawWidth": 3,
+        "cheekHeight": 7
+      }
     },
     "ironhide": {
       "id": "ironhide",
@@ -1310,7 +1604,8 @@
         ],
         "curl": 0.75,
         "density": 0.55,
-        "baldChance": 0.5
+        "baldChance": 0.5,
+        "lightness": 0.16
       },
       "brow": {
         "length": 0.4,
@@ -1323,7 +1618,8 @@
         "coverage": 0.35,
         "lengthMul": 0.7,
         "required": false,
-        "allowed": true
+        "allowed": true,
+        "fullness": 0.35
       },
       "tusk": {
         "count": 2,
@@ -1346,7 +1642,26 @@
         "damp": 2.92,
         "windGain": 0.75
       },
-      "lore": "War-forged in the Slag Pits: the heaviest trunk and a ridged, armoured skull."
+      "lore": "War-forged in the Slag Pits: the heaviest trunk and a ridged, armoured skull.",
+      "face": {
+        "chinHeight": 5,
+        "chinLength": 5,
+        "mouthWidth": 1,
+        "noseLength": 9,
+        "noseWidth": 5,
+        "eyeSpacing": 1,
+        "eyeHeight": 9,
+        "eyeSize": 9,
+        "earSize": 13,
+        "earAngle": 9,
+        "browProminence": 5,
+        "browThickness": 5,
+        "foreheadHeight": 9,
+        "skullWidth": 5,
+        "skullDepth": 1,
+        "jawWidth": 1,
+        "cheekHeight": 5
+      }
     },
     "bloodfang": {
       "id": "bloodfang",
@@ -1397,7 +1712,8 @@
         ],
         "curl": 0.8,
         "density": 0.45,
-        "baldChance": 0.6
+        "baldChance": 0.6,
+        "lightness": 0.22
       },
       "brow": {
         "length": 0.35,
@@ -1410,7 +1726,8 @@
         "coverage": 0.4,
         "lengthMul": 0.8,
         "required": false,
-        "allowed": true
+        "allowed": true,
+        "fullness": 0.4
       },
       "tusk": {
         "count": 2,
@@ -1433,7 +1750,26 @@
         "damp": 2.92,
         "windGain": 0.78
       },
-      "lore": "Swift killers of the Red Steppe: long limbs for a charge and tusks to match."
+      "lore": "Swift killers of the Red Steppe: long limbs for a charge and tusks to match.",
+      "face": {
+        "chinHeight": 6,
+        "chinLength": 6,
+        "mouthWidth": 2,
+        "noseLength": 10,
+        "noseWidth": 6,
+        "eyeSpacing": 2,
+        "eyeHeight": 10,
+        "eyeSize": 10,
+        "earSize": 14,
+        "earAngle": 10,
+        "browProminence": 6,
+        "browThickness": 6,
+        "foreheadHeight": 10,
+        "skullWidth": 6,
+        "skullDepth": 2,
+        "jawWidth": 2,
+        "cheekHeight": 6
+      }
     }
   }
 }

@@ -12,10 +12,13 @@
 // birth-sign mark (warpaint or tattoo) -> class accent -> garment (optional).
 
 import { HAIR_COLORS, nameSeed, raceBuild, SKIN_TONES } from "../../game/RaceAppearance.ts";
+import { BUILDS, buildFor, raceSilhouette } from "../../game/BodyProfile.ts";
+import { buildMuscleTerm } from "../body/Proportions.ts";
 import type { CharacterProfile } from "../../game/Characters.ts";
 import { clamp01, rng32 } from "../../core/MathCore.ts";
 import type { PaintLayer, PaintStack, PatternKind, Region } from "../body/contracts.ts";
 import { hexToHsl, hexToRgb, hslToHex, shadeHex, shiftHsl, tintHex } from "./Blend.ts";
+import { definitionLayers } from "./Definition.ts";
 import { hashCell } from "./Noise.ts";
 import { GRADIENT_AXES, WARPAINT_MOTIFS } from "./Patterns.ts";
 import { boundColour, HAIR_BOUNDS, INK_BOUNDS, SKIN_BOUNDS } from "./Relevance.ts";
@@ -224,6 +227,18 @@ export function stackFor(subject: PaintSubject): PaintStack {
   // 9. Palms/soles and nails carry less melanin: paler and less saturated.
   layers.push(layer("soles", "solid", tintHex(skin, 0.12), 0.7, 1, s(), { regions: ["sole"] }));
   layers.push(layer("nails", "solid", tintHex(shiftHsl(skin, 0, 0.5, 0), 0.2), 0.85, 1, s(), { regions: ["nail"] }));
+
+  // 9b. Muscle definition (lane P-C): dark creases that FOLLOW the sculpted anatomy — the
+  //     abdominal segments, the linea alba and the pectoral separation, and the deltoid/quad
+  //     folds — keyed on the build's muscle term (buildMuscleTerm) and softened by its fat term.
+  //     Painted here (over the skin, under marks/hair/garment) so a clothed or painted fighter
+  //     still reads. A build with no added muscle adds nothing.
+  const build = buildFor(race, subrace);
+  const sil = raceSilhouette(race, subrace);
+  layers.push(...definitionLayers({
+    muscle: buildMuscleTerm(sil, build), fat: BUILDS[build].fat,
+    skin, minFeature, height: H, seed,
+  }));
 
   // 10. Hair: given colour (or a seeded pick), bounded, with faint lighter strands.
   const hairBase = boundColour(subject.hair ?? HAIR_COLORS[Math.floor(rnd() * HAIR_COLORS.length)], HAIR_BOUNDS);

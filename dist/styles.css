@@ -166,6 +166,14 @@ canvas{display:block}
 .ui-panel[data-colour="positive"]{--panel:#a9ce7c}
 .ui-panel[data-colour="violet"]{--panel:#a06cd5}
 .ui-panel[hidden]{display:none}
+/* Wave P: the group header carries the group's CURRENT values, so a closed tree still reads. */
+.creator-seed{margin-top:6px;font-size:12px;color:rgba(214,226,224,.62);font-variant-numeric:tabular-nums}
+.group-summary{margin-left:auto;font-size:12px;color:rgba(214,226,224,.72);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:46ch}
+/* Wave P: the Creator is ONE page (data-flat): no tabs, every panel visible, laid out in columns
+   that fit the viewport (min 340 px per panel, wrapping downwards), preview first and full width. */
+.menu-screen[data-flat="1"]{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,360px),1fr));align-items:start;gap:clamp(10px,1.4vw,18px)}
+.menu-screen[data-flat="1"] > .screen-head{grid-column:1/-1}
+.menu-screen[data-flat="1"] > .ui-panel-preview{grid-column:1/-1;order:-1}
 .panel-head{display:flex;align-items:center;gap:8px;margin:0;font-size:15px;letter-spacing:.04em;text-transform:uppercase}
 .panel-head .dot{width:9px;height:9px;border-radius:50%;background:var(--panel, #dfaa55);flex:none}
 .panel-hint{margin-left:auto;font-size:12px;font-weight:400;text-transform:none;letter-spacing:0;color:var(--muted,#b9c9c8)}

@@ -27,12 +27,18 @@ const DEFAULT_SIZE = 256;
 /** Floor on the size option: below this a PNG is a smear, so a nonsensical option still renders (requirement 5). */
 const MIN_SIZE = 16;
 
-/** Camera framing of a portrait (metres, degrees) — see the module comment. */
+/**
+ * Camera framing of a portrait — see the module comment. Wave P: the DISTANCE and the look-at height are
+ * no longer constants; they are derived from the rig's measured height by `#frameToRig` (a fixed 0.82 m
+ * stand-off cropped tall characters). What stays constant is the 3/4 angle and the field of view.
+ */
 const PORTRAIT_DISTANCE = 0.82;
 const PORTRAIT_HEIGHT = 1.62;
 const PORTRAIT_YAW = 0.35;
 const PORTRAIT_TARGET_Y = 1.58;
 const PORTRAIT_FOV = 30;
+/** Wave P: the small down-tilt the portrait has always had, now expressed as a pitch (radians). */
+const PORTRAIT_PITCH = 0.05;
 
 /** The subset of THREE.WebGLRenderer the studio drives, so a test can stand in a fake (no GL under Deno). */
 export interface PortraitRenderer {
@@ -103,12 +109,32 @@ export class PortraitStudio {
       this.#root = new THREE.Group();
       this.#scene.add(this.#root);
       this.#camera = new THREE.PerspectiveCamera(PORTRAIT_FOV, 1, 0.05, 20);
+      // Wave P: the framing distance is a PLACEHOLDER here — #frameToRig() derives it from the
+      // character's own measured height on every render, so a 2 m ork and a 1.35 m dwarf both fit.
       const x = Math.sin(PORTRAIT_YAW) * PORTRAIT_DISTANCE;
       const z = Math.cos(PORTRAIT_YAW) * PORTRAIT_DISTANCE;
       this.#camera.position.set(x, PORTRAIT_HEIGHT, z);
       this.#camera.lookAt(0, PORTRAIT_TARGET_Y, 0);
     }
     return { renderer: this.#renderer, scene: this.#scene, root: this.#root, camera: this.#camera };
+  }
+
+  /**
+   * Wave P: frame the CURRENT rig. The last wave's studio used a fixed 0.82 m stand-off, which cropped
+   * tall characters exactly as the user described. Same law as the Creator's viewer:
+   *
+   *   distance = (measuredHeight / 2 + margin) / tan(fovY / 2)
+   *
+   * with the height taken from the rig's own bounding box and clamped into a stated band.
+   */
+  #frameToRig(rig: THREE.Object3D, camera: THREE.PerspectiveCamera): void {
+    const box = new THREE.Box3().setFromObject(rig);
+    const height = Math.max(0.5, box.max.y - box.min.y);
+    const halfFov = ((PORTRAIT_FOV / 2) * Math.PI) / 180;
+    const dist = Math.max(0.9, Math.min(6, (height / 2 + 0.18) / Math.tan(halfFov)));
+    const horiz = Math.cos(PORTRAIT_PITCH) * dist;
+    camera.position.set(Math.sin(PORTRAIT_YAW) * horiz, 0.55 * height + Math.sin(PORTRAIT_PITCH) * dist, Math.cos(PORTRAIT_YAW) * horiz);
+    camera.lookAt(0, 0.55 * height, 0);
   }
 
   /** A PNG data URL of `profile`, cached by its build key. One renderer, every profile. */
@@ -130,6 +156,8 @@ export class PortraitStudio {
       root.add(rig.group);
       // Settle the rest pose so the shot is the idle frame, not a bind-pose statue (dt = 0 s).
       rig.update(fighter.skeleton, 0);
+      // Wave P: frame THIS character (its own measured height) before the shot.
+      this.#frameToRig(rig.group, camera);
       renderer.render(scene, camera);
       url = renderer.domElement.toDataURL("image/png");
       root.remove(rig.group);

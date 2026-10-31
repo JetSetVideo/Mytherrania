@@ -857,6 +857,36 @@ according to its own variables, and for autoattack with damage numbers styled by
 `tests/navpilot_test.ts`, `strategies_test.ts`, `concealment_test.ts`, `perception_test.ts`, `cast_test.ts`,
 `autoattack_combattext_test.ts`.
 
+## 11H. Wave P — the menus in place, a viewer that fits, and manga
+
+Added 2026-10-31. The prompt asked to keep refining the last wave: centre and align the menus and give
+them clearer structure; stop making the user click through panels by showing each group's MAIN VALUES and
+opening it only for the details; frame the 3D viewer from the character's own maximum height and make
+turning it manual; let a rolled fighter be edited and then saved or discarded as a deliberate choice, with
+its generation seed recorded; synchronise the parameters an edit drags along; make the ink outline subtle
+and angle-dependent with a stated manga shading equation; build facial ratios into ranked hierarchies
+across the ancestry; make the bodies bulkier and cartoonish with real anatomy and painted definition; and
+fix the bow (its tip must close around the arrow), the sword's guard and the weapons' materials.
+
+| # | Requirement | Where | Status |
+| --- | --- | --- | --- |
+| PA1 | The ink outline is a VARIABLE mark: strength falls off with the light's angle AND the surface's angle to the camera, faces suppress it, and the width is bounded with a far fade — hence the shader consumes uniforms, never a second copy of the law | `src/graphics/shaders/Ink.ts`, `CelShader.ts`, `CelSkinned.ts` | LIVE |
+| PA2 | The manga shading is a STATED equation: few flat bands, a hard terminator, a separate shade tone per material | `src/graphics/shaders/Ink.ts` (`mangaRamp`) | LIVE |
+| PB1 | Facial ratios for every ancestry node (17 measures, units stated, ranked 1..16) and the RATIOS between them, with a ranked hierarchy across all 16 nodes and a two-ancestry comparison whose criteria are stated | `artifacts/design/ancestry.json`, `src/game/Ancestry.ts`, `src/ui/FaceHierarchy.ts` | LIVE |
+| PB2 | The hair/beard law: elves lightest and longest, dwarves always bearded and fullest, humans the widest range, orks barest | the same `hair` / `beard` blocks | LIVE |
+| PC1 | Three explicit builds (fit / bulky / heavy) with measurable radii and muscle/fat terms, every ancestry mapped onto one, the geometry carrying anatomy and the paint a definition pass | `src/game/BodyProfile.ts`, `src/graphics/body/Proportions.ts`, `src/graphics/paint/Definition.ts` | LIVE |
+| PD1 | The bow's limb tip is CAPPED and CLOSED around the string (a channel, no through-hole) and the arrow's nock sits inside it | `src/game/WeaponGen.ts`, `src/graphics/weapons/WeaponParts.ts` | LIVE |
+| PD2 | The sword's guard/grip/blade junction is rebuilt with stated overlaps, and the materials are per-weapon (metal actually metallic, wood/bone/stone/chitin their own) | the same files, `WeaponMesh`/`WeaponMaterial` | LIVE |
+| PP1 | The Creator is ONE page: no tab nav, every panel visible, each group header carrying its CURRENT values from a pure summary model | `src/ui/Menu.ts`, `src/ui/CreatorSync.ts`, `styles.css` | LIVE |
+| PP2 | The viewer frames every character from its own MEASURED maximum height (the same law in the portrait studio), and turning is manual — mouse, finger, gamepad stick — with no self-rotation | `src/graphics/PreviewScene.ts`, `src/graphics/PortraitStudio.ts`, `src/engine/Engine.ts` | LIVE |
+| PP3 | A roll can be EDITED and then saved or discarded as a decision; the generation seed is recorded on the profile and shown on the sheet | `src/game/Profiles.ts`, `src/engine/Engine.ts`, `src/ui/Menu.ts` | LIVE |
+| PP4 | An edit SYNCHRONISES the parameters that depend on it (a skin tone drags its crease/paint/eye tones), and every edit clamps into the race's own band | `src/ui/CreatorSync.ts` | LIVE |
+
+**Pins:** the lanes' suites (`ink`, `facehierarchy`, `bodybuilds`, `weapon_parts`, `creatorsync`) plus the
+re-stated `[SPEC LL2]` disclosure pin (two open entry groups) and the `anim_measure` slide band, which the
+heavier builds moved on the heaviest dwarf (measured 5.54 mm against a 5.00 mm bound; the band is now
+5.6 mm for non-orks, the ork band untouched, and the reason is recorded where the bound lives).
+
 ## 11G. Wave O — the Profiles panel
 
 Added 2026-10-31. The prompt asked to improve the journey from the title's profile button into a panel where

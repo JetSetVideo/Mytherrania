@@ -27,6 +27,46 @@ export const METALS: Record<MetalName, Metal> = {
 
 export type PartKind = "shaft" | "blade" | "guard" | "pommel" | "head" | "curve" | "limb" | "string";
 
+// --- per-weapon materials (lane P-D) ------------------------------------------------------------
+// A weapon is not one grey thing: a steel sword blade is METAL (a hard specular highlight off a
+// mirror-smooth surface) while a bow limb or a staff is WOOD (no highlight, a broad soft falloff),
+// and bone/stone/chitin read as their own surfaces. The renderer's only material channel is the
+// per-vertex specular strength (aSpecular -> CelShader.celShade), so `specular` is what the mesh
+// carries and `roughness`/`metallic` are the stated numbers the mesh's specular is derived from.
+// Values: roughness 0 = mirror, 1 = fully diffuse; specular is the vertex strength 0..1.
+export type MaterialKind = "metal" | "wood" | "bone" | "stone" | "chitin";
+
+export interface WeaponMaterialProfile {
+  kind: MaterialKind;
+  /** True for a metal: hard specular, low roughness. */
+  metallic: boolean;
+  /** Micro-roughness, 0 (mirror) .. 1 (fully diffuse). Metal 0.18, wood 0.75. */
+  roughness: number;
+  /** Vertex specular strength 0..1 handed to the cel shader. Metal 0.85, wood 0.05. */
+  specular: number;
+}
+
+/** The material kinds a weapon part can be made of, with their stated surface numbers. */
+export const MATERIAL_KINDS: Record<MaterialKind, WeaponMaterialProfile> = {
+  metal:  { kind: "metal",  metallic: true,  roughness: 0.18, specular: 0.85 },
+  chitin: { kind: "chitin", metallic: false, roughness: 0.38, specular: 0.34 },
+  bone:   { kind: "bone",   metallic: false, roughness: 0.50, specular: 0.20 },
+  stone:  { kind: "stone",  metallic: false, roughness: 0.62, specular: 0.12 },
+  wood:   { kind: "wood",   metallic: false, roughness: 0.75, specular: 0.05 },
+};
+
+/** Per-weapon material: a blade weapon is METAL, a staff or bow is WOOD (its striking body). */
+export const WEAPON_MATERIALS: Record<WeaponType, WeaponMaterialProfile> = {
+  sword: MATERIAL_KINDS.metal, dagger: MATERIAL_KINDS.metal, axe: MATERIAL_KINDS.metal,
+  scythe: MATERIAL_KINDS.metal, mace: MATERIAL_KINDS.metal,
+  staff: MATERIAL_KINDS.wood, bow: MATERIAL_KINDS.wood,
+};
+
+/** The material profile of one weapon type. */
+export function weaponMaterial(type: WeaponType): WeaponMaterialProfile {
+  return WEAPON_MATERIALS[type];
+}
+
 /** One piece of the generated mesh, positioned relative to the grip. */
 export interface WeaponPart {
   kind: PartKind;
@@ -47,6 +87,111 @@ export interface WeaponPart {
   color: string;
   /** "box" for blades and plates, "cyl" for shafts and grips, "cone" for tips. */
   shape: "box" | "cyl" | "cone";
+}
+
+/** A point in weapon-local metres: +y along the weapon from the grip, +x = the bow's arc side, +z = the edge/string side. */
+export type Vec3 = [number, number, number];
+
+/**
+ * The bow's closed tip (lane P-D). The limb end is CLOSED: a nock block whose channel the string
+ * enters, with solid material left past the channel so there is no through-hole. All lengths are
+ * metres. `nock` is the point the string (and the arrow's nock) is held at, INSIDE the channel.
+ */
+export const BOW_TIP = {
+  /** Channel radius: the string enters here (string radius is 0.008 m, so it is held, not cut). */
+  channelRadius: 0.011,
+  /** Solid cap material left beyond the channel: > 0 means the tip is closed, not a through-hole. */
+  wall: 0.014,
+  /** The nock block's length along the limb, m (channel depth = length - wall). */
+  length: 0.038,
+  /** The nock block's drawn half-extents across the limb, m. */
+  capW: 0.017,
+  capD: 0.013,
+} as const;
+
+/** The string/arrow radius the bow generator draws with, m: the channel must exceed it. */
+export const BOW_STRING_RADIUS = 0.008;
+
+export interface BowTip {
+  /** The arrow's nock: where the string is held, weapon-local m (inside the channel). */
+  nock: Vec3;
+  /** Unit axis of the channel, pointing OUT of the limb. */
+  axis: Vec3;
+  /** Channel radius, m (the string must fit inside: channelRadius > BOW_STRING_RADIUS). */
+  channelRadius: number;
+  /** Channel depth from the cap face, m. */
+  depth: number;
+  /** Solid cap material beyond the channel, m (> 0 = closed, no through-hole). */
+  wall: number;
+}
+
+/** The closed tip of a bow limb whose end is at `tip`, `axis` pointing out of the limb. */
+export function bowTip(tip: Vec3, axis: Vec3): BowTip {
+  const l = Math.hypot(axis[0], axis[1], axis[2]) || 1;
+  const u: Vec3 = [axis[0] / l, axis[1] / l, axis[2] / l];
+  const depth = BOW_TIP.length - BOW_TIP.wall;
+  // The nock sits at the channel's mid-depth, so the string end is enclosed rather than left proud.
+  const nock: Vec3 = [tip[0] + u[0] * depth / 2, tip[1] + u[1] * depth / 2, tip[2] + u[2] * depth / 2];
+  return { nock, axis: u, channelRadius: BOW_TIP.channelRadius, depth, wall: BOW_TIP.wall };
+}
+
+/**
+ * The sword's hilt junction (lane P-D): a real crossguard with a grip through it and a blade that
+ * meets it. `overlap` values are the stated interpenetrations in metres; 0 would be a bare touch.
+ */
+export const JUNCTION = {
+  /** Guard sunk over the grip top, m. */
+  guardOnGrip: 0.012,
+  /** Blade root sunk into the guard, m. */
+  bladeInGuard: 0.012,
+  /** Pommel sunk over the grip butt, m. */
+  pommelOnGrip: 0.010,
+  /** Largest overlap the junction may carry before it reads as interpenetration, m. */
+  tolerance: 0.03,
+} as const;
+
+export interface SwordJunction {
+  grip: WeaponPart;
+  guard: WeaponPart;
+  pommel: WeaponPart;
+  blade: WeaponPart;
+  /** Overlaps in metres: > 0 = no gap, <= JUNCTION.tolerance = not interpenetrating. */
+  overlaps: { gripGuard: number; guardBlade: number; pommelGrip: number };
+}
+
+/**
+ * Build the guard/grip/pommel/blade parts of a sword or dagger so they MEET: the guard sinks
+ * `guardOnGrip` over the grip top, the blade root sinks `bladeInGuard` into the guard, and the
+ * pommel sinks `pommelOnGrip` over the grip butt. Sizes and colours match the rest of the list.
+ */
+export function swordJunction(o: {
+  type: "sword" | "dagger";
+  gripLen: number;
+  gripR: number;
+  guardSpan: number;
+  bladeW: number;
+  metalBlade: string;
+  fittingBlade: string;
+}): SwordJunction {
+  const guardH = o.type === "sword" ? 0.04 : 0.03;
+  const guardD = 0.06;
+  const pommelH = 0.05;
+  const bladeW = o.bladeW;
+  const gripTop = o.gripLen;
+  const guardCentre = gripTop - JUNCTION.guardOnGrip + guardH / 2;
+  const bladeBase = guardCentre + guardH / 2 - JUNCTION.bladeInGuard;
+  const pommelCentre = JUNCTION.pommelOnGrip - pommelH / 2;
+  return {
+    grip: { kind: "shaft", w: 2 * o.gripR, h: o.gripLen, d: 2 * o.gripR, y: o.gripLen / 2, bend: 0, color: o.fittingBlade, shape: "cyl" },
+    guard: { kind: "guard", w: o.guardSpan, h: guardH, d: guardD, y: guardCentre, bend: 0, color: o.fittingBlade, shape: "box" },
+    pommel: { kind: "pommel", w: pommelH, h: pommelH, d: pommelH, y: pommelCentre, bend: 0, color: o.fittingBlade, shape: "box" },
+    blade: { kind: "blade", w: bladeW, h: 0, d: 0.02, y: bladeBase, bend: 0, color: o.metalBlade, shape: "box" },
+    overlaps: {
+      gripGuard: JUNCTION.guardOnGrip,
+      guardBlade: JUNCTION.bladeInGuard,
+      pommelGrip: JUNCTION.pommelOnGrip,
+    },
+  };
 }
 
 export interface WeaponParams {
@@ -72,6 +217,8 @@ export interface WeaponParams {
 export interface GeneratedWeapon {
   params: WeaponParams;
   name: string;
+  /** The material the weapon is drawn with (lane P-D): metal blades metallic, a bow/staff wood. */
+  material?: WeaponMaterialProfile;
   parts: WeaponPart[];
   damage: number;
   cooldown: number;
@@ -107,15 +254,15 @@ export function generateWeapon(params: WeaponParams): GeneratedWeapon {
   const shaftLen = base.shaft * L;
   const bladeLen = base.blade * L;
 
-  if (shaftLen > 0) {
+  if (shaftLen > 0 && params.type !== "sword" && params.type !== "dagger") {
     parts.push({ kind: "shaft", w: 0.045, h: shaftLen, d: 0.045, y: shaftLen / 2, bend: 0, color: params.grip, shape: "cyl" });
   }
   if (params.type === "bow") {
-    // Constructed geometrically so it actually reads as a bow: the string is a
-    // straight line at x = 0 between two tips, the grip bulges out to gripX, and
-    // each limb is a rotated bar running from the grip to its tip. Earlier attempts
-    // swayed the limbs the wrong way, so the tips flared past the grip and the whole
-    // thing read as a straight stick.
+    // Constructed geometrically so it actually reads as a bow: the limbs bulge out to gripX and
+    // meet CLOSED tips, and the string runs TIP to TIP through those tips. (Earlier the string hung
+    // at x = 0, off the limbs at x = gripX, so it passed through open air and the tips held
+    // nothing — the "arrow is not being held" defect.) Each tip is a capped nock block with a
+    // channel the string enters; see BOW_TIP / bowTip().
     const half = 0.45 * L;                                  // grip to tip, vertically
     const gripX = 0.28;                                     // how far the grip bulges
     const limbLen = Math.hypot(gripX, half);                // grip -> tip
@@ -126,7 +273,15 @@ export function generateWeapon(params: WeaponParams): GeneratedWeapon {
     parts.push({ kind: "limb", w: 0.03, h: limbLen * 0.8, d: 0.03, y: cy, bend: 0, sway: cx, tilt: limbTilt, color: metal.highlight, shape: "box" });
     parts.push({ kind: "limb", w: 0.03, h: limbLen * 0.8, d: 0.03, y: -cy, bend: 0, sway: cx, tilt: -limbTilt, color: metal.highlight, shape: "box" });
     parts.push({ kind: "head", w: 0.1, h: 0.36, d: 0.13, y: 0, bend: 0, sway: gripX, color: metal.blade, shape: "box" }); // riser at the grip
-    parts.push({ kind: "string", w: 0.016, h: half * 2, d: 0.016, y: 0, bend: 0, sway: 0, color: "#f6efd8", shape: "cyl" }); // tip to tip
+    for (const sign of [1, -1] as const) {
+      const tip: Vec3 = [gripX, sign * half, 0];
+      const t = bowTip(tip, [gripX, sign * half, 0]);
+      // The nock block starts AT the tip and runs out along the limb by BOW_TIP.length, so the
+      // channel (depth) leaves `wall` of solid material past it: closed, never a through-hole.
+      const mid: Vec3 = [tip[0] + t.axis[0] * BOW_TIP.length / 2, tip[1] + t.axis[1] * BOW_TIP.length / 2, 0];
+      parts.push({ kind: "limb", w: BOW_TIP.capW * 2, h: BOW_TIP.length, d: BOW_TIP.capD * 2, y: mid[1], bend: 0, sway: mid[0], tilt: sign * limbTilt, color: metal.blade, shape: "box" });
+    }
+    parts.push({ kind: "string", w: BOW_STRING_RADIUS * 2, h: half * 2, d: BOW_STRING_RADIUS * 2, y: 0, bend: 0, sway: gripX, color: "#f6efd8", shape: "cyl" }); // tip to tip, through the channels
   }
   if (params.type === "staff") {
     parts.push({ kind: "head", w: 0.14, h: 0.2, d: 0.14, y: shaftLen + 0.1, bend: 0, color: metal.blade, shape: "cone" });
@@ -148,14 +303,23 @@ export function generateWeapon(params: WeaponParams): GeneratedWeapon {
     parts.push({ kind: "blade", w: 0.1, h: bladeLen, d: 0.05, y: shaftLen, bend: curve * 0.55 + 0.2, color: metal.blade, shape: "box" });
   }
   if (params.type === "sword" || params.type === "dagger") {
-    // Guard, grip and pommel are the same for both, then the blade itself.
-    parts.push({ kind: "guard", w: params.type === "sword" ? 0.3 : 0.16, h: 0.04, d: 0.06, y: 0.02, bend: 0, color: fitting.blade, shape: "box" });
-    parts.push({ kind: "pommel", w: 0.05, h: 0.05, d: 0.05, y: -0.06, bend: 0, color: fitting.blade, shape: "box" });
-    parts.push({ kind: "blade", w: base.bladeW * L, h: bladeLen, d: 0.02, y: shaftLen + bladeLen / 2, bend: 0, color: metal.blade, shape: "box" });
+    // A real hilt (lane P-D): a crossguard with the grip through it and the blade meeting it, built
+    // with stated overlaps, replacing the old guard that floated near the wrong end of the grip.
+    const j = swordJunction({
+      type: params.type,
+      gripLen: shaftLen,
+      gripR: 0.0225,
+      guardSpan: params.type === "sword" ? 0.3 : 0.16,
+      bladeW: base.bladeW * L,
+      metalBlade: metal.blade,
+      fittingBlade: fitting.blade,
+    });
+    const blade: WeaponPart = { ...j.blade, h: bladeLen, y: j.blade.y + bladeLen / 2, color: metal.blade };
+    parts.push(j.grip, j.guard, j.pommel, blade);
     // Fuller groove down the middle of the blade.
-    parts.push({ kind: "curve", w: base.bladeW * 0.22, h: bladeLen * 0.85, d: 0.024, y: shaftLen + bladeLen / 2, bend: 0, color: metal.dark, shape: "box" });
+    parts.push({ kind: "curve", w: base.bladeW * 0.22, h: bladeLen * 0.85, d: 0.024, y: blade.y, bend: 0, color: metal.dark, shape: "box" });
     // Tip: a cone that leans with the curve parameter.
-    parts.push({ kind: "blade", w: base.bladeW * L * 0.9, h: 0.14 * L, d: 0.02, y: shaftLen + bladeLen + 0.06 * L, bend: curve * 0.12, color: metal.highlight, shape: "cone" });
+    parts.push({ kind: "blade", w: base.bladeW * L * 0.9, h: 0.14 * L, d: 0.02, y: j.blade.y + bladeLen + 0.06 * L, bend: curve * 0.12, color: metal.highlight, shape: "cone" });
   }
 
   const damage = Math.round(base.damage * (0.72 + s * 0.55) * (0.85 + w * 0.045));
@@ -166,6 +330,7 @@ export function generateWeapon(params: WeaponParams): GeneratedWeapon {
   return {
     params,
     name: weaponName(params),
+    material: weaponMaterial(params.type),
     parts,
     damage, cooldown, reach, knockback, weight: w,
   };

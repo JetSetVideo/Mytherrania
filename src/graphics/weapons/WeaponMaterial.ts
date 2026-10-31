@@ -25,15 +25,30 @@ export const WEAPON_OUTLINE_WIDTH = 0.02;
  */
 export const INK_REF_DISTANCE = 7;
 
+/**
+ * How much surface roughness damps the vertex specular strength in the cel material (lane P-D):
+ * effective = specular * (1 - SPECULAR_ROUGHNESS_DAMP * clamp(roughness, 0, 1)). At 0.85 a metal
+ * blade (roughness 0.18) keeps 0.85 of its highlight (hard), a wood limb (0.75) keeps only 0.36 of
+ * an already-low specular (matte). Mirrored in TS by materialSpecular() so it can be unit-tested.
+ */
+export const SPECULAR_ROUGHNESS_DAMP = 0.85;
+
+/** The effective specular strength the cel shader computes from the material's specular + roughness. */
+export function materialSpecular(specular: number, roughness: number): number {
+  return specular * (1 - SPECULAR_ROUGHNESS_DAMP * Math.min(1, Math.max(0, roughness)));
+}
+
 const vertex = /* glsl */ `
   attribute vec3 aColor;
   attribute float aSpecular;
+  attribute float aRoughness;
   uniform vec3 lightDirection;
   varying vec3 viewNormal;
   varying vec3 viewLight;
   varying vec3 viewPos;
   varying vec3 vColor;
   varying float vSpecular;
+  varying float vRoughness;
   varying vec3 vWorld;
   varying vec3 vWorldN;
   void main() {
@@ -46,6 +61,7 @@ const vertex = /* glsl */ `
     viewPos = mv.xyz;
     vColor = aColor;
     vSpecular = aSpecular;
+    vRoughness = aRoughness;
     gl_Position = projectionMatrix * mv;
   }
 `;
@@ -59,10 +75,14 @@ const fragment = /* glsl */ `
   varying vec3 viewPos;
   varying vec3 vColor;
   varying float vSpecular;
+  varying float vRoughness;
   varying vec3 vWorld;
   varying vec3 vWorldN;
   void main() {
-    vec3 c = celShade(vColor, normalize(viewNormal), normalize(viewLight), viewPos, vWorld, vWorldN, vSpecular);
+    // Per-weapon material (lane P-D): a rougher surface scatters, so it keeps less of the hard
+    // specular band. Metal (roughness 0.18) stays hard; wood (0.75) goes nearly matte.
+    float specular = vSpecular * (1.0 - ${SPECULAR_ROUGHNESS_DAMP.toFixed(2)} * clamp(vRoughness, 0.0, 1.0));
+    vec3 c = celShade(vColor, normalize(viewNormal), normalize(viewLight), viewPos, vWorld, vWorldN, specular);
     gl_FragColor = vec4(c, 1.0);
     #include <tonemapping_fragment>
     #include <colorspace_fragment>

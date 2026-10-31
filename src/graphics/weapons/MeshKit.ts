@@ -7,6 +7,8 @@
 //                  stays closed across hard edges (a hull pushed along split normals cracks).
 //   aColor         linear RGB (THREE.Color from hex, the same conversion CelShader applies).
 //   aSpecular      0 for wood/leather, SPECULAR_METAL for metal.
+//   aRoughness     surface roughness 0 (mirror) .. 1 (diffuse); the cel material damps the
+//                  specular with it, so a metal blade reads hard and a wood limb matte (lane P-D).
 
 // @deno-types="@types/three"
 import * as THREE from "three";
@@ -35,22 +37,36 @@ const sub = (a: V3, b: V3): V3 => [a[0] - b[0], a[1] - b[1], a[2] - b[2]];
 const cross = (a: V3, b: V3): V3 => [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]];
 const dot = (a: V3, b: V3) => a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
 
+/** Default surface roughness (0 = mirror, 1 = fully diffuse); metal is the common weapon surface
+ *  (WeaponGen.MATERIAL_KINDS.metal = 0.18), and wood/bone parts set their own via setMaterial. */
+export const DEFAULT_ROUGHNESS = 0.18;
+
 /** Accumulates triangles; build() turns them into one BufferGeometry. */
 export class MeshKit {
   readonly pos: number[] = [];
   readonly col: number[] = [];
   readonly spec: number[] = [];
+  /** Per-vertex roughness (lane P-D): 0 = mirror, 1 = fully diffuse; consumed by the cel shader. */
+  readonly rough: number[] = [];
   /** Smooth-group id per vertex (-1 = flat). */
   readonly group: number[] = [];
   /** Part label per TRIANGLE (QA only: the readability probe measures the tagged feature). */
   readonly parts: string[] = [];
   #nextGroup = 0;
   #specular = 0;
+  #roughness = DEFAULT_ROUGHNESS;
   #part = "body";
 
-  /** Specular strength applied to the triangles emitted next. */
+  /** Specular strength applied to the triangles emitted next (keeps the current roughness). */
   setSpecular(s: number): this {
     this.#specular = s;
+    return this;
+  }
+
+  /** Material of the triangles emitted next: specular strength and surface roughness (lane P-D). */
+  setMaterial(p: { specular: number; roughness: number }): this {
+    this.#specular = p.specular;
+    this.#roughness = p.roughness;
     return this;
   }
 
@@ -77,6 +93,7 @@ export class MeshKit {
       this.pos.push(p[0], p[1], p[2]);
       this.col.push(col.r, col.g, col.b);
       this.spec.push(this.#specular);
+      this.rough.push(this.#roughness);
       this.group.push(group);
     }
   }
@@ -175,6 +192,7 @@ export class MeshKit {
     geo.setAttribute("outlineNormal", new THREE.BufferAttribute(outline, 3));
     geo.setAttribute("aColor", new THREE.Float32BufferAttribute(this.col, 3));
     geo.setAttribute("aSpecular", new THREE.Float32BufferAttribute(this.spec, 1));
+    geo.setAttribute("aRoughness", new THREE.Float32BufferAttribute(this.rough, 1));
     geo.computeBoundingSphere();
     geo.computeBoundingBox();
     return geo;

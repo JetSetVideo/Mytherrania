@@ -21,7 +21,7 @@
 //                  surface area (m²) — the cell that lands the mesh near its triangle budget.
 
 import { ratioValue, resolvePartAxis } from "../../game/RaceGenes.ts";
-import { RACE_SILHOUETTE, raceSilhouette } from "../../game/BodyProfile.ts";
+import { BUILDS, buildFor, RACE_SILHOUETTE, raceSilhouette, type BuildRow, type BuildType, type RaceSilhouette } from "../../game/BodyProfile.ts";
 import { HAIR_LENGTH_M, nameSeed, raceBuild } from "../../game/RaceAppearance.ts";
 import { ancestryOf, type AncestryNode, type BeardSpec } from "../../game/Ancestry.ts";
 import { clamp } from "../../core/MathCore.ts";
@@ -56,6 +56,15 @@ export const GIRTH_MIN = 0.8;
 export const GIRTH_MAX = 1.35;
 /** How much a race's muscle knob (BodyProfile) changes muscle masses: 1 + gain·(muscle − 1). */
 export const MUSCLE_GAIN = 0.2;
+
+/**
+ * The muscle-mass term for a silhouette under a build (single source of truth: proportionsFor
+ * scales the SDF muscle masses by it, and the paint's definition pass reads it). The race's
+ * muscle knob sets the base, the build's muscle term scales it — so a heavy ork is the biggest.
+ */
+export function buildMuscleTerm(sil: RaceSilhouette, build: BuildType): number {
+  return (1 + MUSCLE_GAIN * (sil.muscle - 1)) * BUILDS[build].muscle;
+}
 /** Triangles a body should land near (the test budget is 12 000; this leaves headroom). */
 export const TRIANGLE_TARGET = 9000;
 /**
@@ -99,8 +108,12 @@ export interface BodyProportions {
   head: number;
   /** Girth multiplier G from BMI (dimensionless). */
   girth: number;
-  /** Muscle-mass multiplier from the race's muscle knob (dimensionless). */
+  /** Muscle-mass multiplier from the race's muscle knob AND the build's muscle term. */
   muscle: number;
+  /** The build this body wears (lane P-C): fit / bulky / heavy. */
+  build: BuildType;
+  /** The build's own row of multipliers, kept for the paint's definition pass. */
+  buildRow: BuildRow;
   /** Landmark heights above the sole. */
   y: { [K in keyof typeof CANON_Y]: number } & { knee: number; ankle: number };
   thigh: number; shin: number; foot: number; ankleHeight: number;
@@ -136,9 +149,11 @@ export function duBoisArea(weightKg: number, heightM: number): number {
 }
 
 /** Derive every proportion of a body from its spec (see the module comment for the chain). */
-export function proportionsFor(spec: BodySpec): BodyProportions {
+export function proportionsFor(spec: BodySpec, buildOverride?: BuildType): BodyProportions {
   const race = spec.race in RACE_SILHOUETTE ? spec.race : "human";
   const sil = raceSilhouette(race, spec.subrace);
+  const buildType = buildOverride ?? buildFor(race, spec.subrace);
+  const B = BUILDS[buildType];
   const build = raceBuild(race, spec.subrace);
   const H = spec.height;
 
@@ -146,10 +161,11 @@ export function proportionsFor(spec: BodySpec): BodyProportions {
   const headsTall = CANON_HEADS_TALL / ratioRel("headToBody", race);
   const h = H / headsTall;
 
-  // 7. Girth and muscle.
+  // 7. Girth and muscle. The build's muscle term multiplies the race's (lane P-C): a heavy
+  //    build carries visibly bigger SDF muscle masses (pecs, biceps, quads) than a fit one.
   const bmi = spec.weight / (H * H);
   const G = clamp(Math.sqrt(bmi / BMI_REFERENCE), GIRTH_MIN, GIRTH_MAX);
-  const muscle = 1 + MUSCLE_GAIN * (sil.muscle - 1);
+  const muscle = buildMuscleTerm(sil, buildType);
 
   // 2. Hip-joint height vs torso below the chin.
   const chin = H - h;
@@ -185,25 +201,28 @@ export function proportionsFor(spec: BodySpec): BodyProportions {
   const foreArm = upperArm * geneMid("foreArm", "y", race) / geneMid("upperArm", "y", race);
   const hand = foreArm * CANON_HAND_PER_FOREARM * ratioRel("handToForearm", race);
 
-  // 6. Widths: canon × race gene ratio × girth^exponent.
+  // 6. Widths: canon × race gene ratio × girth^exponent × BUILD. The build (lane P-C) narrows a
+  //    fit body at shoulder/chest/waist and broadens a heavy one (the fat gathers at the waist).
   const g = (e: number) => Math.pow(G, e);
   const halfWidth = {
-    shoulderJoint: CANON_HALF_WIDTH.shoulderJoint * h * (sil.shoulder / RACE_SILHOUETTE.human.shoulder) * g(GIRTH_EXPONENT.neck),
-    chest: CANON_HALF_WIDTH.chest * h * geneRel("chest", "x", race) * g(GIRTH_EXPONENT.torso),
-    waist: CANON_HALF_WIDTH.waist * h * geneRel("abdomen", "x", race) * g(GIRTH_EXPONENT.waist),
-    hip: CANON_HALF_WIDTH.hip * h * geneRel("pelvis", "x", race) * g(GIRTH_EXPONENT.torso),
-    hipJoint: CANON_HALF_WIDTH.hipJoint * h * geneRel("pelvis", "x", race) * g(GIRTH_EXPONENT.neck),
+    shoulderJoint: CANON_HALF_WIDTH.shoulderJoint * h * (sil.shoulder / RACE_SILHOUETTE.human.shoulder) * g(GIRTH_EXPONENT.neck) * B.shoulder,
+    chest: CANON_HALF_WIDTH.chest * h * geneRel("chest", "x", race) * g(GIRTH_EXPONENT.torso) * B.chest,
+    waist: CANON_HALF_WIDTH.waist * h * geneRel("abdomen", "x", race) * g(GIRTH_EXPONENT.waist) * B.waist,
+    hip: CANON_HALF_WIDTH.hip * h * geneRel("pelvis", "x", race) * g(GIRTH_EXPONENT.torso) * B.hip,
+    hipJoint: CANON_HALF_WIDTH.hipJoint * h * geneRel("pelvis", "x", race) * g(GIRTH_EXPONENT.neck) * B.hip,
     neck: CANON_HALF_WIDTH.neck * h * geneRel("neck", "x", race) * g(GIRTH_EXPONENT.neck),
     // The skull's proportions relative to its own height (head.x / head.y, race over human).
     skull: CANON_HALF_WIDTH.skull * h * geneRel("head", "x", race) / geneRel("head", "y", race),
   };
   const halfDepth = {
-    chest: CANON_HALF_DEPTH.chest * h * geneRel("chest", "z", race) * g(GIRTH_EXPONENT.torso),
-    belly: CANON_HALF_DEPTH.belly * h * geneRel("abdomen", "z", race) * g(GIRTH_EXPONENT.belly),
-    pelvis: CANON_HALF_DEPTH.pelvis * h * geneRel("pelvis", "z", race) * g(GIRTH_EXPONENT.torso),
+    chest: CANON_HALF_DEPTH.chest * h * geneRel("chest", "z", race) * g(GIRTH_EXPONENT.torso) * B.chest,
+    belly: CANON_HALF_DEPTH.belly * h * geneRel("abdomen", "z", race) * g(GIRTH_EXPONENT.belly) * B.fat,
+    pelvis: CANON_HALF_DEPTH.pelvis * h * geneRel("pelvis", "z", race) * g(GIRTH_EXPONENT.torso) * B.hip,
     skull: CANON_HALF_DEPTH.skull * h * geneRel("head", "z", race) / geneRel("head", "y", race),
   };
-  const limb = (k: keyof typeof CANON_RADIUS, part: string, e: number, m = 1) => CANON_RADIUS[k] * h * geneRel(part, "x", race) * g(e) * m;
+  // 7. Limb radii: canon x race gene ratio x girth^exponent x the build's limb term x a local
+  //    muscle term (pecs/biceps/quads read bigger on a heavier body, not just wider).
+  const limb = (k: keyof typeof CANON_RADIUS, part: string, e: number, m = 1) => CANON_RADIUS[k] * h * geneRel(part, "x", race) * g(e) * m * B.limb;
   const radius = {
     deltoid: limb("deltoid", "upperArm", GIRTH_EXPONENT.limb, muscle),
     upperArm: limb("upperArm", "upperArm", GIRTH_EXPONENT.limb),
@@ -230,7 +249,7 @@ export function proportionsFor(spec: BodySpec): BodyProportions {
   const cell = clamp(Math.sqrt(TRIS_PER_AREA_CELL2 * surfaceArea / TRIANGLE_TARGET), CELL_MIN, CELL_MAX);
 
   return {
-    spec, race, headsTall, head: h, girth: G, muscle, y,
+    spec, race, headsTall, head: h, girth: G, muscle, build: buildType, buildRow: B, y,
     thigh, shin, foot, ankleHeight, upperArm, foreArm, hand,
     halfWidth, halfDepth, radius,
     // Ear length now comes from the ancestry hierarchy (Ancestry.ears.lengthMul), not the older

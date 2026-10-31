@@ -76,6 +76,67 @@ export const RACE_SILHOUETTE: Record<string, RaceSilhouette> = {
   ork: { height: 1.12, width: 1.34, depth: 1.1, limbTaper: 0.85, limbLength: 0.94, muscle: 1.6, shoulder: 0.54, hip: 0.32, waist: 0.06, head: 1.08, sectionN: 2.4 },
 };
 
+// -------------------------------------------------------------------------------------------
+// Body builds (lane P-C): "either fat or fit". Three explicit builds, each a row of measured
+// multipliers on the race-derived radii plus a muscle and a fat term, and every ancestry mapped
+// onto one. Composing with the race (never replacing it) is what keeps "dwarves are the shortest"
+// while a heavy ork is still fatter than a fit high elf.
+
+/** The three body builds: a fit body is lean and defined, a heavy one is fat, bulky sits between. */
+export type BuildType = "fit" | "bulky" | "heavy";
+
+/**
+ * One build's measurable terms. Every radius term is a multiplier on the race-derived number,
+ * so the ancestry sets the base silhouette and the build scales it (units: dimensionless, and
+ * 1.0 = the race's own value). The tests rank the three rows on every term.
+ */
+export interface BuildRow {
+  /** Half-width across the shoulder joints, × the race value. */
+  shoulder: number;
+  /** Chest half-width AND half-depth, × the race value. */
+  chest: number;
+  /** Waist half-width, × the race value. */
+  waist: number;
+  /** Hip half-width AND pelvis half-depth, × the race value. */
+  hip: number;
+  /** Limb radii (arms, thighs, shins, hands, feet), × the race value. */
+  limb: number;
+  /** Muscle-mass term on the SDF muscle masses (pectorals, biceps, quads, calves); > 1 = bigger. */
+  muscle: number;
+  /** Fat-mass term: fattens the belly and hips; 1.0 = no added fat. */
+  fat: number;
+}
+
+/**
+ * The three rows (lane P-C), ordered non-decreasing fit -> bulky -> heavy on EVERY term, and
+ * strictly larger fit -> heavy. `bulky` is the neutral reference (1.0 on every term), so a
+ * default bulky body is the pre-existing silhouette; the build only leans it. Cartoonish on
+ * purpose: a heavy body's waist is 22% wider than a bulky one's and its belly 28% fuller.
+ */
+export const BUILDS: Record<BuildType, BuildRow> = {
+  fit:   { shoulder: 0.95, chest: 0.93, waist: 0.88, hip: 0.95, limb: 0.95, muscle: 0.96, fat: 1.0 },
+  bulky: { shoulder: 1.0,  chest: 1.0,  waist: 1.0,  hip: 1.0,  limb: 1.0,  muscle: 1.0,  fat: 1.0 },
+  heavy: { shoulder: 1.10, chest: 1.12, waist: 1.22, hip: 1.10, limb: 1.10, muscle: 1.16, fat: 1.28 },
+};
+
+/**
+ * Which build each of the 16 ancestry nodes wears. Orks (and the humans/dwarves that live hard —
+ * the islander and the mountaineer) are heavy; dwarves and most elves/humans are bulky with real
+ * muscle; the slim high and imperial lines are fit. Every key is an ancestry node id.
+ */
+export const BUILD_FOR: Record<string, BuildType> = {
+  human: "bulky", imperial: "fit", nomad: "bulky", islander: "heavy",
+  elf: "bulky", high: "fit", wood: "bulky", dark: "bulky",
+  dwarf: "bulky", mountain: "heavy", forge: "bulky", deep: "bulky",
+  ork: "heavy", greenhide: "bulky", ironhide: "heavy", bloodfang: "heavy",
+};
+
+/** The build for a race + sub-species: a sub-race's own row wins, else the race's, else bulky. */
+export function buildFor(raceId: string, subraceId: string | null): BuildType {
+  if (subraceId && BUILD_FOR[subraceId]) return BUILD_FOR[subraceId];
+  return BUILD_FOR[raceId] ?? "bulky";
+}
+
 /** Sub-species nudge a race's silhouette without replacing it. */
 export const SUBRACE_SILHOUETTE: Record<string, Partial<RaceSilhouette>> = {
   imperial: { width: 1.02 },

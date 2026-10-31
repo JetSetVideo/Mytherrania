@@ -22,8 +22,19 @@ import { hammerSpike, MAUL_BLOCK_RATIO } from "../../game/weapons/Features.ts";
 import {
   bladeEdgeNormalAt, bladePointAt, bowLimbPoint, HAND_HALF_WIDTH, POINT_FRACTION, TIP_WIDTH_RATIO, type WeaponForm,
 } from "../../game/weapons/Form.ts";
+import { BOW_TIP, MATERIAL_KINDS, type WeaponMaterialProfile } from "../../game/WeaponGen.ts";
 import { SPECULAR_METAL } from "../shaders/CelShader.ts";
 import { MeshKit, type Ring } from "./MeshKit.ts";
+
+/** The metal material most parts are drawn with (hard specular, low roughness). */
+const METAL_MATERIAL: WeaponMaterialProfile = MATERIAL_KINDS.metal;
+/** Wood: no specular, high roughness (hafts, bow limbs). */
+const WOOD_MATERIAL: WeaponMaterialProfile = MATERIAL_KINDS.wood;
+/** Horn/antler: a soft sheen (bow nocks, horn furniture). */
+const HORN_MATERIAL: WeaponMaterialProfile = MATERIAL_KINDS.bone;
+
+/** Stated overlap, m, sunk between the grip top and a sword's guard (lane P-D junction). */
+export const HILT_OVERLAP = 0.004;
 
 /** Colours of one weapon (linear RGB, converted once from the hex names). */
 export interface WeaponPalette {
@@ -83,10 +94,10 @@ const unit = (a: V3): V3 => {
 
 /** A round tube along y between y0 and y1 (radii r0, r1), optionally capped. */
 export function rod(kit: MeshKit, y0: number, y1: number, r0: number, r1: number, color: THREE.Color, opts: {
-  segs?: number; start?: boolean | V3; end?: boolean | V3; specular?: number;
+  segs?: number; start?: boolean | V3; end?: boolean | V3; specular?: number; material?: WeaponMaterialProfile;
 } = {}): void {
   const n = opts.segs ?? HAFT_SEGMENTS;
-  kit.setSpecular(opts.specular ?? 0);
+  if (opts.material) kit.setMaterial(opts.material); else kit.setSpecular(opts.specular ?? 0);
   kit.tube([
     { pts: MeshKit.circle([0, y0, 0], X, Z, r0, r0, n), centre: [0, y0, 0], colors: color },
     { pts: MeshKit.circle([0, y1, 0], X, Z, r1, r1, n), centre: [0, y1, 0], colors: color },
@@ -105,14 +116,14 @@ export function knob(kit: MeshKit, c: number | V3, r: number, color: THREE.Color
 
 /** Wrapped grip band centred at y (one palm long). */
 export function wrap(kit: MeshKit, y: number, r: number, pal: WeaponPalette): void {
-  rod(kit, y - HAND_HALF_WIDTH, y + HAND_HALF_WIDTH, r * WRAP_SCALE, r * WRAP_SCALE, pal.wrap, { segs: SMALL_SEGMENTS });
+  rod(kit, y - HAND_HALF_WIDTH, y + HAND_HALF_WIDTH, r * WRAP_SCALE, r * WRAP_SCALE, pal.wrap, { segs: SMALL_SEGMENTS, material: WOOD_MATERIAL });
 }
 
 /** Haft from the butt to `top`, with an iron butt cap and a wrap at every grip. */
 export function haft(kit: MeshKit, form: WeaponForm, top: number, gripYs: number[], pal: WeaponPalette): void {
   const r = form.details.shaftRadius;
-  rod(kit, -form.tail + 0.05, top, r, r * 0.92, pal.wood);
-  rod(kit, -form.tail, -form.tail + 0.05, r * 1.12, r * 1.12, pal.dark, { start: true, segs: SMALL_SEGMENTS, specular: SPECULAR_METAL });
+  rod(kit, -form.tail + 0.05, top, r, r * 0.92, pal.wood, { material: WOOD_MATERIAL });
+  rod(kit, -form.tail, -form.tail + 0.05, r * 1.12, r * 1.12, pal.dark, { start: true, segs: SMALL_SEGMENTS, material: METAL_MATERIAL });
   for (const y of gripYs) if (y - HAND_HALF_WIDTH > -form.tail + 0.05 && y + HAND_HALF_WIDTH < top) wrap(kit, y, r, pal);
 }
 
@@ -249,7 +260,7 @@ export function blade(kit: MeshKit, form: WeaponForm, pal: WeaponPalette): void 
     if (s <= lk.ricasso * Lb + 1e-9) cols = cols.map(() => pal.wrap); // leather-wrapped ricasso
     rings.push({ pts: MeshKit.section([c[0], c[1], c[2]], X, [n[0], n[1], n[2]], ab), centre: [c[0], c[1], c[2]], colors: cols });
   }
-  kit.setSpecular(SPECULAR_METAL);
+  kit.setMaterial(METAL_MATERIAL);
   kit.tube(rings, { start: true, end: bladePointAt(form, Lb, [0, 0, 0]), apexColor: pal.edge });
 }
 
@@ -321,13 +332,17 @@ export const RAPIER_CUP_DEPTH = 0.042;
  */
 export function hilt(kit: MeshKit, form: WeaponForm, pal: WeaponPalette): void {
   const id = form.archetype;
-  const span = form.details.guardHalfSpan, gy = form.guardY + form.guardThickness / 2;
-  const hy = form.guardThickness / 2;
+  // The guard is grown by HILT_OVERLAP and shifted up half of it, so its top sinks HILT_OVERLAP
+  // into the blade root: guard and blade MEET (no gap), without floating (lane P-D junction).
+  const span = form.details.guardHalfSpan, gy = form.guardY + form.guardThickness / 2 + HILT_OVERLAP / 2;
+  const hy = form.guardThickness / 2 + HILT_OVERLAP / 2;
   const gripR = id === "greatsword" ? 0.0165 : id === "dagger" ? 0.0135 : 0.0155;
   kit.setPart("haft");
-  rod(kit, form.shaftBottomY, form.guardY, gripR, gripR + 0.001, pal.wrap, { segs: SMALL_SEGMENTS });
+  // Grip top sunk HILT_OVERLAP into the guard (metal), so the grip runs through it.
+  rod(kit, form.shaftBottomY, form.guardY + HILT_OVERLAP, gripR, gripR + 0.001, pal.wrap, { segs: SMALL_SEGMENTS, material: WOOD_MATERIAL });
   const pr = Math.max(form.pommelRadius, 0.014);
   kit.setPart("guard");
+  kit.setMaterial(METAL_MATERIAL);
   switch (id) {
     case "shortsword":
       ovalGuard(kit, gy, 0.028, span, hy, pal.fitting);
@@ -370,6 +385,28 @@ export function hilt(kit: MeshKit, form: WeaponForm, pal: WeaponPalette): void {
 }
 
 // --- pole heads ---------------------------------------------------------------------------------
+
+/**
+ * The blade hilt's junction (lane P-D), in metres: where the grip top, the guard and the blade base
+ * sit on +y, and how far each overlap is. Overlap > 0 means the parts interpenetrate (no gap); the
+ * drawn guard uses (gy, hy) so these numbers hold for the cross/oval/cup guards of a blade weapon.
+ */
+export function hiltJunction(form: WeaponForm): {
+  gripTop: number;
+  guardBottom: number;
+  guardTop: number;
+  bladeBase: number;
+  overlaps: { gripGuard: number; guardBlade: number };
+} {
+  const gripTop = form.guardY + HILT_OVERLAP;
+  const guardBottom = form.guardY;
+  const guardTop = form.guardY + form.guardThickness + HILT_OVERLAP;
+  const bladeBase = form.bladeBaseY;
+  return {
+    gripTop, guardBottom, guardTop, bladeBase,
+    overlaps: { gripGuard: gripTop - guardBottom, guardBlade: guardTop - bladeBase },
+  };
+}
 
 /**
  * Leaf-shaped spear head on a socket. Section: a diamond (midrib + two edges), bright edges
@@ -599,7 +636,15 @@ export function maulBlock(kit: MeshKit, y: number, H: number, R: number, pal: We
   kit.tube(rings, { start: true, end: true });
 }
 
-/** Bow limb from the riser to one tip (sign +1 up, -1 down); returns the tip point. */
+/**
+ * Bow limb from the riser to one tip (sign +1 up, -1 down). Returns the NOCK point — inside the
+ * tip's channel — so the caller draws the string tip to tip THROUGH the closed tips, held rather
+ * than left proud (lane P-D: the "arrow is not being held" defect).
+ *
+ * The tip is a capped nock block: a bore of `BOW_TIP.channelRadius` runs `depth` in from the
+ * limb end (the mouth the string enters), it flares to the block's outer size, and it closes with
+ * `BOW_TIP.wall` of solid material past the bore — so there is no through-hole.
+ */
 export function bowLimb(kit: MeshKit, half: number, brace: number, recurve: number, sign: 1 | -1, pal: WeaponPalette): V3 {
   const rings: Ring[] = [];
   const n = 6;
@@ -613,7 +658,26 @@ export function bowLimb(kit: MeshKit, half: number, brace: number, recurve: numb
     const w = 0.021 * (1 - 0.45 * t), th = 0.011 * (1 - 0.4 * t);
     rings.push({ pts: MeshKit.section(p, X, nrm, [[w, th], [w, -th], [-w, -th], [-w, th]]), centre: p, colors: pal.woodLight });
   }
-  kit.setSpecular(0);
+  kit.setMaterial(WOOD_MATERIAL);
   kit.tube(rings, { start: false, end: true });
-  return at(1);
+
+  // --- the closed nock tip -------------------------------------------------------------------
+  const tip = at(1), prev = at(0.9);
+  const tl = Math.hypot(tip[1] - prev[1], tip[2] - prev[2]) || 1;
+  const u: V3 = [0, (tip[1] - prev[1]) / tl, (tip[2] - prev[2]) / tl]; // outward limb direction
+  const nrm: V3 = [0, -u[2], u[1]];
+  const capLen = BOW_TIP.length, depth = capLen - BOW_TIP.wall;
+  const pt = (d: number): V3 => [0, tip[1] + u[1] * d, tip[2] + u[2] * d];
+  const sect = (d: number, a: number, b: number): Ring => ({
+    pts: MeshKit.section(pt(d), X, nrm, [[a, b], [a, -b], [-a, -b], [-a, b]]), centre: pt(d), colors: pal.woodLight,
+  });
+  const R = BOW_TIP.channelRadius; // the mouth/bore, sized so the string + its nock ball fit inside
+  kit.setMaterial(HORN_MATERIAL);
+  kit.tube([
+    sect(0, R, R),                          // mouth: open, the string enters here
+    sect(depth, R, R),                      // bore bottom (the channel is this deep)
+    sect(depth, BOW_TIP.capW, BOW_TIP.capD), // flare out to the block
+    sect(0.9 * capLen, BOW_TIP.capW * 0.85, BOW_TIP.capD * 0.85),
+  ], { start: false, end: pt(capLen + 0.008) });
+  return pt(depth / 2); // the nock, inside the channel
 }

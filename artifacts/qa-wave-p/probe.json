@@ -1,0 +1,95 @@
+{
+ "page1": {
+  "flat": true,
+  "tabNavs": 0,
+  "panels": 6,
+  "hiddenPanels": 0,
+  "groups": 16,
+  "summariesPresent": 16,
+  "summarySample": [
+   "Human — 3 sub-species",
+   "Imperial · Tacticians of the Golden Citadel",
+   "VIT 9 · RES 10 · WIL 10 · REF 10 · STR 10 · INT 12",
+   "Doctrine and drill from the Golden Citadel give the imperial a taller, straighter stance."
+  ]
+ },
+ "shortOne": {
+  "heightM": 2.339,
+  "distanceM": 4.035,
+  "yaw": 0.55,
+  "pitch": 0.18
+ },
+ "tallOne": {
+  "heightM": 2.39,
+  "distanceM": 4.11,
+  "yaw": 0.55,
+  "pitch": 0.18
+ },
+ "idleYaw": [
+  0.55,
+  0.55
+ ],
+ "afterDrag": {
+  "heightM": 2.39,
+  "distanceM": 4.11,
+  "yaw": 1.27,
+  "pitch": -0.06
+ },
+ "clamped": {
+  "heightM": 2.39,
+  "distanceM": 4.11,
+  "yaw": 1.27,
+  "pitch": 1.15
+ },
+ "seed": {
+  "seed": 20261031,
+  "recorded": [
+   10398851
+  ],
+  "text": "Generation seed 20261031 · 0x13528a7 — the idea this fighter came from. Saving keeps it."
+ },
+ "graphics": {
+  "resolution": "auto",
+  "pipeline": {
+   "post": true,
+   "outputWidth": 1280,
+   "outputHeight": 900,
+   "sceneWidth": 1280,
+   "sceneHeight": 900,
+   "effectsWidth": 640,
+   "effectsHeight": 450,
+   "renderScale": 1,
+   "msaa": 4,
+   "aoSamples": 8,
+   "gi": true,
+   "contactSteps": 12,
+   "ssrSteps": 24,
+   "inkEdges": true,
+   "passes": 6
+  },
+  "dynResScale": 1,
+  "dynResAvgMs": 15.3,
+  "quality": {
+   "post": true,
+   "msaa": 4,
+   "shadowMapSize": 2048,
+   "aoSamples": 8,
+   "gi": true,
+   "contactSteps": 12,
+   "ssrSteps": 24,
+   "effectsScale": 0.5,
+   "inkEdges": true,
+   "skyOctaves": 4,
+   "skySegments": 64,
+   "polygonDetail": 1.5,
+   "dynamicResolution": false
+  },
+  "shadowMap": 2048,
+  "shadowOnCel": 1,
+  "drawCalls": 121,
+  "triangles": 68756,
+  "programs": 17,
+  "brokenPrograms": []
+ },
+ "errors": []
+}

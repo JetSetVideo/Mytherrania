@@ -14,10 +14,11 @@
 // @deno-types="@types/three"
 import * as THREE from "three";
 import { CEL_LIGHT_GLSL, celUniforms } from "./CelShader.ts";
+import { INK_BASE_WIDTH, INK_GLSL } from "./Ink.ts";
 
-/** Ink colour and hull width of the outline, identical to CelShader.createCelMesh. */
+/** Ink colour and the DEFAULT hull base width of the outline, identical to CelShader.createCelMesh. */
 export const CEL_INK = "#172128";
-export const CEL_OUTLINE_WIDTH = 0.035;
+export const CEL_OUTLINE_WIDTH = INK_BASE_WIDTH;
 
 const skinnedCelVertex = /* glsl */ `
   #include <common>
@@ -71,11 +72,18 @@ const skinnedCelFragment = /* glsl */ `
   }
 `;
 
-// Inverted hull: push the SKINNED position out along the SKINNED normal in view space.
+// Inverted hull: push the SKINNED position out along the SKINNED normal in view space, by the
+// VARIABLE ink mark (lane P-A) — the Ink.ts law runs here with its constants on the shared cel
+// uniforms, so a lit, camera-facing surface collapses the hull to zero and a silhouette edge is
+// fully marked. `outlineWidth` is the per-mesh base width.
 const skinnedOutlineVertex = /* glsl */ `
   #include <common>
   #include <skinning_pars_vertex>
   uniform float outlineWidth;
+  uniform vec3 lightDirection;
+  uniform float uIsFace;
+  uniform float uMaterialInk;
+  ${INK_GLSL}
   void main() {
     #include <beginnormal_vertex>
     #include <skinbase_vertex>
@@ -84,7 +92,10 @@ const skinnedOutlineVertex = /* glsl */ `
     #include <skinning_vertex>
     vec4 viewPosition = modelViewMatrix * vec4(transformed, 1.0);
     vec3 n = normalize(normalMatrix * objectNormal);
-    viewPosition.xyz += n * outlineWidth;
+    vec3 lightView = normalize((viewMatrix * vec4(lightDirection, 0.0)).xyz);
+    float strength = inkStrength(n, lightView, viewPosition.xyz, uIsFace, uMaterialInk);
+    float w = inkWidth(strength, outlineWidth, 1.0);
+    viewPosition.xyz += n * w;
     gl_Position = projectionMatrix * viewPosition;
   }
 `;
@@ -107,8 +118,12 @@ export interface CelSkinnedOptions {
    * to `geometry.hasAttribute("color")` in createCelSkinnedMesh.
    */
   vertexColors?: boolean;
-  /** Hull width in metres (default CEL_OUTLINE_WIDTH). */
+  /** Hull base width in metres (default CEL_OUTLINE_WIDTH). The mark is capped at Ink.INK_MAX_WIDTH. */
   outlineWidth?: number;
+  /** True on face geometry: the ink law suppresses the mark on a front-facing face. */
+  isFace?: boolean;
+  /** Per-mesh ink multiplier in [0, 1] (0 mutes the outline). */
+  materialInk?: number;
 }
 
 /** The cel surface material for a SkinnedMesh (uniforms shared with CelShader's lighting). */
@@ -125,10 +140,12 @@ export function createCelSkinnedSurfaceMaterial(color: THREE.ColorRepresentation
 /** The inverted-hull outline material for a SkinnedMesh. */
 export function createCelSkinnedOutlineMaterial(opts: CelSkinnedOptions = {}): THREE.ShaderMaterial {
   return new THREE.ShaderMaterial({
-    uniforms: {
+    uniforms: celUniforms({
       inkColor: { value: new THREE.Color(CEL_INK) },
       outlineWidth: { value: opts.outlineWidth ?? CEL_OUTLINE_WIDTH },
-    },
+      uIsFace: { value: opts.isFace ? 1 : 0 },
+      uMaterialInk: { value: opts.materialInk ?? 1 },
+    }),
     vertexShader: skinnedOutlineVertex,
     fragmentShader: outlineFragment,
     side: THREE.BackSide,

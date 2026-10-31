@@ -130,7 +130,7 @@ const pressedPower = await call("debugPress", "power");
 await p.waitForTimeout(300);
 const own = await call("debugPowers");
 report.ownCast = { skill: own.casts[0].skill, total: own.casts[0].total, started: own.casts[0].skill !== null, pressed: pressedPower };
-let text = { seen: 0, sample: null as null | { text: string; cls: string; size: string; hue: string; weight: string } };
+const text = { seen: 0, sample: null as null | { text: string; cls: string; size: string; hue: string; weight: string } };
 for (let i = 0; i < 40; i++) {
   await p.waitForTimeout(300);
   const live = await call("debugPowers");

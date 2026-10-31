@@ -38,12 +38,26 @@ export const PREVIEW_SPIN_RAD_S = 0.45;
 /** Idle breathe rate, rad/s of the skeleton clock — the rig's own rest pose, advanced in time. */
 export const PREVIEW_IDLE_HZ = 0.5;
 
-/** Camera framing of a standing fighter: 3/4 front-left, whole body, slight down-tilt. */
-const CAM_DISTANCE = 2.35;
-const CAM_HEIGHT = 1.28;
-const CAM_YAW = 0.55;
-const CAM_TARGET_Y = 0.95;
+/**
+ * Camera framing. Wave P: the distance is DERIVED from the character's own height, never a constant —
+ * a 2.2 m ork and a 1.35 m dwarf must both fit the panel. The law:
+ *
+ *   visibleHalfHeight = tan(fovY/2) * distance   ->   distance = (halfHeight + marginM) / tan(fovY/2)
+ *
+ * with halfHeight measured from the rig's own bounding box and the vertical FOV (degrees -> radians).
+ * The camera looks at 55 % of the character's height, which keeps the head in the upper third at any
+ * stature, and a floor of CAM_DISTANCE_MIN_M keeps a tiny character from being pressed against the lens.
+ */
 const CAM_FOV = 38;
+const CAM_MARGIN_M = 0.22;
+const CAM_DISTANCE_MIN_M = 1.5;
+const CAM_DISTANCE_MAX_M = 6.0;
+/** Where the camera looks, as a fraction of the character's height (0 = feet, 1 = crown). */
+const CAM_TARGET_FRAC = 0.55;
+const CAM_YAW = 0.55;
+/** Pitch clamp, radians: never below the horizon floor, never straight down. */
+const CAM_PITCH_MIN = -0.45;
+const CAM_PITCH_MAX = 1.15;
 
 /** The lit-pedestal look: the same three lights `Portrait.ts` used, so the family resemblance holds. */
 function addLights(scene: THREE.Scene): void {
@@ -100,7 +114,13 @@ export class PreviewScene {
   #root: THREE.Group;
   #rig: (HumanoidRig & SkinnedExtras) | null = null;
   #fighter = createFighter("Warrior", "Preview", 0, 0, 0.5, "human", null);
-  #spin = 0;
+  /** Manual orbit (wave P): the user turns the figure; it never rotates by itself. */
+  #yaw = CAM_YAW;
+  #pitch = 0.18;
+  /** The current framing distance, derived from the character's height on every rebuild. */
+  #distance: number = CAM_DISTANCE_MIN_M;
+  /** The character's measured height, metres — public evidence for the wave's framing claim. */
+  #heightM = 1.8;
   #clock = 0;
   #disposed = false;
   /** The name+race the current rig was built for, so `setProfile` can skip a rebuild. */
@@ -128,11 +148,37 @@ export class PreviewScene {
     this.resize();
   }
 
+  /** Place the camera from the CURRENT yaw/pitch/distance (called on a rebuild and on every drag). */
   #placeCamera(): void {
-    const x = Math.sin(CAM_YAW) * CAM_DISTANCE;
-    const z = Math.cos(CAM_YAW) * CAM_DISTANCE;
-    this.#camera.position.set(x, CAM_HEIGHT, z);
-    this.#camera.lookAt(0, CAM_TARGET_Y, 0);
+    const horiz = Math.cos(this.#pitch) * this.#distance;
+    const y = CAM_TARGET_FRAC * this.#heightM + Math.sin(this.#pitch) * this.#distance;
+    this.#camera.position.set(Math.sin(this.#yaw) * horiz, Math.max(0.25, y), Math.cos(this.#yaw) * horiz);
+    this.#camera.lookAt(0, CAM_TARGET_FRAC * this.#heightM, 0);
+  }
+
+  /**
+   * Turn the figure. `dx`/`dy` are pointer DELTAS in px; the sensitivity is stated per 100 px so a
+   * mouse, a finger and a gamepad stick (which the engine maps to px deltas) all feel the same.
+   */
+  orbit(dx: number, dy: number): void {
+    if (this.#disposed) return;
+    const k = 0.6; // radians per 100 px
+    this.#yaw += (dx / 100) * k;
+    this.#pitch = Math.max(CAM_PITCH_MIN, Math.min(CAM_PITCH_MAX, this.#pitch - (dy / 100) * k));
+    this.#placeCamera();
+    this.#render(0);
+  }
+
+  /** The long axis of the character's own bounding box, metres (measured, not assumed). */
+  #fitCameraToRig(): void {
+    if (!this.#rig) return;
+    const box = new THREE.Box3().setFromObject(this.#rig.group);
+    const height = Math.max(0.5, box.max.y - box.min.y);
+    this.#heightM = height;
+    const halfFov = ((CAM_FOV / 2) * Math.PI) / 180;
+    const wanted = (height / 2 + CAM_MARGIN_M) / Math.tan(halfFov);
+    this.#distance = Math.max(CAM_DISTANCE_MIN_M, Math.min(CAM_DISTANCE_MAX_M, wanted));
+    this.#placeCamera();
   }
 
   /** Match the drawing buffer to the CSS box (a resize is a no-op when it already matches). */
@@ -158,8 +204,10 @@ export class PreviewScene {
     this.#fighter = fighter;
     this.#rig = rig;
     this.#root.add(rig.group);
-    this.#spin = 0;
     this.#clock = 0;
+    // Wave P: the camera frames THIS character (its own measured height), and the turntable is gone —
+    // the user turns the figure, so a rebuild must not silently start spinning it again.
+    this.#fitCameraToRig();
     this.#render(0);
   }
 
@@ -180,16 +228,19 @@ export class PreviewScene {
   #render(dt: number): void {
     if (this.#disposed) return;
     const step = Math.min(0.1, Math.max(0, dt));
-    this.#spin += step * PREVIEW_SPIN_RAD_S;
     this.#clock += step;
     if (this.#rig) {
-      this.#root.rotation.y = this.#spin;
       // The rig's own rest pose advanced in time: the skeleton's update() is where the
       // breathe/blink time lives, so a still frame would show a frozen statue.
       this.#fighter.skeleton.update(step * PREVIEW_IDLE_HZ);
       this.#rig.update(this.#fighter.skeleton, step);
     }
     this.#renderer.render(this.#scene, this.#camera);
+  }
+
+  /** Wave P evidence: the framing the camera chose for the current character. */
+  framing(): { heightM: number; distanceM: number; yaw: number; pitch: number } {
+    return { heightM: Math.round(this.#heightM * 1000) / 1000, distanceM: Math.round(this.#distance * 1000) / 1000, yaw: Math.round(this.#yaw * 1000) / 1000, pitch: Math.round(this.#pitch * 1000) / 1000 };
   }
 
   /** Triangle count of the current rig, for the wave's evidence (0 when nothing is built). */

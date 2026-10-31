@@ -1,6 +1,6 @@
 import { CLASSES, type ClassName } from "../game/Stats.ts";
 import { NPCS, PALETTES, PRESETS, type CharacterProfile } from "../game/Characters.ts";
-import { RACES, raceById, computeRaceStats, type RaceDef } from "../game/Races.ts";
+import { RACES, raceById, computeRaceStats, type RaceDef, type Subrace } from "../game/Races.ts";
 import { BIRTHSIGNS } from "../game/Birthsight.ts";
 import { secondaryPreview } from "../game/SecondaryStats.ts";
 import { ALL_SKILLS, skillsForClass, type Skill } from "../game/Skills.ts";
@@ -15,6 +15,7 @@ import { HISTORY_SORTS, HISTORY_SORT_LABEL, highlightSummary, rowBadges, sortHis
 import { NavStack } from "./NavStack.ts";
 import { birthsignIcon, icon } from "./Icons.ts";
 import { ancestryView, initialAncestry, nextHeaderIndex, selectSubrace, toggleRace, type AncestryState } from "./AncestryState.ts";
+import { CREATOR_GROUP_IDS, groupSummary } from "./CreatorSync.ts";
 import type { ProfilePanelView } from "./ProfilePanel.ts";
 import { weaponMenuOptions } from "../game/weapons/Loadout.ts";
 import { raceBanner } from "./RaceBanners.ts";
@@ -254,6 +255,12 @@ export interface OptGroupSpec {
   glyph?: string;
   /** The group's controls, already rendered. */
   body: string;
+  /**
+   * Wave P: the group's CURRENT main values, shown on the header so a CLOSED tree still tells the
+   * user what it holds (the "global parameter" the ask named). Comes from `groupSummary`; omitted
+   * for a group whose values live in engine state (the summary answers that case itself).
+   */
+  summary?: string;
 }
 
 /**
@@ -271,6 +278,7 @@ export function optGroupHtml(g: OptGroupSpec): string {
     `<span class="opt-label">${esc(g.label)}</span>` +
     `<span class="opt-count">${esc(optionCount(g.count))}</span>` +
     `<span class="opt-hint">${esc(g.hint)}</span>` +
+    `<span class="group-summary">${esc(g.summary ?? "")}</span>` +
     `<span class="opt-chevron" aria-hidden="true">${icon("chevron-down", "opt-chevron-svg")}</span>` +
     `</summary><div class="opt-body">${g.body}</div></details>`;
 }
@@ -554,6 +562,19 @@ export class Menu {
   }
 
   /** One select-screen panel: a headed section whose groups are closed trees, in tree order. */
+  /** The current profile's race definition (never null: the profile always holds a valid race id). */
+  #raceDef(): RaceDef {
+    // `raceById` answers undefined for an unknown id; a profile always holds a valid one, and the
+    // fallback keeps the summary non-empty even if a hand-edited record carries a bad id.
+    return raceById(this.#player.race) ?? RACES[0];
+  }
+
+  /** The current sub-species definition, or null when the profile carries none. */
+  #subraceDef(): Subrace | null {
+    const r = this.#raceDef();
+    return r.subspecies.find((s) => s.id === this.#player.subrace) ?? null;
+  }
+
   #panelHtml(panel: UiPanel): string {
     return `<section class="ui-panel" data-panel="${esc(panel.id)}" data-colour="${esc(panel.colour)}">` +
       `<h3 class="panel-head"><span class="dot"></span>${esc(panel.label)}<span class="panel-hint">${esc(panel.hint)}</span></h3>` +
@@ -567,6 +588,9 @@ export class Menu {
       screen,
       panel: panelId,
       id: g.id,
+      // Wave P: the closed header shows the group's CURRENT values. `groupSummary` answers for every
+      // Creator group; the title screen's groups are not Creator groups, so they get none.
+      summary: CREATOR_GROUP_IDS.includes(g.id) ? groupSummary(g.id, this.#player, this.#raceDef(), this.#subraceDef()) : undefined,
       label: g.label,
       hint: g.hint,
       colour,
@@ -597,6 +621,9 @@ export class Menu {
       `<div class="palettes">${Object.entries(PALETTES).map(([name]) =>
         `<button class="palette-chip palette-${name}" data-palette="${name}" title="${name}" aria-pressed="false"></button>`).join("")}</div>` +
       `<div id="creator-sheet" class="creator-sheet"></div>` +
+      // Wave P: the generation seed of the fighter on screen — the idea the roll came from, so a save
+      // can be traced back to it and the generation system (or a net trained on its output) can find it.
+      `<div id="creator-seed" class="creator-seed"></div>` +
       `</div></div></section>`;
   }
 
@@ -711,12 +738,11 @@ export class Menu {
         ${this.#titlePanelHtml()}
       </div>
 
-      <div class="menu-screen" data-screen="select">${this.#backBar()}
+      <div class="menu-screen" data-screen="select" data-flat="1">${this.#backBar()}
         <header class="screen-head">
           <h2>Create your fighter</h2>
-          <p class="screen-hint">Everything is one screen away: pick a panel, and the rest stays visible in the tabs.</p>
+          <p class="screen-hint">Everything is on this one page — every group shows its current values on the header, and a click opens it for the details. Nothing switches panel.</p>
         </header>
-        <nav class="panel-tabs" data-tabs="select"></nav>
 
         ${screenPanels("select").map((p) => this.#panelHtml(p)).join("")}
 
@@ -1120,8 +1146,19 @@ export class Menu {
     this.#refreshCreator(seed);
   }
 
+  /**
+   * Wave P: the seed the CURRENT Creator fighter was generated from. The dice mixes one on every
+   * click and the engine cannot guess it, so the roll RECORDS it here — this is what makes an edited
+   * roll traceable (the seed is the idea; the profile id stays the identity) and what the save
+   * writes onto the stored profile.
+   */
+  get lastCreatorSeed(): number | null {
+    return this.#lastSeed;
+  }
+
   #refreshCreator(seed?: number): void {
     const mixed = seed ?? ((Date.now() ^ (this.#rollCount++ * 0x9e3779b9)) >>> 0);
+    this.#lastSeed = mixed >>> 0;
     const rolled = rollProfile(mulberry32(mixed));
     this.#player = rolled.profile;
     this.#syncCreatorUI();
@@ -1252,6 +1289,9 @@ export class Menu {
   }
 
   /** Show the selected class's three skills (dash / power / defense) with their details. */
+  /** Wave P: the seed behind the Creator's current fighter (null until the first roll). */
+  #lastSeed: number | null = null;
+
   #renderClassSkills(className: ClassName) {
     const el = this.#root.querySelector("#class-skills")!;
     const skills = skillsForClass(className);
