@@ -19,6 +19,7 @@ import * as THREE from "three";
 import { mergeGeometries } from "three/examples/jsm/utils/BufferGeometryUtils.js";
 import { RoundedBoxGeometry } from "three/examples/jsm/geometries/RoundedBoxGeometry.js";
 import { fbm3, makeNoise } from "../paint/Noise.ts";
+import type { ObjectKind } from "../../game/ArenaConfig.ts";
 
 export type PropKind = "pillar" | "ramp" | "platform" | "crate" | "rock" | "arch" | "tree" | "gliderPad";
 
@@ -175,4 +176,23 @@ export function propGeometry(kind: PropKind, size: { r: number; h: number }, sca
 /** Triangles of a geometry (indexed or not). */
 export function triangleCount(g: THREE.BufferGeometry): number {
   return g.index ? g.index.count / 3 : g.getAttribute("position").count / 3;
+}
+
+/**
+ * The model's base offset: `-geometry.boundingBox.min.y` for the geometry `propGeometry` builds for
+ * this kind, so a caller seating the model at `seatingY(...)` can put its base EXACTLY on the ground
+ * (metres). 0 means the model is already base-anchored.
+ *
+ * Every model here is built CENTRED on y = 0 (the engine lifts it by h/2), so after measuring the
+ * bounding boxes: NONE of the eight kinds is base-anchored — all return a non-zero offset (≈ h ×
+ * scale / 2, the model's lower half-height; rock varies with its seeded displacement). The engine
+ * therefore still lifts by h/2, but from the footprint MAX rather than the centre height — that is
+ * the float fix. (Measured: see tests/propmodels_test.ts, which prints the per-kind table.)
+ */
+export function propBaseOffset(kind: ObjectKind, size: { r: number; h: number }, scale: number, detail: number, colour: string, seed: number): number {
+  const g = propGeometry(kind as PropKind, size, scale, detail, colour, seed);
+  g.computeBoundingBox();
+  const min = g.boundingBox?.min.y ?? 0;
+  g.dispose();
+  return -min;
 }

@@ -2,47 +2,102 @@
   "day": {
     "cpuMs": {
       "n": 241,
-      "mean": 1.595,
-      "p50": 1.6,
-      "p95": 1.9,
-      "p99": 2.2,
-      "max": 2.3
+      "mean": 2.404,
+      "p50": 2.1,
+      "p95": 3.6,
+      "p99": 5.2,
+      "max": 7.7
     },
     "frameGapMs": {
       "n": 241,
       "mean": 16.666,
       "p50": 16.7,
-      "p95": 16.7,
+      "p95": 16.8,
       "p99": 16.8,
       "max": 16.8
     },
-    "polygons": 12520,
+    "gpuMs": {
+      "n": 242,
+      "mean": 5.932,
+      "p50": 5.498,
+      "p95": 9.959,
+      "p99": 13.096,
+      "max": 13.954
+    },
+    "cpuHeadroomMsP99": 11.4,
+    "polygons": 21184,
     "phase": "day"
   },
   "night": {
     "cpuMs": {
+      "n": 240,
+      "mean": 2.165,
+      "p50": 2,
+      "p95": 3.2,
+      "p99": 4.4,
+      "max": 12.6
+    },
+    "frameGapMs": {
+      "n": 240,
+      "mean": 16.666,
+      "p50": 16.7,
+      "p95": 16.8,
+      "p99": 16.8,
+      "max": 16.8
+    },
+    "gpuMs": {
+      "n": 240,
+      "mean": 4.987,
+      "p50": 4.271,
+      "p95": 9.932,
+      "p99": 12.087,
+      "max": 12.563
+    },
+    "cpuHeadroomMsP99": 12.2,
+    "polygons": 21184,
+    "phase": "night"
+  },
+  "spectate": {
+    "cpuMs": {
       "n": 241,
-      "mean": 1.012,
-      "p50": 1,
-      "p95": 1.4,
-      "p99": 1.8,
-      "max": 2.6
+      "mean": 2.153,
+      "p50": 2,
+      "p95": 3.2,
+      "p99": 4.8,
+      "max": 5.1
     },
     "frameGapMs": {
       "n": 241,
       "mean": 16.666,
       "p50": 16.7,
-      "p95": 16.7,
+      "p95": 16.8,
       "p99": 16.8,
       "max": 16.8
     },
-    "polygons": 12520,
-    "phase": "night"
+    "gpuMs": {
+      "n": 241,
+      "mean": 5.271,
+      "p50": 4.818,
+      "p95": 9.353,
+      "p99": 11.191,
+      "max": 12.442
+    },
+    "cpuHeadroomMsP99": 11.8,
+    "polygons": 21184,
+    "phase": "night",
+    "freeCamera": false,
+    "effects": false
   },
   "environment": {
-    "browser": "154.0.8037.98",
+    "browser": "156.0.8078.76",
     "headless": true,
     "viewport": "1440x900",
-    "note": "headless lab sample; frameGap reflects headless vsync throttling, cpuMs is the engine's own per-frame cost"
+    "budgetMs": 16.6,
+    "gpuTimer": {
+      "available": true,
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+      "note": "EXT_disjoint_timer_query_webgl2 exposed; gpuMs is the per-frame TIME_ELAPSED result"
+    },
+    "note": "headless lab sample; frameGap reflects headless vsync throttling, cpuMs is the engine's own per-frame cost; cpuHeadroomMsP99 = 16.6 - p99 cpuMs (negative = budget missed)"
   }
 }

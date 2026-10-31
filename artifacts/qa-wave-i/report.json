@@ -1,0 +1,142 @@
+{
+  "camera": {
+    "start": {
+      "mode": "free",
+      "yaw": 0,
+      "pitch": 0.35,
+      "dist": 9,
+      "height": 0
+    },
+    "afterDrag": {
+      "mode": "free",
+      "yaw": 0.72,
+      "pitch": 0.53,
+      "dist": 9,
+      "height": 0
+    },
+    "afterIdle": {
+      "mode": "free",
+      "yaw": 0.72,
+      "pitch": 0.53,
+      "dist": 9,
+      "height": 0
+    },
+    "dragMoved": true,
+    "angleHeldForIdleFrames": true,
+    "presetIds": [
+      "duel",
+      "broadcast",
+      "topdown",
+      "lowangle"
+    ],
+    "presetApplied": true,
+    "modeAfterCycle": "follow-a"
+  },
+  "cursor": {
+    "present": true,
+    "follows": true,
+    "blobTrails": true,
+    "blobSettlesOnReticle": true,
+    "radiusAtRest": 14,
+    "radiusHover": 14
+  },
+  "inspect": {
+    "hoveredFighter": "fighter:0",
+    "fighterCardTitle": "Sir Aldric",
+    "fighterCardRows": 17,
+    "fighterCardBars": 3,
+    "swappedToOtherFighter": true,
+    "swappedCardTitle": "Ser Vail",
+    "fighterCardBadges": [
+      "GEN-53AB8C",
+      "AI"
+    ],
+    "objectCardTitle": "Rock",
+    "objectCardIsObject": true,
+    "objectCardBadge": [],
+    "closedOnEmptyClick": true
+  },
+  "props": {
+    "count": 16,
+    "floatingBefore": 15,
+    "floatingNow": 0,
+    "worstFloatingM": 0,
+    "worstSeamM": 1.4200161432053826,
+    "seamsCovered": 16,
+    "seats": [
+      {
+        "kind": "rock",
+        "x": -6.234557350963343,
+        "z": 2.5207696771069994,
+        "baseY": -0.13504282369388604,
+        "footMax": -0.13504282369388604,
+        "floating": 0,
+        "gap": 0.45418600893420963,
+        "skirtDrop": 0.5018
+      },
+      {
+        "kind": "arch",
+        "x": 0.47090766145712903,
+        "z": -4.382951821594853,
+        "baseY": -0.29845373555145266,
+        "footMax": -0.29845373555145266,
+        "floating": 0,
+        "gap": 1.4200161432053826,
+        "skirtDrop": 1.67
+      },
+      {
+        "kind": "pillar",
+        "x": 1.9933112165353966,
+        "z": -6.866250513262696,
+        "baseY": -0.9313185480317985,
+        "footMax": -0.9313185480317985,
+        "floating": 0,
+        "gap": 0.4375281994391751,
+        "skirtDrop": 0.5373
+      }
+    ],
+    "baseOffsetKinds": {
+      "pillar": 1.6,
+      "ramp": 0.45,
+      "platform": 0.7,
+      "crate": 0.4,
+      "rock": 0.4831,
+      "arch": 1.85,
+      "tree": 1.5,
+      "gliderPad": 0.1
+    },
+    "skirtMeshes": 16,
+    "skirtTriangles": 1920,
+    "skirtMaterialSamples": {
+      "wood": 8,
+      "stone": 4,
+      "sand": 4
+    }
+  },
+  "clash": {
+    "firstBurstSparks": 24,
+    "at": 11.0545,
+    "after40BurstsLive": 76,
+    "capped": true,
+    "spawned": 325,
+    "dropped": 251,
+    "events": 48
+  },
+  "frame": {
+    "n": 240,
+    "mean": 2.1774999906619388,
+    "p50": 2,
+    "p95": 3.1000001430511475,
+    "p99": 3.5,
+    "max": 15.199999809265137,
+    "headroomMs": 13.1
+  },
+  "effectsScale": {
+    "scale": 1,
+    "drops": 1,
+    "recoveries": 60,
+    "overBudgetFrames": 17
+  },
+  "errors": [],
+  "at": "2026-10-31T13:01:13.258Z"
+}

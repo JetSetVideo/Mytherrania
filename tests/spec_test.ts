@@ -18,6 +18,13 @@ import { highlightsOf } from "../src/ui/HistoryView.ts";
 import { keyVars, pca, spreadOf, standardise } from "../src/balance/CorpusMath.ts";
 import { statDelta } from "../src/game/Races.ts";
 import { skillsForClass } from "../src/game/Skills.ts";
+// Wave I (spectator camera, inspect overlay, terrain fill, clash sparks, frame budget).
+import { CAMERA_PRESETS, cameraPose, cycleMode, decodeSpectateCam, encodeSpectateCam, orbitCamera, SPECTATE_CAM_BOUNDS, SPECTATE_CAM_DEFAULTS, zoomCamera } from "../src/game/SpectatorCamera.ts";
+import { anchorCard, blobRadius, fighterCard, objectCard, pickNearest, stepCursor, type CursorState } from "../src/ui/InspectOverlay.ts";
+import { footHeight, materialUnder, seatingY, skirtFor } from "../src/graphics/GroundFill.ts";
+import { canClash, clashStrength, detectClash, segSegClosest } from "../src/combat/Clash.ts";
+import { ClashSparks, DEFAULT_MAX_SPARKS, SPARKS_PER_BURST } from "../src/graphics/fx/ClashSparks.ts";
+import { EffectsGovernor, percentile, summarise } from "../src/game/FrameBudget.ts";
 import { stunDuration } from "../src/physics/SmashPhysics.ts";
 import { DEFAULT_TIMING, truceSeconds } from "../src/game/Disposition.ts";
 import { HAIR_LENGTH_M, raceBuild, RACE_BUILDS } from "../src/game/RaceAppearance.ts";
@@ -494,4 +501,179 @@ Deno.test("SPEC HX1: a generated stat budget can never push a fighter outside th
   // A legacy record (no gap, no generation) still parses, so an old history keeps working.
   const legacy = parseHistory(JSON.stringify([{ id: 1, at: "2026-01-01T00:00:00.000Z", hour: 12, phase: "day", place: "P", arena: "ring", reason: "ko", duration: 30, firstStrike: null, winner: 0, fighters: [fightRec(), fightRec()] }]));
   assert(legacy.length === 1 && legacy[0].tie === false && legacy[0].limitS === 180, "a pre-Wave-H record loads with the defaults");
+});
+
+
+// ------------------------------------------------- Wave I: the spectator camera
+
+Deno.test("SPEC IA1: a spectator angle the user sets STAYS set, and every preset is legal", () => {
+  const start = SPECTATE_CAM_DEFAULTS;
+  const turned = orbitCamera(start, 240, 60, { yaw: 0.002, pitch: 0.002 });
+  assert(turned.yaw !== start.yaw && turned.pitch !== start.pitch, "the drag turns the camera");
+  // THE COMPLAINT: no input must leave the angle exactly where the user put it — no ease-back.
+  let idle = turned;
+  for (let i = 0; i < 500; i++) idle = orbitCamera(idle, 0, 0, { yaw: 0.002, pitch: 0.002 });
+  assert(idle.yaw === turned.yaw && idle.pitch === turned.pitch, `an idle frame must not move the camera (${idle.yaw} vs ${turned.yaw})`);
+  assert(orbitCamera(start, 0, 0, { yaw: 1, pitch: 1 }).yaw === start.yaw, "zero drag is a no-op");
+  for (let i = 0; i < 1_000; i++) {
+    const s2 = orbitCamera(idle, (i % 97) - 48, (i % 41) - 20, { yaw: 0.004, pitch: 0.004 });
+    assert(s2.yaw >= -Math.PI && s2.yaw <= Math.PI, `yaw wraps into [-pi, pi] (got ${s2.yaw})`);
+    assert(s2.pitch >= SPECTATE_CAM_BOUNDS.pitch[0] && s2.pitch <= SPECTATE_CAM_BOUNDS.pitch[1], `pitch clamped (got ${s2.pitch})`);
+  }
+  assert(zoomCamera(start, 4).dist > start.dist && zoomCamera(start, -4).dist < start.dist, "zoom is monotone");
+  assert(zoomCamera(start, 100).dist === SPECTATE_CAM_BOUNDS.dist[1] && zoomCamera(start, -100).dist === SPECTATE_CAM_BOUNDS.dist[0], "and clamped");
+  for (const preset of CAMERA_PRESETS) {
+    assert(preset.state.pitch >= SPECTATE_CAM_BOUNDS.pitch[0] && preset.state.pitch <= SPECTATE_CAM_BOUNDS.pitch[1], `${preset.id} pitch in bounds`);
+    assert(preset.state.dist >= SPECTATE_CAM_BOUNDS.dist[0] && preset.state.dist <= SPECTATE_CAM_BOUNDS.dist[1], `${preset.id} dist in bounds`);
+  }
+  const pose = cameraPose(start, [3, 1, -2]);
+  const d = Math.hypot(pose.position[0] - 3, pose.position[1] - (1 + start.height), pose.position[2] + 2);
+  assert(Math.abs(d - start.dist) < 1e-9, `cameraPose keeps the distance (got ${d})`);
+  let mode = start;
+  for (let i = 0; i < 3; i++) mode = cycleMode(mode);
+  assert(mode.mode === start.mode, "cycling three times returns to the starting mode");
+  assert(decodeSpectateCam(encodeSpectateCam(turned)).yaw === turned.yaw, "the camera round-trips through storage");
+  for (const bad of [null, "", "null", "{]", "{}", '{"dist":1e9,"pitch":NaN}', '{"mode":"nope"}']) {
+    const c = decodeSpectateCam(bad as string | null);
+    assert(Number.isFinite(c.yaw) && Number.isFinite(c.pitch) && Number.isFinite(c.dist) && Number.isFinite(c.height), `hostile storage decodes finite (${bad})`);
+  }
+});
+
+// ------------------------------------------------- Wave I: the inspect overlay
+
+Deno.test("SPEC IB1: the inspect card anchors on screen, the cursor's blob follows the reticle, and the pick is nearest-wins", () => {
+  // Fuzz only over cards that FIT the viewport: that is the documented contract (a card wider than
+  // the screen cannot be placed inside it), and the oversize case is pinned separately below.
+  for (let i = 0; i < 2_000; i++) {
+    const viewport = { w: 400 + (i % 900), h: 300 + (i % 500) };
+    const card = { w: 60 + (i % Math.max(60, viewport.w - 80)), h: 40 + (i % Math.max(40, viewport.h - 60)) };
+    const anchor = { x: (i * 37) % viewport.w, y: (i * 53) % viewport.h };
+    const at = anchorCard(anchor, card, viewport);
+    assert(at.left >= -1e-9 && at.top >= -1e-9, "never above/left of the viewport");
+    assert(at.left + card.w <= viewport.w + 1e-6 && at.top + card.h <= viewport.h + 1e-6, "never past the right/bottom edge");
+    assert(at.side === "left" || at.side === "right", "a side is always chosen");
+  }
+  // A card larger than the viewport degrades to the clamped origin instead of returning a NaN.
+  const oversize = anchorCard({ x: 500, y: 400 }, { w: 2_000, h: 1_500 }, { w: 800, h: 600 });
+  assert(Number.isFinite(oversize.left) && Number.isFinite(oversize.top), "an oversize card still answers with finite numbers");
+  const flipped = anchorCard({ x: 900, y: 100 }, { w: 200, h: 100 }, { w: 1000, h: 800 });
+  assert(flipped.side === "left" && flipped.left <= 900, "a card that would overflow flips to the left");
+  assert(pickNearest([{ id: "a", x: 10, y: 10, r: 6 }], { x: 40, y: 40 }) === null, "outside every radius is a miss");
+  assert(pickNearest([{ id: "a", x: 10, y: 10, r: 40 }, { id: "b", x: 20, y: 10, r: 40 }], { x: 18, y: 10 }) === "b", "two overlapping: the nearer centre wins");
+  const card = fighterCard({
+    seat: 0, name: "A", ancestry: "elf/high", subrace: "high", className: "Mage", level: 3, controller: "AI",
+    weapon: "staff", stats: { vitality: 6, resilience: 6, willpower: 12, reflex: 10, strength: 4, intelligence: 14 },
+    combat: { maxHealth: 40000, attackPower: 900, attackInterval: 1, armor: 4 },
+    hp: 30000, mana: 40, manaMax: 60, stamina: 20, staminaMax: 30, dealt: 1200, hits: 9,
+    techniques: ["mage-blink"], generationId: "GEN-ABCDEF",
+    telemetry: { travelledM: 40, avgDistanceM: 5, peak5sDamage: 900 },
+  });
+  assert(card.rows.length >= 10 && card.bars.length === 3, "a fighter card carries its rows and three pools");
+  assert(card.badges.includes("GEN-ABCDEF") && card.badges.includes("AI"), "the generation and the controller are badged");
+  assert(card.rows.some((r) => r.tone === "bad"), "the below-average stat is flagged");
+  const obj = objectCard({ id: "o", kind: "crate", label: "Crate", detail: "", x: 0, z: 0, radiusM: 0.5, heightM: 0.8, scale: 1, boon: null });
+  assert(obj.rows.some((r) => r.label === "What it's for"), "a prop without a boon says what it is for");
+  const boon = objectCard({ id: "p", kind: "buff pickup", label: "Rage", detail: "", x: 0, z: 0, radiusM: 0.4, heightM: 0.3, scale: 1, boon: "rage" });
+  assert(boon.badges.includes("rage") && boon.rows.some((r) => r.label === "Effect"), "a boon carries its id and its real effect");
+  let cur: CursorState = { x: 100, y: 100, blobX: 0, blobY: 0, down: false, hoverId: null };
+  for (let i = 0; i < 60; i++) cur = stepCursor({ ...cur, x: 400, y: 300 }, { x: 400, y: 300 }, 1 / 60);
+  assert(Math.hypot(cur.blobX - 400, cur.blobY - 300) < 1, "the blob converges on the reticle within a second");
+  const one = stepCursor({ ...cur, blobX: 0, blobY: 0 }, { x: 500, y: 500 }, 0.1);
+  let ten: CursorState = { ...cur, blobX: 0, blobY: 0 };
+  for (let i = 0; i < 10; i++) ten = stepCursor(ten, { x: 500, y: 500 }, 0.01);
+  assert(Math.abs(one.blobX - ten.blobX) < 0.5, "the blob's ease is frame-rate independent");
+  assert(blobRadius({ ...cur, down: true }) > blobRadius(cur), "the blob grows while the button is down");
+});
+
+// ------------------------------------------------- Wave I: terrain fill and clash
+
+const slope = (x: number, z: number): number => x * Math.tan(20 * Math.PI / 180) + z * 0.0;
+
+Deno.test("SPEC IC1: a prop cannot float (seated on the footprint's high point) and its apron reaches the terrain", () => {
+  const r = 0.9, x = 1.5, z = -0.4;
+  const base = seatingY(slope, x, z, r);
+  const foot = footHeight(slope, x, z, r);
+  assert(base === foot.max, "the seat is the footprint maximum");
+  // The seating contract, stated the way it is actually meant: the base sits on the HIGHEST ground
+  // under the footprint, so the prop is never buried (base - ground >= 0 everywhere) and never hovers
+  // by more than the footprint's own fall (base - ground <= range). The apron covers that fall: a
+  // base placed at the MAX is above the DOWNHILL ground by exactly range, which is the seam.
+  let buried = Infinity;
+  let hover = -Infinity;
+  for (let i = 0; i < 64; i++) {
+    const a = (i / 64) * Math.PI * 2;
+    const ground = slope(x + Math.cos(a) * r, z + Math.sin(a) * r);
+    buried = Math.min(buried, base - ground);
+    hover = Math.max(hover, base - ground);
+  }
+  assert(buried >= -1e-9, `the base is never below the ground under its footprint (worst ${buried})`);
+  assert(hover <= foot.range + 1e-9, `and never hovers by more than the footprint's own fall (${hover} vs ${foot.range})`);
+  // What the OLD placement did: the base sat at the terrain height under the CENTRE plus half the
+  // model's height, so on a slope it was buried uphill and hovering downhill at the same time.
+  const oldCentre = footHeight(slope, x, z, r).mean;
+  assert(oldCentre < foot.max, "the centre sample is lower than the high point, which is why the old placement buried the uphill side");
+  const skirt = skirtFor({ x, z, y: base, radius: r, rotation: 0, material: "sand" }, slope, { segments: 20, maxDrop: foot.range + 0.25 });
+  assert(skirt.maxDrop + 0.02 >= foot.range, `the apron covers the footprint's fall (${skirt.maxDrop} vs ${foot.range})`);
+  assert(skirt.triangles <= 20 * 2 * 3, `bounded triangles (${skirt.triangles})`);
+  const flat = skirtFor({ x: 0, z: 0, y: 2, radius: 1, rotation: 0, material: "stone" }, () => 2, { segments: 12 });
+  assert(flat.maxDrop < 0.05 && flat.triangles > 0, "flat ground needs almost no apron");
+  for (const radius of [0.01, 40]) {
+    const s2 = skirtFor({ x: 0, z: 0, y: 1, radius, rotation: 0.3, material: "ice" }, slope, { segments: 8 });
+    for (const v of s2.geometry.getAttribute("position").array) assert(Number.isFinite(v as number), "no NaN in the apron");
+  }
+  const sandHalf = (px: number) => (px < 0 ? "sand" : "grass") as "sand" | "grass";
+  assert(materialUnder(sandHalf, -0.2, 0, 1) === "sand", "a footprint mostly on sand is filled as sand");
+  const grassHalf = (px: number) => (px < 0.2 ? "sand" : "grass") as "sand" | "grass";
+  assert(materialUnder(grassHalf, 0.5, 0, 1) === "grass", "a footprint mostly on grass is filled as grass");
+});
+
+Deno.test("SPEC ID1: two moving blades within reach clash once, at a bounded strength, and the spark pool never overflows", () => {
+  const crossA = { a: [0, 0, 0] as [number, number, number], b: [1, 0, 0] as [number, number, number], speed: 6 };
+  const crossB = { a: [0.5, -0.5, 0] as [number, number, number], b: [0.5, 0.5, 0] as [number, number, number], speed: 6 };
+  const near = segSegClosest(crossA.a, crossA.b, crossB.a, crossB.b);
+  assert(Math.abs(near.d) < 1e-9, `crossing segments meet (got ${near.d})`);
+  const parallel = segSegClosest([0, 0, 0], [1, 0, 0], [0, 0.3, 0], [1, 0.3, 0]);
+  assert(Math.abs(parallel.d - 0.3) < 1e-9, `parallel lines keep their offset (got ${parallel.d})`);
+  const degenerate = segSegClosest([1, 1, 1], [1, 1, 1], [2, 2, 2], [2, 2, 2]);
+  assert(Number.isFinite(degenerate.d), "a zero-length segment is finite, never NaN");
+  const idle = detectClash({ ...crossA, speed: 0 }, { ...crossB, speed: 0 }, 0.35);
+  assert(idle === null, "two blades at rest never spark, however close");
+  const hit = detectClash(crossA, crossB, 0.35);
+  assert(hit !== null && hit.strength >= 0 && hit.strength <= 1, "two blades crossing at speed clash");
+  assert(detectClash({ ...crossA, a: [0, 5, 0], b: [1, 5, 0] }, crossB, 0.35) === null, "beyond reach there is no clash");
+  assert(clashStrength(0) === 0 && clashStrength(1e6) === 1, "strength runs 0..1 and saturates");
+  assert(canClash(10, 9.95) === false && canClash(10, 9) === true, "the repeat gate holds for its cooldown");
+  // A stand-in for the scene node the pool is added to: the class only calls add() on it.
+  const parent = { add: () => {} } as unknown as ConstructorParameters<typeof ClashSparks>[0];
+  const sparks = new ClashSparks(parent, { maxSparks: 48, seed: 7 });
+  for (let i = 0; i < 10_000; i++) {
+    sparks.burst([0, 1, 0], 1, i / 60);
+    sparks.update(i / 60, 1 / 60);
+    assert(sparks.liveCount <= 48, `the pool never overflows (${sparks.liveCount})`);
+  }
+  assert(sparks.spawned + sparks.dropped === 10_000 * SPARKS_PER_BURST, `every spark is either born or refused (${sparks.spawned} + ${sparks.dropped})`);
+  sparks.setScale(0);
+  const before = sparks.spawned;
+  sparks.burst([0, 1, 0], 1, 200);
+  assert(sparks.spawned === before, "a zeroed scale spawns nothing");
+  assert(sparks.triangleCount > 0 && sparks.triangleCount < 4_000, `the pool stays inside its triangle budget (${sparks.triangleCount})`);
+  assert(DEFAULT_MAX_SPARKS === 96, "the default pool is the 96 the wave budgeted");
+});
+
+Deno.test("SPEC IE1: the effects governor answers sustained load slowly, recovers slower, and never flaps", () => {
+  const g = new EffectsGovernor();
+  const spike = g.step(20, 1 / 60);
+  assert(spike === 1, "one 20 ms frame does not drop the effects");
+  let scale = 1;
+  for (let i = 0; i < 3_000; i++) scale = g.step(20, 1 / 60);
+  assert(scale === 0.25, `sustained 20 ms frames drive the scale to the floor (got ${scale})`);
+  const recoverFrames = (() => { let n = 0; while (scale < 1 && n < 10_000) { scale = g.step(4, 1 / 60); n++; } return n; })();
+  assert(scale === 1 && recoverFrames > 60, `recovery is slower than the drop (${recoverFrames} frames)`);
+  const climbs = (() => { let dirs = 0, prev = g.step(4, 1 / 60), last = 1; for (let i = 0; i < 600; i++) { const v = g.step(4, 1 / 60); if (Math.sign(v - prev) !== 0 && Math.sign(v - prev) !== last) dirs++; last = Math.sign(v - prev) || last; prev = v; } return dirs; })();
+  assert(climbs <= 1, `a steady regime moves the scale one way (${climbs} reversals)`);
+  for (const bad of [NaN, -5, 1e9, 0]) assert(Number.isFinite(g.step(bad, 1 / 60)), `finite for cpu=${bad}`);
+  assert(percentile([1, 2, 3, 4, 5], 0.5) === 3 && percentile([1, 2, 3, 4, 5], 1) === 5, "percentile is exact on a hand-computed sample");
+  assert(percentile([], 0.5) === 0, "and total on an empty one");
+  const st = summarise([1, 2, 3, 4, 5]);
+  assert(st.n === 5 && st.mean === 3 && st.max === 5 && st.p50 === 3, "summarise matches the hand-computed stats");
 });

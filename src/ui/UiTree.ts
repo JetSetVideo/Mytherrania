@@ -188,6 +188,15 @@ export const UI_TREE: UiScreen[] = [
             c("spectate-techniques", "Techniques", "The technique ids the spent stats unlocked.", "spectate", "system", 0),
             c("spectate-arena", "Arena", "The generated arena's size in metres.", "spectate", "system", 0),
           ] },
+          { id: "inspect", label: "Inspect overlay", hint: "The free spectator cursor and the floating cards a click opens.", controls: [
+            c("inspect-cursor", "Cursor", "The custom reticle and its soft trailing blob.", "spectate", "system", 1),
+            c("inspect-fighter-card", "Fighter card", "Click a fighter for a stat sheet floating beside them.", "spectate", "system", 1),
+            c("inspect-fighter-rows", "Stat rows", "Primaries, derived combat numbers and fight telemetry.", "spectate", "both", 1),
+            c("inspect-fighter-bars", "Resource bars", "Health, mana and stamina as value / max.", "spectate", "both", 1),
+            c("inspect-card-badges", "Badges", "The generation id and the AI / PLAYER controller tag.", "spectate", "system", 0),
+            c("inspect-object-card", "Object card", "Click a prop or boon to see what it is.", "spectate", "system", 1),
+            c("inspect-object-effect", "Object effect", "What the boon does, or what the prop is for.", "spectate", "system", 0),
+          ] },
         ],
       },
       {

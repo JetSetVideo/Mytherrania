@@ -1020,8 +1020,8 @@ lanes with disjoint file ownership against a frozen contract (`docs/ancestry/BRI
 measured by the parent. Evidence: `artifacts/ancestry/VERIFICATION.md`.
 
 ### What is new
-||Module|What it is|
-|---|---|---|
+| Area | Module | What it is |
+| --- | --- | --- |
 |Ancestry|`src/game/Ancestry.ts` + `artifacts/design/ancestry.json`|16 nodes (4 races + 12 subraces), 13 ranked metrics each, and a complete look spec (skin base/range/crease + zones, hair length/styles/colours/curl/density/baldChance, brow, beard mode, tusks, ears, skull, hair physics)|
 |Hair physics|`src/game/anim/SecondaryMotion.ts`|a damped spring per movable mass: `a = (windGain·wind_body·flutter − HEAD_DRAG·v_head)/m − (k/m)x − (c/m)v`, semi-implicit at a 1/200 s sub-step, `dt` clamped to `MAX_STEP_SECONDS`|
 |Spectator generation|`src/game/SpectateGen.ts`|random levels, a budget spent by calling, techniques from the spent stats, an arena size — one seed, one card|
@@ -1063,3 +1063,57 @@ bound to HUD input slots; the brows are morph-driven rather than solver-driven (
 the bug the tensor work already hit); the spectator card's size is clamped into the live arena band; no
 frame-cost measurement of the solver was taken this wave; the hair's 6–7 cm was not judged by eye at
 gameplay distance.
+
+## Pass 28 — Wave I: the spectator camera, the inspect overlay, terrain fill, clash sparks and the 60 FPS guard (2026-10-31)
+
+Gate: 0 type errors | **1276/1276 tests** | lint clean (449 files) | build 1 725 306 B |
+`tools/probe-wave-i.ts` in real Chrome: **0 page errors**, five claims measured.
+
+The prompt: a spectator camera whose angle the user sets and KEEPS, a custom cursor with a trailing blob,
+clicking a fighter to float their stat sheet beside them (and clicking another fighter or a map object to
+change it, a click away to close it), a fix for props floating above the map, another generation layer that
+closes the seams where a surface meets the terrain and is coloured by the ground it stands on, particles
+where two weapons collide, and the 60 FPS budget protected. Built as five parallel lanes against a frozen
+contract (`docs/spectator/BRIEF.md`), integrated and measured by the parent. Evidence:
+`artifacts/spectator/VERIFICATION.md`.
+
+### What is new
+| Area | Module | What it is |
+| --- | --- | --- |
+|Spectator camera|`src/game/SpectatorCamera.ts`|absolute yaw/pitch/dist state with `orbitCamera(state, 0, 0, …) === state` (the no-op identity the complaint needed), four presets, wrapping yaw, clamped pitch/distance, a localStorage round trip|
+|Inspect overlay|`src/ui/InspectOverlay.ts`|fighter and object cards, flip-then-clamp anchoring, nearest-wins picking, and a frame-rate-independent blob that trails the reticle|
+|Ground fill|`src/graphics/GroundFill.ts`|`footHeight`/`seatingY` (the footprint's high point), `materialUnder` (the ground's own material), `skirtFor` (a 4-ring apron, `6 × segments` triangles)|
+|Prop anchoring|`src/graphics/props/PropModels.ts`|`propBaseOffset` — every model is centred on its own origin, so the base needs its own bounding-box offset|
+|Clash|`src/combat/Clash.ts` + `src/graphics/fx/ClashSparks.ts`|exact segment-segment closest approach, a speed gate, a repeat cooldown, and a fixed 96-spark pool (12 per burst, 192 triangles, 2 draw calls)|
+|Frame budget|`src/game/FrameBudget.ts` + `tools/frame-budget.ts`|an EMA-plus-hysteresis effects governor and a measured day/night/**spectate** budget with real GPU timing|
+
+### Measured live (`artifacts/qa-wave-i/report.json`)
+- **The camera holds its angle**: drag 0 → 0.72 yaw / 0.35 → 0.53 pitch, then 2.5 s idle reads back the
+  identical numbers; presets `duel/broadcast/topdown/lowangle` apply; cycling reaches follow-a.
+- **Cursor + cards**: present, follows, blob trails and settles within 1 px; hover `fighter:0` → "Sir
+  Aldric", 17 rows, 3 bars, badges `["GEN-53AB8C","AI"]`; clicking the other fighter swaps to "Ser Vail";
+  clicking a rock opens its card; clicking empty ground closes it.
+- **Props**: 16-prop arena — **15 would have floated under the old placement, 0 do**, worst floating 0 m,
+  `baseOffsets` per kind (pillar 1.60, arch 1.85, rock 0.4831 …), 16 aprons = 1920 triangles coloured from
+  the ground itself (8 wood, 4 stone, 4 sand), worst seam 1.42 m and **16/16 covered**.
+- **Clash**: 24 sparks on the first burst, capped at 96 over 41 bursts, 325 spawned / 251 refused, 48
+  events of which 8 came from real AI-vs-AI blade contact.
+- **Frame**: CPU p99 3.5 ms, headroom 13.1 ms of 16.6, cadence 16.7 ms; the governor stayed at scale 1.00.
+  Lane I-E's own tool: day p99 5.2, night 4.4, spectate 4.8 ms CPU with GPU p95 9.35–9.96 ms and a real
+  GPU timer available.
+
+### Three defects the measurements caught
+1. **Every prop model is centred on its own origin** (a constant float of half its height — measured per
+   kind), and the base was placed from the terrain height under the CENTRE, so on a slope it was buried
+   uphill and hovering downhill at once.
+2. **The apron's depth cap stopped short of the ground**: 0.6 m default against a 1.81 m hillside fall —
+   the fill left exactly the seam it existed to close (now the cap is the footprint's own fall plus margin;
+   16/16 seams covered).
+3. **Pointer lock rejects its promise** in Chrome when the document is not focused; unhandled, that was 4
+   page errors per probe run. Swallowed deliberately now.
+
+### Honest gaps
+The inspect card is read-only. The clash threshold (0.35 m) was chosen, not tuned by eye (natural clashes
+run ~8 per match). The frame numbers are a headless lab sample — cadence there is a vsync artefact, though
+the CPU and GPU times are real. `floating: 0` bounds the seating error at the SAMPLED rim, not between
+samples. Wave H's stat-unlocked techniques still are not bound to HUD slots.

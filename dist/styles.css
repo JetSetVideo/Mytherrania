@@ -574,3 +574,99 @@ canvas{display:block}
   .history-badge{font-size:12px}
 }
 
+/* Wave I (I-B): the spectator inspect overlay — the custom cursor and the floating cards.
+   In spectator mode the mouse is FREE (no pointer lock), so the reticle and the cards replace
+   the system pointer. The palette, 4px spacing scale, 6px radius and 3px coral focus ring follow
+   DESIGN.md. The JS only ever writes transform / opacity (CSSOM), never a style="" attribute —
+   the server CSP (style-src 'self') blocks inline style strings. */
+:root{
+  /* The cursor sizes live here so the JS never touches width/height: it only sets transform. */
+  --cursor-reticle:6px;
+  --cursor-blob:26px;
+  --cursor-blob-down:34px;
+  --cursor-blob-hover:34px;
+  --cursor-ink:#172128;
+  --cursor-ring:#ef7455;
+}
+/* The parent toggles this in spectator mode: the system pointer is hidden (children included,
+   because buttons set cursor:pointer of their own). */
+body.myth-cursor-on,body.myth-cursor-on *{cursor:none}
+
+/* The cursor layer: full-viewport, above every HUD layer (menu 50, settings 70/71), never
+   blocking a click (pointer-events:none). */
+.myth-cursor{position:fixed;inset:0;z-index:80;pointer-events:none;contain:layout}
+.myth-cursor[hidden]{display:none}
+/* The soft trailing blob: its position is written every frame as transform; the negative margins
+   centre it on the origin, so CSS alone owns the size. */
+.myth-cursor-blob{position:absolute;left:0;top:0;width:var(--cursor-blob);height:var(--cursor-blob);
+  margin:calc(-1 * var(--cursor-blob) / 2) 0 0 calc(-1 * var(--cursor-blob) / 2);border-radius:50%;
+  background:radial-gradient(circle at 50% 50%,rgba(239,116,85,.5),rgba(239,116,85,0) 70%);
+  opacity:.85;will-change:transform;transition:width .12s ease-out,height .12s ease-out}
+/* Grows while the pointer is down and while hovering a target (blobRadius in the pure module). */
+.myth-cursor.is-down .myth-cursor-blob{width:var(--cursor-blob-down);height:var(--cursor-blob-down);
+  margin:calc(-1 * var(--cursor-blob-down) / 2) 0 0 calc(-1 * var(--cursor-blob-down) / 2)}
+.myth-cursor.is-hover .myth-cursor-blob{width:var(--cursor-blob-hover);height:var(--cursor-blob-hover);
+  margin:calc(-1 * var(--cursor-blob-hover) / 2) 0 0 calc(-1 * var(--cursor-blob-hover) / 2)}
+/* The crisp reticle: a bright dot with an ink keyline and a coral ring. */
+.myth-cursor-dot{position:absolute;left:0;top:0;width:var(--cursor-reticle);height:var(--cursor-reticle);
+  margin:calc(-1 * var(--cursor-reticle) / 2) 0 0 calc(-1 * var(--cursor-reticle) / 2);border-radius:50%;
+  background:#fff3cf;box-shadow:0 0 0 1px var(--cursor-ink),0 0 6px rgba(239,116,85,.75);will-change:transform}
+.myth-cursor-dot::after{content:"";position:absolute;inset:calc(-1 * var(--cursor-reticle));border:1px solid var(--cursor-ring);border-radius:50%;opacity:.7}
+
+/* The floating inspect card: an ink panel with a coral focus ring, positioned by transform to the
+   anchor the pure anchorCard() returns. It must NOT block the pointer except on its own buttons,
+   so hovering the fighters behind it still works. */
+.inspect-card{position:fixed;left:0;top:0;z-index:60;width:min(320px,calc(100vw - 24px));max-height:calc(100vh - 24px);
+  overflow:auto;overscroll-behavior:contain;padding:12px 14px;background:rgba(23,33,40,.96);border:2px solid #4f8490;
+  border-left:3px solid var(--cursor-ring);border-radius:6px;box-shadow:0 8px 30px rgba(0,0,0,.55);color:#fff3cf;
+  text-align:left;pointer-events:none;will-change:transform}
+.inspect-card[hidden]{display:none}
+.inspect-card .inspect-title{margin:0;font-family:'Cinzel','Trajan Pro','Palatino Linotype','Palatino','Book Antiqua',Georgia,serif;font-size:17px;line-height:1.2;color:#fff3cf}
+.inspect-card .inspect-sub{margin:2px 0 6px;font-size:12px;line-height:1.3;color:#dfcfa5}
+.inspect-card .inspect-badges{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px}
+.inspect-card .inspect-badge{display:inline-block;padding:1px 7px;font-size:11px;font-weight:700;letter-spacing:.03em;
+  color:#fff3cf;background:#172128;border:1px solid #4f8490;border-radius:6px;white-space:nowrap}
+.inspect-card .inspect-badge.is-ai{border-color:#a06cd5;color:#e6ccff}
+.inspect-card .inspect-badge.is-player{border-color:#ef7455;color:#ffd9cf}
+.inspect-card .inspect-rows{display:flex;flex-direction:column;gap:2px;margin:0 0 8px}
+.inspect-card .inspect-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:baseline;font-size:12px;line-height:1.35}
+.inspect-card .inspect-row-label{color:#b9c9c8;overflow-wrap:anywhere}
+.inspect-card .inspect-row-value{color:#fff3cf;font-variant-numeric:tabular-nums;text-align:right}
+.inspect-card .inspect-row.tone-bad .inspect-row-value{color:#ef7455;font-weight:700}
+.inspect-card .inspect-row.tone-good .inspect-row-value{color:#a9ce7c;font-weight:700}
+.inspect-card .inspect-row.tone-muted .inspect-row-value{color:#8fa8ad}
+.inspect-card .inspect-bars{display:flex;flex-direction:column;gap:5px}
+.inspect-card .inspect-bar{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:7px}
+.inspect-card .inspect-bar-label{font-size:10px;font-weight:700;letter-spacing:.05em;color:#cbbf9e}
+.inspect-card .inspect-bar-track{position:relative;height:10px;border-radius:3px;background:#0d0d0f;border:1px solid rgba(255,255,255,.18);overflow:hidden}
+.inspect-card .inspect-bar-fill{position:absolute;left:0;top:0;bottom:0;border-radius:2px;transition:width .18s ease-out}
+.inspect-card .inspect-bar-text{font-size:11px;font-variant-numeric:tabular-nums;color:#f3ead2;min-width:64px;text-align:right}
+/* Only the card's own buttons take the pointer; the panel itself stays click-through. */
+.inspect-card .inspect-btn{pointer-events:auto;min-height:32px;padding:6px 10px;font:inherit;font-size:13px;font-weight:700;
+  color:#fff3cf;background:#2a3a44;border:1px solid #8a7148;border-radius:6px;cursor:pointer}
+.inspect-card .inspect-btn:hover{border-color:#f2c46b;background:#34505a}
+.inspect-card .inspect-btn:active{transform:translateY(1px)}
+.inspect-card .inspect-btn:focus-visible{outline:3px solid var(--cursor-ring);outline-offset:2px}
+
+/* One rule per breakpoint so the card never clips or overflows the viewport. */
+@media(max-width:767px){
+  .inspect-card{width:min(230px,calc(100vw - 16px));max-height:calc(100vh - 16px);padding:9px 10px}
+  .inspect-card .inspect-title{font-size:15px}
+  .inspect-card .inspect-row{font-size:11px}
+  :root{--cursor-blob:22px;--cursor-blob-down:28px;--cursor-blob-hover:28px}
+}
+@media(min-width:768px) and (max-width:1023px){
+  .inspect-card{width:min(280px,calc(100vw - 20px));padding:11px 13px}
+}
+@media(min-width:1024px) and (max-width:1439px){
+  .inspect-card{width:min(320px,calc(100vw - 24px))}
+}
+@media(min-width:1440px){
+  .inspect-card{width:min(360px,calc(100vw - 32px));padding:14px 16px}
+  .inspect-card .inspect-title{font-size:18px}
+  .inspect-card .inspect-row{font-size:13px}
+}
+@media(prefers-reduced-motion:reduce){
+  .myth-cursor-blob,.inspect-card .inspect-bar-fill{transition:none}
+}
+

@@ -749,6 +749,43 @@ the class's three skills; the spectator card's arena size is clamped into the li
 the hair solver is wired into the rig transform but its visual weight has not been judged in a
 browser screenshot at gameplay distance (see the wave's verification log).
 
+## 11B. Wave I — spectator camera, inspect overlay, terrain fill, clash sparks, 60 FPS guard
+
+Added 2026-10-31. The prompt asked for a spectator camera whose angle the user sets and keeps, a custom
+cursor with a trailing blob, a click on a fighter to open a floating stat sheet beside them (and a click on
+another fighter or a map object to change what it shows, a click away to close it), a fix for props floating
+above the map, a generation layer that closes the seams where a surface meets the terrain (coloured by the
+ground it stands on), particles where two weapons collide, and the 60 FPS budget protected.
+
+| # | Requirement | Where | Status |
+| --- | --- | --- | --- |
+| IA1 | The spectator camera's angle is the user's and stays the user's: no ease-back, no reset on a mode change or a new match; four presets; drag-orbit, wheel/Z/X zoom, C to cycle mode | `src/game/SpectatorCamera.ts`, `Engine.#updateCamera` (spectate branch), `#setSpectateCam` | LIVE |
+| IB1 | A full-screen custom cursor (reticle + trailing blob, CSSOM-driven), hover highlight, and a card that anchors beside its subject with flip-then-clamp: fighter stats (primaries, pools, combat numbers, telemetry, techniques, generation badge), map objects (kind, size, and the REAL effect of a boon) | `src/ui/InspectOverlay.ts`, `Menu`/`UiTree`/`styles.css`, `Engine.#pickTargets/#inspectClickAt/#updateSpectateOverlay` | LIVE |
+| IC1 | Props are seated on the terrain (never buried, never hovering) and every platform/prop gets a terrain-matched apron that closes the seam | `src/graphics/GroundFill.ts`, `src/graphics/props/PropModels.ts` (`propBaseOffset`), `Engine.#buildArena` | LIVE |
+| ID1 | Two blades within reach, both moving, clash once: a burst of bounded sparks at the contact point, from a fixed pool that never overflows | `src/combat/Clash.ts`, `src/graphics/fx/ClashSparks.ts`, `Engine.#clashTick` | LIVE |
+| IE1 | The frame budget is MEASURED (CPU per rAF, cadence, GPU via the driver timer) and an effects governor thins the effects out before a frame is ever late | `src/game/FrameBudget.ts`, `tools/frame-budget.ts`, `Engine.#loop` | LIVE |
+
+**Equations and constants.**
+
+- Camera: `position = target + (sin yaw · cos pitch, sin pitch, cos yaw · cos pitch) · dist + (0, height, 0)`,
+  `look = target`; `pitch ∈ [−0.25, 1.55]`, `dist ∈ [2.5, 40]`, zoom ratio 1.15 per step, yaw wrapped into
+  `[−π, π]`. `orbitCamera(state, 0, 0, …) === state` — the no-op identity the complaint needed.
+- Seating: `baseY = max(terrain over the rim + centre)` and `gap = max − min`. The seating guarantee is a
+  property of the sampling, so props are sampled at `max(16, 24 × radius)` rim points. The apron descends
+  per vertex to `clamp(terrainY − 0.02, baseY − maxDrop, baseY)` with
+  `maxDrop = max(0.8, footprint fall + 0.25)`, at `6 × segments` triangles (`segments = 20`, so 120).
+- Clash: `detectClash` needs both blades above `MIN_CLASH_SPEED = 1.5 m/s` and a closest approach under
+  `CLASH_REACH_M = 0.35 m`; `strength` saturates at `MAX_CLASH_SPEED = 30 m/s`; repeats inside
+  `CLASH_COOLDOWN = 0.12 s` are suppressed. Pool: 12 sparks per burst, 96 live maximum, 192 triangles.
+- Governor: an EMA of the CPU time with `TAU = 0.35 s`, a drop after `12` consecutive frames above
+  `hardMs = 16.6`, a drop step of 0.25, a recovery of 0.25/s toward `1`, a floor of `0.25`.
+
+**Pins:** `tests/spec_test.ts` IA1, IB1, IC1, ID1, IE1.
+
+**OPEN in Wave I:** the inspect card is read-only; the clash threshold was chosen rather than tuned by eye;
+the headless frame numbers are a lab sample; `floating: 0` bounds the seating error at the sampled rim
+rather than proving it away between samples.
+
 ## 12. Traceability — every prompt to its requirements
 
 | Prompt (date, gist) | Requirements |
@@ -765,6 +802,7 @@ browser screenshot at gameplay distance (see the wave's verification log).
 | Responsive UI, high-responsiveness input, Player_ID profiles, race hero + sub-species + birthsign preview, secondary stats, creation telemetry | §2.5–2.6, §8 |
 | 3D models: separate shapes, all-angle shots, 33-vertex spine back, race/subrace expansion, hair/beards/tusks, facial morph loop, animation tensor bounds, menu expansion | §2.5, §4.2.3–4.2.4, §11.1, §11.4–11.5 |
 | Ancestry hierarchy over every subrace with body-part ratios, per-ancestry look, hair physics bound to length and curl, generations logged for training, a 3-minute limit that ends as a tie with the stat difference recorded, History highlights, generated spectator matches with a stat budget, a bounded corpus data-science pass | §11A, `docs/ancestry/BRIEF.md` |
+| Spectator camera whose angle stays, a custom blob cursor, click-to-inspect stat sheets and object cards, props floating above the map, a ground-fill layer that closes terrain seams, particles where two weapons collide, and the 60 FPS budget kept | §11B, `docs/spectator/BRIEF.md` |
 
 **Statuses in one line.** LIVE: races, physics, skills, shaped arenas with walls, truce, senses,
 fog + minimap, statuses, items, environment, adaptive AI + telemetry + Elo leaderboard, stance
