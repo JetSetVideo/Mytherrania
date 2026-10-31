@@ -385,6 +385,27 @@ export function polylineLength(points: readonly PathPoint[]): number {
   return len;
 }
 
+/**
+ * Shortest horizontal distance from (x, z) to the polyline `points`, m. This is how far a body
+ * has STRAYED off its route: 0 on the line, growing to one side. Total: an empty polyline returns
+ * Infinity, a single point returns the point distance, a NaN input returns Infinity (never NaN),
+ * so a caller can compare it against a threshold without a guard.
+ */
+export function distanceToPolyline(points: readonly PathPoint[], x: number, z: number): number {
+  if (!Number.isFinite(x) || !Number.isFinite(z) || points.length === 0) return Infinity;
+  if (points.length === 1) return Math.hypot(points[0].x - x, points[0].z - z);
+  let best = Infinity;
+  for (let k = 1; k < points.length; k++) best = Math.min(best, distanceToSegment(points[k - 1], points[k], x, z));
+  return best;
+}
+
+/** Shortest distance from (x, z) to the segment a -> b, m. */
+export function distanceToSegment(a: PathPoint, b: PathPoint, x: number, z: number): number {
+  const dx = b.x - a.x, dz = b.z - a.z, l2 = dx * dx + dz * dz;
+  const t = l2 > 1e-12 ? Math.max(0, Math.min(1, ((x - a.x) * dx + (z - a.z) * dz) / l2)) : 0;
+  return Math.hypot(a.x + dx * t - x, a.z + dz * t - z);
+}
+
 const finders = new WeakMap<Heightfield, GridPathFinder>();
 
 /**

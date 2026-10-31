@@ -1,0 +1,90 @@
+{
+  "harness": {
+    "runningAfterResume": true
+  },
+  "playerCast": {
+    "pressed": true,
+    "skill": "assassin-execution",
+    "totalS": 1.830275229357798,
+    "channelIsNotInstant": true,
+    "bar": {
+      "present": true,
+      "state": "cast",
+      "label": "assassin-execution · 1.8s",
+      "visible": true,
+      "fillWidth": "31.97%"
+    }
+  },
+  "playerVanish": {
+    "pressed": true,
+    "active": true,
+    "enemyKnowsPosition": false,
+    "enemyConfidence": 0.737,
+    "enemyStrategy": "hide",
+    "enemyTarget": {
+      "x": -0.8042137234131115,
+      "z": 4.610007756493888
+    },
+    "rigVisibility": [
+      true,
+      true
+    ],
+    "strategies": [
+      "bait",
+      "bait"
+    ]
+  },
+  "cast": {
+    "castsSeen": 1,
+    "first": {
+      "skill": "mage-arcane-nova",
+      "total": 2.5671259842519683,
+      "left": 0.167
+    },
+    "channelIsNotInstant": true,
+    "bar": {
+      "present": true,
+      "state": "cast",
+      "label": "mage-arcane-nova · 2.6s",
+      "visible": true,
+      "fillWidth": "5.79%"
+    },
+    "pushbackObserved": {
+      "skill": "mage-arcane-nova",
+      "pushback": 0.002,
+      "elapsed": 0.633,
+      "total": 2.5671259842519683
+    },
+    "interruptObserved": null
+  },
+  "ownCast": {
+    "skill": null,
+    "total": 0,
+    "started": false,
+    "pressed": false
+  },
+  "combatText": {
+    "seen": 0,
+    "sample": null
+  },
+  "vanish": {
+    "active": false,
+    "enemyKnowsPosition": true,
+    "enemyConfidence": 1,
+    "enemyStrategy": "brawl",
+    "enemyTarget": {
+      "x": 8.104480340017522,
+      "z": 10.109048320004721
+    },
+    "rigVisibility": [
+      true,
+      true
+    ],
+    "pressed": false,
+    "strategies": [
+      "bait",
+      "bait"
+    ]
+  },
+  "errors": []
+}

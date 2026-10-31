@@ -1244,3 +1244,35 @@ lessons that cost real time.
    NEXT single-line declaration in the same file (M-D's `VictoryCondition`), because the block-removal hunted
    for a closing brace at column 0. Restored from its doc comment; the lesson is to remove by exact text, not
    by "from here to the next closing brace".
+
+## Pass 32 — Wave N: the timeout that was not a pathing failure, and what invisibility costs
+
+| claim | measured |
+| --- | --- |
+| timeout rate before → after the navigation pilot (grid design, seed 20261031, 300 matches) | **29.0 → 29.0 per 100** (87/300 both sides); mixed designs 11.0 → 10.3 |
+| why | **85 of the 87 timeouts had already traded hits** (2 had zero hits): the fighters reach each other and do not finish |
+| the pilot where navigation IS the cause | three scripted stalls (prop / wall / rim) each free themselves inside `ESCAPE_MAX_S = 2.0 s`; ~148 escape ticks over 300 matches |
+| casting | Assassin Execution 1.830 s, Mage Arcane Nova 2.567 s live; Mage 2.629 s vs Barbarian 1.684 s in the model; haste 50 % → 1.753 s |
+| pushback | 0.0782 s (25 % hit, square-on) → 0.6253 s (full-power, from behind), capped 0.9 s per hit / 1.5 s per cast; +0.002 s observed live |
+| concealment | `knowsPosition false`, confidence 0.85 → 0.053 across the memory horizon, belief lapses to `null` at 8 s, probable strategy `"hide"` |
+| damage numbers | size 19.6–25.2 px, weight 415–439, hue 10 — all read off the DOM, all from the hit |
+| gate | 1520 passed / 0 failed, lint 525 files, build 1 822 116 B |
+
+**Lessons recorded.**
+
+1. **Measure the hypothesis before building for it.** The ask asserted the AIs failed to navigate; the
+   measurement says the timeouts are fights that do not finish. Building the pilot was still right — it is
+   the levers that matter — but the honest order is: measure, then say which cause dominates, then build for
+   the DOMINANT one. A negative result published next to a positive one is what kept this wave useful.
+2. **A testable claim beats a plausible one.** "The AIs failed at pathfinding" and "85 of 87 timeouts
+   traded hits" differ in exactly one thing: the second is checkable, and it redirects the next wave.
+3. **Authority must live in the simulation, never in the renderer.** Hiding a mesh is cosmetic; the belief
+   that `knowsPosition === false` is the concealment. The test asserts the true coordinates are absent from
+   the serialized belief, so a future "optimisation" that leaks the position fails loudly.
+4. **A harness that pauses the game looks like a broken game.** Headless pages never take pointer lock, the
+   engine opens the settings panel on a lost lock, and `onOpen` pauses the fight: casts stop advancing, hp
+   stops moving, and a probe pressing keys measures nothing. Resume with Escape, drive the engine's own
+   press path, and assert liveness (the clock advanced) before believing any reading.
+5. **A channel occupies the runtime.** A second technique press during a channel is correctly refused, which
+   is why a probe must wait the channel out — and why "the button did nothing" needs the state read before
+   it is called a bug.

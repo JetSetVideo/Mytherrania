@@ -850,3 +850,39 @@ body.myth-cursor-on,body.myth-cursor-on *{cursor:none}
   .batch-btn { min-height: 44px; }
   .batch-run { margin-left: 0; }
 }
+
+/* ── Wave N: the cast bar and the floating damage numbers ──────────────────────────────────────
+   The cast bar (.cast-bar / .cb-*) is painted from CastBar's pure view model; the floating number
+   (.combat-text + --ct-*) from CombatText's pure style model. Both are driven through CSSOM and
+   classes only — an inline style attribute is blocked by the page's CSP. */
+.cast-bar {
+  position: absolute; left: 50%; transform: translateX(-50%); bottom: 132px; z-index: 6;
+  display: none; flex-direction: column; gap: 2px; width: 220px; pointer-events: none;
+}
+.cast-bar[data-state="interrupted"] .cb-fill { background: #ef7455; }
+.cast-bar[data-state="done"] .cb-fill { background: #a9ce7c; }
+.cb-label { font-size: 12px; color: #dfaa55; text-align: center; letter-spacing: 0.03em; }
+.cb-track {
+  position: relative; height: 12px; border-radius: 6px; background: #172128;
+  border: 1px solid #2c3a46; overflow: hidden;
+}
+.cb-pushback { position: absolute; left: 0; top: 0; height: 100%; width: 0; background: #ef7455; opacity: 0.45; }
+.cb-fill { position: absolute; left: 0; top: 0; height: 100%; width: 0; background: #a06cd5; }
+
+.combat-text {
+  position: absolute; z-index: 7; pointer-events: none; transform: translate(-50%, -50%);
+  color: hsl(var(--ct-hue, 30) 85% var(--ct-light, 60%));
+  font-size: var(--ct-size, 18px); font-weight: var(--ct-weight, 500);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.65);
+  animation: combat-rise var(--ct-life, 900ms) ease-out forwards;
+}
+.combat-text--crit { letter-spacing: 0.02em; }
+.combat-text--absorbed, .combat-text--resisted, .combat-text--miss, .combat-text--immune { opacity: 0.85; }
+@keyframes combat-rise {
+  from { opacity: 0; transform: translate(-50%, -30%) scale(0.9); }
+  15% { opacity: 1; }
+  to { opacity: 0; transform: translate(-50%, calc(-50% - 46px)) scale(1); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .combat-text { animation-duration: 1ms; }
+}

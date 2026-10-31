@@ -57,6 +57,8 @@ import { buildFighter, type BuiltFighter } from "./FighterBuild.ts";
 import { knockbackSpeed, meterGain, WAVE_J_RULES, type MatchRules } from "./MatchRules.ts";
 import { randomSource } from "./ArenaHarness.ts";
 import { PropGrid, type PathPt } from "./SimPath.ts";
+import { createNavPilot, type NavPilot } from "../game/NavPilot.ts";
+import type { Obstacle } from "../world/PathFinder.ts";
 
 /** Engine constants the simulator shares (Engine.ts). */
 export const AI_MOVE_SPEED = 4.2;
@@ -117,6 +119,8 @@ interface SimFighter {
   path: PathPt[] | null; pathAge: number; pathGoalX: number; pathGoalZ: number;
   /** Edge play may bend the approach toward the push spot (false while self's back is to an open edge). */
   edgeBlend: boolean;
+  /** Wave N (lane N-A): the pilot's stuck detector / bounded escape, and the last position it saw. */
+  pilot: NavPilot; navPrevX: number; navPrevZ: number;
   dealt: number; hits: number; swings: number; wallHits: number; edgeTime: number;
 }
 
@@ -157,7 +161,8 @@ function run(cond: MatchConditions, opts: SimOptions): MatchOutcome {
   const grid = solidProps.length > 0
     ? new PropGrid(solidProps, Math.max(1, ...digest.rim) + 0.5, FOOTPRINT, (x, z) => Math.hypot(x, z) < ringRadiusAt(cfg, Math.atan2(z, x)) - FOOTPRINT)
     : null;
-
+  // Wave N (lane N-A): the pilot's obstacle circles (radius = the prop's own radius).
+  const navObstacles: Obstacle[] = solidProps.map((p) => ({ x: p.x, z: p.z, radius: p.r }));
   const make = (seat: 0 | 1): SimFighter => {
     const b = buildFighter(cond.fighters[seat], rules);
     const sp = digest.spawns.spawns[seat] ?? { x: seat === 0 ? -1 : 1, z: 0, yaw: 0 };
@@ -172,6 +177,7 @@ function run(cond: MatchConditions, opts: SimOptions): MatchOutcome {
       exitAt: null, out: false, moving: false,
       detourProp: -1, detourSign: 1, detourUntil: 0,
       path: null, pathAge: 0, pathGoalX: 0, pathGoalZ: 0, edgeBlend: false,
+      pilot: createNavPilot({}), navPrevX: sp.x, navPrevZ: sp.z,
       dealt: 0, hits: 0, swings: 0, wallHits: 0, edgeTime: 0,
     };
   };
@@ -194,6 +200,9 @@ function run(cond: MatchConditions, opts: SimOptions): MatchOutcome {
 
   function act(f: SimFighter, o: SimFighter, dt: number, hostileT: number): void {
     f.moving = false;
+    // Wave N (lane N-A): the displacement the pilot will read as velocity this tick.
+    const navVx = (f.x - f.navPrevX) / dt, navVz = (f.z - f.navPrevZ) / dt;
+    f.navPrevX = f.x; f.navPrevZ = f.z;
     const dx = o.x - f.x, dz = o.z - f.z;
     const dist = Math.hypot(dx, dz) || 1e-6;
     const ux = dx / dist, uz = dz / dist;
@@ -275,6 +284,12 @@ function run(cond: MatchConditions, opts: SimOptions): MatchOutcome {
           // prop: the full brain steps OUT of that reach instead of standing in it.
           if (!routed && strat === "full" && dist <= o.b.reach + 0.3) { tx = -ux; tz = -uz; }
         } else f.path = null;
+        // Wave N (lane N-A): the pilot detects a stalled approach (no closure on the enemy) and,
+        // past its bound, sidesteps for a bounded burst — a body pinned on a prop or the rim does
+        // not grind until the bell.
+        f.pilot.plan({ x: o.x, z: o.z }, { x: f.x, z: f.z }, navObstacles);
+        const nav = f.pilot.step(dt, { x: f.x, z: f.z, vx: navVx, vz: navVz });
+        if (f.pilot.escaping) { tx = nav.dirX; tz = nav.dirZ; routed = true; }
         // Engine: an advance always moves; walking into the other body SHOVES it (the separation).
         walk(f, tx * step, tz * step, false, !routed);
         break;

@@ -837,6 +837,26 @@ updates, with a review gate later).
 | MD1 | A branch tree over arena × victory condition × match-up, bounded by BOTH node count and depth, every node carrying its telemetry, outcome, distances, fighter gap, evolution and object events, summarised per depth with win rates and branch counts | `src/balance/BranchTree.ts` (`branchPlan`, `buildBranchTree`, `summariseTree`) | LIVE |
 | ME1 | ONE compact report at the bell (schema 1, capped at 8 KiB, no stream during the fight): both seats' telemetry, an opponent model whose probable strategies are real decision-tree leaves with weights that sum to 1, measured habits, and a TESTED privacy claim (no name, no personal id, no position); the update gate takes accept / defer / refuse with an auto mode that records why | `src/game/MatchReport.ts` (`buildReport`, `isPersonalData`, `applyVerdict`, `autoVerdict`), `Engine.#assembleReport` | LIVE |
 
+## 11F. Wave N — navigation, strategy, concealment, casting and combat feedback
+
+Added 2026-10-31. The prompt read the 300 s time-limit ending as proof that both AIs failed to navigate to
+each other, asked for the same AI system to kite and to hide or push the clock, for the assassin to become
+invisible **so the opponent cannot cheat** with the AI understanding that the disappearance is a strategy
+(and a sound cue), for strong powers to cast with a bar that can be interrupted or pushed back by a hit
+according to its own variables, and for autoattack with damage numbers styled by the combat statistics.
+
+| # | Requirement | Where | Status |
+| --- | --- | --- | --- |
+| NA1 | A navigation pilot: a stuck detector with a bounded escape, a bounded re-plan cadence for a moving target, and an arrival rule | `src/game/NavPilot.ts`, `src/world/PathFinder.ts` (`distanceToPolyline`) | TESTED (headless) |
+| NB1 | Strategies as a shared vocabulary — brawl / kite / hide / stall / bait / trade — each with stated parameters, a deterministic chooser, an advice function, and a switch that stops a LOSING seat stalling forever; every behavioural id maps onto decision leaves a shipped tree can really emit | `src/game/Strategies.ts` | LIVE (chosen per seat and reported; the movement bias is OPEN) |
+| NC1 | Concealment is AUTHORITATIVE in the simulation, and the other seat's belief is graded against it: while concealed the belief carries the last known place, `knowsPosition` false, a confidence decaying over the memory horizon, and the probable strategy — never the true position | `src/game/Concealment.ts`, `src/game/Perception.ts`, `Engine` per-substep, the model hidden for the other seat, `AudioManager.playVanish` | LIVE |
+| ND1 | A caster's heavy technique CHANNELS: a duration from the power, the element and the caster's statistics (mages at the long end), a cast bar painted from a pure view model, an interrupt by a heavy technique, and a pushback from being hit scaled by the hit's own variables (share of the pool, angle, stamina, weapon weight) | `src/game/Cast.ts`, `src/ui/CastBar.ts`, `Engine.#useSkill` gate, the hit site, `styles.css` | LIVE |
+| NE1 | Autoattack swings by itself in reach (never stunned, never casting), and every landed blow pops a number out of the victim whose size, weight, hue, lightness, rise and life come from the blow's own statistics, with the outcome carried by a glyph as well as by colour | `src/game/AutoAttack.ts`, `src/ui/CombatText.ts`, `Engine.#spawnDamageText`, `styles.css` | LIVE |
+
+**Pins:** `tests/spec_test.ts` pins the wave's cross-module bounds; the lanes' own suites are
+`tests/navpilot_test.ts`, `strategies_test.ts`, `concealment_test.ts`, `perception_test.ts`, `cast_test.ts`,
+`autoattack_combattext_test.ts`.
+
 ## 12. Traceability — every prompt to its requirements
 
 | Prompt (date, gist) | Requirements |
@@ -857,6 +877,7 @@ updates, with a review gate later).
 | Damage that answers impact, halved health pools and attack power, mana 20 % dearer, stat bars with the numbers inside and squares across, and three named attacks re-animated | §11C, `docs/tuning/BRIEF.md` |
 | Éendards for every race and sub-species, a purple rocky dice that rolls a fighter and shows its model and statistics, the options as closed trees, and the whole title → Create path polished | §11D, `docs/creation/BRIEF.md` |
 | Live fight telemetry computed in the frontend and shared as ONE report at the bell, the one-click headless batch with its min/max/median summary, and the branch tree over arenas × victory conditions × match-ups | §11E, `docs/telemetry/BRIEF.md` |
+| Navigation quality for the stall subset, kiting/hiding/stalling strategies, authoritative invisibility with a bounded enemy belief and a cue, casting with a bar / interrupts / pushback, and autoattack with statistics-styled damage numbers | §11F, `docs/powers/BRIEF.md` |
 
 **Statuses in one line.** LIVE: races, physics, skills, shaped arenas with walls, truce, senses,
 fog + minimap, statuses, items, environment, adaptive AI + telemetry + Elo leaderboard, stance

@@ -31,6 +31,13 @@ export class AudioManager {
   playStep(material: string = "stone") { this.#surfaceTone(material); }
   playImpact() { this.#tone(80, 0.14, "sawtooth"); }
 
+  /**
+   * Wave N: the VANISH cue. Deliberately unlike every other sound in the set — a long descending
+   * sweep into a hollow fifth, so "he is gone" is recognisable with the screen ignored (the WoW-like
+   * cue the user asked for). Duration 0.55 s.
+   */
+  playVanish() { this.#sweep(1200, 180, 0.55, "sine"); }
+
   /** Signature sound per element: a short sweep that reads as the skill leaving the weapon. */
   playSkill(element: Element) {
     switch (element) {
