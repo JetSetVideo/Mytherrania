@@ -812,3 +812,41 @@ body.myth-cursor-on,body.myth-cursor-on *{cursor:none}
   .opt-chevron-svg,.opt-head{transition:none}
 }
 
+
+/* ── Wave M: the reading page's one-click batch ────────────────────────────────────────────────
+   Purple and stone-faced like the Creator's dice (same family), but the batch bar is a wide strip:
+   the sizes, one Run button, a progress track and the summary table. No inline styles: widths and
+   colours are classes and CSSOM only (the page's CSP blocks a style attribute). */
+.batch-bar {
+  display: flex; flex-direction: column; gap: 8px;
+  margin: 0 0 16px; padding: 12px; border-radius: 6px;
+  background: #1d2630; border: 1px solid #2c3a46;
+}
+.batch-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px; }
+.batch-title { color: #dfaa55; font-weight: 700; letter-spacing: 0.04em; }
+.batch-note { color: #9fb0bb; font-size: 12px; }
+.batch-sizes { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.batch-btn {
+  min-width: 48px; min-height: 40px; border-radius: 6px; cursor: pointer;
+  background: #172128; color: #dfaa55; border: 1px solid #2c3a46;
+  font: inherit; font-weight: 600;
+}
+.batch-btn:hover { border-color: #a06cd5; }
+.batch-btn:focus-visible { outline: 2px solid #ef7455; outline-offset: 2px; }
+.batch-btn.selected { background: #a06cd5; color: #172128; border-color: #a06cd5; }
+.batch-run { margin-left: auto; }
+.batch-run[disabled] { opacity: 0.55; cursor: progress; }
+.batch-progress { display: flex; align-items: center; gap: 10px; }
+.batch-track { flex: 1; height: 10px; border-radius: 5px; background: #172128; overflow: hidden; border: 1px solid #2c3a46; }
+.batch-fill { display: block; height: 100%; width: 0; background: #a06cd5; transition: width 120ms linear; }
+.batch-status { color: #9fb0bb; font-size: 12px; min-width: 12ch; }
+.batch-summary { overflow-x: auto; }
+.batch-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.batch-table th { text-align: right; color: #9fb0bb; font-weight: 600; padding: 2px 6px; }
+.batch-table th:first-child { text-align: left; }
+.batch-table td { text-align: right; padding: 2px 6px; border-top: 1px solid #22303a; }
+.batch-table td:first-child { text-align: left; }
+@media (max-width: 767px) {
+  .batch-btn { min-height: 44px; }
+  .batch-run { margin-left: 0; }
+}

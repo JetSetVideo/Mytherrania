@@ -1,4 +1,5 @@
 import type { ArenaDigest } from "./arena/contracts.ts";
+import { engagement, type Stance } from "./Engagement.ts";
 
 export type Decision = "attack" | "advance" | "retreat" | "block" | "wait" | "flank";
 
@@ -31,6 +32,12 @@ export interface CombatView {
   laneOffset?: number;
   /** Fraction of the rim that is open (digest.openFraction). */
   openFraction?: number;
+  // Wave M (lane M-B): the engagement inputs. Both optional — a caller without telemetry leaves
+  // them out and every pre-Wave-M tree decides exactly as before (quietS reads as 0).
+  /** Seconds since EITHER fighter last landed a hit — the quiet stretch (M-A's `quietS`), s. */
+  quietS?: number;
+  /** The fighter's stance, shaping the engagement intent. */
+  stance?: Stance;
 }
 
 /** Distances the digest features report when the ray never meets an open edge (finite, for trees). */
@@ -48,6 +55,12 @@ export interface TreeNode {
    * exactly what `undefined <= t` (false) always did, so old trees are unchanged.
    */
   missing?: "less" | "greater";
+  /**
+   * Wave M (lane M-B): an intent hook. Before the field comparison, a branch may compute a Decision
+   * from the whole view (the engagement intent) — returning it takes the branch; returning
+   * `undefined` falls through to the field comparison. Absent on every pre-Wave-M tree.
+   */
+  compute?: (view: CombatView) => Decision | undefined;
 }
 
 // Richer decision tree with adaptive thresholds.
@@ -56,6 +69,8 @@ export function decide(tree: TreeNode, view: CombatView): Decision {
   const v = (f: keyof CombatView) => view[f] as number;
   function walk(node: TreeNode): Decision {
     if (node.kind === "leaf") return node.decision!;
+    const hooked = node.compute?.(view);
+    if (hooked !== undefined) return hooked;
     const raw = view[node.field!];
     if (raw === undefined || (typeof raw === "number" && Number.isNaN(raw))) {
       return walk(node.missing === "less" ? node.less! : node.greater!);
@@ -226,6 +241,26 @@ export function edgeAwareTree(reach = 1.5): TreeNode {
 
 // Default adaptive tree — more complex than the original.
 export function defaultTree(): TreeNode {
+  // Wave M (lane M-B): the survival subtree (near the edge) consults the ENGAGEMENT intent before
+  // the pre-Wave-M block/retreat rules. A fighter near a rim whose enemy is OUTSIDE its own
+  // striking band is told to APPROACH — this is what ends a stand-off, where both fighters backed
+  // into opposite walls and only ever retreated (measured in the headless sim: 144 s of no hit at
+  // ~25 m). Inside the band the hook returns undefined and the survival rules (block / retreat)
+  // run exactly as before, so every pre-Wave-M behaviour test still holds.
+  const survival: TreeNode = {
+    kind: "branch",
+    field: "selfHpRatio",
+    threshold: 0.3,
+    compute: engagementHook,
+    less: { kind: "leaf", decision: "block" },
+    greater: {
+      kind: "branch",
+      field: "enemyAttacking",
+      threshold: 0.5,
+      less: { kind: "leaf", decision: "retreat" },
+      greater: { kind: "leaf", decision: "block" },
+    },
+  };
   return {
     kind: "branch", field: "nearEdge",
     threshold: 0.5,
@@ -275,19 +310,30 @@ export function defaultTree(): TreeNode {
         greater: { kind: "leaf", decision: "advance" },
       },
     },
-    // Near edge (nearEdge=true, 1>0.5 → greater): fight to survive
-    greater: {
-      kind: "branch", field: "selfHpRatio",
-      threshold: 0.3,
-      less: { kind: "leaf", decision: "block" },
-      greater: {
-        kind: "branch", field: "enemyAttacking",
-        threshold: 0.5,
-        less: { kind: "leaf", decision: "retreat" },
-        greater: { kind: "leaf", decision: "block" },
-      },
-    },
+    // Near edge (nearEdge=true, 1>0.5 → greater): fight to survive, with the engagement hook
+    greater: survival,
   };
+}
+
+/**
+ * Wave M (lane M-B): the engagement hook, evaluated at the near-edge survival branch. It maps the
+ * intent to a Decision the tree can take — `approach` -> "advance", `disengage` -> "retreat" — and
+ * returns `undefined` for `hold`/`circle`/`bait`, so the pre-Wave-M survival rules decide those
+ * (which is why every pre-Wave-M behaviour test still holds). One source of truth: the band and the
+ * pull live in Engagement.ts.
+ */
+function engagementHook(view: CombatView): Decision | undefined {
+  const e = engagement({
+    distance: view.distance,
+    selfReach: view.selfReach,
+    quietS: view.quietS ?? 0,
+    selfReady: view.ready,
+    enemyAttacking: view.enemyAttacking >= 0.5,
+    selfHpRatio: view.selfHpRatio,
+    enemyHpRatio: view.enemyHpRatio,
+    stance: view.stance ?? "neutral",
+  });
+  return e.intent === "approach" ? "advance" : e.intent === "disengage" ? "retreat" : undefined;
 }
 
 // Mutate: flip a random leaf's decision or tweak a threshold.

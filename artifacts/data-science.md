@@ -1202,3 +1202,45 @@ usefully, the two failure modes a UI rewrite of shared markup produces in this r
 5. **Machine-read colour is not taste.** The dice button's stone treatment was verified as three shadow
    steps and the right violet border; whether it *looks* like struck stone is a judgement no test in this
    repo can make, and the wave says so rather than implying it was judged.
+
+## Pass 31 — Wave M: naming the stall, the one-click batch, and what a report costs
+
+The ask was to compute the fight's variables in the frontend, answer the stall, add a one-click headless
+batch, branch a tree and hand the back end one report. The pass records what was measured and the three
+lessons that cost real time.
+
+| claim | measured |
+| --- | --- |
+| the stall, before → after (80 matches, seed 20261031) | `standoffMaxS` **143.97 → 10.5 s**; time beyond the circling band **213.9 → 32.1 s**; peak separation 24.6 → 13.14 m |
+| the same seed's residual | `quietMaxS` unchanged at 180.03 s: 1/80 matches is a 2 m walled closet where the pair is in-band near the edge, so a band-defined stall does not count it |
+| one click, simulator only | 100 matches summarised in-page; endings **ringout 67 · ko 24 · time 9**; 7 variables with min/p10/median/mean/p90/max; frames while running p50 16.8 ms, p90 25 ms |
+| the simulator's cost | 3.35–5.94 ms per match (10 → 59 ms, 50 → 167 ms); lane M-C's `PER_MATCH_MS = 2` landed inside 2× after it corrected a first constant of 4 ms |
+| the report at the bell | **6 962 bytes** of an 8 192 cap, schema 1, both seats, four real tree-leaf strategies summing to 1, no name/position |
+| the tree | 1 189 nodes in 3.34 s, depth 1/45/127/508/508, win rate 0.864 → 0.481 depth 1 → 4 |
+| gate | 1 429 passed / 0 failed, lint 502 files, build 1 817 375 B |
+
+**Lessons recorded.**
+
+1. **Name the stall before "fixing" it.** "They move but they don't really move" is unrateable by eye across
+   thousands of matches. `standoffMaxS` (longest no-hit stretch while the pair is beyond the circling band)
+   turned it into a number, and the number is also what proved the fix worked (143.97 → 10.5 s) and what
+   exposes what the fix does NOT cover (an in-band stand-off in a 2 m closet, reported instead of hidden).
+2. **A fix in a pure module is not a fix until the ENGINE feeds it.** `Engagement`'s pull needs
+   `CombatView.quietS`; the field did not exist in the live engine, so the improvement was real in the batch
+   and absent in the game. No unit test could see the missing wire — the engine-side pin (a text assertion in
+   `tests/wave_m_wiring_test.ts`) exists precisely because of it.
+3. **"The last report" is state, and state cleared on the next match is evidence destroyed.** `#startFight`
+   cleared `#report`; a spectate match that rolled straight into the next one wiped the payload before anyone
+   could read it, and the probe found it twice as `assembled: false`. Clearing at the START of a new run is
+   the wrong default for anything a player or a reviewer may read after the fact.
+4. **A probe that polls for a FIXED time measures the timeout, not the claim.** A spectate bell is a 30 s
+   HOSTILE clock (the truce does not count), so a 30 s poll reads "no report" while the match is still
+   running. Wait for the fact (`debugClock().decided`), never for a duration you guessed.
+5. **A lane that starts before its dependency lands will mirror it.** Two lanes (M-D, M-E) declared structural
+   copies of `FightTelemetry` because M-A's module was not in the tree yet. Harmless while they compile, a
+   silent drift later: integration replaced both with a single import + re-export, so the three can no longer
+   disagree without a compile error.
+6. **Removing a duplicated block by pattern is a loaded gun.** Stripping the mirrored interfaces swallowed the
+   NEXT single-line declaration in the same file (M-D's `VictoryCondition`), because the block-removal hunted
+   for a closing brace at column 0. Restored from its doc comment; the lesson is to remove by exact text, not
+   by "from here to the next closing brace".

@@ -118,6 +118,8 @@ export interface MenuCallbacks {
   onProfile?(playerId: string): void;
   /** The title's Settings button: open the settings panel over the menu. */
   onSettings?(): void;
+  /** Wave M: run a headless batch of `size` matches (the reading page's one-click button). */
+  onBatch?(size: number): void;
   /**
    * A complete fighter was rolled by the Creator's dice (L-B's `rollProfile`); the engine draws
    * its 3D model into `#creator-preview`. Fired AFTER the whole Creator step has been refreshed,
@@ -336,6 +338,42 @@ export class Menu {
     this.#spectateCard = card;
     this.#spectateTechniques = techniques;
     this.#renderSpectateCard();
+  }
+
+  /**
+   * Wave M: the batch controls' state. The MODEL behind them is lane M-C's `BatchPanel`
+   * (`batchPlan`/`batchProgress`/`batchSummary`); this class only paints it — through CSSOM and
+   * classes, never an inline style attribute (the page's CSP blocks those).
+   */
+  #batchSize = 10;
+  #batchRunning = false;
+  /** The size the picker currently selects. */
+  get batchSize(): number { return this.#batchSize; }
+  setBatchRunning(running: boolean): void { this.#batchRunning = running; }
+  /** Paint the progress bar: a fraction 0..1, a count and an ETA in seconds. */
+  setBatchProgress(p: { fraction: number; done: number; total: number; etaS: number }): void {
+    const wrap = this.#root.querySelector<HTMLElement>("#batch-progress");
+    const fill = this.#root.querySelector<HTMLElement>("#batch-fill");
+    const status = this.#root.querySelector<HTMLElement>("#batch-status");
+    if (!wrap || !fill || !status) return;
+    wrap.hidden = false;
+    const f = Number.isFinite(p.fraction) ? Math.max(0, Math.min(1, p.fraction)) : 0;
+    fill.style.width = `${(f * 100).toFixed(1)}%`;
+    status.textContent = `${p.done} / ${p.total}${p.etaS > 0.05 ? ` · ~${p.etaS.toFixed(1)} s left` : ""}`;
+  }
+  /** Paint the finished batch's summary: one row per variable, min / p10 / median / mean / p90 / max. */
+  setBatchSummary(s: { matches: number; variables: Record<string, { min: number; max: number; mean: number; median: number; p10: number; p90: number }>; reasons: Record<string, number> } | null): void {
+    const el = this.#root.querySelector<HTMLElement>("#batch-summary");
+    if (!el) return;
+    if (!s) { el.innerHTML = ""; return; }
+    const rows = Object.entries(s.variables).map(([k, v]) =>
+      `<tr class="sheet-row" data-row="${esc(k)}"><td class="sheet-row-label">${esc(k)}</td>` +
+      `<td class="sheet-row-value">${v.min.toFixed(1)}</td><td class="sheet-row-value">${v.p10.toFixed(1)}</td>` +
+      `<td class="sheet-row-value">${v.median.toFixed(1)}</td><td class="sheet-row-value">${v.mean.toFixed(1)}</td>` +
+      `<td class="sheet-row-value">${v.p90.toFixed(1)}</td><td class="sheet-row-value">${v.max.toFixed(1)}</td></tr>`).join("");
+    const ends = Object.entries(s.reasons).map(([k, n]) => `${esc(k)} ${n}`).join(" · ");
+    el.innerHTML = `<p class="batch-note">${s.matches} matches · endings: ${ends}</p>` +
+      `<table class="pick-table batch-table"><thead><tr><th>variable</th><th>min</th><th>p10</th><th>median</th><th>mean</th><th>p90</th><th>max</th></tr></thead><tbody>${rows}</tbody></table>`;
   }
 
   /** The arena the player asked for (applied to the next match only). */
@@ -625,6 +663,23 @@ export class Menu {
 
       <div class="menu-screen" data-screen="digest">${this.#backBar()}
         <h2>Match History</h2>
+        <!-- Wave M: the one-click batch. The button runs the headless SIMULATOR only — no graphics —
+             in this page, chunked so the frame loop keeps running, and prints the min/max/median. -->
+        <section class="batch-bar" id="batch-bar">
+          <div class="batch-head">
+            <span class="batch-title">Run a batch</span>
+            <span class="batch-note">Simulator only — no rendering. One click, then the summary below.</span>
+          </div>
+          <div class="batch-sizes" id="batch-sizes">
+            ${[10, 20, 50, 100].map((n, i) => `<button class="batch-btn${i === 0 ? " selected" : ""}" data-batch-size="${n}">${n}</button>`).join("")}
+            <button class="dice-btn dice-btn-rocky batch-run" data-action="run-batch" title="Run the selected batch">${icon("dice", "dice-glyph")}<span class="dice-label">Run</span></button>
+          </div>
+          <div class="batch-progress" id="batch-progress" hidden>
+            <div class="batch-track"><span class="batch-fill" id="batch-fill"></span></div>
+            <span class="batch-status" id="batch-status">—</span>
+          </div>
+          <div class="batch-summary" id="batch-summary"></div>
+        </section>
         <div id="digest-body" class="digest-body">No fights recorded yet.</div>
         <button class="menu-btn menu-btn-alt" data-action="menu">Main menu</button>
       </div>`;
@@ -716,6 +771,17 @@ export class Menu {
     // The dice (purple, rocky): one click rolls a complete fighter and refreshes the Creator step.
     // A legacy `data-action="random"` control, if one survives, rolls through the same path.
     root.querySelector('[data-action="dice"]')?.addEventListener("click", () => this.rollCreator());
+    // Wave M: the batch size picker and the Run button. The size is read at the click, so the
+    // selection can change while a batch is running without corrupting the one in flight.
+    root.querySelectorAll("[data-batch-size]").forEach((b) => b.addEventListener("click", () => {
+      this.#batchSize = Number((b as HTMLElement).dataset.batchSize);
+      root.querySelectorAll("[data-batch-size]").forEach((x) => x.classList.toggle("selected", x === b));
+    }));
+    root.querySelector('[data-action="run-batch"]')?.addEventListener("click", () => {
+      if (this.#batchRunning) return;
+      this.setBatchProgress({ fraction: 0, done: 0, total: this.#batchSize, etaS: 0 });
+      cb.onBatch?.(this.#batchSize);
+    });
     root.querySelector('[data-action="random"]')?.addEventListener("click", () => this.rollCreator());
     root.querySelectorAll("[data-preset]").forEach(btn => btn.addEventListener("click", () => {
       this.#player = { ...PRESETS[parseInt((btn as HTMLElement).dataset.preset!)] };

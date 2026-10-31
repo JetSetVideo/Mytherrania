@@ -1,0 +1,135 @@
+{
+  "live": {
+    "live": true,
+    "quietAtStart": 1.37,
+    "quietLater": 3.87,
+    "durationS": 3.873700000047686,
+    "distanceMean": 8.925875821824532,
+    "distanceMedian": 8.935861989157274,
+    "bands": {
+      "contact": 0,
+      "striking": 0,
+      "circling": 0,
+      "apart": 3.873700000047686
+    },
+    "standoffMaxS": 3.873700000047686,
+    "dryMaxS": [
+      3.873700000047686,
+      3.873700000047686
+    ],
+    "accumulated": true
+  },
+  "bell": {
+    "decided": true,
+    "waitedS": null
+  },
+  "report": {
+    "assembled": true,
+    "bytes": 6962,
+    "schema": 1,
+    "outcome": "time-limit",
+    "telemetrySeats": 2,
+    "seatDurations": [
+      36.005700000047156,
+      36.005700000047156
+    ],
+    "strategies": [
+      "block",
+      "attack",
+      "advance",
+      "retreat"
+    ],
+    "strategyWeightsSum": 1,
+    "habits": {
+      "openingMove": "Bulwark",
+      "averageApproachS": 6.290200000047647,
+      "retreatThreshold": 0,
+      "favouredBand": "striking"
+    },
+    "containsNoWords": true
+  },
+  "batch": {
+    "bar": {
+      "sizes": [
+        10,
+        20,
+        50,
+        100
+      ],
+      "runPresent": true,
+      "runLabel": "Run"
+    },
+    "progressReadings": [
+      "7 / 100 · ~0.9 s left",
+      "13 / 100 · ~0.8 s left",
+      "18 / 100 · ~0.8 s left",
+      "25 / 100 · ~0.6 s left",
+      "29 / 100 · ~0.6 s left",
+      "36 / 100 · ~0.5 s left"
+    ],
+    "frameMsDuringBatch": {
+      "p50": 16.8,
+      "p90": 25,
+      "n": 40
+    },
+    "matches": 100,
+    "variables": [
+      "duration",
+      "damageA",
+      "damageB",
+      "hitsA",
+      "hitsB",
+      "hpFracA",
+      "hpFracB"
+    ],
+    "endings": {
+      "ringout": 67,
+      "ko": 24,
+      "time": 9
+    },
+    "timeoutShare": 9,
+    "sample": {
+      "duration": {
+        "min": 6.27,
+        "p10": 11.21,
+        "median": 58.135000000000005,
+        "mean": 70.38129999999998,
+        "p90": 167.87300000000008,
+        "max": 186.03
+      },
+      "damageA": {
+        "min": 0,
+        "p10": 490.10400000000016,
+        "median": 11668.634999999998,
+        "mean": 14240.828699999996,
+        "p90": 32478.152000000002,
+        "max": 42223.63
+      },
+      "damageB": {
+        "min": 0,
+        "p10": 178.1910000000001,
+        "median": 8631.85,
+        "mean": 12511.920800000004,
+        "p90": 29223.100000000002,
+        "max": 49069.25
+      },
+      "hitsA": {
+        "min": 0,
+        "p10": 0.9000000000000004,
+        "median": 20,
+        "mean": 24.1,
+        "p90": 51,
+        "max": 94
+      },
+      "hitsB": {
+        "min": 0,
+        "p10": 0.9000000000000004,
+        "median": 20.5,
+        "mean": 28.11,
+        "p90": 66,
+        "max": 143
+      }
+    }
+  },
+  "errors": []
+}

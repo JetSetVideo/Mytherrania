@@ -818,6 +818,25 @@ transcript; the decode and the flag are in `docs/creation/BRIEF.md`.)
 | LC1 | The options are CLOSED trees: every group renders as a native disclosure, closed on arrival except the single entry group, each header showing its option count, and the open set persists (a corrupt payload falls back to the initial state) | `src/ui/UiTree.ts` (`UiGroup.defaultOpen`, `defaultOpenGroups`), `src/ui/Disclosure.ts` | LIVE |
 | LD1 | One purple rocky dice button (dice icon, violet-on-ink struck-stone treatment, CSS only) rolls a fighter and refreshes the whole Creator step, and the rolled fighter's **model** (a live render built by the same path the arena uses) and **statistics** are shown beside it | `src/ui/Menu.ts` (`rollCreator`, `#refreshCreator`, `data-panel="preview"`), `src/graphics/PreviewScene.ts`, `Engine.#updateCreatorPreview` | LIVE |
 
+## 11E. Wave M — fight telemetry, the one-click batch and the branch tree
+
+Added 2026-10-31. The prompt asked for the variables the browser should compute so the back end can learn
+the fighters' behaviour (the dry-streak seconds with their maximum and minimum, the average and median
+distance), for the stall the user described ("they move, but they don't really move, and they don't serve
+each other") to be fixed, for one button on the reading page that runs a batch of 10/20/50/100 matches with
+the SIMULATOR ONLY, for many more min/max statistics, for thousands of branches from the initial arena over
+victory conditions and match-ups, for the enemy's behaviour and probable strategies to reach the AI models,
+and for the frontend to preprocess during the fight and share one report at the end (dev-mode automatic
+updates, with a review gate later).
+
+| # | Requirement | Where | Status |
+| --- | --- | --- | --- |
+| MA1 | The live accumulator: dry streaks per fighter (count/total/mean/max/min), the pair's mutual-dry and quiet time with its longest stretch, the distance statistics (mean/median/min/max/p10/p90), the time in contact/striking/circling/apart bands, jumps (count + peak), damage dealt/taken/absorbed with the highest single hit, the same per weapon, the object events (taken/destroyed/defended/attacked), the fighters' evolution, and the named stall (`standoffMaxS`) — one accumulator per match, fed per substep, allocation-free, and a non-finite step is REFUSED rather than poisoning the mean | `src/game/FightTelemetry.ts` (`createTelemetry`, `telemetrySummary`, `telemetryForSeat`) | LIVE |
+| MB1 | The stall is answered: an engagement intent (approach/hold/circle/disengage/bait) whose pull to close is `clamp(quietS / 3 s, 0, 1)` — bounded, monotone, never returning `approach` inside the fighter's own striking band | `src/game/Engagement.ts`, the `compute` hook in `src/game/DecisionTree.ts`, fed by `CombatView.quietS` from `Engine.#stepFight` | LIVE |
+| MC1 | One button on the reading page runs 10/20/50/100 matches with the SIMULATOR ONLY (no rendering), chunked a match at a time so the frame loop survives, and prints min/p10/median/mean/p90/max per variable plus the ending distribution | `src/ui/BatchPanel.ts` (`batchPlan`, `batchProgress`, `batchSummary`), `Menu`'s batch bar, `Engine.#runBatchFromMenu` | LIVE |
+| MD1 | A branch tree over arena × victory condition × match-up, bounded by BOTH node count and depth, every node carrying its telemetry, outcome, distances, fighter gap, evolution and object events, summarised per depth with win rates and branch counts | `src/balance/BranchTree.ts` (`branchPlan`, `buildBranchTree`, `summariseTree`) | LIVE |
+| ME1 | ONE compact report at the bell (schema 1, capped at 8 KiB, no stream during the fight): both seats' telemetry, an opponent model whose probable strategies are real decision-tree leaves with weights that sum to 1, measured habits, and a TESTED privacy claim (no name, no personal id, no position); the update gate takes accept / defer / refuse with an auto mode that records why | `src/game/MatchReport.ts` (`buildReport`, `isPersonalData`, `applyVerdict`, `autoVerdict`), `Engine.#assembleReport` | LIVE |
+
 ## 12. Traceability — every prompt to its requirements
 
 | Prompt (date, gist) | Requirements |
@@ -837,6 +856,7 @@ transcript; the decode and the flag are in `docs/creation/BRIEF.md`.)
 | Spectator camera whose angle stays, a custom blob cursor, click-to-inspect stat sheets and object cards, props floating above the map, a ground-fill layer that closes terrain seams, particles where two weapons collide, and the 60 FPS budget kept | §11B, `docs/spectator/BRIEF.md` |
 | Damage that answers impact, halved health pools and attack power, mana 20 % dearer, stat bars with the numbers inside and squares across, and three named attacks re-animated | §11C, `docs/tuning/BRIEF.md` |
 | Éendards for every race and sub-species, a purple rocky dice that rolls a fighter and shows its model and statistics, the options as closed trees, and the whole title → Create path polished | §11D, `docs/creation/BRIEF.md` |
+| Live fight telemetry computed in the frontend and shared as ONE report at the bell, the one-click headless batch with its min/max/median summary, and the branch tree over arenas × victory conditions × match-ups | §11E, `docs/telemetry/BRIEF.md` |
 
 **Statuses in one line.** LIVE: races, physics, skills, shaped arenas with walls, truce, senses,
 fog + minimap, statuses, items, environment, adaptive AI + telemetry + Elo leaderboard, stance
