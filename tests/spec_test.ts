@@ -765,8 +765,11 @@ Deno.test("SPEC LL1: every race and every sub-species flies its own standard, dr
 });
 
 Deno.test("SPEC LL2: the options are CLOSED trees on arrival, with the one entry group open", () => {
+  // Wave O: the title has TWO entry groups — the modes (Fight/History/Spectate/Settings) and the
+  // saved fighters (which opens the Profiles panel). Both start open; every other group in the
+  // interface starts closed. The count moved from 1 to 2 on purpose, and this pin records why.
   const open = defaultOpenGroups();
-  assert(open.length === 1 && open[0] === "title/start/modes", `exactly the entry group starts open (got ${open.join(", ")})`);
+  assert(open.length === 2 && open.includes("title/start/modes") && open.includes("title/start/profiles"), `the two entry groups start open (got ${open.join(", ")})`);
   const state = initialDisclosure(UI_TREE);
   const selectGroups = UI_TREE.find((s) => s.id === "select")!.panels.flatMap((p) => p.groups.map((g) => groupKey("select", p.id, g.id)));
   assert(selectGroups.length >= 10, `the Creator has its groups (${selectGroups.length})`);

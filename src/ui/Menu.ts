@@ -15,6 +15,7 @@ import { HISTORY_SORTS, HISTORY_SORT_LABEL, highlightSummary, rowBadges, sortHis
 import { NavStack } from "./NavStack.ts";
 import { birthsignIcon, icon } from "./Icons.ts";
 import { ancestryView, initialAncestry, nextHeaderIndex, selectSubrace, toggleRace, type AncestryState } from "./AncestryState.ts";
+import type { ProfilePanelView } from "./ProfilePanel.ts";
 import { weaponMenuOptions } from "../game/weapons/Loadout.ts";
 import { raceBanner } from "./RaceBanners.ts";
 import { creatorSheet, rollProfile, type CreatorSheet, type SheetRow } from "./CreatorRoll.ts";
@@ -96,7 +97,7 @@ export function arenaSizeFromSlider(value: number): number | null {
 /** The slider's "random" notch: one step below the minimum size. */
 export const ARENA_SLIDER_RANDOM = LIVE_ARENA_MIN - ARENA_SIZE_STEP;
 
-export type Screen = "title" | "select" | "victory" | "digest" | "sheet";
+export type Screen = "title" | "select" | "victory" | "digest" | "sheet" | "profiles";
 
 /** Short name of each screen, used by the breadcrumb next to the Back button. */
 export const SCREEN_LABEL: Readonly<Record<Screen, string>> = {
@@ -105,6 +106,7 @@ export const SCREEN_LABEL: Readonly<Record<Screen, string>> = {
   victory: "Result",
   sheet: "Character sheet",
   digest: "Match history",
+  profiles: "Profiles",
 };
 
 export interface MenuCallbacks {
@@ -120,6 +122,12 @@ export interface MenuCallbacks {
   onSettings?(): void;
   /** Wave M: run a headless batch of `size` matches (the reading page's one-click button). */
   onBatch?(size: number): void;
+  /**
+   * Wave O: one hook for the Profiles panel — `action` is one of open, select, new-random, new-specific,
+   * save-creator, load, duplicate, rename, delete, and `playerId` is the row it acted on (null when the
+   * action is not about a row).
+   */
+  onProfileAction?(action: string, playerId: string | null): void;
   /**
    * A complete fighter was rolled by the Creator's dice (L-B's `rollProfile`); the engine draws
    * its 3D model into `#creator-preview`. Fired AFTER the whole Creator step has been refreshed,
@@ -376,6 +384,76 @@ export class Menu {
       `<table class="pick-table batch-table"><thead><tr><th>variable</th><th>min</th><th>p10</th><th>median</th><th>mean</th><th>p90</th><th>max</th></tr></thead><tbody>${rows}</tbody></table>`;
   }
 
+  /**
+   * Wave O: the Profiles panel. `view` is lane O-C's pure model and `portraits` maps a profile id to a
+   * PNG data URL the engine rendered (img-src allows `data:`, so an <img> is the right element). Every
+   * interactive piece reports back through `onProfileAction(action, playerId)`.
+   */
+  showProfiles(view: ProfilePanelView, portraits: Record<string, string>): void {
+    const body = this.#root.querySelector<HTMLElement>("#profiles-body");
+    if (!body) return;
+    this.#profilesView = view;
+    const rows = view.rows.map((r) => {
+      const portrait = portraits[r.playerId];
+      const manage = (r.selected ? view.selected?.actions ?? [] : [])
+        .map((a) => `<button class="${this.#profileActionClass(a.id)}" data-profile-action="${esc(a.id)}" data-profile-id="${esc(r.playerId)}"${a.disabled ? " disabled" : ""} title="${esc(a.hint)}">${esc(a.label)}</button>`)
+        .join("");
+      return `<li class="profile-row${r.active ? " is-active" : ""}${r.selected ? " is-selected" : ""}" data-profile-id="${esc(r.playerId)}">` +
+        (portrait ? `<img class="profile-portrait" src="${esc(portrait)}" alt="" width="56" height="56">` : `<span class="profile-portrait profile-portrait-empty" aria-hidden="true"></span>`) +
+        `<span class="profile-banner" aria-hidden="true">${r.banner}</span>` +
+        `<span class="profile-ident"><strong class="profile-name">${esc(r.name)}</strong>` +
+        `<small class="profile-level">${esc(r.raceLabel)}${r.subraceLabel ? ` · ${esc(r.subraceLabel)}` : ""} · ${esc(r.className)} · lv ${r.level}</small>` +
+        `<small class="profile-record">${esc(r.record)}${r.active ? " · active" : ""}</small></span>` +
+        `<span class="profile-manage">${manage}</span></li>`;
+    }).join("");
+    const toolbar = view.actions.map((a) =>
+      `<button class="${this.#profileActionClass(a.id)}" data-profile-action="${esc(a.id)}">${esc(a.label)}</button>`).join("");
+    const sheet = view.selected ? this.#profileSheetHtml(view.selected.sheet) : "";
+    const empty = view.empty.show ? `<p class="profiles-empty">${esc(view.empty.text)}</p>` : "";
+    body.innerHTML =
+      `<header class="profiles-head"><h2 class="profiles-title">${esc(view.title)}</h2>` +
+      `<span class="profiles-count">${view.count} saved</span><p class="profiles-hint">${esc(view.hint)}</p></header>` +
+      `<div class="profiles-actions">${toolbar}</div>${empty}` +
+      `<ul class="profiles-list">${rows}</ul>` +
+      (sheet ? `<div class="profile-sheet">${sheet}</div>` : "");
+    this.#wireProfilePanel();
+  }
+
+  /** The selected profile's statistics, in the same three columns the Creator shows. */
+  #profileSheetHtml(sheet: CreatorSheet): string {
+    const col = (label: string, rows: SheetRow[]) =>
+      `<div class="sheet-col"><h4 class="sheet-col-head">${esc(label)}</h4>` +
+      rows.map((r) => `<div class="sheet-row"><span class="sheet-row-label">${esc(r.label)}</span>` +
+        `<span class="sheet-row-value">${esc(r.value)}</span></div>`).join("") + `</div>`;
+    return `<div class="sheet-ident"><strong class="sheet-name">${esc(sheet.name)}</strong>` +
+      `<small class="sheet-meta">${esc(sheet.raceLabel)}${sheet.subraceLabel ? ` · ${esc(sheet.subraceLabel)}` : ""} · ${esc(sheet.className)} · ${esc(sheet.weaponLabel)} · ${esc(sheet.signLabel)}</small></div>` +
+      `<div class="sheet-cols">${col("Attributes", sheet.primary)}${col("Derived", sheet.derived)}${col("Modifiers", sheet.secondary)}</div>`;
+  }
+
+  /** The lane's documented class vocabulary: random / specific / manage. */
+  #profileActionClass(id: string): string {
+    if (id === "new-random") return "profile-action profile-action-random";
+    if (id === "new-specific") return "profile-action profile-action-specific";
+    return "profile-action profile-action-manage";
+  }
+
+  #wireProfilePanel(): void {
+    const body = this.#root.querySelector<HTMLElement>("#profiles-body");
+    if (!body) return;
+    body.querySelectorAll<HTMLElement>("[data-profile-action]").forEach((el) => el.addEventListener("click", (e) => {
+      e.stopPropagation();
+      this.#cb.onProfileAction?.(el.dataset.profileAction ?? "", el.dataset.profileId ?? null);
+    }));
+    body.querySelectorAll<HTMLElement>(".profile-row").forEach((row) => row.addEventListener("click", () => {
+      this.#cb.onProfileAction?.("select", row.dataset.profileId ?? null);
+    }));
+  }
+  #profilesView: ProfilePanelView | null = null;
+  /** QA: the view the panel last painted (the engine's probe reads the panel through this). */
+  get profilesView(): ProfilePanelView | null { return this.#profilesView; }
+  /** The Creator's fighter as a CharacterProfile, for the panel's "save what I built" path. */
+  get playerProfile(): CharacterProfile { return this.#player; }
+
   /** The arena the player asked for (applied to the next match only). */
   arenaChoice(): Partial<ArenaConfig> {
     return { ...this.#arena };
@@ -551,7 +629,8 @@ export class Menu {
   #groupBody(panelId: string, groupId: string): string {
     switch (`${panelId}/${groupId}`) {
       case "start/profiles":
-        return `<div id="profile-picker" class="profile-picker"></div>`;
+        return `<div id="profile-picker" class="profile-picker"></div>` +
+          `<button class="menu-btn menu-btn-alt profiles-open" data-action="profiles">≡ Profiles<span class="btn-note">Models, statistics, roll or manage</span></button>`;
       case "start/modes":
         return `<div class="title-modes">` +
           `<button class="menu-btn" data-action="start">⚔ Fight</button>` +
@@ -643,6 +722,9 @@ export class Menu {
 
         ${this.#previewPanelHtml()}
 
+        <div class="creator-row">
+          <button class="menu-btn menu-btn-sm" data-action="save-profile" title="Save this fighter into your profile library">Save as profile</button>
+        </div>
         <button class="menu-btn menu-btn-primary" data-action="begin">Enter the ring</button>
       </div>
 
@@ -659,6 +741,13 @@ export class Menu {
         <h2>Character Sheet</h2>
         <div id="sheet-body" class="sheet-body"></div>
         <button class="menu-btn menu-btn-alt" data-action="menu">Main menu</button>
+      </div>
+
+      <div class="menu-screen" data-screen="profiles">${this.#backBar()}
+        <!-- Wave O: the Profiles panel. Every saved fighter as a row with a REAL portrait (rendered by
+             the engine's PortraitStudio off the same rig the arena builds), its ancestry standard, its
+             calling, level and record, and the selected one's full stat sheet beside it. -->
+        <div id="profiles-body" class="profiles-panel"></div>
       </div>
 
       <div class="menu-screen" data-screen="digest">${this.#backBar()}
@@ -771,6 +860,10 @@ export class Menu {
     // The dice (purple, rocky): one click rolls a complete fighter and refreshes the Creator step.
     // A legacy `data-action="random"` control, if one survives, rolls through the same path.
     root.querySelector('[data-action="dice"]')?.addEventListener("click", () => this.rollCreator());
+    // Wave O: the title button opens the Profiles panel, and every control inside it reports through
+    // ONE hook (action + the row it acted on), so the engine owns the library and this class only paints.
+    root.querySelector('[data-action="profiles"]')?.addEventListener("click", () => cb.onProfileAction?.("open", null));
+    root.querySelector('[data-action="save-profile"]')?.addEventListener("click", () => cb.onProfileAction?.("save-creator", null));
     // Wave M: the batch size picker and the Run button. The size is read at the click, so the
     // selection can change while a batch is running without corrupting the one in flight.
     root.querySelectorAll("[data-batch-size]").forEach((b) => b.addEventListener("click", () => {

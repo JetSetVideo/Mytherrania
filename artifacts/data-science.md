@@ -1276,3 +1276,38 @@ lessons that cost real time.
 5. **A channel occupies the runtime.** A second technique press during a channel is correctly refused, which
    is why a probe must wait the channel out — and why "the button did nothing" needs the state read before
    it is called a bug.
+
+## Pass 33 — Wave O: a list of fighters that could not be drawn, and what a probe catches that a test cannot
+
+| claim | measured |
+| --- | --- |
+| the journey | title button -> panel; 1 saved, 1 row, toolbar [Roll, Create, Load, Duplicate, Rename, Delete] |
+| one roll | rows 1 -> 2, the new fighter selected and saved; 2 rows with a PNG data URL (50 862 and 54 662 bytes) |
+| the studio | 2 renders + 1 cache hit for a 2-profile list (ONE WebGL context for the whole list) |
+| the statistics | 16 rows from `creatorSheet`; Max Health 20 450, Attack Power 636, interval 1.13 s, armour 5.6 |
+| load | the active profile switched (measured) |
+| ids | 100 rolled ids -> 100 unique, 0 collisions |
+| layout | 390/820/1280/1920 px clean AFTER two real overflow fixes (5 px at 820, 12 px at 390) |
+| a real portrait | 59 810-byte PNG, 65 536/65 536 opaque pixels, 150 colour buckets (headless Chromium, real WebGL2) |
+| open entry trees | 2 (modes + saved fighters) — the pin moved from 1 on purpose |
+
+**Lessons recorded.**
+
+1. **A persisted record that cannot describe its own appearance cannot be drawn, and that is a schema
+   problem, not a UI problem.** The panel's first blocker was `Profile` having no appearance field. Resolving
+   one deterministically (name seed + race + sub-species + calling) turned 100 % of existing profiles into
+   drawable ones without a migration step, and a stored appearance still wins. Choose the deterministic
+   resolve over a one-shot migration when the record's own fields can seed it.
+2. **One renderer for many pictures, or the browser says no.** The old portrait path created a WebGL context
+   per call; a 12-row list would have asked for 12 contexts. One studio + a cache keyed by the build key made
+   the second paint of the same list cost 1 render + 1 hit instead of two renders.
+3. **A probe measures LAYOUT; a unit test cannot.** Both bugs this wave were widths: `96vw` ignoring the
+   container's padding (5 px at 820) and four manage buttons on one line (12 px at 390). Neither is
+   expressible as a pure assertion — they exist only where CSS meets a viewport, which is why the four-viewport
+   sweep is part of the gate.
+4. **A closed tree can hide the way into your own data.** Wave L made every option group closed by default and
+   the profile area went with it, so the entry point became invisible. Entry paths (fight modes, saved
+   fighters) belong in the open set; the pin now records both and why.
+5. **A test seam is not a render.** The studio was exercised under Deno through an injected renderer (cache,
+   stats, reuse, hostile inputs), and the PIXELS were proved separately in a real browser. Claiming either one
+   as both would have been the easy lie in this wave.

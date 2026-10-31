@@ -1,0 +1,65 @@
+{
+  "title": {
+    "buttonPresent": true,
+    "label": "≡ ProfilesModels, statistics, roll or manage"
+  },
+  "opened": {
+    "open": true,
+    "count": "1 saved",
+    "rows": 1,
+    "toolbar": [
+      "Roll a fighter",
+      "Create a fighter",
+      "Load",
+      "Duplicate",
+      "Rename",
+      "Delete"
+    ],
+    "empty": ""
+  },
+  "roll": {
+    "rowsBefore": 1,
+    "rowsAfter": 2,
+    "grew": true,
+    "selected": "Dusk",
+    "portraitsNow": 2,
+    "biggestPortraitBytes": 55842
+  },
+  "stats": {
+    "sheetRows": 16,
+    "sheetSample": "DuskHuman · Nomad · Assassin · Hidden Blade · The SerpentAttributesVitality4Resilience3Willpower4Reflex14Strength5Intelligence5DerivedMax Health21 150Attack Power468Attack Interval0.78 sArmour3.6Modif",
+    "studio": {
+      "renders": 2,
+      "cacheHits": 1,
+      "cached": 2
+    },
+    "debug": {
+      "rows": 2,
+      "withPortrait": 2,
+      "active": "PL-6AFEB6",
+      "studio": {
+        "renders": 2,
+        "cacheHits": 1,
+        "cached": 2
+      }
+    }
+  },
+  "load": {
+    "target": "Hero",
+    "activeNow": "Hero",
+    "switched": true,
+    "manageOnActive": [
+      "Load",
+      "Duplicate",
+      "Rename",
+      "Delete"
+    ]
+  },
+  "viewports": {
+    "390x844": [],
+    "820x1180": [],
+    "1280x800": [],
+    "1920x1080": []
+  },
+  "errors": []
+}

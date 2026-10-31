@@ -857,6 +857,23 @@ according to its own variables, and for autoattack with damage numbers styled by
 `tests/navpilot_test.ts`, `strategies_test.ts`, `concealment_test.ts`, `perception_test.ts`, `cast_test.ts`,
 `autoattack_combattext_test.ts`.
 
+## 11G. Wave O — the Profiles panel
+
+Added 2026-10-31. The prompt asked to improve the journey from the title's profile button into a panel where
+the user can generate a random or a specified fighter, see the list of already existing ones, and see their
+models and their statistics.
+
+| # | Requirement | Where | Status |
+| --- | --- | --- | --- |
+| OA1 | ONE portrait studio renders many profiles off the SAME rig the arena builds (`buildPreviewRig`, shared with the Creator's live preview) — one WebGL context for the whole list, a PNG data URL per profile, cached by its build key; the old `renderPortrait` now delegates to it | `src/graphics/PortraitStudio.ts`, `src/graphics/PreviewScene.ts`, `src/graphics/Portrait.ts` | LIVE |
+| OB1 | A profile library over the persisted records: a saved profile has no appearance, so one is resolved DETERMINISTICALLY (name seed + race + sub-species + calling) unless the record carries one; roll-and-save, save-from-Creator, rename, duplicate, delete (a tombstone — the repo has no remove), setActive, unique ids | `src/game/ProfileLibrary.ts` | LIVE |
+| OC1 | The panel's pure view model: rows with the portrait key, the ancestry standard, calling, level, record and the active/selected flags; the selected one's statistics via the game's own maths (`creatorSheet`); the two ways to make a new profile; the manage actions with their disabled reasons; a real empty state; a 100-row cap that still reports the true count | `src/ui/ProfilePanel.ts` | LIVE |
+| OD1 | The screen itself: the title's profile button opens the panel (it used to silently switch the active profile), rows show real portraits, load switches the active fighter, and the whole panel survives 390/820/1280/1920 px without clipping | `src/ui/Menu.ts`, `styles.css`, `Engine.#onProfileAction` | LIVE |
+
+**Pins:** `[SPEC LL1–LL4]` plus the lanes' own suites (`portraitstudio`, `profilelibrary`, `profilepanel`).
+The `[SPEC LL2]` open-group pin moved from ONE entry group to TWO (the modes and the saved fighters): a
+closed tree must never hide the way into your own fighters, and the pin records the deliberate change.
+
 ## 12. Traceability — every prompt to its requirements
 
 | Prompt (date, gist) | Requirements |
@@ -878,6 +895,7 @@ according to its own variables, and for autoattack with damage numbers styled by
 | Éendards for every race and sub-species, a purple rocky dice that rolls a fighter and shows its model and statistics, the options as closed trees, and the whole title → Create path polished | §11D, `docs/creation/BRIEF.md` |
 | Live fight telemetry computed in the frontend and shared as ONE report at the bell, the one-click headless batch with its min/max/median summary, and the branch tree over arenas × victory conditions × match-ups | §11E, `docs/telemetry/BRIEF.md` |
 | Navigation quality for the stall subset, kiting/hiding/stalling strategies, authoritative invisibility with a bounded enemy belief and a cue, casting with a bar / interrupts / pushback, and autoattack with statistics-styled damage numbers | §11F, `docs/powers/BRIEF.md` |
+| A Profiles panel behind the title's profile button: every saved fighter as a row with a real portrait, its ancestry standard, calling, level and record, the selected one's statistics, and roll / build / load / duplicate / rename / delete | §11G, `docs/profiles/BRIEF.md` |
 
 **Statuses in one line.** LIVE: races, physics, skills, shaped arenas with walls, truce, senses,
 fog + minimap, statuses, items, environment, adaptive AI + telemetry + Elo leaderboard, stance

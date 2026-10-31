@@ -1,0 +1,422 @@
+{
+  "empty": {
+    "title": "Profiles",
+    "hint": "Your saved fighters — roll a random one, build a specific one, or select a row to see its statistics.",
+    "count": 0,
+    "empty": {
+      "show": true,
+      "text": "No profiles yet. Roll a random fighter, or build one in the Creator.",
+      "action": "new-random"
+    },
+    "rows": [],
+    "selected": null,
+    "actions": [
+      {
+        "id": "new-random",
+        "label": "Roll a fighter",
+        "hint": "Roll a random fighter and save it to the library.",
+        "kind": "random",
+        "disabled": false
+      },
+      {
+        "id": "new-specific",
+        "label": "Create a fighter",
+        "hint": "Build a specific fighter in the Creator, then save it.",
+        "kind": "specific",
+        "disabled": false
+      }
+    ]
+  },
+  "twoSelected": {
+    "title": "Profiles",
+    "hint": "Your saved fighters — roll a random one, build a specific one, or select a row to see its statistics.",
+    "count": 2,
+    "empty": {
+      "show": false,
+      "text": "No profiles yet. Roll a random fighter, or build one in the Creator.",
+      "action": "new-random"
+    },
+    "rows": [
+      {
+        "playerId": "PL-000001",
+        "name": "Aldric",
+        "raceLabel": "Human",
+        "subraceLabel": "Imperial",
+        "className": "Warrior",
+        "banner": "<svg class=\"banner banner-human\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 96 120\" width=\"96\" height=\"120\" data-cadency=\"saltire\" aria-hidden=\"true\" focusable=\"false\"><rect x=\"4\" y=\"4\" width=\"88\" height=\"112\" fill=\"#d99a70\"/><path d=\"M4 4 L92 116 M92 4 L4 116\" fill=\"none\" stroke=\"#d98e37\" stroke-width=\"8\"/><g class=\"banner-charge\" fill=\"#6b4130\" stroke=\"#6b4130\" stroke-width=\"3\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M16 44 L16 90 L80 90 L80 44 L64 66 L57 26 L48 60 L39 26 L32 66 Z\"/></g><rect x=\"4\" y=\"4\" width=\"88\" height=\"112\" fill=\"none\" stroke=\"#d98e37\" stroke-width=\"6\"/></svg>",
+        "portraitKey": "Aldric|human|imperial|Warrior||1.8000|90.0000|#172128|mountain",
+        "level": 4,
+        "record": "12 W · 4 L",
+        "active": true,
+        "selected": false
+      },
+      {
+        "playerId": "PL-000002",
+        "name": "Vex",
+        "raceLabel": "Elf",
+        "subraceLabel": "Dark Elf",
+        "className": "Rogue",
+        "banner": "<svg class=\"banner banner-elf\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 96 120\" width=\"96\" height=\"120\" data-cadency=\"chevron\" aria-hidden=\"true\" focusable=\"false\"><rect x=\"4\" y=\"4\" width=\"88\" height=\"112\" fill=\"#cdc0d6\"/><path d=\"M4 78 L48 34 L92 78\" fill=\"none\" stroke=\"#577793\" stroke-width=\"10\"/><g class=\"banner-charge\" fill=\"#2f3d63\" stroke=\"#2f3d63\" stroke-width=\"3\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M48 24 L56.82 47.87 L82.24 48.88 L62.27 64.63 L69.16 89.12 L48 75 L26.84 89.12 L33.73 64.63 L13.76 48.88 L39.18 47.87 Z\"/></g><rect x=\"4\" y=\"4\" width=\"88\" height=\"112\" fill=\"none\" stroke=\"#577793\" stroke-width=\"6\"/></svg>",
+        "portraitKey": "Vex|elf|dark|Rogue||1.8000|90.0000|#172128|mountain",
+        "level": 2,
+        "record": "3 W · 7 L",
+        "active": false,
+        "selected": true
+      }
+    ],
+    "selected": {
+      "playerId": "PL-000002",
+      "name": "Vex",
+      "portraitKey": "Vex|elf|dark|Rogue||1.8000|90.0000|#172128|mountain",
+      "sheet": {
+        "name": "Vex",
+        "raceLabel": "Elf",
+        "subraceLabel": "Dark Elf",
+        "className": "Rogue",
+        "weaponLabel": "Twin Daggers",
+        "signLabel": "The Mountain",
+        "primary": [
+          {
+            "label": "Vitality",
+            "value": "4"
+          },
+          {
+            "label": "Resilience",
+            "value": "6"
+          },
+          {
+            "label": "Willpower",
+            "value": "5"
+          },
+          {
+            "label": "Reflex",
+            "value": "10"
+          },
+          {
+            "label": "Strength",
+            "value": "4"
+          },
+          {
+            "label": "Intelligence",
+            "value": "6"
+          }
+        ],
+        "derived": [
+          {
+            "label": "Max Health",
+            "value": "21 031"
+          },
+          {
+            "label": "Attack Power",
+            "value": "364",
+            "hint": "≈ 320 a blow vs. an even foe"
+          },
+          {
+            "label": "Attack Interval",
+            "value": "0.92 s"
+          },
+          {
+            "label": "Armour",
+            "value": "4.9"
+          }
+        ],
+        "secondary": [
+          {
+            "label": "Critical Strike",
+            "value": "+3%"
+          },
+          {
+            "label": "Haste",
+            "value": "—"
+          },
+          {
+            "label": "Mastery",
+            "value": "—"
+          },
+          {
+            "label": "Physical Resistance",
+            "value": "+3%"
+          },
+          {
+            "label": "Magic Resistance",
+            "value": "+1%"
+          },
+          {
+            "label": "Versatility",
+            "value": "-1%"
+          }
+        ]
+      },
+      "actions": [
+        {
+          "id": "load",
+          "label": "Load",
+          "hint": "Make this the fighter you play.",
+          "kind": "manage",
+          "disabled": false
+        },
+        {
+          "id": "duplicate",
+          "label": "Duplicate",
+          "hint": "Copy this fighter into a new profile.",
+          "kind": "manage",
+          "disabled": false
+        },
+        {
+          "id": "rename",
+          "label": "Rename",
+          "hint": "Give this fighter a new name.",
+          "kind": "manage",
+          "disabled": false
+        },
+        {
+          "id": "delete",
+          "label": "Delete",
+          "hint": "Remove this fighter for good.",
+          "kind": "manage",
+          "disabled": false
+        }
+      ]
+    },
+    "actions": [
+      {
+        "id": "new-random",
+        "label": "Roll a fighter",
+        "hint": "Roll a random fighter and save it to the library.",
+        "kind": "random",
+        "disabled": false
+      },
+      {
+        "id": "new-specific",
+        "label": "Create a fighter",
+        "hint": "Build a specific fighter in the Creator, then save it.",
+        "kind": "specific",
+        "disabled": false
+      },
+      {
+        "id": "load",
+        "label": "Load",
+        "hint": "Make this the fighter you play.",
+        "kind": "manage",
+        "disabled": false
+      },
+      {
+        "id": "duplicate",
+        "label": "Duplicate",
+        "hint": "Copy this fighter into a new profile.",
+        "kind": "manage",
+        "disabled": false
+      },
+      {
+        "id": "rename",
+        "label": "Rename",
+        "hint": "Give this fighter a new name.",
+        "kind": "manage",
+        "disabled": false
+      },
+      {
+        "id": "delete",
+        "label": "Delete",
+        "hint": "Remove this fighter for good.",
+        "kind": "manage",
+        "disabled": false
+      }
+    ]
+  },
+  "staleSelected": {
+    "title": "Profiles",
+    "hint": "Your saved fighters — roll a random one, build a specific one, or select a row to see its statistics.",
+    "count": 2,
+    "empty": {
+      "show": false,
+      "text": "No profiles yet. Roll a random fighter, or build one in the Creator.",
+      "action": "new-random"
+    },
+    "rows": [
+      {
+        "playerId": "PL-000001",
+        "name": "Aldric",
+        "raceLabel": "Human",
+        "subraceLabel": "Imperial",
+        "className": "Warrior",
+        "banner": "<svg class=\"banner banner-human\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 96 120\" width=\"96\" height=\"120\" data-cadency=\"saltire\" aria-hidden=\"true\" focusable=\"false\"><rect x=\"4\" y=\"4\" width=\"88\" height=\"112\" fill=\"#d99a70\"/><path d=\"M4 4 L92 116 M92 4 L4 116\" fill=\"none\" stroke=\"#d98e37\" stroke-width=\"8\"/><g class=\"banner-charge\" fill=\"#6b4130\" stroke=\"#6b4130\" stroke-width=\"3\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M16 44 L16 90 L80 90 L80 44 L64 66 L57 26 L48 60 L39 26 L32 66 Z\"/></g><rect x=\"4\" y=\"4\" width=\"88\" height=\"112\" fill=\"none\" stroke=\"#d98e37\" stroke-width=\"6\"/></svg>",
+        "portraitKey": "Aldric|human|imperial|Warrior||1.8000|90.0000|#172128|mountain",
+        "level": 4,
+        "record": "12 W · 4 L",
+        "active": true,
+        "selected": false
+      },
+      {
+        "playerId": "PL-000002",
+        "name": "Vex",
+        "raceLabel": "Elf",
+        "subraceLabel": "Dark Elf",
+        "className": "Rogue",
+        "banner": "<svg class=\"banner banner-elf\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 96 120\" width=\"96\" height=\"120\" data-cadency=\"chevron\" aria-hidden=\"true\" focusable=\"false\"><rect x=\"4\" y=\"4\" width=\"88\" height=\"112\" fill=\"#cdc0d6\"/><path d=\"M4 78 L48 34 L92 78\" fill=\"none\" stroke=\"#577793\" stroke-width=\"10\"/><g class=\"banner-charge\" fill=\"#2f3d63\" stroke=\"#2f3d63\" stroke-width=\"3\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M48 24 L56.82 47.87 L82.24 48.88 L62.27 64.63 L69.16 89.12 L48 75 L26.84 89.12 L33.73 64.63 L13.76 48.88 L39.18 47.87 Z\"/></g><rect x=\"4\" y=\"4\" width=\"88\" height=\"112\" fill=\"none\" stroke=\"#577793\" stroke-width=\"6\"/></svg>",
+        "portraitKey": "Vex|elf|dark|Rogue||1.8000|90.0000|#172128|mountain",
+        "level": 2,
+        "record": "3 W · 7 L",
+        "active": false,
+        "selected": false
+      }
+    ],
+    "selected": {
+      "playerId": "PL-000001",
+      "name": "Aldric",
+      "portraitKey": "Aldric|human|imperial|Warrior||1.8000|90.0000|#172128|mountain",
+      "sheet": {
+        "name": "Aldric",
+        "raceLabel": "Human",
+        "subraceLabel": "Imperial",
+        "className": "Warrior",
+        "weaponLabel": "Longsword",
+        "signLabel": "The Mountain",
+        "primary": [
+          {
+            "label": "Vitality",
+            "value": "7"
+          },
+          {
+            "label": "Resilience",
+            "value": "12"
+          },
+          {
+            "label": "Willpower",
+            "value": "5"
+          },
+          {
+            "label": "Reflex",
+            "value": "5"
+          },
+          {
+            "label": "Strength",
+            "value": "8"
+          },
+          {
+            "label": "Intelligence",
+            "value": "6"
+          }
+        ],
+        "derived": [
+          {
+            "label": "Max Health",
+            "value": "26 569"
+          },
+          {
+            "label": "Attack Power",
+            "value": "408",
+            "hint": "≈ 342 a blow vs. an even foe"
+          },
+          {
+            "label": "Attack Interval",
+            "value": "1.13 s"
+          },
+          {
+            "label": "Armour",
+            "value": "7.2"
+          }
+        ],
+        "secondary": [
+          {
+            "label": "Critical Strike",
+            "value": "—"
+          },
+          {
+            "label": "Haste",
+            "value": "—"
+          },
+          {
+            "label": "Mastery",
+            "value": "+2%"
+          },
+          {
+            "label": "Physical Resistance",
+            "value": "+3%"
+          },
+          {
+            "label": "Magic Resistance",
+            "value": "+1%"
+          },
+          {
+            "label": "Versatility",
+            "value": "+2%"
+          }
+        ]
+      },
+      "actions": [
+        {
+          "id": "load",
+          "label": "Load",
+          "hint": "Already the active fighter.",
+          "kind": "manage",
+          "disabled": true
+        },
+        {
+          "id": "duplicate",
+          "label": "Duplicate",
+          "hint": "Copy this fighter into a new profile.",
+          "kind": "manage",
+          "disabled": false
+        },
+        {
+          "id": "rename",
+          "label": "Rename",
+          "hint": "Give this fighter a new name.",
+          "kind": "manage",
+          "disabled": false
+        },
+        {
+          "id": "delete",
+          "label": "Delete",
+          "hint": "The active fighter cannot be deleted.",
+          "kind": "manage",
+          "disabled": true
+        }
+      ]
+    },
+    "actions": [
+      {
+        "id": "new-random",
+        "label": "Roll a fighter",
+        "hint": "Roll a random fighter and save it to the library.",
+        "kind": "random",
+        "disabled": false
+      },
+      {
+        "id": "new-specific",
+        "label": "Create a fighter",
+        "hint": "Build a specific fighter in the Creator, then save it.",
+        "kind": "specific",
+        "disabled": false
+      },
+      {
+        "id": "load",
+        "label": "Load",
+        "hint": "Already the active fighter.",
+        "kind": "manage",
+        "disabled": true
+      },
+      {
+        "id": "duplicate",
+        "label": "Duplicate",
+        "hint": "Copy this fighter into a new profile.",
+        "kind": "manage",
+        "disabled": false
+      },
+      {
+        "id": "rename",
+        "label": "Rename",
+        "hint": "Give this fighter a new name.",
+        "kind": "manage",
+        "disabled": false
+      },
+      {
+        "id": "delete",
+        "label": "Delete",
+        "hint": "The active fighter cannot be deleted.",
+        "kind": "manage",
+        "disabled": true
+      }
+    ]
+  }
+}

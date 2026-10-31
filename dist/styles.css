@@ -886,3 +886,65 @@ body.myth-cursor-on,body.myth-cursor-on *{cursor:none}
 @media (prefers-reduced-motion: reduce) {
   .combat-text { animation-duration: 1ms; }
 }
+
+/* ── Wave O: the Profiles panel ───────────────────────────────────────────────────────────────────
+   The title's profile group gains a button into a panel that lists every saved fighter: a REAL
+   portrait per row (rendered by PortraitStudio off the same rig the arena builds), the ancestry
+   standard, the calling, the level and the record, and the selected fighter's full stat sheet
+   underneath. Classes only, values through CSSOM — an inline style attribute is blocked by the CSP. */
+.profiles-open { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.profiles-open .btn-note { font-size: 11px; opacity: 0.75; font-weight: 400; }
+/* 100 % of the screen's content box, not 96 vw: a vw width ignores the container's padding and
+   overflowed by 5 px at 820 px (measured). */
+.profiles-panel { display: flex; flex-direction: column; gap: 12px; width: min(980px, 100%); }
+.profiles-head { display: flex; align-items: baseline; flex-wrap: wrap; gap: 10px; }
+.profiles-title { margin: 0; font-size: 22px; color: #dfaa55; }
+.profiles-count { color: #9fb0bb; font-size: 13px; }
+.profiles-hint { flex-basis: 100%; margin: 2px 0 0; color: #9fb0bb; font-size: 12px; }
+.profiles-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.profile-action {
+  min-height: 40px; padding: 6px 12px; border-radius: 6px; cursor: pointer; font: inherit;
+  background: #172128; color: #dfaa55; border: 1px solid #2c3a46;
+}
+.profile-action:hover { border-color: #a06cd5; }
+.profile-action:focus-visible { outline: 2px solid #ef7455; outline-offset: 2px; }
+.profile-action[disabled] { opacity: 0.45; cursor: not-allowed; }
+.profile-action-random { background: #a06cd5; color: #172128; border-color: #a06cd5; font-weight: 700; }
+.profile-action-new-specific { border-color: #dfaa55; }
+.profiles-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.profile-row {
+  display: grid; grid-template-columns: 56px 40px 1fr auto; align-items: center; gap: 10px;
+  padding: 8px; border-radius: 6px; background: #1d2630; border: 1px solid #2c3a46; cursor: pointer;
+}
+.profile-row:hover { border-color: #a06cd5; }
+.profile-row.is-selected { border-color: #dfaa55; background: #223040; }
+.profile-row.is-active { box-shadow: inset 3px 0 0 0 #a9ce7c; }
+.profile-portrait { width: 56px; height: 56px; border-radius: 6px; background: #172128; object-fit: cover; }
+.profile-portrait-empty { display: block; border: 1px dashed #2c3a46; }
+.profile-banner { display: block; width: 40px; height: 46px; }
+.profile-banner svg { width: 100%; height: 100%; }
+.profile-ident { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+.profile-name { color: #e8dcc8; font-size: 15px; }
+.profile-level, .profile-record { color: #9fb0bb; font-size: 12px; }
+.profile-manage { display: flex; flex-wrap: wrap; gap: 6px; justify-content: flex-end; }
+.profile-sheet { padding: 12px; border-radius: 6px; background: #1d2630; border: 1px solid #2c3a46; }
+.profile-sheet .sheet-name { color: #dfaa55; font-size: 16px; }
+.profile-sheet .sheet-meta { display: block; color: #9fb0bb; font-size: 12px; margin-bottom: 8px; }
+.profiles-empty { color: #dfaa55; margin: 4px 0 0; }
+@media (max-width: 1023px) {
+  /* The row is a grid with an auto-width manage column: at narrow widths the four manage buttons
+     overflowed the viewport (measured 402 > 390 at 390 px, 825 > 820 at 820 px). The buttons wrap
+     onto their own full-width line and shrink; the row itself may never exceed its container. */
+  .profile-row { max-width: 100%; grid-template-columns: 44px 32px 1fr; grid-template-areas: "portrait banner ident" "manage manage manage"; }
+  .profile-row > .profile-manage { grid-area: manage; width: 100%; justify-content: flex-start; }
+  .profile-row .profile-action { padding: 4px 8px; font-size: 12px; }
+}
+@media (max-width: 767px) {
+  .profile-row { grid-template-columns: 44px 32px 1fr; grid-template-areas: "portrait banner ident" "manage manage manage"; }
+  .profile-row > .profile-portrait { grid-area: portrait; width: 44px; height: 44px; }
+  .profiles-panel { width: 100%; }
+  .profile-row > .profile-banner { grid-area: banner; width: 32px; height: 38px; }
+  .profile-row > .profile-ident { grid-area: ident; }
+  .profile-row > .profile-manage { grid-area: manage; justify-content: flex-start; }
+  .profile-action { min-height: 44px; }
+}

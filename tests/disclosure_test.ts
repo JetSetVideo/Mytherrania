@@ -47,11 +47,15 @@ Deno.test("groupKey is the screen/panel/group path", () => {
   assertEquals(groupKey("title", "start", "modes"), "title/start/modes");
 });
 
-Deno.test("exactly ONE group is default-open, and it is not empty", () => {
+Deno.test("the ENTRY groups are default-open, and none of them is empty", () => {
   const open = defaultOpenGroups();
-  // The wave's pinned constant: one group open because entry paths must never be hidden.
-  assertEquals(open.length, 1, "default-open groups");
-  assertEquals(open, ["title/start/modes"]);
+  // Wave L pinned ONE open group (the title's modes: entry paths must never be hidden). Wave O added a
+  // second entry path — the saved fighters, which opens the Profiles panel — because a closed tree hid
+  // the way into your own profiles. The count moved from 1 to 2 ON PURPOSE; this pin records the two
+  // and the reason, rather than being deleted.
+  assertEquals(open.length, 2, "default-open groups");
+  // Order follows the tree (the profiles group is declared before the modes group on the title screen).
+  assertEquals([...open].sort(), ["title/start/modes", "title/start/profiles"]);
   // A default-open group must still contain controls — an empty tree has nothing to show.
   for (const key of open) {
     const [s, p, g] = key.split("/");
@@ -66,11 +70,12 @@ Deno.test("every other group is closed in the initial state", () => {
   const groupCount = treeSize().groups;
   assertEquals(Object.keys(state).length, groupCount, "one entry per group");
   for (const key of everyGroupKey()) {
-    const shouldBeOpen = key === "title/start/modes";
+    // The two title entry groups are open; every other group in every screen starts closed (Wave O).
+    const shouldBeOpen = key === "title/start/modes" || key === "title/start/profiles";
     assertEquals(isOpen(state, key), shouldBeOpen, `initial open state of ${key}`);
   }
-  // Only the marked group is open.
-  assertEquals(openKeys(state), ["title/start/modes"]);
+  // Only the marked groups are open.
+  assertEquals([...openKeys(state)].sort(), ["title/start/modes", "title/start/profiles"]);
 });
 
 Deno.test("initialDisclosure follows an injected tree's defaultOpen marks", () => {
@@ -168,6 +173,6 @@ Deno.test("the model covers the tree: one entry per real group, closed by defaul
   assertEquals(keys, everyGroupKey().sort(), "state keys match the tree's groups");
   assertEquals(keys.length, treeSize().groups, "one entry per group");
   assert(flattenTree().length > 0, "the tree has controls behind its groups");
-  // Sanity: only one group is open at the start.
-  assertEquals(openKeys(state).length, 1);
+  // Sanity: only the title's entry groups are open at the start (Wave O: modes + saved fighters).
+  assertEquals(openKeys(state).length, 2);
 });

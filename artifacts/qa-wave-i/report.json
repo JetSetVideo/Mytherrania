@@ -48,10 +48,10 @@
     "swappedToOtherFighter": true,
     "swappedCardTitle": "Ser Vail",
     "fighterCardBadges": [
-      "GEN-5238E4",
+      "GEN-8DD1B4",
       "AI"
     ],
-    "objectCardTitle": "Ramp",
+    "objectCardTitle": "Crate",
     "objectCardIsObject": true,
     "objectCardBadge": [],
     "closedOnEmptyClick": true
@@ -59,9 +59,9 @@
   "bars": {
     "count": 3,
     "texts": [
-      "37 125 / 37 200 · 100%",
-      "144 / 144 · 100%",
-      "226 / 236 · 96%"
+      "45 783 / 47 100 · 97%",
+      "168 / 168 · 100%",
+      "316 / 326 · 97%"
     ],
     "squaresPerBar": [
       12,
@@ -82,42 +82,42 @@
     "squared": true
   },
   "props": {
-    "count": 15,
-    "floatingBefore": 11,
+    "count": 16,
+    "floatingBefore": 12,
     "floatingNow": 0,
     "worstFloatingM": 0,
-    "worstSeamM": 2.1662323543717865,
-    "seamsCovered": 15,
+    "worstSeamM": 1.3444366967926489,
+    "seamsCovered": 16,
     "seats": [
       {
-        "kind": "ramp",
-        "x": 5.47533854926795,
-        "z": -43.620855739068276,
-        "baseY": 0.4502493079119147,
-        "footMax": 0.4502493079119147,
+        "kind": "crate",
+        "x": 18.513771085968827,
+        "z": -12.811140280981741,
+        "baseY": 3.6135604849044167,
+        "footMax": 3.6135604849044167,
         "floating": 0,
-        "gap": 1.818900989273432,
-        "skirtDrop": 1.9973
+        "gap": 0.1385807373604493,
+        "skirtDrop": 0.1784
       },
       {
-        "kind": "arch",
-        "x": -39.1050056221081,
-        "z": 7.090760359830598,
-        "baseY": 6.384331554170235,
-        "footMax": 6.384331554170235,
+        "kind": "crate",
+        "x": -18.513771085968827,
+        "z": 12.811140280981743,
+        "baseY": 3.613560507179084,
+        "footMax": 3.613560507179084,
         "floating": 0,
-        "gap": 1.085198773089072,
-        "skirtDrop": 1.3191
+        "gap": 0.13858071159925567,
+        "skirtDrop": 0.1784
       },
       {
-        "kind": "pillar",
-        "x": -51.2305807751873,
-        "z": -19.16155453674572,
-        "baseY": 3.0226905084772495,
-        "footMax": 3.0226905084772495,
+        "kind": "rock",
+        "x": -17.4489398939882,
+        "z": 14.972411358738167,
+        "baseY": 3.7733094267586282,
+        "footMax": 3.7733094267586282,
         "floating": 0,
-        "gap": 0.5383384300153695,
-        "skirtDrop": 0.6576
+        "gap": 0.06342667763410104,
+        "skirtDrop": 0.1182
       }
     ],
     "baseOffsetKinds": {
@@ -130,39 +130,38 @@
       "tree": 1.5,
       "gliderPad": 0.1
     },
-    "skirtMeshes": 15,
-    "skirtTriangles": 1800,
+    "skirtMeshes": 16,
+    "skirtTriangles": 1920,
     "skirtMaterialSamples": {
-      "sand": 5,
-      "ice": 2,
-      "wood": 7,
-      "stone": 1
+      "sand": 10,
+      "wood": 4,
+      "stone": 2
     }
   },
   "clash": {
-    "firstBurstSparks": 12,
-    "at": 10.963399999856948,
-    "after40BurstsLive": 89,
+    "firstBurstSparks": 40,
+    "at": 11.076699999809264,
+    "after40BurstsLive": 87,
     "capped": true,
-    "spawned": 284,
-    "dropped": 244,
-    "events": 44
+    "spawned": 337,
+    "dropped": 239,
+    "events": 48
   },
   "frame": {
     "n": 240,
-    "mean": 2.5020833293596905,
-    "p50": 2.1999998092651367,
-    "p95": 4,
-    "p99": 9.099999904632568,
-    "max": 14.700000047683716,
-    "headroomMs": 7.5
+    "mean": 2.282916686932246,
+    "p50": 2,
+    "p95": 3.8000001907348633,
+    "p99": 9.599999904632568,
+    "max": 11.700000047683716,
+    "headroomMs": 7
   },
   "effectsScale": {
     "scale": 1,
     "drops": 0,
     "recoveries": 0,
-    "overBudgetFrames": 9
+    "overBudgetFrames": 5
   },
   "errors": [],
-  "at": "2026-10-31T18:32:38.069Z"
+  "at": "2026-10-31T19:34:11.868Z"
 }

@@ -11,18 +11,18 @@
   },
   "tie": {
     "limitApplied": 30,
-    "hostileAtEnd": 30,
+    "hostileAtEnd": 30.01,
     "decided": true,
     "winner": "opponent",
     "endReason": "time-limit",
     "storedReason": "time-limit",
     "storedTie": false,
     "storedLimitS": 30,
-    "statGapDistance": 4.738099750501856,
-    "dominance": 0.6106893301573375,
-    "damageShare": 0.6090707419275326,
-    "generationId": "GEN-C0A555",
-    "generationBudget": 84,
+    "statGapDistance": 5.135780137794293,
+    "dominance": 0.5256733486251242,
+    "damageShare": 0.4200882253138785,
+    "generationId": "GEN-57DDE3",
+    "generationBudget": 66,
     "generationTechniques": [
       "warrior-dash",
       "warrior-crushing-blow",
@@ -40,8 +40,8 @@
       "human/imperial"
     ],
     "fightHp": [
-      4871,
-      33449
+      8175,
+      27755
     ],
     "resultTitle": "Ser Vail wins on points"
   },
@@ -49,93 +49,93 @@
     "masses": 5,
     "samples": [
       {
-        "windMs": 1.48,
+        "windMs": 1.97,
         "wetness": 0,
-        "magnitude": 0.0241
+        "magnitude": 0.0318
       },
       {
-        "windMs": 8.9,
+        "windMs": 9.45,
         "wetness": 0.9,
-        "magnitude": 0.0548
+        "magnitude": 0.0585
       },
       {
-        "windMs": 8.88,
+        "windMs": 9.44,
         "wetness": 0.9,
-        "magnitude": 0.0549
+        "magnitude": 0.0582
       },
       {
-        "windMs": 0.52,
+        "windMs": 0.96,
         "wetness": 0.01,
-        "magnitude": 0.0088
+        "magnitude": 0.0161
       }
     ],
-    "maxMagnitude": 0.0549,
-    "minMagnitude": 0.0088,
+    "maxMagnitude": 0.0585,
+    "minMagnitude": 0.0161,
     "boundedUnderOneMetre": true,
     "settledInStorm": true,
     "dryCalmestIsSmallest": true,
     "soakedResistsStrongerWind": false,
     "offsetsAtStorm": [
       [
-        0.020853328395976596,
-        0.0000032941665720134615,
-        -0.00016780221977049498
+        -0.021682612463804533,
+        0.000005109589363328637,
+        0.004275733641710008
       ],
       [
-        0.02519779975969249,
-        0.000003388828715162456,
-        -0.00020197646514927213
+        -0.026203418205587404,
+        0.000005319055796130186,
+        0.005167750539137937
       ],
       [
-        0.01887729815203737,
-        0.0000035147530589357257,
-        -0.00015264389998622841
+        -0.01939092311929915,
+        0.000005495993276217449,
+        0.003823235243996503
       ],
       [
-        0.02433162951788014,
-        0.00000389240171102034,
-        -0.00019601960076201256
+        -0.025713945365407304,
+        0.000006363072525587927,
+        0.005070460667330271
       ],
       [
-        0.03141451409568393,
-        0.000003983232396063899,
-        -0.0002514848228061753
+        -0.033200126631393226,
+        0.0000062902052935369435,
+        0.006547897865009225
       ]
     ],
     "offsetsAtLull": [
       [
-        0.0031680949056542753,
-        -0.000003839993461997506,
-        -0.000016389965752925152
+        -0.005678705741003103,
+        -0.000007873640976145258,
+        0.0011264402841888123
       ],
       [
-        0.003811676094638612,
-        -0.000003969305404622961,
-        -0.000021133845640900518
+        -0.006841916067251071,
+        -0.000008200745327367593,
+        0.0013562408311664728
       ],
       [
-        0.0027968924269370426,
-        -0.00000406411299671151,
-        -0.000012907783000771288
+        -0.004938745312091362,
+        -0.000008443113237055819,
+        0.000980853138420792
       ],
       [
-        0.004054893584008844,
-        -0.000004752642608887725,
-        -0.00002135142571319314
+        -0.007322355421132189,
+        -0.000009991852409715914,
+        0.0014523884513242683
       ],
       [
-        0.005328357485819197,
-        -0.000004648389183050032,
-        -0.00003145487179362662
+        -0.009611175880873672,
+        -0.000009685370622299877,
+        0.0019038494032490962
       ]
     ]
   },
   "spectateCard": {
-    "text": "Spectator card GEN-C0A555\n      \n        Level 112 stat points\n        Level 1172 stat points\n      \n      69 m arenaseed 2470308471\n      warrior-dash · warrior-crushing-blow · warrior-bulwark · barbarian-skullsplitter · priest-smite · mage-arcane-nova",
+    "text": "Spectator card GEN-57DDE3\n      \n        Level 112 stat points\n        Level 854 stat points\n      \n      25 m arenaseed 2473816180\n      warrior-dash · warrior-crushing-blow · warrior-bulwark · barbarian-skullsplitter · priest-smite · mage-arcane-nova",
     "hasLevels": true,
     "hasBudget": true,
     "hasArena": true
   },
   "errors": [],
-  "at": "2026-10-31T18:35:31.373Z"
+  "at": "2026-10-31T19:33:58.850Z"
 }

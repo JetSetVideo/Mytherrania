@@ -11,6 +11,7 @@ import { seededRng } from "../game/Items.ts";
 import type { CharacterProfile } from "../game/Characters.ts";
 import type { Appearance } from "../game/Characters.ts";
 import type { HumanoidRig } from "./Humanoid.ts";
+import type { Fighter } from "../game/Fighter.ts";
 
 /**
  * PreviewScene — the live 3D portrait the Character Creator shows (wave L).
@@ -52,6 +53,43 @@ function addLights(scene: THREE.Scene): void {
   const rim = new THREE.DirectionalLight("#dfaa55", 0.55);
   rim.position.set(-1, 0.5, -0.5);
   scene.add(ambient, key, rim);
+}
+
+/**
+ * The build key of a profile: everything `buildPreviewRig` reads (or `setProfile` skips a rebuild
+ * on). Extracted so the live turntable AND the offscreen studio cache on the exact same string —
+ * a thumbnail may not drift from the figure it thumbnails. Lengths are quantised to 4 dp (a
+ * hundredth of a millimetre), the resolution the rig actually renders at.
+ */
+export function previewKey(profile: CharacterProfile): string {
+  return `${profile.name}|${profile.race}|${profile.subrace ?? ""}|${profile.className}|${profile.weaponType ?? ""}|${profile.appearance.height.toFixed(4)}|${profile.appearance.weight.toFixed(4)}|${profile.appearance.hair ?? ""}|${profile.birthsign ?? ""}`;
+}
+
+/**
+ * Build the preview rig a profile renders as — ONE place, shared by the live preview and the
+ * studio. Runs the SAME path the arena runs (`raceBuild` → seeded hair/skin/silhouette →
+ * `buildSkinnedHumanoid` with `{garment, weaponSpec}`), so a thumbnail cannot drift from the
+ * figure the match builds. Pure geometry: no GL context, no DOM — the caller gives it a renderer.
+ */
+export function buildPreviewRig(profile: CharacterProfile): { rig: HumanoidRig & SkinnedExtras; fighter: Fighter } {
+  const fighter = createFighter(profile.className, profile.name, 0, 0, 0.5, profile.race, profile.subrace, profile.weaponType);
+  const skills = skillsForClass(fighter.className);
+  const build = raceBuild(profile.race, profile.subrace);
+  const seed = nameSeed(profile.name);
+  const app: Appearance = {
+    ...profile.appearance,
+    race: profile.race,
+    subrace: profile.subrace,
+    hair: profile.appearance.hair ?? seededPick(HAIR_COLORS, seed),
+    body: mixHex(build.tint, seededPick(SKIN_TONES, seed >>> 5), 0.4),
+    silhouette: randomSilhouette(seededRng(seed ^ 0x2545f491), profile.race, profile.subrace),
+  };
+  const weaponGen = fighter.weaponSpec ? toGeneratedWeapon(fighter.weaponSpec) : generateClassWeapon(fighter.className);
+  const rig = buildSkinnedHumanoid(weaponGen, app, skills[0].element, {
+    race: profile.race, subrace: profile.subrace, className: fighter.className,
+    height: app.height, weight: app.weight, seed, birthsign: profile.birthsign,
+  }, { garment: profile.appearance.body, weaponSpec: fighter.weaponSpec });
+  return { rig, fighter };
 }
 
 export class PreviewScene {
@@ -112,28 +150,12 @@ export class PreviewScene {
   /** Rebuild the rig for `profile`. A re-roll of the same name+race DOES rebuild (the seed drives it). */
   setProfile(profile: CharacterProfile): void {
     if (this.#disposed) return;
-    const key = `${profile.name}|${profile.race}|${profile.subrace ?? ""}|${profile.className}|${profile.weaponType ?? ""}|${profile.appearance.height.toFixed(4)}|${profile.appearance.weight.toFixed(4)}|${profile.appearance.hair ?? ""}|${profile.birthsign ?? ""}`;
+    const key = previewKey(profile);
     if (key === this.#built) return;
     this.#built = key;
     this.#clearRig();
-    const f = createFighter(profile.className, profile.name, 0, 0, 0.5, profile.race, profile.subrace, profile.weaponType);
-    this.#fighter = f;
-    const skills = skillsForClass(f.className);
-    const build = raceBuild(profile.race, profile.subrace);
-    const seed = nameSeed(profile.name);
-    const app: Appearance = {
-      ...profile.appearance,
-      race: profile.race,
-      subrace: profile.subrace,
-      hair: profile.appearance.hair ?? seededPick(HAIR_COLORS, seed),
-      body: mixHex(build.tint, seededPick(SKIN_TONES, seed >>> 5), 0.4),
-      silhouette: randomSilhouette(seededRng(seed ^ 0x2545f491), profile.race, profile.subrace),
-    };
-    const weaponGen = f.weaponSpec ? toGeneratedWeapon(f.weaponSpec) : generateClassWeapon(f.className);
-    const rig = buildSkinnedHumanoid(weaponGen, app, skills[0].element, {
-      race: profile.race, subrace: profile.subrace, className: f.className,
-      height: app.height, weight: app.weight, seed, birthsign: profile.birthsign,
-    }, { garment: profile.appearance.body, weaponSpec: f.weaponSpec });
+    const { rig, fighter } = buildPreviewRig(profile);
+    this.#fighter = fighter;
     this.#rig = rig;
     this.#root.add(rig.group);
     this.#spin = 0;

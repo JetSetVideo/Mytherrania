@@ -109,6 +109,9 @@ export const UI_TREE: UiScreen[] = [
             id: "profiles",
             label: "Saved fighters",
             hint: "Player_ID profiles persisted across reload.",
+            // Wave O: an ENTRY path (it opens the Profiles panel), so like the modes group it starts
+            // open — a closed tree must never hide the way into the game or into your own saved fighters.
+            defaultOpen: true,
             controls: [
               c("profile-picker", "Fighter", "Load a saved character into the creator.", "always", "player", 2),
             ],
