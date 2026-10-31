@@ -62,6 +62,14 @@ export const MUSCLE_GAIN = 0.2;
  * scales the SDF muscle masses by it, and the paint's definition pass reads it). The race's
  * muscle knob sets the base, the build's muscle term scales it — so a heavy ork is the biggest.
  */
+/**
+ * Lane Q-B: the neck's half-width comes down by this fraction — 0.94 = -6 %. "Reduce ... their neck"
+ * is an explicit ask; the SHOULDER overhang cut from the same lane is NOT taken here: at 15 % it moved
+ * lane M's planted-foot slide from 5.54 mm to 5.75 mm (band 5.6) and tipped the ragdoll settle, both
+ * re-measured in the parent's integration. A slimmer neck does not touch either.
+ */
+export const NECK_SLIM = 0.94;
+
 export function buildMuscleTerm(sil: RaceSilhouette, build: BuildType): number {
   return (1 + MUSCLE_GAIN * (sil.muscle - 1)) * BUILDS[build].muscle;
 }
@@ -210,7 +218,7 @@ export function proportionsFor(spec: BodySpec, buildOverride?: BuildType): BodyP
     waist: CANON_HALF_WIDTH.waist * h * geneRel("abdomen", "x", race) * g(GIRTH_EXPONENT.waist) * B.waist,
     hip: CANON_HALF_WIDTH.hip * h * geneRel("pelvis", "x", race) * g(GIRTH_EXPONENT.torso) * B.hip,
     hipJoint: CANON_HALF_WIDTH.hipJoint * h * geneRel("pelvis", "x", race) * g(GIRTH_EXPONENT.neck) * B.hip,
-    neck: CANON_HALF_WIDTH.neck * h * geneRel("neck", "x", race) * g(GIRTH_EXPONENT.neck),
+    neck: CANON_HALF_WIDTH.neck * h * geneRel("neck", "x", race) * g(GIRTH_EXPONENT.neck) * NECK_SLIM,
     // The skull's proportions relative to its own height (head.x / head.y, race over human).
     skull: CANON_HALF_WIDTH.skull * h * geneRel("head", "x", race) / geneRel("head", "y", race),
   };

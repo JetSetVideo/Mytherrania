@@ -8,6 +8,7 @@
 import type { BoneId, Primitive, PrimitiveKind, Region, SdfNode, SdfSample, Vec3, VolumeOp } from "./contracts.ts";
 import type { BodyProportions } from "./Proportions.ts";
 import { compileSdf, primitiveDistance } from "./Sdf.ts";
+import { ancestryOf, type AncestryNode } from "../../game/Ancestry.ts";
 
 /** Smooth-union width at a joint: BLEND_FRACTION × the harmonic mean of the two radii (m). */
 export const BLEND_FRACTION = 0.5;
@@ -189,9 +190,99 @@ export interface FaceAnchors {
   noseTip: Vec3;
 }
 
+// --- pointed brow, eyelids and the recessed eyeball (lane Q-A) -------------------------------
+//
+// The brow is no longer a round capsule swept across the face (which read as a tube): it is a
+// WEDGE per side whose inner (glabella) end has radius BROW_ROOT_R_PER_HEAD·h and whose outer tip
+// tapers to ~0 (brow.point sharpens the taper and runs the tip further out). The eyeball is
+// RECESSED: its centre sits behind the socket's opening plane by EYE_INSET_PER_HEAD·h and its
+// front surface behind the socket rim by EYE_FRONT_VS_RIM_PER_HEAD·h, so the eyes sit IN the
+// socket instead of bulging out of an open hole. The lids (FaceParts) cover the aperture.
+
+/** Inner-end radius of the brow ridge, head heights (a ridge ~1.7 cm on a 22.7 cm head). */
+export const BROW_ROOT_R_PER_HEAD = 0.075;
+/** Outer tip radius as a fraction of the root, at brow.point = 0 and at brow.point = 1. */
+export const BROW_TIP_FRAC_AT_POINT0 = 0.30;
+export const BROW_TIP_FRAC_AT_POINT1 = 0.05;
+/** Where the two brow halves meet the glabella, head heights (x magnitude). */
+export const BROW_INNER_X_PER_HEAD = 0.10;
+/** Base outer reach of the tip, head heights, and the extra reach a fully pointed brow adds. */
+export const BROW_TIP_X_PER_HEAD = 0.20;
+export const BROW_TIP_REACH_PER_HEAD = 0.10;
+/** Ridge height above the eye line and its forward position, head heights (kept from the capsule). */
+export const BROW_RISE_PER_HEAD = 0.13;
+export const BROW_Z_PER_HEAD = 0.31;
+/** The outer tip drops this far below the inner end, head heights (the brow's natural angle). */
+export const BROW_DROP_PER_HEAD = 0.04;
+/** SDF radius floors, cells: the ridge and its tip stay resolvable in the grid. */
+export const BROW_ROOT_MIN_CELLS = 0.7;
+export const BROW_TIP_MIN_CELLS = 0.45;
+
+/** The pointed-brow geometry for one head (metres). Root radius > tip radius (the stated taper). */
+export interface BrowWedge {
+  /** Radius at the inner (glabella) end of the ridge (m). */
+  rootR: number;
+  /** Radius at the outer TIP (m); ~0 when pointed (tipR ≪ rootR). */
+  tipR: number;
+  /** x magnitude of the inner end (m). */
+  innerX: number;
+  /** x magnitude of the outer tip (m) - the tip's position, stated. */
+  tipX: number;
+  /** Ridge height (eye line + BROW_RISE_PER_HEAD·h) and forward position, model space (m). */
+  y: number;
+  z: number;
+}
+/**
+ * The brow wedge for a head of height `h` with the eye line at `eyeY`: the ancestry's
+ * brow.prominence bulges the root, brow.point sharpens the taper (tipR → BROW_TIP_FRAC_AT_POINT1
+ * of the root) and runs the tip out (BROW_TIP_REACH_PER_HEAD). tipR < rootR always at point < 1.
+ */
+export function browWedge(node: AncestryNode, h: number, eyeY: number): BrowWedge {
+  const point = Math.max(0, Math.min(1, node.brow.point));
+  const rootR = BROW_ROOT_R_PER_HEAD * h * (0.75 + 0.5 * node.brow.prominence);
+  const frac = BROW_TIP_FRAC_AT_POINT0 + (BROW_TIP_FRAC_AT_POINT1 - BROW_TIP_FRAC_AT_POINT0) * point;
+  return {
+    rootR, tipR: rootR * frac,
+    innerX: BROW_INNER_X_PER_HEAD * h,
+    tipX: (BROW_TIP_X_PER_HEAD + BROW_TIP_REACH_PER_HEAD * point) * h,
+    y: eyeY + BROW_RISE_PER_HEAD * h, z: BROW_Z_PER_HEAD * h,
+  };
+}
+
+/** Upper and lower lid band thickness and the lid aperture, metres, from the ancestry. */
+export interface LidBands { upperThickness: number; lowerThickness: number; aperture: number }
+/** The eyelid bands for a head of height `h`: node.lid (head heights) × h. */
+export function lidBands(node: AncestryNode, h: number): LidBands {
+  return { upperThickness: node.lid.upper * h, lowerThickness: node.lid.lower * h, aperture: node.lid.aperture * h };
+}
+
+/** Eyeball radius, head heights (a 1.7 cm globe on a 22.7 cm head). */
+export const EYE_RADIUS_PER_HEAD = 0.075;
+/** The socket carve sphere's centre z - its OPENING plane - head heights. */
+export const SOCKET_OPEN_Z_PER_HEAD = 0.30;
+/** The socket carve sphere's radius, head heights. */
+export const SOCKET_R_PER_HEAD = 0.12;
+/** The recessed eyeball centre's z, head heights (was 0.33h - a bulging eye in an open hole). */
+export const EYE_Z_PER_HEAD = 0.16;
+/** The socket rim = the carve's forward-most reach (opening plane + radius), head heights. */
+export const SOCKET_RIM_Z_PER_HEAD = SOCKET_OPEN_Z_PER_HEAD + SOCKET_R_PER_HEAD;
+/** The eyeball centre's inset behind the socket's opening plane, head heights (> 0). */
+export const EYE_INSET_PER_HEAD = SOCKET_OPEN_Z_PER_HEAD - EYE_Z_PER_HEAD;
+/** The eyeball's front surface's clearance behind the socket rim, head heights (> 0). */
+export const EYE_FRONT_VS_RIM_PER_HEAD = SOCKET_RIM_Z_PER_HEAD - (EYE_Z_PER_HEAD + EYE_RADIUS_PER_HEAD);
+
+/** The eye recess for a head of height `h` (metres): centre, front and the socket rim. */
+export interface EyeRecess { eyeZ: number; eyeR: number; eyeFrontZ: number; socketOpenZ: number; socketR: number; rimZ: number }
+/** The eye's recess geometry, metres: eye centre/front and the socket opening plane and rim. */
+export function eyeRecess(h: number): EyeRecess {
+  const eyeZ = EYE_Z_PER_HEAD * h, eyeR = EYE_RADIUS_PER_HEAD * h, socketOpenZ = SOCKET_OPEN_Z_PER_HEAD * h, socketR = SOCKET_R_PER_HEAD * h;
+  return { eyeZ, eyeR, eyeFrontZ: eyeZ + eyeR, socketOpenZ, socketR, rimZ: socketOpenZ + socketR };
+}
+
 /** Skull + jaw + face masses + ears, eye sockets carved (smoothSubtract), temples flattened (smoothIntersect). */
 export function headNode(P: BodyProportions, jitter: { nose: number; jaw: number }): { node: SdfNode; face: FaceAnchors } {
   const h = P.head, H = P.y.crown, eyeY = P.y.eye, chinY = P.y.chin, c = P.cell;
+  const node0 = ancestryOf(P.race, P.spec.subrace);
   const sw = P.halfWidth.skull, sd = P.halfDepth.skull;
   const jut = P.underbite * 0.3 * h; // ork jaw jut, RaceAppearance.underbite in skull fractions
   const skullCentre: Vec3 = [0, H - 0.47 * h, -0.06 * h];
@@ -206,23 +297,27 @@ export function headNode(P: BodyProportions, jitter: { nose: number; jaw: number
   const jaw = (s: 1 | -1) => prim(`jaw${s > 0 ? "L" : "R"}`, "sphere", "head", "face", [s * jawW, chinY + 0.3 * h, 0.02 * h + jut * 0.5], { r: 0.15 * h * (1 + 0.4 * P.underbite) });
   const cheek = (s: 1 | -1) => prim(`cheekbone${s > 0 ? "L" : "R"}`, "ellipsoid", "head", "face", [s * 0.24 * h, eyeY - 0.17 * h, 0.27 * h], { size: [0.12 * h, 0.08 * h, 0.1 * h] });
   const core = op("smoothUnion", 0.12 * h, skull, face, jaw(1), jaw(-1), cheek(1), cheek(-1));
-  const brow = prim("browRidge", "capsule", "head", "face", [-0.24 * h, eyeY + 0.13 * h, 0.31 * h], { b: [0.24 * h, eyeY + 0.13 * h, 0.31 * h], r: Math.max(0.07 * h, 0.6 * c) });
+  // Pointed brow (lane Q-A): two round-cone wedges, inner root → outer point, sized by the ancestry.
+  const w = browWedge(node0, h, eyeY);
+  const brow = (s: 1 | -1) => prim(`browRidge${s > 0 ? "L" : "R"}`, "roundCone", "head", "face",
+    [s * w.innerX, w.y, w.z], { b: [s * w.tipX, w.y - BROW_DROP_PER_HEAD * h, w.z], r: Math.max(w.rootR, BROW_ROOT_MIN_CELLS * c), r2: Math.max(w.tipR, BROW_TIP_MIN_CELLS * c) });
   const noseTip: Vec3 = [0, eyeY - 0.27 * h * jitter.nose, 0.44 * h];
   const nose = prim("nose", "roundCone", "head", "face", [0, eyeY - 0.02 * h, 0.36 * h], { b: noseTip, r: Math.max(0.045 * h, 0.6 * c), r2: Math.max(0.075 * h, 0.75 * c) });
   const headField = compileSdf(core);
   const probe: SdfSample = { d: 0, region: 0, bone: 0 };
   const ears = earNodes(P, skullCentre, skullRadii, (x, y, z) => headField.sample(x, y, z, probe).d);
-  const features = op("smoothUnion", 0.05 * h, core, brow, nose, ...ears.nodes);
-  const eyeR = 0.075 * h;
-  const socketAt = (s: 1 | -1): Vec3 => [s * 0.2 * h, eyeY, 0.37 * h];
-  const socket = (s: 1 | -1) => prim(`eyeSocket${s > 0 ? "L" : "R"}`, "sphere", "head", "face", socketAt(s), { r: 0.105 * h });
+  const features = op("smoothUnion", 0.05 * h, core, brow(1), brow(-1), nose, ...ears.nodes);
+  const eyeR = EYE_RADIUS_PER_HEAD * h;
+  const socketAt = (s: 1 | -1): Vec3 => [s * 0.2 * h, eyeY, SOCKET_OPEN_Z_PER_HEAD * h];
+  const socket = (s: 1 | -1) => prim(`eyeSocket${s > 0 ? "L" : "R"}`, "sphere", "head", "face", socketAt(s), { r: SOCKET_R_PER_HEAD * h });
   const node = op("smoothSubtract", 0.04 * h, features, socket(1), socket(-1));
-  const eyeAt = (s: 1 | -1): Vec3 => [s * 0.2 * h, eyeY, 0.33 * h];
+  // The eyeball's anchor is RECESSED: its centre behind the socket's opening plane (lane Q-A).
+  const eyeAt = (s: 1 | -1): Vec3 => [s * 0.2 * h, eyeY, EYE_Z_PER_HEAD * h];
   return {
     node,
     face: {
       eye: [eyeAt(1), eyeAt(-1)], eyeRadius: eyeR,
-      brow: [[0.2 * h, eyeY + 0.15 * h, 0.36 * h], [-0.2 * h, eyeY + 0.15 * h, 0.36 * h]],
+      brow: [[0.2 * h, w.y, w.z], [-0.2 * h, w.y, w.z]],
       mouth: [0, chinY + 0.27 * h, 0.33 * h + jut * 0.5], chin, crown: [0, H, -0.06 * h],
       skullCentre, skullRadii, ear: ears.anchors, noseTip,
     },

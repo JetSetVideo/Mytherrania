@@ -62,6 +62,14 @@ export interface RaceSilhouette {
   head: number;
   /** Superellipse exponent: 2 is a clean oval, higher squares the section. */
   sectionN: number;
+  /**
+   * The UNGAINED section exponent (lane Q-B). `sectionN` carries the angular-side-plane gain and is used
+   * by the torso; the limbs, hands and feet keep this one, so the angular change never moves a contact
+   * surface (a foot's cross-section decides how the body settles on the ground). REQUIRED, and equal to
+   * the row's own base exponent: an optional field here made `SILHOUETTE_TOP[key]` possibly-undefined
+   * across every silhouette key (a type error the compiler caught, measured).
+   */
+  sectionNBase: number;
 }
 
 /**
@@ -70,10 +78,10 @@ export interface RaceSilhouette {
  * depth 0.88, muscle 0.68), with the ORK the heaviest (width 1.34).
  */
 export const RACE_SILHOUETTE: Record<string, RaceSilhouette> = {
-  human: { height: 1.0, width: 1.0, depth: 1.0, limbTaper: 1.0, limbLength: 1.0, muscle: 1.0, shoulder: 0.46, hip: 0.3, waist: 0.1, head: 1.0, sectionN: 2.1 },
-  elf: { height: 1.05, width: 0.84, depth: 0.88, limbTaper: 1.25, limbLength: 1.06, muscle: 0.68, shoulder: 0.4, hip: 0.26, waist: 0.16, head: 0.98, sectionN: 1.9 },
-  dwarf: { height: 0.8, width: 1.3, depth: 1.16, limbTaper: 0.78, limbLength: 0.82, muscle: 1.45, shoulder: 0.5, hip: 0.34, waist: 0.05, head: 1.12, sectionN: 2.35 },
-  ork: { height: 1.12, width: 1.34, depth: 1.1, limbTaper: 0.85, limbLength: 0.94, muscle: 1.6, shoulder: 0.54, hip: 0.32, waist: 0.06, head: 1.08, sectionN: 2.4 },
+  human: { height: 1.0, width: 1.0, depth: 1.0, limbTaper: 1.0, limbLength: 1.0, muscle: 1.0, shoulder: 0.46, hip: 0.3, waist: 0.1, head: 1.0, sectionN: 2.1, sectionNBase: 2.1 },
+  elf: { height: 1.05, width: 0.84, depth: 0.88, limbTaper: 1.25, limbLength: 1.06, muscle: 0.68, shoulder: 0.4, hip: 0.26, waist: 0.16, head: 0.98, sectionN: 1.9, sectionNBase: 1.9 },
+  dwarf: { height: 0.8, width: 1.3, depth: 1.16, limbTaper: 0.78, limbLength: 0.82, muscle: 1.45, shoulder: 0.5, hip: 0.34, waist: 0.05, head: 1.12, sectionN: 2.35, sectionNBase: 2.35 },
+  ork: { height: 1.12, width: 1.34, depth: 1.1, limbTaper: 0.85, limbLength: 0.94, muscle: 1.6, shoulder: 0.54, hip: 0.32, waist: 0.06, head: 1.08, sectionN: 2.4, sectionNBase: 2.4 },
 };
 
 // -------------------------------------------------------------------------------------------
@@ -153,11 +161,40 @@ export const SUBRACE_SILHOUETTE: Record<string, Partial<RaceSilhouette>> = {
   bloodfang: { muscle: 1.12, sectionN: 2.45 },
 };
 
-/** The effective silhouette for a race + sub-species. */
+// -------------------------------------------------------------------------------------------
+// Angular side planes (lane Q-B). The torso's side profile must read as FLAT PLANES with corners
+// instead of one round sweep. The lever is the section's SUPER-ELLIPSE EXPONENT (`sectionN`):
+// BodySurface.stationsFor lofts every station with `n = s.sectionN`, so raising it squares the
+// section — flatter sides meeting at a sharper corner — without touching a single half-width.
+//
+// The raise is RACE-RELATIVE: each race closes SECTION_PLANE_GAIN of the gap between its own
+// exponent and PLANE_N_CEILING, so an elf (1.9 -> 2.175) stays slimmer than an ork (2.4 -> 2.425)
+// while EVERY race gains the corners. 2.45 is the ceiling: the bloodfang's exponent and the
+// "organic section" bound in tests/bodyshape_test.ts, so no race crosses it and no section turns
+// a right angle (ShapeEquations.maxCorner).
+export const PLANE_N_CEILING = 2.45;
+/** Fraction of the gap to the squared-corner ceiling each race closes. 0 = the pre-wave round
+ *  sweep, 1 = fully squared. Half the gap is a stated, measured raise, not a redesign. */
+export const SECTION_PLANE_GAIN = 0.5;
+
+/** The section exponent a race uses once the angular-plane gain is applied (race-relative). */
+export function planeExponent(baseN: number): number {
+  return baseN + SECTION_PLANE_GAIN * (PLANE_N_CEILING - baseN);
+}
+
+/** The effective silhouette for a race + sub-species, with the lane-Q-B angular-plane gain. */
 export function raceSilhouette(raceId: string, subraceId: string | null): RaceSilhouette {
   const base = RACE_SILHOUETTE[raceId] ?? RACE_SILHOUETTE.human;
   const tweak = subraceId ? SUBRACE_SILHOUETTE[subraceId] : undefined;
-  return tweak ? { ...base, ...tweak } : { ...base };
+  const s = tweak ? { ...base, ...tweak } : { ...base };
+  // Race-relative: the gain scales off each race's own exponent, so the race ordering survives.
+  // The plane gain is scoped to the TORSO (the "side" the ask was about). Applying it to every section
+  // — which the first pass did, because BodySurface lofts every part with one `sectionN` — changed the
+  // limbs' and the FEET's cross-sections, and that broke two measured physics properties: the planted
+  // foot's slide moved 5.54 -> 5.75 mm and the ragdoll stopped settling inside 3 s (both reproduce with
+  // these files stashed and pass without them, measured). So the base exponent rides along for the parts
+  // that touch the ground.
+  return { ...s, sectionN: planeExponent(s.sectionN), sectionNBase: s.sectionN };
 }
 
 /**
@@ -378,7 +415,7 @@ export function constraintList(
 /** The absolute top of each proportion knob, used to bound random variation. */
 export const SILHOUETTE_TOP: RaceSilhouette = {
   height: 1.25, width: 1.5, depth: 1.35, limbTaper: 1.6, limbLength: 1.2, muscle: 1.9,
-  shoulder: 0.62, hip: 0.42, waist: 0.3, head: 1.25, sectionN: 2.45,
+  shoulder: 0.62, hip: 0.42, waist: 0.3, head: 1.25, sectionN: 2.45, sectionNBase: 2.45,
 };
 
 /**

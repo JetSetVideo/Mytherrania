@@ -887,6 +887,27 @@ re-stated `[SPEC LL2]` disclosure pin (two open entry groups) and the `anim_meas
 heavier builds moved on the heaviest dwarf (measured 5.54 mm against a 5.00 mm bound; the band is now
 5.6 mm for non-orks, the ork band untouched, and the reason is recorded where the bound lives).
 
+## 11I. Wave Q — lids and recessed eyes, pointed brows, the neck, and a batch that climbs
+
+Added 2026-10-31. The prompt asked for pointed eyebrows and real upper/lower eyelids on every model,
+eyes pushed deeper into the socket, more angular side planes with a lower shoulder over-width and a
+slimmer neck, slightly better features, mechanics that work together, and a batch that generates
+different cases so the progression from a working game to a working TYPE of game can be seen.
+
+| # | Requirement | Where | Status |
+| --- | --- | --- | --- |
+| QA1 | The brow is a pointed WEDGE (inner root -> outer point, taper and tip position in head heights, ancestry-driven) | `src/graphics/body/AnatomyParts.ts`, `FaceParts.ts`, `ancestry.json`, `src/game/Ancestry.ts` | LIVE |
+| QA2 | Upper AND lower eyelids on all 16 ancestries, with stated thickness and aperture, validated | the same files (`lid` block) | LIVE |
+| QA3 | The eyeball is RECESSED: its front surface sits behind the socket rim (measured inset 0.140h, front-vs-rim 0.185h) | the same files | LIVE |
+| QB1 | Angular side planes: the torso's section exponent is raised race-relative toward a stated ceiling — and SCOPED to the torso, so no limb or foot section moves | `src/game/BodyProfile.ts`, `src/graphics/BodySurface.ts` | LIVE |
+| QB2 | The neck is slimmer by a stated fraction (−6 %) | `src/graphics/body/Proportions.ts` | LIVE |
+| QB3 | The shoulder over-width cut — **NOT TAKEN**: measured to move the planted-foot slide past its band (5.54 → 5.75 mm against 5.6) and to tip the ragdoll settle | — | DROPPED, with the numbers |
+| QQ1 | A batch LADDER: steps that generate different cases, score them on stated criteria, keep the survivors, mutate them onward, prune cells that are never a game, and report the first agreed type | `src/balance/Ladder.ts`, `tools/evolution-ladder.ts` | LIVE |
+
+**Pins:** `tests/face_parts_test.ts` (7), `tests/planes_neck_test.ts` (4), `tests/ladder_test.ts` (9).
+Lane Q-B's own test file is NOT kept: it asserted the shoulder cut that this wave dropped after
+measurement.
+
 ## 11G. Wave O — the Profiles panel
 
 Added 2026-10-31. The prompt asked to improve the journey from the title's profile button into a panel where

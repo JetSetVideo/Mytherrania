@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "units": "rank 1 = most of the metric; body `ranks` are 1..4 across the 4 race nodes; `face` metrics are a rank 1..16 across ALL 16 nodes (units per metric in src/game/Ancestry.ts FACE_UNITS: chin/mouth/nose/eye/ear/skull/jaw/cheek/brow in mm, earAngle in degrees); hairPhysics.massKg in kg at stature 1.0; hair.lightness 0..1 mean palette lightness; beard.fullness 0..1 composite of coverage x lengthMul; skin/hair colours #rrggbb; brow/ear/skull factors dimensionless",
+  "units": "rank 1 = most of the metric; body `ranks` are 1..4 across the 4 race nodes; `face` metrics are a rank 1..16 across ALL 16 nodes (units per metric in src/game/Ancestry.ts FACE_UNITS: chin/mouth/nose/eye/ear/skull/jaw/cheek/brow in mm, earAngle in degrees); hairPhysics.massKg in kg at stature 1.0; hair.lightness 0..1 mean palette lightness; beard.fullness 0..1 composite of coverage x lengthMul; skin/hair colours #rrggbb; brow/ear/skull factors dimensionless; `lid` block in head heights (upper/lower band thickness + aperture) and brow.point 0..1 pointedness",
   "note": "The ancestry hierarchy: 4 race nodes and 12 subrace nodes. Body `ranks` are a strict 1..4 ordering across the 4 race nodes for every metric; a subrace copies its race's ranks and shifts at most two metrics by +/-1, staying in [1,4]. The additive `face` block ranks each facial measure 1..16 across ALL 16 nodes (rank 1 = the most), so the facial hierarchy is a single ranking over races and subraces together.",
   "statures": {
     "human": 1.0,
@@ -71,7 +71,8 @@
         "length": 0.6,
         "thickness": 0.45,
         "prominence": 0.55,
-        "tipPastFace": 0.2
+        "tipPastFace": 0.2,
+        "point": 0.45
       },
       "beard": {
         "mode": "full",
@@ -121,6 +122,11 @@
         "skullDepth": 12,
         "jawWidth": 12,
         "cheekHeight": 12
+      },
+      "lid": {
+        "upper": 0.028,
+        "lower": 0.022,
+        "aperture": 0.055
       }
     },
     "elf": {
@@ -183,7 +189,8 @@
         "length": 0.9,
         "thickness": 0.15,
         "prominence": 0.35,
-        "tipPastFace": 0.55
+        "tipPastFace": 0.55,
+        "point": 0.9
       },
       "beard": {
         "mode": "moustache-thin",
@@ -233,6 +240,11 @@
         "skullDepth": 16,
         "jawWidth": 16,
         "cheekHeight": 16
+      },
+      "lid": {
+        "upper": 0.02,
+        "lower": 0.016,
+        "aperture": 0.062
       }
     },
     "dwarf": {
@@ -294,7 +306,8 @@
         "length": 0.65,
         "thickness": 0.75,
         "prominence": 0.85,
-        "tipPastFace": 0.25
+        "tipPastFace": 0.25,
+        "point": 0.22
       },
       "beard": {
         "mode": "full",
@@ -344,6 +357,11 @@
         "skullDepth": 8,
         "jawWidth": 8,
         "cheekHeight": 4
+      },
+      "lid": {
+        "upper": 0.038,
+        "lower": 0.03,
+        "aperture": 0.046
       }
     },
     "ork": {
@@ -405,7 +423,8 @@
         "length": 0.35,
         "thickness": 0.25,
         "prominence": 0.15,
-        "tipPastFace": 0.1
+        "tipPastFace": 0.1,
+        "point": 0.12
       },
       "beard": {
         "mode": "chin",
@@ -455,6 +474,11 @@
         "skullDepth": 4,
         "jawWidth": 4,
         "cheekHeight": 8
+      },
+      "lid": {
+        "upper": 0.034,
+        "lower": 0.028,
+        "aperture": 0.048
       }
     },
     "imperial": {
@@ -517,7 +541,8 @@
         "length": 0.6,
         "thickness": 0.45,
         "prominence": 0.55,
-        "tipPastFace": 0.22
+        "tipPastFace": 0.22,
+        "point": 0.42
       },
       "beard": {
         "mode": "full",
@@ -567,6 +592,11 @@
         "skullDepth": 9,
         "jawWidth": 9,
         "cheekHeight": 9
+      },
+      "lid": {
+        "upper": 0.026,
+        "lower": 0.021,
+        "aperture": 0.057
       }
     },
     "nomad": {
@@ -629,7 +659,8 @@
         "length": 0.55,
         "thickness": 0.42,
         "prominence": 0.5,
-        "tipPastFace": 0.2
+        "tipPastFace": 0.2,
+        "point": 0.5
       },
       "beard": {
         "mode": "full",
@@ -679,6 +710,11 @@
         "skullDepth": 10,
         "jawWidth": 10,
         "cheekHeight": 10
+      },
+      "lid": {
+        "upper": 0.029,
+        "lower": 0.023,
+        "aperture": 0.054
       }
     },
     "islander": {
@@ -740,7 +776,8 @@
         "length": 0.6,
         "thickness": 0.45,
         "prominence": 0.55,
-        "tipPastFace": 0.2
+        "tipPastFace": 0.2,
+        "point": 0.45
       },
       "beard": {
         "mode": "moustache",
@@ -790,6 +827,11 @@
         "skullDepth": 11,
         "jawWidth": 11,
         "cheekHeight": 11
+      },
+      "lid": {
+        "upper": 0.028,
+        "lower": 0.022,
+        "aperture": 0.055
       }
     },
     "high": {
@@ -849,7 +891,8 @@
         "length": 0.9,
         "thickness": 0.15,
         "prominence": 0.4,
-        "tipPastFace": 0.58
+        "tipPastFace": 0.58,
+        "point": 0.95
       },
       "beard": {
         "mode": "moustache-thin",
@@ -899,6 +942,11 @@
         "skullDepth": 13,
         "jawWidth": 13,
         "cheekHeight": 13
+      },
+      "lid": {
+        "upper": 0.018,
+        "lower": 0.014,
+        "aperture": 0.064
       }
     },
     "wood": {
@@ -959,7 +1007,8 @@
         "length": 0.88,
         "thickness": 0.15,
         "prominence": 0.35,
-        "tipPastFace": 0.55
+        "tipPastFace": 0.55,
+        "point": 0.85
       },
       "beard": {
         "mode": "moustache-thin",
@@ -1009,6 +1058,11 @@
         "skullDepth": 14,
         "jawWidth": 14,
         "cheekHeight": 14
+      },
+      "lid": {
+        "upper": 0.021,
+        "lower": 0.017,
+        "aperture": 0.061
       }
     },
     "dark": {
@@ -1069,7 +1123,8 @@
         "length": 0.9,
         "thickness": 0.15,
         "prominence": 0.35,
-        "tipPastFace": 0.55
+        "tipPastFace": 0.55,
+        "point": 0.9
       },
       "beard": {
         "mode": "moustache-thin",
@@ -1119,6 +1174,11 @@
         "skullDepth": 15,
         "jawWidth": 15,
         "cheekHeight": 15
+      },
+      "lid": {
+        "upper": 0.02,
+        "lower": 0.016,
+        "aperture": 0.062
       }
     },
     "mountain": {
@@ -1177,7 +1237,8 @@
         "length": 0.65,
         "thickness": 0.75,
         "prominence": 0.85,
-        "tipPastFace": 0.25
+        "tipPastFace": 0.25,
+        "point": 0.2
       },
       "beard": {
         "mode": "full",
@@ -1227,6 +1288,11 @@
         "skullDepth": 5,
         "jawWidth": 5,
         "cheekHeight": 1
+      },
+      "lid": {
+        "upper": 0.039,
+        "lower": 0.031,
+        "aperture": 0.045
       }
     },
     "forge": {
@@ -1287,7 +1353,8 @@
         "length": 0.62,
         "thickness": 0.72,
         "prominence": 0.82,
-        "tipPastFace": 0.25
+        "tipPastFace": 0.25,
+        "point": 0.28
       },
       "beard": {
         "mode": "full",
@@ -1337,6 +1404,11 @@
         "skullDepth": 6,
         "jawWidth": 6,
         "cheekHeight": 2
+      },
+      "lid": {
+        "upper": 0.036,
+        "lower": 0.029,
+        "aperture": 0.048
       }
     },
     "deep": {
@@ -1395,7 +1467,8 @@
         "length": 0.65,
         "thickness": 0.75,
         "prominence": 0.85,
-        "tipPastFace": 0.25
+        "tipPastFace": 0.25,
+        "point": 0.22
       },
       "beard": {
         "mode": "full",
@@ -1445,6 +1518,11 @@
         "skullDepth": 7,
         "jawWidth": 7,
         "cheekHeight": 3
+      },
+      "lid": {
+        "upper": 0.038,
+        "lower": 0.03,
+        "aperture": 0.046
       }
     },
     "greenhide": {
@@ -1503,7 +1581,8 @@
         "length": 0.35,
         "thickness": 0.25,
         "prominence": 0.15,
-        "tipPastFace": 0.1
+        "tipPastFace": 0.1,
+        "point": 0.12
       },
       "beard": {
         "mode": "chin",
@@ -1553,6 +1632,11 @@
         "skullDepth": 3,
         "jawWidth": 3,
         "cheekHeight": 7
+      },
+      "lid": {
+        "upper": 0.035,
+        "lower": 0.029,
+        "aperture": 0.047
       }
     },
     "ironhide": {
@@ -1611,7 +1695,8 @@
         "length": 0.4,
         "thickness": 0.3,
         "prominence": 0.25,
-        "tipPastFace": 0.12
+        "tipPastFace": 0.12,
+        "point": 0.18
       },
       "beard": {
         "mode": "chin",
@@ -1661,6 +1746,11 @@
         "skullDepth": 1,
         "jawWidth": 1,
         "cheekHeight": 5
+      },
+      "lid": {
+        "upper": 0.036,
+        "lower": 0.03,
+        "aperture": 0.046
       }
     },
     "bloodfang": {
@@ -1719,7 +1809,8 @@
         "length": 0.35,
         "thickness": 0.25,
         "prominence": 0.15,
-        "tipPastFace": 0.1
+        "tipPastFace": 0.1,
+        "point": 0.1
       },
       "beard": {
         "mode": "chin",
@@ -1769,6 +1860,11 @@
         "skullDepth": 2,
         "jawWidth": 2,
         "cheekHeight": 6
+      },
+      "lid": {
+        "upper": 0.033,
+        "lower": 0.027,
+        "aperture": 0.049
       }
     }
   }

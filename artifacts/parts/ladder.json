@@ -1,0 +1,111 @@
+{
+ "options": {
+  "STEPS": 2,
+  "CASES": 2,
+  "MATCHES": 4,
+  "KEEP": 1,
+  "SEED": 20261031
+ },
+ "criteria": [
+  {
+   "key": "decisiveness",
+   "weight": 0.35,
+   "why": "a game that cannot end is not a game"
+  },
+  {
+   "key": "engagement",
+   "weight": 0.3,
+   "why": "both fighters actually fighting, not circling"
+  },
+  {
+   "key": "closeness",
+   "weight": 0.2,
+   "why": "one seat always winning is a bug, not a type"
+  },
+  {
+   "key": "mix",
+   "weight": 0.15,
+   "why": "a type of game should be able to end in more than one way"
+  }
+ ],
+ "history": [
+  {
+   "step": 0,
+   "cases": [
+    {
+     "cell": -1,
+     "kind": "all",
+     "seed": 160458887,
+     "m": {
+      "decisiveness": 1,
+      "closeness": 0.5,
+      "engagement": 0.75,
+      "mix": 0.3333333333333333,
+      "medianSeconds": 8.615,
+      "dominantEnding": "ringout"
+     },
+     "score": 0.725,
+     "survived": false
+    },
+    {
+     "cell": 0,
+     "kind": "all",
+     "seed": 1133862057,
+     "m": {
+      "decisiveness": 1,
+      "closeness": 0.5,
+      "engagement": 0.75,
+      "mix": 0.6666666666666666,
+      "medianSeconds": 85.265,
+      "dominantEnding": "ringout"
+     },
+     "score": 0.775,
+     "survived": true
+    }
+   ],
+   "kept": 1,
+   "archetype": null,
+   "cluster": "cell 0 · ringout (1/1 agree)"
+  },
+  {
+   "step": 1,
+   "cases": [
+    {
+     "cell": 1,
+     "kind": "corner",
+     "seed": 1854129813,
+     "m": {
+      "decisiveness": 1,
+      "closeness": 1,
+      "engagement": 0.25,
+      "mix": 0.3333333333333333,
+      "medianSeconds": 7.130000000000001,
+      "dominantEnding": "ringout"
+     },
+     "score": 0.675,
+     "survived": false
+    },
+    {
+     "cell": 4,
+     "kind": "random",
+     "seed": 3317668584,
+     "m": {
+      "decisiveness": 1,
+      "closeness": 0.5,
+      "engagement": 0.5,
+      "mix": 0.6666666666666666,
+      "medianSeconds": 55.95,
+      "dominantEnding": "ko"
+     },
+     "score": 0.7,
+     "survived": true
+    }
+   ],
+   "kept": 1,
+   "archetype": null,
+   "cluster": "cell 4 · ko (1/1 agree)"
+  }
+ ],
+ "archetypeFirstSeen": null,
+ "wallMs": 85
+}

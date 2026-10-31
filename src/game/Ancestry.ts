@@ -59,6 +59,22 @@ export interface BrowSpec {
   thickness: number;
   prominence: number;
   tipPastFace: number;
+  // 0..1 how far the brow's OUTER end tapers to a point (lane Q-A). 0 = a rounded ridge,
+  // 1 = the sharpest wedge: the tip radius falls to ~5% of the inner root (a pointed brow on
+  // an elf is not a pointed brow on an ork). The SDF ridge and the rigid brow mesh read it.
+  point: number;
+}
+/**
+ * The eyelid bands (lane Q-A), in HEAD HEIGHTS: `upper`/`lower` are the vertical height of the
+ * lid band above/below the eye opening, `aperture` is the opening the bands leave between them.
+ * A heavy-browed ancestry (dwarf/ork) carries thicker lids and a narrower aperture; an elf a
+ * thinner lid and a wider aperture. Validated for every node (validateAncestry refuses a node
+ * without them), so every model has an upper AND a lower lid.
+ */
+export interface LidSpec {
+  upper: number;
+  lower: number;
+  aperture: number;
 }
 export interface BeardSpec {
   mode: "none" | "chin" | "moustache-thin" | "moustache" | "full";
@@ -131,6 +147,7 @@ export interface AncestryNode {
   hair: HairSpec;
   brow: BrowSpec;
   beard: BeardSpec;
+  lid: LidSpec;
   tusk: TuskSpec;
   ears: EarSpec;
   skull: SkullSpec;
@@ -216,6 +233,13 @@ export const FACE_UNITS: Record<FaceMetricName, string> = {
 const RAW = ancestryRaw as unknown as AncestryFile;
 
 /**
+ * The largest lid band thickness / aperture a node may state, head heights (lane Q-A). A lid or
+ * opening 0.12 h (≈ 2.7 cm on a 22.7 cm head) is already a cartoon eye; anything larger is a
+ * data error, not a look. validateAncestry refuses it.
+ */
+export const LID_MAX_PER_HEAD = 0.12;
+
+/**
  * Validate the new face block and the extended hair/beard fields against the frozen contract:
  * every one of the 16 nodes carries every face metric as an integer in [1,16], each metric is a
  * strict permutation of {1..16} across the 16 nodes (no tie, no zero), and every node states a
@@ -240,6 +264,18 @@ export function validateAncestry(): string[] {
     const f = n.beard.fullness;
     if (typeof f !== "number" || !Number.isFinite(f) || f < 0 || f > 1) {
       problems.push(`${id}.beard.fullness = ${f} must be 0..1`);
+    }
+    // Pointed brow (lane Q-A): the taper is a data field, declared for every node.
+    const pt = n.brow.point;
+    if (typeof pt !== "number" || !Number.isFinite(pt) || pt < 0 || pt > 1) {
+      problems.push(`${id}.brow.point = ${pt} must be 0..1`);
+    }
+    // Upper AND lower lid bands with an aperture, in head heights, declared for every node.
+    for (const k of ["upper", "lower", "aperture"] as const) {
+      const v = n.lid?.[k];
+      if (typeof v !== "number" || !Number.isFinite(v) || v <= 0 || v > LID_MAX_PER_HEAD) {
+        problems.push(`${id}.lid.${k} = ${v} must be a finite number in (0, ${LID_MAX_PER_HEAD}] head heights`);
+      }
     }
   }
   for (const m of FACE_METRICS) {
@@ -285,6 +321,7 @@ function merge(race: AncestryNode, sub: AncestryNode): AncestryNode {
     hair: { ...race.hair, ...sub.hair, styles: [...sub.hair.styles], colors: [...sub.hair.colors] },
     brow: { ...race.brow, ...sub.brow },
     beard: { ...race.beard, ...sub.beard },
+    lid: { ...race.lid, ...sub.lid },
     tusk: { ...race.tusk, ...sub.tusk },
     ears: { ...race.ears, ...sub.ears },
     skull: { ...race.skull, ...sub.skull },

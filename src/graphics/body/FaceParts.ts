@@ -8,15 +8,17 @@ import * as THREE from "three";
 import { createCelSurface } from "../shaders/CelShader.ts";
 import { raceBuild, seededPick } from "../../game/RaceAppearance.ts";
 import { ancestryOf } from "../../game/Ancestry.ts";
-import { beardModeFor, browDims, hairColourFor, hairFall, hairLengthM, isBald, lookSeed, tuskDims } from "./Proportions.ts";
+import { beardModeFor, hairColourFor, hairFall, hairLengthM, isBald, lookSeed, tuskDims } from "./Proportions.ts";
 import type { Appearance } from "../../game/Characters.ts";
 import type { Vec3 } from "./contracts.ts";
-import { type FaceAnchors, HAIR_CAP_POLAR, HAIR_CAP_SCALE, HAIR_CAP_TILT } from "./AnatomyParts.ts";
+import { browWedge, type FaceAnchors, HAIR_CAP_POLAR, HAIR_CAP_SCALE, HAIR_CAP_TILT, lidBands } from "./AnatomyParts.ts";
 
 /** The parts the face morph drives each frame (brow, eyelid, mouth), like Humanoid's refs. */
 export interface FaceRig {
   brow: THREE.Mesh[];
   eyelid: THREE.Mesh[];
+  /** The lower lid bands (lane Q-A): every model has an upper AND a lower lid. */
+  eyelidLower: THREE.Mesh[];
   mouth: THREE.Mesh;
   /** Rest heights (head-bone space) the morph offsets from. */
   browRestY: number[];
@@ -76,7 +78,14 @@ export function buildFaceParts(head: THREE.Object3D, face: FaceAnchors, origin: 
   };
   const flat = (color: string) => new THREE.MeshLambertMaterial({ color, emissive: new THREE.Color(color).multiplyScalar(0.45) });
   const h = unit, r = face.eyeRadius;
-  const refs: FaceRig = { brow: [], eyelid: [], mouth: null as unknown as THREE.Mesh, browRestY: [], mouthRestY: 0, unit, triangleCount: 0, secondary: [] };
+  const refs: FaceRig = { brow: [], eyelid: [], eyelidLower: [], mouth: null as unknown as THREE.Mesh, browRestY: [], mouthRestY: 0, unit, triangleCount: 0, secondary: [] };
+  // Eyelid bands (lane Q-A): the ancestry's lid block (head heights) × h, per eye. The upper band
+  // spans from the eyeball's top down to the opening; the lower from the bottom up to the opening,
+  // so the visible aperture is node.lid.aperture and both bands overlap the recessed globe.
+  const lb = lidBands(node, h);
+  const halfAperture = lb.aperture / 2;
+  const shell = r * 1.04;
+  const clampUnit = (v: number) => Math.max(-1, Math.min(1, v));
   // Eyes: sclera ball in the socket, iris and pupil discs on its front, a catch-light.
   for (let i = 0; i < 2; i++) {
     const e = at(face.eye[i]);
@@ -85,19 +94,32 @@ export function buildFaceParts(head: THREE.Object3D, face: FaceAnchors, origin: 
     iris.renderOrder = 1;
     add(new THREE.CircleGeometry(r * 0.25, 12), flat("#050505"), [e[0], e[1], e[2] + r * 0.99]);
     add(new THREE.CircleGeometry(r * 0.1, 8), flat("#ffffff"), [e[0] + r * 0.2, e[1] + r * 0.2, e[2] + r * 0.995]);
-    // Eyelid: the upper half-shell of the eyeball, hung from its TOP (geometry shifted so
-    // the pole is the origin): scale.y = 1 − eyeOpen lowers its rim from the top of the eye
-    // (open) to the eye's equator (half closed), as the morph expects.
-    const lidGeo = new THREE.SphereGeometry(r * 1.06, 14, 6, 0, Math.PI * 2, 0, Math.PI * 0.5).translate(0, -r * 1.06, 0);
-    const lid = add(lidGeo, flat(shade(a.body, 0.7)), [e[0], e[1] + r * 1.06, e[2]]);
-    refs.eyelid.push(lid);
+    // Upper lid: a spherical zone from the eyeball's top down to y = +aperture/2 (its rim), of
+    // height min(R, aperture/2 + upperThickness); scale.y = 1 − eyeOpen lowers it to close the eye.
+    const yUpTop = Math.min(shell, halfAperture + lb.upperThickness);
+    const thUpStart = Math.acos(clampUnit(yUpTop / shell));
+    const thUpEnd = Math.acos(clampUnit(halfAperture / shell));
+    const upperGeo = new THREE.SphereGeometry(shell, 10, 3, 0, Math.PI * 2, thUpStart, Math.max(1e-3, thUpEnd - thUpStart));
+    refs.eyelid.push(add(upperGeo, flat(shade(a.body, 0.7)), [e[0], e[1], e[2]]));
+    // Lower lid: the mirror band, from the bottom up to y = −aperture/2.
+    const yLoBot = -Math.min(shell, halfAperture + lb.lowerThickness);
+    const thLoStart = Math.acos(clampUnit(-halfAperture / shell));
+    const thLoEnd = Math.acos(clampUnit(yLoBot / shell));
+    const lowerGeo = new THREE.SphereGeometry(shell, 10, 3, 0, Math.PI * 2, thLoStart, Math.max(1e-3, thLoEnd - thLoStart));
+    refs.eyelidLower.push(add(lowerGeo, flat(shade(a.body, 0.7)), [e[0], e[1], e[2]]));
     const b = at(face.brow[i]);
-    // Brow from the ancestry: length/thickness/prominence from Ancestry.brow, and tipPastFace
-    // pushes the OUTER end past the eye anchor by `tipPast` so the elf's tips run out past the
-    // skull radius. The mesh stays in refs.brow, so the face morph keeps driving it.
-    const br = browDims(node, h, Math.abs(b[0]));
+    // Brow from the ancestry: a POINTED wedge (lane Q-A), no longer a box. browWedge gives the
+    // inner root radius and the outer tip (tipR ≪ rootR, brow.point sharpens it); the tip's x is
+    // stated in head heights. A 6-sided cone flattened along the face depth reads as a ridge that
+    // runs to a point at its outer end. The mesh stays in refs.brow, so the morph keeps driving it.
+    const w = browWedge(node, h, face.eye[i][1]);
     const browColour = hairColourFor(node, seed);
-    const brow = add(new THREE.BoxGeometry(br.width, br.thickness, br.depth), flat(browColour), [b[0] + Math.sign(b[0]) * br.tipPast * 0.5, b[1], b[2] + 0.02 * h * node.brow.prominence]);
+    const sgn = b[0] < 0 ? -1 : 1;
+    const len = w.tipX - w.innerX;
+    const brow = add(new THREE.ConeGeometry(w.rootR, len, 6), flat(browColour),
+      at([sgn * (w.innerX + w.tipX) * 0.5, w.y, w.z]));
+    brow.scale.set(1, 1, 0.5);                 // flatten the cone into a ridge in the face depth
+    brow.rotation.z = sgn > 0 ? -Math.PI / 2 : Math.PI / 2; // apex (point) points outward
     refs.brow.push(brow);
     refs.browRestY.push(b[1]);
   }
@@ -202,6 +224,7 @@ export function applyFaceMorph(refs: FaceRig, f: { browRaise: number; browFurrow
     b.rotation.z = (f.browFurrow - 0.5) * 0.3 * (b.position.x < 0 ? -1 : 1);
   }
   for (const e of refs.eyelid) e.scale.y = Math.max(0.05, 1 - f.eyeOpen);
+  for (const e of refs.eyelidLower) e.scale.y = Math.max(0.05, 1 - f.eyeOpen);
   refs.mouth.scale.y = 0.4 + f.mouthOpen * 1.2;
   refs.mouth.position.y = refs.mouthRestY - f.mouthOpen * r * 0.08;
   refs.mouth.rotation.z = f.mouthCurve * 0.2;

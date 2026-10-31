@@ -23,6 +23,9 @@ export const PART_SIDES = 22;
  * along the length. The directional lobes ride on each station so the ring builder
  * applies them per angle.
  */
+/** The parts whose SIDE profile the angular-plane ask is about. */
+const TORSO_PARTS: ReadonlySet<BodyPartName> = new Set<BodyPartName>(["chest", "abdomen", "pelvis", "pectorals", "scapulae"]);
+
 export function stationsFor(part: BodyPartName, s: RaceSilhouette, samples = PART_SAMPLES): LoftStation[] {
   const sh = partShape(part, s);
   const out: LoftStation[] = [];
@@ -31,7 +34,10 @@ export function stationsFor(part: BodyPartName, s: RaceSilhouette, samples = PAR
     let g = taper(t, ...sh.taper);
     for (const b of sh.bulges) g += bulge(t, ...b);
     if (sh.pinch) g *= pinch(t, ...sh.pinch);
-    out.push({ t, radius: sh.root * g, depth: sh.depth, n: s.sectionN, lobes: sh.lobes });
+    // Torso parts take the angular-side-plane exponent; the limbs, hands and feet keep the race's base
+    // exponent (see RaceSilhouette.sectionNBase): the angular change must not move a contact surface.
+    const torso = TORSO_PARTS.has(part);
+    out.push({ t, radius: sh.root * g, depth: sh.depth, n: torso ? s.sectionN : (s.sectionNBase ?? s.sectionN), lobes: sh.lobes });
   }
   return out;
 }
