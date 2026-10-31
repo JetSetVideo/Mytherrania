@@ -90,6 +90,17 @@ const clickAt = async (which: "fighter0" | "fighter1" | "object" | "empty") => {
 
 const hoverOnFighter = await clickAt("fighter0");
 const cardA = hoverOnFighter;
+// Wave J: the card's bars must carry their numbers INSIDE and be cut into squares across the whole
+// track — read the rendered DOM, not the model.
+const barRead = await p.evaluate(() => {
+  const bars = [...document.querySelectorAll(".inspect-card .inspect-bar")];
+  return bars.map((b) => ({
+    text: b.querySelector(".inspect-bar-text")?.textContent ?? "",
+    squares: b.querySelectorAll(".inspect-bar-seg").length,
+    fullSquares: b.querySelectorAll(".inspect-bar-seg.is-full").length,
+    widths: [...b.querySelectorAll(".inspect-bar-seg-fill")].map((f) => (f as HTMLElement).style.width).slice(0, 3),
+  }));
+});
 await p.screenshot({ path: "artifacts/qa-wave-i/01-fighter-card.png" });
 const cardB = await clickAt("fighter1");
 const cardObj = await clickAt("object");
@@ -116,6 +127,15 @@ report.inspect = {
   objectCardIsObject: cardObj.target?.kind === "object" && cardObj.card?.title !== cardA.card?.title,
   objectCardBadge: cardObj.card?.badges ?? [],
   closedOnEmptyClick: cardClosed.card === null && cardClosed.hover === null,
+};
+report.bars = {
+  count: barRead.length,
+  texts: barRead.map((b) => b.text),
+  squaresPerBar: barRead.map((b) => b.squares),
+  fullSquares: barRead.map((b) => b.fullSquares),
+  firstWidths: barRead[0]?.widths ?? [],
+  numbersInside: barRead.every((b) => /\d/.test(b.text) && b.text.includes("%")),
+  squared: barRead.length > 0 && barRead.every((b) => b.squares >= 8),
 };
 
 // ── 4. props seated on the terrain, and the skirt layer

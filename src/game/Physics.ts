@@ -259,17 +259,29 @@ export function bodyFromStats(s: BodyStats): Body {
  * The damage multiplier a blow gets from the two bodies' physics, clamped so
  * physics shapes a fight without deciding it on its own.
  *
- *   physicsMul = clamp( (0.55 + 0.30·(m_a/m_d) + 0.25·(ρ_a/ρ_d)) · closing , 0.6, 1.8 )
- *   closing    = 0.85 + 0.15·min(2, |v_a|)
+ *   physicsMul = clamp( (0.55 + 0.30·(m_a/m_d) + 0.25·(ρ_a/ρ_d)) · closing , 0.5, 2.2 )
+ *   closing    = 0.85 + 0.55·min(2, |v_a|)
  *
- * Equal bodies standing still give 1.10·0.85 = 0.935.
+ * Equal bodies standing still give 1.10·0.85 = 0.935 (pinned by SPEC P2). Wave J steepened the
+ * closing term (was 0.85 + 0.15·min(2, |v_a|)) so impact drives damage far more: a full-speed blow
+ * (|v| >= 2) from the same heavy body is 1.10·1.95 = 2.145, i.e. 2.29x the same blow standing still
+ * ("the strikes that have more impact do more damage"), while the floor (a light body barely moving,
+ * capped at PHYSICS_MUL_MIN) stays >= 0.45x a nominal blow.
  */
-export const PHYSICS_MUL_MIN = 0.6;
-export const PHYSICS_MUL_MAX = 1.8;
+export const PHYSICS_MUL_MIN = 0.5;
+export const PHYSICS_MUL_MAX = 2.2;
+/**
+ * Closingspeed term of physicsMultiplier: a blow that is not moving is worth CLOSING_BASE of a
+ * nominal one, and every m/s of closing speed adds CLOSING_GAIN, saturating at CLOSING_SAT m/s.
+ * Steeper than the pre-Wave-J (base 0.85, gain 0.15, sat 2): at the arena's representative 1 m/s
+ * (ArenaHarness.HARNESS_CLOSING_SPEED) this is 1.40x versus 1.00x before, which is what pulls the
+ * median duel from ~52 s into the 25-55 s band. closing(0) = 0.85 is fixed by SPEC P2.
+ */
+export const CLOSING_BASE = 0.85, CLOSING_GAIN = 0.55, CLOSING_SAT = 2;
 export function physicsMultiplier(attacker: Body, defender: Body, attackerSpeed: number): number {
   const massRatio = totalMass(attacker) / Math.max(1e-6, totalMass(defender));
   const densRatio = density(attacker) / Math.max(1e-6, density(defender));
-  const closing = 0.85 + 0.15 * Math.min(2, Math.abs(attackerSpeed));
+  const closing = CLOSING_BASE + CLOSING_GAIN * Math.min(CLOSING_SAT, Math.abs(attackerSpeed));
   const raw = (0.55 + 0.3 * massRatio + 0.25 * densRatio) * closing;
   return Math.max(PHYSICS_MUL_MIN, Math.min(PHYSICS_MUL_MAX, raw));
 }

@@ -22,7 +22,8 @@
 //    vector = J_n·(−n) + J_t·t̂ — so a square blow pushes straight in, a glancing one mostly
 //    slides and pushes little; then the defender's guard (BLOCK_BRACE) and footing
 //    (GROUND_SHARE·balance) take their share.
-// 5. Damage = attackPower × roll[min, max] × crit × ZONE_DAMAGE[zone] × Σ_kind mix·eff·armour.
+// 5. Damage = attackPower × roll[min, max] × crit × ZONE_DAMAGE[zone] × Σ_kind mix·eff·armour
+//    × IMPACT (impactMul, section 6 below).
 
 import { clamp, clamp01, lerp, smoothstep } from "../core/MathCore.ts";
 import type { DamageKind, HitZone, ImpactInput, ImpactResult, StrikeFeature, V3, WeaponSpec } from "./contracts.ts";
@@ -99,6 +100,24 @@ export const EFFICIENCY_MAX = 1.8;
 export const GRAZE_EFF = 0.35;
 /** A poorly aligned blow is harder to land: accuracy × lerp(ACCURACY_FLOOR, 1, quality). */
 export const ACCURACY_FLOOR = 0.75;
+
+// --- 6. the impact term (Wave J) -------------------------------------------------------------
+/**
+ * Wave J: "the strikes that have more impact, they do more damage". On top of how cleanly the edge
+ * bit (efficiency, above), a geometric blow's damage now carries an explicit IMPACT factor that
+ * grows with the closing speed v_n and the effective striking mass m_w,eff the swing delivered. It
+ * is exactly 1 at the REFERENCE contact (v_n = IMPACT_REF_SPEED, m_w,eff = IMPACT_REF_MASS) so the
+ * per-weapon DPS normalisation still holds in expectation (the reference distribution these weapons
+ * were normalised over is a 6-14 m/s swing), is bounded to [IMPACT_MUL_MIN, IMPACT_MUL_MAX], and is
+ * monotone non-decreasing in both v_n and m_w,eff.
+ *   impactMul = clamp(1 + IMPACT_SPEED_GAIN·(speedTerm − 1) + IMPACT_MASS_GAIN·(massTerm − 1), MIN, MAX)
+ *   speedTerm = clamp(v_n / IMPACT_REF_SPEED, 0, 2);  massTerm = clamp(m_w,eff / IMPACT_REF_MASS, 0, 2)
+ */
+export const IMPACT_REF_SPEED = 10;   // m/s of v_n that is "nominal impact" (== V_NOMINAL)
+export const IMPACT_REF_MASS = 1.5;   // kg of m_w,eff that is "nominal mass" (measured typical ~1-2 kg)
+export const IMPACT_SPEED_GAIN = 0.6; // impact added per reference speed of closing speed
+export const IMPACT_MASS_GAIN = 0.4;  // impact added per reference mass of effective striking mass
+export const IMPACT_MUL_MIN = 0.4, IMPACT_MUL_MAX = 2.6;
 
 // --- derived tables ------------------------------------------------------------------------
 
@@ -326,7 +345,11 @@ export function resolveImpact(input: ImpactInput): ImpactResult {
   // An aligned, biting thrust finds the gaps: the weapon's pierce plus a bonus for this hit.
   const pierceHit = clamp01(pierce + THRUST_PIERCE_BONUS * w.thrust * effThrust * thrustA * thrustA);
   const armourMul = 1 / (1 + ARMOUR_DIVISOR_GAIN * armour * (1 - pierceHit));
-  const damageFactor = efficiency * armourMul;
+  // 6. Impact (Wave J): how much punch this contact carried, on top of how well it bit.
+  const speedTerm = clamp(vn / IMPACT_REF_SPEED, 0, 2);
+  const massTerm = clamp(mW / IMPACT_REF_MASS, 0, 2);
+  const impactMul = clamp(1 + IMPACT_SPEED_GAIN * (speedTerm - 1) + IMPACT_MASS_GAIN * (massTerm - 1), IMPACT_MUL_MIN, IMPACT_MUL_MAX);
+  const damageFactor = efficiency * armourMul * impactMul;
   const quality = w.cut * edgeA + w.thrust * thrustA + w.blunt;
   const pHit = clamp01(fin(profile.accuracy, 0.9)) * lerp(ACCURACY_FLOOR, 1, clamp01(quality));
   const rAcc = rng(), rRoll = rng(), rCrit = rng();
@@ -335,7 +358,7 @@ export function resolveImpact(input: ImpactInput): ImpactResult {
   const kindName = handsUsed === 2 ? "2H" : "1H";
   notes.push(`${weapon.archetype} ${kindName} ${contact.feature} on ${contact.hitbox.side}${zone}: ${(angle * 180 / Math.PI).toFixed(0)}° from the normal, v_n ${vn.toFixed(1)} m/s`);
   notes.push(`m_w,eff ${mW.toFixed(2)} kg (lever ${y.toFixed(2)} m) vs m_t ${mT.toFixed(1)} kg → J_n ${Jn.toFixed(1)} N·s, J_t ${Jt.toFixed(1)} N·s, e ${e.toFixed(2)}`);
-  notes.push(`delivery cut ${effCut.toFixed(2)} thrust ${effThrust.toFixed(2)} blunt ${effBlunt.toFixed(2)}; armour ${armour.toFixed(2)} → physical ×${kindFactor.toFixed(2)}, damage ×${damageFactor.toFixed(2)} (efficiency ${efficiency.toFixed(2)}); zone ×${zoneMul.toFixed(2)}`);
+  notes.push(`delivery cut ${effCut.toFixed(2)} thrust ${effThrust.toFixed(2)} blunt ${effBlunt.toFixed(2)}; armour ${armour.toFixed(2)} → physical ×${kindFactor.toFixed(2)}, damage ×${damageFactor.toFixed(2)} (efficiency ${efficiency.toFixed(2)}, impact ×${impactMul.toFixed(2)}); zone ×${zoneMul.toFixed(2)}`);
 
   let outcome: ImpactResult["outcome"];
   let damage: number;

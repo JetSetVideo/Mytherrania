@@ -4,29 +4,42 @@ canvas{display:block}
 
 /* HUD */
 #hud{position:fixed;top:var(--hud-top,12px);left:var(--hud-edge,16px);font-family:'Palatino Linotype','Palatino','Book Antiqua',Georgia,serif;font-size:13px;line-height:1.5;pointer-events:none;z-index:10}
-/* Fighter panels (FighterPanel.ts): identity + life / mana / stamina, each a bright NOMINAL fill
-   over a dark POTENTIAL fill on an empty track; text "nominal / potential". */
+/* Fighter panels (FighterPanel.ts): identity + life / mana / stamina. Each bar is a squared
+   channel: a dark POTENTIAL fill under a bright NOMINAL fill cut into BAR_SEGMENTS (12) equal
+   squares by tick dividers, with the numbers (value / max · share) drawn INSIDE the bar. The
+   track is 18px tall so the 11px in-bar text fits. Widths are set through CSSOM, never an
+   inline style attribute. */
 #hud-panels{display:flex;flex-direction:column;gap:6px;margin-bottom:4px}
 .fighter-panel{width:min(330px,100%);padding:5px 8px 6px;border-radius:7px;background:rgba(8,12,16,.62);box-shadow:0 1px 6px rgba(0,0,0,.45);text-shadow:0 1px 2px #000}
 .fighter-panel[data-side=player] .fp-head{color:#ef7455}
 .fighter-panel[data-side=opponent] .fp-head{color:#b9c9c8}
 .fp-head{font-weight:700;font-size:13px;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .fp-ident{font-size:12px;line-height:1.3;color:#dfcfa5;margin-bottom:3px}
-.fp-row{display:grid;grid-template-columns:22px 1fr auto;align-items:center;gap:6px;margin-top:2px}
+.fp-row{display:grid;grid-template-columns:22px minmax(0,1fr);align-items:center;gap:6px;margin-top:3px}
 .fp-label{font-size:10px;font-weight:700;letter-spacing:.05em;color:#cbbf9e}
-.fp-track{position:relative;height:10px;border-radius:3px;background:#0d0d0f;border:1px solid rgba(255,255,255,.18);overflow:hidden}
-.fp-pot,.fp-nom{position:absolute;left:0;top:0;bottom:0;transition:width .18s ease-out}
+/* The empty channel is panel slate so the near-black square dividers read on it as well as on the
+   bright fills. Overflow hidden, so a 1px-wide bar simply clips rather than overflowing. */
+.fp-track{position:relative;height:18px;border-radius:4px;background:#202d35;border:1px solid rgba(255,255,255,.16);overflow:hidden}
+.fp-pot{position:absolute;left:0;top:0;bottom:0;transition:width .18s ease-out}
+/* The squares: a flex row of equal cells; each cell carries the bright fill of its own share. */
+.fp-segs{position:absolute;inset:0;display:flex;pointer-events:none}
+.fp-seg{position:relative;flex:1 1 0;min-width:0;border-right:1px solid rgba(6,10,13,.85)}
+.fp-seg:last-child{border-right:none}
+.fp-seg.is-full{box-shadow:inset 0 0 0 1px rgba(255,255,255,.12)}
+.fp-seg-fill{display:block;height:100%;width:0;border-radius:2px;transition:width .18s ease-out}
 .fp-life .fp-pot{background:#5a0f12}
-.fp-life .fp-nom{background:linear-gradient(#ff5a4e,#d61f22)}
+.fp-life .fp-seg-fill{background:linear-gradient(#ff5a4e,#d61f22)}
 .fp-mana .fp-pot{background:#0d1f52}
-.fp-mana .fp-nom{background:linear-gradient(#5aa2ff,#1f55e0)}
+.fp-mana .fp-seg-fill{background:linear-gradient(#5aa2ff,#1f55e0)}
 .fp-stamina .fp-pot{background:#0c3a17}
-.fp-stamina .fp-nom{background:linear-gradient(#6fe07a,#22a338)}
-.fp-text{font-size:11px;font-variant-numeric:tabular-nums;color:#f3ead2;min-width:74px;text-align:right}
+.fp-stamina .fp-seg-fill{background:linear-gradient(#6fe07a,#22a338)}
+/* The numbers INSIDE the bar, centred, kept legible on any fill by an ink shadow. */
+.fp-text{position:absolute;inset:0;z-index:2;display:flex;align-items:center;justify-content:center;font-size:11px;font-variant-numeric:tabular-nums;color:#fff3cf;text-shadow:0 1px 2px rgba(0,0,0,.95),0 0 3px rgba(0,0,0,.85);pointer-events:none}
 .fp-exhausted{grid-column:1/-1;font-size:10px;font-weight:700;color:#ffd166;letter-spacing:.06em}
 .fp-status{font-size:11px;color:#cfe3ff;min-height:0}
 .fp-status:empty{display:none}
-@media(max-width:767px){.fighter-panel{width:100%;padding:4px 6px}.fp-text{min-width:60px;font-size:10px}}
+@media(max-width:767px){.fighter-panel{width:100%;padding:4px 6px}.fp-track{height:16px}.fp-text{font-size:10px}}
+@media(min-width:1440px){.fp-track{height:20px}.fp-text{font-size:12px}}
 #hud-status{font-family:'Cinzel','Trajan Pro','Palatino Linotype','Palatino','Book Antiqua',Georgia,serif;font-size:24px;line-height:1.1;margin-top:2px}
 #hud-weapons{font-size:14px;color:#dfaa55;margin-top:2px}
 #hud-world{font-size:13px;color:#cfe3ff;margin-top:2px;text-shadow:0 1px 2px #000}
@@ -636,11 +649,21 @@ body.myth-cursor-on,body.myth-cursor-on *{cursor:none}
 .inspect-card .inspect-row.tone-good .inspect-row-value{color:#a9ce7c;font-weight:700}
 .inspect-card .inspect-row.tone-muted .inspect-row-value{color:#8fa8ad}
 .inspect-card .inspect-bars{display:flex;flex-direction:column;gap:5px}
-.inspect-card .inspect-bar{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:7px}
+/* Wave J (J-B): the card's bars mirror the HUD — label + a squared track with the numbers inside.
+   The track fills its column and the value/max/pct text is drawn over the squares. The engine
+   sets each square's width and each fill's colour (--bar-colour) through CSSOM, never a style=""
+   attribute (the server CSP blocks those). */
+.inspect-card .inspect-bar{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:7px}
 .inspect-card .inspect-bar-label{font-size:10px;font-weight:700;letter-spacing:.05em;color:#cbbf9e}
-.inspect-card .inspect-bar-track{position:relative;height:10px;border-radius:3px;background:#0d0d0f;border:1px solid rgba(255,255,255,.18);overflow:hidden}
-.inspect-card .inspect-bar-fill{position:absolute;left:0;top:0;bottom:0;border-radius:2px;transition:width .18s ease-out}
-.inspect-card .inspect-bar-text{font-size:11px;font-variant-numeric:tabular-nums;color:#f3ead2;min-width:64px;text-align:right}
+.inspect-card .inspect-bar-track{position:relative;height:18px;border-radius:4px;background:#202d35;border:1px solid rgba(255,255,255,.16);overflow:hidden}
+.inspect-card .inspect-bar-segs{position:absolute;inset:0;display:flex;pointer-events:none}
+.inspect-card .inspect-bar-seg{position:relative;flex:1 1 0;min-width:0;border-right:1px solid rgba(6,10,13,.85)}
+.inspect-card .inspect-bar-seg:last-child{border-right:none}
+.inspect-card .inspect-bar-seg.is-full{box-shadow:inset 0 0 0 1px rgba(255,255,255,.12)}
+.inspect-card .inspect-bar-seg-fill{display:block;height:100%;width:0;border-radius:2px;background:var(--bar-colour,#ef7455);transition:width .18s ease-out}
+.inspect-card .inspect-bar-text{position:absolute;inset:0;z-index:2;display:flex;align-items:center;justify-content:center;font-size:11px;font-variant-numeric:tabular-nums;color:#fff3cf;text-shadow:0 1px 2px rgba(0,0,0,.95),0 0 3px rgba(0,0,0,.85);pointer-events:none}
+/* Legacy single-fill hook, kept so a card built before the squares still paints. */
+.inspect-card .inspect-bar-fill{position:absolute;left:0;top:0;bottom:0;border-radius:2px;background:var(--bar-colour,#ef7455);transition:width .18s ease-out}
 /* Only the card's own buttons take the pointer; the panel itself stays click-through. */
 .inspect-card .inspect-btn{pointer-events:auto;min-height:32px;padding:6px 10px;font:inherit;font-size:13px;font-weight:700;
   color:#fff3cf;background:#2a3a44;border:1px solid #8a7148;border-radius:6px;cursor:pointer}
@@ -667,6 +690,6 @@ body.myth-cursor-on,body.myth-cursor-on *{cursor:none}
   .inspect-card .inspect-row{font-size:13px}
 }
 @media(prefers-reduced-motion:reduce){
-  .myth-cursor-blob,.inspect-card .inspect-bar-fill{transition:none}
+  .myth-cursor-blob,.inspect-card .inspect-bar-fill,.inspect-card .inspect-bar-seg-fill,.fp-seg-fill,.fp-pot{transition:none}
 }
 

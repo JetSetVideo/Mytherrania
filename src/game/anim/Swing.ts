@@ -455,6 +455,59 @@ export const HOLD_MIN = 0.03, SETTLE_MIN = 0.03;
 /** Peak / mean speed of strikeProgress is 2 (a smootherstep's is 15/8): mean-to-peak 1/2. */
 export const STYLED_MEAN_TO_PEAK = 0.5;
 
+// ─── J-C: the impact answer ───────────────────────────────────────────────────────────────────
+//
+// "the strikes that have more impact" must also READ as more impact. Three pure responses, each a
+// function of the weapon's heft and of the blow's IMPACT — the 0..1 share of the hit the engine
+// measured at the press (closing speed × mass × zone; the same energy scale tools/anim-report
+// prints). They shape the timeline SwingDriver.phaseTimes hands the engine:
+//
+//   wind-up     anticipationSeconds(strike, heftMul) = (WINDUP_BASE + WINDUP_RATIO·strike)·heftMul
+//               `heftMul` is the weapon-inertia multiplier (MotionStyle.eff.windupTime: a war
+//               hammer ≈ 1.2×, a dagger ≈ 0.85×), so a heavy weapon COCKS LONGER and a light one
+//               telegraphs less. The strike — the weapon's own speed — never moves, so the whole
+//               blow still fits the class attack interval (COOLDOWN_SHARE · cooldown; asserted in
+//               tests/strike_anim_test.ts).
+//   impact hold hold = base·(1 + IMPACT_HOLD_GAIN·impact), bounded to [HOLD_MIN, HOLD_MAX]: a blow
+//               that lands at full speed freezes its pose ~1.7× as long as a graze. The hold is
+//               added AFTER the strike and is absorbed by styledSwingTiming's cooldown squeeze
+//               (wind-up + hold give to COOLDOWN_SHARE·cooldown), so the ATTACK RATE is unchanged
+//               — only how the budget is spent changes.
+//   recoil      recover, settle = base·(1 + IMPACT_SETTLE_GAIN·impact): a heavy strike settles
+//               slower than a whiff (impact 0 keeps today's fast settle). recoveryCurve is C1 at
+//               both ends, so scaling its DURATION — never its shape — leaves the pose continuous
+//               at the strike and at rest (no pop).
+
+/** Impact 0..1 → hold multiplier (see the section comment). */
+export const IMPACT_HOLD_GAIN = 0.7;
+/** Impact 0..1 → recovery + settle multiplier (a whiff, 0, keeps today's fast settle). */
+export const IMPACT_SETTLE_GAIN = 0.9;
+/** Hard ceiling of a single impact hold, s (a blow may not freeze the swing forever). */
+export const HOLD_MAX = 0.32;
+
+/** Bounded impact hold, s: base·(1 + IMPACT_HOLD_GAIN·impact), clamped to [HOLD_MIN, HOLD_MAX]. */
+export function impactHold(base: number, impact: number): number {
+  const b = Number.isFinite(base) ? base : 0, i = clamp01(Number.isFinite(impact) ? impact : 0);
+  return clamp(b * (1 + IMPACT_HOLD_GAIN * i), HOLD_MIN, HOLD_MAX);
+}
+
+/** Impact-scaled recovery / settle duration, s: base·(1 + IMPACT_SETTLE_GAIN·impact), ≥ 0. */
+export function impactSettle(base: number, impact: number): number {
+  const b = Number.isFinite(base) ? base : 0, i = clamp01(Number.isFinite(impact) ? impact : 0);
+  return Math.max(0, b * (1 + IMPACT_SETTLE_GAIN * i));
+}
+
+/**
+ * Wind-up of a blow, s: (WINDUP_BASE + WINDUP_RATIO·strike)·heftMul, floored at WINDUP_MIN.
+ * `heftMul` is the weapon's inertia multiplier (MotionStyle.eff.windupTime): > 1 heavy, < 1 light.
+ * The strike is untouched, so the blow still fits the class interval.
+ */
+export function anticipationSeconds(strike: number, heftMul = 1): number {
+  const s = clamp(Number.isFinite(strike) ? strike : 0.2, STRIKE_MIN, STRIKE_MAX);
+  const k = Number.isFinite(heftMul) && heftMul > 0 ? heftMul : 1;
+  return Math.max(WINDUP_MIN, (WINDUP_BASE + WINDUP_RATIO * s) * k);
+}
+
 /** Phase scales of a styled swing (MotionStyle.eff satisfies it). */
 export interface PhaseScales { windupTime: number; strikeTime: number; recoverTime: number; holdTime: number; settleTime: number }
 
@@ -466,15 +519,18 @@ export interface PhaseScales { windupTime: number; strikeTime: number; recoverTi
  * the cooldown, wind-up, recovery, hold and settle shrink together toward their minima.
  */
 export function styledSwingTiming(
-  strike: number, cooldown: number, sc: PhaseScales, minStrike = 0, overrun = 0, minWindup = WINDUP_MIN, minRecover = RECOVER_MIN, tailFree = true,
+  strike: number, cooldown: number, sc: PhaseScales, minStrike = 0, overrun = 0, minWindup = WINDUP_MIN, minRecover = RECOVER_MIN, tailFree = true, impact = 0,
 ): SwingTiming {
   const s0 = clamp(Number.isFinite(strike) ? strike : 0.2, STRIKE_MIN, STRIKE_MAX);
   const s = clamp(Math.max(s0 * (MEAN_TO_PEAK / STYLED_MEAN_TO_PEAK) * sc.strikeTime, minStrike), STRIKE_MIN, STRIKE_MAX);
   // Speed-safe floors (the caller derives them from the joint speed limit): a squeezed wind-up or
   // recovery must not outrun the animator's limiter, which would clip the curve into a lag.
   const wMin = Math.max(WINDUP_MIN, Number.isFinite(minWindup) ? minWindup : 0), rMin = Math.max(RECOVER_MIN, Number.isFinite(minRecover) ? minRecover : 0);
-  let windup = Math.max(wMin, (WINDUP_BASE + WINDUP_RATIO * s0) * sc.windupTime), recover = Math.max(rMin, (RECOVER_BASE + RECOVER_RATIO * s0) * sc.recoverTime);
-  let hold = Math.max(HOLD_MIN, sc.holdTime), settle = Math.max(SETTLE_MIN, sc.settleTime);
+  // J-C: the wind-up cocks with the weapon's heft and the strike (anticipationSeconds), the hold
+  // grows with the blow's impact and the recovery/settle answer what was hit. `impact` 0 (the
+  // engine's default press until a measured impact is supplied) leaves every phase as before.
+  let windup = Math.max(wMin, anticipationSeconds(s0, sc.windupTime)), recover = Math.max(rMin, impactSettle((RECOVER_BASE + RECOVER_RATIO * s0) * sc.recoverTime, impact));
+  let hold = impactHold(Math.max(HOLD_MIN, sc.holdTime), impact), settle = impactSettle(Math.max(SETTLE_MIN, sc.settleTime), impact);
   // `overrun` (≥ 0): the share a TIRED or HURT fighter's swing may outlast the cooldown by
   // (MotionStyle.swingOverrun) — the next blow then waits for this one (Engine gates on active).
   // Only the BLOW (wind-up + strike + hold) must fit the cooldown budget: the recovery and the

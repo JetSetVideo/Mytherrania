@@ -1,11 +1,15 @@
 // One HUD panel per fighter (the player and every opponent of the match): who it is (name, race ·
-// sub-race · class · level), and three resource bars, each a bright NOMINAL fill (the value now)
-// over a dark POTENTIAL fill (the most the pool can reach now), with "nominal / potential" text:
+// sub-race · class · level), and three resource bars. Each bar is a squared channel — a bright
+// NOMINAL fill (the value now, cut into equal squares) over a dark POTENTIAL fill (the most the
+// pool can reach now) — with the numbers drawn INSIDE the bar (value / max · share), so a fighter
+// reads their pools at a glance without leaving the fiction:
 //   life     red      over dark red
 //   mana     blue     over dark blue
 //   stamina  green    over dark green   (EXHAUSTED tag while the pool is locked out)
-// Built once; every update patches widths and text in place, and only when the shown value
-// changed (no innerHTML per tick). The pure model (barModel) is unit-tested in Deno.
+// Built once; every update patches widths, classes and text in place, and only when the shown value
+// changed (no innerHTML per tick). Widths go through CSSOM (element.style.width), never an inline
+// style="" attribute — the server CSP (style-src 'self') blocks those and once blanked the History
+// bars. The pure model (barModel / barLabel / barSegments) is unit-tested in Deno.
 
 /** One bar's input: the value now, the most it can reach now, and its full capacity. */
 export interface BarInput {
@@ -14,24 +18,89 @@ export interface BarInput {
   max: number;
 }
 
-/** What a bar draws: fill fractions of the track (0..1) and the text. */
+/** What a bar draws: fill fractions of the track (0..1) and the text shown inside the bar. */
 export interface BarModel {
   /** Bright fill = nominal / max. */
   nominal: number;
   /** Dark fill = potential / max (never below the nominal fill). */
   potential: number;
+  /** The numbers inside the bar: "value / max · pct%" (see barLabel). */
   text: string;
 }
 
+/**
+ * Segments per bar. 12 divides by 2, 3, 4 and 6, so the half, quarter and third marks fall
+ * exactly on a square boundary (10 would leave thirds and quarters without a division). At the
+ * HUD's narrowest track (~150 px on a 375 px phone) each square still spans ~12 px, so the ticks
+ * read as squares rather than a mush.
+ */
+export const BAR_SEGMENTS = 12;
+
 const finiteNonNeg = (v: number) => (Number.isFinite(v) && v > 0 ? v : 0);
+
+/** Group the digits in threes with a space ("3 200"), matching the brief's own example. */
+function groupThousands(n: number): string {
+  const s = String(Math.round(n));
+  let out = "";
+  for (let i = 0; i < s.length; i++) {
+    out += s[i];
+    const fromEnd = s.length - i;
+    if (fromEnd > 1 && (fromEnd - 1) % 3 === 0) out += " ";
+  }
+  return out;
+}
+
+/**
+ * The numbers a bar shows INSIDE it: the value now, the capacity, and the share of it
+ * ("3 200 / 5 000 · 64%"). Total over any input: a non-finite or negative value reads as 0, a
+ * value above the capacity is clamped to it (the fill can never pass the track's edge, so the
+ * text must not read past 100 %), and an empty pool (max <= 0) reads "0 / 0 · 0%".
+ */
+export function barLabel(value: number, max: number): string {
+  const cap = finiteNonNeg(max);
+  if (cap <= 0) return "0 / 0 · 0%";
+  const now = Math.min(finiteNonNeg(value), cap);
+  const pct = Math.round((now / cap) * 100);
+  return `${groupThousands(now)} / ${groupThousands(cap)} · ${pct}%`;
+}
 
 /** Total over any input (NaN, negative, nominal > potential > max): fractions in [0, 1], ordered. */
 export function barModel(b: BarInput): BarModel {
   const max = finiteNonNeg(b.max);
-  const nom = Math.min(finiteNonNeg(b.nominal), max || Infinity);
-  const pot = Math.min(Math.max(finiteNonNeg(b.potential), nom), max || Infinity);
-  if (max <= 0) return { nominal: 0, potential: 0, text: "0 / 0" };
-  return { nominal: nom / max, potential: pot / max, text: `${Math.round(nom)} / ${Math.round(pot)}` };
+  if (max <= 0) return { nominal: 0, potential: 0, text: barLabel(0, 0) };
+  const nom = Math.min(finiteNonNeg(b.nominal), max);
+  const pot = Math.min(Math.max(finiteNonNeg(b.potential), nom), max);
+  return { nominal: nom / max, potential: pot / max, text: barLabel(nom, max) };
+}
+
+/** A bar cut into squares: how full each one is, and which ones are completely full. */
+export interface BarSegments {
+  /** Fill fraction 0..1 of each square, left to right. */
+  fills: number[];
+  /** true where a square's fill reaches its FAR edge — the square reads as full. */
+  full: boolean[];
+}
+
+/**
+ * Cut a bar into `segments` equal squares. Square i covers the fraction [i/n, (i+1)/n) of the
+ * track; its fill is the fraction OF THAT SQUARE the bar's fill covers, so the fills average to
+ * the bar's fill value, sum to fill × n, and the LAST (partial) square is exact. A square is
+ * "full" when the fill reaches its far edge, i.e. its fill fraction is 1 — that is what paints
+ * the square solid. `segments` is floored and clamped to >= 1, so a nonsense count still yields
+ * one square.
+ */
+export function barSegments(model: BarModel, segments: number): BarSegments {
+  const n = Math.max(1, Math.floor(Number.isFinite(segments) ? segments : 1));
+  const w = 1 / n;
+  const fill = Math.min(Math.max(model.nominal, 0), 1);
+  const fills: number[] = [];
+  const full: boolean[] = [];
+  for (let i = 0; i < n; i++) {
+    const f = Math.min(Math.max((fill - i * w) / w, 0), 1);
+    fills.push(f);
+    full.push(f >= 1 - 1e-9);
+  }
+  return { fills, full };
 }
 
 export type BarKind = "life" | "mana" | "stamina";
@@ -62,7 +131,16 @@ export function identityLine(d: Pick<FighterPanelData, "race" | "subrace" | "cla
   return [d.race, d.subrace, d.className, `Lv ${Math.max(1, Math.round(finiteNonNeg(d.level) || 1))}`].filter(Boolean).join(" · ");
 }
 
-interface BarEls { root: HTMLElement; pot: HTMLElement; nom: HTMLElement; text: HTMLElement; last: string }
+interface BarEls {
+  row: HTMLElement;
+  track: HTMLElement;
+  pot: HTMLElement;
+  text: HTMLElement;
+  /** One bright fill per square, and the square cell that holds it (for the is-full class). */
+  fills: HTMLElement[];
+  cells: HTMLElement[];
+  last: string;
+}
 
 export class FighterPanel {
   readonly root: HTMLDivElement;
@@ -92,12 +170,20 @@ export class FighterPanel {
       const track = el("div", "fp-track", row);
       track.setAttribute("role", "meter");
       track.setAttribute("aria-label", kind);
-      const pot = el("div", "fp-pot", track), nom = el("div", "fp-nom", track);
-      const text = el("span", "fp-text", row);
-      return { root: track, pot, nom, text, last: "" };
+      // The dark potential fill sits behind the squares; the bright fills live INSIDE the cells.
+      const pot = el("div", "fp-pot", track);
+      const segs = el("div", "fp-segs", track);
+      const fills: HTMLElement[] = [], cells: HTMLElement[] = [];
+      for (let i = 0; i < BAR_SEGMENTS; i++) {
+        const cell = el("i", "fp-seg", segs);
+        fills.push(el("b", "fp-seg-fill", cell));
+        cells.push(cell);
+      }
+      const text = el("span", "fp-text", track);
+      return { row, track, pot, text, fills, cells, last: "" };
     };
     this.#bars = { life: mk("life"), mana: mk("mana"), stamina: mk("stamina") };
-    this.#exhaust = el("span", "fp-exhausted", this.#bars.stamina.text.parentElement!) as HTMLSpanElement;
+    this.#exhaust = el("span", "fp-exhausted", this.#bars.stamina.row) as HTMLSpanElement;
     this.#exhaust.textContent = "EXHAUSTED";
     this.#exhaust.style.display = "none";
     this.#status = el("div", "fp-status", this.root) as HTMLDivElement;
@@ -114,11 +200,16 @@ export class FighterPanel {
       const key = `${m.nominal.toFixed(4)}|${m.potential.toFixed(4)}|${m.text}`;
       if (key === b.last) continue;
       b.last = key;
-      b.nom.style.width = `${(m.nominal * 100).toFixed(2)}%`;
       b.pot.style.width = `${(m.potential * 100).toFixed(2)}%`;
+      const seg = barSegments(m, BAR_SEGMENTS);
+      for (let i = 0; i < b.fills.length; i++) {
+        b.fills[i].style.width = `${(seg.fills[i] * 100).toFixed(2)}%`;
+        b.cells[i].classList.toggle("is-full", seg.full[i]);
+      }
       b.text.textContent = m.text;
-      b.root.setAttribute("aria-valuenow", String(Math.round(finiteNonNeg(d[k].nominal))));
-      b.root.setAttribute("aria-valuemax", String(Math.round(finiteNonNeg(d[k].max))));
+      b.track.setAttribute("aria-valuenow", String(Math.round(finiteNonNeg(d[k].nominal))));
+      b.track.setAttribute("aria-valuemax", String(Math.round(finiteNonNeg(d[k].max))));
+      b.track.setAttribute("aria-valuetext", m.text);
     }
     this.#exhaust.style.display = d.exhausted ? "" : "none";
     if (d.status !== this.#lastStatus) this.#status.textContent = this.#lastStatus = d.status;

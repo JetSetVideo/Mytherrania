@@ -5,7 +5,7 @@ import { judgeTimeLimit, JUDGE_MARGIN } from "../src/game/MatchControl.ts";
 import { skillsForClass } from "../src/game/Skills.ts";
 import { DIGEST_DIRS } from "../src/game/arena/contracts.ts";
 import { ENGINE_RULES, knockbackSpeed, meterGain, METER_FULL, WAVE_J_RULES } from "../src/balance/MatchRules.ts";
-import { DAMAGE_SCALE } from "../src/game/Stats.ts";
+import { DAMAGE_SCALE , HEALTH_SCALE } from "../src/game/Stats.ts";
 
 function assert(ok: unknown, msg: string): asserts ok { if (!ok) throw new Error(msg); }
 
@@ -95,10 +95,13 @@ Deno.test("J-B D5: edge play targets the enemy's far side from its open edge; st
 Deno.test("J-B D6: the judge at the bell, the knockback meter and floor", () => {
   assert(judgeTimeLimit(0.9, 0.2) === 0 && judgeTimeLimit(0.1, 0.6) === 1, "the clear leader wins");
   assert(judgeTimeLimit(0.5, 0.5 + JUDGE_MARGIN / 2) === null && judgeTimeLimit(NaN, NaN) === null, "close or broken -> tie");
-  // Relative meter equals the engine's at a 45 k pool, halves at 90 k.
-  const eng = meterGain(ENGINE_RULES, 900, 45000, DAMAGE_SCALE), rel = meterGain(WAVE_J_RULES, 900, 45000, DAMAGE_SCALE);
-  assert(Math.abs(eng - rel) < 1e-9, `45 k pool: engine ${eng} vs relative ${rel}`);
-  assert(Math.abs(meterGain(WAVE_J_RULES, 900, 90000, DAMAGE_SCALE) - rel / 2) < 1e-9 && METER_FULL === 360, "relative to the pool");
+  // Relative meter equals the engine's at the reference pool, halves at twice that pool. The pool is
+  // DERIVED from HEALTH_SCALE: Wave J halved it (1000 -> 500), and a hard-coded 45 000 was the
+  // pre-Wave-J value, which made this assertion compare two different pools.
+  const pool = 45 * HEALTH_SCALE;
+  const eng = meterGain(ENGINE_RULES, 900, pool, DAMAGE_SCALE), rel = meterGain(WAVE_J_RULES, 900, pool, DAMAGE_SCALE);
+  assert(Math.abs(eng - rel) < 1e-9, `pool ${pool}: engine ${eng} vs relative ${rel}`);
+  assert(Math.abs(meterGain(WAVE_J_RULES, 900, pool * 2, DAMAGE_SCALE) - rel / 2) < 1e-9 && METER_FULL === 360, "relative to the pool");
   // Knockback grows with the meter; the Wave J floor lowers the push on a fresh fighter only.
   let prev = -1;
   for (const pct of [0, 30, 60, 120, 300]) {

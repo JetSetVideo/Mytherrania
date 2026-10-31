@@ -1117,3 +1117,47 @@ The inspect card is read-only. The clash threshold (0.35 m) was chosen, not tune
 run ~8 per match). The frame numbers are a headless lab sample — cadence there is a vsync artefact, though
 the CPU and GPU times are real. `floating: 0` bounds the seating error at the SAMPLED rim, not between
 samples. Wave H's stat-unlocked techniques still are not bound to HUD slots.
+
+## Pass 29 — Wave K: what "reduce the HPs, there is too much AP" costs, and what it buys (2026-10-31)
+
+The ask was qualitative — *"the strikes that have more impact, they do more damages… reduce the HPs…
+increase the cost of mana a little by 20 % or so"* — so the pass is a before/after on one seed
+(20261009) with the same harness on both sides.
+
+| metric | before | after | note |
+| --- | --- | --- | --- |
+| health pool (Barbarian → Necromancer) | 53 250 → 39 200 | 26 625 → 19 600 | exactly ×0.5, as asked |
+| attack power | 680 → 1 335 | 340 → 667 | ×0.5, so the time-to-kill ratio held |
+| median decisive duel | 51.8 s | 36.7 s | inside the brief's 25–55 s |
+| damage p20 / p50 / p80 | 662.4 / 860.0 / 1 105.2 | 402.9 / 603.6 / 824.3 | p80/p20 1.67 → 2.05 |
+| mean hits to kill | 51.3 | 36.2 | the pools fall faster than the hits |
+| mirror win rates | 48.7–51.1 % | 49.3–50.9 % | 5/28 "balanced" pairs, same as before |
+| full-speed blow vs standing | 1.8× (capped) | 2.294× | the impact term, not the pool |
+
+**Lessons recorded.**
+
+1. **Halving both sides preserves the win-rate band but not the texture.** Pool and attack power both
+   moved ×0.5, so DPS × eHP — the quantity the class solve targets — is unchanged and the mirror
+   matrix barely moves (48.7–51.1 → 49.3–50.9). What DID change is the felt texture: p80/p20 rose
+   1.67 → 2.05 and hits-to-kill fell 51.3 → 36.2, i.e. individual swings now decide more. A balance
+   band is not evidence that the game feels different; the spread is.
+2. **The steeper impact term is what actually delivers "more impact = more damage".** Raising the
+   closing-speed coefficient (0.15 → 0.55) plus a bounded `impactMul` gave the 2.294× the brief
+   demanded; widening the pool reduction alone would have changed nothing about impact response.
+3. **Pin the measured band, not the round number.** `[SPEC H2]` asserted `HEALTH_SCALE === 1000`,
+   which after this change is not a false assertion but a *type error* — the whole `deno task check`
+   aborted before a single test ran. Cross-module pins must assert the RELATIONSHIP
+   (`DAMAGE_SCALE === HEALTH_SCALE / FIGHT_LENGTH`) plus a measured band, so a deliberate change
+   fails informatively instead of breaking the build. Both H1 and H2 were re-stated from measurement
+   and the changes are listed in `artifacts/tuning/VERIFICATION.md` §7; the third casualty
+   (`tests/balance_decision_test.ts`'s hard-coded 45 000 pool) now derives its pool from the constant.
+4. **A shared tool that calls class methods as extracted functions is a measurement that will
+   silently stop measuring.** `tools/frame-budget.ts` passed each debug hook to `page.evaluate` as a
+   bare function, so `debugSpectateCam` lost its private fields and threw reading `#q` — the frame
+   measurement could not run at all until it was called with the engine as `this`. The probe's own
+   p99 of 15.4 ms was its DOM/screenshot load, not the game: with the tool working again, spectate
+   p99 is 2.7 ms with 13.9 ms of headroom and a 16.7 ms cadence.
+5. **Two sessions on one repo need one wave-number authority.** Both this session and the paired one
+   called their work "Wave J"; the paired session's had already shipped, so this wave was renumbered
+   K, its lane reports renamed `artifacts/messages-K*.md`, and its brief/spec sections renamed with
+   it. Nothing in the code depended on the label, but the docs would have pointed at the wrong wave.

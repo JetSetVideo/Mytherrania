@@ -4,7 +4,7 @@
 import { luminosity } from "../src/graphics/Environment.ts";
 import { adaptedRanges, NEUTRAL_ENV } from "../src/game/Senses.ts";
 import { bodyFromStats, closingSpeed, density, physicsMultiplier, PHYSICS_MUL_MAX, PHYSICS_MUL_MIN, totalMass } from "../src/game/Physics.ts";
-import { attackDamage, CLASSES, createStats, criticalChance, DAMAGE_SCALE, HEALTH_SCALE } from "../src/game/Stats.ts";
+import { attackDamage, CLASSES, createStats, criticalChance, DAMAGE_SCALE, FIGHT_LENGTH, HEALTH_SCALE } from "../src/game/Stats.ts";
 import { HARNESS_CLOSING_SPEED } from "../src/balance/ArenaHarness.ts";
 import { applyRaceBonus } from "../src/game/Races.ts";
 // Wave H (ancestry hierarchy, hair physics, match telemetry, data science).
@@ -18,9 +18,10 @@ import { highlightsOf } from "../src/ui/HistoryView.ts";
 import { keyVars, pca, spreadOf, standardise } from "../src/balance/CorpusMath.ts";
 import { statDelta } from "../src/game/Races.ts";
 import { skillsForClass } from "../src/game/Skills.ts";
+import { SKILL_RESOURCE_COST } from "../src/engine/Engine.ts";
 // Wave I (spectator camera, inspect overlay, terrain fill, clash sparks, frame budget).
 import { CAMERA_PRESETS, cameraPose, cycleMode, decodeSpectateCam, encodeSpectateCam, orbitCamera, SPECTATE_CAM_BOUNDS, SPECTATE_CAM_DEFAULTS, zoomCamera } from "../src/game/SpectatorCamera.ts";
-import { anchorCard, blobRadius, fighterCard, objectCard, pickNearest, stepCursor, type CursorState } from "../src/ui/InspectOverlay.ts";
+import { anchorCard, BAR_SEGMENTS, barLabel, barModel, barSegments, blobRadius, fighterCard, inspectBarSegments, objectCard, pickNearest, stepCursor, type CursorState } from "../src/ui/InspectOverlay.ts";
 import { footHeight, materialUnder, seatingY, skirtFor } from "../src/graphics/GroundFill.ts";
 import { canClash, clashStrength, detectClash, segSegClosest } from "../src/combat/Clash.ts";
 import { ClashSparks, DEFAULT_MAX_SPARKS, SPARKS_PER_BURST } from "../src/graphics/fx/ClashSparks.ts";
@@ -117,7 +118,7 @@ Deno.test("SPEC P5: closing speed is relative — a fleeing defender softens the
 
 // ---------------------------------------------------- health scale -> stun
 
-Deno.test("SPEC H1: every class's average hit stuns 0.05–0.20 s (scale-corrected), never seconds", () => {
+Deno.test("SPEC H1: every class's average hit stuns 0.05-0.25 s (scale-corrected), never seconds", () => {
   // Regression: feeding scaled damage (~850) into the verbatim stun formula gave
   // ~10 s stuns per hit after the x1000 health change. The live engine now feeds the
   // CLASS damage (attackDamage x physics) divided by DAMAGE_SCALE.
@@ -127,14 +128,23 @@ Deno.test("SPEC H1: every class's average hit stuns 0.05–0.20 s (scale-correct
       const D = createStats(d);
       const dmg = attackDamage(a, D, 1, 0.5) * physicsMultiplier(bodyFromStats(a), bodyFromStats(D), HARNESS_CLOSING_SPEED);
       const stun = stunDuration(dmg / DAMAGE_SCALE, 1.2, 0);
-      assert(stun >= 0.05 && stun <= 0.2, `${c}->${d}: stun ${stun.toFixed(3)} s outside 0.05–0.20`);
-      assert(stunDuration(dmg, 1.2, 0) > stun * 50, "unscaled damage would have produced absurd stuns");
+      // Wave K's steeper impact term raises the WORST-case stun: at the strongest match-up the
+      // average hit now stuns 0.218 s instead of 0.19 s (still ~13 frames, still sub-second), so the
+      // band is 0.05-0.25 and the "unscaled damage would be absurd" ratio is 20x rather than 50x
+      // (DAMAGE_SCALE is 50 after the pool halving, so a 50x assertion would be exactly its own value).
+      assert(stun >= 0.05 && stun <= 0.25, `${c}->${d}: stun ${stun.toFixed(3)} s outside 0.05–0.25`);
+      assert(stunDuration(dmg, 1.2, 0) > stun * 20, "unscaled damage would have produced absurd stuns");
     }
   }
 });
 
-Deno.test("SPEC H2: every class needs 25–160 average hits to kill every other class (armour, crit, physics)", () => {
-  assert(HEALTH_SCALE === 1000, "the brief fixes health at x1000");
+Deno.test("SPEC H2: every class needs 18-90 average hits to kill every other class (armour, crit, physics)", () => {
+  // Wave K halved the pools (HEALTH_SCALE 1000 -> 500) at the user's request ("reduce the HPs,
+  // there is too much AP"): one strike is a bigger share of a life bar and a duel is shorter. The
+  // band below is the MEASURED one after that change (21.5-59.0 hits over the 64 class pairs,
+  // reported by lane J-A), not the pre-Wave-J 25-160.
+  assert(HEALTH_SCALE === 500, "Wave K fixes the health pool at x500");
+  assert(DAMAGE_SCALE === HEALTH_SCALE / FIGHT_LENGTH, "damage scale stays derived from the pool");
   for (const c of CLASSES) for (const d of CLASSES) {
     const a = applyRaceBonus(createStats(c), "human", null), D = applyRaceBonus(createStats(d), "human", null);
     // Expected damage per hit: mean roll (0.5), crit priced in at its chance.
@@ -142,7 +152,7 @@ Deno.test("SPEC H2: every class needs 25–160 average hits to kill every other 
     const perHit = attackDamage(a, D, 1, 0.5) * (1 + crit * 0.4)
       * physicsMultiplier(bodyFromStats(a), bodyFromStats(D), HARNESS_CLOSING_SPEED);
     const hits = D.maxHealth / perHit;
-    assert(hits >= 25 && hits <= 160, `${c} needs ${hits.toFixed(0)} hits to kill ${d}; band is 25–160`);
+    assert(hits >= 18 && hits <= 90, `${c} needs ${hits.toFixed(0)} hits to kill ${d}; band is 18-90 (Wave K pools)`);
   }
 });
 
@@ -676,4 +686,52 @@ Deno.test("SPEC IE1: the effects governor answers sustained load slowly, recover
   assert(percentile([], 0.5) === 0, "and total on an empty one");
   const st = summarise([1, 2, 3, 4, 5]);
   assert(st.n === 5 && st.mean === 3 && st.max === 5 && st.p50 === 3, "summarise matches the hand-computed stats");
+});
+
+
+// ------------------------------------------------- Wave K: the resource price of a technique
+
+Deno.test("SPEC KK1: mana costs are 20% above the balance pass's table, and a dash costs no mana", () => {
+  // The recorded pre-Wave-J table: dash 0, power 20, defense 5 (mana). The user asked for +20%.
+  const before = { dash: 0, power: 20, defense: 5 };
+  for (const [kind, mana] of Object.entries(before)) {
+    const cost = SKILL_RESOURCE_COST[kind];
+    assert(cost !== undefined, `${kind} has a cost row`);
+    assert(cost.mana === Math.round(mana * 1.2), `${kind} mana ${cost.mana} is 20% above ${mana}`);
+    assert(Number.isFinite(cost.stamina) && cost.stamina >= 0, `${kind} stamina is finite and non-negative`);
+  }
+  assert(SKILL_RESOURCE_COST.dash.mana === 0, "a dash is a stamina move: no mana");
+  assert(SKILL_RESOURCE_COST.power.mana > SKILL_RESOURCE_COST.defense.mana, "a power skill costs more mana than a guard");
+});
+
+
+// ------------------------------------------------- Wave K: the statistics bars
+
+Deno.test("SPEC KK2: every stat bar is cut into squares and carries its numbers inside, with no inline style attribute", () => {
+  assert(BAR_SEGMENTS >= 8 && BAR_SEGMENTS % 4 === 0, `12-ish squares that divide by 2/3/4 (got ${BAR_SEGMENTS})`);
+  // The model: a third of the bar is 4 full squares of 12, and the partial one carries the rest.
+  const model = barModel({ nominal: 1_000 / 3, potential: 1_000 / 3, max: 1_000 });
+  const segs = barSegments(model, BAR_SEGMENTS);
+  assert(segs.fills.length === BAR_SEGMENTS && segs.full.length === BAR_SEGMENTS, "one entry per square");
+  assert(segs.full.filter(Boolean).length === 4, `a third fills 4 squares (got ${segs.full.filter(Boolean).length})`);
+  // Each square carries the fraction OF ITSELF that is filled, so the sum is the bar fraction in
+  // square units: sum = fraction x segments (a third of 12 squares sums to 4.0, not to 0.333).
+  assert(Math.abs(segs.fills.reduce((a, b) => a + b, 0) - (1 / 3) * BAR_SEGMENTS) < 1e-9, "the squares cover the bar's own fraction");
+  assert(segs.fills.every((f) => f >= 0 && f <= 1), "fills stay in [0,1]");
+  // The label the bar shows: value / max and the share.
+  assert(barLabel(320, 500) === "320 / 500 · 64%", `label format (got ${barLabel(320, 500)})`);
+  assert(barLabel(0, 0) === "0 / 0 · 0%" && barLabel(NaN, 5) === "0 / 5 · 0%" && barLabel(900, 500) === "500 / 500 · 100%", "and it is total");
+  const card = inspectBarSegments({ label: "HP", value: 30, max: 40, colour: "#ef7455" });
+  assert(card.fills.length === BAR_SEGMENTS && card.full.filter(Boolean).length === 9, "the card uses the same squares");
+});
+
+Deno.test("SPEC KK3: the card's bars are written through CSSOM, never an inline style attribute", async () => {
+  // A text-level pin, because the failure it guards (the History bars rendering nothing under the
+  // server's style-src 'self' CSP) is invisible in a unit test and was a real bug in this repo.
+  const engine = await Deno.readTextFile(new URL("../src/engine/Engine.ts", import.meta.url));
+  const inspect = engine.slice(engine.indexOf("  #renderInspect(): void {"), engine.indexOf("  #positionInspect(): void {"));
+  assert(inspect.length > 400, `the renderer was found (${inspect.length} chars)`);
+  assert(!/style="/.test(inspect), "no inline style attribute in the inspect card's markup");
+  assert(inspect.includes("inspect-bar-seg") && inspect.includes("barLabel("), "the squares and the label are both rendered");
+  assert(inspect.includes("--bar-colour") && inspect.includes("style.width"), "widths and colours go through CSSOM");
 });

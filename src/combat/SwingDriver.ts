@@ -142,7 +142,13 @@ export class SwingDriver {
    * Start a swing against a target `distance` m away; `cooldown` (s) bounds the swing's length;
    * `variant` (the swing count) picks the aim line from AIM_PATTERN.
    */
-  begin(distance: number, cooldown: number, variant = 0): void {
+  /**
+   * Wave J: `impact` (0..1) is the blow's own impact — the caller's measured closing speed
+   * normalised on a 12 m/s reference. It reaches the styled profile so the wind-up cocks with the
+   * weapon's heft, the hold grows with the blow and the recovery answers what was hit. 0 (the
+   * default) leaves every phase exactly as the pre-Wave-J rig played them.
+   */
+  begin(distance: number, cooldown: number, variant = 0, impact = 0): void {
     const s = this.setup, step = stepInFor(distance, s.sweet);
     // Closer than the half step back can fix: slide the hands up the haft (choke) by the rest.
     this.#choke = Math.min(s.choke, Math.max(0, s.sweet - distance + step));
@@ -157,7 +163,7 @@ export class SwingDriver {
         pr.fromLeg = this.legDrive();
       }
       pr.chained = chained;
-      const timing = this.#styledProfile(cooldown);
+      const timing = this.#styledProfile(cooldown, Math.min(1, Math.max(0, Number.isFinite(impact) ? impact : 0)));
       this.player.begin(s.shape, timing, step, aim, s.twoHanded, s.arm, this.#profile);
     } else {
       this.player.begin(s.shape, swingTiming(s.strike, cooldown), step, aim, s.twoHanded, s.arm);
@@ -187,7 +193,7 @@ export class SwingDriver {
    * return its timing. The keys scale about the CONTACT key, so the contact pose (reach, aim) is
    * the unstyled one; DOF leads follow the chain depth.
    */
-  #styledProfile(cooldown: number): ReturnType<typeof styledSwingTiming> {
+  #styledProfile(cooldown: number, impact = 0): ReturnType<typeof styledSwingTiming> {
     const st = this.#style!, e = st.eff, s = this.setup, pr = this.#profile, u = this.#contactU;
     this.#liveGuard();
     strikeKeyAt(s.shape, s.arm, 0, this.#k0);
@@ -280,7 +286,7 @@ export class SwingDriver {
     const minStrike = rate / om, overrun = st.swingOverrun();
     // Arcs (slash/chop): the recovery is an interruptible tail. Hand-path thrusts keep one budget.
     const tailFree = !h;
-    const t0 = styledSwingTiming(s.strike, cooldown, e, minStrike, overrun, 1.5 * wTravel / om, rk * rTravel / om, tailFree);
+    const t0 = styledSwingTiming(s.strike, cooldown, e, minStrike, overrun, 1.5 * wTravel / om, rk * rTravel / om, tailFree, impact);
     // The heavy floor is always honoured: the recovery is an interruptible tail (the next press
     // chains from it, SwingPlayer.recovering), so a long recovery never lowers the attack rate.
     const heavy = rk / (2 * HEAVY_RECOVERY) * heavyRatio * t0.strike;
@@ -290,7 +296,7 @@ export class SwingDriver {
       rHeavy = Math.min(heavy, Math.max(t0.recover, cap - (swingDuration(t0) - t0.recover)));
     }
     if (rHeavy <= t0.recover + 1e-9) return t0;
-    return styledSwingTiming(s.strike, cooldown, e, minStrike, overrun, 1.5 * wTravel / om, rHeavy, tailFree);
+    return styledSwingTiming(s.strike, cooldown, e, minStrike, overrun, 1.5 * wTravel / om, rHeavy, tailFree, impact);
   }
 
   /** Advance the swing clock by dt and refresh the sample. */

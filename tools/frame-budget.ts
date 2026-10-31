@@ -156,7 +156,9 @@ const spectateFlags = await page.evaluate(() => {
     for (const n of names) {
       const fn = eng[n];
       if (typeof fn === "function") {
-        (fn as (v: unknown) => void)(true);
+        // Called with the engine as `this`: these debug hooks are class methods, and an extracted
+        // method loses its private fields (Wave-K run: `debugSpectateCam` threw reading `#q`).
+        (fn as (this: unknown, v: unknown) => void).call(eng, true);
         return true;
       }
     }

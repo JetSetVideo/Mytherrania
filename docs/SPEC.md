@@ -765,6 +765,23 @@ ground it stands on), particles where two weapons collide, and the 60 FPS budget
 | ID1 | Two blades within reach, both moving, clash once: a burst of bounded sparks at the contact point, from a fixed pool that never overflows | `src/combat/Clash.ts`, `src/graphics/fx/ClashSparks.ts`, `Engine.#clashTick` | LIVE |
 | IE1 | The frame budget is MEASURED (CPU per rAF, cadence, GPU via the driver timer) and an effects governor thins the effects out before a frame is ever late | `src/game/FrameBudget.ts`, `tools/frame-budget.ts`, `Engine.#loop` | LIVE |
 
+## 11C. Wave K — impact-driven damage, smaller pools, pricier mana, segmented bars, better strikes
+
+Added 2026-10-31. The prompt asked for the values and equations to be changed so that the strikes with more
+impact do more damage, for the health pools to come down ("there is too much AP"), for mana to cost about
+20 % more, for the statistics bars to carry their numbers inside and be divided by squares, and for some of
+the attacks and animations to be improved. (The wave is **K**, not J: a second Hermes session working this
+repo had already committed its own "Wave J" — arena walls, symmetric maps, the AI arena digest and the
+headless batch back end — and released it at 15:53 UTC. See `artifacts/tuning/VERIFICATION.md`.)
+
+| # | Requirement | Where | Status |
+| --- | --- | --- | --- |
+| KA1 | Damage responds MORE to impact: a full-speed heavy blow is ≥ 2.2× the same blow standing still (measured 2.294×) and a graze ≥ 0.45× it (0.507×); every expression bounded and monotone in speed and mass | `src/combat/Impact.ts` (`impactMul`), `src/game/Physics.ts` (`physicsMultiplier`, `PHYSICS_MUL_MIN 0.5` / `MAX 2.2`, closing term `0.85 + 0.55·min(2,|v|)`) | LIVE |
+| KB1 | Smaller pools, bigger shares: `HEALTH_SCALE 500` (was 1000) with `DAMAGE_SCALE = HEALTH_SCALE / FIGHT_LENGTH`, the class solve's `TARGET_POWER_INDEX = DPS × effectiveHP` invariant kept, median decisive duel 25–55 s (measured 36.7 s, was 51.8), per-hit p80/p20 ≥ 1.9 (2.05), hits-to-kill down (51.3 → 36.2) and mirror win rates still 48–52 % (49.3–50.9 %) | `src/game/Stats.ts`, `src/balance/ArenaHarness.ts`, `tools/balance-report.ts` | LIVE |
+| KC1 | Every technique costs 20 % more mana (`power 20 → 24`, `defense 5 → 6`; a dash stays a stamina move) | `src/engine/Engine.ts` (`SKILL_RESOURCE_COST`) | LIVE |
+| KD1 | Every stat bar carries its numbers INSIDE it (value / max · share) and is divided into 12 squares across its whole length, with the full squares marked; widths and colours written through CSSOM only (never an inline style attribute — the server CSP blocks those) | `src/ui/FighterPanel.ts` (`barLabel`, `barSegments`, `BAR_SEGMENTS`), `src/ui/InspectOverlay.ts` (`inspectBarSegments`), `styles.css`, `Engine.#renderInspect` | LIVE |
+| KE1 | The animation answers the impact: the wind-up scales with the weapon's heft, a heavy blow holds its pose longer than a graze, the recovery settles slower after a heavy hit, and none of it changes the attack rate | `src/game/anim/Swing.ts` (`anticipationSeconds`, `impactHold`, `impactSettle`), `src/game/anim/MotionStyle.ts`, `src/combat/SwingDriver.ts` (`begin(..., impact)`) | LIVE |
+
 **Equations and constants.**
 
 - Camera: `position = target + (sin yaw · cos pitch, sin pitch, cos yaw · cos pitch) · dist + (0, height, 0)`,
@@ -803,6 +820,7 @@ rather than proving it away between samples.
 | 3D models: separate shapes, all-angle shots, 33-vertex spine back, race/subrace expansion, hair/beards/tusks, facial morph loop, animation tensor bounds, menu expansion | §2.5, §4.2.3–4.2.4, §11.1, §11.4–11.5 |
 | Ancestry hierarchy over every subrace with body-part ratios, per-ancestry look, hair physics bound to length and curl, generations logged for training, a 3-minute limit that ends as a tie with the stat difference recorded, History highlights, generated spectator matches with a stat budget, a bounded corpus data-science pass | §11A, `docs/ancestry/BRIEF.md` |
 | Spectator camera whose angle stays, a custom blob cursor, click-to-inspect stat sheets and object cards, props floating above the map, a ground-fill layer that closes terrain seams, particles where two weapons collide, and the 60 FPS budget kept | §11B, `docs/spectator/BRIEF.md` |
+| Damage that answers impact, halved health pools and attack power, mana 20 % dearer, stat bars with the numbers inside and squares across, and three named attacks re-animated | §11C, `docs/tuning/BRIEF.md` |
 
 **Statuses in one line.** LIVE: races, physics, skills, shaped arenas with walls, truce, senses,
 fog + minimap, statuses, items, environment, adaptive AI + telemetry + Elo leaderboard, stance

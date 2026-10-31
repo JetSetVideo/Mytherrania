@@ -198,6 +198,13 @@ export const STAT_GAIN = {
 export const WEAPON_I_REF = 0.3, WEAPON_I_SPREAD = 1.2;
 export const WEAPON_GAIN = {
   windupTime: 0.18, windupDepth: 0.1, followThrough: 0.12, overshoot: 0.35, recoverTime: 0.15, holdTime: 0.15,
+  /**
+   * J-C: the COUNTER-MOVE (StyleCoeffs.anticipation) grows with the weapon's heft — a heavy weapon
+   * is cocked back further before it commits, a light one telegraphs less. With a war hammer
+   * (w ≈ 0.75, anticipation 0.14 → 0.18) the shoulder counter-moves ~30 % deeper than a dagger's
+   * (w ≈ −1, 0.14 → 0.08); both stay inside SAFE.anticipation [0.05, 0.25].
+   */
+  anticipation: 0.4,
   chainLag: 0.12, legDrive: 0.4,
   /** Two hands: the trunk drives the blow (more leg drive, a slightly longer chain). */
   twoHandLegDrive: 0.15, twoHandChain: 0.05,
@@ -539,6 +546,9 @@ export function motionStyleFor(input: MotionStyleInput): MotionStyle {
     c.holdTime *= 1 + WG.holdTime * w;
     c.chainLag *= 1 + WG.chainLag * w;
     c.legDrive *= 1 + WG.legDrive * w;
+    // J-C: the counter-move deepens with the weapon's heft (the wind-up is cocked further back,
+    // and longer through windupTime), so a heavy archetype telegraphs more than a light one.
+    c.anticipation *= 1 + WG.anticipation * w;
     if (fin(wpn.hands, 1) >= 1.5) { c.legDrive *= 1 + WG.twoHandLegDrive; c.chainLag *= 1 + WG.twoHandChain; }
     const hn = Math.tanh((clamp(fin(wpn.grip, 0.15), 0, 2) - WG.handleRef) / WG.handleSpread);
     c.overshoot *= 1 - WG.handleOvershoot * hn;

@@ -157,8 +157,10 @@ const SKILLS: Skill[] = [
     blurb: "A two-handed overhead cleave that stuns whatever it lands on.",
     cooldown: 9,
     payload: { damageMul: 2.3, stun: 0.85, knockbackMul: 1.7, lifesteal: 0 },
-    animation: { duration: 0.95, hitAt: 0.42, lunge: 0.9, hop: 0.18, effectIntensity: 1.0,
-      tracks: [...strikeTracks(0.42, 1.9, -1.1, -0.5), ...legDrive(0.42, 0.5, -0.45), track("head", -0.3, 0.42)] },
+    // J-C: the cleave now drives THROUGH the target — the weapon arm travels 117.5° (was 108.9°),
+    // the trunk follows deeper and the body stamps down a touch harder on the hit.
+    animation: { duration: 0.95, hitAt: 0.42, lunge: 1.0, hop: 0.22, effectIntensity: 1.0,
+      tracks: [...strikeTracks(0.42, 2.05, -1.25, -0.55), ...legDrive(0.42, 0.6, -0.55), track("head", -0.35, 0.42)] },
   },
   {
     id: "barbarian-ironhide", className: "Barbarian", kind: "defense", name: "Iron Hide", element: "fury",
@@ -203,8 +205,10 @@ const SKILLS: Skill[] = [
     blurb: "Slips sideways and reappears at the enemy's flank, blade already moving.",
     cooldown: 3.5,
     payload: { damageMul: 0.9, stun: 0.1, knockbackMul: 0.6, lifesteal: 0 },
-    animation: { duration: 0.4, hitAt: 0.3, lunge: 2.6, hop: 0.12, effectIntensity: 0.5,
-      tracks: [...strikeTracks(0.3, 1.0, -0.5, -0.25), ...legDrive(0.3, 0.8, -0.75)] },
+    // J-C: the slip now LANDS a cut instead of drifting past — the weapon arm travels 71.6° (was
+    // 57.3°), the off arm braces against the flank rush and the head leads the turn into the blade.
+    animation: { duration: 0.4, hitAt: 0.3, lunge: 2.7, hop: 0.16, effectIntensity: 0.6,
+      tracks: [...strikeTracks(0.3, 1.25, -0.65, -0.3), track("head", -0.2, 0.3), ...legDrive(0.3, 0.85, -0.8)] },
   },
   {
     id: "rogue-venom-strike", className: "Rogue", kind: "power", name: "Venom Strike", element: "poison",
@@ -266,8 +270,10 @@ const SKILLS: Skill[] = [
     blurb: "Detonates a ring of raw magic centred on the staff.",
     cooldown: 8,
     payload: { damageMul: 1.75, stun: 0.55, knockbackMul: 1.5, lifesteal: 0 },
-    animation: { duration: 0.9, hitAt: 0.44, lunge: 0.2, hop: 0.25, effectIntensity: 1.0,
-      tracks: [...strikeTracks(0.44, 1.6, -1.5, -0.55), track("head", -0.45, 0.44, [0.06, 4.0, 0])] },
+    // J-C: the staff snaps out further (the arm travels 106.0°, was 91.7°); the caster is thrown a
+    // touch further back and hops higher, blown off his own detonation.
+    animation: { duration: 0.9, hitAt: 0.44, lunge: 0.25, hop: 0.3, effectIntensity: 1.0,
+      tracks: [...strikeTracks(0.44, 1.85, -1.7, -0.55), track("head", -0.45, 0.44, [0.06, 4.0, 0])] },
   },
   {
     id: "mage-mana-shield", className: "Mage", kind: "defense", name: "Mana Shield", element: "arcane",

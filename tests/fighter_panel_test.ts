@@ -4,8 +4,9 @@ import { barModel, identityLine } from "../src/ui/FighterPanel.ts";
 function assert(ok: unknown, m = "assertion failed"): asserts ok { if (!ok) throw new Error(m); }
 
 Deno.test("barModel: nominal over potential, fractions of the capacity", () => {
+  // text is the in-bar label now (value / max · share), Wave J J-B; the fractions are unchanged.
   const m = barModel({ nominal: 300, potential: 800, max: 1000 });
-  assert(m.nominal === 0.3 && m.potential === 0.8 && m.text === "300 / 800", JSON.stringify(m));
+  assert(m.nominal === 0.3 && m.potential === 0.8 && m.text === "300 / 1 000 · 30%", JSON.stringify(m));
   const full = barModel({ nominal: 1000, potential: 1000, max: 1000 });
   assert(full.nominal === 1 && full.potential === 1, "full");
 });

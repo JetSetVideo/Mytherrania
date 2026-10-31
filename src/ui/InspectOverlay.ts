@@ -12,6 +12,21 @@
 
 import { PICKUP_KINDS, type PickupDef } from "../game/PowerUps.ts";
 
+// Wave J (J-B): the segmented-bar model lives with the bars it describes (FighterPanel); it is
+// imported and re-exported here so the engine — which builds the inspect card's rows and bars —
+// imports the card data and the bar helpers together. barModel/barSegments/barLabel are pure and
+// DOM-free, so the card's squares and "value / max · %" text stay unit-testable without a browser.
+import {
+  BAR_SEGMENTS,
+  barLabel,
+  barModel,
+  barSegments,
+  type BarModel,
+  type BarSegments,
+} from "./FighterPanel.ts";
+export { BAR_SEGMENTS, barLabel, barModel, barSegments };
+export type { BarModel, BarSegments };
+
 /** What a click selected: one of the two seats, or a map object by id. */
 export type InspectTarget = { kind: "fighter"; seat: 0 | 1 } | { kind: "object"; id: string };
 
@@ -21,6 +36,13 @@ export interface InspectRow { label: string; value: string; tone?: "good" | "bad
 export interface InspectBar { label: string; value: number; max: number; colour: string }
 /** The whole card: a title, a subtitle, badges, text rows and bars. */
 export interface InspectCard { title: string; subtitle: string; badges: string[]; rows: InspectRow[]; bars: InspectBar[] }
+
+/** The squares of one card bar, ready for the DOM layer: a fill fraction per square and which
+ *  squares are full. The card carries value/max only, so the bright fill and the potential fill
+ *  are the same — the squares read the value's share of the max. */
+export function inspectBarSegments(b: InspectBar, segments = BAR_SEGMENTS): BarSegments {
+  return barSegments(barModel({ nominal: b.value, potential: b.value, max: b.max }), segments);
+}
 
 /** Everything the fighter card shows for one seat. */
 export interface FighterView {
