@@ -22,7 +22,9 @@ export type IconName =
   | "serpent" | "mountain" | "flame" | "moon" | "storm" | "void"
   | "chevron-left" | "chevron-down"
   | "dash" | "power" | "defense" | "dice"
-  | "gear" | "flag" | "play" | "restart" | "home" | "close";
+  | "gear" | "flag" | "play" | "restart" | "home" | "close"
+  // Wave U: the menus' own glyphs (they replace the emoji buttons: ⚔ 📋 📜 👁).
+  | "swords" | "scroll" | "eye" | "sheet" | "save" | "chevron-right";
 
 /**
  * The inner SVG markup (paths only) of each icon, in viewBox units.
@@ -102,6 +104,26 @@ const PATHS: Record<IconName, string> = {
     `<path d="M10 20.2V14.4H14V20.2"/>`,
   close:
     `<path d="M6 6 18 18M18 6 6 18"/>`,
+  // Two crossed blades, each with a cross-guard (Fighters).
+  swords:
+    `<path d="M4 4l9.5 9.5M20 4l-9.5 9.5"/><path d="M11.5 16.5 7.5 20.5M12.5 16.5l4 4"/>` +
+    `<path d="M6 13.5l4.5 4.5M18 13.5 13.5 18"/>`,
+  // A scroll: a sheet with rolled ends (History).
+  scroll:
+    `<path d="M7 4.5h11a2 2 0 0 1 0 4h-1.5V18a2 2 0 0 1-2 2H5.5a2 2 0 0 1 0-4H7z"/><path d="M7 16V4.5"/>` +
+    `<path d="M10 9h4M10 12.5h4"/>`,
+  // An eye: almond outline and pupil (Spectate).
+  eye:
+    `<path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/>`,
+  // A character sheet: a page with a portrait box and two lines (Sheet).
+  sheet:
+    `<rect x="5" y="3" width="14" height="18" rx="1.5"/><rect x="8" y="6" width="4" height="4"/>` +
+    `<path d="M14 7h2M8 13.5h8M8 17h8"/>`,
+  // A disk-like seal: a square ribbon with a notch (Save).
+  save:
+    `<path d="M5 4h11l3 3v13H5z"/><path d="M8 4v5h7V4"/><rect x="8" y="13" width="8" height="5"/>`,
+  "chevron-right":
+    `<path d="M9 5.5 15.5 12 9 18.5"/>`,
 };
 
 /** Every icon name, in a stable order (birth signs, navigation, skill kinds). */

@@ -18,6 +18,7 @@
  * it runs on a minimal fake DOM in Deno. CSP: no style attributes; state is classes and
  * attributes only.
  */
+import { autoUpgrade, stepperFor } from "./Stepper.ts";
 import { icon, type IconName } from "./Icons.ts";
 import { GRAPHICS_PRESETS, RESOLUTION_LABEL, RESOLUTIONS, type EffectToggle, type GraphicsPreset, type ResolutionChoice } from "../graphics/render/Quality.ts";
 
@@ -417,6 +418,8 @@ export class SettingsPanel {
     (options.gearContainer ?? container).appendChild(btn);
     container.appendChild(backdrop);
     container.appendChild(dlg);
+    // Wave U: the dialog's dropdowns and sliders become ‹ value › steppers (natives kept, hidden).
+    autoUpgrade(dlg);
     this.#syncAll();
     this.setContext("menu");
   }
@@ -686,7 +689,9 @@ export class SettingsPanel {
 
     const graphics = this.#section(grid, "graphics", "Graphics");
     this.#select(graphics, "sel-graphics", "Preset", "graphics", [["low", "Low"], ["medium", "Medium"], ["high", "High"], ["ultra", "Ultra"]]);
-    const toggle: [string, string][] = [["auto", "Preset"], ["on", "On"], ["off", "Off"]];
+    // "As preset" (was "Preset", which read like an unfilled placeholder): the effect follows the
+    // graphics preset above unless forced on or off here.
+    const toggle: [string, string][] = [["auto", "As preset"], ["on", "On"], ["off", "Off"]];
     this.#select(graphics, "sel-ssao", "Ambient occlusion (SSAO)", "ssao", toggle);
     this.#select(graphics, "sel-gi", "Global illumination", "gi", toggle);
     this.#select(graphics, "sel-raytracing", "Ray tracing (screen-space)", "rayTracing", toggle);
@@ -741,7 +746,8 @@ export class SettingsPanel {
     const group: FocusGroup = this.#confirming ? "confirm" : "main";
     return this.#focusables
       .filter((f) => f.group === group && !(f.el as HTMLButtonElement).disabled)
-      .map((f) => f.el);
+      // An upgraded control is reached through its stepper (the native is hidden).
+      .map((f) => stepperFor(f.el)?.element ?? f.el);
   }
 
   #onKey(e: KeyboardEvent): void {

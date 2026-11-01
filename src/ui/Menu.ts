@@ -18,6 +18,7 @@ import { ancestryView, initialAncestry, nextHeaderIndex, selectSubrace, toggleRa
 import { applyEdit, CREATOR_GROUP_IDS, groupSummary } from "./CreatorSync.ts";
 import { PROFILE_PANEL_CLASSES, type ProfilePanelView } from "./ProfilePanel.ts";
 import { weaponMenuOptions } from "../game/weapons/Loadout.ts";
+import { autoUpgrade } from "./Stepper.ts";
 import { raceBanner } from "./RaceBanners.ts";
 import { creatorSheet, rollProfile, type CreatorSheet, type SheetRow } from "./CreatorRoll.ts";
 import { DISCLOSURE_STORAGE_KEY, decodeDisclosure, encodeDisclosure, groupKey, initialDisclosure, isOpen, openGroup, type DisclosureState } from "./Disclosure.ts";
@@ -491,6 +492,11 @@ export class Menu {
     // absent payload decodes to the initial state and never throws.
     this.#disclosure = decodeDisclosure(this.#readStoredDisclosure(), UI_TREE);
     this.#render(callbacks);
+    // Wave U: every <select>, range and number field of every screen is shown as a ‹ value ›
+    // stepper (left / right changes the value). The native element stays in the DOM, hidden, as
+    // the source of truth — each existing listener and `.value` read is untouched — and
+    // autoUpgrade re-runs after every re-render of a screen.
+    autoUpgrade(this.#root);
   }
 
   /** The stored disclosure payload, or null when storage is unavailable (private mode, CSP). */
@@ -625,17 +631,22 @@ export class Menu {
    */
   #previewPanelHtml(): string {
     return `<section class="ui-panel ui-panel-preview" data-panel="preview" data-colour="violet" data-pinned>` +
-      `<h3 class="panel-head"><span class="dot"></span>Preview<span class="panel-hint">The rolled fighter: the model above the sheet below.</span></h3>` +
+      `<h3 class="panel-head"><span class="dot"></span>Preview<span class="panel-hint">The rolled fighter: the model, and its statistics on the right.</span></h3>` +
       `<div class="preview-grid">` +
+      // Wave U: the stage holds the model AND the tools that change its look (the dice, the three
+      // presets, the palette) under it; the right column is the fighter's identity and statistics
+      // only, level with the model (the user's rule: the statistics on the right of the model).
       `<div class="preview-stage">` +
       `<canvas id="creator-preview" width="360" height="440" class="preview-canvas" role="img" aria-label="3D preview of the rolled fighter"></canvas>` +
-      `<p class="preview-hint">The model is the fighter the dice rolled — the engine draws it here.</p></div>` +
-      `<div class="preview-stats">` +
+      `<p class="preview-hint">The model is the fighter the dice rolled — the engine draws it here.</p>` +
+      `<div class="stage-tools">` +
       diceButtonHtml() +
-      `<div class="creator-row">${PRESETS.map((p, i) => `<button class="menu-btn menu-btn-sm" data-preset="${i}">${p.name}</button>`).join("")}</div>` +
-      `<h4 class="group-head">Palette</h4>` +
+      `<div class="creator-row preset-row" role="group" aria-label="Preset fighters">${PRESETS.map((p, i) => `<button class="menu-btn menu-btn-sm menu-btn-alt" data-preset="${i}">${p.name}</button>`).join("")}</div>` +
+      `<div class="palette-block"><h4 class="group-head">Palette</h4>` +
       `<div class="palettes">${Object.entries(PALETTES).map(([name]) =>
-        `<button class="palette-chip palette-${name}" data-palette="${name}" title="${name}" aria-pressed="false"></button>`).join("")}</div>` +
+        `<button class="palette-chip palette-${name}" data-palette="${name}" title="${name}" aria-pressed="false"></button>`).join("")}</div></div>` +
+      `</div></div>` +
+      `<div class="preview-stats">` +
       `<div id="creator-sheet" class="creator-sheet"></div>` +
       // Wave P: the generation seed of the fighter on screen — the idea the roll came from, so a save
       // can be traced back to it and the generation system (or a net trained on its output) can find it.
@@ -720,10 +731,14 @@ export class Menu {
         // name (every probe/tool that clicks it still lands on the generator), and it stays a real
         // <button> in the modes group, so the fight path is keyboard- and screen-reader-reachable.
         return `<div class="title-modes">` +
-          `<button class="menu-btn menu-btn-primary entry-btn" data-action="start">⚔ Fighters<span class="btn-note">Roster and generator on one page — roll, override or save</span></button>` +
-          `<button class="menu-btn menu-btn-alt" data-action="digest">📋 History</button>` +
-          `<button class="menu-btn menu-btn-alt" data-action="spectate">👁 Spectate</button>` +
-          `<button class="menu-btn menu-btn-alt" data-action="settings" title="Keyboard layout, mouse, camera, display, sound">${icon("gear", "menu-btn-icon")}Settings</button>` +
+          // Wave U: line icons instead of emoji (one glyph family); on narrow screens the three
+          // secondary modes compress to icon + short label in one row (CSS .title-modes-row).
+          `<button class="menu-btn menu-btn-primary entry-btn" data-action="start">${icon("swords", "menu-btn-icon")}<span class="btn-label">Fighters</span><span class="btn-note">Roster and generator on one page — roll, override or save</span></button>` +
+          `<div class="title-modes-row">` +
+          `<button class="menu-btn menu-btn-alt" data-action="digest" title="Every match fought or watched, and the batch runner">${icon("scroll", "menu-btn-icon")}<span class="btn-label">History</span></button>` +
+          `<button class="menu-btn menu-btn-alt" data-action="spectate" title="Watch two generated fighters">${icon("eye", "menu-btn-icon")}<span class="btn-label">Spectate</span></button>` +
+          `<button class="menu-btn menu-btn-alt" data-action="settings" title="Keyboard layout, mouse, camera, display, sound">${icon("gear", "menu-btn-icon")}<span class="btn-label">Settings</span></button>` +
+          `</div>` +
           `</div>`;
       case "ancestry/race":
         return `<label class="field override-name">Name <input id="creator-name" type="text" value="${esc(this.#player.name)}"></label>` +
@@ -813,26 +828,34 @@ export class Menu {
 
         ${this.#rosterPanelHtml()}
 
-        <div class="creator-row">
-          <button class="menu-btn menu-btn-sm" data-action="save-profile" title="Save this fighter into your profile library">Save as profile</button>
-          <button class="menu-btn menu-btn-sm menu-btn-alt" data-action="discard" title="Throw the hand-edits away and regenerate the rolled fighter from its seed">Discard edits</button>
+        <!-- Wave U: one action bar, pinned to the bottom of the screen (sticky): secondary actions on
+             the left, the one primary action on the right, so "what next" is always in view. -->
+        <div class="screen-actions">
+          <div class="creator-row">
+            <button class="menu-btn menu-btn-sm menu-btn-alt" data-action="discard" title="Throw the hand-edits away and regenerate the rolled fighter from its seed">${icon("restart", "menu-btn-icon")}<span class="btn-label">Discard edits</span></button>
+            <button class="menu-btn menu-btn-sm" data-action="save-profile" title="Save this fighter into your profile library">${icon("save", "menu-btn-icon")}<span class="btn-label">Save as profile</span></button>
+          </div>
+          <button class="menu-btn menu-btn-primary" data-action="begin">${icon("swords", "menu-btn-icon")}<span class="btn-label">Enter the ring</span></button>
         </div>
-        <button class="menu-btn menu-btn-primary" data-action="begin">Enter the ring</button>
       </div>
 
       <div class="menu-screen" data-screen="victory">${this.#backBar()}
-        <h2 id="victory-text">Victory!</h2>
-        <p id="victory-detail" class="menu-sub"></p>
-        <button class="menu-btn" data-action="rematch">Rematch</button>
-        <button class="menu-btn menu-btn-alt" data-action="sheet">📋 Sheet</button>
-        <button class="menu-btn menu-btn-alt" data-action="history">📜 History</button>
-        <button class="menu-btn menu-btn-alt" data-action="menu">Menu</button>
+        <div class="victory-card">
+          <h2 id="victory-text">Victory!</h2>
+          <p id="victory-detail" class="menu-sub victory-detail"></p>
+          <div class="victory-actions">
+            <button class="menu-btn menu-btn-primary" data-action="rematch">${icon("restart", "menu-btn-icon")}<span class="btn-label">Rematch</span></button>
+            <button class="menu-btn menu-btn-alt" data-action="sheet">${icon("sheet", "menu-btn-icon")}<span class="btn-label">Sheet</span></button>
+            <button class="menu-btn menu-btn-alt" data-action="history">${icon("scroll", "menu-btn-icon")}<span class="btn-label">History</span></button>
+            <button class="menu-btn menu-btn-alt" data-action="menu">${icon("home", "menu-btn-icon")}<span class="btn-label">Menu</span></button>
+          </div>
+        </div>
       </div>
 
       <div class="menu-screen" data-screen="sheet">${this.#backBar()}
         <h2>Character Sheet</h2>
         <div id="sheet-body" class="sheet-body"></div>
-        <button class="menu-btn menu-btn-alt" data-action="menu">Main menu</button>
+        <button class="menu-btn menu-btn-alt" data-action="menu">${icon("home", "menu-btn-icon")}<span class="btn-label">Main menu</span></button>
       </div>
 
       <div class="menu-screen" data-screen="digest">${this.#backBar()}
@@ -855,7 +878,7 @@ export class Menu {
           <div class="batch-summary" id="batch-summary"></div>
         </section>
         <div id="digest-body" class="digest-body">No fights recorded yet.</div>
-        <button class="menu-btn menu-btn-alt" data-action="menu">Main menu</button>
+        <button class="menu-btn menu-btn-alt" data-action="menu">${icon("home", "menu-btn-icon")}<span class="btn-label">Main menu</span></button>
       </div>`;
 
     // Title buttons
@@ -1319,7 +1342,9 @@ export class Menu {
     const weight = q<HTMLInputElement>("creator-weight");
     if (weight) weight.value = String(Math.round(this.#player.appearance.weight));
     const sex = q<HTMLSelectElement>("creator-sex");
-    if (sex) sex.value = (this.#player as unknown as { sex?: string }).sex ?? "male";
+    // The sex lives on the appearance (CreatorSync writes appearance.sex). This used to read a
+    // top-level `sex` that does not exist, so every change was written back as "male" at once.
+    if (sex) sex.value = this.#player.appearance.sex ?? "male";
     for (const name of ATTR_NAMES) {
       const el = q<HTMLInputElement>(`creator-attr-${name}`);
       if (el) el.value = String(Math.round(this.#player.allocated[name] ?? 0));
