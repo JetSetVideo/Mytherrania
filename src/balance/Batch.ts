@@ -9,6 +9,8 @@ import { designPoints, toConditions, type DesignKind } from "./Gradient.ts";
 import { simulateMatch, type SimOptions } from "./MatchSim.ts";
 import { fighterStats } from "./FighterBuild.ts";
 import { WAVE_J_RULES, type MatchRules } from "./MatchRules.ts";
+import { resolveTimeLimit } from "../game/MatchControl.ts";
+import { truceSeconds } from "../game/Disposition.ts";
 
 export interface BatchOptions {
   matches: number;
@@ -31,6 +33,11 @@ export function runBatch(o: BatchOptions): MatchRecord[] {
   points.forEach((p, i) => {
     const conditions = toConditions(p, provider, o.codeHash ?? "unhashed");
     for (const f of conditions.fighters) f.stats = fighterStats(f, rules);
+    // The record states the clock the simulator ACTUALLY plays (MatchSim takes the truce from
+    // Disposition and the limit from MatchControl, never from the arena config): before wave J2 the
+    // record said timeLimit 90 / roamSeconds 6 from the config while the match ran 6 + 180 s.
+    conditions.arena.timeLimit = resolveTimeLimit(o.sim?.timeLimit);
+    conditions.arena.roamSeconds = truceSeconds();
     const outcome = simulateMatch(conditions, { ...o.sim, rules });
     const rec: MatchRecord = { conditions, outcome };
     o.onRecord?.(rec, i);

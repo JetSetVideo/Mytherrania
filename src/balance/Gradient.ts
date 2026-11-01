@@ -14,7 +14,11 @@
 // Pure module: no THREE, no DOM, no Math.random.
 
 import { NO_SYMMETRY, WALL_RULE_KINDS, type FighterSpec, type MatchConditions, type StrategyLevel, type WallRuleKind } from "../game/arena/contracts.ts";
-import { makeArena, type ArenaConfig } from "../game/ArenaConfig.ts";
+import { makeArena, snapSymmetryRotation, type ArenaConfig } from "../game/ArenaConfig.ts";
+import { BIRTHSIGNS } from "../game/Birthsight.ts";
+import { RACES, type StatName } from "../game/Races.ts";
+import { budgetForLevel, PER_STAT_CAP } from "../game/SpectateGen.ts";
+import { BATCH_VARIABLES, STAT_NAMES, valueAt, VARIABLE_BY_ID, type VariableDef } from "./Variables.ts";
 import { CLASSES, type ClassName } from "../game/Stats.ts";
 import { ARCHETYPE_IDS } from "../game/weapons/Archetypes.ts";
 import { MAX_LEVEL, MIN_LEVEL } from "../game/SpectateGen.ts";
@@ -39,6 +43,11 @@ export interface DesignPoint {
   seed: number;
   /** Explicit wall rule (the invariant sweep covers every kind); absent = wallOf(arena.walls). */
   wall?: WallRuleKind;
+  /**
+   * Per-VARIABLE overrides (designs "vars-extreme" / "vars-grid"), normalised 0..1 positions keyed
+   * by Variables.ts id: "arena.<key>", or "A.fighter.<field>" / "B.fighter.<field>" per seat.
+   */
+  over?: Record<string, number>;
 }
 
 export const FIGHTER_AXES: readonly (keyof FighterKnobs)[] = ["level", "stats", "gear", "strategy", "ai"];
@@ -95,7 +104,7 @@ export const CORNER_ARENAS: readonly { name: string; arena: ArenaKnobs }[] = [
   { name: "large-walled", arena: { size: 1, walls: 1, props: 0 } },
 ];
 
-export type DesignKind = "all" | "extreme" | "corner" | "grid" | "random" | "invariant";
+export type DesignKind = "all" | "extreme" | "corner" | "grid" | "random" | "invariant" | "vars" | "vars-extreme" | "vars-grid";
 
 /** Arena sizes the invariant sweep visits, m (the contract's 2 m closet to its 320 m field). */
 export const SWEEP_SIZES: readonly number[] = [2, 3, 5, 8, 14, 25, 60, 120, 320];
@@ -108,6 +117,11 @@ const sizeKnob = (m: number) => Math.log(m / SIZE_MIN) / Math.log(SIZE_MAX / SIZ
  */
 export function designPoints(kind: DesignKind, n: number, seed: number): DesignPoint[] {
   const total = Math.max(0, Math.floor(n));
+  if (kind === "vars") {
+    const e = Math.round(total * 0.5);
+    return [...designPoints("vars-extreme", e, seed ^ 0x5005), ...designPoints("vars-grid", total - e, seed ^ 0x6006)];
+  }
+  if (kind === "vars-extreme" || kind === "vars-grid") return varsPoints(kind, total, seed);
   if (kind === "all") {
     const c = Math.round(total * 0.3), e = Math.round(total * 0.25), g = Math.round(total * 0.3);
     return [
@@ -156,29 +170,122 @@ export function designPoints(kind: DesignKind, n: number, seed: number): DesignP
   return out;
 }
 
-/** A design point's fighter as a contract FighterSpec. */
-export function fighterSpecOf(k: FighterKnobs, cat: Categorical, seat: 0 | 1, seed: number): FighterSpec {
-  const anc = ANCESTRIES[cat.ancestry[seat]];
-  const className: ClassName = CLASSES[cat.cls[seat]];
-  const level = levelOf(k.level);
+/** A design point's fighter as a contract FighterSpec (`over`: the point's per-variable overrides). */
+export function fighterSpecOf(k: FighterKnobs, cat: Categorical, seat: 0 | 1, seed: number, over?: Record<string, number>): FighterSpec {
+  const pre = seat === 0 ? "A.fighter." : "B.fighter.";
+  const o = (field: string): number | undefined => over?.[pre + field];
+  const at = (field: string, u: number) => valueAt(VARIABLE_BY_ID.get(`fighter.${field}`)!, u);
+  let anc = ANCESTRIES[cat.ancestry[seat]];
+  if (o("ancestry") !== undefined) anc = ANCESTRIES[at("ancestry", o("ancestry")!)];
+  else if (o("race") !== undefined) {
+    // A race step keeps the point's sub-race SLOT (0..2) inside the chosen race.
+    const race = RACES[at("race", o("race")!)];
+    const slot = RACES.find((r) => r.id === anc.race)!.subspecies.findIndex((s) => s.id === anc.subrace);
+    anc = { race: race.id, subrace: race.subspecies[Math.max(0, slot) % race.subspecies.length].id };
+  }
+  const className: ClassName = o("class") !== undefined ? CLASSES[at("class", o("class")!)] : CLASSES[cat.cls[seat]];
+  const level = o("level") !== undefined ? at("level", o("level")!) : levelOf(k.level);
+  const weapon = o("weapon") !== undefined ? WEAPONS[at("weapon", o("weapon")!)] : WEAPONS[cat.weapon[seat]];
+  const signIdx = o("birthsign") !== undefined ? at("birthsign", o("birthsign")!) : 0;
+  const strategy = o("strategy") !== undefined ? (["none", "basic", "full"] as const)[at("strategy", o("strategy")!)] : strategyOf(k.strategy);
+  const stats: Partial<Record<StatName, number>> = {};
+  for (const s of STAT_NAMES) if (o(`stat.${s}`) !== undefined) stats[s] = o(`stat.${s}`)!;
   return {
     name: `${seat === 0 ? "A" : "B"}-${className}-${anc.race}`,
     race: anc.race,
     subrace: anc.subrace,
     className,
-    birthsign: null,
+    birthsign: signIdx > 0 ? BIRTHSIGNS[signIdx - 1].id : null,
     level,
-    allocated: leanAllocation(className, level, k.stats),
-    weapon: { type: WEAPONS[cat.weapon[seat]], seed: (seed ^ (seat === 0 ? 0x5bd1e995 : 0x1b873593)) >>> 0, quality: clamp01(k.gear) },
-    strategy: strategyOf(k.strategy),
-    aiLevel: clamp01(k.ai),
+    allocated: Object.keys(stats).length > 0 ? legalAllocation(className, level, k.stats, stats) : leanAllocation(className, level, k.stats),
+    weapon: { type: weapon, seed: (seed ^ (seat === 0 ? 0x5bd1e995 : 0x1b873593)) >>> 0, quality: o("gear") !== undefined ? clamp01(o("gear")!) : clamp01(k.gear) },
+    strategy,
+    aiLevel: o("aiLevel") !== undefined ? clamp01(o("aiLevel")!) : clamp01(k.ai),
   };
+}
+
+/**
+ * A per-attribute allocation that stays LEGAL: each overridden attribute asks for u · PER_STAT_CAP
+ * points, the others keep the lean spend of the `fraction` knob, and the whole is scaled down to
+ * the level's budget when it would exceed it (so "strength at max" on a level-1 fighter is the
+ * level-1 budget poured into strength, not 60 points it could never have).
+ */
+export function legalAllocation(className: ClassName, level: number, fraction: number, wanted: Partial<Record<StatName, number>>): Record<StatName, number> {
+  const base = leanAllocation(className, level, fraction);
+  const want: Record<StatName, number> = { ...base };
+  for (const s of STAT_NAMES) if (wanted[s] !== undefined) want[s] = Math.round(clamp01(wanted[s]!) * PER_STAT_CAP);
+  const budget = budgetForLevel(level);
+  const sum = STAT_NAMES.reduce((t, s) => t + want[s], 0);
+  if (sum <= budget) return want;
+  // Scale to the budget, then hand the rounding remainder to the largest asks.
+  const k = budget / sum, out = {} as Record<StatName, number>;
+  let used = 0;
+  for (const s of STAT_NAMES) { out[s] = Math.floor(want[s] * k); used += out[s]; }
+  const order = [...STAT_NAMES].sort((a, b) => want[b] - want[a]);
+  for (let i = 0; used < budget && i < order.length * 4; i++) {
+    const s = order[i % order.length];
+    if (want[s] > out[s] && out[s] < PER_STAT_CAP) { out[s]++; used++; }
+  }
+  return out;
+}
+
+/** Normalised position of an enum value index (0..n−1 -> 0..1). */
+const enumU = (v: VariableDef, idx: number) => (v.max > v.min ? (idx) / (v.max - v.min) : 0);
+
+/**
+ * vars-extreme: EVERY batch variable (Variables.BATCH_VARIABLES: each sim-read arena variable once,
+ * each fighter variable per seat) independently at its min or its max (a coin each); enums take a
+ * uniform value (an enum has no "max"). gradient = the whole override map, so Summary.effects can
+ * split every record by every variable.
+ * vars-grid: ONE variable stepped min -> max (GRID_STEPS positions; enums every value), everything
+ * else at its middle; fighter variables on seat A only.
+ */
+function varsPoints(kind: "vars-extreme" | "vars-grid", n: number, seed: number): DesignPoint[] {
+  const rng = randomSource(seed >>> 0);
+  const out: DesignPoint[] = [];
+  const mid: ArenaKnobs = { size: 0.5, walls: 0.5, props: 0.5 };
+  if (kind === "vars-extreme") {
+    for (let i = 0; i < n; i++) {
+      const pseed = Math.floor(rng() * 0x7fffffff), cat = categorical(rng), over: Record<string, number> = {};
+      for (const v of BATCH_VARIABLES) {
+        const keys = v.perSeat ? [`A.${v.id}`, `B.${v.id}`] : [v.id];
+        for (const key of keys) over[key] = v.kind === "enum" ? enumU(v, Math.min(v.max - v.min, Math.floor(rng() * (v.max - v.min + 1)))) : coin(rng);
+      }
+      out.push({ design: "vars-extreme", a: { ...MID_KNOBS }, b: { ...MID_KNOBS }, arena: { ...mid }, cat, seed: pseed, over, gradient: { ...over } });
+    }
+    return out;
+  }
+  // Every (variable, step) cell in order, cycled until n points.
+  const cells: { key: string; u: number }[] = [];
+  for (const v of BATCH_VARIABLES) {
+    const key = v.perSeat ? `A.${v.id}` : v.id;
+    const steps = v.kind === "enum" ? v.max - v.min + 1 : v.kind === "bool" ? 2 : GRID_STEPS;
+    for (let s = 0; s < steps; s++) cells.push({ key, u: steps > 1 ? s / (steps - 1) : 0 });
+  }
+  for (let i = 0; i < n; i++) {
+    const pseed = Math.floor(rng() * 0x7fffffff), cat = categorical(rng), c = cells[i % cells.length];
+    out.push({ design: `vars-grid:${c.key}`, a: { ...MID_KNOBS }, b: { ...MID_KNOBS }, arena: { ...mid }, cat, seed: pseed, over: { [c.key]: c.u }, gradient: { [c.key]: c.u } });
+  }
+  return out;
+}
+
+/** Number of cells one full vars-grid sweep has (each batch variable × its steps). */
+export function varsGridCells(): number {
+  return BATCH_VARIABLES.reduce((t, v) => t + (v.kind === "enum" ? v.max - v.min + 1 : v.kind === "bool" ? 2 : GRID_STEPS), 0);
 }
 
 /** The ArenaConfig of a design point (flat, symmetric-start, solid outside ground 1 m below). */
 export function arenaConfigOf(p: DesignPoint): ArenaConfig {
   const wall = p.wall ?? wallOf(p.arena.walls);
-  return makeArena({
+  // Per-variable arena overrides (vars designs) go on top; the outline is then re-aligned to its
+  // symmetry (ArenaConfig.snapSymmetryRotation, as randomArena does after its own overrides).
+  const ov: Partial<ArenaConfig> = {};
+  for (const [key, u] of Object.entries(p.over ?? {})) {
+    if (!key.startsWith("arena.")) continue;
+    const v = VARIABLE_BY_ID.get(key);
+    if (v) (ov as Record<string, number>)[key.slice(6)] = valueAt(v, u);
+  }
+  return snapSymmetryRotation(makeArena({
     size: sizeOf(p.arena.size),
     walls: wall === "none" ? 0 : 1,
     wallHeight: WALL_BASE,
@@ -192,13 +299,21 @@ export function arenaConfigOf(p: DesignPoint): ArenaConfig {
     outsideCollision: 1,
     outsideHeight: -1,
     roamSeconds: 6,
-  });
+    ...ov,
+  }));
+}
+
+/** The wall rule a point builds: the arena.wallRule override when the point has one, else the ladder. */
+export function wallRuleOf(p: DesignPoint, cfg: ArenaConfig): WallRuleKind {
+  if (p.over && "arena.wallRule" in p.over) return cfg.walls >= 1 ? WALL_RULE_KINDS[Math.max(0, Math.min(WALL_RULE_KINDS.length - 1, Math.round(cfg.wallRule)))] : "none";
+  if (p.over && "arena.walls" in p.over && cfg.walls < 1) return "none";
+  return p.wall ?? wallOf(p.arena.walls);
 }
 
 /** Full MatchConditions for a design point (the record's "conditions"). */
 export function toConditions(p: DesignPoint, provider: ArenaProvider, codeHash: string): MatchConditions {
   const arena = arenaConfigOf(p);
-  const built = provider(arena, p.wall ?? wallOf(p.arena.walls), WALL_BASE, p.seed);
+  const built = provider(arena, wallRuleOf(p, arena), arena.wallHeight, p.seed);
   return {
     version: 1,
     seed: p.seed,
@@ -208,7 +323,7 @@ export function toConditions(p: DesignPoint, provider: ArenaProvider, codeHash: 
     walls: built.walls,
     symmetry: built.symmetry ?? NO_SYMMETRY,
     digest: built.digest,
-    fighters: [fighterSpecOf(p.a, p.cat, 0, p.seed), fighterSpecOf(p.b, p.cat, 1, p.seed)],
+    fighters: [fighterSpecOf(p.a, p.cat, 0, p.seed, p.over), fighterSpecOf(p.b, p.cat, 1, p.seed, p.over)],
     timeScale: 1,
     design: p.design,
     ...(p.gradient ? { gradient: p.gradient } : {}),

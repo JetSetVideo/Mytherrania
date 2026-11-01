@@ -20,8 +20,10 @@ export const buildLaneJTArena: ArenaProvider = (cfg, wall, baseHeight, seed) => 
     ...cfg,
     walls: wall === "none" ? 0 : 1,
     wallRule: Math.max(0, WALL_RULE_KINDS.indexOf(wall)),
-    wallRule2: -1,
-    wallRule3: -1,
+    // The config's own secondary rules are kept (default −1 = one rule, as the ladder designs use),
+    // so a vars design can combine rules; before wave J2 they were forced to −1 here.
+    wallRule2: Number.isFinite(cfg.wallRule2) ? cfg.wallRule2 : -1,
+    wallRule3: Number.isFinite(cfg.wallRule3) ? cfg.wallRule3 : -1,
     wallHeight: baseHeight,
   };
   // Write the resolved wall keys back so the record's ArenaConfig is the one the plan came from.
