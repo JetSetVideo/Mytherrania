@@ -111,6 +111,18 @@ export const SEX_CURVE: Record<Sex, SexCurve> = {
 };
 
 /**
+ * Wave S (lane S-B): "boys have a larger shoulder-to-hip ratio, and girls, they're more curvy" — the
+ * shoulder-to-hip RATIO is made to differ by sex by a STATED amount, ON TOP of wave R's female curve.
+ * The shoulder JOINT takes NO sex multiplier (a moved shoulder joint moves the swing's planted-foot
+ * slide off its band — measured; the numbers live in the SHOULDER_OVERHANG note in
+ * graphics/body/Proportions.ts), so the difference is realised through the HIP half-width (and the
+ * pelvis half-depth), the same lever wave R already leans on. male = 1.0 (the neutral body, so the
+ * pre-wave silhouette is untouched); female = the extra width her hips carry over SEX_CURVE.female.hip.
+ * Effect: female shoulder-to-hip = male's ÷ (SEX_CURVE.female.hip · SEX_HIP_GAIN.female).
+ */
+export const SEX_HIP_GAIN: Record<Sex, number> = { male: 1.0, female: 1.06 };
+
+/**
  * The four races' silhouettes. The brief's hard requirements live here:
  * the DWARF is the smallest (height 0.80) and the ELF the thinnest (width 0.84,
  * depth 0.88, muscle 0.68), with the ORK the heaviest (width 1.34).

@@ -1,0 +1,27 @@
+{
+ "started": "duel",
+ "before": {
+  "yaw": 45.756,
+  "pitch": 36.718,
+  "distance": 6.427,
+  "dragging": false
+ },
+ "dragging": {
+  "yaw": 14.546,
+  "pitch": 41.242,
+  "distance": 6.543,
+  "dragging": true
+ },
+ "after": {
+  "yaw": 20.352,
+  "pitch": 41.242,
+  "distance": 6.543,
+  "dragging": false
+ },
+ "yawDelta": -25.404,
+ "pitchDelta": 4.524,
+ "draggedWhileHeld": true,
+ "contextMenuSuppressed": true,
+ "canvasFound": true,
+ "errors": []
+}

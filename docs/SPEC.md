@@ -931,6 +931,37 @@ fingernails.
 `tests/hair_eyes_nails_test.ts`. R-A's pectoral pin was re-stated from the change to the DROPPED state with
 the reason, rather than deleted.
 
+## 11K. Wave S — right-drag camera, forty powers with one cost law, and the cost argument settled by measurement
+
+Added 2026-11-01. The prompt asked for a right-click third-person camera; five archetype-true powers for
+every class, tied to the animations, the weapons and the statistics, with cast times, mana and cooldowns;
+two agents to argue the balance and the cost function; and bodies that are less slouched, more muscled at
+the shoulder and trapezius, closer at the hip junction, with a small crotch mass and a shoulder-to-hip
+hierarchy by race and sex.
+
+| # | Requirement | Where | Status |
+| --- | --- | --- | --- |
+| SA1 | Right button held + drag orbits the third-person camera; the context menu is suppressed; only the left button attacks | `src/engine/Engine.ts` | LIVE |
+| SA2 | Five powers per class (**8 classes = 40 powers**, not the ten the brief assumed), each declaring a shape, an element, and the attribute + weapon input it scales from | `src/game/Skills.ts` | LIVE |
+| SA3 | ONE law derives amplitude, cast time, mana, cooldown and duration from the caster's own statistics and weapon; a hard-coded power fails its test | `src/game/PowerCost.ts` | LIVE |
+| SA4 | Combos (which power after which earns a bonus) and exclusions (every class lacks exactly one shape) | `src/game/ComboTable.ts` | LIVE |
+| SA5 | The duplicated resource table is SINGLE-SOURCED (it existed in `Engine.ts` and `MatchSim.ts`) | `PowerCost.ts`, both re-export | LIVE |
+| SA6 | The powers are the class's **loadout in game** — NOT YET: the runtime still fields the three legacy skills (`skillsForClass`, `Engine.ts:1677`); the powers exist, derive and are tested, but are not yet on the bar | — | **OPEN** |
+| SB1 | The cost function is settled by measurement: mana is nearly inert, cast time is the lever | `docs/systems/COST-A.md`, `COST-B.md`, `PowerCost.SHAPE_BASE` | LIVE |
+| SC1 | Less slouch (girdle forward 5.5–7.2 mm) and trapezius redistribution (top rises 9–14.8 mm) | `AnatomyParts.ts` | LIVE |
+| SC2 | The sex shoulder-to-hip hierarchy: female 13.4 % lower than male, across all 16 ancestry nodes | `BodyProfile.ts` | LIVE |
+| SC3 | Hip joints closer / crotch pack / deltoid mass / neck straighten — all **DROPPED** with numbers (foot slide, ragdoll ground settle, the weld floor) | — | DROPPED |
+
+**The reconciliation (both advocates' documents are in the repo).** S-C argued expensive and impactful;
+S-D argued cheap and frequent. S-D won the MANA question on the game's own scoreboard: zeroing the power's
+mana at runtime left the weighted score flat (**0.8052 → 0.8060**) while closeness rose 0.621 → 0.717 and
+the median fell 38.25 → 31.83 s — mana is a flavour tax, not the gate. S-C won the TIME question: the cast
+is what limits casts, and its own batch showed that casting more lowered the KO share (0.29 → 0.17) rather
+than making fights decisive. So `SHAPE_BASE` now charges **4/8/12/10/8 mana** with cast times of
+**0.45/0.75/1.45/1.60/0.90 s** (the heavy shapes earn the long cast) and cooldowns of **4/6/8/10/12 s**.
+Both advocates' honest negatives stand: S-D's grid cells cast NOTHING at any price, so no cost change can
+move their 33 % timeout share — that stall is a strategy/arena problem, and it is recorded as such.
+
 ## 11G. Wave O — the Profiles panel
 
 Added 2026-10-31. The prompt asked to improve the journey from the title's profile button into a panel where

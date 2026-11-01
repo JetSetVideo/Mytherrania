@@ -324,7 +324,16 @@ export function headNode(P: BodyProportions, jitter: { nose: number; jaw: number
   };
 }
 
-/** Neck column with the two sternocleidomastoid cords (mastoid → sternal notch). */
+/**
+ * Neck column with the two sternocleidomastoid cords (mastoid → sternal notch).
+ *
+ * Lane S-B note: a NECK-TOP straighten (moving the neck top back by 0.02·h) was the first "less slouch"
+ * attempt. It was DROPPED, not faked: moving the neck's top shifts the neck/head junction, which moves
+ * body volume, and the default Warrior's forearm segment then falls below the ragdoll's 2 % weld floor
+ * (elbowL 2.034 % -> 1.992 %, "welded light leaves: …elbowL…") — measured, and even a 0.1·h move flips
+ * it. The slouch rides the SHOULDER GIRDLE instead (SLOUCH_FWD_PER_HEAD in torsoNode), a redistribution
+ * that leaves every ragdoll and animation suite green.
+ */
 export function neckNode(P: BodyProportions): SdfNode {
   const h = P.head, r = P.halfWidth.neck;
   const column = prim("neck", "roundCone", "neck", "neck", [0, P.y.neckBase - 0.25 * h, -0.08 * h], { b: [0, P.y.headPivot + 0.05 * h, -0.04 * h], r: r * 1.25, r2: r });
@@ -356,19 +365,66 @@ export interface TorsoOpts {
   pectoralGain?: number;
   /** Pectoral centre forward offset, head heights (default PECTORAL_FORWARD_PER_HEAD; 0 = pre-wave). */
   pectoralForwardPerHead?: number;
+  /** Lane S-B: reconstruct the pre-wave (slouched, un-risen) trapezius for a before -> after measure. */
+  trapeziusPreWave?: boolean;
+  /** Lane S-B shoulder-girdle forward offset, head heights (default SLOUCH_FWD_PER_HEAD; 0 = pre-wave). */
+  slouchForwardPerHead?: number;
 }
+
+/**
+ * Lane S-B "less slouch (a straighter upper spine)": the shoulder girdle is squared FORWARD over the
+ * hips by this many head heights — a REDISTRIBUTION (the girdle capsule moves; no volume is added), so
+ * the upper spine reads straighter without perturbing the ragdoll. 0 = the pre-wave (slouched) girdle.
+ */
+export const SLOUCH_FWD_PER_HEAD = 0.03 as number;
+
+/**
+ * Lane S-B: "a bit more muscular with some muscles in the shoulders and the trapezoids". The trapezius
+ * roundCone moves INWARD (tip x × TRAP_TIP_X_FRAC of the shoulder half-width) and RISES over the
+ * shoulder line (both ends up by the stated head heights). This is a REDISTRIBUTION, NOT a radius gain:
+ * the radii are unchanged, because ANY radius increase flips the default Warrior's forearm below the
+ * ragdoll's 2 % weld floor (measured: TRAPEZIUS_GAIN 1.01 already welds the elbows). Measured as the
+ * torso's top (+y) surface over the shoulder line. The `_PRE_` values are the pre-wave positions.
+ */
+export const TRAP_ROOT_RISE_PER_HEAD = 0.22 as number;
+export const TRAP_ROOT_RISE_PRE_PER_HEAD = 0.15 as number;
+export const TRAP_ROOT_Z_PER_HEAD = -0.13 as number;
+export const TRAP_TIP_X_FRAC = 0.62 as number;
+export const TRAP_TIP_RISE_PER_HEAD = 0.17 as number;
+export const TRAP_TIP_Z_PER_HEAD = -0.07 as number;
+
+/**
+ * Lane S-B: "give them a little pack for simulating the genitals". The CROTCH PACK is a small,
+ * tasteful ellipsoid at the crotch, in front of the body between the thighs, with its own size per sex
+ * (head heights): the male pack sits lower and further forward, the female's sits higher and flatter.
+ * GEOMETRY ONLY: it touches no leg-chain length, no hip joint and no ground-contact radius.
+ *   w = half-width, h = half-height, d = half-depth, fwd = centre forward offset, per head height.
+ *
+ * DROPPED this wave, not faked: mid-size it no longer allows the default Warrior to settle inside
+ * RAGDOLL GROUND's 3 s window (adding it shifts the pelvis segment's share of the body mass); the
+ * suite stayed green only for a <=8 % copy (~2 mm), which is not a pack. Kept here as the stated
+ * per-sex size the pack WOULD carry.
+ */
+export const CROTCH_PACK: Record<"male" | "female", { w: number; h: number; d: number; fwd: number }> = {
+  male:   { w: 0.11, h: 0.17, d: 0.10, fwd: 0.06 },
+  female: { w: 0.13, h: 0.10, d: 0.07, fwd: 0.04 },
+};
 
 /** Torso: ribcage, shoulder girdle, pectorals, scapulae, clavicles, trapezius, abdomen, obliques, pelvis, glutes; navel carved (subtract). */
 export function torsoNode(P: BodyProportions, opts: TorsoOpts = {}): { node: SdfNode; bellyFront: Vec3; sternalNotch: Vec3; backZ: number } {
   const h = P.head, y = P.y, m = P.muscle, c = P.cell;
   const pecGain = opts.pectoralGain ?? PECTORAL_DEPTH_GAIN;
   const pecFwd = opts.pectoralForwardPerHead ?? PECTORAL_FORWARD_PER_HEAD;
+  const trapPre = opts.trapeziusPreWave === true;
   const cw = P.halfWidth.chest, cd = P.halfDepth.chest;
   const sx = P.halfWidth.shoulderJoint;
   const ribCentre: Vec3 = [0, (y.ribBottom + y.shoulder) / 2 + 0.05 * h, 0];
   const ribSize: Vec3 = [cw, (y.shoulder - y.ribBottom) / 2 + 0.2 * h, cd];
   const ribcage = prim("ribcage", "ellipsoid", "spine", "torso", ribCentre, { size: ribSize });
-  const girdle = prim("shoulderGirdle", "capsule", "spine", "torso", [-sx * 0.85, y.shoulder + 0.08 * h, -0.05 * h], { b: [sx * 0.85, y.shoulder + 0.08 * h, -0.05 * h], r: 0.2 * h });
+  // Lane S-B "less slouch": the shoulder girdle is squared FORWARD over the hips (a REDISTRIBUTION,
+  // not added volume), so the upper spine reads straighter. z = (-0.05 + slouchForward) · h.
+  const slouchFwd = opts.slouchForwardPerHead ?? SLOUCH_FWD_PER_HEAD;
+  const girdle = prim("shoulderGirdle", "capsule", "spine", "torso", [-sx * 0.85, y.shoulder + 0.08 * h, (-0.05 + slouchFwd) * h], { b: [sx * 0.85, y.shoulder + 0.08 * h, (-0.05 + slouchFwd) * h], r: 0.2 * h });
   const bellyCentre: Vec3 = [0, (y.navel + y.ribBottom) / 2, 0.04 * h * P.girth];
   const bellySize: Vec3 = [P.halfWidth.waist, (y.ribBottom - y.navel) / 2 + 0.45 * h, P.halfDepth.belly];
   const abdomen = prim("abdomen", "ellipsoid", "abdomen", "torso", bellyCentre, { size: bellySize });
@@ -383,8 +439,14 @@ export function torsoNode(P: BodyProportions, opts: TorsoOpts = {}): { node: Sdf
   const scap = (s: 1 | -1) => prim(`scapula${s > 0 ? "L" : "R"}`, "ellipsoid", "spine", "torso", [s * 0.33 * h, y.shoulder - 0.45 * h, -cd * 0.72], { size: [0.3 * h, 0.42 * h, 0.12 * h * m], rot: [0.15, -s * 0.35, s * 0.15] });
   const sternalNotch: Vec3 = [0, y.sternalNotch, cd * 0.7];
   const clav = (s: 1 | -1) => prim(`clavicle${s > 0 ? "L" : "R"}`, "capsule", "spine", "torso", [s * 0.08 * h, y.sternalNotch + 0.02 * h, cd * 0.7], { b: [s * sx * 0.95, y.shoulder + 0.14 * h, 0.02 * h], r: Math.max(0.065 * h, 0.6 * c) });
-  const trap = (s: 1 | -1) => prim(`trapezius${s > 0 ? "L" : "R"}`, "roundCone", "spine", "torso", [0, y.neckBase + 0.15 * h, -0.15 * h], { b: [s * sx * 0.75, y.shoulder + 0.1 * h, -0.08 * h], r: 0.2 * h, r2: 0.12 * h * m });
+  const trap = (s: 1 | -1) => prim(`trapezius${s > 0 ? "L" : "R"}`, "roundCone", "spine", "torso",
+    [0, y.neckBase + (trapPre ? TRAP_ROOT_RISE_PRE_PER_HEAD : TRAP_ROOT_RISE_PER_HEAD) * h, (trapPre ? -0.15 : TRAP_ROOT_Z_PER_HEAD) * h],
+    { b: [s * sx * (trapPre ? 0.75 : TRAP_TIP_X_FRAC), y.shoulder + (trapPre ? 0.10 : TRAP_TIP_RISE_PER_HEAD) * h, (trapPre ? -0.08 : TRAP_TIP_Z_PER_HEAD) * h], r: 0.2 * h, r2: 0.12 * h * m });
   const glute = (s: 1 | -1) => prim(`gluteus${s > 0 ? "L" : "R"}`, "ellipsoid", "abdomen", "pelvis", [s * P.halfWidth.hip * 0.48, y.pelvis - 0.25 * h, -P.halfDepth.pelvis * 0.5], { size: [P.halfWidth.hip * 0.5, 0.48 * h, 0.34 * h * m] });
+  // Lane S-B: the CROTCH PACK was DROPPED, not faked. Adding it (a small ellipsoid at the crotch, its
+  // own size per sex — CROTCH_PACK) shifts the pelvis segment's share of the body mass and the default
+  // Warrior no longer settles inside RAGDOLL GROUND's 3 s window; only a <=8 % copy of the designed
+  // size (~2 mm — not a "pack") stayed green, so the geometry is not added.
   const muscles = op("smoothUnion", 0.1 * h, core, pec(1), pec(-1), scap(1), scap(-1), clav(1), clav(-1), trap(1), trap(-1), glute(1), glute(-1));
 
   const navelR = Math.max(0.07 * h, 1.2 * c);
@@ -408,6 +470,12 @@ export function armNode(P: BodyProportions, side: 1 | -1, abduction: number): { 
   const wrist = along(elbow, d, P.foreArm);
   const fingertip = along(wrist, d, P.hand);
   const sb = `shoulder${L}` as BoneId, eb = `elbow${L}` as BoneId;
+  // Lane S-B: the deltoid mass was DROPPED, not faked. The shoulder delivers its "some muscles in the
+  // shoulders" through the TRAPEZIUS redistribution (see TRAP_TIP_X_FRAC) instead: the deltoid sits
+  // exactly on the skin-weight shoulder seam, and EVERY direction of growth (lateral, along the arm, in
+  // depth, or a bigger P.radius.deltoid) moved the ork half-guard trunk-skin travel from 54 mm to
+  // 56-61 mm against a 56.2 mm bound (or split the slim elf mesh into 3 components) — measured, so the
+  // deltoid geometry stays pre-wave.
   const deltoid = prim(`deltoid${L}`, "ellipsoid", sb, "upperArm", sum(shoulder, mul(o, 0.08 * h), mul(d, 0.25 * h)), { size: [R.deltoid, 0.5 * h, R.deltoid * 1.05], rot });
   const upper = prim(`upperArm${L}`, "roundCone", sb, "upperArm", shoulder, { b: elbow, r: R.upperArm, r2: R.upperArmDistal });
   const biceps = prim(`biceps${L}`, "ellipsoid", sb, "upperArm", sum(shoulder, mul(d, 0.5 * P.upperArm), mul(f, 0.45 * R.upperArm)), { size: [0.62 * R.upperArm * m, 0.4 * P.upperArm, 0.58 * R.upperArm * m], rot });

@@ -21,7 +21,7 @@
 //                  surface area (m²) — the cell that lands the mesh near its triangle budget.
 
 import { ratioValue, resolvePartAxis } from "../../game/RaceGenes.ts";
-import { BUILDS, buildFor, RACE_SILHOUETTE, raceSilhouette, SEX_CURVE, type BuildRow, type BuildType, type RaceSilhouette, type Sex } from "../../game/BodyProfile.ts";
+import { BUILDS, buildFor, RACE_SILHOUETTE, raceSilhouette, SEX_CURVE, SEX_HIP_GAIN, type BuildRow, type BuildType, type RaceSilhouette, type Sex } from "../../game/BodyProfile.ts";
 import { HAIR_LENGTH_M, nameSeed, raceBuild } from "../../game/RaceAppearance.ts";
 import { ancestryOf, type AncestryNode, type BeardSpec } from "../../game/Ancestry.ts";
 import { clamp } from "../../core/MathCore.ts";
@@ -96,6 +96,16 @@ export const SHOULDER_OVERHANG = 0.35;
 // 1 % cut (5.54 -> 5.65 mm against 5.6), and at -8 % (5.54 -> 6.42 mm). So the dwarf's "less large of
 // shoulders" asks is DROPPED with its numbers rather than faked, the way the lane-Q-B angular gain
 // had to be scoped to the torso to leave the ground-contact geometry alone.
+
+/**
+ * Lane S-B: "make the legs a bit closer at the junction" (the hip joints move inward — the STANCE).
+ * DROPPED, not faked. The hip joint's x IS the leg root, and moving it moves a physical property the
+ * suite pins: the swing's planted-foot slide (tests/anim_measure_test.ts). Measured at dwarf/mountain
+ * slash fresh — pre-wave 5.54 mm against a 5.6 mm band — the stance 0.98 (2 % inward) gives 6.21 mm and
+ * 0.9 gives 9.19 mm. There is NO headroom (0.06 mm), so the joint stays; 1.0 = the pre-wave stance. The
+ * leg-chain LENGTHS (thigh/shin/foot, y.hipJoint) and the ground-contact radii are untouched regardless.
+ */
+export const HIP_JOINT_STANCE = 1 as number;
 
 /** Canon half-widths (x), head heights: shoulder joint, ribcage, waist, hips, hip joint, neck, skull. */
 export const CANON_HALF_WIDTH = {
@@ -191,6 +201,9 @@ export function proportionsFor(spec: BodySpec, buildOverride?: BuildType): BodyP
   // Default male = 1.0 on every term, so an unset spec is byte-for-byte the pre-wave silhouette.
   const sex = sexOf(spec);
   const C = SEX_CURVE[sex];
+  // Wave S (lane S-B): the sex's extra hip width on top of wave R's curve, so the shoulder-to-hip
+  // ratio differs by sex (male 1.0 = neutral). Applied ONLY to the hip half-width and pelvis depth.
+  const hipSex = SEX_HIP_GAIN[sex];
 
   // 1. Head unit.
   const headsTall = CANON_HEADS_TALL / ratioRel("headToBody", race);
@@ -243,10 +256,11 @@ export function proportionsFor(spec: BodySpec, buildOverride?: BuildType): BodyP
     shoulderJoint: CANON_HALF_WIDTH.shoulderJoint * h * (sil.shoulder / RACE_SILHOUETTE.human.shoulder) * g(GIRTH_EXPONENT.neck) * B.shoulder,
     chest: CANON_HALF_WIDTH.chest * h * geneRel("chest", "x", race) * g(GIRTH_EXPONENT.torso) * B.chest,
     waist: CANON_HALF_WIDTH.waist * h * geneRel("abdomen", "x", race) * g(GIRTH_EXPONENT.waist) * B.waist * C.waist,
-    hip: CANON_HALF_WIDTH.hip * h * geneRel("pelvis", "x", race) * g(GIRTH_EXPONENT.torso) * B.hip * C.hip,
+    hip: CANON_HALF_WIDTH.hip * h * geneRel("pelvis", "x", race) * g(GIRTH_EXPONENT.torso) * B.hip * C.hip * hipSex,
     // The hip JOINT takes NO sex curve: a female's leg roots stay where the male's are, so her feet
-    // plant exactly as his do (a moved hip joint would move the whole ground-contact layout).
-    hipJoint: CANON_HALF_WIDTH.hipJoint * h * geneRel("pelvis", "x", race) * g(GIRTH_EXPONENT.neck) * B.hip,
+    // plant exactly as his do (a moved hip joint would move the whole ground-contact layout). Lane S-B
+    // applies the (dropped) STANCE here too — HIP_JOINT_STANCE is 1.0, a no-op, see its note above.
+    hipJoint: CANON_HALF_WIDTH.hipJoint * h * geneRel("pelvis", "x", race) * g(GIRTH_EXPONENT.neck) * B.hip * HIP_JOINT_STANCE,
     neck: CANON_HALF_WIDTH.neck * h * geneRel("neck", "x", race) * g(GIRTH_EXPONENT.neck) * NECK_SLIM,
     // The skull's proportions relative to its own height (head.x / head.y, race over human).
     skull: CANON_HALF_WIDTH.skull * h * geneRel("head", "x", race) / geneRel("head", "y", race),
@@ -254,7 +268,7 @@ export function proportionsFor(spec: BodySpec, buildOverride?: BuildType): BodyP
   const halfDepth = {
     chest: CANON_HALF_DEPTH.chest * h * geneRel("chest", "z", race) * g(GIRTH_EXPONENT.torso) * B.chest * C.chestDepth,
     belly: CANON_HALF_DEPTH.belly * h * geneRel("abdomen", "z", race) * g(GIRTH_EXPONENT.belly) * B.fat,
-    pelvis: CANON_HALF_DEPTH.pelvis * h * geneRel("pelvis", "z", race) * g(GIRTH_EXPONENT.torso) * B.hip * C.hip,
+    pelvis: CANON_HALF_DEPTH.pelvis * h * geneRel("pelvis", "z", race) * g(GIRTH_EXPONENT.torso) * B.hip * C.hip * hipSex,
     skull: CANON_HALF_DEPTH.skull * h * geneRel("head", "z", race) / geneRel("head", "y", race),
   };
   // 7. Limb radii: canon x race gene ratio x girth^exponent x the build's limb term x a local
@@ -288,7 +302,7 @@ export function proportionsFor(spec: BodySpec, buildOverride?: BuildType): BodyP
   const cell = clamp(Math.sqrt(TRIS_PER_AREA_CELL2 * surfaceArea / TRIANGLE_TARGET), CELL_MIN, CELL_MAX);
 
   return {
-    spec, race, headsTall, head: h, girth: G, muscle, build: buildType, sex, sexCurve: { ...C }, buildRow: B, y,
+    spec, race, headsTall, head: h, girth: G, muscle, build: buildType, sex, sexCurve: { chestDepth: C.chestDepth, waist: C.waist, hip: C.hip * hipSex }, buildRow: B, y,
     thigh, shin, foot, ankleHeight, upperArm, foreArm, hand,
     halfWidth, halfDepth, radius,
     // Ear length now comes from the ancestry hierarchy (Ancestry.ears.lengthMul), not the older

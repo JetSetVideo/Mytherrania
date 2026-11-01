@@ -65,12 +65,13 @@ export const AI_MOVE_SPEED = 4.2;
 export const BODY_SPACING = 0.9;
 /** Engine: Engine.#arenaState.wallImpactSpeed = MOVE_SPEED · 1.05 — slower contacts are leans. */
 export const WALL_IMPACT_SPEED = 6.5 * 1.05;
-/** Engine: SKILL_RESOURCE_COST. */
-export const SKILL_RESOURCE_COST: Record<string, { mana: number; stamina: number }> = {
-  dash: { mana: 0, stamina: 12 },
-  power: { mana: 20, stamina: 8 },
-  defense: { mana: 5, stamina: 12 },
-};
+/**
+ * The one resource table (wave S). It used to be defined HERE and again in src/engine/Engine.ts -
+ * two copies of a balance number, which is exactly the "why is it like that here and not there"
+ * problem. `src/game/PowerCost.ts` owns it now; this re-export keeps every existing import working.
+ */
+import { SKILL_RESOURCE_COST } from "../game/PowerCost.ts";
+export { SKILL_RESOURCE_COST };
 /** Engine: a block holds 0.4 s, lets 40 % of the damage through and braces 45 % of the push. */
 export const BLOCK_SECONDS = 0.4;
 export const BLOCK_DAMAGE = 0.4;
