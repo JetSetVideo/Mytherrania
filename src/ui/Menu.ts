@@ -15,8 +15,8 @@ import { HISTORY_SORTS, HISTORY_SORT_LABEL, highlightSummary, rowBadges, sortHis
 import { NavStack } from "./NavStack.ts";
 import { birthsignIcon, icon } from "./Icons.ts";
 import { ancestryView, initialAncestry, nextHeaderIndex, selectSubrace, toggleRace, type AncestryState } from "./AncestryState.ts";
-import { CREATOR_GROUP_IDS, groupSummary } from "./CreatorSync.ts";
-import type { ProfilePanelView } from "./ProfilePanel.ts";
+import { applyEdit, CREATOR_GROUP_IDS, groupSummary } from "./CreatorSync.ts";
+import { PROFILE_PANEL_CLASSES, type ProfilePanelView } from "./ProfilePanel.ts";
 import { weaponMenuOptions } from "../game/weapons/Loadout.ts";
 import { raceBanner } from "./RaceBanners.ts";
 import { creatorSheet, rollProfile, type CreatorSheet, type SheetRow } from "./CreatorRoll.ts";
@@ -27,6 +27,22 @@ export const LIVE_ARENA_MAX = 120;
 
 /** The arena-size slider's step, metres. */
 export const ARENA_SIZE_STEP = 2;
+
+/**
+ * Wave R: the six primary attributes (Races.StatName), in the character sheet's order. They are the
+ * keys the hand-override controls write under (`allocated.<name>`), so the order here is the on-screen
+ * order and the ids are derived from it.
+ */
+const ATTR_NAMES = ["vitality", "resilience", "willpower", "reflex", "strength", "intelligence"] as const;
+/** Display label per attribute — the same words the sheet prints, so a control and its row agree. */
+const ATTR_LABELS: Record<(typeof ATTR_NAMES)[number], string> = {
+  vitality: "Vitality",
+  resilience: "Resilience",
+  willpower: "Willpower",
+  reflex: "Reflex",
+  strength: "Strength",
+  intelligence: "Intelligence",
+};
 
 /**
  * Base parameters of the minimum arena (W04), each read from where the game defines it:
@@ -627,6 +643,43 @@ export class Menu {
       `</div></div></section>`;
   }
 
+  /**
+   * Wave R: the hand-override strip. After the dice, every parameter the roll set is editable in
+   * place — height, weight, sex and the six attributes — with the dice button among them. It renders
+   * INSIDE the Race group's body (no new tree group: the group-id coverage test must keep seeing the
+   * same ids), and each control writes through {@link #override}, whose single routing point is
+   * `CreatorSync.applyEdit`, so an edit synchronises its dependents.
+   *
+   * Units: height in metres (the race band clamps it), weight in kilograms, level/attributes are the
+   * character sheet's allocated point values (Races.StatName keys).
+   */
+  #overrideFieldsHtml(): string {
+    const a = this.#player.appearance;
+    return `<div class="override-fields" id="override-fields" role="group" aria-label="Override the rolled parameters">` +
+      `<h4 class="group-head">Override by hand</h4>` +
+      `<div class="override-attrs">` +
+      `<label class="field">Height <input id="creator-height" type="number" step="0.01" value="${a.height.toFixed(2)}"> m</label>` +
+      `<label class="field">Weight <input id="creator-weight" type="number" step="1" value="${Math.round(a.weight)}"> kg</label>` +
+      `<label class="field">Sex <select id="creator-sex" title="Male or female build (R-A's sex field)"><option value="male">Male</option><option value="female">Female</option></select></label>` +
+      ATTR_NAMES.map((n) => `<label class="field">${ATTR_LABELS[n]} <input id="creator-attr-${n}" name="${n}" type="number" min="1" max="999" value="${Math.round(this.#player.allocated[n] ?? 0)}"></label>`).join("") +
+      `</div>` +
+      diceButtonHtml() +
+      `</div>`;
+  }
+
+  /**
+   * Wave R: the roster, EMBEDDED in the Creator's screen. The title's one entry opens the roster AND
+   * the generator, so this pinned section (`data-pinned`, never a tab) carries the saved-fighter list
+   * and the selected fighter's sheet, painted by `showProfiles()` into `#profiles-body`, beside the
+   * generator's panels. It is not a tree panel: the UI tree's `select` screen keeps its five panels and
+   * CreatorSync's group-id coverage test still sees the same group ids.
+   */
+  #rosterPanelHtml(): string {
+    return `<section class="ui-panel ui-panel-roster" data-panel="roster" data-pinned>` +
+      `<h3 class="panel-head"><span class="dot"></span>Roster<span class="panel-hint">Your saved fighters — the generator's controls are on this same page.</span></h3>` +
+      `<div id="profiles-body" class="profiles-panel ${PROFILE_PANEL_CLASSES.embedded}"></div></section>`;
+  }
+
   /** An opt-group's leading glyph: an étendard where the ancestry appears, an icon elsewhere. */
   #groupGlyph(panelId: string, groupId: string): string {
     switch (`${panelId}/${groupId}`) {
@@ -656,17 +709,27 @@ export class Menu {
   #groupBody(panelId: string, groupId: string): string {
     switch (`${panelId}/${groupId}`) {
       case "start/profiles":
+        // Wave R: the ≡ Profiles BUTTON is gone — its job and the ⚔ Fight button's are ONE entry
+        // (below, in modes). This group now holds only the saved-fighter picker: pick a profile to
+        // load into the generator, which shares this page with the roster once the entry opens it.
         return `<div id="profile-picker" class="profile-picker"></div>` +
-          `<button class="menu-btn menu-btn-alt profiles-open" data-action="profiles">≡ Profiles<span class="btn-note">Models, statistics, roll or manage</span></button>`;
+          `<p class="opt-note">Pick a saved fighter to load it into the generator — the roster and the generator share one page.</p>`;
       case "start/modes":
+        // Wave R: ONE entry replaces the two title buttons (⚔ Fight + ≡ Profiles). A click opens the
+        // roster AND the generator, which are the same screen now. It keeps the old `data-action="start"`
+        // name (every probe/tool that clicks it still lands on the generator), and it stays a real
+        // <button> in the modes group, so the fight path is keyboard- and screen-reader-reachable.
         return `<div class="title-modes">` +
-          `<button class="menu-btn" data-action="start">⚔ Fight</button>` +
+          `<button class="menu-btn menu-btn-primary entry-btn" data-action="start">⚔ Fighters<span class="btn-note">Roster and generator on one page — roll, override or save</span></button>` +
           `<button class="menu-btn menu-btn-alt" data-action="digest">📋 History</button>` +
           `<button class="menu-btn menu-btn-alt" data-action="spectate">👁 Spectate</button>` +
           `<button class="menu-btn menu-btn-alt" data-action="settings" title="Keyboard layout, mouse, camera, display, sound">${icon("gear", "menu-btn-icon")}Settings</button>` +
           `</div>`;
       case "ancestry/race":
-        return `<label class="field">Name <input id="creator-name" type="text" value="${esc(this.#player.name)}"></label>` +
+        return `<label class="field override-name">Name <input id="creator-name" type="text" value="${esc(this.#player.name)}"></label>` +
+          // Wave R: the hand-override strip sits AMONG the fields: after the dice, every parameter it
+          // set (height, weight, sex, the six attributes) can be changed by hand right here.
+          this.#overrideFieldsHtml() +
           `<div class="ancestry-list" id="ancestry-list">${RACES.map((r) => this.#raceBoxHtml(r)).join("")}</div>`;
       case "ancestry/subrace":
         return `<p class="opt-note">Sub-species open inside each race box above — pick the nation within the people.</p>`;
@@ -741,15 +804,18 @@ export class Menu {
       <div class="menu-screen" data-screen="select" data-flat="1">${this.#backBar()}
         <header class="screen-head">
           <h2>Create your fighter</h2>
-          <p class="screen-hint">Everything is on this one page — every group shows its current values on the header, and a click opens it for the details. Nothing switches panel.</p>
+          <p class="screen-hint">Roster and generator on one page — roll, then override any parameter by hand. Every group shows its current values on the header, and a click opens it for the details. Nothing switches panel.</p>
         </header>
 
         ${screenPanels("select").map((p) => this.#panelHtml(p)).join("")}
 
         ${this.#previewPanelHtml()}
 
+        ${this.#rosterPanelHtml()}
+
         <div class="creator-row">
           <button class="menu-btn menu-btn-sm" data-action="save-profile" title="Save this fighter into your profile library">Save as profile</button>
+          <button class="menu-btn menu-btn-sm menu-btn-alt" data-action="discard" title="Throw the hand-edits away and regenerate the rolled fighter from its seed">Discard edits</button>
         </div>
         <button class="menu-btn menu-btn-primary" data-action="begin">Enter the ring</button>
       </div>
@@ -767,13 +833,6 @@ export class Menu {
         <h2>Character Sheet</h2>
         <div id="sheet-body" class="sheet-body"></div>
         <button class="menu-btn menu-btn-alt" data-action="menu">Main menu</button>
-      </div>
-
-      <div class="menu-screen" data-screen="profiles">${this.#backBar()}
-        <!-- Wave O: the Profiles panel. Every saved fighter as a row with a REAL portrait (rendered by
-             the engine's PortraitStudio off the same rig the arena builds), its ancestry standard, its
-             calling, level and record, and the selected one's full stat sheet beside it. -->
-        <div id="profiles-body" class="profiles-panel"></div>
       </div>
 
       <div class="menu-screen" data-screen="digest">${this.#backBar()}
@@ -800,7 +859,13 @@ export class Menu {
       </div>`;
 
     // Title buttons
-    root.querySelector('[data-action="start"]')!.addEventListener("click", () => this.show("select"));
+    // Wave R: the ONE entry — it opens the generator (show "select") AND the roster, which is the
+    // same screen now (the engine's onProfileAction("open") paints #profiles-body inside it). The old
+    // ≡ Profiles button is gone; the old ⚔ Fight button IS this entry and now brings the roster too.
+    root.querySelector('[data-action="start"]')!.addEventListener("click", () => {
+      this.show("select");
+      cb.onProfileAction?.("open", null);
+    });
     root.querySelector('[data-action="digest"]')!.addEventListener("click", () => { cb.onDigest?.(); });
     root.querySelector('[data-action="spectate"]')!.addEventListener("click", () => { this.hide(); cb.onSpectate?.(this.#player, this.#opponent); });
     root.querySelector('[data-action="settings"]')!.addEventListener("click", () => { cb.onSettings?.(); });
@@ -824,8 +889,10 @@ export class Menu {
     for (const id of ["arena-shape", "arena-size", "arena-walls", "arena-res"]) arenaSel(id).addEventListener("input", readArena);
 
     // Creator: name + class/weapon tables.
+    // Wave R: the name edit routes through CreatorSync.applyEdit (the one override route); an empty
+    // box reads as the same "Fighter" placeholder as before, and applyEdit refuses an empty name.
     const nameInput = root.querySelector("#creator-name") as HTMLInputElement;
-    nameInput.addEventListener("input", () => { this.#player.name = nameInput.value || "Fighter"; });
+    nameInput.addEventListener("input", () => { this.#override("name", nameInput.value || "Fighter"); });
     const pickRow = (tableId: string, attr: string, onPick: (value: string) => void) => {
       root.querySelectorAll(`#${tableId} .pick-row`).forEach(row => row.addEventListener("click", () => {
         const value = (row as HTMLElement).dataset[attr]!;
@@ -834,15 +901,18 @@ export class Menu {
       }));
     };
     pickRow("class-table", "class", (value) => {
-      this.#player = { ...this.#player, className: value as ClassName };
+      this.#override("className", value);
       this.#renderClassSkills(value as ClassName);
     });
     pickRow("weapon-table", "weapon", (value) => {
-      this.#player = { ...this.#player, weaponType: value || undefined };
+      // "" means "the class's own weapon" — applyEdit has no clear case, so an empty pick clears the
+      // override directly (still a synchronised edit: it follows the class, which is the source).
+      if (value) this.#override("weaponType", value);
+      else this.#player = { ...this.#player, weaponType: undefined };
     });
     // Star sign: the birthsign stacks on the sub-species, so the secondary rows refresh.
     pickRow("birthsign-table", "birthsign", (value) => {
-      this.#player = { ...this.#player, birthsign: value };
+      this.#override("birthsign", value);
       this.#refreshSecondary();
     });
 
@@ -884,12 +954,25 @@ export class Menu {
     });
 
     // The dice (purple, rocky): one click rolls a complete fighter and refreshes the Creator step.
-    // A legacy `data-action="random"` control, if one survives, rolls through the same path.
-    root.querySelector('[data-action="dice"]')?.addEventListener("click", () => this.rollCreator());
-    // Wave O: the title button opens the Profiles panel, and every control inside it reports through
-    // ONE hook (action + the row it acted on), so the engine owns the library and this class only paints.
-    root.querySelector('[data-action="profiles"]')?.addEventListener("click", () => cb.onProfileAction?.("open", null));
+    // Wave R: there is a dice button in the preview panel AND among the override fields, so ALL dice
+    // controls are wired (querySelectorAll), not just the first.
+    root.querySelectorAll('[data-action="dice"]').forEach((b) => b.addEventListener("click", () => this.rollCreator()));
+    // Wave R: every hand-override writes through ONE route (#override -> CreatorSync.applyEdit). Height,
+    // weight, sex and the six attributes are committed on "change" (blur / Enter), so typing is not
+    // fought by the clamped value being written back under the caret.
+    const onOverride = (id: string, field: string, asNumber: boolean) => {
+      const el = root.querySelector<HTMLInputElement | HTMLSelectElement>(`#${id}`);
+      el?.addEventListener("change", () => { this.#override(field, asNumber ? Number(el.value) : el.value); });
+    };
+    onOverride("creator-height", "appearance.height", true);
+    onOverride("creator-weight", "appearance.weight", true);
+    // The sex field: routed through applyEdit so it synchronises like every other parameter. Until R-A
+    // lands the `sex` case in CreatorSync it is a total no-op (the UI side is exposed here — see report).
+    onOverride("creator-sex", "sex", false);
+    for (const name of ATTR_NAMES) onOverride(`creator-attr-${name}`, `allocated.${name}`, true);
+    // Wave R: the save/discard decision made explicit — Save keeps the edited roll, Discard re-rolls it.
     root.querySelector('[data-action="save-profile"]')?.addEventListener("click", () => cb.onProfileAction?.("save-creator", null));
+    root.querySelector('[data-action="discard"]')?.addEventListener("click", () => this.discardEdits());
     // Wave M: the batch size picker and the Run button. The size is read at the click, so the
     // selection can change while a batch is running without corrupting the one in flight.
     root.querySelectorAll("[data-batch-size]").forEach((b) => b.addEventListener("click", () => {
@@ -1194,7 +1277,72 @@ export class Menu {
     if (race) this.#renderRaceDetail(race);
     // The rolled fighter's stat sheet (real game maths) and the ancestry group étendards.
     this.#renderCreatorSheet();
+    this.#syncOverrideFields();
     this.#refreshGroupGlyphs();
+  }
+
+  /**
+   * Wave R: apply ONE hand-override through `CreatorSync.applyEdit` — the single route every control
+   * uses, so dependents synchronise (a race edit clears a foreign sub-species; a height/weight edit
+   * clamps into the race's own band). It then redraws the sheet and writes the ACCEPTED values back
+   * into the override fields, so the controls show what the profile really holds (a clamped height is
+   * shown clamped, never the raw typed number).
+   */
+  #override(field: string, value: string | number | boolean | null): void {
+    this.#player = applyEdit(this.#player, { field, value });
+    this.#renderCreatorSheet();
+    this.#syncOverrideFields();
+    this.#refreshGroupSummaries();
+  }
+
+  /**
+   * Wave R: redraw every Creator group header's CURRENT-VALUES summary. Wave P baked the summaries at
+   * render time, so without this a hand-override (or a roll) leaves a CLOSED header lying about what
+   * the group now holds. One textContent write per group — never per frame.
+   */
+  #refreshGroupSummaries(): void {
+    const race = this.#raceDef();
+    const subrace = this.#subraceDef();
+    this.#root.querySelectorAll<HTMLElement>('[data-screen="select"] details.opt-group').forEach((d) => {
+      const id = (d.dataset.group ?? "").split("/")[2] ?? "";
+      if (!CREATOR_GROUP_IDS.includes(id)) return;
+      const el = d.querySelector<HTMLElement>(".group-summary");
+      if (el) el.textContent = groupSummary(id, this.#player, race, subrace);
+    });
+  }
+
+  /** Write the profile's own values into the override inputs (height/weight/sex/six attributes). */
+  #syncOverrideFields(): void {
+    const q = <T extends HTMLElement>(id: string) => this.#root.querySelector<T>(`#${id}`);
+    const height = q<HTMLInputElement>("creator-height");
+    if (height) height.value = this.#player.appearance.height.toFixed(2);
+    const weight = q<HTMLInputElement>("creator-weight");
+    if (weight) weight.value = String(Math.round(this.#player.appearance.weight));
+    const sex = q<HTMLSelectElement>("creator-sex");
+    if (sex) sex.value = (this.#player as unknown as { sex?: string }).sex ?? "male";
+    for (const name of ATTR_NAMES) {
+      const el = q<HTMLInputElement>(`creator-attr-${name}`);
+      if (el) el.value = String(Math.round(this.#player.allocated[name] ?? 0));
+    }
+  }
+
+  /** How many Discard clicks have run (QA: the save/discard decision is observable). */
+  #discarded = 0;
+  /** The Discard clicks so far — the probe reads this through the menu the page exposes. */
+  get discardedCount(): number { return this.#discarded; }
+
+  /**
+   * Wave R: the DISCARD side of the save/discard decision. It throws the hand-edits away and
+   * regenerates the fighter from the roll's recorded seed (a pure re-roll of the same idea), which is
+   * what makes the decision explicit: Save keeps the edited roll, Discard returns to the roll itself.
+   * With no roll recorded yet there is nothing to discard, so it is a no-op returning null.
+   */
+  discardEdits(): number | null {
+    const seed = this.#lastSeed;
+    if (seed === null) return null;
+    this.#discarded++;
+    this.#refreshCreator(seed);
+    return seed;
   }
 
   /** Draw the rolled fighter's stat sheet from L-B's `creatorSheet` (the real game maths). */
@@ -1210,6 +1358,8 @@ export class Menu {
    * them by hand (CSSOM/`innerHTML` once per roll, never per frame).
    */
   #refreshGroupGlyphs(): void {
+    // Wave R: a roll or an override moves the values a closed header shows, so redraw those too.
+    this.#refreshGroupSummaries();
     const glyph = (key: string): HTMLElement | null =>
       this.#root.querySelector<HTMLElement>(`details.opt-group[data-group="${key}"] .opt-glyph`);
     const race = glyph("select/ancestry/race");
@@ -1248,16 +1398,27 @@ export class Menu {
    * sync the boxes' highlight, labels and open state.
    */
   #setAncestry(next: AncestryState): void {
-    const prev = this.#ancestry;
-    this.#ancestry = next;
-    if (next.race !== prev.race || next.subrace !== prev.subrace) {
-      this.#player = { ...this.#player, race: next.race, subrace: next.subrace };
-      const race = raceById(next.race);
-      if (next.race !== prev.race && race) this.#renderRaceDetail(race);
-      else this.#refreshSecondary();
+    const prev = this.#player;
+    // Wave R: the race and sub-species overrides go through CreatorSync.applyEdit — the one route that
+    // SYNCHRONISES dependents. A race change clears a sub-species that does not belong to the new race
+    // (wave P's stated open item: "a dwarf cannot hold an elf's nation"), then the chosen sub-species is
+    // applied on top, which lands only when it belongs to the new race.
+    if (next.race !== prev.race) this.#player = applyEdit(this.#player, { field: "race", value: next.race });
+    if (next.subrace !== this.#player.subrace) this.#player = applyEdit(this.#player, { field: "subrace", value: next.subrace });
+    // The accordion mirrors what applyEdit ACCEPTED (a refused/cleared sub-species cannot stay highlighted),
+    // while the box the user opened stays expanded.
+    this.#ancestry = { expanded: next.expanded, race: this.#player.race, subrace: this.#player.subrace };
+    if (next.race !== prev.race) {
+      const race = raceById(this.#player.race);
+      if (race) this.#renderRaceDetail(race);
+    } else {
+      this.#refreshSecondary();
     }
     this.#renderAncestryLore();
     this.#syncAncestry();
+    this.#renderCreatorSheet();
+    this.#syncOverrideFields();
+    this.#refreshGroupGlyphs();
   }
 
   /**
@@ -1323,6 +1484,10 @@ export class Menu {
    * the root), any other screen is pushed on top (re-showing the current screen adds nothing).
    */
   show(screen: Screen, opts?: { winner?: "player" | "opponent"; result?: { title: string; detail: string }; history?: HistoryView; sheet?: SheetData; leaderboard?: LeaderRow[] }) {
+    // Wave R: the profiles screen IS the Creator's screen now — the roster is embedded in it — so the
+    // engine's own panel route (`menu.show("profiles")` from `#onProfileAction`) lands on the one
+    // merged page. The `profiles` id stays in the type for the engine; no such screen div exists.
+    if (screen === "profiles") screen = "select";
     this.#visible = true;
     this.#root.style.display = "flex";
     this.#nav.push(screen);

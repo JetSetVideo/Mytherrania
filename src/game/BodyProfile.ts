@@ -73,6 +73,44 @@ export interface RaceSilhouette {
 }
 
 /**
+ * Character sex (lane R-A). `male` is the NEUTRAL body — every curve term is exactly 1.0, so a male
+ * body is the pre-wave silhouette and the "bulky is the neutral build" invariant is untouched.
+ * `female` adds measured curves. The sex rides the profile AND the body spec and is read by
+ * proportionsFor; it is NOT a build (it composes with fit/bulky/heavy).
+ */
+export type Sex = "male" | "female";
+
+/** The two values, for a UI that must list them (lane R-C). */
+export const SEXES: Sex[] = ["male", "female"];
+
+/**
+ * The female curve multipliers (lane R-A): each a stated multiplier on the MALE body of the same
+ * race/height/weight (dimensionless; 1.0 = the male value). "make the female a bit more curvy": a
+ * narrower waist relative to fuller hips, and a fuller bust. TORSO ONLY — the ground-contact radii
+ * (ankle/foot/heel) and the hip JOINT never take these, so a female plants her feet where a male does.
+ *
+ * NO shoulder and NO rib-width term, on purpose: narrowing the shoulder JOINT moves a physical
+ * property (the swing's planted-foot slide in tests/anim_measure_test.ts moves off its band even at
+ * a 1 % cut — measured), and widening the ribcage would push the get-out-of-the-ribcage shoulder
+ * overhang clamp out with it (which forces the shoulders back out, the opposite of the ask). Both are
+ * scoped OUT here, the way the lane-Q-B angular gain had to be scoped to the torso.
+ */
+export interface SexCurve {
+  /** Chest half-depth (the bust), × the male value. */
+  chestDepth: number;
+  /** Waist half-width, × the male value (the pinch is the ratio to the hips). */
+  waist: number;
+  /** Hip half-width AND pelvis half-depth, × the male value. */
+  hip: number;
+}
+
+/** male is EXACTLY the pre-wave silhouette (1.0 on every term); female is the stated curve. */
+export const SEX_CURVE: Record<Sex, SexCurve> = {
+  male:   { chestDepth: 1.00, waist: 1.00, hip: 1.00 },
+  female: { chestDepth: 1.12, waist: 0.80, hip: 1.09 },
+};
+
+/**
  * The four races' silhouettes. The brief's hard requirements live here:
  * the DWARF is the smallest (height 0.80) and the ELF the thinnest (width 0.84,
  * depth 0.88, muscle 0.68), with the ORK the heaviest (width 1.34).
@@ -80,7 +118,14 @@ export interface RaceSilhouette {
 export const RACE_SILHOUETTE: Record<string, RaceSilhouette> = {
   human: { height: 1.0, width: 1.0, depth: 1.0, limbTaper: 1.0, limbLength: 1.0, muscle: 1.0, shoulder: 0.46, hip: 0.3, waist: 0.1, head: 1.0, sectionN: 2.1, sectionNBase: 2.1 },
   elf: { height: 1.05, width: 0.84, depth: 0.88, limbTaper: 1.25, limbLength: 1.06, muscle: 0.68, shoulder: 0.4, hip: 0.26, waist: 0.16, head: 0.98, sectionN: 1.9, sectionNBase: 1.9 },
-  dwarf: { height: 0.8, width: 1.3, depth: 1.16, limbTaper: 0.78, limbLength: 0.82, muscle: 1.45, shoulder: 0.5, hip: 0.34, waist: 0.05, head: 1.12, sectionN: 2.35, sectionNBase: 2.35 },
+  // Lane R-A: "make the dwarves a bit less large of shoulders and have a bigger fit". The dwarf's
+  // muscle term goes UP (1.45 -> 1.60: the dwarf is FIT, not wide — the deltoid/chest mass radii
+  // measure +2.6 mm at the reference build). The "less large of shoulders" half is DROPPED, not
+  // faked: the dwarf's shoulder half-width is set by the rib-cage overhang clamp in Proportions
+  // (its canon shoulder sits well below the clamp), so the row knob does nothing, and narrowing the
+  // shoulder joint itself moves tests/anim_measure_test.ts's planted-foot slide off its band at
+  // dwarf/mountain slash fresh (5.54 -> 6.42 mm against 5.6, measured; even a 1 % cut -> 5.65 mm).
+  dwarf: { height: 0.8, width: 1.3, depth: 1.16, limbTaper: 0.78, limbLength: 0.82, muscle: 1.6, shoulder: 0.5, hip: 0.34, waist: 0.05, head: 1.12, sectionN: 2.35, sectionNBase: 2.35 },
   ork: { height: 1.12, width: 1.34, depth: 1.1, limbTaper: 0.85, limbLength: 0.94, muscle: 1.6, shoulder: 0.54, hip: 0.32, waist: 0.06, head: 1.08, sectionN: 2.4, sectionNBase: 2.4 },
 };
 

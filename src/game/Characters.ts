@@ -1,7 +1,7 @@
 import type { ClassName } from "./Stats.ts";
 import { BIRTHSIGNS } from "./Birthsight.ts";
 import { startingStats } from "./Leveling.ts";
-import type { RaceSilhouette } from "./BodyProfile.ts";
+import type { RaceSilhouette, Sex } from "./BodyProfile.ts";
 
 export interface Appearance {
   body: string;
@@ -20,6 +20,11 @@ export interface Appearance {
    * `randomSilhouette`, two members of one race get different bodies that still read.
    */
   silhouette?: RaceSilhouette;
+  /**
+   * The character's sex (lane R-A). Left unset, the body builds NEUTRAL male (the pre-wave
+   * silhouette); set to "female" for the measured curves. Defaulted deterministically by the roll.
+   */
+  sex?: Sex;
 }
 
 export interface CharacterProfile {
@@ -103,6 +108,9 @@ export function randomProfile(rng: () => number): CharacterProfile {
       hair: ["#172128","#fff3cf","#dfaa55","#ef7455"][Math.floor(rng() * 4)],
       beard: rng() < 0.3, moustache: rng() < 0.25,
       eyes: ["#dfaa55","#4f8490","#ef7455","#172128"][Math.floor(rng() * 4)],
+      // Lane R-A: the sex is a deterministic draw from the SAME seeded roll (never Math.random),
+      // so a given seed always yields the same sex — and an unset sex still builds neutral male.
+      sex: rng() < 0.5 ? "male" : "female",
     },
   };
 }

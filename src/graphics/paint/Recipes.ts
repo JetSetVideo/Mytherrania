@@ -12,7 +12,7 @@
 // birth-sign mark (warpaint or tattoo) -> class accent -> garment (optional).
 
 import { HAIR_COLORS, nameSeed, raceBuild, SKIN_TONES } from "../../game/RaceAppearance.ts";
-import { BUILDS, buildFor, raceSilhouette } from "../../game/BodyProfile.ts";
+import { BUILDS, buildFor, raceSilhouette, SEX_CURVE, type Sex } from "../../game/BodyProfile.ts";
 import { buildMuscleTerm } from "../body/Proportions.ts";
 import type { CharacterProfile } from "../../game/Characters.ts";
 import { clamp01, rng32 } from "../../core/MathCore.ts";
@@ -43,6 +43,8 @@ export interface PaintSubject {
   height?: number;
   /** Mesh vertex spacing in metres (lane A's polygoniser cell; default 0.025). */
   vertexSpacing?: number;
+  /** The character's sex (lane R-A). "female" carries the curve; absent = neutral male. */
+  sex?: Sex;
   seed: number;
 }
 
@@ -62,6 +64,17 @@ export const INK_SEPARATION = 0.22;
 export const TONE_NEIGHBOURS = 3;
 /** Largest share of the neighbour tone mixed into the race tint. */
 export const TONE_VARIATION = 0.5;
+/**
+ * Nails (lane R-B): the plate carries less melanin than the surrounding skin, so its base colour is
+ * the skin tinted this fraction toward WHITE through tintHex (each sRGB channel c -> c + (1-c)·k;
+ * chroma scales by 1 - k). 0.24 on a mid skin gives a pale, slightly translucent nail.
+ */
+export const NAIL_TINT = 0.24;
+/** Nail gloss: a further tint toward white for the wet/shiny highlight band (bounded by INK_BOUNDS). */
+export const NAIL_GLOSS_TINT = 0.42;
+/** The gloss band's opacity (a highlight, not a repaint) and its painted share of the plate period. */
+export const NAIL_GLOSS_OPACITY = 0.3;
+export const NAIL_GLOSS_WIDTH = 0.5;
 
 /**
  * Feature sizes as fractions of stature (so a 1.2 m dwarf and a 2.0 m ork get
@@ -224,19 +237,35 @@ export function stackFor(subject: PaintSubject): PaintStack {
     }));
   }
 
-  // 9. Palms/soles and nails carry less melanin: paler and less saturated.
+  // 9. Palms/soles and nails carry less melanin: paler and less saturated (lane R-B gives the
+  //    nails their own two-layer painted pass — a pale plate plus a bounded gloss band).
   layers.push(layer("soles", "solid", tintHex(skin, 0.12), 0.7, 1, s(), { regions: ["sole"] }));
-  layers.push(layer("nails", "solid", tintHex(shiftHsl(skin, 0, 0.5, 0), 0.2), 0.85, 1, s(), { regions: ["nail"] }));
+  //    Nail plate: the skin tinted NAIL_TINT toward white; measured to cover every nail vertex.
+  const nailBed = tintHex(skin, NAIL_TINT);
+  layers.push(layer("nail-bed", "solid", nailBed, 0.9, 1, s(), { regions: ["nail"] }));
+  //    Nail gloss: a brighter band (screen so it can only lighten), tinted further toward white and
+  //    pulled inside INK_BOUNDS so it cannot blow out under the cel bands. Its share of the plate is
+  //    stated in NAIL_GLOSS_WIDTH and measured against the nail region by the test.
+  layers.push(layer("nail-gloss", "stripes", boundColour(tintHex(skin, NAIL_GLOSS_TINT), INK_BOUNDS),
+    NAIL_GLOSS_OPACITY, size("sheen"), s(), {
+      blend: "screen", regions: ["nail"],
+      params: { angle: Math.PI / 2, width: NAIL_GLOSS_WIDTH, warp: 0.4 },
+    }));
 
   // 9b. Muscle definition (lane P-C): dark creases that FOLLOW the sculpted anatomy — the
   //     abdominal segments, the linea alba and the pectoral separation, and the deltoid/quad
   //     folds — keyed on the build's muscle term (buildMuscleTerm) and softened by its fat term.
   //     Painted here (over the skin, under marks/hair/garment) so a clothed or painted fighter
   //     still reads. A build with no added muscle adds nothing.
+  //
+  //     Lane R-A: the female's fuller bust (SEX_CURVE.female.chestDepth) is part of the new anatomy, so
+  //     the definition pass reads it too — a female fighter paints the pectoral separation even when
+  //     the build adds no muscle of its own. male is exactly 1.0, so a male stack is unchanged.
   const build = buildFor(race, subrace);
   const sil = raceSilhouette(race, subrace);
+  const sexMuscle = subject.sex === "female" ? SEX_CURVE.female.chestDepth : 1;
   layers.push(...definitionLayers({
-    muscle: buildMuscleTerm(sil, build), fat: BUILDS[build].fat,
+    muscle: buildMuscleTerm(sil, build) * sexMuscle, fat: BUILDS[build].fat,
     skin, minFeature, height: H, seed,
   }));
 
@@ -314,6 +343,6 @@ export function subjectFromProfile(profile: CharacterProfile, options: { garment
   return {
     race: profile.race, subrace: profile.subrace, className: profile.className, birthsign: profile.birthsign,
     hair: a.hair, accent: a.accent, garment: options.garment ? a.body : undefined, height: a.height,
-    vertexSpacing: options.vertexSpacing, seed: nameSeed(profile.name),
+    vertexSpacing: options.vertexSpacing, sex: a.sex, seed: nameSeed(profile.name),
   };
 }

@@ -138,6 +138,12 @@ export const PROFILE_PANEL_CLASSES = {
   sheet: "profile-sheet",
   sheetRow: "profile-sheet-row",
   empty: "profiles-empty",
+  /**
+   * Wave R (layout only): the frame the panel wears when it is EMBEDDED in the Creator's screen — the
+   * roster and the generator are one page now, so the parent places the panel inside that screen's grid
+   * with this class. It names WHERE the model's markup sits; the model itself is unchanged.
+   */
+  embedded: "profiles-embedded",
 } as const;
 
 const TITLE = "Profiles";

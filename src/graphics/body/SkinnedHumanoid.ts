@@ -83,6 +83,9 @@ export function specFromAppearance(a: Appearance, className = "Warrior", birthsi
   return {
     race: a.race ?? "human", subrace: a.subrace ?? null, className,
     height: a.height, weight: a.weight, birthsign,
+    // Wave R: the sex rides from the profile's appearance onto the spec, which is the ONLY way the
+    // female curve reaches the rendered body (lane R-A's stated caveat, closed here).
+    sex: a.sex ?? null,
     seed: seed ?? nameSeed(`${a.race ?? "human"}|${a.subrace ?? ""}|${a.body}|${a.hair ?? ""}|${a.eyes}`),
   };
 }

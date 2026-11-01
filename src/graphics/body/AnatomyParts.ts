@@ -339,9 +339,30 @@ export function ellipsoidFrontZ(centre: Vec3, size: Vec3, y: number): number {
   return centre[2] + size[2] * Math.sqrt(Math.max(0, 1 - t * t));
 }
 
+/**
+ * Pectoral depth gain (lane R-A): "the pectorals a bit more obvious". The chest plates' forward
+ * extent (their z radius) is multiplied by this and their centres are pushed forward by
+ * PECTORAL_FORWARD_PER_HEAD head heights — so the torso's front surface at the nipple line stands
+ * measurably further out. 1.0 / 0 = the pre-wave chest. Races and builds scale it on top of this.
+ */
+export const PECTORAL_DEPTH_GAIN = 1 as number;
+/** Additional forward offset of each pectoral centre, head heights (m). */
+export const PECTORAL_FORWARD_PER_HEAD = 0 as number;
+
+/** Optional overrides for the pectoral masses (lane R-A), so a test can reconstruct the pre-wave
+ *  chest and measure the depth delta on the real field. Defaults are the wave's own constants. */
+export interface TorsoOpts {
+  /** Pectoral z-radius multiplier (default PECTORAL_DEPTH_GAIN; 1 = pre-wave). */
+  pectoralGain?: number;
+  /** Pectoral centre forward offset, head heights (default PECTORAL_FORWARD_PER_HEAD; 0 = pre-wave). */
+  pectoralForwardPerHead?: number;
+}
+
 /** Torso: ribcage, shoulder girdle, pectorals, scapulae, clavicles, trapezius, abdomen, obliques, pelvis, glutes; navel carved (subtract). */
-export function torsoNode(P: BodyProportions): { node: SdfNode; bellyFront: Vec3; sternalNotch: Vec3; backZ: number } {
+export function torsoNode(P: BodyProportions, opts: TorsoOpts = {}): { node: SdfNode; bellyFront: Vec3; sternalNotch: Vec3; backZ: number } {
   const h = P.head, y = P.y, m = P.muscle, c = P.cell;
+  const pecGain = opts.pectoralGain ?? PECTORAL_DEPTH_GAIN;
+  const pecFwd = opts.pectoralForwardPerHead ?? PECTORAL_FORWARD_PER_HEAD;
   const cw = P.halfWidth.chest, cd = P.halfDepth.chest;
   const sx = P.halfWidth.shoulderJoint;
   const ribCentre: Vec3 = [0, (y.ribBottom + y.shoulder) / 2 + 0.05 * h, 0];
@@ -356,7 +377,9 @@ export function torsoNode(P: BodyProportions): { node: SdfNode; bellyFront: Vec3
   const pelvis = prim("pelvis", "ellipsoid", "abdomen", "pelvis", pelvisCentre, { size: [P.halfWidth.hip, 0.55 * h, P.halfDepth.pelvis] });
   const core = op("smoothUnion", blendWidth(cw, P.halfWidth.waist), ribcage, girdle, abdomen, oblique(1), oblique(-1), pelvis);
 
-  const pec = (s: 1 | -1) => prim(`pectoral${s > 0 ? "L" : "R"}`, "ellipsoid", "spine", "torso", [s * 0.3 * h, y.nipple + 0.12 * h, cd * 0.62], { size: [0.32 * h * m, 0.26 * h, 0.2 * h * m], rot: [0, s * 0.25, 0] });
+  const pec = (s: 1 | -1) => prim(`pectoral${s > 0 ? "L" : "R"}`, "ellipsoid", "spine", "torso",
+    [s * 0.3 * h, y.nipple + 0.12 * h, cd * 0.62 + pecFwd * h],
+    { size: [0.32 * h * m, 0.26 * h, 0.2 * h * m * pecGain], rot: [0, s * 0.25, 0] });
   const scap = (s: 1 | -1) => prim(`scapula${s > 0 ? "L" : "R"}`, "ellipsoid", "spine", "torso", [s * 0.33 * h, y.shoulder - 0.45 * h, -cd * 0.72], { size: [0.3 * h, 0.42 * h, 0.12 * h * m], rot: [0.15, -s * 0.35, s * 0.15] });
   const sternalNotch: Vec3 = [0, y.sternalNotch, cd * 0.7];
   const clav = (s: 1 | -1) => prim(`clavicle${s > 0 ? "L" : "R"}`, "capsule", "spine", "torso", [s * 0.08 * h, y.sternalNotch + 0.02 * h, cd * 0.7], { b: [s * sx * 0.95, y.shoulder + 0.14 * h, 0.02 * h], r: Math.max(0.065 * h, 0.6 * c) });

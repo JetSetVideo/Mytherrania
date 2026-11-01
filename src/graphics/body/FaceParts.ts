@@ -2,6 +2,15 @@
 // beard and ork tusks, parented to the HEAD bone. Re-implements the parts of Humanoid.addFace
 // (not exported there) against the SDF head's anchors, so the features sit in the carved eye
 // sockets and on the generated skull rather than on a nominal sphere.
+//
+// Lane R-B (wave R) adds three things, each a stated number rather than an adjective:
+//   * the hair's FALL is FITTED to the skull — a polyline whose near surface rides the cranium
+//     ellipsoid at a stated shell gap, so the mass never sinks into the skull and never floats
+//     off it (FaceParts.hairFallPath + skullClearance; the test measures the built vertices);
+//   * the eye is ROUND (a higher-segment globe + iris edge count, measured by roundnessOf), the
+//     globe carries a WET GLINT (a specular highlight plus a small secondary catch-light) and the
+//     iris carries fine PAINTED flecks instead of a flat disc (EYE.fleck*: count/size in mm);
+//   * the nails get their own painted pass in Recipes.ts (the eye/nail passes only there).
 
 // @deno-types="@types/three"
 import * as THREE from "three";
@@ -12,6 +21,7 @@ import { beardModeFor, hairColourFor, hairFall, hairLengthM, isBald, lookSeed, t
 import type { Appearance } from "../../game/Characters.ts";
 import type { Vec3 } from "./contracts.ts";
 import { browWedge, type FaceAnchors, HAIR_CAP_POLAR, HAIR_CAP_SCALE, HAIR_CAP_TILT, lidBands } from "./AnatomyParts.ts";
+import { shadeHex, tintHex } from "../paint/Blend.ts";
 
 /** The parts the face morph drives each frame (brow, eyelid, mouth), like Humanoid's refs. */
 export interface FaceRig {
@@ -34,6 +44,12 @@ export interface FaceRig {
    * exactly the bug the animation tensor work already hit once.
    */
   secondary: THREE.Object3D[];
+  /**
+   * The hair's SKULL-HUGGING parts only (lane R-B): the cap shell and the fall tubes that ride
+   * the cranium. Exposed so a test can measure their clearance to the head's own surface; the
+   * hanging lobes/crest/beard are NOT here (they sit below the skull and float free by design).
+   */
+  hairParts: THREE.Object3D[];
 }
 
 /** Hex colour scaled by k (k < 1 darkens). */
@@ -50,6 +66,137 @@ export function irisColour(a: Appearance): string {
   const dist = Math.abs(eye.r - skin.r) + Math.abs(eye.g - skin.g) + Math.abs(eye.b - skin.b);
   if (lum(eye) > 0.55 || lum(eye) < 0.04 || dist < 0.5) return "#2f6fb5";
   return `#${eye.multiplyScalar(0.8).getHexString()}`;
+}
+
+/**
+ * The eye's look (lane R-B), on the eye's own scale (× the globe radius r) unless stated. The
+ * segment counts set how ROUND the parts are: a disc of n edges inscribed in its circle has
+ * roundnessOf(n), so the iris edge count is the one that matters for "not square".
+ */
+export const EYE = {
+  /** Sclera sphere segments (lon, lat): the globe's own silhouette resolution (already a sphere). */
+  globeLon: 14,
+  globeLat: 10,
+  /** Iris disc edges. 32 edges -> roundnessOf = 0.990 (was 16 -> 0.950): the iris reads round. */
+  irisSegments: 32,
+  pupilSegments: 16,
+  /** Iris / pupil disc radius as fractions of the globe radius r. */
+  irisRadius: 0.55,
+  pupilRadius: 0.22,
+  /** Fine painted flecks on the iris: count, and radius as a fraction of the iris disc radius. */
+  fleckCount: 8,
+  fleckRadius: 0.16,
+  /** The wet glint: radius (× r), its y-squash (a specular on a wet curve) and its centre offset. */
+  glintRadius: 0.30,
+  glintSquash: 0.7,
+  glintX: 0.30,
+  glintY: 0.34,
+  /** A small secondary catch-light on the far side (two highlights read as a moist surface). */
+  glint2Radius: 0.10,
+  glint2X: -0.24,
+  glint2Y: -0.28,
+} as const;
+
+/**
+ * Roundness of a regular n-gon inscribed in its circumcircle: area(ngon) / area(circle) =
+ * (n / 2π)·sin(2π/n). 1 = a perfect circle; 14 edges -> 0.950, 18 -> 0.970, 32 -> 0.990.
+ */
+export function roundnessOf(n: number): number {
+  return (n / (2 * Math.PI)) * Math.sin((2 * Math.PI) / n);
+}
+
+/** The hair's fit to the skull (lane R-B), head heights unless stated. */
+export const HAIR_FIT = {
+  /**
+   * Radial gap between the skull's surface and the hair fall's NEAR surface, head heights
+   * (0.04 h ≈ 0.9 cm on a 22.7 cm head): the fall rides the cranium just clear of it.
+   */
+  shellGapPerHead: 0.04,
+  /** Vertical tube segments the fall is built from (each rides the skull's back). */
+  fallSegments: 8,
+  /** Radial segments of each fall tube (a smooth tube, not a prism). */
+  fallRadialSegments: 6,
+  /** Fall radius clamps (× h): the mass's own thickness behind the skull (not a float). */
+  fallRadiusTopPerHead: 0.10,
+  fallRadiusBotPerHead: 0.07,
+  /** The band is measured where the skull has real depth (|y − centre| / y-radius ≤ this). */
+  bandWindowPerRadius: 0.6,
+  /** The stated clearance band the fall's NEAR surface sits in, head heights. */
+  minClearancePerHead: 0.008,
+  maxClearancePerHead: 0.10,
+} as const;
+
+/** Deterministic [0,1) hash of a seed (no Math.random anywhere in this pure module). */
+function unitHash(seed: number): number {
+  let h = Math.imul((seed | 0) ^ 0x27d4eb2d, 0x165667b1) >>> 0;
+  h ^= h >>> 15;
+  h = Math.imul(h, 0x2c1b3c6d) >>> 0;
+  h = (h ^ (h >>> 12)) >>> 0; // >>> 0: a JS XOR yields a SIGNED 32-bit int, which would go negative
+  return h / 0x100000000;
+}
+
+/**
+ * The cranium's BACK surface z at height y (the skull ellipsoid FaceAnchors state), model
+ * space, or null outside the ellipsoid's vertical span. The head's own surface, no screenshot.
+ */
+export function skullBackZ(sc: Vec3, sr: Vec3, y: number): number | null {
+  const t = (y - sc[1]) / sr[1];
+  if (t < -1 || t > 1) return null;
+  return sc[2] - sr[2] * Math.sqrt(1 - t * t);
+}
+
+/**
+ * SIGNED clearance (m) of a model point from the skull ellipsoid surface: the point's radial
+ * excess over the surface along the ray from the skull centre (> 0 outside, < 0 inside).
+ * q < 1 means the point is inside the cranium, so a hair vertex with clearance <= 0 has sunk in.
+ */
+export function skullClearance(p: Vec3, sc: Vec3, sr: Vec3): number {
+  const dx = p[0] - sc[0], dy = p[1] - sc[1], dz = p[2] - sc[2];
+  const qx = dx / sr[0], qy = dy / sr[1], qz = dz / sr[2];
+  const q = Math.hypot(qx, qy, qz);
+  const dist = Math.hypot(dx, dy, dz);
+  return q < 1e-9 ? -dist : dist * (q - 1) / q;
+}
+
+/** One vertical fall tube: its y-range, its axis z and its radius (model space, metres). */
+export interface HairSeg { y0: number; y1: number; z: number; r: number }
+
+/**
+ * The hair fall as vertical tube segments that ride the skull's back at the shell gap (lane R-B).
+ * Each segment's axis z is placed behind the DEEPEST skull point over its own y-range, by the gap
+ * plus the segment radius, so the tube's near surface can never reach the skull: an un-tilted tube
+ * cannot poke a leaning rim into the head the way a path-aligned one can (measured and fixed here).
+ * The polyline starts below the crown (the cap shell covers the crown) and, below the skull, keeps
+ * the last z so the fall hangs straight.
+ */
+export function hairSegments(h: number, sc: Vec3, sr: Vec3, topR: number, botR: number, drop: number): HairSeg[] {
+  const gap = HAIR_FIT.shellGapPerHead * h;
+  const yTop = sc[1] + 0.15 * sr[1];
+  const yBot = yTop - Math.max(1e-4, drop);
+  const K = HAIR_FIT.fallSegments;
+  const segs: HairSeg[] = [];
+  let lastZ = sc[2] - sr[2] - gap - topR; // fallback for segments entirely below the skull
+  for (let i = 0; i < K; i++) {
+    const y0 = yTop - (yTop - yBot) * (i / K);
+    const y1 = yTop - (yTop - yBot) * ((i + 1) / K);
+    const mid = (y0 + y1) / 2;
+    const f = Math.min(1, Math.max(0, (yTop - mid) / drop));
+    const r = topR + (botR - topR) * f;
+    let minBack = Infinity;
+    for (let s = 0; s <= 6; s++) {
+      const sb = skullBackZ(sc, sr, y1 + (y0 - y1) * (s / 6));
+      if (sb !== null) minBack = Math.min(minBack, sb);
+    }
+    const z = minBack === Infinity ? lastZ : minBack - gap - r;
+    lastZ = z;
+    segs.push({ y0, y1, z, r });
+  }
+  return segs;
+}
+
+/** An iris fleck's colours: lighter and darker than the iris, alternating, so marks read as paint. */
+export function irisFleckColours(iris: string): [string, string] {
+  return [tintHex(iris, 0.45), shadeHex(iris, 0.55)];
 }
 
 function tris(g: THREE.BufferGeometry): number {
@@ -78,7 +225,7 @@ export function buildFaceParts(head: THREE.Object3D, face: FaceAnchors, origin: 
   };
   const flat = (color: string) => new THREE.MeshLambertMaterial({ color, emissive: new THREE.Color(color).multiplyScalar(0.45) });
   const h = unit, r = face.eyeRadius;
-  const refs: FaceRig = { brow: [], eyelid: [], eyelidLower: [], mouth: null as unknown as THREE.Mesh, browRestY: [], mouthRestY: 0, unit, triangleCount: 0, secondary: [] };
+  const refs: FaceRig = { brow: [], eyelid: [], eyelidLower: [], mouth: null as unknown as THREE.Mesh, browRestY: [], mouthRestY: 0, unit, triangleCount: 0, secondary: [], hairParts: [] };
   // Eyelid bands (lane Q-A): the ancestry's lid block (head heights) × h, per eye. The upper band
   // spans from the eyeball's top down to the opening; the lower from the bottom up to the opening,
   // so the visible aperture is node.lid.aperture and both bands overlap the recessed globe.
@@ -86,14 +233,37 @@ export function buildFaceParts(head: THREE.Object3D, face: FaceAnchors, origin: 
   const halfAperture = lb.aperture / 2;
   const shell = r * 1.04;
   const clampUnit = (v: number) => Math.max(-1, Math.min(1, v));
-  // Eyes: sclera ball in the socket, iris and pupil discs on its front, a catch-light.
+  // Eyes: a ROUND globe in the socket, a round PAINTED iris with fine flecks, a pupil and a WET GLINT.
+  const irisHex = irisColour(a);
+  const [fleckLight, fleckDark] = irisFleckColours(irisHex);
   for (let i = 0; i < 2; i++) {
     const e = at(face.eye[i]);
-    add(new THREE.SphereGeometry(r, 14, 10), flat("#f6f1e6"), e);
-    const iris = add(new THREE.CircleGeometry(r * 0.55, 16), flat(irisColour(a)), [e[0], e[1], e[2] + r * 0.985]);
+    add(new THREE.SphereGeometry(r, EYE.globeLon, EYE.globeLat), flat("#f6f1e6"), e);
+    const irisR = r * EYE.irisRadius;
+    const irisZ = r * 0.985;
+    const iris = add(new THREE.CircleGeometry(irisR, EYE.irisSegments), flat(irisHex), [e[0], e[1], e[2] + irisZ]);
     iris.renderOrder = 1;
-    add(new THREE.CircleGeometry(r * 0.25, 12), flat("#050505"), [e[0], e[1], e[2] + r * 0.99]);
-    add(new THREE.CircleGeometry(r * 0.1, 8), flat("#ffffff"), [e[0] + r * 0.2, e[1] + r * 0.2, e[2] + r * 0.995]);
+    add(new THREE.CircleGeometry(r * EYE.pupilRadius, EYE.pupilSegments), flat("#050505"), [e[0], e[1], e[2] + r * 0.99]);
+    // Fine painted iris flecks (lane R-B): EYE.fleckCount marks spread over the iris disc, placed
+    // deterministically from the character seed. Each is a small disc, alternating lighter/darker,
+    // so the iris reads as painted rather than a flat coloured circle.
+    const fleckR = irisR * EYE.fleckRadius;
+    for (let f = 0; f < EYE.fleckCount; f++) {
+      const ang = (f / EYE.fleckCount) * Math.PI * 2 + (unitHash(seed ^ (f * 2654435761)) - 0.5) * 0.9;
+      const rad = irisR * (0.22 + 0.58 * unitHash(seed ^ (f * 40503 + 17)));
+      const fl = add(new THREE.CircleGeometry(fleckR, 6), flat(f % 2 === 0 ? fleckLight : fleckDark),
+        [e[0] + Math.cos(ang) * rad, e[1] + Math.sin(ang) * rad, e[2] + irisZ + r * 0.004]);
+      fl.renderOrder = 2;
+    }
+    // Wet glint: a specular highlight (moisture) up and to one side of the globe, plus a small
+    // secondary catch-light on the other. Sizes/offsets are fractions of r (EYE.glint*).
+    const glint = add(new THREE.CircleGeometry(r * EYE.glintRadius, 12), flat("#ffffff"),
+      [e[0] + r * EYE.glintX, e[1] + r * EYE.glintY, e[2] + r * 0.99]);
+    glint.renderOrder = 3;
+    glint.scale.set(1, EYE.glintSquash, 1);
+    const glint2 = add(new THREE.CircleGeometry(r * EYE.glint2Radius, 8), flat("#eef4ff"),
+      [e[0] + r * EYE.glint2X, e[1] + r * EYE.glint2Y, e[2] + r * 0.985]);
+    glint2.renderOrder = 3;
     // Upper lid: a spherical zone from the eyeball's top down to y = +aperture/2 (its rim), of
     // height min(R, aperture/2 + upperThickness); scale.y = 1 − eyeOpen lowers it to close the eye.
     const yUpTop = Math.min(shell, halfAperture + lb.upperThickness);
@@ -141,7 +311,8 @@ export function buildFaceParts(head: THREE.Object3D, face: FaceAnchors, origin: 
   }
   // Hair: colours/curl/density/length from the ancestry. A bald draw is deterministic from the
   // character seed, and a baldChance of 0 (the elf) is NEVER bald. The cap sits over the skull
-  // ellipsoid; the fall down the back is WIDENED and SHORTENED by curl, with lobes when it coils.
+  // ellipsoid; the fall is FITTED to the skull's back surface (lane R-B) and hangs below it, with
+  // lobes when it coils.
   const bald = isBald(node, seed);
   const hairColor = hairColourFor(node, seed);
   const style = seededPick(node.hair.styles, (a.race ?? "human").length * 31 + (a.subrace ?? "").length);
@@ -155,26 +326,35 @@ export function buildFaceParts(head: THREE.Object3D, face: FaceAnchors, origin: 
     cap.position.set(...sc);
     cap.rotation.x = HAIR_CAP_TILT;
     head.add(cap);
+    refs.hairParts.push(cap);
     triangleCount += tris(capGeo);
   }
   if (!bald && hairLen > 0.02) {
     const fall = hairFall(node.hair.curl, node.hair.density, hairLen, h);
-    const top: Vec3 = [0, sc[1] + 0.1 * h, sc[2] - sr[2] * 0.95];
-    const bot: Vec3 = [0, top[1] - fall.drop, top[2] - 0.35 * h];
-    const span = Math.hypot(top[1] - bot[1], top[2] - bot[2]);
-    const fallGeo = new THREE.CylinderGeometry(fall.topRadius, fall.botRadius, span, 12);
-    const fallMesh = createCelSurface(fallGeo, hairColor);
-    fallMesh.position.set(0, (top[1] + bot[1]) / 2, (top[2] + bot[2]) / 2);
-    fallMesh.rotation.x = -Math.atan2(bot[2] - top[2], top[1] - bot[1]);
-    head.add(fallMesh);
-    refs.secondary.push(fallMesh);
-    triangleCount += tris(fallGeo);
-    // Lobes: a coiled fall reads as a lumpier mass, a straight one stays a smooth tube.
+    // The fall radii are CLAMPED: hairFall's own radii reach ~0.75 h (a mass that would engulf the
+    // head). A hair mass a fraction of the head's width sits behind the skull and reads as hair.
+    const topR = Math.min(fall.topRadius, HAIR_FIT.fallRadiusTopPerHead * h);
+    const botR = Math.min(fall.botRadius, HAIR_FIT.fallRadiusBotPerHead * h);
+    const segs = hairSegments(h, sc, sr, topR, botR, fall.drop);
+    for (const s of segs) {
+      const segGeo = new THREE.CylinderGeometry(s.r, s.r, Math.max(1e-4, s.y0 - s.y1), HAIR_FIT.fallRadialSegments);
+      const seg = createCelSurface(segGeo, hairColor);
+      // Vertical tube: its axis at x = 0, the segment's mid-height, and the fitted z.
+      seg.position.set(0, (s.y0 + s.y1) / 2, s.z);
+      head.add(seg);
+      refs.hairParts.push(seg);
+      refs.secondary.push(seg);
+      triangleCount += tris(segGeo);
+    }
+    // Lobes: a coiled fall reads as a lumpier mass, a straight one stays a smooth tube. Placed at
+    // the fall's tip (below the skull), so they are a hanging decoration, not a skull-hugging part.
+    const tip = segs[segs.length - 1];
+    const tipY = tip.y1, tipZ = tip.z;
     for (let i = 0; i < Math.min(fall.lobes, 4); i++) {
       const a2 = (i / fall.lobes) * Math.PI * 2;
       const lobeGeo = new THREE.SphereGeometry(fall.botRadius * 0.5, 8, 6);
       const lobe = createCelSurface(lobeGeo, hairColor);
-      lobe.position.set(Math.cos(a2) * fall.topRadius * 0.55, (top[1] + bot[1]) / 2, (top[2] + bot[2]) / 2 + Math.sin(a2) * fall.topRadius * 0.55);
+      lobe.position.set(Math.cos(a2) * botR * 0.55, tipY + botR * 0.3, tipZ + Math.sin(a2) * botR * 0.55);
       head.add(lobe);
       refs.secondary.push(lobe);
       triangleCount += tris(lobeGeo);

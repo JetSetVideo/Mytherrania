@@ -156,6 +156,13 @@ export interface BodySpec {
   seed: number;
   /** Birth sign id (e.g. "serpent"); drives the paint recipe's warpaint/tattoo. Optional. */
   birthsign?: string | null;
+  /**
+   * The character's sex (wave R). Optional so every pre-wave spec still builds exactly as before; an
+   * unset sex is NEUTRAL MALE, and `Proportions.sexOf` reads it off the spec. This field is why the
+   * female curve reaches the RENDERED body: `specFromAppearance` copies it from the profile's
+   * `Appearance.sex`, and without that copy the curve existed only in the maths and never on screen.
+   */
+  sex?: "male" | "female" | null;
 }
 
 /** The full generated body: volumes, brushes, bones and the box to polygonise. */

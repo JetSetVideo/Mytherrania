@@ -908,6 +908,29 @@ different cases so the progression from a working game to a working TYPE of game
 Lane Q-B's own test file is NOT kept: it asserted the shoulder cut that this wave dropped after
 measurement.
 
+## 11J. Wave R — one entry to the generator, a female curve, hair that fits, eyes that pop
+
+Added 2026-11-01. The prompt asked to merge the title's two buttons into one, to be able to change every
+statistic by hand during generation, to make the female curvier and the dwarf less wide and fitter, to keep
+improving the polygons and style, to fit the hairstyles to the head (and the collision systems), to give the
+eyes "some glue" so they pop (not square, painted), to make the pectorals more obvious and to paint the
+fingernails.
+
+| # | Requirement | Where | Status |
+| --- | --- | --- | --- |
+| RA1 | ONE entry: the title's Profiles and Fight buttons are one button that opens the roster AND the generator on one page, with the fight still reachable and keyboard-accessible | `src/ui/Menu.ts`, `src/ui/UiTree.ts`, `styles.css` | LIVE |
+| RA2 | Every parameter overridable by hand after a roll (race, sub-species, class, weapon, sign, the six attributes, height, weight, sex, name), routed through `applyEdit` so dependents synchronise | `src/ui/Menu.ts`, `src/ui/CreatorSync.ts` | LIVE |
+| RA3 | A `sex` field, drawn deterministically, carried onto the body spec, giving a measurably curvier female | `src/game/Characters.ts`, `Proportions.ts`, `contracts.ts`, `SkinnedHumanoid.ts` | LIVE |
+| RA4 | The dwarf's muscle term up (fitter); its **shoulder over-width NOT cut** (any cut breaches the foot-slide band) | `Proportions.ts` | PARTIAL, with numbers |
+| RA5 | **Pectorals DROPPED**: any depth gain breaks four ragdoll tests (mass, welds, round trip, settle) | — | DROPPED, with numbers |
+| RB1 | Hair fitted to the skull: 0 vertices inside, a stated clearance band in head heights, hairline above the brow | `src/graphics/body/FaceParts.ts` | LIVE |
+| RB2 | Eyes that pop: round iris (32 edges, 0.9936), a wet glint, painted iris flecks | the same file + `paint/Recipes.ts` | LIVE |
+| RB3 | Nails painted (plate + gloss, measured coverage) — but **no SDF primitive carries the `nail` region**, so it shows on the mannequin and not on generated fighters | `paint/Recipes.ts` | PARTIAL, gap recorded |
+
+**Pins:** `tests/sexbuild_test.ts`, `tests/sex_wire_test.ts`, `tests/menu_entry_test.ts`,
+`tests/hair_eyes_nails_test.ts`. R-A's pectoral pin was re-stated from the change to the DROPPED state with
+the reason, rather than deleted.
+
 ## 11G. Wave O — the Profiles panel
 
 Added 2026-10-31. The prompt asked to improve the journey from the title's profile button into a panel where

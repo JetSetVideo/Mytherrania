@@ -34,6 +34,16 @@ import { weaponForClass, type WeaponType } from "../game/Weapon.ts";
 import { PALETTES } from "../game/Characters.ts";
 import { shadeHex, tintHex } from "../graphics/paint/Blend.ts";
 
+// ─── the hand-set bounds ───────────────────────────────────────────────────────
+
+/** Wave R: the hand-set attribute band (points per attribute): 1..20, integers. */
+export const STAT_MIN = 1;
+export const STAT_MAX = 20;
+/** Clamp a hand-set attribute into the band above (the roller's own bound). */
+function clampStat(x: number): number {
+  return Math.max(STAT_MIN, Math.min(STAT_MAX, Math.round(x)));
+}
+
 // ─── the edit patch ────────────────────────────────────────────────────────────
 
 /** One parameter edit: which field, and what the user set it to. */
@@ -150,6 +160,18 @@ export function applyEdit(p: CharacterProfile, patch: EditPatch): CharacterProfi
   const next = copy(p);
   const { field, value } = patch;
 
+  // Wave R: the six ATTRIBUTES come in as `allocated.<stat>` (a PREFIXED field, which the exact-name
+  // switch below can never match). They are overridable by hand ("change the statistics manually") and
+  // clamped into the game's own band, so a hand-set number can never leave the fighter unrunnable.
+  if (field.startsWith("allocated.")) {
+    const name = field.slice("allocated.".length);
+    if (!(name in next.allocated)) return p;
+    const raw = typeof value === "number" ? value : Number(value);
+    if (!Number.isFinite(raw)) return p;
+    next.allocated = { ...next.allocated, [name]: clampStat(raw) };
+    return next;
+  }
+
   const setColour = (onto: string): boolean => {
     const hex = asHex(value);
     if (hex === null) return false;
@@ -233,6 +255,13 @@ export function applyEdit(p: CharacterProfile, patch: EditPatch): CharacterProfi
       }
       break;
 
+    case "sex": {
+      // Wave R: the override the UI exposes. "female"/"male" only; anything else is a no-op, and the
+      // body curve follows the profile -- the same value the renderer reads via specFromAppearance.
+      const sex = patch.value === "female" ? "female" : patch.value === "male" ? "male" : null;
+      if (sex === null) return p;
+      return { ...p, appearance: { ...p.appearance, sex } };
+    }
     case "palette":
       if (typeof value === "string" && value in PALETTES) next.palette = value;
       break;

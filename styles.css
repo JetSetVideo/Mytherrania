@@ -956,3 +956,30 @@ body.myth-cursor-on,body.myth-cursor-on *{cursor:none}
   .profile-row > .profile-manage { grid-area: manage; justify-content: flex-start; }
   .profile-action { min-height: 44px; }
 }
+
+/* ── Wave R: one entry, and a generator you can override ──────────────────────────────────────────
+   The ≡ Profiles button and the ⚔ Fight button are ONE entry that opens the roster AND the generator,
+   which are the same screen. The roster is a pinned section inside the Creator's flat grid; the
+   hand-override fields sit among the generator's own fields. Classes only — no inline style (CSP). */
+/* The roster is an ordinary grid ITEM of the Creator's flat grid, so it shares a row with the
+   generator's own panels — the brief's "the roster on it and the generate/override controls beside
+   it" — at every width it fits (the grid is 1 column on a phone, so it simply stacks there). Its
+   inner .sheet-cols already collapse on narrow widths, so nothing clips. */
+.menu-screen[data-flat="1"] > .ui-panel-roster { grid-column: auto; }
+.ui-panel-roster { --panel: #dfaa55; }
+/* Embedded in a panel: fill the panel's content box rather than the model's own 980 px cap. */
+.profiles-embedded { width: 100%; }
+/* The merged entry button: the note wraps under the label, centred, still one real <button>. */
+.entry-btn { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.btn-note { display: block; font-size: 11px; font-weight: 400; opacity: 0.8; letter-spacing: 0; }
+/* The hand-override strip: the dice sits among the fields; each input is a full-width field. */
+.override-fields { display: flex; flex-direction: column; gap: 8px; text-align: left; }
+.override-fields .group-head { margin: 0; }
+.override-attrs { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 120px), 1fr)); gap: 6px 10px; }
+.override-fields .field { font-size: 12px; }
+.override-fields input, .override-fields select {
+  width: 100%; background: #172128; color: #fff3cf; border: 2px solid #b9c9c8; border-radius: 6px;
+  padding: 6px 10px; font-size: 14px;
+}
+.override-fields input:focus-visible, .override-fields select:focus-visible { outline: 3px solid #ef7455; outline-offset: 2px; }
+.override-fields .dice-btn { align-self: flex-start; }

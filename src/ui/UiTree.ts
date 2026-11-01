@@ -108,7 +108,10 @@ export const UI_TREE: UiScreen[] = [
           {
             id: "profiles",
             label: "Saved fighters",
-            hint: "Player_ID profiles persisted across reload.",
+            // Wave R: this group no longer holds a button — its ≡ Profiles button merged with the ⚔
+            // Fight button into ONE entry (the modes group below). It now holds only the picker: a
+            // saved fighter loads into the generator, which shares a page with the roster.
+            hint: "Saved fighters that load into the generator (the roster shares its page).",
             // Wave O: an ENTRY path (it opens the Profiles panel), so like the modes group it starts
             // open — a closed tree must never hide the way into the game or into your own saved fighters.
             defaultOpen: true,
@@ -119,10 +122,13 @@ export const UI_TREE: UiScreen[] = [
           {
             id: "modes",
             label: "Modes",
-            hint: "How the next match is played.",
+            hint: "The one entry to the fighters generator and the roster, plus the other ways in.",
             defaultOpen: true,
             controls: [
-              c("btn-fight", "Fight", "You against one AI.", "always", "player", 2),
+              // Wave R: the ≡ Profiles button and the ⚔ Fight button are ONE entry now. It opens the
+              // roster AND the generator, which are the same screen, and stays a keyboard- and
+              // screen-reader-reachable button in this group (the fight path into the ring).
+              c("btn-enter", "Fighters", "Opens the roster and the generator on one page — roll, override or save.", "always", "player", 2),
               c("btn-spectate", "Spectate", "AI against AI, with a speed control.", "always", "system", 2),
               c("btn-train", "Auto-train", "Run matches headless and fast to gather data.", "always", "system", 1),
               c("btn-history", "History", "Past matches, with filters.", "always", "system", 1),
