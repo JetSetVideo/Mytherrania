@@ -104,7 +104,7 @@ function bladeOf(drv: SwingDriver, lean: number, shoulder: number, elbow: number
   const a = lean + shoulder + elbow, ca = Math.cos(a), sa = Math.sin(a);
   const b: V3t = [t[0], t[1] * ca - t[2] * sa, t[1] * sa + t[2] * ca];
   const sign = drv.setup.reverse ? -1 : 1;
-  return { elev: deg(Math.asin(sign * b[1])), fwd: sign * b[2], acrossDeg: deg(Math.acos(Math.min(1, Math.abs(dot(y, HAND[0]))))) };
+  return { elev: deg(Math.asin(Math.max(-1, Math.min(1, sign * b[1])))), fwd: sign * b[2], acrossDeg: deg(Math.acos(Math.min(1, Math.abs(dot(y, HAND[0]))))) };
 }
 
 Deno.test("rules: the carry holds at guard and the swing never turns the end down into the holder", () => {

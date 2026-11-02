@@ -12,6 +12,7 @@ import type { CharacterProfile } from "../game/Characters.ts";
 import type { Appearance } from "../game/Characters.ts";
 import type { HumanoidRig } from "./Humanoid.ts";
 import type { Fighter } from "../game/Fighter.ts";
+import { UI_WALNUT_DEEP } from "./PortraitBackdrop.ts";
 
 /**
  * PreviewScene — the live 3D portrait the Character Creator shows (wave L).
@@ -136,7 +137,8 @@ export class PreviewScene {
     // A dark disc under the boots so the model is not floating in the panel's gradient.
     const disc = new THREE.Mesh(
       new THREE.CircleGeometry(0.75, 40),
-      new THREE.MeshBasicMaterial({ color: "#172128", transparent: true, opacity: 0.55 }),
+      // Wave W (lane H): the UI's deep walnut, not the old cold #172128 (blue-grey under a warm panel).
+      new THREE.MeshBasicMaterial({ color: UI_WALNUT_DEEP, transparent: true, opacity: 0.55 }),
     );
     disc.rotation.x = -Math.PI / 2;
     disc.position.y = 0.001;

@@ -30,7 +30,8 @@ import { type CapsuleLike, ClearanceStat, polylineClearance, setClearance } from
 import { SwingDriver, swingSetupFor } from "../src/combat/SwingDriver.ts";
 import { measureAimLine } from "../src/combat/SwingRig.ts";
 import { hitboxesFromPlan, updateHitboxes } from "../src/combat/Hitboxes.ts";
-import { boneWorldOf } from "../src/combat/RigAdapter.ts";
+import { applyForearmTwist, boneWorldOf } from "../src/combat/RigAdapter.ts";
+import { applyTwoHandGrip } from "../src/combat/OffHand.ts";
 import type { ArchetypeId, Hitbox, HitboxSet, WeaponSpec } from "../src/combat/contracts.ts";
 import { weaponFromSeed } from "../src/game/weapons/Generate.ts";
 import { combatProfile } from "../src/game/weapons/Profile.ts";
@@ -140,12 +141,19 @@ function placeRig(rig: Rig, sk: ReturnType<typeof defaultHumanoid>, drv: SwingDr
   sk.drive(out.angles, out.hipRoll, out.ankleRoll);
   rig.update(sk, dt);
   if (drv) {
+    // Wave W lane T: the engine's forearm supination (lane G) — the gripping hand turns the thumb up.
+    applyForearmTwist(rig, sk.joint("elbowR").angle, drv.setup.twist);
     rig.setGrip(drv.gripPitch(sk.joint("spine").angle, sk.joint("shoulderR").angle, sk.joint("elbowR").angle), drv.gripRoll());
     rig.weaponNode.position.y = -drv.chokeOffset();
   }
   rig.group.position.set(pl.x + pl.lateral * Math.cos(pl.yaw), pl.y, pl.z - pl.lateral * Math.sin(pl.yaw));
   rig.group.rotation.set(0, pl.yaw, pl.roll);
   rig.group.updateMatrixWorld(true);
+  // Wave W lane T: both fists on a two-handed haft (the engine's OffHand.applyTwoHandGrip, same order).
+  if (drv?.setup.offHand) {
+    applyTwoHandGrip(rig, sk.joint("shoulderR").angle, drv.setup.offHand, drv.chokeOffset());
+    rig.group.updateMatrixWorld(true);
+  }
 }
 
 const quant = (xs: number[], q: number) => {

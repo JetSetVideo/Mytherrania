@@ -11,9 +11,10 @@ import { serveAsset } from "./serve.ts";
 
 const OUT = Deno.args[0] ?? "artifacts/qa-ui-all";
 await Deno.mkdir(OUT, { recursive: true });
-const VIEWPORTS: [string, number, number][] = [
-  ["phone", 390, 844], ["phone-land", 844, 390], ["tablet", 820, 1180], ["laptop", 1280, 800], ["desktop", 1920, 1080],
-];
+const VIEWPORTS: [string, number, number][] = (Deno.env.get("UI_VPS") ?? "small,phone,phone-land,tablet,laptop,desktop,wide").split(",").map((n) => ({
+  small: ["small", 320, 568], phone: ["phone", 390, 844], "phone-land": ["phone-land", 844, 390], tablet: ["tablet", 820, 1180],
+  laptop: ["laptop", 1280, 800], desktop: ["desktop", 1920, 1080], wide: ["wide", 2560, 1440],
+} as Record<string, [string, number, number]>)[n]).filter(Boolean);
 const ONLY = (Deno.env.get("UI_SCREENS") ?? "").split(",").filter(Boolean);
 const server = Deno.serve({ hostname: "127.0.0.1", port: 0, onListen() {} }, (r) => serveAsset(r));
 const PORT = (server.addr as Deno.NetAddr).port;
@@ -63,6 +64,38 @@ async function audit(page: Page) {
     // Structure: panels and groups of the visible screen.
     const screen = [...document.querySelectorAll(".menu-screen")].find(visible) as HTMLElement | undefined;
     const panels = screen ? [...screen.querySelectorAll("[data-panel], .ui-panel, section, details")].filter(visible).map(label) : [];
+    // Wave W: how much of the window the visible screen (or dialog) uses.
+    const box = (document.querySelector("#settings-dialog:not([hidden])") as HTMLElement | null) ?? screen ?? null;
+    const br = box?.getBoundingClientRect();
+    const widthUse = br ? +(br.width / vw).toFixed(3) : null;
+    // Wave W: the hierarchy by depth — the median font size per level (0 screen title, 1 panel head,
+    // 2 group head, 3 control text, 4 hint), and whether it falls monotonically.
+    const LEVELS: [number, string][] = [
+      [0, ".menu-screen.active h2, .menu-screen.active .menu-title, #settings-dialog:not([hidden]) h2, .settings-title"],
+      [1, ".menu-screen.active .panel-head, #settings-dialog:not([hidden]) .settings-section h3, #settings-dialog:not([hidden]) .settings-section-title, .menu-screen.active .profiles-title"],
+      [2, ".menu-screen.active .opt-head .opt-label, .menu-screen.active .sheet-col-head, .menu-screen.active .hero-tab strong, .menu-screen.active .group-head"],
+      [3, ".menu-screen.active .menu-btn .btn-label, .menu-screen.active .sheet-row-label, .menu-screen.active .stepper-text, #settings-dialog:not([hidden]) .settings-row > span:first-child, .menu-screen.active .field"],
+      [4, ".menu-screen.active .opt-hint, .menu-screen.active .panel-hint, .menu-screen.active .screen-hint, .menu-screen.active .btn-note, .menu-screen.active .sheet-meta, .menu-screen.active small"],
+    ];
+    const levelPx: Record<number, number | null> = {};
+    for (const [lv, sel] of LEVELS) {
+      const sizes = [...document.querySelectorAll(sel)].filter(visible).map((e) => parseFloat(getComputedStyle(e).fontSize)).sort((a, b) => a - b);
+      levelPx[lv] = sizes.length ? sizes[sizes.length >> 1] : null;
+    }
+    const seq = [0, 1, 2, 3, 4].map((l) => levelPx[l]).filter((v): v is number => v !== null);
+    const monotone = seq.every((v, i) => i === 0 || v <= seq[i - 1] + 0.01);
+    // Visible text volume (characters) inside the screen/dialog.
+    const textChars = box ? (box.innerText ?? "").replace(/\s+/g, " ").length : 0;
+    // Icons next to text: icon height / the label's font size, and the vertical centre offset.
+    const iconFit: number[] = [], iconOff: number[] = [];
+    for (const ic of [...document.querySelectorAll(".menu-screen.active svg.icon, #settings-dialog:not([hidden]) svg.icon")].filter(visible)) {
+      const host = ic.parentElement!; const fs = parseFloat(getComputedStyle(host).fontSize);
+      const ir = ic.getBoundingClientRect(); const lab = [...host.childNodes].find((n) => n !== ic && (n.textContent ?? "").trim().length > 0) as Element | Text | undefined;
+      if (!lab) continue;
+      const range = document.createRange(); range.selectNodeContents(lab); const lr = range.getBoundingClientRect();
+      if (lr.height === 0) continue;
+      iconFit.push(+(ir.height / fs).toFixed(2)); iconOff.push(+Math.abs((ir.top + ir.height / 2) - (lr.top + lr.height / 2)).toFixed(1));
+    }
     const docH = document.documentElement.scrollHeight, scrollers = [...document.querySelectorAll("*")].filter((e) => {
       const s = getComputedStyle(e); return visible(e) && /(auto|scroll)/.test(s.overflowY) && (e as HTMLElement).scrollHeight > (e as HTMLElement).clientHeight + 4;
     }).map((e) => `${label(e)} ${(e as HTMLElement).scrollHeight}/${(e as HTMLElement).clientHeight}`);
@@ -71,6 +104,7 @@ async function audit(page: Page) {
       smallTargets: small.length, smallSample: small.slice(0, 12), overflow: overflow.slice(0, 12), overflowN: overflow.length,
       clipped: clipped.slice(0, 12), clippedN: clipped.length, tinyText: tinyText.slice(0, 12), tinyTextN: tinyText.length,
       panels: panels.slice(0, 30), scrollers: scrollers.slice(0, 8), docHeight: docH, tree: tree.slice(0, 80),
+      widthUse, levelPx, monotone, textChars, iconFit, iconOffMax: iconOff.length ? Math.max(...iconOff) : null,
     };
   });
 }
@@ -85,7 +119,8 @@ async function capture(page: Page, screen: string, vp: string) {
   await page.screenshot({ path: file });
   const a = await audit(page);
   shots.push({ screen, vp, file, audit: a });
-  console.log(`${screen.padEnd(10)} ${vp.padEnd(10)} controls ${String(a.controls).padStart(3)} ${JSON.stringify(a.kinds)} small ${a.smallTargets} overflow ${a.overflowN} clipped ${a.clippedN} tiny ${a.tinyTextN}`);
+  const lv = [0, 1, 2, 3, 4].map((l) => a.levelPx[l] ?? "-").join("/");
+  console.log(`${screen.padEnd(11)} ${vp.padEnd(10)} width ${a.widthUse ?? "-"} levels ${lv} ${a.monotone ? "mono" : "NOT-MONO"} text ${a.textChars} icon ${a.iconFit.length ? Math.min(...a.iconFit) + "-" + Math.max(...a.iconFit) : "-"} off ${a.iconOffMax ?? "-"} | small ${a.smallTargets} overflow ${a.overflowN} clipped ${a.clippedN} tiny ${a.tinyTextN}`);
 }
 
 const want = (s: string) => ONLY.length === 0 || ONLY.includes(s);

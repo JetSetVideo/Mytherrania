@@ -12,7 +12,7 @@ import { profileTerms } from "../game/weapons/Profile.ts";
 import type { JointLimitTable } from "../game/anim/Rig.ts";
 import {
   AIM_PATTERN, type AimLine, aimYawForLine, type ArmGeometry, armIK, CONTACT_HOLD, COOLDOWN_SHARE, swingDuration, contactFraction, engageDistance, GUARD_KEY, gripPitchFor,
-  newSwingProfile, newSwingSample, planarAimLine, stepInFor, strikeDuration, strikeKeyAt, styledKeyAt, styledLegDrive, styledSwingTiming,
+  handPoint, newSwingProfile, newSwingSample, planarAimLine, REVERSE_THRUST, stepInFor, strikeDuration, strikeKeyAt, styledKeyAt, styledLegDrive, styledSwingTiming,
   SWING_DOF_DEPTH, SWING_DOFS, SWING_SHAPES, type SwingKey, type SwingKind, swingKindOf, SwingPlayer, swingPose, type SwingShape, swingTiming,
   swingWindow, bladePoint, REACH_SAMPLES, SWEET_SHARE, TARGET_HALF_DEPTH, TORSO_BAND,
 } from "../game/anim/Swing.ts";
@@ -20,7 +20,7 @@ import { clamp, lerp, smoothstep } from "../core/MathCore.ts";
 import { smoothMax, smoothMin } from "../game/anim/FootIK.ts";
 import { DEFAULT_GAIT } from "../game/anim/Gait.ts";
 import { JOINT_INDEX } from "../game/anim/Rig.ts";
-import { type GripRule, gripRuleOf, REST_GRIP } from "../game/GripStance.ts";
+import { type GripRule, gripRuleOf, holdsWithTwoHands, offHandPlan, type OffHandPlan, REST_GRIP } from "../game/GripStance.ts";
 import { clampWristPitch, GRIP_SUPINATION_DEFAULT, gripEuler, PLAIN_HAND, type V3t, type WristBand } from "../game/PalmWeapon.ts";
 import { GUARD_POSE } from "../game/anim/Poses.ts";
 import { recoveryPeakRate } from "../game/AnimationCurve.ts";
@@ -87,6 +87,12 @@ export interface SwingSetup {
    * GRIP_SUPINATION_DEFAULT; SwingRig.solveGripTwist (run by measureAimLine) solves it per rig.
    */
   twist: number;
+  /**
+   * Lane T (wave W): where the OFF hand holds this weapon (GripStance.offHandPlan) when it is held with
+   * two hands on a haft (not a bow); null/absent = the off arm guards. combat/OffHand.applyTwoHandGrip
+   * puts the left fist there every frame (render side).
+   */
+  offHand?: OffHandPlan | null;
 }
 
 /** Tip distance of a weapon from its main grip, m: the farthest strike-feature point along +y. */
@@ -103,13 +109,15 @@ export function swingSetupFor(spec: WeaponSpec, arm: ArmGeometry): SwingSetup {
   const pref = preferredGrip(spec), grip = pref === "reverse" && !rule.reverseAllowed ? "forward" : pref;
   const terms = profileTerms(spec, grip);
   const kind = swingKindOf(terms.mix, spec.weaponClass, spec.hands);
-  const shape = SWING_SHAPES[kind], tip = weaponTip(spec);
+  // Lane T: a reverse-grip thrust stabs down onto the target (Swing.REVERSE_THRUST).
+  const shape = kind === "thrust" && grip === "reverse" ? REVERSE_THRUST : SWING_SHAPES[kind], tip = weaponTip(spec);
   const sweet = handSweetDistance(shape, arm, tip, rule, grip === "reverse");
   return {
     kind, shape, strike: strikeDuration(shape, terms.omega, terms.thrustTime), arm, reverse: grip === "reverse",
     twoHanded: terms.handsUsed === 2, tip, sweet, engage: engageDistance(sweet), aimLine: planarAimLine(arm, tip),
     choke: Math.max(0, ...spec.grips.filter((g) => g.id === "choke").map((g) => g.y)),
     hand: PLAIN_HAND, rule, twist: GRIP_SUPINATION_DEFAULT,
+    offHand: holdsWithTwoHands(spec, terms.handsUsed === 2) ? offHandPlan(spec, tip) : null,
   };
 }
 
@@ -267,19 +275,21 @@ export class SwingDriver {
     }
     const h = s.shape.hand;
     if (h) {
+      // Lane T: the shape's points scaled to this arm's reach (Swing.handPoint).
+      const hs = handPoint(s.shape, s.arm, "strike", [0, 0]), hw = handPoint(s.shape, s.arm, "windup", [0, 0]);
       // A thrust meets the body at its FARTHEST point (contactFraction = 1), so a follow-through
       // past it cannot come from the hand. The hand reaches the strike point at the contact
       // (THRUST_CONTACT of the strike time, peak speed there), capped at THRUST_REACH of the arm's
       // reach (a locked elbow has an unbounded extension rate), and the CHEST follows through.
       const H = pr.hand ?? (pr.hand = new Float64Array(6));
       const reach = THRUST_REACH * (s.arm.upper + s.arm.fore);
-      let cx = h.strike[0], cy = h.strike[1];
+      let cx = hs[0], cy = hs[1];
       const r = Math.hypot(cx, cy);
       if (r > reach) { cx *= reach / r; cy *= reach / r; }
       // The pull-back never goes deeper than the shape's own (a deeper one draws the hand into the
       // chest: measured −11.7 mm hand-torso on the ork); a deep anticipation shows in lean + twist.
       const wh = Math.min(1, wd);
-      H[0] = cx + wh * (h.windup[0] - cx); H[1] = cy + wh * (h.windup[1] - cy);
+      H[0] = cx + wh * (hw[0] - cx); H[1] = cy + wh * (hw[1] - cy);
       H[2] = cx; H[3] = cy;
       H[4] = cx; H[5] = cy;
       Object.assign(pr.contactKey, this.#k1);

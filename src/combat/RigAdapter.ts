@@ -17,6 +17,7 @@ import { RIG_ROTATION_SIGN } from "../game/anim/Rig.ts";
 import type { JointName, Skeleton } from "../game/Skeleton.ts";
 import type { HitboxSet, WeaponSpec } from "./contracts.ts";
 import { updateHitboxes } from "./Hitboxes.ts";
+import { convergeWeaponArm, weaponArmConvergenceOf } from "./OffHand.ts";
 import {
   type ClearanceJoint, type ClearanceResult, SELF_JOINT_WEIGHT, selfClearance, type SelfOptions, selfPenetration, solveSelfClearance,
 } from "./SelfGuard.ts";
@@ -233,6 +234,10 @@ export class ArmGuard {
       else if (name === "gripRoll") this.#grip.rotation.z = angles[i];
     }
     this.#root.updateMatrixWorld(true);
+    // Lane T (wave W): a two-handed grip converges the weapon arm toward the midline (OffHand.ts); the
+    // guard draws and measures that same arm, so its correction holds for the arm on screen.
+    const conv = this.#names.includes("shoulderR") ? weaponArmConvergenceOf(this.#rig) : 0;
+    if (conv !== 0) convergeWeaponArm(this.#rig, conv);
   }
 
   /** Signed penetration (m) of the weapon into its holder in the rig's CURRENT matrices. */

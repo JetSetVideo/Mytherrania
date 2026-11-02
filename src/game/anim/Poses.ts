@@ -12,10 +12,18 @@ import { JOINT_COUNT, JOINT_ORDER, type JointLimitTable } from "./Rig.ts";
 /** A sparse pose: joint -> angle (override) or offset (additive). */
 export type SparsePose = Partial<Record<JointName, number>>;
 
-/** Guard: forearms up in front of the face, trunk slightly hunched (override, upper body). */
+/**
+ * Guard: the free forearm up in front of the face, trunk slightly hunched (override, upper body). The
+ * WEAPON arm (lane T, wave W): the upper arm as before (−1.0), the elbow opened from −1.45 to −0.51 so
+ * the forearm runs ~10° below the horizontal (λ + θs + θe = 0.12 − 1.0 − 0.51 = −1.39 → forearm at
+ * 1.75 rad from up), the fist at the lower chest ~0.58 m forward — a forearm a handle crosses at the
+ * hammer grip (it was 46° from vertical: the guard blade needed the wrist's whole ulnar range and the
+ * handle lay 47° to the fingers). The shoulder is unchanged so the swings' wind-up travel (and the
+ * kinetic chain's peak order) keep their timing.
+ */
 export const GUARD_POSE: SparsePose = {
   spine: 0.12, abdomen: 0.06, neck: -0.06, head: -0.06,
-  shoulderL: -0.85, shoulderR: -1.0, elbowL: -1.7, elbowR: -1.45,
+  shoulderL: -0.85, shoulderR: -1.0, elbowL: -1.7, elbowR: -0.51,
 };
 
 /** Basic attack without a skill curve (defaultHumanoid "attack", upper body only). */

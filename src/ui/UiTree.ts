@@ -96,7 +96,7 @@ export const UI_TREE: UiScreen[] = [
   {
     id: "title",
     label: "Title",
-    hint: "The entry screen: pick a saved fighter or start a new one.",
+    hint: "Pick a hero or start a new one.",
     colour: "ink",
     panels: [
       {
@@ -111,7 +111,7 @@ export const UI_TREE: UiScreen[] = [
             // Wave R: this group no longer holds a button — its ≡ Profiles button merged with the ⚔
             // Fight button into ONE entry (the modes group below). It now holds only the picker: a
             // saved fighter loads into the generator, which shares a page with the roster.
-            hint: "Saved fighters that load into the generator (the roster shares its page).",
+            hint: "Your saved heroes.",
             // Wave O: an ENTRY path (it opens the Profiles panel), so like the modes group it starts
             // open — a closed tree must never hide the way into the game or into your own saved fighters.
             defaultOpen: true,
@@ -122,7 +122,7 @@ export const UI_TREE: UiScreen[] = [
           {
             id: "modes",
             label: "Modes",
-            hint: "The one entry to the fighters generator and the roster, plus the other ways in.",
+            hint: "Fight, watch, read, set up.",
             defaultOpen: true,
             controls: [
               // Wave R: the ≡ Profiles button and the ⚔ Fight button are ONE entry now. It opens the
@@ -142,19 +142,19 @@ export const UI_TREE: UiScreen[] = [
   {
     id: "select",
     label: "Create",
-    hint: "Build the fighter: ancestry, calling, skills, star sign, arena.",
+    hint: "Ancestry, calling, sign, arena.",
     colour: "coral",
     panels: [
       {
         id: "ancestry",
         label: "Ancestry",
-        hint: "Race and sub-species. Drives the body, the hair, the beard, the tusks.",
+        hint: "People and nation: body, hair, tusks.",
         colour: "grass",
         groups: [
           { id: "race", label: "Race", hint: "The four peoples.", controls: [c("race-table", "Race", "Pick the people; the hero panel previews it.", "always", "player", 2)] },
           { id: "subrace", label: "Sub-species", hint: "A nation within the people.", controls: [c("subrace-table", "Sub-species", "Nested under the chosen race.", "always", "player", 1)] },
-          { id: "hero", label: "Hero preview", hint: "Primary and secondary stats for the pick.", controls: [c("race-hero", "Preview", "Primary left, secondary right.", "always", "player", 2)] },
-          { id: "lore", label: "Ancestry lore", hint: "What the hierarchy says about the pick: skin, hair, beard, tusks, ranks.", controls: [
+          { id: "hero", label: "Hero preview", hint: "The pick's statistics.", controls: [c("race-hero", "Preview", "Primary left, secondary right.", "always", "player", 2)] },
+          { id: "lore", label: "Ancestry lore", hint: "Skin, hair, beard, tusks, ranks.", controls: [
             c("ancestry-lore", "Lore", "The race and sub-species name with its one-line lore.", "always", "player", 1),
             c("ancestry-skin", "Skin", "Skin tone swatches and the crease colour.", "always", "player", 1),
             c("ancestry-hair", "Hair", "Hair colours drawn from the ancestry.", "always", "player", 1),
@@ -167,33 +167,33 @@ export const UI_TREE: UiScreen[] = [
       {
         id: "calling",
         label: "Calling",
-        hint: "Class, weapon and the three techniques it brings.",
+        hint: "Class, weapon, techniques.",
         colour: "sand",
         groups: [
           { id: "class", label: "Class", hint: "The eight callings.", controls: [c("class-table", "Class", "Each row shows its three techniques.", "always", "player", 2)] },
-          { id: "weapon", label: "Weapon", hint: "Generated from the class, or chosen.", controls: [c("weapon-table", "Weapon", "Shaft, blade, curve, weight, metal.", "always", "player", 1)] },
+          { id: "weapon", label: "Weapon", hint: "From the class, or chosen.", controls: [c("weapon-table", "Weapon", "Shaft, blade, curve, weight, metal.", "always", "player", 1)] },
           { id: "skills", label: "Techniques", hint: "Dash, power and defence.", controls: [c("skill-cards", "Techniques", "The three moves this calling brings.", "always", "player", 2)] },
         ],
       },
       {
         id: "sign",
         label: "Star sign",
-        hint: "The birthsign, and the secondary stats it stacks.",
+        hint: "Birthsign and its bonuses.",
         colour: "violet",
         groups: [
-          { id: "birthsign", label: "Birthsign", hint: "Stacks additively on the sub-species.", controls: [c("birthsign-table", "Birthsign", "Pick one of the twelve.", "always", "player", 1)] },
-          { id: "secondary", label: "Secondary stats", hint: "Crit, haste, mastery, resistances, versatility.", controls: [c("secondary-rows", "Deltas", "Green up, coral down.", "always", "player", 1)] },
+          { id: "birthsign", label: "Birthsign", hint: "Adds to the nation's bonus.", controls: [c("birthsign-table", "Birthsign", "Pick one of the twelve.", "always", "player", 1)] },
+          { id: "secondary", label: "Secondary stats", hint: "Crit, haste, mastery, resistances.", controls: [c("secondary-rows", "Deltas", "Green up, coral down.", "always", "player", 1)] },
         ],
       },
       {
         id: "opponent",
         label: "Opponent",
-        hint: "Who you fight, and the terms of the match.",
+        hint: "Rival and terms.",
         colour: "ocean",
         groups: [
           { id: "rival", label: "Rival", hint: "The AI you face.", controls: [c("menu-opponent", "Rival", "Pick the opponent's calling.", "always", "opponent", 1)] },
           { id: "terms", label: "Match terms", hint: "Length and win condition.", controls: [c("match-length", "Length", "Shorter matches gather data faster.", "always", "system", 1), c("win-condition", "Win condition", "One condition is rolled per match.", "always", "system", 0)] },
-          { id: "spectate", label: "Spectator card", hint: "The generated AI-vs-AI card, when the engine hands one over.", controls: [
+          { id: "spectate", label: "Spectator card", hint: "The generated AI-vs-AI card.", controls: [
             c("spectate-card", "Card", "The spectator card: levels, budgets, techniques and arena.", "spectate", "system", 1),
             c("spectate-level-a", "Level A", "Fighter A's generated level.", "spectate", "system", 0),
             c("spectate-level-b", "Level B", "Fighter B's generated level.", "spectate", "system", 0),
@@ -202,7 +202,7 @@ export const UI_TREE: UiScreen[] = [
             c("spectate-techniques", "Techniques", "The technique ids the spent stats unlocked.", "spectate", "system", 0),
             c("spectate-arena", "Arena", "The generated arena's size in metres.", "spectate", "system", 0),
           ] },
-          { id: "inspect", label: "Inspect overlay", hint: "The free spectator cursor and the floating cards a click opens.", controls: [
+          { id: "inspect", label: "Inspect overlay", hint: "Click a fighter or object to inspect it.", controls: [
             c("inspect-cursor", "Cursor", "The custom reticle and its soft trailing blob.", "spectate", "system", 1),
             c("inspect-fighter-card", "Fighter card", "Click a fighter for a stat sheet floating beside them.", "spectate", "system", 1),
             c("inspect-fighter-rows", "Stat rows", "Primaries, derived combat numbers and fight telemetry.", "spectate", "both", 1),
@@ -220,8 +220,8 @@ export const UI_TREE: UiScreen[] = [
         colour: "positive",
         groups: [
           { id: "field", label: "Field", hint: "Shape and size of the ring.", controls: [c("arena-shape", "Shape", "Circle, polygon, oval, diamond.", "always", "system", 1), c("arena-size", "Size", "Metres across.", "always", "system", 1)] },
-          { id: "walls", label: "Walls", hint: "A wall on 90% of arenas, with its own resistance.", controls: [c("arena-walls", "Walls", "On, off, or generated.", "always", "system", 1), c("wall-resistance", "Resistance", "How much impulse a wall absorbs.", "always", "system", 0)] },
-          { id: "pickups", label: "Pickups", hint: "Coins and power-ups that spawn in the field.", controls: [c("pickup-rate", "Spawn rate", "How often a pickup appears.", "always", "system", 0), c("pickup-kinds", "Kinds", "Which buffs can spawn.", "always", "system", 0)] },
+          { id: "walls", label: "Walls", hint: "Walls and their resistance.", controls: [c("arena-walls", "Walls", "On, off, or generated.", "always", "system", 1), c("wall-resistance", "Resistance", "How much impulse a wall absorbs.", "always", "system", 0)] },
+          { id: "pickups", label: "Pickups", hint: "Coins and power-ups.", controls: [c("pickup-rate", "Spawn rate", "How often a pickup appears.", "always", "system", 0), c("pickup-kinds", "Kinds", "Which buffs can spawn.", "always", "system", 0)] },
         ],
       },
     ],
@@ -245,7 +245,7 @@ export const UI_TREE: UiScreen[] = [
       {
         id: "resources",
         label: "Resources",
-        hint: "Health, mana and stamina — the three pools.",
+        hint: "Health, mana, stamina.",
         colour: "grass",
         groups: [
           { id: "pools", label: "Pools", hint: "Maxima and regeneration.", controls: [c("sheet-pools", "Pools", "Health, mana, stamina and their regen.", "fight", "both", 1)] },
@@ -257,13 +257,13 @@ export const UI_TREE: UiScreen[] = [
   {
     id: "digest",
     label: "History",
-    hint: "Past matches, the leaderboard, and the training runs.",
+    hint: "Matches, leaderboard, batches.",
     colour: "violet",
     panels: [
       {
         id: "filters",
         label: "Filters",
-        hint: "Narrow the list before you read it.",
+        hint: "Narrow the list.",
         colour: "sand",
         groups: [
           { id: "who", label: "Fighter", hint: "By name or id.", controls: [c("filter-name", "Name", "Substring match on either fighter.", "always", "system", 2)] },
@@ -279,14 +279,14 @@ export const UI_TREE: UiScreen[] = [
         colour: "ocean",
         groups: [
           { id: "summary", label: "Summary", hint: "Totals across the filtered set.", controls: [c("history-summary", "Summary", "Matches, win rate, average length.", "always", "system", 2)] },
-          { id: "highlights", label: "Highlights", hint: "The standout matches at a glance.", controls: [c("history-highlights", "Highlights", "Fastest decided match, widest stat gap, ties and timeouts.", "always", "system", 1)] },
+          { id: "highlights", label: "Highlights", hint: "Standout matches.", controls: [c("history-highlights", "Highlights", "Fastest decided match, widest stat gap, ties and timeouts.", "always", "system", 1)] },
           { id: "list", label: "Matches", hint: "One row per fight.", controls: [c("history-list", "Matches", "Click a row for the full detail.", "always", "system", 2), c("history-badge", "Row badges", "TIE, TIMEOUT, generation id, stat gap and margin, shown when the record carries them.", "always", "system", 1)] },
         ],
       },
       {
         id: "ladder",
         label: "Ladder",
-        hint: "Elo MMR, with a king at rank one.",
+        hint: "Elo ranking.",
         colour: "coral",
         groups: [
           { id: "rank", label: "Ranking", hint: "Every AI profile, ranked.", controls: [c("leader-table", "Ladder", "Click a row for that AI's card.", "always", "system", 1)] },
@@ -307,7 +307,7 @@ export const UI_TREE: UiScreen[] = [
         hint: "The winner and the reason.",
         colour: "positive",
         groups: [
-          { id: "verdict", label: "Verdict", hint: "Who won, and by what condition.", controls: [c("victory-title", "Verdict", "The rolled win condition that fired.", "always", "system", 2)] },
+          { id: "verdict", label: "Verdict", hint: "Winner and condition.", controls: [c("victory-title", "Verdict", "The rolled win condition that fired.", "always", "system", 2)] },
           { id: "again", label: "Next", hint: "Rematch or return.", controls: [c("btn-rematch", "Rematch", "Same fighters, new arena.", "always", "system", 2), c("btn-menu", "Menu", "Back to the title.", "always", "system", 2)] },
         ],
       },

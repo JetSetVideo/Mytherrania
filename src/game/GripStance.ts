@@ -10,7 +10,8 @@
 //
 // Pure module: no Three.js, no DOM. Angles in radians.
 
-import type { ArchetypeId } from "../combat/contracts.ts";
+import type { ArchetypeId, WeaponSpec } from "../combat/contracts.ts";
+import { ARCHETYPES } from "./weapons/Archetypes.ts";
 import type { GripMetrics, WristBand } from "./PalmWeapon.ts";
 
 export type GripStance = "rest" | "thrust" | "guard" | "swing-h" | "swing-v" | "swing-d";
@@ -166,4 +167,48 @@ export function checkOrientation(rule: GripRule, beat: "guard" | "windup" | "con
   } else if (rule.carry !== "reverse-down" && m.elevation < -30 && m.forward < -0.2) why.push(`end points down and back (elev ${m.elevation.toFixed(0)}°)`);
   if (m.bodyClearMm < rule.minBodyClearMm) why.push(`blade ${m.bodyClearMm.toFixed(0)} mm from the body axis`);
   return { ok: why.length === 0, why };
+}
+
+// ---------------------------------------------------------------------------------------------
+// Lane T (wave W): where the OFF hand holds a two-handed weapon (combat/OffHand.ts puts it there).
+// ---------------------------------------------------------------------------------------------
+
+/** Half a hand's width along a haft, m (lane W's Form.HAND_HALF_WIDTH): the hands never overlap. */
+export const OFF_HAND_HALF_WIDTH = 0.045;
+/** A two-handed sword's off hand sits this far below the main grip, m: two half-hands and 1 cm. */
+export const SWORD_HAND_SPACING = 2 * OFF_HAND_HALF_WIDTH + 0.01;
+/** How far a POLE's off hand may slide from its designed point toward the shoulder, m (a sword's handle is too short to slide). */
+export const POLE_SLIDE = 0.25;
+/** Where the off hand goes on a weapon, in weapon-local +y from the main grip (m). */
+export interface OffHandPlan {
+  /** Designed off-hand point (the weapon's "off" grip). */
+  y: number;
+  /** The striking end's distance from the main grip, m (SwingDriver.weaponTip): the blade the convergence keeps off the body. */
+  tip: number;
+  /** The butt end, weapon-local y (tip − length, m; < 0): the whole weapon the convergence keeps out of the torso. */
+  butt: number;
+  /** Range it may slide in to stay reachable [low, high] (high stays a hand below the main grip). */
+  range: [number, number];
+}
+
+/** True for weapons whose off hand belongs ON the haft (two hands; a bow's off hand draws the string). */
+export function holdsWithTwoHands(spec: WeaponSpec, twoHanded: boolean): boolean {
+  return twoHanded && spec.archetype !== "bow" && spec.grips.some((g) => g.id === "off");
+}
+
+/**
+ * The off hand's plan on a weapon (pure): the designed "off" grip; a pole (long haft, off point at least
+ * 0.2 m down) may slide POLE_SLIDE toward the main hand, never closer than two half-hands, never past the
+ * butt (weaponTip − length).
+ */
+export function offHandPlan(spec: WeaponSpec, tip: number): OffHandPlan {
+  const designed = spec.grips.find((g) => g.id === "off")?.y ?? -2 * OFF_HAND_HALF_WIDTH;
+  // A two-handed SWORD's off hand closes just below the main hand (the user's ask), not at the pommel end
+  // of a long handle (lane W's off grip for a greatsword is −0.21 m: two hand-widths apart).
+  const off = ARCHETYPES[spec.archetype]?.family === "blade" ? Math.max(designed, -SWORD_HAND_SPACING) : designed;
+  const butt = Math.min(off - OFF_HAND_HALF_WIDTH, tip - spec.length + OFF_HAND_HALF_WIDTH);
+  const pole = spec.length >= 1.4 && off <= -0.2;
+  const high = Math.min(-2 * OFF_HAND_HALF_WIDTH, pole ? off + POLE_SLIDE : -2 * OFF_HAND_HALF_WIDTH);
+  const low = Math.max(butt, pole ? off - POLE_SLIDE : off - 0.01);
+  return { y: off, tip, butt: tip - spec.length, range: [Math.min(low, off), Math.max(high, off)] };
 }

@@ -2,6 +2,7 @@
 import * as THREE from "three";
 import { buildPreviewRig, previewKey } from "./PreviewScene.ts";
 import type { CharacterProfile } from "../game/Characters.ts";
+import { backdropPixels, UI_WALNUT_DEEP } from "./PortraitBackdrop.ts";
 
 /**
  * PortraitStudio — the Profiles panel's thumbnail factory (wave O, lane O-A).
@@ -57,13 +58,33 @@ export interface PortraitOptions {
   createRenderer?: (size: number) => PortraitRenderer;
 }
 
-/** The default offscreen renderer: alpha-transparent so the panel's gradient shows through the corners. */
+/** The default offscreen renderer (the backdrop texture covers the frame; the clear colour is its corner walnut). */
 function defaultRenderer(size: number): PortraitRenderer {
   const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, preserveDrawingBuffer: true });
   renderer.setPixelRatio(1);
   renderer.setSize(size, size);
-  renderer.setClearColor("#172128", 1);
+  renderer.setClearColor(PORTRAIT_CLEAR, 1);
   return renderer;
+}
+
+/**
+ * Wave W (lane H): the portrait's clear colour and backdrop. It was #172128 — a cold blue-grey (RGB 23,
+ * 33, 40) under every hero card, clashing with the walnut/gold UI. Now the deep walnut of the UI, and the
+ * scene background is PortraitBackdrop's warm vignette (leather centre, walnut edges, a faint gold glow).
+ */
+export const PORTRAIT_CLEAR = UI_WALNUT_DEEP;
+/** Backdrop texture edge (px): a smooth gradient needs few texels (bilinear filtering does the rest). */
+export const BACKDROP_TEXELS = 64;
+/** The portrait's backdrop as a texture (rows uploaded bottom-up: GL's v = 0 is the bottom). */
+export function backdropTexture(n = BACKDROP_TEXELS): THREE.DataTexture {
+  const top = backdropPixels(n, n), data = new Uint8Array(n * n * 4);
+  for (let y = 0; y < n; y++) data.set(top.subarray((n - 1 - y) * n * 4, (n - y) * n * 4), y * n * 4);
+  const tex = new THREE.DataTexture(data, n, n, THREE.RGBAFormat);
+  tex.colorSpace = THREE.SRGBColorSpace;
+  tex.magFilter = THREE.LinearFilter;
+  tex.minFilter = THREE.LinearFilter;
+  tex.needsUpdate = true;
+  return tex;
 }
 
 /** The same three-light pedestal `PreviewScene` uses, so a thumbnail matches the live preview. */
@@ -103,8 +124,9 @@ export class PortraitStudio {
       this.#renderer = this.#createRenderer(this.#size);
       this.#renderer.setPixelRatio(1);
       this.#renderer.setSize(this.#size, this.#size);
-      this.#renderer.setClearColor("#172128", 1);
+      this.#renderer.setClearColor(PORTRAIT_CLEAR, 1);
       this.#scene = new THREE.Scene();
+      this.#scene.background = backdropTexture();
       addPortraitLights(this.#scene);
       this.#root = new THREE.Group();
       this.#scene.add(this.#root);

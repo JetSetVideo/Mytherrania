@@ -30,6 +30,8 @@ import { formGainsFor } from "./Improvise.ts";
 import { RIG_ROTATION_SIGN } from "../../game/anim/Rig.ts";
 import type { WeaponSpec } from "../../combat/contracts.ts";
 import { buildWeaponModel } from "../weapons/WeaponModel.ts";
+import { attachHands, type HandRigApi } from "./HandRig.ts";
+import { createJointHelpers, creaseBands, creaseWeights, type JointHelper, syncJointHelpers } from "./JointHelpers.ts";
 import { gripModeRotation, preferredGrip } from "../../game/weapons/Generate.ts";
 
 /** What the skinned rig adds to HumanoidRig. */
@@ -51,6 +53,12 @@ export interface SkinnedExtras {
   readonly outline: THREE.SkinnedMesh;
   /** Build timings of the body (ms; 0 when served from the cache). */
   readonly timing: BodyTiming;
+  /**
+   * Wave W (lane H): the fingered hands (render-only; the body's mitten is cut from the render index)
+   * and the elbow/knee crease helper bones. QA surfaces.
+   */
+  readonly hands?: HandRigApi;
+  readonly jointHelpers?: readonly JointHelper[];
 }
 
 /** Build options. */
@@ -165,19 +173,29 @@ export function buildSkinnedHumanoid(
     bones.set(seg.id, bone);
     boneList.push(bone);
   }
+  // Per-frame data, allocated once: the display roll per bone (also the crease helpers' rest).
+  const display = new Map<BoneId, THREE.Quaternion>();
+  for (const seg of plan.bones) display.set(seg.id, new THREE.Quaternion().setFromAxisAngle(Z_AXIS, boneDisplayRoll(plan, seg.id)));
+  // Wave W (lane H): half-angle helper bones at the elbows and knees (render-only, JointHelpers.ts).
+  const helpers = createJointHelpers(plan, bones, boneList, worldRest, display);
   const root = bones.get("root")!;
   root.updateMatrixWorld(true);
   const skeleton = new THREE.Skeleton(boneList); // inverses from the bind pose (group at identity)
+  const crease = creaseWeights(skin.skinIndex, skin.skinWeight, helpers, mesh.positions, creaseBands(plan, helpers));
 
   // The skin: one indexed geometry, one SkinnedMesh + its ink hull on the same skeleton.
   const geometry = new THREE.BufferGeometry();
   geometry.setAttribute("position", new THREE.BufferAttribute(mesh.positions, 3));
   geometry.setAttribute("normal", new THREE.BufferAttribute(mesh.normals, 3));
-  geometry.setAttribute("skinIndex", new THREE.Uint16BufferAttribute(skin.skinIndex, 4));
-  geometry.setAttribute("skinWeight", new THREE.Float32BufferAttribute(skin.skinWeight, 4));
+  geometry.setAttribute("skinIndex", new THREE.Uint16BufferAttribute(crease.skinIndex, 4));
+  geometry.setAttribute("skinWeight", new THREE.Float32BufferAttribute(crease.skinWeight, 4));
   geometry.setIndex(new THREE.BufferAttribute(mesh.indices, 1));
   const paint = options.paint === false ? null
     : options.paint ? options.paint(mesh) : paintSkin(mesh, bodySpec, appearance, plan.cell, options.garment ?? appearance.body);
+  // Wave W (lane H): the hands are painted with the same recipe (no form shade: sub-cell curvature).
+  const handPaint = options.paint === undefined
+    ? (m: MeshData) => paintSkin(m, bodySpec, appearance, plan.cell, options.garment ?? appearance.body, false)
+    : null;
   if (paint) geometry.setAttribute("color", new THREE.Float32BufferAttribute(paint, 3));
   geometry.computeBoundingSphere();
   const cel = createCelSkinnedMesh(geometry, skeleton, appearance.body, { vertexColors: !!paint });
@@ -213,9 +231,13 @@ export function buildSkinnedHumanoid(
   grip.add(weaponMesh.group);
   triangleCount += weaponMesh.triangleCount;
 
-  // Per-frame data, allocated once: the display roll per bone and a scratch joint rotation.
-  const display = new Map<BoneId, THREE.Quaternion>();
-  for (const seg of plan.bones) display.set(seg.id, new THREE.Quaternion().setFromAxisAngle(Z_AXIS, boneDisplayRoll(plan, seg.id)));
+  // Wave W (lane H): fingered hands. The body's mitten leaves the RENDER index (the body mesh, its
+  // stats and the physics keep it); each hand is posed on the CPU from the live grip (HandRig.ts).
+  const hands = attachHands({
+    plan, bones, geometry, body: mesh, gripMount: mount, grip, weapon: weaponMesh.group,
+    paint: handPaint, flatColour: appearance.body, outline: cel.outline,
+  });
+  triangleCount += hands.triangles - hands.cutTriangles;
   // levelFeet: each ankle's leg chain, precomputed so the frame loop builds no strings.
   const LEVEL_CHAIN: Partial<Record<JointName, JointName[]>> = {
     ankleL: ["spine", "abdomen", "hipL", "kneeL"], ankleR: ["spine", "abdomen", "hipR", "kneeR"],
@@ -287,11 +309,18 @@ export function buildSkinnedHumanoid(
     skin: cel.surface,
     outline: cel.outline,
     timing: cached ? { anatomyMs: 0, polygonizeMs: 0, sampleMs: 0, meshBrushMs: 0, statsMs: 0, totalMs: 0, corners: 0 } : body.timing,
+    hands,
+    jointHelpers: helpers,
     // Wave H: the movable hair/beard masses, so the engine's SecondaryMotion can drive them with
     // the weather's wind and the head's own motion. Empty when the ancestry has no such mass.
     secondaryMasses: face.secondary,
     setEffect(strength: number, time: number): void { weaponMesh.setEffect(strength, time); },
-    setGrip(pitch: number, roll: number): void { grip.rotation.x = pitch; grip.rotation.z = roll; },
+    setGrip(pitch: number, roll: number): void {
+      grip.rotation.x = pitch; grip.rotation.z = roll;
+      // The joints are final by now (twist/guard ran): re-read the creases, re-close the hands.
+      syncJointHelpers(helpers);
+      hands.update();
+    },
     update(sk: GameSkeleton, dt: number): void {
       sk.update(dt);
       for (const jb of jointBones) {
@@ -319,6 +348,8 @@ export function buildSkinnedHumanoid(
       }
       applyFaceMorph(face, sk.face.face());
       soleOffset = measureSoles();
+      syncJointHelpers(helpers);
+      hands.update();
     },
   };
 }

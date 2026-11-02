@@ -1,0 +1,2399 @@
+{
+ "race": "human:nomad",
+ "errors": [],
+ "summary": {
+  "guard": {
+   "n": 11,
+   "through": 11,
+   "ruleOk": 11,
+   "worstAcrossDeg": 6.7,
+   "worstOutOfPalmDeg": 0,
+   "worstOffGapMm": 0,
+   "guardHandleDeg": [
+    83.3,
+    83.3
+   ],
+   "meanAcrossDeg": 6.7
+  },
+  "windup": {
+   "n": 11,
+   "through": 11,
+   "ruleOk": 11,
+   "worstAcrossDeg": 60,
+   "worstOutOfPalmDeg": 9.9,
+   "worstOffGapMm": 0,
+   "meanAcrossDeg": 60
+  },
+  "contact": {
+   "n": 11,
+   "through": 11,
+   "ruleOk": 11,
+   "worstAcrossDeg": 60.2,
+   "worstOutOfPalmDeg": 4.6,
+   "worstOffGapMm": 0,
+   "meanAcrossDeg": 55.1
+  },
+  "hold": {
+   "n": 11,
+   "through": 11,
+   "ruleOk": 11,
+   "worstAcrossDeg": 60.2,
+   "worstOutOfPalmDeg": 9.8,
+   "worstOffGapMm": 37.2,
+   "meanAcrossDeg": 55.1
+  },
+  "recover": {
+   "n": 11,
+   "through": 11,
+   "ruleOk": 11,
+   "worstAcrossDeg": 23.9,
+   "worstOutOfPalmDeg": 5.3,
+   "worstOffGapMm": 20.3,
+   "meanAcrossDeg": 20.7
+  }
+ },
+ "rows": [
+  {
+   "id": "greatsword",
+   "beat": "guard",
+   "kind": "slash",
+   "reverse": false,
+   "m": {
+    "handleToFingers": 83.27,
+    "outOfPalmPlane": 0,
+    "side": 1,
+    "lineToPalmMm": 41.69,
+    "lineToGripAnchorMm": 0,
+    "gripToPalmMm": 41.98,
+    "through": true,
+    "elevation": 70.2,
+    "outward": 0.31,
+    "forward": 0.29,
+    "edgeForward": 0.74,
+    "bodyClearMm": 651.86,
+    "offHandGapMm": 0.01
+   },
+   "rule": {
+    "ok": true,
+    "why": []
+   },
+   "euler": [
+    1.7985,
+    0,
+    -0.571
+   ],
+   "tipElev": 70.2,
+   "lineElev": 1.17,
+   "aimErr": 69.03,
+   "offHand": {
+    "gapMm": 0,
+    "y": -0.1,
+    "converge": 0.428,
+    "elbow": -0.5582,
+    "twist": -1.276,
+    "reached": true,
+    "hold": 1,
+    "pushedMm": 0
+   }
+  },
+  {
+   "id": "greatsword",
+   "beat": "windup",
+   "kind": "slash",
+   "reverse": false,
+   "m": {
+    "handleToFingers": 30.02,
+    "outOfPalmPlane": 9.88,
+    "side": 1,
+    "lineToPalmMm": 21,
+    "lineToGripAnchorMm": 0,
+    "gripToPalmMm": 41.98,
+    "through": true,
+    "elevation": 45.1,
+    "outward": -0.44,
+    "forward": -0.7,
+    "edgeForward": 0.55,
+    "bodyClearMm": 9999,
+    "offHandGapMm": 0
+   },
+   "rule": {
+    "ok": true,
+    "why": []
+   },
+   "euler": [
+    2.6355,
+    0,
+    -0.0087
+   ],
+   "tipElev": 45.1,
+   "lineElev": -31.95,
+   "aimErr": 77.05,
+   "offHand": {
+    "gapMm": 0,
+    "y": -0.1,
+    "converge": 0,
+    "elbow": -0.8551,
+    "twist": -0.8439,
+    "reached": true,
+    "hold": 1,
+    "pushedMm": 0
+   }
+  },
+  {
+   "id": "greatsword",
+   "beat": "contact",
+   "kind": "slash",
+   "reverse": false,
+   "m": {
+    "handleToFingers": 29.84,
+    "outOfPalmPlane": 1.6,
+    "side": 1,
+    "lineToPalmMm": 20.89,
+    "lineToGripAnchorMm": 0,
+    "gripToPalmMm": 41.98,
+    "through": true,
+    "elevation": 11.62,
+    "outward": 0.95,
+    "forward": 0.97,
+    "edgeForward": 0.08,
+    "bodyClearMm": 730.78,
+    "offHandGapMm": 0
+   },
+   "rule": {
+    "ok": true,
+    "why": []
+   },
+   "euler": [
+    2.7287,
+    0,
+    -0.1878
+   ],
+   "tipElev": 11.62,
+   "lineElev": 5.81,
+   "aimErr": 5.81,
+   "offHand": {
+    "gapMm": 0,
+    "y": -0.1,
+    "converge": 0.3124,
+    "elbow": -0.5346,
+    "twist": -1.3,
+    "reached": true,
+    "hold": 1,
+    "pushedMm": 0
+   }
+  },
+  {
+   "id": "greatsword",
+   "beat": "hold",
+   "kind": "slash",
+   "reverse": false,
+   "m": {
+    "handleToFingers": 29.84,
+    "outOfPalmPlane": 8.68,
+    "side": 1,
+    "lineToPalmMm": 20.88,
+    "lineToGripAnchorMm": 0,
+    "gripToPalmMm": 41.98,
+    "through": true,
+    "elevation": -27.35,
+    "outward": 0.84,
+    "forward": 0.88,
+    "edgeForward": -0.37,
+    "bodyClearMm": 9999,
+    "offHandGapMm": 0
+   },
+   "rule": {
+    "ok": true,
+    "why": []
+   },
+   "euler": [
+    2.8177,
+    0,
+    -0.2783
+   ],
+   "tipElev": -27.35,
+   "lineElev": 19.39,
+   "aimErr": -46.74,
+   "offHand": {
+    "gapMm": 0,
+    "y": -0.1,
+    "converge": 0.5048,
+    "elbow": -0.5276,
+    "twist": -1.3,
+    "reached": true,
+    "hold": 1,
+    "pushedMm": 0
+   }
+  },
+  {
+   "id": "greatsword",
+   "beat": "recover",
+   "kind": "slash",
+   "reverse": false,
+   "m": {
+    "handleToFingers": 67.6,
+    "outOfPalmPlane": 3.09,
+    "side": 1,
+    "lineToPalmMm": 38.82,
+    "lineToGripAnchorMm": 0,
+    "gripToPalmMm": 41.99,
+    "through": true,
+    "elevation": 49.83,
+    "outward": 0.62,
+    "forward": 0.61,
+    "edgeForward": 0.52,
+    "bodyClearMm": 652.45,
+    "offHandGapMm": 0.01
+   },
+   "rule": {
+    "ok": true,
+    "why": []
+   },
+   "euler": [
+    2.1247,
+    0,
+    -0.5359
+   ],
+   "tipElev": 49.83,
+   "lineElev": 3.58,
+   "aimErr": 46.24,
+   "offHand": {
+    "gapMm": 0,
+    "y": -0.1,
+    "converge": 0.3826,
+    "elbow": -0.5861,
+    "twist": -1.3,
+    "reached": true,
+    "hold": 1,
+    "pushedMm": 0
+   }
+  },
+  {
+   "id": "spear",
+   "beat": "guard",
+   "kind": "thrust",
+   "reverse": false,
+   "m": {
+    "handleToFingers": 83.27,
+    "outOfPalmPlane": 0,
+    "side": 1,
+    "lineToPalmMm": 41.69,
+    "lineToGripAnchorMm": 0,
+    "gripToPalmMm": 41.98,
+    "through": true,
+    "elevation": 70.2,
+    "outward": 0.33,
+    "forward": 0.29,
+    "edgeForward": 0.6,
+    "bodyClearMm": 602.82,
+    "offHandGapMm": 0
+   },
+   "rule": {
+    "ok": true,
+    "why": []
+   },
+   "euler": [
+    1.7985,
+    0,
+    -0.571
+   ],
+   "tipElev": 70.2,
+   "lineElev": 0.95,
+   "aimErr": 69.24,
+   "offHand": {
+    "gapMm": 0,
+    "y": -0.275,
+    "converge": 0.6353,
+    "elbow": -0.4356,
+    "twist": -1.3,
+    "reached": true,
+    "hold": 1,
+    "pushedMm": 0
+   }
+  },
+  {
+   "id": "spear",
+   "beat": "windup",
+   "kind": "thrust",
+   "reverse": false,
+   "m": {
+    "handleToFingers": 30.02,
+    "outOfPalmPlane": 2.29,
+    "side": 1,
+    "lineToPalmMm": 21,
+    "lineToGripAnchorMm": 0,
+    "gripToPalmMm": 41.98,
+    "through": true,
+    "elevation": 29.02,
+    "outward": 0.5,
+    "forward": 0.87,
+    "edgeForward": 0.4,
+    "bodyClearMm": 335.98,
+    "offHandGapMm": 0
+   },
+   "rule": {
+    "ok": true,
+    "why": []
+   },
+   "euler": [
+    2.7335,
+    0,
+    -0.199
+   ],
+   "tipElev": 29.02,
+   "lineElev": 1.45,
+   "aimErr": 27.57,
+   "offHand": {
+    "gapMm": 0,
+    "y": -0.425,
+    "converge": 0,
+    "elbow": -0.4112,
+    "twist": -1.3,
+    "reached": true,
+    "hold": 1,
+    "pushedMm": 0
+   }
+  },
+  {
+   "id": "spear",
+   "beat": "contact",
+   "kind": "thrust",
+   "reverse": false,
+   "m": {
+    "handleToFingers": 29.84,
+    "outOfPalmPlane": 2.28,
+    "side": 1,
+    "lineToPalmMm": 20.88,
+    "lineToGripAnchorMm": 0,
+    "gripToPalmMm": 41.98,
+    "through": true,
+    "elevation": 5.36,
+    "outward": 0.9,
+    "forward": 0.99,
+    "edgeForward": 0.04,
+    "bodyClearMm": 731.87,
+    "offHandGapMm": 0
+   },
+   "rule": {
+    "ok": true,
+    "why": []
+   },
+   "euler": [
+    2.736,
+    0,
+    -0.1972
+   ],
+   "tipElev": 5.36,
+   "lineElev": 11.44,
+   "aimErr": -6.08,
+   "offHand": {
+    "gapMm": 0,
+    "y": -0.5,
+    "converge": 0,
+    "elbow": -0.7052,
+    "twist": -1.3,
+    "reached": true,
+    "hold": 1,
+    "pushedMm": 0
+   }
+  },
+  {
+   "id": "spear",
+   "beat": "hold",
+   "kind": "thrust",
+   "reverse": false,
+   "m": {
+    "handleToFingers": 29.84,
+    "outOfPalmPlane": 2.28,
+    "side": 1,
+    "lineToPalmMm": 20.89,
+    "lineToGripAnchorMm": 0,
+    "gripToPalmMm": 41.98,
+    "through": true,
+    "elevation": 5.31,
+    "outward": 0.9,
+    "forward": 0.99,
+    "edgeForward": 0.04,
+    "bodyClearMm": 731.55,
+    "offHandGapMm": 0
+   },
+   "rule": {
+    "ok": true,
+    "why": []
+   },
+   "euler": [
+    2.736,
+    0,
+    -0.1972
+   ],
+   "tipElev": 5.31,
+   "lineElev": 10.98,
+   "aimErr": -5.67,
+   "offHand": {
+    "gapMm": 0,
+    "y": -0.5,
+    "converge": 0,
+    "elbow": -0.7051,
+    "twist": -1.3,
+    "reached": true,
+    "hold": 1,
+    "pushedMm": 0
+   }
+  },
+  {
+   "id": "spear",
+   "beat": "recover",
+   "kind": "thrust",
+   "reverse": false,
+   "m": {
+    "handleToFingers": 76.43,
+    "outOfPalmPlane": 2.8,
+    "side": 1,
+    "lineToPalmMm": 40.81,
+    "lineToGripAnchorMm": 0,
+    "gripToPalmMm": 41.99,
+    "through": true,
+    "elevation": 66.9,
+    "outward": 0.38,
+    "forward": 0.37,
+    "edgeForward": 0.69,
+    "bodyClearMm": 663.17,
+    "offHandGapMm": 20.33
+   },
+   "rule": {
+    "ok": true,
+    "why": []
+   },
+   "euler": [
+    1.9175,
+    0,
+    -0.4921
+   ],
+   "tipElev": 66.9,
+   "lineElev": -1.19,
+   "aimErr": 68.08,
+   "offHand": {
+    "gapMm": 95.16,
+    "y": -0.25,
+    "converge": 0.4328,
+    "elbow": -0.3617,
+    "twist": -1.2816,
+    "reached": false,
+    "hold": 0.875,
+    "pushedMm": 0
+   }
+  },
+  {
+   "id": "halberd",
+   "beat": "guard",
+   "kind": "slash",
+   "reverse": false,
+   "m": {
+    "handleToFingers": 83.26,
+    "outOfPalmPlane": 0,
+    "side": 1,
+    "lineToPalmMm": 41.69,
+    "lineToGripAnchorMm": 0,
+    "gripToPalmMm": 41.98,
+    "through": true,
+    "elevation": 70.2,
+    "outward": 0.31,
+    "forward": 0.29,
+    "edgeForward": 0.74,
+    "bodyClearMm": 651.92,
+    "offHandGapMm": 0
+   },
+   "rule": {
+    "ok": true,
+    "why": []
+   },
+   "euler": [
+    1.7988,
+    0,
+    -0.5709
+   ],
+   "tipElev": 70.2,
+   "lineElev": 0.77,
+   "aimErr": 69.43,
+   "offHand": {
+    "gapMm": 0,
+    "y": -0.142,
+    "converge": 0.4279,
+    "elbow": -0.3669,
+    "twist": -1.2922,
+    "reached": true,
+    "hold": 1,
+    "pushedMm": 0
+   }
+  },
+  {
+   "id": "halberd",
+   "beat": "windup",
+   "kind": "slash",
+   "reverse": false,
+   "m": {
+    "handleToFingers": 30.02,
+    "outOfPalmPlane": 9.88,
+    "side": 1,
+    "lineToPalmMm": 21,
+    "lineToGripAnchorMm": 0,
+    "gripToPalmMm": 41.98,
+    "through": true,
+    "elevation": 39.83,
+    "outward": -0.3,
+    "forward": -0.77,
+    "edgeForward": 0.49,
+    "bodyClearMm": 9999,
+    "offHandGapMm": 0.01
+   },
+   "rule": {
+    "ok": true,
+    "why": []
+   },
+   "euler": [
+    2.6355,
+    0,
+    -0.0087
+   ],
+   "tipElev": 39.83,
+   "lineElev": -24.61,
+   "aimErr": 64.44,
+   "offHand": {
+    "gapMm": 0,
+    "y": -0.253,
+    "converge": 0,
+    "elbow": -1.1411,
+    "twist": -0.6357,
+    "reached": true,
+    "hold": 1,
+    "pushedMm": 0
+   }
+  },
+  {
+   "id": "halberd",
+   "beat": "contact",
+   "kind": "slash",
+   "reverse": false,
+   "m": {
+    "handleToFingers": 29.84,
+    "outOfPalmPlane": 1.8,
+    "side": 1,
+    "lineToPalmMm": 20.9,
+    "lineToGripAnchorMm": 0,
+    "gripToPalmMm": 41.98,
+    "through": true,
+    "elevation": 13.17,
+    "outward": 0.89,
+    "forward": 0.97,
+    "edgeForward": 0.16,
+    "bodyClearMm": 779.73,
+    "offHandGapMm": 0.01
+   },
+   "rule": {
+    "ok": true,
+    "why": []
+   },
+   "euler": [
+    2.7308,
+    0,
+    -0.1905
+   ],
+   "tipElev": 13.17,
+   "lineElev": 3.08,
+   "aimErr": 10.09,
+   "offHand": {
+    "gapMm": 0,
+    "y": -0.253,
+    "converge": 0,
+    "elbow": -0.4429,
+    "twist": -1.3,
+    "reached": true,
+    "hold": 1,
+    "pushedMm": 0
+   }
+  },
+  {
+   "id": "halberd",
+   "beat": "hold",
+   "kind": "slash",
+   "reverse": false,
+   "m": {
+    "handleToFingers": 29.84,
+    "outOfPalmPlane": 9.82,
+    "side": 1,
+    "lineToPalmMm": 20.89,
+    "lineToGripAnchorMm": 0,
+    "gripToPalmMm": 41.98,
+    "through": true,
+    "elevation": -36.52,
+    "outward": 0.6,
+    "forward": 0.79,
+    "edgeForward": -0.57,
+    "bodyClearMm": 9999,
+    "offHandGapMm": 0.01
+   },
+   "rule": {
+    "ok": true,
+    "why": []
+   },
+   "euler": [
+    2.8347,
+    0,
+    -0.2911
+   ],
+   "tipElev": -36.52,
+   "lineElev": 15.18,
+   "aimErr": -51.69,
+   "offHand": {
+    "gapMm": 0,
+    "y": -0.253,
+    "converge": 0.082,
+    "elbow": -0.3799,
+    "twist": -1.3,
+    "reached": true,
+    "hold": 1,
+    "pushedMm": 0
+   }
+  },
+  {
+   "id": "halberd",
+   "beat": "recover",
+   "kind": "slash",
+   "reverse": false,
+   "m": {
+    "handleToFingers": 69.6,
+    "outOfPalmPlane": 3.12,
+    "side": 1,
+    "lineToPalmMm": 39.35,
+    "lineToGripAnchorMm": 0,
+    "gripToPalmMm": 41.98,
+    "through": true,
+    "elevation": 51.25,
+    "outward": 0.6,
+    "forward": 0.59,
+    "edgeForward": 0.53,
+    "bodyClearMm": 646.48,
+    "offHandGapMm": 0
+   },
+   "rule": {
+    "ok": true,
+    "why": []
+   },
+   "euler": [
+    2.0871,
+    0,
+    -0.5496
+   ],
+   "tipElev": 51.25,
+   "lineElev": 2.82,
+   "aimErr": 48.43,
+   "offHand": {
+    "gapMm": 0,
+    "y": -0.2044,
+    "converge": 0.3901,
+    "elbow": -0.3657,
+    "twist": -1.3,
+    "reached": true,
+    "hold": 1,
+    "pushedMm": 0
+   }
+  },
+  {
+   "id": "warhammer",
+   "beat": "guard",
+   "kind": "chop",
+   "reverse": false,
+   "m": {
+    "handleToFingers": 83.28,
+    "outOfPalmPlane": 0,
+    "side": 1,
+    "lineToPalmMm": 41.69,
+    "lineToGripAnchorMm": 0,
+    "gripToPalmMm": 41.98,
+    "through": true,
+    "elevation": 70.2,
+    "outward": 0.23,
+    "forward": 0.29,
+    "edgeForward": 0.92,
+    "bodyClearMm": 756.97,
+    "offHandGapMm": null
+   },
+   "rule": {
+    "ok": true,
+    "why": []
+   },
+   "euler": [
+    1.7985,
+    0,
+    -0.571
+   ],
+   "tipElev": 70.2,
+   "lineElev": -1.12,
+   "aimErr": 71.32,
+   "offHand": null
+  },
+  {
+   "id": "warhammer",
+   "beat": "windup",
+   "kind": "chop",
+   "reverse": false,
+   "m": {
+    "handleToFingers": 30.02,
+    "outOfPalmPlane": 0,
+    "side": 1,
+    "lineToPalmMm": 21,
+    "lineToGripAnchorMm": 0,
+    "gripToPalmMm": 41.98,
+    "through": true,
+    "elevation": 9.08,
+    "outward": 0.69,
+    "forward": -0.99,
+    "edgeForward": 0.16,
+    "bodyClearMm": 9999,
+    "offHandGapMm": null
+   },
+   "rule": {
+    "ok": true,
+    "why": []
+   },
+   "euler": [
+    2.7096,
+    0,
+    -0.1668
+   ],
+   "tipElev": 9.08,
+   "lineElev": -28.65,
+   "aimErr": 37.73,
+   "offHand": null
+  },
+  {
+   "id": "warhammer",
+   "beat": "contact",
+   "kind": "chop",
+   "reverse": false,
+   "m": {
+    "handleToFingers": 29.84,
+    "outOfPalmPlane": 0,
+    "side": 1,
+    "lineToPalmMm": 20.89,
+    "lineToGripAnchorMm": 0,
+    "gripToPalmMm": 41.98,
+    "through": true,
+    "elevation": 16.64,
+    "outward": 0.89,
+    "forward": 0.95,
+    "edgeForward": 0.22,
+    "bodyClearMm": 780.71,
+    "offHandGapMm": null
+   },
+   "rule": {
+    "ok": true,
+    "why": []
+   },
+   "euler": [
+    2.7122,
+    0,
+    -0.165
+   ],
+   "tipElev": 16.64,
+   "lineElev": 6.22,
+   "aimErr": 10.42,
+   "offHand": null
+  },
+  {
+   "id": "warhammer",
+   "beat": "hold",
+   "kind": "chop",
+   "reverse": false,
+   "m": {
+    "handleToFingers": 29.84,
+    "outOfPalmPlane": 0,
+    "side": 1,
+    "lineToPalmMm": 20.88,
+    "lineToGripAnchorMm": 0,
+    "gripToPalmMm": 41.97,
+    "through": true,
+    "elevation": -40.69,
+    "outward": 0.61,
+    "forward": 0.76,
+    "edgeForward": -0.58,
+    "bodyClearMm": 9999,
+    "offHandGapMm": null
+   },
+   "rule": {
+    "ok": true,
+    "why": []
+   },
+   "euler": [
+    2.7122,
+    0,
+    -0.165
+   ],
+   "tipElev": -40.69,
+   "lineElev": 25.34,
+   "aimErr": -66.04,
+   "offHand": null
+  },
+  {
+   "id": "warhammer",
+   "beat": "recover",
+   "kind": "chop",
+   "reverse": false,
+   "m": {
+    "handleToFingers": 67.12,
+    "outOfPalmPlane": 0,
+    "side": 1,
+    "lineToPalmMm": 38.68,
+    "lineToGripAnchorMm": 0,
+    "gripToPalmMm": 41.98,
+    "through": true,
+    "elevation": 49.01,
+    "outward": 0.56,
+    "forward": 0.64,
+    "edgeForward": 0.7,
+    "bodyClearMm": 741.78,
+    "offHandGapMm": null
+   },
+   "rule": {
+    "ok": true,
+    "why": []
+   },
+   "euler": [
+    2.1089,
+    0,
+    -0.4831
+   ],
+   "tipElev": 49.01,
+   "lineElev": 4.35,
+   "aimErr": 44.65,
+   "offHand": null
+  },
+  {
+   "id": "staff",
+   "beat": "guard",
+   "kind": "chop",
+   "reverse": false,
+   "m": {
+    "handleToFingers": 83.27,
+    "outOfPalmPlane": 0,
+    "side": 1,
+    "lineToPalmMm": 41.7,
+    "lineToGripAnchorMm": 0,
+    "gripToPalmMm": 41.99,
+    "through": true,
+    "elevation": 70.2,
+    "outward": 0.33,
+    "forward": 0.29,
+    "edgeForward": 0.6,
+    "bodyClearMm": 602.89,
+    "offHandGapMm": 0.01
+   },
+   "rule": {
+    "ok": true,
+    "why": []
+   },
+   "euler": [
+    1.7987,
+    0,
+    -0.5709
+   ],
+   "tipElev": 70.2,
+   "lineElev": 0.92,
+   "aimErr": 69.27,
+   "offHand": {
+    "gapMm": 0,
+    "y": -0.275,
+    "converge": 0.6352,
+    "elbow": -0.4357,
+    "twist": -1.3,
+    "reached": true,
+    "hold": 1,
+    "pushedMm": 0
+   }
+  },
+  {
+   "id": "staff",
+   "beat": "windup",
+   "kind": "chop",
+   "reverse": false,
+   "m": {
+    "handleToFingers": 30.02,
+    "outOfPalmPlane": 0,
+    "side": 1,
+    "lineToPalmMm": 21,
+    "lineToGripAnchorMm": 0,
+    "gripToPalmMm": 41.98,
+    "through": true,
+    "elevation": 7.41,
+    "outward": 0.72,
+    "forward": -0.99,
+    "edgeForward": 0.14,
+    "bodyClearMm": 9999,
+    "offHandGapMm": 0.01
+   },
+   "rule": {
+    "ok": true,
+    "why": []
+   },
+   "euler": [
+    2.7096,
+    0,
+    -0.1668
+   ],
+   "tipElev": 7.41,
+   "lineElev": -23.39,
+   "aimErr": 30.8,
+   "offHand": {
+    "gapMm": 0,
+    "y": -0.5,
+    "converge": 0,
+    "elbow": -0.6589,
+    "twist": -0.3729,
+    "reached": true,
+    "hold": 1,
+    "pushedMm": 0
+   }
+  },
+  {
+   "id": "staff",
+   "beat": "contact",
+   "kind": "chop",
+   "reverse": false,
+   "m": {
+    "handleToFingers": 29.84,
+    "outOfPalmPlane": 0,
+    "side": 1,
+    "lineToPalmMm": 20.89,
+    "lineToGripAnchorMm": 0,
+    "gripToPalmMm": 41.98,
+    "through": true,
+    "elevation": 13.07,
+    "outward": 0.9,
+    "forward": 0.97,
+    "edgeForward": 0.17,
+    "bodyClearMm": 769.69,
+    "offHandGapMm": 0
+   },
+   "rule": {
+    "ok": true,
+    "why": []
+   },
+   "euler": [
+    2.7122,
+    0,
+    -0.165
+   ],
+   "tipElev": 13.07,
+   "lineElev": 6.88,
+   "aimErr": 6.18,
+   "offHand": {
+    "gapMm": 0,
+    "y": -0.5,
+    "converge": 0,
+    "elbow": -0.8432,
+    "twist": -1.3,
+    "reached": true,
+    "hold": 1,
+    "pushedMm": 0
+   }
+  },
+  {
+   "id": "staff",
+   "beat": "hold",
+   "kind": "chop",
+   "reverse": false,
+   "m": {
+    "handleToFingers": 29.84,
+    "outOfPalmPlane": 0,
+    "side": 1,
+    "lineToPalmMm": 20.88,
+    "lineToGripAnchorMm": 0,
+    "gripToPalmMm": 41.97,
+    "through": true,
+    "elevation": -37.18,
+    "outward": 0.66,
+    "forward": 0.8,
+    "edgeForward": -0.54,
+    "bodyClearMm": 9999,
+    "offHandGapMm": 37.16
+   },
+   "rule": {
+    "ok": true,
+    "why": []
+   },
+   "euler": [
+    2.7122,
+    0,
+    -0.165
+   ],
+   "tipElev": -37.18,
+   "lineElev": 19.93,
+   "aimErr": -57.11,
+   "offHand": {
+    "gapMm": 39.21,
+    "y": -0.5375,
+    "converge": 0,
+    "elbow": -1.0114,
+    "twist": -1.3,
+    "reached": true,
+    "hold": 1,
+    "pushedMm": 39.2
+   }
+  },
+  {
+   "id": "staff",
+   "beat": "recover",
+   "kind": "chop",
+   "reverse": false,
+   "m": {
+    "handleToFingers": 75.53,
+    "outOfPalmPlane": 5.31,
+    "side": 1,
+    "lineToPalmMm": 40.66,
+    "lineToGripAnchorMm": 0,
+    "gripToPalmMm": 41.99,
+    "through": true,
+    "elevation": 56.75,
+    "outward": 0.55,
+    "forward": 0.54,
+    "edgeForward": 0.64,
+    "bodyClearMm": 649.17,
+    "offHandGapMm": 6.09
+   },
+   "rule": {
+    "ok": true,
+    "why": []
+   },
+   "euler": [
+    1.9206,
+    0,
+    -0.4455
+   ],
+   "tipElev": 56.75,
+   "lineElev": 3.13,
+   "aimErr": 53.62,
+   "offHand": {
+    "gapMm": 36.14,
+    "y": -0.25,
+    "converge": 0.4191,
+    "elbow": -0.3617,
+    "twist": -1.3,
+    "reached": false,
+    "hold": 0.956,
+    "pushedMm": 0
+   }
+  },
+  {
+   "id": "rapier",
+   "beat": "guard",
+   "kind": "thrust",
+   "reverse": false,
+   "m": {
+    "handleToFingers": 83.27,
+    "outOfPalmPlane": 0,
+    "side": 1,
+    "lineToPalmMm": 41.7,
+    "lineToGripAnchorMm": 0,
+    "gripToPalmMm": 41.99,
+    "through": true,
+    "elevation": 70.2,
+    "outward": 0.23,
+    "forward": 0.29,
+    "edgeForward": 0.92,
+    "bodyClearMm": 756.99,
+    "offHandGapMm": null
+   },
+   "rule": {
+    "ok": true,
+    "why": []
+   },
+   "euler": [
+    1.7985,
+    0,
+    -0.571
+   ],
+   "tipElev": 70.2,
+   "lineElev": -0.89,
+   "aimErr": 71.09,
+   "offHand": null
+  },
+  {
+   "id": "rapier",
+   "beat": "windup",
+   "kind": "thrust",
+   "reverse": false,
+   "m": {
+    "handleToFingers": 30.02,
+    "outOfPalmPlane": 2.29,
+    "side": 1,
+    "lineToPalmMm": 21,
+    "lineToGripAnchorMm": 0,
+    "gripToPalmMm": 41.98,
+    "through": true,
+    "elevation": 26.41,
+    "outward": 0.52,
+    "forward": 0.89,
+    "edgeForward": 0.36,
+    "bodyClearMm": 336.98,
+    "offHandGapMm": null
+   },
+   "rule": {
+    "ok": true,
+    "why": []
+   },
+   "euler": [
+    2.7335,
+    0,
+    -0.199
+   ],
+   "tipElev": 26.41,
+   "lineElev": 1.1,
+   "aimErr": 25.31,
+   "offHand": null
+  },
+  {
+   "id": "rapier",
+   "beat": "contact",
+   "kind": "thrust",
+   "reverse": false,
+   "m": {
+    "handleToFingers": 29.84,
+    "outOfPalmPlane": 2.28,
+    "side": 1,
+    "lineToPalmMm": 20.89,
+    "lineToGripAnchorMm": 0,
+    "gripToPalmMm": 41.99,
+    "through": true,
+    "elevation": 5.11,
+    "outward": 0.9,
+    "forward": 0.99,
+    "edgeForward": 0.04,
+    "bodyClearMm": 726.98,
+    "offHandGapMm": null
+   },
+   "rule": {
+    "ok": true,
+    "why": []
+   },
+   "euler": [
+    2.736,
+    0,
+    -0.1972
+   ],
+   "tipElev": 5.11,
+   "lineElev": 11.61,
+   "aimErr": -6.49,
+   "offHand": null
+  },
+  {
+   "id": "rapier",
+   "beat": "hold",
+   "kind": "thrust",
+   "reverse": false,
+   "m": {
+    "handleToFingers": 29.84,
+    "outOfPalmPlane": 2.28,
+    "side": 1,
+    "lineToPalmMm": 20.89,
+    "lineToGripAnchorMm": 0,
+    "gripToPalmMm": 41.98,
+    "through": true,
+    "elevation": 5.31,
+    "outward": 0.9,
+    "forward": 0.99,
+    "edgeForward": 0.04,
+    "bodyClearMm": 728.29,
+    "offHandGapMm": null
+   },
+   "rule": {
+    "ok": true,
+    "why": []
+   },
+   "euler": [
+    2.736,
+    0,
+    -0.1972
+   ],
+   "tipElev": 5.31,
+   "lineElev": 11.15,
+   "aimErr": -5.84,
+   "offHand": null
+  },
+  {
+   "id": "rapier",
+   "beat": "recover",
+   "kind": "thrust",
+   "reverse": false,
+   "m": {
+    "handleToFingers": 66.25,
+    "outOfPalmPlane": 0.95,
+    "side": 1,
+    "lineToPalmMm": 38.42,
+    "lineToGripAnchorMm": 0,
+    "gripToPalmMm": 41.98,
+    "through": true,
+    "elevation": 54.09,
+    "outward": 0.48,
+    "forward": 0.56,
+    "edgeForward": 0.75,
+    "bodyClearMm": 756.16,
+    "offHandGapMm": null
+   },
+   "rule": {
+    "ok": true,
+    "why": []
+   },
+   "euler": [
+    2.1322,
+    0,
+    -0.4924
+   ],
+   "tipElev": 54.09,
+   "lineElev": -0.92,
+   "aimErr": 55,
+   "offHand": null
+  },
+  {
+   "id": "dagger",
+   "beat": "guard",
+   "kind": "thrust",
+   "reverse": true,
+   "m": {
+    "handleToFingers": 83.28,
+    "outOfPalmPlane": 0,
+    "side": -1,
+    "lineToPalmMm": 41.68,
+    "lineToGripAnchorMm": 0,
+    "gripToPalmMm": 41.97,
+    "through": true,
+    "elevation": -70.2,
+    "outward": -0.23,
+    "forward": -0.29,
+    "edgeForward": 0.92,
+    "bodyClearMm": 699.08,
+    "offHandGapMm": null
+   },
+   "rule": {
+    "ok": true,
+    "why": []
+   },
+   "euler": [
+    1.7984,
+    0,
+    -0.571
+   ],
+   "tipElev": -70.2,
+   "lineElev": -2.83,
+   "aimErr": -67.37,
+   "offHand": null
+  },
+  {
+   "id": "dagger",
+   "beat": "windup",
+   "kind": "thrust",
+   "reverse": true,
+   "m": {
+    "handleToFingers": 30.02,
+    "outOfPalmPlane": 2.28,
+    "side": -1,
+    "lineToPalmMm": 21,
+    "lineToGripAnchorMm": 0,
+    "gripToPalmMm": 41.98,
+    "through": true,
+    "elevation": -30.99,
+    "outward": 0.72,
+    "forward": 0.85,
+    "edgeForward": 0.48,
+    "bodyClearMm": 259.74,
+    "offHandGapMm": null
+   },
+   "rule": {
+    "ok": true,
+    "why": []
+   },
+   "euler": [
+    2.7335,
+    0,
+    -0.199
+   ],
+   "tipElev": -30.99,
+   "lineElev": -44.76,
+   "aimErr": 13.77,
+   "offHand": null
+  },
+  {
+   "id": "dagger",
+   "beat": "contact",
+   "kind": "thrust",
+   "reverse": true,
+   "m": {
+    "handleToFingers": 85.78,
+    "outOfPalmPlane": 4.57,
+    "side": -1,
+    "lineToPalmMm": 41.88,
+    "lineToGripAnchorMm": 0,
+    "gripToPalmMm": 41.99,
+    "through": true,
+    "elevation": -43.32,
+    "outward": 0.73,
+    "forward": 0.7,
+    "edgeForward": 0.7,
+    "bodyClearMm": 644.29,
+    "offHandGapMm": null
+   },
+   "rule": {
+    "ok": true,
+    "why": []
+   },
+   "euler": [
+    1.7686,
+    0,
+    -0.6585
+   ],
+   "tipElev": -43.32,
+   "lineElev": -52.97,
+   "aimErr": 9.65,
+   "offHand": null
+  },
+  {
+   "id": "dagger",
+   "beat": "hold",
+   "kind": "thrust",
+   "reverse": true,
+   "m": {
+    "handleToFingers": 85.81,
+    "outOfPalmPlane": 4.57,
+    "side": -1,
+    "lineToPalmMm": 41.87,
+    "lineToGripAnchorMm": 0,
+    "gripToPalmMm": 41.98,
+    "through": true,
+    "elevation": -43.32,
+    "outward": 0.73,
+    "forward": 0.7,
+    "edgeForward": 0.7,
+    "bodyClearMm": 644.84,
+    "offHandGapMm": null
+   },
+   "rule": {
+    "ok": true,
+    "why": []
+   },
+   "euler": [
+    1.768,
+    0,
+    -0.6586
+   ],
+   "tipElev": -43.32,
+   "lineElev": -53.26,
+   "aimErr": 9.94,
+   "offHand": null
+  },
+  {
+   "id": "dagger",
+   "beat": "recover",
+   "kind": "thrust",
+   "reverse": true,
+   "m": {
+    "handleToFingers": 69.95,
+    "outOfPalmPlane": 0.94,
+    "side": -1,
+    "lineToPalmMm": 39.44,
+    "lineToGripAnchorMm": 0,
+    "gripToPalmMm": 41.98,
+    "through": true,
+    "elevation": -65.18,
+    "outward": 0.42,
+    "forward": 0.39,
+    "edgeForward": 0.92,
+    "bodyClearMm": 762.08,
+    "offHandGapMm": null
+   },
+   "rule": {
+    "ok": true,
+    "why": []
+   },
+   "euler": [
+    1.2339,
+    0,
+    -0.6241
+   ],
+   "tipElev": -65.18,
+   "lineElev": -23.35,
+   "aimErr": -41.82,
+   "offHand": null
+  },
+  {
+   "id": "longsword",
+   "beat": "guard",
+   "kind": "slash",
+   "reverse": false,
+   "m": {
+    "handleToFingers": 83.27,
+    "outOfPalmPlane": 0,
+    "side": 1,
+    "lineToPalmMm": 41.69,
+    "lineToGripAnchorMm": 0,
+    "gripToPalmMm": 41.98,
+    "through": true,
+    "elevation": 70.2,
+    "outward": 0.31,
+    "forward": 0.29,
+    "edgeForward": 0.74,
+    "bodyClearMm": 651.89,
+    "offHandGapMm": 0
+   },
+   "rule": {
+    "ok": true,
+    "why": []
+   },
+   "euler": [
+    1.7986,
+    0,
+    -0.5709
+   ],
+   "tipElev": 70.2,
+   "lineElev": 1.37,
+   "aimErr": 68.82,
+   "offHand": {
+    "gapMm": 0,
+    "y": -0.1,
+    "converge": 0.4279,
+    "elbow": -0.5582,
+    "twist": -1.276,
+    "reached": true,
+    "hold": 1,
+    "pushedMm": 0
+   }
+  },
+  {
+   "id": "longsword",
+   "beat": "windup",
+   "kind": "slash",
+   "reverse": false,
+   "m": {
+    "handleToFingers": 30.02,
+    "outOfPalmPlane": 9.46,
+    "side": 1,
+    "lineToPalmMm": 21,
+    "lineToGripAnchorMm": 0,
+    "gripToPalmMm": 41.98,
+    "through": true,
+    "elevation": 53.8,
+    "outward": -0.49,
+    "forward": -0.59,
+    "edgeForward": 0.65,
+    "bodyClearMm": 9999,
+    "offHandGapMm": 0.01
+   },
+   "rule": {
+    "ok": true,
+    "why": []
+   },
+   "euler": [
+    2.6377,
+    0,
+    -0.0159
+   ],
+   "tipElev": 53.81,
+   "lineElev": -36.46,
+   "aimErr": 90.26,
+   "offHand": {
+    "gapMm": 0,
+    "y": -0.1,
+    "converge": 0,
+    "elbow": -0.7955,
+    "twist": -0.9454,
+    "reached": true,
+    "hold": 1,
+    "pushedMm": 0
+   }
+  },
+  {
+   "id": "longsword",
+   "beat": "contact",
+   "kind": "slash",
+   "reverse": false,
+   "m": {
+    "handleToFingers": 29.84,
+    "outOfPalmPlane": 1.6,
+    "side": 1,
+    "lineToPalmMm": 20.88,
+    "lineToGripAnchorMm": 0,
+    "gripToPalmMm": 41.98,
+    "through": true,
+    "elevation": 8.69,
+    "outward": 0.96,
+    "forward": 0.98,
+    "edgeForward": 0.05,
+    "bodyClearMm": 717.73,
+    "offHandGapMm": 0.01
+   },
+   "rule": {
+    "ok": true,
+    "why": []
+   },
+   "euler": [
+    2.7287,
+    0,
+    -0.1878
+   ],
+   "tipElev": 8.69,
+   "lineElev": 8.16,
+   "aimErr": 0.53,
+   "offHand": {
+    "gapMm": 0,
+    "y": -0.1,
+    "converge": 0.3214,
+    "elbow": -0.5339,
+    "twist": -1.3,
+    "reached": true,
+    "hold": 1,
+    "pushedMm": 0
+   }
+  },
+  {
+   "id": "longsword",
+   "beat": "hold",
+   "kind": "slash",
+   "reverse": false,
+   "m": {
+    "handleToFingers": 29.84,
+    "outOfPalmPlane": 7.91,
+    "side": 1,
+    "lineToPalmMm": 20.89,
+    "lineToGripAnchorMm": 0,
+    "gripToPalmMm": 41.98,
+    "through": true,
+    "elevation": -21.26,
+    "outward": 0.89,
+    "forward": 0.92,
+    "edgeForward": -0.32,
+    "bodyClearMm": 9999,
+    "offHandGapMm": 0.01
+   },
+   "rule": {
+    "ok": true,
+    "why": []
+   },
+   "euler": [
+    2.8066,
+    0,
+    -0.2692
+   ],
+   "tipElev": -21.26,
+   "lineElev": 20.12,
+   "aimErr": -41.38,
+   "offHand": {
+    "gapMm": 0,
+    "y": -0.1,
+    "converge": 0.4805,
+    "elbow": -0.5282,
+    "twist": -1.3,
+    "reached": true,
+    "hold": 1,
+    "pushedMm": 0
+   }
+  },
+  {
+   "id": "longsword",
+   "beat": "recover",
+   "kind": "slash",
+   "reverse": false,
+   "m": {
+    "handleToFingers": 66.13,
+    "outOfPalmPlane": 3.01,
+    "side": 1,
+    "lineToPalmMm": 38.4,
+    "lineToGripAnchorMm": 0,
+    "gripToPalmMm": 41.99,
+    "through": true,
+    "elevation": 49.13,
+    "outward": 0.63,
+    "forward": 0.62,
+    "edgeForward": 0.51,
+    "bodyClearMm": 657.68,
+    "offHandGapMm": 0.01
+   },
+   "rule": {
+    "ok": true,
+    "why": []
+   },
+   "euler": [
+    2.1513,
+    0,
+    -0.5245
+   ],
+   "tipElev": 49.13,
+   "lineElev": 3.47,
+   "aimErr": 45.66,
+   "offHand": {
+    "gapMm": 0,
+    "y": -0.1,
+    "converge": 0.3764,
+    "elbow": -0.5885,
+    "twist": -1.3,
+    "reached": true,
+    "hold": 1,
+    "pushedMm": 0
+   }
+  },
+  {
+   "id": "scythe",
+   "beat": "guard",
+   "kind": "slash",
+   "reverse": false,
+   "m": {
+    "handleToFingers": 83.28,
+    "outOfPalmPlane": 0,
+    "side": 1,
+    "lineToPalmMm": 41.7,
+    "lineToGripAnchorMm": 0,
+    "gripToPalmMm": 41.98,
+    "through": true,
+    "elevation": 70.2,
+    "outward": 0.31,
+    "forward": 0.29,
+    "edgeForward": 0.74,
+    "bodyClearMm": 651.86,
+    "offHandGapMm": 0.01
+   },
+   "rule": {
+    "ok": true,
+    "why": []
+   },
+   "euler": [
+    1.7985,
+    0,
+    -0.571
+   ],
+   "tipElev": 70.2,
+   "lineElev": 0.82,
+   "aimErr": 69.38,
+   "offHand": {
+    "gapMm": 0,
+    "y": -0.1412,
+    "converge": 0.428,
+    "elbow": -0.3714,
+    "twist": -1.2917,
+    "reached": true,
+    "hold": 1,
+    "pushedMm": 0
+   }
+  },
+  {
+   "id": "scythe",
+   "beat": "windup",
+   "kind": "slash",
+   "reverse": false,
+   "m": {
+    "handleToFingers": 30.02,
+    "outOfPalmPlane": 9.88,
+    "side": 1,
+    "lineToPalmMm": 21,
+    "lineToGripAnchorMm": 0,
+    "gripToPalmMm": 41.98,
+    "through": true,
+    "elevation": 40.33,
+    "outward": -0.32,
+    "forward": -0.76,
+    "edgeForward": 0.49,
+    "bodyClearMm": 9999,
+    "offHandGapMm": 0.01
+   },
+   "rule": {
+    "ok": true,
+    "why": []
+   },
+   "euler": [
+    2.6355,
+    0,
+    -0.0087
+   ],
+   "tipElev": 40.33,
+   "lineElev": -25.43,
+   "aimErr": 65.77,
+   "offHand": {
+    "gapMm": 0,
+    "y": -0.1775,
+    "converge": 0,
+    "elbow": -1.0449,
+    "twist": -0.6673,
+    "reached": true,
+    "hold": 1,
+    "pushedMm": 0
+   }
+  },
+  {
+   "id": "scythe",
+   "beat": "contact",
+   "kind": "slash",
+   "reverse": false,
+   "m": {
+    "handleToFingers": 29.84,
+    "outOfPalmPlane": 1.8,
+    "side": 1,
+    "lineToPalmMm": 20.9,
+    "lineToGripAnchorMm": 0,
+    "gripToPalmMm": 41.99,
+    "through": true,
+    "elevation": 13.51,
+    "outward": 0.92,
+    "forward": 0.97,
+    "edgeForward": 0.14,
+    "bodyClearMm": 757.4,
+    "offHandGapMm": 0.01
+   },
+   "rule": {
+    "ok": true,
+    "why": []
+   },
+   "euler": [
+    2.7308,
+    0,
+    -0.1905
+   ],
+   "tipElev": 13.51,
+   "lineElev": 3.46,
+   "aimErr": 10.04,
+   "offHand": {
+    "gapMm": 0,
+    "y": -0.1775,
+    "converge": 0.1566,
+    "elbow": -0.5462,
+    "twist": -1.3,
+    "reached": true,
+    "hold": 1,
+    "pushedMm": 0
+   }
+  },
+  {
+   "id": "scythe",
+   "beat": "hold",
+   "kind": "slash",
+   "reverse": false,
+   "m": {
+    "handleToFingers": 29.84,
+    "outOfPalmPlane": 9.78,
+    "side": 1,
+    "lineToPalmMm": 20.89,
+    "lineToGripAnchorMm": 0,
+    "gripToPalmMm": 41.98,
+    "through": true,
+    "elevation": -35.38,
+    "outward": 0.69,
+    "forward": 0.8,
+    "edgeForward": -0.5,
+    "bodyClearMm": 9999,
+    "offHandGapMm": 0
+   },
+   "rule": {
+    "ok": true,
+    "why": []
+   },
+   "euler": [
+    2.834,
+    0,
+    -0.2906
+   ],
+   "tipElev": -35.38,
+   "lineElev": 15.89,
+   "aimErr": -51.27,
+   "offHand": {
+    "gapMm": 0,
+    "y": -0.1775,
+    "converge": 0.3233,
+    "elbow": -0.5384,
+    "twist": -1.3,
+    "reached": true,
+    "hold": 1,
+    "pushedMm": 0
+   }
+  },
+  {
+   "id": "scythe",
+   "beat": "recover",
+   "kind": "slash",
+   "reverse": false,
+   "m": {
+    "handleToFingers": 69.68,
+    "outOfPalmPlane": 3.08,
+    "side": 1,
+    "lineToPalmMm": 39.37,
+    "lineToGripAnchorMm": 0,
+    "gripToPalmMm": 41.99,
+    "through": true,
+    "elevation": 51.34,
+    "outward": 0.6,
+    "forward": 0.59,
+    "edgeForward": 0.54,
+    "bodyClearMm": 646.65,
+    "offHandGapMm": 0
+   },
+   "rule": {
+    "ok": true,
+    "why": []
+   },
+   "euler": [
+    2.0853,
+    0,
+    -0.5495
+   ],
+   "tipElev": 51.34,
+   "lineElev": 2.95,
+   "aimErr": 48.38,
+   "offHand": {
+    "gapMm": 0,
+    "y": -0.1775,
+    "converge": 0.3902,
+    "elbow": -0.4482,
+    "twist": -1.3,
+    "reached": true,
+    "hold": 1,
+    "pushedMm": 0
+   }
+  },
+  {
+   "id": "greataxe",
+   "beat": "guard",
+   "kind": "chop",
+   "reverse": false,
+   "m": {
+    "handleToFingers": 83.27,
+    "outOfPalmPlane": 0,
+    "side": 1,
+    "lineToPalmMm": 41.69,
+    "lineToGripAnchorMm": 0,
+    "gripToPalmMm": 41.98,
+    "through": true,
+    "elevation": 70.2,
+    "outward": 0.31,
+    "forward": 0.29,
+    "edgeForward": 0.74,
+    "bodyClearMm": 651.88,
+    "offHandGapMm": 0
+   },
+   "rule": {
+    "ok": true,
+    "why": []
+   },
+   "euler": [
+    1.7986,
+    0,
+    -0.5709
+   ],
+   "tipElev": 70.2,
+   "lineElev": 0.98,
+   "aimErr": 69.22,
+   "offHand": {
+    "gapMm": 0,
+    "y": -0.1324,
+    "converge": 0.4279,
+    "elbow": -0.4206,
+    "twist": -1.2867,
+    "reached": true,
+    "hold": 1,
+    "pushedMm": 0
+   }
+  },
+  {
+   "id": "greataxe",
+   "beat": "windup",
+   "kind": "chop",
+   "reverse": false,
+   "m": {
+    "handleToFingers": 30.02,
+    "outOfPalmPlane": 0,
+    "side": 1,
+    "lineToPalmMm": 21,
+    "lineToGripAnchorMm": 0,
+    "gripToPalmMm": 41.99,
+    "through": true,
+    "elevation": 6.15,
+    "outward": 0.74,
+    "forward": -0.99,
+    "edgeForward": 0.12,
+    "bodyClearMm": 9999,
+    "offHandGapMm": 0.01
+   },
+   "rule": {
+    "ok": true,
+    "why": []
+   },
+   "euler": [
+    2.7096,
+    0,
+    -0.1668
+   ],
+   "tipElev": 6.15,
+   "lineElev": -22.11,
+   "aimErr": 28.26,
+   "offHand": {
+    "gapMm": 0,
+    "y": -0.1324,
+    "converge": 0,
+    "elbow": -1.1762,
+    "twist": 1.3,
+    "reached": true,
+    "hold": 1,
+    "pushedMm": 0
+   }
+  },
+  {
+   "id": "greataxe",
+   "beat": "contact",
+   "kind": "chop",
+   "reverse": false,
+   "m": {
+    "handleToFingers": 29.84,
+    "outOfPalmPlane": 0,
+    "side": 1,
+    "lineToPalmMm": 20.9,
+    "lineToGripAnchorMm": 0,
+    "gripToPalmMm": 41.98,
+    "through": true,
+    "elevation": 11.54,
+    "outward": 0.95,
+    "forward": 0.98,
+    "edgeForward": 0.11,
+    "bodyClearMm": 731.15,
+    "offHandGapMm": 0
+   },
+   "rule": {
+    "ok": true,
+    "why": []
+   },
+   "euler": [
+    2.7122,
+    0,
+    -0.165
+   ],
+   "tipElev": 11.54,
+   "lineElev": 7.84,
+   "aimErr": 3.71,
+   "offHand": {
+    "gapMm": 0,
+    "y": -0.1324,
+    "converge": 0.2205,
+    "elbow": -0.5417,
+    "twist": -1.3,
+    "reached": true,
+    "hold": 1,
+    "pushedMm": 0
+   }
+  },
+  {
+   "id": "greataxe",
+   "beat": "hold",
+   "kind": "chop",
+   "reverse": false,
+   "m": {
+    "handleToFingers": 29.84,
+    "outOfPalmPlane": 0,
+    "side": 1,
+    "lineToPalmMm": 20.89,
+    "lineToGripAnchorMm": 0,
+    "gripToPalmMm": 41.99,
+    "through": true,
+    "elevation": -44.74,
+    "outward": 0.66,
+    "forward": 0.71,
+    "edgeForward": -0.46,
+    "bodyClearMm": 9999,
+    "offHandGapMm": 0
+   },
+   "rule": {
+    "ok": true,
+    "why": []
+   },
+   "euler": [
+    2.7122,
+    0,
+    -0.165
+   ],
+   "tipElev": -44.74,
+   "lineElev": 19.45,
+   "aimErr": -64.19,
+   "offHand": {
+    "gapMm": 0,
+    "y": -0.1324,
+    "converge": 0.3797,
+    "elbow": -0.5208,
+    "twist": -1.3,
+    "reached": true,
+    "hold": 1,
+    "pushedMm": 0
+   }
+  },
+  {
+   "id": "greataxe",
+   "beat": "recover",
+   "kind": "chop",
+   "reverse": false,
+   "m": {
+    "handleToFingers": 67.16,
+    "outOfPalmPlane": 0,
+    "side": 1,
+    "lineToPalmMm": 38.69,
+    "lineToGripAnchorMm": 0,
+    "gripToPalmMm": 41.99,
+    "through": true,
+    "elevation": 49.9,
+    "outward": 0.63,
+    "forward": 0.63,
+    "edgeForward": 0.54,
+    "bodyClearMm": 657.89,
+    "offHandGapMm": 0
+   },
+   "rule": {
+    "ok": true,
+    "why": []
+   },
+   "euler": [
+    2.1082,
+    0,
+    -0.4833
+   ],
+   "tipElev": 49.9,
+   "lineElev": 2.93,
+   "aimErr": 46.96,
+   "offHand": {
+    "gapMm": 0,
+    "y": -0.1324,
+    "converge": 0.3717,
+    "elbow": -0.5719,
+    "twist": -1.3,
+    "reached": true,
+    "hold": 1,
+    "pushedMm": 0
+   }
+  },
+  {
+   "id": "maul",
+   "beat": "guard",
+   "kind": "chop",
+   "reverse": false,
+   "m": {
+    "handleToFingers": 83.27,
+    "outOfPalmPlane": 0,
+    "side": 1,
+    "lineToPalmMm": 41.7,
+    "lineToGripAnchorMm": 0,
+    "gripToPalmMm": 41.99,
+    "through": true,
+    "elevation": 70.2,
+    "outward": 0.31,
+    "forward": 0.29,
+    "edgeForward": 0.74,
+    "bodyClearMm": 651.89,
+    "offHandGapMm": 0
+   },
+   "rule": {
+    "ok": true,
+    "why": []
+   },
+   "euler": [
+    1.7987,
+    0,
+    -0.5709
+   ],
+   "tipElev": 70.2,
+   "lineElev": 1.52,
+   "aimErr": 68.68,
+   "offHand": {
+    "gapMm": 0,
+    "y": -0.09,
+    "converge": 0.4279,
+    "elbow": -0.592,
+    "twist": -1.2744,
+    "reached": true,
+    "hold": 1,
+    "pushedMm": 0
+   }
+  },
+  {
+   "id": "maul",
+   "beat": "windup",
+   "kind": "chop",
+   "reverse": false,
+   "m": {
+    "handleToFingers": 30.02,
+    "outOfPalmPlane": 0,
+    "side": 1,
+    "lineToPalmMm": 21,
+    "lineToGripAnchorMm": 0,
+    "gripToPalmMm": 41.99,
+    "through": true,
+    "elevation": 6.79,
+    "outward": 0.73,
+    "forward": -0.99,
+    "edgeForward": 0.13,
+    "bodyClearMm": 9999,
+    "offHandGapMm": 0.01
+   },
+   "rule": {
+    "ok": true,
+    "why": []
+   },
+   "euler": [
+    2.7096,
+    0,
+    -0.1668
+   ],
+   "tipElev": 6.79,
+   "lineElev": -27.11,
+   "aimErr": 33.9,
+   "offHand": {
+    "gapMm": 0,
+    "y": -0.09,
+    "converge": 0,
+    "elbow": -1.1512,
+    "twist": 1.3,
+    "reached": true,
+    "hold": 1,
+    "pushedMm": 0
+   }
+  },
+  {
+   "id": "maul",
+   "beat": "contact",
+   "kind": "chop",
+   "reverse": false,
+   "m": {
+    "handleToFingers": 29.84,
+    "outOfPalmPlane": 0,
+    "side": 1,
+    "lineToPalmMm": 20.9,
+    "lineToGripAnchorMm": 0,
+    "gripToPalmMm": 41.99,
+    "through": true,
+    "elevation": 12.12,
+    "outward": 0.96,
+    "forward": 0.97,
+    "edgeForward": 0.1,
+    "bodyClearMm": 723.98,
+    "offHandGapMm": 0
+   },
+   "rule": {
+    "ok": true,
+    "why": []
+   },
+   "euler": [
+    2.7122,
+    0,
+    -0.165
+   ],
+   "tipElev": 12.12,
+   "lineElev": 11.43,
+   "aimErr": 0.69,
+   "offHand": {
+    "gapMm": 0,
+    "y": -0.09,
+    "converge": 0.3022,
+    "elbow": -0.5357,
+    "twist": -1.3,
+    "reached": true,
+    "hold": 1,
+    "pushedMm": 0
+   }
+  },
+  {
+   "id": "maul",
+   "beat": "hold",
+   "kind": "chop",
+   "reverse": false,
+   "m": {
+    "handleToFingers": 29.84,
+    "outOfPalmPlane": 0,
+    "side": 1,
+    "lineToPalmMm": 20.89,
+    "lineToGripAnchorMm": 0,
+    "gripToPalmMm": 41.98,
+    "through": true,
+    "elevation": -42.75,
+    "outward": 0.72,
+    "forward": 0.73,
+    "edgeForward": -0.37,
+    "bodyClearMm": 9999,
+    "offHandGapMm": 0
+   },
+   "rule": {
+    "ok": true,
+    "why": []
+   },
+   "euler": [
+    2.7122,
+    0,
+    -0.165
+   ],
+   "tipElev": -42.75,
+   "lineElev": 25.72,
+   "aimErr": -68.47,
+   "offHand": {
+    "gapMm": 0,
+    "y": -0.09,
+    "converge": 0.5252,
+    "elbow": -0.5148,
+    "twist": -1.3,
+    "reached": true,
+    "hold": 1,
+    "pushedMm": 0
+   }
+  },
+  {
+   "id": "maul",
+   "beat": "recover",
+   "kind": "chop",
+   "reverse": false,
+   "m": {
+    "handleToFingers": 67.15,
+    "outOfPalmPlane": 0,
+    "side": 1,
+    "lineToPalmMm": 38.69,
+    "lineToGripAnchorMm": 0,
+    "gripToPalmMm": 41.99,
+    "through": true,
+    "elevation": 49.7,
+    "outward": 0.63,
+    "forward": 0.63,
+    "edgeForward": 0.54,
+    "bodyClearMm": 657.52,
+    "offHandGapMm": 0.01
+   },
+   "rule": {
+    "ok": true,
+    "why": []
+   },
+   "euler": [
+    2.1084,
+    0,
+    -0.4833
+   ],
+   "tipElev": 49.7,
+   "lineElev": 4.68,
+   "aimErr": 45.02,
+   "offHand": {
+    "gapMm": 0,
+    "y": -0.09,
+    "converge": 0.372,
+    "elbow": -0.592,
+    "twist": -1.3,
+    "reached": true,
+    "hold": 1,
+    "pushedMm": 0
+   }
+  }
+ ],
+ "shots": {
+  "greatsword": {
+   "guard-front": "artifacts/qa-wave-w/live-after/greatsword-guard-front.png",
+   "guard-side": "artifacts/qa-wave-w/live-after/greatsword-guard-side.png",
+   "guard-hand-side": "artifacts/qa-wave-w/live-after/greatsword-guard-hand-side.png",
+   "guard-hand-front": "artifacts/qa-wave-w/live-after/greatsword-guard-hand-front.png",
+   "contact-front": "artifacts/qa-wave-w/live-after/greatsword-contact-front.png",
+   "contact-side": "artifacts/qa-wave-w/live-after/greatsword-contact-side.png",
+   "contact-hand-side": "artifacts/qa-wave-w/live-after/greatsword-contact-hand-side.png",
+   "contact-hand-front": "artifacts/qa-wave-w/live-after/greatsword-contact-hand-front.png"
+  },
+  "spear": {
+   "guard-front": "artifacts/qa-wave-w/live-after/spear-guard-front.png",
+   "guard-side": "artifacts/qa-wave-w/live-after/spear-guard-side.png",
+   "guard-hand-side": "artifacts/qa-wave-w/live-after/spear-guard-hand-side.png",
+   "guard-hand-front": "artifacts/qa-wave-w/live-after/spear-guard-hand-front.png",
+   "contact-front": "artifacts/qa-wave-w/live-after/spear-contact-front.png",
+   "contact-side": "artifacts/qa-wave-w/live-after/spear-contact-side.png",
+   "contact-hand-side": "artifacts/qa-wave-w/live-after/spear-contact-hand-side.png",
+   "contact-hand-front": "artifacts/qa-wave-w/live-after/spear-contact-hand-front.png"
+  },
+  "halberd": {
+   "guard-front": "artifacts/qa-wave-w/live-after/halberd-guard-front.png",
+   "guard-side": "artifacts/qa-wave-w/live-after/halberd-guard-side.png",
+   "guard-hand-side": "artifacts/qa-wave-w/live-after/halberd-guard-hand-side.png",
+   "guard-hand-front": "artifacts/qa-wave-w/live-after/halberd-guard-hand-front.png",
+   "contact-front": "artifacts/qa-wave-w/live-after/halberd-contact-front.png",
+   "contact-side": "artifacts/qa-wave-w/live-after/halberd-contact-side.png",
+   "contact-hand-side": "artifacts/qa-wave-w/live-after/halberd-contact-hand-side.png",
+   "contact-hand-front": "artifacts/qa-wave-w/live-after/halberd-contact-hand-front.png"
+  },
+  "warhammer": {
+   "guard-front": "artifacts/qa-wave-w/live-after/warhammer-guard-front.png",
+   "guard-side": "artifacts/qa-wave-w/live-after/warhammer-guard-side.png",
+   "guard-hand-side": "artifacts/qa-wave-w/live-after/warhammer-guard-hand-side.png",
+   "guard-hand-front": "artifacts/qa-wave-w/live-after/warhammer-guard-hand-front.png",
+   "contact-front": "artifacts/qa-wave-w/live-after/warhammer-contact-front.png",
+   "contact-side": "artifacts/qa-wave-w/live-after/warhammer-contact-side.png",
+   "contact-hand-side": "artifacts/qa-wave-w/live-after/warhammer-contact-hand-side.png",
+   "contact-hand-front": "artifacts/qa-wave-w/live-after/warhammer-contact-hand-front.png"
+  },
+  "staff": {
+   "guard-front": "artifacts/qa-wave-w/live-after/staff-guard-front.png",
+   "guard-side": "artifacts/qa-wave-w/live-after/staff-guard-side.png",
+   "guard-hand-side": "artifacts/qa-wave-w/live-after/staff-guard-hand-side.png",
+   "guard-hand-front": "artifacts/qa-wave-w/live-after/staff-guard-hand-front.png",
+   "contact-front": "artifacts/qa-wave-w/live-after/staff-contact-front.png",
+   "contact-side": "artifacts/qa-wave-w/live-after/staff-contact-side.png",
+   "contact-hand-side": "artifacts/qa-wave-w/live-after/staff-contact-hand-side.png",
+   "contact-hand-front": "artifacts/qa-wave-w/live-after/staff-contact-hand-front.png"
+  },
+  "rapier": {
+   "guard-front": "artifacts/qa-wave-w/live-after/rapier-guard-front.png",
+   "guard-side": "artifacts/qa-wave-w/live-after/rapier-guard-side.png",
+   "guard-hand-side": "artifacts/qa-wave-w/live-after/rapier-guard-hand-side.png",
+   "guard-hand-front": "artifacts/qa-wave-w/live-after/rapier-guard-hand-front.png",
+   "contact-front": "artifacts/qa-wave-w/live-after/rapier-contact-front.png",
+   "contact-side": "artifacts/qa-wave-w/live-after/rapier-contact-side.png",
+   "contact-hand-side": "artifacts/qa-wave-w/live-after/rapier-contact-hand-side.png",
+   "contact-hand-front": "artifacts/qa-wave-w/live-after/rapier-contact-hand-front.png"
+  },
+  "dagger": {
+   "guard-front": "artifacts/qa-wave-w/live-after/dagger-guard-front.png",
+   "guard-side": "artifacts/qa-wave-w/live-after/dagger-guard-side.png",
+   "guard-hand-side": "artifacts/qa-wave-w/live-after/dagger-guard-hand-side.png",
+   "guard-hand-front": "artifacts/qa-wave-w/live-after/dagger-guard-hand-front.png",
+   "contact-front": "artifacts/qa-wave-w/live-after/dagger-contact-front.png",
+   "contact-side": "artifacts/qa-wave-w/live-after/dagger-contact-side.png",
+   "contact-hand-side": "artifacts/qa-wave-w/live-after/dagger-contact-hand-side.png",
+   "contact-hand-front": "artifacts/qa-wave-w/live-after/dagger-contact-hand-front.png"
+  },
+  "longsword": {
+   "guard-front": "artifacts/qa-wave-w/live-after/longsword-guard-front.png",
+   "guard-side": "artifacts/qa-wave-w/live-after/longsword-guard-side.png",
+   "guard-hand-side": "artifacts/qa-wave-w/live-after/longsword-guard-hand-side.png",
+   "guard-hand-front": "artifacts/qa-wave-w/live-after/longsword-guard-hand-front.png",
+   "contact-front": "artifacts/qa-wave-w/live-after/longsword-contact-front.png",
+   "contact-side": "artifacts/qa-wave-w/live-after/longsword-contact-side.png",
+   "contact-hand-side": "artifacts/qa-wave-w/live-after/longsword-contact-hand-side.png",
+   "contact-hand-front": "artifacts/qa-wave-w/live-after/longsword-contact-hand-front.png"
+  },
+  "scythe": {
+   "guard-front": "artifacts/qa-wave-w/live-after/scythe-guard-front.png",
+   "guard-side": "artifacts/qa-wave-w/live-after/scythe-guard-side.png",
+   "guard-hand-side": "artifacts/qa-wave-w/live-after/scythe-guard-hand-side.png",
+   "guard-hand-front": "artifacts/qa-wave-w/live-after/scythe-guard-hand-front.png",
+   "contact-front": "artifacts/qa-wave-w/live-after/scythe-contact-front.png",
+   "contact-side": "artifacts/qa-wave-w/live-after/scythe-contact-side.png",
+   "contact-hand-side": "artifacts/qa-wave-w/live-after/scythe-contact-hand-side.png",
+   "contact-hand-front": "artifacts/qa-wave-w/live-after/scythe-contact-hand-front.png"
+  },
+  "greataxe": {
+   "guard-front": "artifacts/qa-wave-w/live-after/greataxe-guard-front.png",
+   "guard-side": "artifacts/qa-wave-w/live-after/greataxe-guard-side.png",
+   "guard-hand-side": "artifacts/qa-wave-w/live-after/greataxe-guard-hand-side.png",
+   "guard-hand-front": "artifacts/qa-wave-w/live-after/greataxe-guard-hand-front.png",
+   "contact-front": "artifacts/qa-wave-w/live-after/greataxe-contact-front.png",
+   "contact-side": "artifacts/qa-wave-w/live-after/greataxe-contact-side.png",
+   "contact-hand-side": "artifacts/qa-wave-w/live-after/greataxe-contact-hand-side.png",
+   "contact-hand-front": "artifacts/qa-wave-w/live-after/greataxe-contact-hand-front.png"
+  },
+  "maul": {
+   "guard-front": "artifacts/qa-wave-w/live-after/maul-guard-front.png",
+   "guard-side": "artifacts/qa-wave-w/live-after/maul-guard-side.png",
+   "guard-hand-side": "artifacts/qa-wave-w/live-after/maul-guard-hand-side.png",
+   "guard-hand-front": "artifacts/qa-wave-w/live-after/maul-guard-hand-front.png",
+   "contact-front": "artifacts/qa-wave-w/live-after/maul-contact-front.png",
+   "contact-side": "artifacts/qa-wave-w/live-after/maul-contact-side.png",
+   "contact-hand-side": "artifacts/qa-wave-w/live-after/maul-contact-hand-side.png",
+   "contact-hand-front": "artifacts/qa-wave-w/live-after/maul-contact-hand-front.png"
+  }
+ }
+}

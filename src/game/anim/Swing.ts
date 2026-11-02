@@ -67,6 +67,13 @@ export interface SwingShape {
   strike: SwingKey;
   hand?: { windup: [number, number]; strike: [number, number] };
   /**
+   * Lane T (wave W): the arm reach (upper + fore, m) the `hand` points are written for. The path scales
+   * with the holder's own reach (handPoint), so a long-armed ork drives the SAME arm shape — the elbow
+   * as straight and the forearm at the same angle — instead of reaching the same metres with a bent elbow
+   * (a bent elbow raises the forearm and the point with it). Absent = metres as written.
+   */
+  handRef?: number;
+  /**
    * Where on the target the blade is aimed, m sideways from its centre line (+ = the holder's
    * left): a diagonal cut goes for the shoulder/neck junction on the holder's right, a thrust for
    * the centre. Without it a vertical blade on the centre line always meets the head first.
@@ -79,10 +86,17 @@ export interface SwingShape {
   windowLead: number;
 }
 
-/** Guard key = the Animator's GUARD_POSE right arm + trunk, blade up and a little forward. */
+/**
+ * Guard key = the Animator's GUARD_POSE right arm + trunk, blade up and a little forward. Lane T (wave
+ * W): GUARD_POSE holds the weapon forearm ~10° below the horizontal, so the hammer grip (handle at 90° to
+ * the forearm) already stands the blade ~10° forward of upright and the wrist turns only ~7° more to
+ * GUARD_KEY.blade (0.3 rad: the point leans ~17° toward the opponent; 0.35 before) — the handle lies
+ * ACROSS the palm (~83° to the fingers) instead of at the carry band's edge (47°: the forearm was 46° from
+ * vertical, so the wrist needed its whole ulnar range and still stopped the blade short of the wanted lean).
+ */
 export const GUARD_KEY: SwingKey = {
-  shoulder: GUARD_POSE.shoulderR ?? -1.0, elbow: GUARD_POSE.elbowR ?? -1.45,
-  blade: 0.35, roll: 0, lean: GUARD_POSE.spine ?? 0.12, twist: 0,
+  shoulder: GUARD_POSE.shoulderR ?? -1.0, elbow: GUARD_POSE.elbowR ?? -0.51,
+  blade: 0.3, roll: 0, lean: GUARD_POSE.spine ?? 0.12, twist: 0,
 };
 
 /**
@@ -107,15 +121,50 @@ export const SWING_SHAPES: Record<SwingKind, SwingShape> = {
     aimLateral: -0.12,
     windowLead: 0.9,
   },
+  // Lane T (wave W): the point is DRIVEN AT THE TARGET. The wrist can turn a handle at most 60° from
+  // the hammer grip toward the forearm line (GripStance.SNAP_BAND ulnar 1.05 rad), so a level point
+  // needs the forearm well below the horizontal: the hand drives from a chamber at the lower ribs
+  // (0.05 forward, 0.32 below the shoulder for a 0.66 m arm; the point ~25-30° up while it cocks) to
+  // the contact point ~37° down-forward at 0.97 of the reach (the forearm ~24° down, the wrist at its
+  // snap), where the point lies within 5° of the line to the target's torso (wave V's path kept the
+  // forearm level and the tip rose 24-27° above it). Tuned against lane M's meters: a lower chamber
+  // drew the hand into the hip (−72 mm) and slid the ork's planted foot past the 5 mm p95 band (5.27).
+  // `handRef`: the points scale with the holder's reach (handPoint).
   thrust: {
     kind: "thrust",
     windup: { shoulder: 0, elbow: -2, blade: Math.PI / 2, roll: -0.08, lean: -0.06, twist: -0.06 },
     strike: { shoulder: -1.4, elbow: -0.05, blade: Math.PI / 2 + 0.05, roll: -0.08, lean: 0.22, twist: 0.03 },
-    hand: { windup: [0.2, -0.3], strike: [0.64, -0.2] },
+    hand: { windup: [0.05, -0.32], strike: [0.511, -0.385] },
+    handRef: 0.66,
     aimLateral: 0,
     windowLead: 1,
   },
 };
+
+/**
+ * Lane T (wave W): the REVERSE-grip (ice-pick) thrust of a dagger. Its blade leaves the little-finger
+ * side, at 90° + the wrist band to the forearm on the far side from a forward grip, so a level drive
+ * pointed it 58-70° at the floor. An ice-pick stab comes DOWN onto the target instead: the fist cocks
+ * high by the head (forearm up and back) and drives forward-down to the target's upper chest; the point
+ * leads, ~45° down along the line from the fist to the torso. Kind "thrust" (the hand-path machinery).
+ */
+export const REVERSE_THRUST: SwingShape = {
+  kind: "thrust",
+  windup: { shoulder: -2, elbow: -1.6, blade: 2.3, roll: -0.08, lean: -0.08, twist: -0.08 },
+  strike: { shoulder: -1.4, elbow: -0.9, blade: 2.36, roll: -0.08, lean: 0.22, twist: 0.04 },
+  hand: { windup: [0.1, 0.33], strike: [0.45, 0.05] },
+  handRef: 0.66,
+  aimLateral: 0,
+  windowLead: 1,
+};
+
+/** A hand-path shape's point (`which` key) for an arm: the written point × reach / handRef. Writes `out`. */
+export function handPoint(shape: SwingShape, arm: ArmGeometry, which: "windup" | "strike", out: [number, number] = [0, 0]): [number, number] {
+  const h = shape.hand!, k = shape.handRef ? (arm.upper + arm.fore) / shape.handRef : 1;
+  out[0] = h[which][0] * k; out[1] = h[which][1] * k;
+  return out;
+}
+const HP1: [number, number] = [0, 0], HP2: [number, number] = [0, 0];
 
 /** Share of the damage mix that makes a weapon a thrusting weapon (spear 0.88, rapier 0.85, longsword 0.45). */
 export const THRUST_SHARE_MIN = 0.6;
@@ -259,8 +308,9 @@ function keysFor(shape: SwingShape, arm: ArmGeometry | null, k1: SwingKey, k2: S
   Object.assign(k2, shape.strike);
   if (!shape.hand || !arm) return;
   // armIK solves in the world's vertical plane; the shoulder joint sits in the chest frame (− lean).
-  armIK(arm, shape.hand.windup[0], shape.hand.windup[1], IK_OUT); k1.shoulder = IK_OUT.shoulder - k1.lean; k1.elbow = IK_OUT.elbow;
-  armIK(arm, shape.hand.strike[0], shape.hand.strike[1], IK_OUT); k2.shoulder = IK_OUT.shoulder - k2.lean; k2.elbow = IK_OUT.elbow;
+  handPoint(shape, arm, "windup", HP1); handPoint(shape, arm, "strike", HP2);
+  armIK(arm, HP1[0], HP1[1], IK_OUT); k1.shoulder = IK_OUT.shoulder - k1.lean; k1.elbow = IK_OUT.elbow;
+  armIK(arm, HP2[0], HP2[1], IK_OUT); k2.shoulder = IK_OUT.shoulder - k2.lean; k2.elbow = IK_OUT.elbow;
 }
 
 const K1: SwingKey = { ...GUARD_KEY }, K2: SwingKey = { ...GUARD_KEY };
@@ -273,8 +323,8 @@ export function strikeKeyAt(shape: SwingShape, arm: ArmGeometry | null, u: numbe
   keysFor(shape, arm, K1, K2);
   mixKey(K1, K2, u, out);
   if (shape.hand && arm) {
-    const h = shape.hand;
-    armIK(arm, lerp(h.windup[0], h.strike[0], u), lerp(h.windup[1], h.strike[1], u), IK_OUT);
+    handPoint(shape, arm, "windup", HP1); handPoint(shape, arm, "strike", HP2);
+    armIK(arm, lerp(HP1[0], HP2[0], u), lerp(HP1[1], HP2[1], u), IK_OUT);
     out.shoulder = IK_OUT.shoulder - out.lean; out.elbow = IK_OUT.elbow;
   }
   return out;

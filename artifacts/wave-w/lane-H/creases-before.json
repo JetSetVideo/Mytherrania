@@ -1,0 +1,3218 @@
+[
+ {
+  "id": "human-male-1",
+  "boundary": 0,
+  "nonManifold": 0,
+  "components": 1,
+  "reps": [
+   {
+    "joint": "elbowL",
+    "angle": 0,
+    "tris": 777,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.965,
+    "inner": 0.965
+   },
+   {
+    "joint": "elbowR",
+    "angle": 0,
+    "tris": 787,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.965,
+    "inner": 0.965
+   },
+   {
+    "joint": "elbowL",
+    "angle": -0.8,
+    "tris": 777,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.665,
+    "inner": 0.665
+   },
+   {
+    "joint": "elbowR",
+    "angle": -0.8,
+    "tris": 787,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.665,
+    "inner": 0.665
+   },
+   {
+    "joint": "elbowL",
+    "angle": -1.45,
+    "tris": 777,
+    "folds": 4,
+    "selfX": 0,
+    "minR": 0.348,
+    "inner": 0.348
+   },
+   {
+    "joint": "elbowR",
+    "angle": -1.45,
+    "tris": 787,
+    "folds": 4,
+    "selfX": 0,
+    "minR": 0.347,
+    "inner": 0.347
+   },
+   {
+    "joint": "elbowL",
+    "angle": -2,
+    "tris": 777,
+    "folds": 5,
+    "selfX": 24,
+    "minR": 0.163,
+    "inner": 0.163
+   },
+   {
+    "joint": "elbowR",
+    "angle": -2,
+    "tris": 787,
+    "folds": 6,
+    "selfX": 23,
+    "minR": 0.161,
+    "inner": 0.161
+   },
+   {
+    "joint": "kneeL",
+    "angle": 0,
+    "tris": 636,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 1.022,
+    "inner": 1.022
+   },
+   {
+    "joint": "kneeR",
+    "angle": 0,
+    "tris": 630,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 1.014,
+    "inner": 1.014
+   },
+   {
+    "joint": "kneeL",
+    "angle": -0.5,
+    "tris": 636,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.926,
+    "inner": 0.926
+   },
+   {
+    "joint": "kneeR",
+    "angle": -0.5,
+    "tris": 630,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.918,
+    "inner": 0.918
+   },
+   {
+    "joint": "kneeL",
+    "angle": -1.2,
+    "tris": 636,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.59,
+    "inner": 0.59
+   },
+   {
+    "joint": "kneeR",
+    "angle": -1.2,
+    "tris": 630,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.584,
+    "inner": 0.584
+   }
+  ]
+ },
+ {
+  "id": "human-male-7",
+  "boundary": 0,
+  "nonManifold": 0,
+  "components": 1,
+  "reps": [
+   {
+    "joint": "elbowL",
+    "angle": 0,
+    "tris": 780,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.985,
+    "inner": 0.985
+   },
+   {
+    "joint": "elbowR",
+    "angle": 0,
+    "tris": 787,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.984,
+    "inner": 0.984
+   },
+   {
+    "joint": "elbowL",
+    "angle": -0.8,
+    "tris": 780,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.681,
+    "inner": 0.681
+   },
+   {
+    "joint": "elbowR",
+    "angle": -0.8,
+    "tris": 787,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.681,
+    "inner": 0.681
+   },
+   {
+    "joint": "elbowL",
+    "angle": -1.45,
+    "tris": 780,
+    "folds": 1,
+    "selfX": 0,
+    "minR": 0.352,
+    "inner": 0.352
+   },
+   {
+    "joint": "elbowR",
+    "angle": -1.45,
+    "tris": 787,
+    "folds": 1,
+    "selfX": 0,
+    "minR": 0.351,
+    "inner": 0.351
+   },
+   {
+    "joint": "elbowL",
+    "angle": -2,
+    "tris": 780,
+    "folds": 4,
+    "selfX": 26,
+    "minR": 0.147,
+    "inner": 0.147
+   },
+   {
+    "joint": "elbowR",
+    "angle": -2,
+    "tris": 787,
+    "folds": 4,
+    "selfX": 31,
+    "minR": 0.146,
+    "inner": 0.146
+   },
+   {
+    "joint": "kneeL",
+    "angle": 0,
+    "tris": 628,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 1.019,
+    "inner": 1.019
+   },
+   {
+    "joint": "kneeR",
+    "angle": 0,
+    "tris": 628,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 1.018,
+    "inner": 1.018
+   },
+   {
+    "joint": "kneeL",
+    "angle": -0.5,
+    "tris": 628,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.923,
+    "inner": 0.923
+   },
+   {
+    "joint": "kneeR",
+    "angle": -0.5,
+    "tris": 628,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.922,
+    "inner": 0.922
+   },
+   {
+    "joint": "kneeL",
+    "angle": -1.2,
+    "tris": 628,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.585,
+    "inner": 0.585
+   },
+   {
+    "joint": "kneeR",
+    "angle": -1.2,
+    "tris": 628,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.584,
+    "inner": 0.584
+   }
+  ]
+ },
+ {
+  "id": "human-male-42",
+  "boundary": 0,
+  "nonManifold": 0,
+  "components": 1,
+  "reps": [
+   {
+    "joint": "elbowL",
+    "angle": 0,
+    "tris": 772,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.983,
+    "inner": 0.983
+   },
+   {
+    "joint": "elbowR",
+    "angle": 0,
+    "tris": 783,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.982,
+    "inner": 0.982
+   },
+   {
+    "joint": "elbowL",
+    "angle": -0.8,
+    "tris": 772,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.679,
+    "inner": 0.679
+   },
+   {
+    "joint": "elbowR",
+    "angle": -0.8,
+    "tris": 783,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.679,
+    "inner": 0.679
+   },
+   {
+    "joint": "elbowL",
+    "angle": -1.45,
+    "tris": 772,
+    "folds": 4,
+    "selfX": 0,
+    "minR": 0.351,
+    "inner": 0.351
+   },
+   {
+    "joint": "elbowR",
+    "angle": -1.45,
+    "tris": 783,
+    "folds": 1,
+    "selfX": 0,
+    "minR": 0.351,
+    "inner": 0.351
+   },
+   {
+    "joint": "elbowL",
+    "angle": -2,
+    "tris": 772,
+    "folds": 5,
+    "selfX": 22,
+    "minR": 0.149,
+    "inner": 0.149
+   },
+   {
+    "joint": "elbowR",
+    "angle": -2,
+    "tris": 783,
+    "folds": 4,
+    "selfX": 32,
+    "minR": 0.147,
+    "inner": 0.147
+   },
+   {
+    "joint": "kneeL",
+    "angle": 0,
+    "tris": 628,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 1.016,
+    "inner": 1.016
+   },
+   {
+    "joint": "kneeR",
+    "angle": 0,
+    "tris": 628,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 1.015,
+    "inner": 1.015
+   },
+   {
+    "joint": "kneeL",
+    "angle": -0.5,
+    "tris": 628,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.921,
+    "inner": 0.921
+   },
+   {
+    "joint": "kneeR",
+    "angle": -0.5,
+    "tris": 628,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.919,
+    "inner": 0.919
+   },
+   {
+    "joint": "kneeL",
+    "angle": -1.2,
+    "tris": 628,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.583,
+    "inner": 0.583
+   },
+   {
+    "joint": "kneeR",
+    "angle": -1.2,
+    "tris": 628,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.582,
+    "inner": 0.582
+   }
+  ]
+ },
+ {
+  "id": "human-female-1",
+  "boundary": 0,
+  "nonManifold": 0,
+  "components": 1,
+  "reps": [
+   {
+    "joint": "elbowL",
+    "angle": 0,
+    "tris": 781,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.861,
+    "inner": 0.861
+   },
+   {
+    "joint": "elbowR",
+    "angle": 0,
+    "tris": 777,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.861,
+    "inner": 0.861
+   },
+   {
+    "joint": "elbowL",
+    "angle": -0.8,
+    "tris": 781,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.587,
+    "inner": 0.587
+   },
+   {
+    "joint": "elbowR",
+    "angle": -0.8,
+    "tris": 777,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.587,
+    "inner": 0.587
+   },
+   {
+    "joint": "elbowL",
+    "angle": -1.45,
+    "tris": 781,
+    "folds": 3,
+    "selfX": 0,
+    "minR": 0.29,
+    "inner": 0.29
+   },
+   {
+    "joint": "elbowR",
+    "angle": -1.45,
+    "tris": 777,
+    "folds": 3,
+    "selfX": 0,
+    "minR": 0.29,
+    "inner": 0.29
+   },
+   {
+    "joint": "elbowL",
+    "angle": -2,
+    "tris": 781,
+    "folds": 5,
+    "selfX": 29,
+    "minR": 0.083,
+    "inner": 0.083
+   },
+   {
+    "joint": "elbowR",
+    "angle": -2,
+    "tris": 777,
+    "folds": 4,
+    "selfX": 28,
+    "minR": 0.083,
+    "inner": 0.083
+   },
+   {
+    "joint": "kneeL",
+    "angle": 0,
+    "tris": 634,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.95,
+    "inner": 0.95
+   },
+   {
+    "joint": "kneeR",
+    "angle": 0,
+    "tris": 633,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.949,
+    "inner": 0.949
+   },
+   {
+    "joint": "kneeL",
+    "angle": -0.5,
+    "tris": 634,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.773,
+    "inner": 0.773
+   },
+   {
+    "joint": "kneeR",
+    "angle": -0.5,
+    "tris": 633,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.772,
+    "inner": 0.772
+   },
+   {
+    "joint": "kneeL",
+    "angle": -1.2,
+    "tris": 634,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.431,
+    "inner": 0.431
+   },
+   {
+    "joint": "kneeR",
+    "angle": -1.2,
+    "tris": 633,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.432,
+    "inner": 0.432
+   }
+  ]
+ },
+ {
+  "id": "human-female-7",
+  "boundary": 0,
+  "nonManifold": 0,
+  "components": 1,
+  "reps": [
+   {
+    "joint": "elbowL",
+    "angle": 0,
+    "tris": 769,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 1.042,
+    "inner": 1.042
+   },
+   {
+    "joint": "elbowR",
+    "angle": 0,
+    "tris": 769,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 1.046,
+    "inner": 1.046
+   },
+   {
+    "joint": "elbowL",
+    "angle": -0.8,
+    "tris": 769,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.713,
+    "inner": 0.713
+   },
+   {
+    "joint": "elbowR",
+    "angle": -0.8,
+    "tris": 769,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.714,
+    "inner": 0.714
+   },
+   {
+    "joint": "elbowL",
+    "angle": -1.45,
+    "tris": 769,
+    "folds": 2,
+    "selfX": 0,
+    "minR": 0.384,
+    "inner": 0.384
+   },
+   {
+    "joint": "elbowR",
+    "angle": -1.45,
+    "tris": 769,
+    "folds": 3,
+    "selfX": 0,
+    "minR": 0.384,
+    "inner": 0.384
+   },
+   {
+    "joint": "elbowL",
+    "angle": -2,
+    "tris": 769,
+    "folds": 7,
+    "selfX": 37,
+    "minR": 0.22,
+    "inner": 0.22
+   },
+   {
+    "joint": "elbowR",
+    "angle": -2,
+    "tris": 769,
+    "folds": 6,
+    "selfX": 38,
+    "minR": 0.22,
+    "inner": 0.22
+   },
+   {
+    "joint": "kneeL",
+    "angle": 0,
+    "tris": 633,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.951,
+    "inner": 0.951
+   },
+   {
+    "joint": "kneeR",
+    "angle": 0,
+    "tris": 633,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.951,
+    "inner": 0.951
+   },
+   {
+    "joint": "kneeL",
+    "angle": -0.5,
+    "tris": 633,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.775,
+    "inner": 0.775
+   },
+   {
+    "joint": "kneeR",
+    "angle": -0.5,
+    "tris": 633,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.775,
+    "inner": 0.775
+   },
+   {
+    "joint": "kneeL",
+    "angle": -1.2,
+    "tris": 633,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.435,
+    "inner": 0.435
+   },
+   {
+    "joint": "kneeR",
+    "angle": -1.2,
+    "tris": 633,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.435,
+    "inner": 0.435
+   }
+  ]
+ },
+ {
+  "id": "human-female-42",
+  "boundary": 0,
+  "nonManifold": 0,
+  "components": 1,
+  "reps": [
+   {
+    "joint": "elbowL",
+    "angle": 0,
+    "tris": 773,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 1.042,
+    "inner": 1.042
+   },
+   {
+    "joint": "elbowR",
+    "angle": 0,
+    "tris": 773,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 1.047,
+    "inner": 1.047
+   },
+   {
+    "joint": "elbowL",
+    "angle": -0.8,
+    "tris": 773,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.722,
+    "inner": 0.722
+   },
+   {
+    "joint": "elbowR",
+    "angle": -0.8,
+    "tris": 773,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.723,
+    "inner": 0.723
+   },
+   {
+    "joint": "elbowL",
+    "angle": -1.45,
+    "tris": 773,
+    "folds": 2,
+    "selfX": 0,
+    "minR": 0.388,
+    "inner": 0.388
+   },
+   {
+    "joint": "elbowR",
+    "angle": -1.45,
+    "tris": 773,
+    "folds": 3,
+    "selfX": 0,
+    "minR": 0.389,
+    "inner": 0.389
+   },
+   {
+    "joint": "elbowL",
+    "angle": -2,
+    "tris": 773,
+    "folds": 7,
+    "selfX": 31,
+    "minR": 0.221,
+    "inner": 0.221
+   },
+   {
+    "joint": "elbowR",
+    "angle": -2,
+    "tris": 773,
+    "folds": 6,
+    "selfX": 38,
+    "minR": 0.221,
+    "inner": 0.221
+   },
+   {
+    "joint": "kneeL",
+    "angle": 0,
+    "tris": 633,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.951,
+    "inner": 0.951
+   },
+   {
+    "joint": "kneeR",
+    "angle": 0,
+    "tris": 633,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.95,
+    "inner": 0.95
+   },
+   {
+    "joint": "kneeL",
+    "angle": -0.5,
+    "tris": 633,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.775,
+    "inner": 0.775
+   },
+   {
+    "joint": "kneeR",
+    "angle": -0.5,
+    "tris": 633,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.775,
+    "inner": 0.775
+   },
+   {
+    "joint": "kneeL",
+    "angle": -1.2,
+    "tris": 633,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.436,
+    "inner": 0.436
+   },
+   {
+    "joint": "kneeR",
+    "angle": -1.2,
+    "tris": 633,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.436,
+    "inner": 0.436
+   }
+  ]
+ },
+ {
+  "id": "elf-male-1",
+  "boundary": 0,
+  "nonManifold": 0,
+  "components": 1,
+  "reps": [
+   {
+    "joint": "elbowL",
+    "angle": 0,
+    "tris": 797,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.999,
+    "inner": 0.999
+   },
+   {
+    "joint": "elbowR",
+    "angle": 0,
+    "tris": 794,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 1.001,
+    "inner": 1.001
+   },
+   {
+    "joint": "elbowL",
+    "angle": -0.8,
+    "tris": 797,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.67,
+    "inner": 0.67
+   },
+   {
+    "joint": "elbowR",
+    "angle": -0.8,
+    "tris": 794,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.672,
+    "inner": 0.672
+   },
+   {
+    "joint": "elbowL",
+    "angle": -1.45,
+    "tris": 797,
+    "folds": 1,
+    "selfX": 0,
+    "minR": 0.324,
+    "inner": 0.324
+   },
+   {
+    "joint": "elbowR",
+    "angle": -1.45,
+    "tris": 794,
+    "folds": 1,
+    "selfX": 0,
+    "minR": 0.326,
+    "inner": 0.326
+   },
+   {
+    "joint": "elbowL",
+    "angle": -2,
+    "tris": 797,
+    "folds": 4,
+    "selfX": 21,
+    "minR": 0.095,
+    "inner": 0.095
+   },
+   {
+    "joint": "elbowR",
+    "angle": -2,
+    "tris": 794,
+    "folds": 4,
+    "selfX": 23,
+    "minR": 0.096,
+    "inner": 0.096
+   },
+   {
+    "joint": "kneeL",
+    "angle": 0,
+    "tris": 728,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 1.007,
+    "inner": 1.007
+   },
+   {
+    "joint": "kneeR",
+    "angle": 0,
+    "tris": 728,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 1,
+    "inner": 1
+   },
+   {
+    "joint": "kneeL",
+    "angle": -0.5,
+    "tris": 728,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.866,
+    "inner": 0.866
+   },
+   {
+    "joint": "kneeR",
+    "angle": -0.5,
+    "tris": 728,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.859,
+    "inner": 0.859
+   },
+   {
+    "joint": "kneeL",
+    "angle": -1.2,
+    "tris": 728,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.535,
+    "inner": 0.535
+   },
+   {
+    "joint": "kneeR",
+    "angle": -1.2,
+    "tris": 728,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.53,
+    "inner": 0.53
+   }
+  ]
+ },
+ {
+  "id": "elf-male-7",
+  "boundary": 0,
+  "nonManifold": 0,
+  "components": 1,
+  "reps": [
+   {
+    "joint": "elbowL",
+    "angle": 0,
+    "tris": 792,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 1.017,
+    "inner": 1.017
+   },
+   {
+    "joint": "elbowR",
+    "angle": 0,
+    "tris": 789,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 1.021,
+    "inner": 1.021
+   },
+   {
+    "joint": "elbowL",
+    "angle": -0.8,
+    "tris": 792,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.685,
+    "inner": 0.685
+   },
+   {
+    "joint": "elbowR",
+    "angle": -0.8,
+    "tris": 789,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.687,
+    "inner": 0.687
+   },
+   {
+    "joint": "elbowL",
+    "angle": -1.45,
+    "tris": 792,
+    "folds": 1,
+    "selfX": 0,
+    "minR": 0.333,
+    "inner": 0.333
+   },
+   {
+    "joint": "elbowR",
+    "angle": -1.45,
+    "tris": 789,
+    "folds": 1,
+    "selfX": 0,
+    "minR": 0.334,
+    "inner": 0.334
+   },
+   {
+    "joint": "elbowL",
+    "angle": -2,
+    "tris": 792,
+    "folds": 3,
+    "selfX": 24,
+    "minR": 0.098,
+    "inner": 0.098
+   },
+   {
+    "joint": "elbowR",
+    "angle": -2,
+    "tris": 789,
+    "folds": 5,
+    "selfX": 24,
+    "minR": 0.098,
+    "inner": 0.098
+   },
+   {
+    "joint": "kneeL",
+    "angle": 0,
+    "tris": 732,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 1.004,
+    "inner": 1.004
+   },
+   {
+    "joint": "kneeR",
+    "angle": 0,
+    "tris": 732,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 1.004,
+    "inner": 1.004
+   },
+   {
+    "joint": "kneeL",
+    "angle": -0.5,
+    "tris": 732,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.863,
+    "inner": 0.863
+   },
+   {
+    "joint": "kneeR",
+    "angle": -0.5,
+    "tris": 732,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.863,
+    "inner": 0.863
+   },
+   {
+    "joint": "kneeL",
+    "angle": -1.2,
+    "tris": 732,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.533,
+    "inner": 0.533
+   },
+   {
+    "joint": "kneeR",
+    "angle": -1.2,
+    "tris": 732,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.533,
+    "inner": 0.533
+   }
+  ]
+ },
+ {
+  "id": "elf-male-42",
+  "boundary": 0,
+  "nonManifold": 0,
+  "components": 1,
+  "reps": [
+   {
+    "joint": "elbowL",
+    "angle": 0,
+    "tris": 796,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 1.017,
+    "inner": 1.017
+   },
+   {
+    "joint": "elbowR",
+    "angle": 0,
+    "tris": 794,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 1.028,
+    "inner": 1.028
+   },
+   {
+    "joint": "elbowL",
+    "angle": -0.8,
+    "tris": 796,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.691,
+    "inner": 0.691
+   },
+   {
+    "joint": "elbowR",
+    "angle": -0.8,
+    "tris": 794,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.693,
+    "inner": 0.693
+   },
+   {
+    "joint": "elbowL",
+    "angle": -1.45,
+    "tris": 796,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.336,
+    "inner": 0.336
+   },
+   {
+    "joint": "elbowR",
+    "angle": -1.45,
+    "tris": 794,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.337,
+    "inner": 0.337
+   },
+   {
+    "joint": "elbowL",
+    "angle": -2,
+    "tris": 796,
+    "folds": 4,
+    "selfX": 26,
+    "minR": 0.099,
+    "inner": 0.099
+   },
+   {
+    "joint": "elbowR",
+    "angle": -2,
+    "tris": 794,
+    "folds": 2,
+    "selfX": 24,
+    "minR": 0.099,
+    "inner": 0.099
+   },
+   {
+    "joint": "kneeL",
+    "angle": 0,
+    "tris": 733,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 1.002,
+    "inner": 1.002
+   },
+   {
+    "joint": "kneeR",
+    "angle": 0,
+    "tris": 733,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 1.001,
+    "inner": 1.001
+   },
+   {
+    "joint": "kneeL",
+    "angle": -0.5,
+    "tris": 733,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.861,
+    "inner": 0.861
+   },
+   {
+    "joint": "kneeR",
+    "angle": -0.5,
+    "tris": 733,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.86,
+    "inner": 0.86
+   },
+   {
+    "joint": "kneeL",
+    "angle": -1.2,
+    "tris": 733,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.531,
+    "inner": 0.531
+   },
+   {
+    "joint": "kneeR",
+    "angle": -1.2,
+    "tris": 733,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.531,
+    "inner": 0.531
+   }
+  ]
+ },
+ {
+  "id": "elf-female-1",
+  "boundary": 0,
+  "nonManifold": 0,
+  "components": 1,
+  "reps": [
+   {
+    "joint": "elbowL",
+    "angle": 0,
+    "tris": 766,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.982,
+    "inner": 0.982
+   },
+   {
+    "joint": "elbowR",
+    "angle": 0,
+    "tris": 779,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.99,
+    "inner": 0.99
+   },
+   {
+    "joint": "elbowL",
+    "angle": -0.8,
+    "tris": 766,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.69,
+    "inner": 0.69
+   },
+   {
+    "joint": "elbowR",
+    "angle": -0.8,
+    "tris": 779,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.691,
+    "inner": 0.691
+   },
+   {
+    "joint": "elbowL",
+    "angle": -1.45,
+    "tris": 766,
+    "folds": 1,
+    "selfX": 0,
+    "minR": 0.359,
+    "inner": 0.359
+   },
+   {
+    "joint": "elbowR",
+    "angle": -1.45,
+    "tris": 779,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.359,
+    "inner": 0.359
+   },
+   {
+    "joint": "elbowL",
+    "angle": -2,
+    "tris": 766,
+    "folds": 4,
+    "selfX": 15,
+    "minR": 0.153,
+    "inner": 0.153
+   },
+   {
+    "joint": "elbowR",
+    "angle": -2,
+    "tris": 779,
+    "folds": 4,
+    "selfX": 28,
+    "minR": 0.152,
+    "inner": 0.152
+   },
+   {
+    "joint": "kneeL",
+    "angle": 0,
+    "tris": 755,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.995,
+    "inner": 0.995
+   },
+   {
+    "joint": "kneeR",
+    "angle": 0,
+    "tris": 751,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.988,
+    "inner": 0.988
+   },
+   {
+    "joint": "kneeL",
+    "angle": -0.5,
+    "tris": 755,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.84,
+    "inner": 0.84
+   },
+   {
+    "joint": "kneeR",
+    "angle": -0.5,
+    "tris": 751,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.834,
+    "inner": 0.834
+   },
+   {
+    "joint": "kneeL",
+    "angle": -1.2,
+    "tris": 755,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.498,
+    "inner": 0.498
+   },
+   {
+    "joint": "kneeR",
+    "angle": -1.2,
+    "tris": 751,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.493,
+    "inner": 0.493
+   }
+  ]
+ },
+ {
+  "id": "elf-female-7",
+  "boundary": 0,
+  "nonManifold": 0,
+  "components": 1,
+  "reps": [
+   {
+    "joint": "elbowL",
+    "angle": 0,
+    "tris": 765,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.993,
+    "inner": 0.993
+   },
+   {
+    "joint": "elbowR",
+    "angle": 0,
+    "tris": 791,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 1,
+    "inner": 1
+   },
+   {
+    "joint": "elbowL",
+    "angle": -0.8,
+    "tris": 765,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.7,
+    "inner": 0.7
+   },
+   {
+    "joint": "elbowR",
+    "angle": -0.8,
+    "tris": 791,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.702,
+    "inner": 0.702
+   },
+   {
+    "joint": "elbowL",
+    "angle": -1.45,
+    "tris": 765,
+    "folds": 2,
+    "selfX": 0,
+    "minR": 0.358,
+    "inner": 0.358
+   },
+   {
+    "joint": "elbowR",
+    "angle": -1.45,
+    "tris": 791,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.359,
+    "inner": 0.359
+   },
+   {
+    "joint": "elbowL",
+    "angle": -2,
+    "tris": 765,
+    "folds": 4,
+    "selfX": 28,
+    "minR": 0.131,
+    "inner": 0.131
+   },
+   {
+    "joint": "elbowR",
+    "angle": -2,
+    "tris": 791,
+    "folds": 3,
+    "selfX": 26,
+    "minR": 0.13,
+    "inner": 0.13
+   },
+   {
+    "joint": "kneeL",
+    "angle": 0,
+    "tris": 756,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.991,
+    "inner": 0.991
+   },
+   {
+    "joint": "kneeR",
+    "angle": 0,
+    "tris": 754,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.991,
+    "inner": 0.991
+   },
+   {
+    "joint": "kneeL",
+    "angle": -0.5,
+    "tris": 756,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.837,
+    "inner": 0.837
+   },
+   {
+    "joint": "kneeR",
+    "angle": -0.5,
+    "tris": 754,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.836,
+    "inner": 0.836
+   },
+   {
+    "joint": "kneeL",
+    "angle": -1.2,
+    "tris": 756,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.495,
+    "inner": 0.495
+   },
+   {
+    "joint": "kneeR",
+    "angle": -1.2,
+    "tris": 754,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.495,
+    "inner": 0.495
+   }
+  ]
+ },
+ {
+  "id": "elf-female-42",
+  "boundary": 0,
+  "nonManifold": 0,
+  "components": 1,
+  "reps": [
+   {
+    "joint": "elbowL",
+    "angle": 0,
+    "tris": 770,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.975,
+    "inner": 0.975
+   },
+   {
+    "joint": "elbowR",
+    "angle": 0,
+    "tris": 779,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.975,
+    "inner": 0.975
+   },
+   {
+    "joint": "elbowL",
+    "angle": -0.8,
+    "tris": 770,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.645,
+    "inner": 0.645
+   },
+   {
+    "joint": "elbowR",
+    "angle": -0.8,
+    "tris": 779,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.643,
+    "inner": 0.643
+   },
+   {
+    "joint": "elbowL",
+    "angle": -1.45,
+    "tris": 770,
+    "folds": 2,
+    "selfX": 0,
+    "minR": 0.309,
+    "inner": 0.309
+   },
+   {
+    "joint": "elbowR",
+    "angle": -1.45,
+    "tris": 779,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.309,
+    "inner": 0.309
+   },
+   {
+    "joint": "elbowL",
+    "angle": -2,
+    "tris": 770,
+    "folds": 6,
+    "selfX": 17,
+    "minR": 0.092,
+    "inner": 0.092
+   },
+   {
+    "joint": "elbowR",
+    "angle": -2,
+    "tris": 779,
+    "folds": 5,
+    "selfX": 31,
+    "minR": 0.092,
+    "inner": 0.092
+   },
+   {
+    "joint": "kneeL",
+    "angle": 0,
+    "tris": 746,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.985,
+    "inner": 0.985
+   },
+   {
+    "joint": "kneeR",
+    "angle": 0,
+    "tris": 746,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.984,
+    "inner": 0.984
+   },
+   {
+    "joint": "kneeL",
+    "angle": -0.5,
+    "tris": 746,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.826,
+    "inner": 0.826
+   },
+   {
+    "joint": "kneeR",
+    "angle": -0.5,
+    "tris": 746,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.825,
+    "inner": 0.825
+   },
+   {
+    "joint": "kneeL",
+    "angle": -1.2,
+    "tris": 746,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.483,
+    "inner": 0.483
+   },
+   {
+    "joint": "kneeR",
+    "angle": -1.2,
+    "tris": 746,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.482,
+    "inner": 0.482
+   }
+  ]
+ },
+ {
+  "id": "dwarf-male-1",
+  "boundary": 0,
+  "nonManifold": 0,
+  "components": 1,
+  "reps": [
+   {
+    "joint": "elbowL",
+    "angle": 0,
+    "tris": 680,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.821,
+    "inner": 0.821
+   },
+   {
+    "joint": "elbowR",
+    "angle": 0,
+    "tris": 688,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.821,
+    "inner": 0.821
+   },
+   {
+    "joint": "elbowL",
+    "angle": -0.8,
+    "tris": 680,
+    "folds": 8,
+    "selfX": 0,
+    "minR": 0.593,
+    "inner": 0.593
+   },
+   {
+    "joint": "elbowR",
+    "angle": -0.8,
+    "tris": 688,
+    "folds": 8,
+    "selfX": 0,
+    "minR": 0.593,
+    "inner": 0.593
+   },
+   {
+    "joint": "elbowL",
+    "angle": -1.45,
+    "tris": 680,
+    "folds": 16,
+    "selfX": 0,
+    "minR": 0.318,
+    "inner": 0.318
+   },
+   {
+    "joint": "elbowR",
+    "angle": -1.45,
+    "tris": 688,
+    "folds": 17,
+    "selfX": 0,
+    "minR": 0.318,
+    "inner": 0.318
+   },
+   {
+    "joint": "elbowL",
+    "angle": -2,
+    "tris": 680,
+    "folds": 24,
+    "selfX": 45,
+    "minR": 0.096,
+    "inner": 0.096
+   },
+   {
+    "joint": "elbowR",
+    "angle": -2,
+    "tris": 688,
+    "folds": 29,
+    "selfX": 44,
+    "minR": 0.096,
+    "inner": 0.096
+   },
+   {
+    "joint": "kneeL",
+    "angle": 0,
+    "tris": 750,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.928,
+    "inner": 0.928
+   },
+   {
+    "joint": "kneeR",
+    "angle": 0,
+    "tris": 742,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.924,
+    "inner": 0.924
+   },
+   {
+    "joint": "kneeL",
+    "angle": -0.5,
+    "tris": 750,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.773,
+    "inner": 0.773
+   },
+   {
+    "joint": "kneeR",
+    "angle": -0.5,
+    "tris": 742,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.769,
+    "inner": 0.769
+   },
+   {
+    "joint": "kneeL",
+    "angle": -1.2,
+    "tris": 750,
+    "folds": 5,
+    "selfX": 0,
+    "minR": 0.441,
+    "inner": 0.441
+   },
+   {
+    "joint": "kneeR",
+    "angle": -1.2,
+    "tris": 742,
+    "folds": 5,
+    "selfX": 0,
+    "minR": 0.438,
+    "inner": 0.438
+   }
+  ]
+ },
+ {
+  "id": "dwarf-male-7",
+  "boundary": 0,
+  "nonManifold": 0,
+  "components": 1,
+  "reps": [
+   {
+    "joint": "elbowL",
+    "angle": 0,
+    "tris": 677,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.838,
+    "inner": 0.838
+   },
+   {
+    "joint": "elbowR",
+    "angle": 0,
+    "tris": 684,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.838,
+    "inner": 0.838
+   },
+   {
+    "joint": "elbowL",
+    "angle": -0.8,
+    "tris": 677,
+    "folds": 8,
+    "selfX": 0,
+    "minR": 0.632,
+    "inner": 0.632
+   },
+   {
+    "joint": "elbowR",
+    "angle": -0.8,
+    "tris": 684,
+    "folds": 8,
+    "selfX": 0,
+    "minR": 0.632,
+    "inner": 0.632
+   },
+   {
+    "joint": "elbowL",
+    "angle": -1.45,
+    "tris": 677,
+    "folds": 17,
+    "selfX": 0,
+    "minR": 0.361,
+    "inner": 0.361
+   },
+   {
+    "joint": "elbowR",
+    "angle": -1.45,
+    "tris": 684,
+    "folds": 17,
+    "selfX": 0,
+    "minR": 0.361,
+    "inner": 0.361
+   },
+   {
+    "joint": "elbowL",
+    "angle": -2,
+    "tris": 677,
+    "folds": 26,
+    "selfX": 44,
+    "minR": 0.111,
+    "inner": 0.111
+   },
+   {
+    "joint": "elbowR",
+    "angle": -2,
+    "tris": 684,
+    "folds": 27,
+    "selfX": 44,
+    "minR": 0.111,
+    "inner": 0.111
+   },
+   {
+    "joint": "kneeL",
+    "angle": 0,
+    "tris": 748,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.928,
+    "inner": 0.928
+   },
+   {
+    "joint": "kneeR",
+    "angle": 0,
+    "tris": 744,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.928,
+    "inner": 0.928
+   },
+   {
+    "joint": "kneeL",
+    "angle": -0.5,
+    "tris": 748,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.77,
+    "inner": 0.77
+   },
+   {
+    "joint": "kneeR",
+    "angle": -0.5,
+    "tris": 744,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.77,
+    "inner": 0.77
+   },
+   {
+    "joint": "kneeL",
+    "angle": -1.2,
+    "tris": 748,
+    "folds": 4,
+    "selfX": 0,
+    "minR": 0.438,
+    "inner": 0.438
+   },
+   {
+    "joint": "kneeR",
+    "angle": -1.2,
+    "tris": 744,
+    "folds": 5,
+    "selfX": 0,
+    "minR": 0.438,
+    "inner": 0.438
+   }
+  ]
+ },
+ {
+  "id": "dwarf-male-42",
+  "boundary": 0,
+  "nonManifold": 0,
+  "components": 1,
+  "reps": [
+   {
+    "joint": "elbowL",
+    "angle": 0,
+    "tris": 682,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.836,
+    "inner": 0.836
+   },
+   {
+    "joint": "elbowR",
+    "angle": 0,
+    "tris": 688,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.836,
+    "inner": 0.836
+   },
+   {
+    "joint": "elbowL",
+    "angle": -0.8,
+    "tris": 682,
+    "folds": 9,
+    "selfX": 0,
+    "minR": 0.628,
+    "inner": 0.628
+   },
+   {
+    "joint": "elbowR",
+    "angle": -0.8,
+    "tris": 688,
+    "folds": 9,
+    "selfX": 0,
+    "minR": 0.628,
+    "inner": 0.628
+   },
+   {
+    "joint": "elbowL",
+    "angle": -1.45,
+    "tris": 682,
+    "folds": 15,
+    "selfX": 0,
+    "minR": 0.356,
+    "inner": 0.356
+   },
+   {
+    "joint": "elbowR",
+    "angle": -1.45,
+    "tris": 688,
+    "folds": 17,
+    "selfX": 0,
+    "minR": 0.356,
+    "inner": 0.356
+   },
+   {
+    "joint": "elbowL",
+    "angle": -2,
+    "tris": 682,
+    "folds": 26,
+    "selfX": 47,
+    "minR": 0.109,
+    "inner": 0.109
+   },
+   {
+    "joint": "elbowR",
+    "angle": -2,
+    "tris": 688,
+    "folds": 31,
+    "selfX": 44,
+    "minR": 0.109,
+    "inner": 0.109
+   },
+   {
+    "joint": "kneeL",
+    "angle": 0,
+    "tris": 744,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.927,
+    "inner": 0.927
+   },
+   {
+    "joint": "kneeR",
+    "angle": 0,
+    "tris": 741,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.927,
+    "inner": 0.927
+   },
+   {
+    "joint": "kneeL",
+    "angle": -0.5,
+    "tris": 744,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.769,
+    "inner": 0.769
+   },
+   {
+    "joint": "kneeR",
+    "angle": -0.5,
+    "tris": 741,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.769,
+    "inner": 0.769
+   },
+   {
+    "joint": "kneeL",
+    "angle": -1.2,
+    "tris": 744,
+    "folds": 5,
+    "selfX": 0,
+    "minR": 0.437,
+    "inner": 0.437
+   },
+   {
+    "joint": "kneeR",
+    "angle": -1.2,
+    "tris": 741,
+    "folds": 5,
+    "selfX": 0,
+    "minR": 0.437,
+    "inner": 0.437
+   }
+  ]
+ },
+ {
+  "id": "dwarf-female-1",
+  "boundary": 0,
+  "nonManifold": 0,
+  "components": 1,
+  "reps": [
+   {
+    "joint": "elbowL",
+    "angle": 0,
+    "tris": 711,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.901,
+    "inner": 0.901
+   },
+   {
+    "joint": "elbowR",
+    "angle": 0,
+    "tris": 718,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.901,
+    "inner": 0.901
+   },
+   {
+    "joint": "elbowL",
+    "angle": -0.8,
+    "tris": 711,
+    "folds": 4,
+    "selfX": 0,
+    "minR": 0.668,
+    "inner": 0.668
+   },
+   {
+    "joint": "elbowR",
+    "angle": -0.8,
+    "tris": 718,
+    "folds": 6,
+    "selfX": 0,
+    "minR": 0.668,
+    "inner": 0.668
+   },
+   {
+    "joint": "elbowL",
+    "angle": -1.45,
+    "tris": 711,
+    "folds": 11,
+    "selfX": 0,
+    "minR": 0.359,
+    "inner": 0.359
+   },
+   {
+    "joint": "elbowR",
+    "angle": -1.45,
+    "tris": 718,
+    "folds": 14,
+    "selfX": 0,
+    "minR": 0.359,
+    "inner": 0.359
+   },
+   {
+    "joint": "elbowL",
+    "angle": -2,
+    "tris": 711,
+    "folds": 30,
+    "selfX": 41,
+    "minR": 0.168,
+    "inner": 0.168
+   },
+   {
+    "joint": "elbowR",
+    "angle": -2,
+    "tris": 718,
+    "folds": 27,
+    "selfX": 42,
+    "minR": 0.168,
+    "inner": 0.168
+   },
+   {
+    "joint": "kneeL",
+    "angle": 0,
+    "tris": 739,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.933,
+    "inner": 0.933
+   },
+   {
+    "joint": "kneeR",
+    "angle": 0,
+    "tris": 739,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.928,
+    "inner": 0.928
+   },
+   {
+    "joint": "kneeL",
+    "angle": -0.5,
+    "tris": 739,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.791,
+    "inner": 0.791
+   },
+   {
+    "joint": "kneeR",
+    "angle": -0.5,
+    "tris": 739,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.786,
+    "inner": 0.786
+   },
+   {
+    "joint": "kneeL",
+    "angle": -1.2,
+    "tris": 739,
+    "folds": 2,
+    "selfX": 0,
+    "minR": 0.472,
+    "inner": 0.472
+   },
+   {
+    "joint": "kneeR",
+    "angle": -1.2,
+    "tris": 739,
+    "folds": 2,
+    "selfX": 0,
+    "minR": 0.469,
+    "inner": 0.469
+   }
+  ]
+ },
+ {
+  "id": "dwarf-female-7",
+  "boundary": 0,
+  "nonManifold": 0,
+  "components": 1,
+  "reps": [
+   {
+    "joint": "elbowL",
+    "angle": 0,
+    "tris": 713,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.948,
+    "inner": 0.948
+   },
+   {
+    "joint": "elbowR",
+    "angle": 0,
+    "tris": 714,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.948,
+    "inner": 0.948
+   },
+   {
+    "joint": "elbowL",
+    "angle": -0.8,
+    "tris": 713,
+    "folds": 5,
+    "selfX": 0,
+    "minR": 0.707,
+    "inner": 0.707
+   },
+   {
+    "joint": "elbowR",
+    "angle": -0.8,
+    "tris": 714,
+    "folds": 6,
+    "selfX": 0,
+    "minR": 0.707,
+    "inner": 0.707
+   },
+   {
+    "joint": "elbowL",
+    "angle": -1.45,
+    "tris": 713,
+    "folds": 17,
+    "selfX": 0,
+    "minR": 0.368,
+    "inner": 0.368
+   },
+   {
+    "joint": "elbowR",
+    "angle": -1.45,
+    "tris": 714,
+    "folds": 15,
+    "selfX": 0,
+    "minR": 0.368,
+    "inner": 0.368
+   },
+   {
+    "joint": "elbowL",
+    "angle": -2,
+    "tris": 713,
+    "folds": 31,
+    "selfX": 38,
+    "minR": 0.165,
+    "inner": 0.165
+   },
+   {
+    "joint": "elbowR",
+    "angle": -2,
+    "tris": 714,
+    "folds": 28,
+    "selfX": 40,
+    "minR": 0.165,
+    "inner": 0.165
+   },
+   {
+    "joint": "kneeL",
+    "angle": 0,
+    "tris": 739,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.923,
+    "inner": 0.923
+   },
+   {
+    "joint": "kneeR",
+    "angle": 0,
+    "tris": 739,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.923,
+    "inner": 0.923
+   },
+   {
+    "joint": "kneeL",
+    "angle": -0.5,
+    "tris": 739,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.782,
+    "inner": 0.782
+   },
+   {
+    "joint": "kneeR",
+    "angle": -0.5,
+    "tris": 739,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.782,
+    "inner": 0.782
+   },
+   {
+    "joint": "kneeL",
+    "angle": -1.2,
+    "tris": 739,
+    "folds": 1,
+    "selfX": 0,
+    "minR": 0.465,
+    "inner": 0.465
+   },
+   {
+    "joint": "kneeR",
+    "angle": -1.2,
+    "tris": 739,
+    "folds": 2,
+    "selfX": 0,
+    "minR": 0.465,
+    "inner": 0.465
+   }
+  ]
+ },
+ {
+  "id": "dwarf-female-42",
+  "boundary": 0,
+  "nonManifold": 0,
+  "components": 1,
+  "reps": [
+   {
+    "joint": "elbowL",
+    "angle": 0,
+    "tris": 699,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.943,
+    "inner": 0.943
+   },
+   {
+    "joint": "elbowR",
+    "angle": 0,
+    "tris": 706,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.943,
+    "inner": 0.943
+   },
+   {
+    "joint": "elbowL",
+    "angle": -0.8,
+    "tris": 699,
+    "folds": 5,
+    "selfX": 0,
+    "minR": 0.703,
+    "inner": 0.703
+   },
+   {
+    "joint": "elbowR",
+    "angle": -0.8,
+    "tris": 706,
+    "folds": 6,
+    "selfX": 0,
+    "minR": 0.703,
+    "inner": 0.703
+   },
+   {
+    "joint": "elbowL",
+    "angle": -1.45,
+    "tris": 699,
+    "folds": 12,
+    "selfX": 0,
+    "minR": 0.367,
+    "inner": 0.367
+   },
+   {
+    "joint": "elbowR",
+    "angle": -1.45,
+    "tris": 706,
+    "folds": 12,
+    "selfX": 0,
+    "minR": 0.367,
+    "inner": 0.367
+   },
+   {
+    "joint": "elbowL",
+    "angle": -2,
+    "tris": 699,
+    "folds": 27,
+    "selfX": 40,
+    "minR": 0.166,
+    "inner": 0.166
+   },
+   {
+    "joint": "elbowR",
+    "angle": -2,
+    "tris": 706,
+    "folds": 24,
+    "selfX": 38,
+    "minR": 0.166,
+    "inner": 0.166
+   },
+   {
+    "joint": "kneeL",
+    "angle": 0,
+    "tris": 733,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.921,
+    "inner": 0.921
+   },
+   {
+    "joint": "kneeR",
+    "angle": 0,
+    "tris": 737,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.921,
+    "inner": 0.921
+   },
+   {
+    "joint": "kneeL",
+    "angle": -0.5,
+    "tris": 733,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.78,
+    "inner": 0.78
+   },
+   {
+    "joint": "kneeR",
+    "angle": -0.5,
+    "tris": 737,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.78,
+    "inner": 0.78
+   },
+   {
+    "joint": "kneeL",
+    "angle": -1.2,
+    "tris": 733,
+    "folds": 3,
+    "selfX": 0,
+    "minR": 0.464,
+    "inner": 0.464
+   },
+   {
+    "joint": "kneeR",
+    "angle": -1.2,
+    "tris": 737,
+    "folds": 2,
+    "selfX": 0,
+    "minR": 0.464,
+    "inner": 0.464
+   }
+  ]
+ },
+ {
+  "id": "ork-male-1",
+  "boundary": 0,
+  "nonManifold": 0,
+  "components": 1,
+  "reps": [
+   {
+    "joint": "elbowL",
+    "angle": 0,
+    "tris": 851,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.813,
+    "inner": 0.813
+   },
+   {
+    "joint": "elbowR",
+    "angle": 0,
+    "tris": 846,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.813,
+    "inner": 0.813
+   },
+   {
+    "joint": "elbowL",
+    "angle": -0.8,
+    "tris": 851,
+    "folds": 13,
+    "selfX": 0,
+    "minR": 0.591,
+    "inner": 0.591
+   },
+   {
+    "joint": "elbowR",
+    "angle": -0.8,
+    "tris": 846,
+    "folds": 13,
+    "selfX": 0,
+    "minR": 0.591,
+    "inner": 0.591
+   },
+   {
+    "joint": "elbowL",
+    "angle": -1.45,
+    "tris": 851,
+    "folds": 28,
+    "selfX": 0,
+    "minR": 0.317,
+    "inner": 0.317
+   },
+   {
+    "joint": "elbowR",
+    "angle": -1.45,
+    "tris": 846,
+    "folds": 27,
+    "selfX": 0,
+    "minR": 0.317,
+    "inner": 0.317
+   },
+   {
+    "joint": "elbowL",
+    "angle": -2,
+    "tris": 851,
+    "folds": 43,
+    "selfX": 47,
+    "minR": 0.091,
+    "inner": 0.091
+   },
+   {
+    "joint": "elbowR",
+    "angle": -2,
+    "tris": 846,
+    "folds": 41,
+    "selfX": 53,
+    "minR": 0.091,
+    "inner": 0.091
+   },
+   {
+    "joint": "kneeL",
+    "angle": 0,
+    "tris": 837,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.859,
+    "inner": 0.859
+   },
+   {
+    "joint": "kneeR",
+    "angle": 0,
+    "tris": 817,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.857,
+    "inner": 0.857
+   },
+   {
+    "joint": "kneeL",
+    "angle": -0.5,
+    "tris": 837,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.716,
+    "inner": 0.716
+   },
+   {
+    "joint": "kneeR",
+    "angle": -0.5,
+    "tris": 817,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.713,
+    "inner": 0.713
+   },
+   {
+    "joint": "kneeL",
+    "angle": -1.2,
+    "tris": 837,
+    "folds": 12,
+    "selfX": 0,
+    "minR": 0.413,
+    "inner": 0.413
+   },
+   {
+    "joint": "kneeR",
+    "angle": -1.2,
+    "tris": 817,
+    "folds": 14,
+    "selfX": 0,
+    "minR": 0.411,
+    "inner": 0.411
+   }
+  ]
+ },
+ {
+  "id": "ork-male-7",
+  "boundary": 0,
+  "nonManifold": 0,
+  "components": 1,
+  "reps": [
+   {
+    "joint": "elbowL",
+    "angle": 0,
+    "tris": 853,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.831,
+    "inner": 0.831
+   },
+   {
+    "joint": "elbowR",
+    "angle": 0,
+    "tris": 844,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.831,
+    "inner": 0.831
+   },
+   {
+    "joint": "elbowL",
+    "angle": -0.8,
+    "tris": 853,
+    "folds": 13,
+    "selfX": 1,
+    "minR": 0.633,
+    "inner": 0.633
+   },
+   {
+    "joint": "elbowR",
+    "angle": -0.8,
+    "tris": 844,
+    "folds": 13,
+    "selfX": 1,
+    "minR": 0.633,
+    "inner": 0.633
+   },
+   {
+    "joint": "elbowL",
+    "angle": -1.45,
+    "tris": 853,
+    "folds": 31,
+    "selfX": 0,
+    "minR": 0.347,
+    "inner": 0.347
+   },
+   {
+    "joint": "elbowR",
+    "angle": -1.45,
+    "tris": 844,
+    "folds": 30,
+    "selfX": 0,
+    "minR": 0.347,
+    "inner": 0.347
+   },
+   {
+    "joint": "elbowL",
+    "angle": -2,
+    "tris": 853,
+    "folds": 42,
+    "selfX": 49,
+    "minR": 0.107,
+    "inner": 0.107
+   },
+   {
+    "joint": "elbowR",
+    "angle": -2,
+    "tris": 844,
+    "folds": 42,
+    "selfX": 48,
+    "minR": 0.107,
+    "inner": 0.107
+   },
+   {
+    "joint": "kneeL",
+    "angle": 0,
+    "tris": 823,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.861,
+    "inner": 0.861
+   },
+   {
+    "joint": "kneeR",
+    "angle": 0,
+    "tris": 823,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.861,
+    "inner": 0.861
+   },
+   {
+    "joint": "kneeL",
+    "angle": -0.5,
+    "tris": 823,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.718,
+    "inner": 0.718
+   },
+   {
+    "joint": "kneeR",
+    "angle": -0.5,
+    "tris": 823,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.718,
+    "inner": 0.718
+   },
+   {
+    "joint": "kneeL",
+    "angle": -1.2,
+    "tris": 823,
+    "folds": 13,
+    "selfX": 0,
+    "minR": 0.415,
+    "inner": 0.415
+   },
+   {
+    "joint": "kneeR",
+    "angle": -1.2,
+    "tris": 823,
+    "folds": 13,
+    "selfX": 0,
+    "minR": 0.415,
+    "inner": 0.415
+   }
+  ]
+ },
+ {
+  "id": "ork-male-42",
+  "boundary": 0,
+  "nonManifold": 0,
+  "components": 1,
+  "reps": [
+   {
+    "joint": "elbowL",
+    "angle": 0,
+    "tris": 849,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.829,
+    "inner": 0.829
+   },
+   {
+    "joint": "elbowR",
+    "angle": 0,
+    "tris": 836,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.829,
+    "inner": 0.829
+   },
+   {
+    "joint": "elbowL",
+    "angle": -0.8,
+    "tris": 849,
+    "folds": 13,
+    "selfX": 0,
+    "minR": 0.628,
+    "inner": 0.628
+   },
+   {
+    "joint": "elbowR",
+    "angle": -0.8,
+    "tris": 836,
+    "folds": 13,
+    "selfX": 0,
+    "minR": 0.628,
+    "inner": 0.628
+   },
+   {
+    "joint": "elbowL",
+    "angle": -1.45,
+    "tris": 849,
+    "folds": 30,
+    "selfX": 0,
+    "minR": 0.343,
+    "inner": 0.343
+   },
+   {
+    "joint": "elbowR",
+    "angle": -1.45,
+    "tris": 836,
+    "folds": 28,
+    "selfX": 0,
+    "minR": 0.343,
+    "inner": 0.343
+   },
+   {
+    "joint": "elbowL",
+    "angle": -2,
+    "tris": 849,
+    "folds": 42,
+    "selfX": 50,
+    "minR": 0.105,
+    "inner": 0.105
+   },
+   {
+    "joint": "elbowR",
+    "angle": -2,
+    "tris": 836,
+    "folds": 40,
+    "selfX": 50,
+    "minR": 0.105,
+    "inner": 0.105
+   },
+   {
+    "joint": "kneeL",
+    "angle": 0,
+    "tris": 834,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.861,
+    "inner": 0.861
+   },
+   {
+    "joint": "kneeR",
+    "angle": 0,
+    "tris": 832,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.861,
+    "inner": 0.861
+   },
+   {
+    "joint": "kneeL",
+    "angle": -0.5,
+    "tris": 834,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.718,
+    "inner": 0.718
+   },
+   {
+    "joint": "kneeR",
+    "angle": -0.5,
+    "tris": 832,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.718,
+    "inner": 0.718
+   },
+   {
+    "joint": "kneeL",
+    "angle": -1.2,
+    "tris": 834,
+    "folds": 15,
+    "selfX": 0,
+    "minR": 0.415,
+    "inner": 0.415
+   },
+   {
+    "joint": "kneeR",
+    "angle": -1.2,
+    "tris": 832,
+    "folds": 16,
+    "selfX": 0,
+    "minR": 0.414,
+    "inner": 0.414
+   }
+  ]
+ },
+ {
+  "id": "ork-female-1",
+  "boundary": 0,
+  "nonManifold": 0,
+  "components": 1,
+  "reps": [
+   {
+    "joint": "elbowL",
+    "angle": 0,
+    "tris": 715,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.94,
+    "inner": 0.94
+   },
+   {
+    "joint": "elbowR",
+    "angle": 0,
+    "tris": 717,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.94,
+    "inner": 0.94
+   },
+   {
+    "joint": "elbowL",
+    "angle": -0.8,
+    "tris": 715,
+    "folds": 10,
+    "selfX": 0,
+    "minR": 0.639,
+    "inner": 0.639
+   },
+   {
+    "joint": "elbowR",
+    "angle": -0.8,
+    "tris": 717,
+    "folds": 9,
+    "selfX": 0,
+    "minR": 0.639,
+    "inner": 0.639
+   },
+   {
+    "joint": "elbowL",
+    "angle": -1.45,
+    "tris": 715,
+    "folds": 25,
+    "selfX": 0,
+    "minR": 0.32,
+    "inner": 0.32
+   },
+   {
+    "joint": "elbowR",
+    "angle": -1.45,
+    "tris": 717,
+    "folds": 25,
+    "selfX": 0,
+    "minR": 0.32,
+    "inner": 0.32
+   },
+   {
+    "joint": "elbowL",
+    "angle": -2,
+    "tris": 715,
+    "folds": 37,
+    "selfX": 53,
+    "minR": 0.118,
+    "inner": 0.118
+   },
+   {
+    "joint": "elbowR",
+    "angle": -2,
+    "tris": 717,
+    "folds": 34,
+    "selfX": 54,
+    "minR": 0.118,
+    "inner": 0.118
+   },
+   {
+    "joint": "kneeL",
+    "angle": 0,
+    "tris": 726,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.854,
+    "inner": 0.854
+   },
+   {
+    "joint": "kneeR",
+    "angle": 0,
+    "tris": 711,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.847,
+    "inner": 0.847
+   },
+   {
+    "joint": "kneeL",
+    "angle": -0.5,
+    "tris": 726,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.739,
+    "inner": 0.739
+   },
+   {
+    "joint": "kneeR",
+    "angle": -0.5,
+    "tris": 711,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.731,
+    "inner": 0.731
+   },
+   {
+    "joint": "kneeL",
+    "angle": -1.2,
+    "tris": 726,
+    "folds": 13,
+    "selfX": 0,
+    "minR": 0.45,
+    "inner": 0.45
+   },
+   {
+    "joint": "kneeR",
+    "angle": -1.2,
+    "tris": 711,
+    "folds": 10,
+    "selfX": 0,
+    "minR": 0.45,
+    "inner": 0.45
+   }
+  ]
+ },
+ {
+  "id": "ork-female-7",
+  "boundary": 0,
+  "nonManifold": 0,
+  "components": 1,
+  "reps": [
+   {
+    "joint": "elbowL",
+    "angle": 0,
+    "tris": 715,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.962,
+    "inner": 0.962
+   },
+   {
+    "joint": "elbowR",
+    "angle": 0,
+    "tris": 717,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.962,
+    "inner": 0.962
+   },
+   {
+    "joint": "elbowL",
+    "angle": -0.8,
+    "tris": 715,
+    "folds": 10,
+    "selfX": 0,
+    "minR": 0.661,
+    "inner": 0.661
+   },
+   {
+    "joint": "elbowR",
+    "angle": -0.8,
+    "tris": 717,
+    "folds": 9,
+    "selfX": 0,
+    "minR": 0.661,
+    "inner": 0.661
+   },
+   {
+    "joint": "elbowL",
+    "angle": -1.45,
+    "tris": 715,
+    "folds": 24,
+    "selfX": 0,
+    "minR": 0.332,
+    "inner": 0.332
+   },
+   {
+    "joint": "elbowR",
+    "angle": -1.45,
+    "tris": 717,
+    "folds": 23,
+    "selfX": 0,
+    "minR": 0.332,
+    "inner": 0.332
+   },
+   {
+    "joint": "elbowL",
+    "angle": -2,
+    "tris": 715,
+    "folds": 31,
+    "selfX": 54,
+    "minR": 0.113,
+    "inner": 0.113
+   },
+   {
+    "joint": "elbowR",
+    "angle": -2,
+    "tris": 717,
+    "folds": 32,
+    "selfX": 57,
+    "minR": 0.113,
+    "inner": 0.113
+   },
+   {
+    "joint": "kneeL",
+    "angle": 0,
+    "tris": 721,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.857,
+    "inner": 0.857
+   },
+   {
+    "joint": "kneeR",
+    "angle": 0,
+    "tris": 721,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.857,
+    "inner": 0.857
+   },
+   {
+    "joint": "kneeL",
+    "angle": -0.5,
+    "tris": 721,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.743,
+    "inner": 0.743
+   },
+   {
+    "joint": "kneeR",
+    "angle": -0.5,
+    "tris": 721,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.743,
+    "inner": 0.743
+   },
+   {
+    "joint": "kneeL",
+    "angle": -1.2,
+    "tris": 721,
+    "folds": 13,
+    "selfX": 0,
+    "minR": 0.445,
+    "inner": 0.445
+   },
+   {
+    "joint": "kneeR",
+    "angle": -1.2,
+    "tris": 721,
+    "folds": 15,
+    "selfX": 0,
+    "minR": 0.445,
+    "inner": 0.445
+   }
+  ]
+ },
+ {
+  "id": "ork-female-42",
+  "boundary": 0,
+  "nonManifold": 0,
+  "components": 1,
+  "reps": [
+   {
+    "joint": "elbowL",
+    "angle": 0,
+    "tris": 707,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.96,
+    "inner": 0.96
+   },
+   {
+    "joint": "elbowR",
+    "angle": 0,
+    "tris": 716,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.96,
+    "inner": 0.96
+   },
+   {
+    "joint": "elbowL",
+    "angle": -0.8,
+    "tris": 707,
+    "folds": 11,
+    "selfX": 0,
+    "minR": 0.659,
+    "inner": 0.659
+   },
+   {
+    "joint": "elbowR",
+    "angle": -0.8,
+    "tris": 716,
+    "folds": 11,
+    "selfX": 0,
+    "minR": 0.659,
+    "inner": 0.659
+   },
+   {
+    "joint": "elbowL",
+    "angle": -1.45,
+    "tris": 707,
+    "folds": 23,
+    "selfX": 0,
+    "minR": 0.331,
+    "inner": 0.331
+   },
+   {
+    "joint": "elbowR",
+    "angle": -1.45,
+    "tris": 716,
+    "folds": 22,
+    "selfX": 0,
+    "minR": 0.331,
+    "inner": 0.331
+   },
+   {
+    "joint": "elbowL",
+    "angle": -2,
+    "tris": 707,
+    "folds": 31,
+    "selfX": 47,
+    "minR": 0.113,
+    "inner": 0.113
+   },
+   {
+    "joint": "elbowR",
+    "angle": -2,
+    "tris": 716,
+    "folds": 31,
+    "selfX": 52,
+    "minR": 0.113,
+    "inner": 0.113
+   },
+   {
+    "joint": "kneeL",
+    "angle": 0,
+    "tris": 725,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.856,
+    "inner": 0.856
+   },
+   {
+    "joint": "kneeR",
+    "angle": 0,
+    "tris": 716,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.855,
+    "inner": 0.855
+   },
+   {
+    "joint": "kneeL",
+    "angle": -0.5,
+    "tris": 725,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.742,
+    "inner": 0.742
+   },
+   {
+    "joint": "kneeR",
+    "angle": -0.5,
+    "tris": 716,
+    "folds": 0,
+    "selfX": 0,
+    "minR": 0.741,
+    "inner": 0.741
+   },
+   {
+    "joint": "kneeL",
+    "angle": -1.2,
+    "tris": 725,
+    "folds": 13,
+    "selfX": 0,
+    "minR": 0.445,
+    "inner": 0.445
+   },
+   {
+    "joint": "kneeR",
+    "angle": -1.2,
+    "tris": 716,
+    "folds": 12,
+    "selfX": 0,
+    "minR": 0.445,
+    "inner": 0.445
+   }
+  ]
+ }
+]

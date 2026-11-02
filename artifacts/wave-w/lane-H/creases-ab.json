@@ -1,0 +1,162 @@
+[
+ {
+  "body": "human-male",
+  "angle": -1.45,
+  "variant": "lbs",
+  "inkSide": 0.159,
+  "inkInto": 0.296,
+  "folds": 1,
+  "selfX": 0,
+  "inner": 0.351
+ },
+ {
+  "body": "human-male",
+  "angle": -1.45,
+  "variant": "helper",
+  "inkSide": 0.159,
+  "inkInto": 0.236,
+  "folds": 0,
+  "selfX": 0,
+  "inner": 0.622
+ },
+ {
+  "body": "human-male",
+  "angle": -2,
+  "variant": "lbs",
+  "inkSide": 0.159,
+  "inkInto": 0.24,
+  "folds": 4,
+  "selfX": 31,
+  "inner": 0.146
+ },
+ {
+  "body": "human-male",
+  "angle": -2,
+  "variant": "helper",
+  "inkSide": 0.159,
+  "inkInto": 0.226,
+  "folds": 1,
+  "selfX": 42,
+  "inner": 0.426
+ },
+ {
+  "body": "dwarf-male",
+  "angle": -1.45,
+  "variant": "lbs",
+  "inkSide": 0.09,
+  "inkInto": 0.231,
+  "folds": 18,
+  "selfX": 0,
+  "inner": 0.361
+ },
+ {
+  "body": "dwarf-male",
+  "angle": -1.45,
+  "variant": "helper",
+  "inkSide": 0.09,
+  "inkInto": 0.17,
+  "folds": 0,
+  "selfX": 0,
+  "inner": 0.508
+ },
+ {
+  "body": "dwarf-male",
+  "angle": -2,
+  "variant": "lbs",
+  "inkSide": 0.09,
+  "inkInto": 0.166,
+  "folds": 28,
+  "selfX": 44,
+  "inner": 0.111
+ },
+ {
+  "body": "dwarf-male",
+  "angle": -2,
+  "variant": "helper",
+  "inkSide": 0.09,
+  "inkInto": 0.132,
+  "folds": 0,
+  "selfX": 58,
+  "inner": 0.332
+ },
+ {
+  "body": "ork-male",
+  "angle": -1.45,
+  "variant": "lbs",
+  "inkSide": 0.015,
+  "inkInto": 0.135,
+  "folds": 30,
+  "selfX": 0,
+  "inner": 0.347
+ },
+ {
+  "body": "ork-male",
+  "angle": -1.45,
+  "variant": "helper",
+  "inkSide": 0.015,
+  "inkInto": 0.061,
+  "folds": 0,
+  "selfX": 0,
+  "inner": 0.503
+ },
+ {
+  "body": "ork-male",
+  "angle": -2,
+  "variant": "lbs",
+  "inkSide": 0.015,
+  "inkInto": 0.09,
+  "folds": 41,
+  "selfX": 52,
+  "inner": 0.107
+ },
+ {
+  "body": "ork-male",
+  "angle": -2,
+  "variant": "helper",
+  "inkSide": 0.015,
+  "inkInto": 0.061,
+  "folds": 20,
+  "selfX": 81,
+  "inner": 0.327
+ },
+ {
+  "body": "elf-female",
+  "angle": -1.45,
+  "variant": "lbs",
+  "inkSide": 0.225,
+  "inkInto": 0.416,
+  "folds": 0,
+  "selfX": 0,
+  "inner": 0.359
+ },
+ {
+  "body": "elf-female",
+  "angle": -1.45,
+  "variant": "helper",
+  "inkSide": 0.225,
+  "inkInto": 0.323,
+  "folds": 0,
+  "selfX": 0,
+  "inner": 0.642
+ },
+ {
+  "body": "elf-female",
+  "angle": -2,
+  "variant": "lbs",
+  "inkSide": 0.225,
+  "inkInto": 0.339,
+  "folds": 3,
+  "selfX": 26,
+  "inner": 0.13
+ },
+ {
+  "body": "elf-female",
+  "angle": -2,
+  "variant": "helper",
+  "inkSide": 0.225,
+  "inkInto": 0.338,
+  "folds": 0,
+  "selfX": 14,
+  "inner": 0.468
+ }
+]
