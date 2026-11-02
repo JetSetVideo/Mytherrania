@@ -457,3 +457,83 @@ export function buildSkinnedHumanoid(
   };
   return rig;
 }
+
+
+// ---------------------------------------------------------------------------------------------
+// Wave FALL (lane A): render-side helpers for the fall / lying / get-up motion.
+// ---------------------------------------------------------------------------------------------
+
+const TILT_Q = new THREE.Quaternion(), TILT_Y = new THREE.Quaternion(), TILT_Z = new THREE.Quaternion();
+const TILT_EY = new THREE.Vector3(0, 1, 0), TILT_EZ = new THREE.Vector3(0, 0, 1);
+
+/**
+ * Insert the animator's whole-body tilt (AnimatorOutput.rootTilt, [x, y, z, w] in the heading
+ * frame) between the yaw and the roll the caller already wrote into group.rotation (y, z):
+ *   group.quaternion = Ry(rotation.y) · tilt · Rz(rotation.z)
+ * Call AFTER setting rotation.y / rotation.z for the frame. An identity tilt (no fall) changes
+ * nothing (returns false without touching the group), so today's placement is byte-identical.
+ * Writing the quaternion re-syncs group.rotation (x included): the caller must reset the WHOLE
+ * Euler every frame (`rotation.set(0, yaw, roll)`), or the next frame keeps a stale rotation.x and the
+ * tilt compounds (wave FALL: a front fall sank 0.38 m until the engine did so, M Z-21).
+ */
+export function applyRootTilt(group: THREE.Object3D, tilt: ArrayLike<number>): boolean {
+  if (Math.abs(tilt[0]) + Math.abs(tilt[1]) + Math.abs(tilt[2]) < 1e-9) return false;
+  const yaw = group.rotation.y, roll = group.rotation.z;
+  TILT_Y.setFromAxisAngle(TILT_EY, yaw);
+  TILT_Z.setFromAxisAngle(TILT_EZ, roll);
+  TILT_Q.set(tilt[0], tilt[1], tilt[2], tilt[3]);
+  group.quaternion.copy(TILT_Y).multiply(TILT_Q).multiply(TILT_Z);
+  return true;
+}
+
+const SETTLE_V = new THREE.Vector3();
+const SETTLE_CACHE = new WeakMap<object, Uint32Array>();
+
+/**
+ * Lowest skin point of a skinned rig against the ground, in world metres: min over the skin's
+ * vertices (linear-blend skinned with the CURRENT bone matrices, SkinnedMesh.applyBoneTransform) of
+ * vertexY - ground(vertexX, vertexZ). `stride` samples every n-th vertex (1 = all, exact).
+ * Call after the group is placed and its world matrices are current.
+ */
+export function skinClearance(
+  rig: { group: THREE.Object3D; skin: THREE.Object3D }, ground: (x: number, z: number) => number, stride = 1,
+): { clearance: number; x: number; y: number; z: number } {
+  const mesh = rig.skin as THREE.SkinnedMesh;
+  rig.group.updateMatrixWorld(true);
+  const pos = mesh.geometry.getAttribute("position") as THREE.BufferAttribute;
+  let best = Infinity, bx = 0, by = 0, bz = 0;
+  let idx = SETTLE_CACHE.get(mesh);
+  if (!idx || idx.length !== Math.ceil(pos.count / stride)) {
+    idx = new Uint32Array(Math.ceil(pos.count / stride));
+    for (let i = 0, k = 0; i < pos.count; i += stride, k++) idx[k] = i;
+    SETTLE_CACHE.set(mesh, idx);
+  }
+  for (let k = 0; k < idx.length; k++) {
+    SETTLE_V.fromBufferAttribute(pos, idx[k]);
+    mesh.applyBoneTransform(idx[k], SETTLE_V);
+    SETTLE_V.applyMatrix4(mesh.matrixWorld);
+    const c = SETTLE_V.y - ground(SETTLE_V.x, SETTLE_V.z);
+    if (c < best) { best = c; bx = SETTLE_V.x; by = SETTLE_V.y; bz = SETTLE_V.z; }
+  }
+  return { clearance: best, x: bx, y: by, z: bz };
+}
+
+/**
+ * Wave FALL: seat a fallen / lying / rising body exactly on the floor (render side, after the
+ * caller placed rig.group for the frame): shift group.position.y so the lowest skin point is on the
+ * ground. `weight` = AnimatorOutput.groundBody (0 = no change at all): a body BELOW the floor is
+ * always lifted fully (never sinks), a body above it is lowered by `weight` of its gap. Returns the
+ * shift applied (m). The animator already grounds its sphere model (Rig.bodySpheres), so the shift
+ * is the model-vs-skin residual (a few cm at most, measured per race in tests/wave_fall_anim_test.ts).
+ */
+export function settleOnFloor(
+  rig: { group: THREE.Object3D; skin: THREE.Object3D }, ground: (x: number, z: number) => number, weight: number, stride = 1,
+): number {
+  if (!(weight > 0)) return 0;
+  const c = skinClearance(rig, ground, stride).clearance;
+  if (!Number.isFinite(c)) return 0;
+  const dy = c < 0 ? -c : -Math.min(1, weight) * c;
+  rig.group.position.y += dy;
+  rig.group.updateMatrixWorld(true);
+  return dy;
+}

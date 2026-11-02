@@ -11,7 +11,7 @@
 // Pure module: no Three.js, no DOM. decideBrain() is the single entry point the
 // Engine calls each tick.
 
-import { ATTRIBUTE_KEYS, decide, defaultTree, type AttributeKey, type CombatView, type Decision, type FighterKnowledge, type TreeNode } from "./DecisionTree.ts";
+import { ATTRIBUTE_KEYS, decide, defaultTree, type AttributeKey, type CombatView, type Decision, type FallView, type FighterKnowledge, type TreeNode } from "./DecisionTree.ts";
 import { fatigueReading, poolLevels, type PotentialState, type SpendKind } from "./Potential.ts";
 import type { ResourceState } from "./Resources.ts";
 import { NeuralPolicy, toFeatures } from "../balance/NeuralPolicy.ts";
@@ -372,4 +372,65 @@ export function poolWiseSkill(
     if (share(st.potential, st.max) < PACE_STAMINA_POTENTIAL && share(st.current, st.max) < 0.5) return false;
   }
   return true;
+}
+
+// ---------------------------------------------------------------------------
+// Wave FALL (C-AI): falls and collisions in the AI's view, and the decisions that use them.
+// ---------------------------------------------------------------------------
+
+/** Own stamina share under which the body counts as low on stamina (unsafe to charge / back up). */
+export const FALL_LOW_STAMINA = 0.35;
+/** Enemy effective mass ratio over self above which a head-on charge is avoided when low on stamina. */
+export const FALL_HEAVY_RATIO = 1.3;
+/** Distance to an open rim behind under which an unbalanced / tired body will not back up, m. */
+export const FALL_EDGE_BACK_M = 2.5;
+/** A collision within this many seconds leaves the body "shaken" (treated as unbalanced). */
+export const FALL_SHAKEN_S = 2;
+/** Distance under which a head-on advance counts as a charge, m. */
+export const FALL_CHARGE_RANGE = 3;
+
+/** One fighter's FallState as the brain reads it. */
+export function fallView(s: { phase: FallView["phase"]; t: number; duration: number; cause: FallView["cause"] }): FallView {
+  const t01 = s.duration > 0 ? Math.max(0, Math.min(1, s.t / s.duration)) : 1;
+  return {
+    phase: s.phase, t01, cause: s.cause,
+    downed: s.phase === "down" || s.phase === "rising",
+    unbalanced: s.phase === "stagger" || s.phase === "stumble" || s.phase === "falling",
+  };
+}
+
+/**
+ * PUNISH a fallen enemy: while the enemy is falling, down or rising (or stumbling), close in and strike
+ * when ready; wait in reach otherwise. Undefined = let the tree decide (also when self is not standing).
+ */
+export function fallDecision(view: CombatView): Decision | undefined {
+  const e = view.enemyFall, s = view.selfFall;
+  if (!e || (s && s.phase !== "stand")) return undefined;
+  if (!(e.downed || e.phase === "falling" || e.phase === "stumble")) return undefined;
+  if (view.distance > view.selfReach) return "advance";
+  return view.ready ? "attack" : "wait";
+}
+
+/** Wrap a tree with the punish hook at its root (exactly like poolAwareTree). */
+export function fallAwareTree(tree: TreeNode): TreeNode {
+  return { kind: "branch", field: "distance", threshold: -1, missing: "greater", compute: fallDecision, less: tree, greater: tree };
+}
+
+/**
+ * Edge / charge safety on a decided action:
+ *   - a RETREAT toward a nearby open rim behind (rimBehind < FALL_EDGE_BACK_M, openBehind) while shaken
+ *     (a collision in the last FALL_SHAKEN_S s, or unbalanced) or low on stamina -> flank instead;
+ *   - an ADVANCE head-on (distance < FALL_CHARGE_RANGE) into an enemy whose effective mass is over
+ *     FALL_HEAVY_RATIO × self's while low on stamina -> flank instead.
+ * Without the Wave FALL fields the decision is returned unchanged.
+ */
+export function fallSafeDecision(d: Decision, view: CombatView): Decision {
+  const st = view.selfStamina01;
+  if (st === undefined) return d;
+  const low = st < FALL_LOW_STAMINA;
+  const shaken = (view.lastCollision !== undefined && view.lastCollision.ago < FALL_SHAKEN_S) || (view.selfFall?.unbalanced ?? false);
+  if (d === "retreat" && (low || shaken) && (view.openBehind ?? 0) >= 0.5 && (view.rimBehind ?? Infinity) < FALL_EDGE_BACK_M) return "flank";
+  if (d === "advance" && low && view.distance < FALL_CHARGE_RANGE && view.selfStability !== undefined && view.enemyStability !== undefined
+    && view.enemyStability > FALL_HEAVY_RATIO * view.selfStability) return "flank";
+  return d;
 }

@@ -1,0 +1,50 @@
+[
+  {
+    "lane": "M",
+    "ready": "Z-7",
+    "verdict": "PASS",
+    "board": "Z-8",
+    "summary": "all M checks pass; ring-out +0.038 flagged",
+    "at": "2026-11-02T22:10:00.566Z"
+  },
+  {
+    "lane": "M",
+    "ready": "Z-12",
+    "verdict": "PASS",
+    "board": "Z-16",
+    "summary": "all M checks pass; ring-out +0.038 flagged",
+    "at": "2026-11-02T22:42:39.826Z"
+  },
+  {
+    "lane": "M",
+    "ready": "Z-14",
+    "verdict": "PASS",
+    "board": "Z-19",
+    "summary": "all M checks pass (incl. V-F6 split); ring-out +0.038 flagged",
+    "at": "2026-11-02T22:47:41.526Z"
+  },
+  {
+    "lane": "A",
+    "ready": "Z-15",
+    "verdict": "FAIL",
+    "board": "Z-20",
+    "summary": "live engine: front pose arm 312-340 mm below floor (elbow bone -80..-92 mm); rising pops pelvis 318/584/101 mm; 21/104 downed samples < -30 mm",
+    "at": "2026-11-02T22:47:41.543Z"
+  },
+  {
+    "lane": "A",
+    "ready": "Z-23",
+    "verdict": "PASS",
+    "board": "Z-29",
+    "summary": "live skin clearance down 0..23 / rising -1..45 mm, Warrior+Barbarian, 0 page errors",
+    "at": "2026-11-02T23:00:16.285Z"
+  },
+  {
+    "lane": "M",
+    "ready": "Z-27",
+    "verdict": "PASS",
+    "board": "Z-30",
+    "summary": "no sim change (digest == r3), live checks pass; ring-out +0.038 open flag",
+    "at": "2026-11-02T23:00:16.300Z"
+  }
+]

@@ -70,6 +70,53 @@ export interface FightTelemetry {
   evolution: { level: number; statDelta: number }[];   // the fighters' own evolution, per event
 }
 
+// --- Wave FALL (C-LOG): collisions, falls and rises ------------------------------------------------
+
+/** One recorded force event. `who` is the seat (0/1) the event happened TO. */
+export interface ForceEvent {
+  /** Match time, s. */
+  t: number;
+  kind: "collision" | "fall" | "rise";
+  who: FighterIndex;
+  /** collision: "charge" | "clash" | "qa"; fall/rise: the fall cause (collision, hit, edge, backstep, ledge, exhaustion). */
+  cause: string;
+  /** The fall phase the event left the body in (stand / stagger / stumble / falling / down / rising). */
+  phase: string;
+  /** Collision impulse (N·s; 0 for falls) and the body's balance loss 0..1. */
+  impulse: number;
+  balance: number;
+  /** This body's pushback, m (collision) — 0 otherwise. */
+  pushback: number;
+  /** collision: stagger s; fall: planned get-up s (down + rising); rise: seconds from the fall to standing. */
+  duration: number;
+  hp01: number;
+  stamina01: number;
+  /** collision: "stagger" | "stumble" | "fall" | "none"; fall: the pose; rise: "rose" | "ko". */
+  outcome: string;
+}
+
+/** The match's force log, summarised. */
+export interface ForceSummary {
+  /** Collisions in the match (each counted once). */
+  collisions: number;
+  /** Falls (reaching the floor) and completed rises per seat. */
+  falls: [number, number];
+  rises: [number, number];
+  /** Seconds spent downed (down + rising) per seat, and the mean per fall. */
+  downS: [number, number];
+  meanDownS: number;
+  /** Damage taken while downed per seat, HP. */
+  damageWhileDown: [number, number];
+  /** Falls by cause. */
+  causes: Record<string, number>;
+  /** The events, in order, up to FORCE_EVENT_CAP; `dropped` counts the rest. */
+  events: ForceEvent[];
+  dropped: number;
+}
+
+/** Events kept in one match's force log (a 180 s match measured well under it). */
+export const FORCE_EVENT_CAP = 64;
+
 /**
  * Project a match's summary onto ONE seat. The match-level numbers (duration, the distance
  * statistics, the bands, the engagement and the object events) are shared; the per-fighter
@@ -163,6 +210,49 @@ export class TelemetryAccumulator {
   #byWeapon = new Map<string, HitAcc>();
   #objects = { taken: 0, destroyed: 0, defended: 0, attacked: 0 };
   #evolution: { level: number; statDelta: number }[] = [];
+  // Wave FALL (C-LOG).
+  #forceEvents: ForceEvent[] = [];
+  #forceDropped = 0;
+  #collisions = 0;
+  #falls: [number, number] = [0, 0];
+  #rises: [number, number] = [0, 0];
+  #downS: [number, number] = [0, 0];
+  #dmgDown: [number, number] = [0, 0];
+  #causes: Record<string, number> = {};
+
+  /** Wave FALL: record a collision / fall / rise. A non-finite number in the event refuses it whole. */
+  force(e: ForceEvent): void {
+    const nums = [e.t, e.impulse, e.balance, e.pushback, e.duration, e.hp01, e.stamina01];
+    if (nums.some((v) => !Number.isFinite(v)) || (e.who !== 0 && e.who !== 1)) { this.refused++; return; }
+    if (e.kind === "collision") { if (e.who === 0) this.#collisions++; } // one collision = two events (both bodies)
+    else if (e.kind === "fall") { this.#falls[e.who]++; this.#causes[e.cause] = (this.#causes[e.cause] ?? 0) + 1; }
+    else this.#rises[e.who]++;
+    if (this.#forceEvents.length < FORCE_EVENT_CAP) this.#forceEvents.push({ ...e });
+    else this.#forceDropped++;
+  }
+
+  /** Wave FALL: seconds `seat` spent downed this substep. */
+  downed(seat: FighterIndex, dtS: number): void {
+    if (!Number.isFinite(dtS) || dtS < 0) { this.refused++; return; }
+    this.#downS[seat] += dtS;
+  }
+
+  /** Wave FALL: damage `seat` took while downed. */
+  damageWhileDown(seat: FighterIndex, damage: number): void {
+    if (!Number.isFinite(damage) || damage < 0) { this.refused++; return; }
+    this.#dmgDown[seat] += damage;
+  }
+
+  /** Wave FALL: the force log summary (non-mutating). */
+  forceSummary(): ForceSummary {
+    const falls = this.#falls[0] + this.#falls[1];
+    return {
+      collisions: this.#collisions, falls: [this.#falls[0], this.#falls[1]], rises: [this.#rises[0], this.#rises[1]],
+      downS: [this.#downS[0], this.#downS[1]], meanDownS: falls > 0 ? (this.#downS[0] + this.#downS[1]) / falls : 0,
+      damageWhileDown: [this.#dmgDown[0], this.#dmgDown[1]], causes: { ...this.#causes },
+      events: this.#forceEvents.map((e) => ({ ...e })), dropped: this.#forceDropped,
+    };
+  }
 
   /**
    * Close one simulated substep of `dtS` seconds at the pair distance `distanceM` (metres),

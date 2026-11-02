@@ -43,6 +43,8 @@ export interface BuiltFighter {
   swingCooldown: number;
   body: Body;
   mass: number;
+  /** Wave FALL: the weapon's mass, kg (WeaponSpec.mass) — part of the body's collision mass. */
+  weaponMass: number;
   skills: Skill[];
   resources: ResourceState;
   resourceCtx: ResourceContext;
@@ -130,6 +132,7 @@ export function buildFighter(spec: FighterSpec, rules: MatchRules): BuiltFighter
     swingCooldown: stats.attackInterval * raw.cooldown,
     body,
     mass: totalMass(body),
+    weaponMass: Number.isFinite(weapon.mass) ? weapon.mass : 1,
     skills: skillsForClass(spec.className),
     resources: createResources(stats, resourceCtx),
     resourceCtx,

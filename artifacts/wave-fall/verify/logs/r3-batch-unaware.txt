@@ -1,0 +1,86 @@
+{
+  "label": "unaware",
+  "root": ".",
+  "outcomeDigest": "3b2b9a366e70fde5",
+  "matches": 6000,
+  "seed": 4242,
+  "seconds": 38,
+  "errors": 0,
+  "reasons": {
+    "ringout": 4118,
+    "ko": 1596,
+    "time": 286
+  },
+  "ringOutShare": 0.6863,
+  "koShare": 0.266,
+  "medianDuelSeconds": 38.17,
+  "classWinShare": {
+    "Barbarian": 0.5272,
+    "Warrior": 0.5628,
+    "Rogue": 0.5272,
+    "Assassin": 0.5881,
+    "Mage": 0.4035,
+    "Necromancer": 0.4223,
+    "Archer": 0.5423,
+    "Priest": 0.4329
+  },
+  "classMeanAbsDev": 0.0611,
+  "traceKinds": {
+    "swing": 414696,
+    "hit": 271608,
+    "ringout": 4126,
+    "skill": 43200,
+    "collision": 18238,
+    "fall": 13907,
+    "rise": 10395,
+    "wall": 8774
+  },
+  "fallsPerMatch": 2.3178,
+  "collisionsPerMatch": 3.0397,
+  "telemetryFallsPerMatch": null,
+  "telemetryCollisionsPerMatch": null,
+  "downWindowOpensAfterFallS": 0.5,
+  "meanDownSeconds": 2.0157,
+  "downIntervals": 13472,
+  "strikesOnDownPerSec": 0.5013,
+  "strikesOnStandPerSec": 0.4386,
+  "strikesOnDown": 13613,
+  "strikesOnStand": 257995,
+  "downSeconds": 27156.1533,
+  "standSeconds": 588284,
+  "forces": {
+    "matches": 6000,
+    "collisionsPerMatch": 3.0397,
+    "fallsPerMatch": 2.3178,
+    "downSecondsPerMatch": 4.481,
+    "damageWhileDownPerMatch": 3163.5698,
+    "meanDownPerFall": 1.9333,
+    "causes": {
+      "hit": 9678,
+      "edge": 1356,
+      "collision": 1484,
+      "backstep": 1389
+    }
+  },
+  "traceFallNotes": {
+    "hit/back": 9678,
+    "edge/back": 1296,
+    "collision/back": 1484,
+    "backstep/back": 82,
+    "backstep/front": 289,
+    "backstep/side": 1018,
+    "edge/side": 60
+  },
+  "damagePath": {
+    "attackerMatchPairs": 2527,
+    "medianDamageRatioDownOverStand": 2.3689,
+    "medianKnockbackRatioDownOverStand": 4.5436,
+    "critShareDown": 0.3215,
+    "critShareStand": 0.211,
+    "plainStrikesDown": 12450,
+    "plainStrikesStand": 197186
+  },
+  "outcomeExtraKeys": [
+    "forces"
+  ]
+}

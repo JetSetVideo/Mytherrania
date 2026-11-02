@@ -1,0 +1,42 @@
+[
+  {
+    "id": "V-K1",
+    "lane": "M",
+    "claim": "SimOptions.falls=false plays HEAD exactly",
+    "method": "6000 seeded matches, sha256 of every outcome's core fields",
+    "pass": true,
+    "result": "HEAD 4becccf2a2163eb8 vs falls:false 4becccf2a2163eb8"
+  },
+  {
+    "id": "V-K2",
+    "lane": "M",
+    "claim": "batch with falls: no errors; collisions and falls happen; down time per fall inside the get-up clamp",
+    "method": "6000 matches, MatchSim trace + outcome.forces",
+    "pass": true,
+    "result": "errors 0; collision events/match 3.101 (2 per collision); falls/match 2.4812; down s/fall 1.9845; downed window (fall+FALL_SECONDS -> stand) 2.0633 s; causes {\"hit\":10950,\"edge\":1328,\"collision\":1456,\"backstep\":1153}; forces on 6000/6000 outcomes"
+  },
+  {
+    "id": "V-K3",
+    "lane": "M",
+    "claim": "balance after vs before: median duel inside 25-55 s, class mean |dev| not worse by > 0.02 (1.5 SE at 6000); ring-out share shift reported",
+    "method": "same 6000 seeded design points",
+    "pass": true,
+    "result": "ring-out 0.6513 -> 0.6895 (+0.0382), KO 0.2873 -> 0.2617, median duel 45.39 -> 40.03 s, class |dev| 0.0522 -> 0.061"
+  },
+  {
+    "id": "V-K4",
+    "lane": "M",
+    "claim": "downed penalties in the real damage path (MatchSim.resolveHit): plain-hit damage x DOWNED_DAMAGE_TAKEN, more crits on a downed defender",
+    "method": "hit events carry the defender's phase; per attacker-match median damage of plain hits down/stand, median of ratios; crit share among landed plain strikes",
+    "pass": true,
+    "result": "damage ratio 1.3055 (DOWNED_DAMAGE_TAKEN 1.3) over 2714 attacker-matches; crit share down 0.3186 vs stand 0.2109 (+0.1077, DOWNED_CRIT_BONUS 0.15); knockback ratio 3.1246 (confounded by damage % and blocks; DOWNED_KNOCKBACK 1.25)"
+  },
+  {
+    "id": "V-K5",
+    "lane": "M",
+    "claim": "AI strikes a downed enemy more than a standing one; fall-aware brains more than unaware; aware brains back-step into drops less",
+    "method": "strikes landed per second of the defender's downed (down|rising) vs standing exposure; same seeds with fallAware [false,false]",
+    "pass": true,
+    "result": "aware: 0.5834/s on downed vs 0.4428/s standing; unaware: 0.5013/s vs 0.4386/s; backstep falls aware 1153 vs unaware 1389, edge 1328 vs 1356"
+  }
+]

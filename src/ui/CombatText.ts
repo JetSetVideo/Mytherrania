@@ -223,3 +223,12 @@ export function combatTextVars(s: HitStyle): Record<string, string> {
 export function combatTextText(s: HitStyle, damage: number): string {
   return `${HIT_GLYPH_CHAR[s.glyph]} ${formatHit(damage)}`;
 }
+
+/**
+ * Wave FALL: the two force callouts — a body reaching the floor ("Down!") and the loser of a
+ * body-on-body collision ("Shoved"). Fixed words, styled by `.combat-text--force` (+ `--down`).
+ */
+export const FORCE_TEXT = {
+  down: { text: "Down!", className: "combat-text combat-text--force combat-text--down" },
+  shoved: { text: "Shoved", className: "combat-text combat-text--force combat-text--shoved" },
+} as const;

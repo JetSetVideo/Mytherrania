@@ -1,0 +1,106 @@
+[
+  {
+    "id": "V-C1",
+    "lane": "M",
+    "claim": "equal fighters, mirrored velocities -> mirror outputs; swapping a/b swaps outputs",
+    "method": "fuzz 20000x2 random BodyStates",
+    "pass": true,
+    "result": "worst mirror residual 0.00e+0, worst swap residual 0.00e+0"
+  },
+  {
+    "id": "V-C2",
+    "lane": "M",
+    "claim": "momentum conserved in the effective masses (m_eff,a dv_a + m_eff,b dv_b = 0); bodies separate after contact",
+    "method": "fuzz 20000",
+    "pass": true,
+    "result": "worst |Σ m_eff dv|/J 3.87e-16; separating after 9965/9965; carried-mass momentum residual up to 2.6862·J (by design: stability-weighted)"
+  },
+  {
+    "id": "V-C3",
+    "lane": "M",
+    "claim": "more mass/armour/weapon/strength/agility/level/stamina/hp -> less |dv|, pushback, stagger, balance loss (the other side more)",
+    "method": "fuzz 4000 pairs per stat, head-on charge",
+    "pass": true,
+    "result": "mass: viol 0/0, strict push 0.6895, strict stagger 0.9058; armourMass: viol 0/0, strict push 0.6488, strict stagger 0.8878; weaponMass: viol 0/0, strict push 0.639, strict stagger 0.8798; strength: viol 0/0, strict push 0.67, strict stagger 0.9183; agility: viol 0/0, strict push 0.6698, strict stagger 0.9068; level: viol 0/0, strict push 0.6278, strict stagger 0.8855; stamina01: viol 0/0, strict push 0.6725, strict stagger 0.9008; hp01: viol 0/0, strict push 0.6318, strict stagger 0.877"
+  },
+  {
+    "id": "V-C3b",
+    "lane": "M",
+    "claim": "every listed stat actually matters for pushback (not flat)",
+    "method": "share of pairs with strictly less pushback",
+    "pass": true,
+    "result": "all stats strictly reduce pushback on some pairs"
+  },
+  {
+    "id": "V-C4",
+    "lane": "M",
+    "claim": "deterministic and total (finite outputs for NaN/Inf/negative/undefined fields)",
+    "method": "fuzz 3000 + garbage fields",
+    "pass": true,
+    "result": "deterministic true, finite true"
+  },
+  {
+    "id": "V-C5",
+    "lane": "M",
+    "claim": "equal charge = equal push; heavy/strong/levelled vs light pushes the light one further",
+    "method": "fixed fighters 4 m/s head-on",
+    "pass": true,
+    "result": "equal: push 0.46/0.46 m stagger 0.38/0.38 s bal 0.37/0.37; heavy vs light: push 0/1.45 m stagger 0.07/0.65 s bal 0/0.87; fresh vs tired+wounded push 0/1.05 m"
+  },
+  {
+    "id": "V-C6",
+    "lane": "M",
+    "claim": "a downed body is pushed further (DOWNED_KNOCKBACK) and gets no extra balance loss",
+    "method": "same charge into standing vs downed target at rest",
+    "pass": true,
+    "result": "standing target push 1 m, downed 1.11 m (x1.11), downed balanceLoss 0"
+  },
+  {
+    "id": "V-F1",
+    "lane": "M",
+    "claim": "riseSeconds monotone: heavier armour/body, wounded, tired -> slower; agile -> faster; clamped",
+    "method": "fuzz 5000 pairs per argument",
+    "pass": true,
+    "result": "armourMass↑slower: viol 0, strict 0.7464; bodyMass↑slower: viol 0, strict 0.7278; agility↑faster: viol 0, strict 0.7266; hp01↑faster: viol 0, strict 0.7036; stamina01↑faster: viol 0, strict 0.6864; range [1.2, 3.5] s; agile light fresh 1.2 s, average 1.65 s, plate heavy wounded tired 3.5 s"
+  },
+  {
+    "id": "V-F2",
+    "lane": "M",
+    "claim": "fall state machine: only contract-order transitions, finite timers, always back to stand within a bound",
+    "method": "4000 random runs (random triggers incl. NaN loss, dt <= 1/30), then free-run",
+    "pass": true,
+    "result": "illegal 0, stuck 0, non-finite 0, falling->not-down 0, falls seen 5055, worst return to stand 4.719 s (bound 6.2 s)"
+  },
+  {
+    "id": "V-F3",
+    "lane": "M",
+    "claim": "balance-loss bands trigger falling/stumble/stagger; exhaustion adds loss; fallChance monotone (loss up, agility down, stamina down -> more falls)",
+    "method": "fixed triggers + 5000 fallChance triples",
+    "pass": true,
+    "result": "L0.85->falling L0.5->stumble L0.15->stagger L0.05->stand stagger0.3s->stagger; L0.3 at stamina 0.05 -> stumble/exhaustion; fallChance violations 0; stumble roll 0.01 willFall true, roll 0.999 false; plan down+rise = riseSeconds 1.65"
+  },
+  {
+    "id": "V-F4",
+    "lane": "M",
+    "claim": "edge: outside = ring-out (no teeter), brink + outward -> teeter (faster = more loss), walled/inside/slow -> none; back-step into drop/obstacle stumbles; pushed over a ledge falls",
+    "method": "fixed probes",
+    "pass": true,
+    "result": "teeter outside null inside null walled null slow null brink2m/s 0.562 brink4m/s 0.722; backstep drop 0.5 obstacle 0.5 flat null forward null; ledge pushed true walked false small step false"
+  },
+  {
+    "id": "V-F6",
+    "lane": "M",
+    "claim": "get-up split: down + rising = riseSeconds; rising >= RISE_PHASE_MIN; down > 0",
+    "method": "fuzz 20000 bodies",
+    "pass": true,
+    "result": "max |down+rise-T| 0.0e+0; min rising 1 s (RISE_PHASE_MIN 1); min down 0.2 s"
+  },
+  {
+    "id": "V-F5",
+    "lane": "M",
+    "claim": "downed penalties exist, point the right way and apply only down/rising",
+    "method": "constants + helpers",
+    "pass": true,
+    "result": "DAMAGE_TAKEN 1.3, CRIT_BONUS 0.15, STATUS_DURATION 1.4, KNOCKBACK 1.25; mul down 1.3 rising 1.3 falling 1"
+  }
+]

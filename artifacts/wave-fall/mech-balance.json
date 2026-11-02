@@ -1,0 +1,166 @@
+{
+  "generatedBy": "src/balance/fall-study.ts",
+  "design": "random",
+  "constants": {
+    "AGILITY_GAIN": 0.06,
+    "AGILITY_REF": 5,
+    "ARMOUR_KG_PER_POINT": 2.5,
+    "BALANCE_DV0": 3,
+    "BALANCE_SPAN": 6,
+    "CHARGE_EACH_MIN": 0.5,
+    "CHARGE_MIN_CLOSING": 3,
+    "CLASH_SPEED": 3,
+    "COLLISION_COOLDOWN": 0.8,
+    "CONTACT_SKIN": 0.08,
+    "DASH_CHARGE": 6,
+    "GUARD_BRACE": 1.3,
+    "HIT_BALANCE_DV0": 4.5,
+    "HIT_BALANCE_SPAN": 6,
+    "HP_FLOOR": 0.85,
+    "LEVEL_GAIN": 0.01,
+    "PUSH_DECAY": 2.6,
+    "RESTITUTION": 0.3,
+    "STABILITY_MAX": 3,
+    "STABILITY_MIN": 0.3,
+    "STAGGER_DV0": 2,
+    "STAGGER_MAX": 1.2,
+    "STAGGER_PER_DV": 0.12,
+    "STAMINA_FLOOR": 0.6,
+    "STRENGTH_REF": 5.5,
+    "BACKSTEP_BALANCE": 0.5,
+    "DOWNED_CRIT_BONUS": 0.15,
+    "DOWNED_DAMAGE_TAKEN": 1.3,
+    "DOWNED_KNOCKBACK": 1.25,
+    "DOWNED_STATUS_DURATION": 1.4,
+    "DOWN_MIN": 0.2,
+    "DOWN_SHARE": 0.45,
+    "EXHAUSTION_BALANCE": 0.2,
+    "EXHAUSTION_STAMINA": 0.1,
+    "FALL_SECONDS": 0.5,
+    "FALL_THRESHOLD": 0.8,
+    "RISE_ARMOUR": 0.02,
+    "RISE_BASE": 1.5,
+    "RISE_MASS_REF": 75,
+    "RISE_MAX": 3.5,
+    "RISE_MIN": 1.2,
+    "RISE_PHASE_MIN": 1,
+    "RISE_TIRED": 0.4,
+    "RISE_WOUND": 0.5,
+    "STAGGER_THRESHOLD": 0.1,
+    "STUMBLE_SECONDS": 0.55,
+    "STUMBLE_THRESHOLD": 0.4,
+    "TEETER_BALANCE": 0.45,
+    "TEETER_MARGIN": 0.2,
+    "TEETER_PER_SPEED": 0.08,
+    "TEETER_SPEED": 0.6
+  },
+  "before": {
+    "label": "before (falls off = HEAD rules)",
+    "matches": 6000,
+    "seed": 4242,
+    "decisive": 5908,
+    "reasons": {
+      "ringout": 3908,
+      "ko": 1724,
+      "time": 368
+    },
+    "ringOutShare": 0.6513,
+    "koShare": 0.2873,
+    "classWinShare": {
+      "Barbarian": 0.5008,
+      "Warrior": 0.5595,
+      "Rogue": 0.538,
+      "Assassin": 0.582,
+      "Mage": 0.4232,
+      "Necromancer": 0.4338,
+      "Archer": 0.5313,
+      "Priest": 0.437
+    },
+    "meanAbsDev": 0.0522,
+    "medianDuration": 51.39,
+    "medianDuelSeconds": 45.39,
+    "collisionsPerMatch": 0,
+    "staggersPerMatch": 0,
+    "stumblesPerMatch": 0,
+    "fallsPerMatch": 0,
+    "meanDownS": 0,
+    "damageWhileDownShare": 0,
+    "causes": {}
+  },
+  "after": {
+    "label": "after (falls on, fall-aware AI)",
+    "matches": 6000,
+    "seed": 4242,
+    "decisive": 5909,
+    "reasons": {
+      "ringout": 4137,
+      "ko": 1570,
+      "time": 293
+    },
+    "ringOutShare": 0.6895,
+    "koShare": 0.2617,
+    "classWinShare": {
+      "Barbarian": 0.5144,
+      "Warrior": 0.5672,
+      "Rogue": 0.5392,
+      "Assassin": 0.5857,
+      "Mage": 0.4051,
+      "Necromancer": 0.4174,
+      "Archer": 0.5407,
+      "Priest": 0.437
+    },
+    "meanAbsDev": 0.061,
+    "medianDuration": 46.03,
+    "medianDuelSeconds": 40.03,
+    "collisionsPerMatch": 1.5505,
+    "staggersPerMatch": 6.148,
+    "stumblesPerMatch": 2.7782,
+    "fallsPerMatch": 2.4812,
+    "meanDownS": 1.9845,
+    "damageWhileDownShare": 0.0988,
+    "causes": {
+      "hit": 0.7355,
+      "edge": 0.0892,
+      "collision": 0.0978,
+      "backstep": 0.0775
+    }
+  },
+  "aware": {
+    "matches": 3000,
+    "seed": 777,
+    "counted": 2676,
+    "decisive": 2605,
+    "awareWins": 1330,
+    "awareWinRate": 0.5106,
+    "se": 0.0098,
+    "hitRate": {
+      "aware": {
+        "downed": 0.6167,
+        "standing": 0.403
+      },
+      "unaware": {
+        "downed": 0.5541,
+        "standing": 0.4062
+      }
+    }
+  },
+  "noopControl": {
+    "matches": 1000,
+    "seed": 777,
+    "counted": 914,
+    "decisive": 898,
+    "awareWins": 449,
+    "awareWinRate": 0.5,
+    "se": 0.0167,
+    "hitRate": {
+      "aware": {
+        "downed": 0.5458,
+        "standing": 0.3964
+      },
+      "unaware": {
+        "downed": 0.5458,
+        "standing": 0.3964
+      }
+    }
+  }
+}

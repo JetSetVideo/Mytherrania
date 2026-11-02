@@ -25,13 +25,19 @@ import {
   smoothMax, smoothMin, solveLegInPelvis, type TwoBoneChain,
 } from "./FootIK.ts";
 import { Gait, type GaitParams } from "./Gait.ts";
+import {
+  type AnimFallInput, type AnimShoveInput, CONTACT_COUNT, evalKeys, type FallKey, type FallSequences, fallSequences,
+  newReact, qaxis, qmul, qrot, qslerp, reactTargets, type ReactTargets, wideLimits,
+} from "./FallMotion.ts";
 import type { LiveState, MotionStyle } from "./MotionStyle.ts";
 import { makeMask, MASK_FULL, MASK_LOWER, MASK_UPPER, PoseBlender } from "./PoseBlend.ts";
 import { AIR_POSE, ATTACK_POSE, BREATH_UNIT, GUARD_POSE, HIT_OFFSETS, KO_POSE, poseArray } from "./Poses.ts";
 import {
-  ARM_JOINTS, hipPivot, hipRestRollOf, JOINT_COUNT, JOINT_INDEX, type JointLimitTable, LEG_JOINTS, legFK3, type LegGeometry,
-  legLength, localToWorld, newLegFK3, type Side, standingSoleDepth, worldToLocal,
+  ARM_JOINTS, bodySpheres, hipPivot, hipRestRollOf, JOINT_COUNT, JOINT_INDEX, type JointLimitTable, LEG_JOINTS, legFK3,
+  type LegGeometry, legLength, localToWorld, newLegFK3, type Side, SPHERE, SPHERE_COUNT, standingSoleDepth, worldToLocal,
 } from "./Rig.ts";
+
+export type { AnimFallInput, AnimFallPhase, AnimFallPose, AnimShoveInput } from "./FallMotion.ts";
 
 /** Named base parameters of the animator (ratios are of the leg length L unless stated). */
 export interface AnimatorParams {
@@ -294,6 +300,16 @@ export interface AnimatorInput {
    * absent/false: yawOffset stays 0 and the motion is exactly as before.
    */
   honoursYawOffset?: boolean;
+  /**
+   * Wave FALL (C-ANIM): the fighter's fall state (M's Fall.ts). "stagger" / "stumble" layer a
+   * balance reaction on the gait; "falling" / "down" / "rising" hand the whole body to the keyed
+   * fall -> lying -> get-up (FallMotion.ts), grounded on the floor and anchored on its contacts.
+   * Absent / null / "stand" = today's motion exactly. While it plays, the caller must honour
+   * AnimatorOutput.yawOffset, rootTilt and rootOffsetForward (docs/wave-fall/ANIMATION.md).
+   */
+  fall?: AnimFallInput | null;
+  /** Wave FALL (C-ANIM): a shove / clash exchange (brace -> impact -> recoil) layered on the gait. */
+  shove?: AnimShoveInput | null;
 }
 
 /** One foot as the animator placed it this frame (world metres). */
@@ -343,6 +359,32 @@ export interface AnimatorOutput {
   breath: number;
   /** Wave V lane P: this frame's idle weight shift, rig-local x, m (QA; already in rootOffsetLateral). */
   idleSway: number;
+  /**
+   /**
+    * Wave FALL: add this to the fighter's body x/z this frame (world m). While a fall / lying /
+    * get-up plays, the body (physics, hitboxes, ring-out, AI) is pulled under the PELVIS of the pose
+    * (the contact anchoring moves the pose over the floor: a backward fall lands the hips ~0.5 m
+    * behind the feet, a get-up stands up over a planted foot). The animator already moved its root
+    * offsets by the same amount, so a caller that ignores it sees the pose drift toward the body.
+    */
+   bodyShift: Float64Array;
+   /** Wave FALL: whole-body tilt, unit quaternion [x, y, z, w] in the HEADING frame, applied between
+   * the yaw and the roll: rig rotation = Ry(yaw + yawOffset) · rootTilt · Rz(rootRoll + caller's tilt)
+   * (SkinnedHumanoid.applyRootTilt). Identity unless a fall / get-up plays.
+   */
+  rootTilt: Float64Array;
+  /** Wave FALL: shift the rig origin along its local z (m), like rootOffsetLateral along x. 0 unless falling. */
+  rootOffsetForward: number;
+  /** Wave FALL: share (0..1) of the keyed fall / lying / get-up pose in this frame's output (QA). */
+  fallWeight: number;
+  /**
+   * Wave FALL: 0..1 — how much the caller should seat the WHOLE body on the floor after placing
+   * the rig (SkinnedHumanoid.settleOnFloor: the lowest skin point onto the ground). The animator
+   * already grounds its own body model (Rig.bodySpheres); this is the exact skin correction.
+   */
+  groundBody: number;
+  /** Wave FALL: the pose uses the widened lying / kneeling windows (FallMotion.WIDE_JOINT_LIMITS): pass to Skeleton.drive. */
+  wideLimits: boolean;
 }
 
 const SPINE = JOINT_INDEX.spine, ABD = JOINT_INDEX.abdomen, NECK = JOINT_INDEX.neck, HEAD = JOINT_INDEX.head;
@@ -371,7 +413,58 @@ export const SKILL_SPEED_SHARE = 0.65;
 const PR4: FourPhaseProfile = { anticipation: 0, anticipationShare: 0, hold: 0, overshoot: 0, settle: 0 };
 
 /** Layer indices inside the animator's blender. */
-export const LAYER = { loco: 0, air: 1, guard: 2, attack: 3, skill: 4, ko: 5, hit: 6, balance: 7, breath: 8 } as const;
+export const LAYER = { loco: 0, air: 1, guard: 2, attack: 3, skill: 4, ko: 5, hit: 6, balance: 7, breath: 8, react: 9 } as const;
+
+/** Wave FALL: rate (1/s) the body is pulled under the fallen pose's pelvis (AnimatorOutput.bodyShift). */
+export const FALL_BODY_PULL = 10;
+/**
+ * Wave FALL: fastest whole-body turn (rad/s) of the fall / get-up root tilt. The keys are timed by
+ * M's law (a 0.8 s get-up at the fast end), so the root's angular speed is rate-limited like every
+ * joint (PoseBlender.maxJointSpeed): a short clip lags a little instead of popping.
+ */
+export const FALL_ROOT_SPEED = 9;
+/** Wave FALL: inertialization time (s) that absorbs any pose jump at a fall phase switch / exit. */
+export const FALL_BLEND_TIME = 0.22;
+/** Wave FALL: values carried through the inertialization (16 joints + hipRoll[2] + ankleRoll[2]). */
+const FV = JOINT_COUNT + 4;
+const REACT_MASK = makeMask(["shoulderL", "shoulderR", "elbowL", "elbowR", "neck"]);
+
+/** Wave FALL: per-fighter fall state (internal). */
+interface FallState {
+  mode: boolean;
+  phase: string;
+  pose: string;
+  seq: FallSequences;
+  keys: FallKey[];
+  /** Heading the body falls / lies on (rad, world) and the one it started from. */
+  heading: number;
+  yaw0: number;
+  /** Root horizontal offset from the body position, world m (the contact anchoring moves it). */
+  cx: number;
+  cz: number;
+  latchX: Float64Array;
+  latchZ: Float64Array;
+  latched: Uint8Array;
+  /** Inertialization: value offsets, world-rotation offset, root offsets, elapsed. */
+  off: Float64Array;
+  qOff: Float64Array;
+  offC: Float64Array;
+  offT: number;
+  /** Last final output of the fall pose (for inertialization at a switch). */
+  last: Float64Array;
+  lastQ: Float64Array; // world rotation Ry(yaw)·tilt
+  lastYaw: number;
+  lastC: Float64Array; // cx, cz, rootY(world)
+  handoff: boolean;
+  /** Exit inertialization (normal mode after a fall), elapsed; < 0 = none. */
+  exitT: number;
+  contact: Float64Array;
+  clearance: number;
+  /** The snapshot's hip / ankle rolls (kept while its feet stay loaded in the first fall keys). */
+  snapRoll: Float64Array;
+  /** Heading turn (rad) the get-up makes on hands and knees to face the rival (latched at rise start). */
+  turnTo: number;
+}
 
 /** The per-fighter animator. */
 export class Animator {
@@ -431,6 +524,19 @@ export class Animator {
   #swayPh = 0;
   #swayW = 0;
   #swayX = 0;
+  /** Wave FALL: reaction (shove / stagger / stumble) state and target, the fall state, scratch. */
+  readonly #react: ReactTargets = newReact();
+  readonly #reactTarget: ReactTargets = newReact();
+  #reactOn = false;
+  readonly #wide: JointLimitTable;
+  readonly #fs: FallState;
+  readonly #sph = new Float64Array(4 * SPHERE_COUNT);
+  readonly #normA = new Float64Array(FV);
+  readonly #fallA = new Float64Array(FV);
+  readonly #rawQ = new Float64Array(4);
+  readonly #qw = new Float64Array(4);
+  readonly #qt = new Float64Array(4);
+  readonly #v3 = new Float64Array(3);
 
   constructor(geometry: LegGeometry, limits: JointLimitTable, params: Partial<AnimatorParams> = {}) {
     this.geometry = geometry;
@@ -463,6 +569,8 @@ export class Animator {
     B.addLayer({ name: "hit", mode: "additive", mask: MASK_UPPER, smoothTime: p.smoothHit });
     B.addLayer({ name: "balance", mode: "additive", mask: TRUNK, smoothTime: 0.1 });
     B.addLayer({ name: "breath", mode: "additive", mask: MASK_UPPER, smoothTime: p.smoothBreath });
+    // Wave FALL: shove / stagger / stumble arm + neck offsets (additive; all-zero values = no effect).
+    B.addLayer({ name: "react", mode: "additive", mask: REACT_MASK, smoothTime: 0 });
     B.values(LAYER.air).set(poseArray(AIR_POSE, limits, "override"));
     B.values(LAYER.guard).set(poseArray(GUARD_POSE, limits, "override"));
     this.#attackStatic = poseArray(ATTACK_POSE, limits, "override");
@@ -472,6 +580,7 @@ export class Animator {
     B.values(LAYER.skill).set(limits.rest);
     B.setWeightImmediate(LAYER.balance, 1);
     B.setWeightImmediate(LAYER.breath, 1);
+    B.setWeightImmediate(LAYER.react, 1);
     for (let j = 0; j < JOINT_COUNT; j++) B.passThrough[j] = MASK_LOWER[j];
     let range = 0;
     for (let j = 0; j < JOINT_COUNT; j++) range = Math.max(range, limits.max[j] - limits.min[j]);
@@ -484,7 +593,25 @@ export class Animator {
       footPlant: { left: true, right: true },
       feet: [{ x: 0, y: 0, z: 0, planted: true }, { x: 0, y: 0, z: 0, planted: true }],
       pelvisDrop: 0, phase: 0, yawOffset: 0, breath: 0, idleSway: 0,
+      rootTilt: Float64Array.of(0, 0, 0, 1), rootOffsetForward: 0, fallWeight: 0, groundBody: 0, wideLimits: false,
+      bodyShift: new Float64Array(2),
     };
+    this.#wide = wideLimits(limits);
+    const seq = fallSequences("back", 1);
+    this.#fs = {
+      mode: false, phase: "stand", pose: "back", seq, keys: seq.falling, heading: 0, yaw0: 0, cx: 0, cz: 0,
+      latchX: new Float64Array(CONTACT_COUNT), latchZ: new Float64Array(CONTACT_COUNT), latched: new Uint8Array(CONTACT_COUNT),
+      off: new Float64Array(FV), qOff: Float64Array.of(0, 0, 0, 1), offC: new Float64Array(3), offT: Infinity,
+      last: new Float64Array(FV), lastQ: Float64Array.of(0, 0, 0, 1), lastYaw: 0, lastC: new Float64Array(3),
+      handoff: false, exitT: -1, contact: new Float64Array(CONTACT_COUNT), clearance: 0, snapRoll: new Float64Array(4),
+      turnTo: 0,
+    };
+  }
+
+  /** Wave FALL (QA): the fall state's contact loads [footL, footR, kneeL, kneeR, handL, handR, pelvis] and mode. */
+  get fallDebug(): { mode: boolean; phase: string; contact: Float64Array; heading: number; spheres: Float64Array } {
+    const f = this.#fs;
+    return { mode: f.mode, phase: f.phase, contact: f.contact, heading: f.heading, spheres: this.#sph };
   }
 
   /** Leg length L (m). */
@@ -512,6 +639,7 @@ export class Animator {
     this.#lastX = x; this.#lastZ = z; this.#hasLast = true;
     this.#primed = false;
     this.#heldYaw = yaw; this.#heldInit = true; this.#refacing = false; this.#lastYawEff = yaw;
+    this.#fs.mode = false; this.#fs.exitT = -1; this.#fs.phase = "stand";
   }
 
   /** Wave V lane P: the idle sway period of this fighter, s (seeded by the style's breath phase). */
@@ -537,6 +665,15 @@ export class Animator {
       this.gait.params.strideGain = this.#strideB0 * e.strideScale;
     }
 
+    // Wave FALL: which motion owns the body, and the get-up hand-off (before the facing hold, so the
+    // gait inherits the heading the rise ended on and the feet where it put them).
+    const fin = inp.fall ?? null;
+    const fallOwns = !!fin && (fin.phase === "falling" || fin.phase === "down" || fin.phase === "rising");
+    {
+      const fs = this.#fs;
+      if (fallOwns && fs.mode && fin!.phase === "rising" && fin!.t01 >= fs.seq.guardAt && !fs.handoff) this.#handOff(inp.x, inp.z);
+    }
+
     // 0. Facing hold (wave V lane P, AnimatorParams.facingSlack): standing, the body keeps the
     //    heading its feet were planted at while the rival sways inside the slack, and re-faces with
     //    a step past it. Every rig-frame computation below uses the EFFECTIVE yaw.
@@ -545,7 +682,11 @@ export class Animator {
       if (!this.#heldInit) { this.#heldYaw = inp.yaw; this.#heldInit = true; this.#lastYawEff = inp.yaw; }
       holdIdle = inp.grounded && !inp.ko && !inp.attack && !inp.skill && !inp.attackPose && this.gait.moving < p.facingStill;
       const err = wrapAngle(inp.yaw - this.#heldYaw);
-      if (holdIdle) {
+      if (fallOwns && this.#fs.mode) {
+        // Wave FALL: through a fall / get-up and its hand-off the gait keeps the heading the rise
+        // ends on — no re-facing step under a loaded foot; the turn toward the rival comes after.
+        holdIdle = false; this.#refacing = false;
+      } else if (holdIdle) {
         if (Math.abs(err) > p.facingSlack) this.#refacing = true;
         if (this.#refacing) {
           this.#heldYaw = wrapAngle(this.#heldYaw + err * (1 - Math.exp(-p.facingRate * h)));
@@ -564,6 +705,10 @@ export class Animator {
     const mdl = inp.honoursYawOffset ? wrapAngle(inp.moveDirLocal - yawOffset) : inp.moveDirLocal;
     const turnRate = inp.honoursYawOffset ? (h > 0 ? wrapAngle(yaw - this.#lastYawEff) / h : 0) : inp.turnRate;
     this.#lastYawEff = yaw;
+
+    // Wave FALL: shove / stagger / stumble reaction targets in the rig frame, sprung (no pops).
+    if (inp.shove || (fin && (fin.phase === "stagger" || fin.phase === "stumble")) || this.#reactOn) this.#stepReact(h, inp, fin, yaw);
+    const rx = this.#reactOn ? this.#react : null;
 
     // 1. Gait.
     this.#stance = damp(this.#stance, inp.engaged || inp.block ? 1 : 0, 4, h);
@@ -633,6 +778,7 @@ export class Animator {
     const hunch = e ? e.hunch : 0;
     bal[SPINE] = accLean + hunch;
     bal[ABD] = counter * (accLean + hunch);
+    if (rx) { bal[SPINE] += rx.lean; bal[ABD] += counter * rx.lean; }
     // Breathing (wave V lane P): integrated phase (a rate that changes with fatigue must not jump
     // the phase), a skewed wave — a quicker inhale, a longer exhale — and the style's amplitude.
     this.#breathPh += 2 * Math.PI * (e ? e.breathRate : p.breathRate) * h;
@@ -677,6 +823,7 @@ export class Animator {
     // height), so the chest and shoulders lift with each breath while the feet stay latched.
     const bw = B.weight(LAYER.breath);
     ride -= p.breathRise * (breathAmp / p.breathAmplitude) * bw * (1 - wave);
+    if (rx) ride -= rx.crouch;
     out.breath = bw * wave;
     let rootY = groundBody + g.soleOffset + L * ride + this.gait.bob - HIP2[0];
     // Idle weight shift: the pelvis drifts over one foot, then the other (seeded slow period).
@@ -689,7 +836,8 @@ export class Animator {
       this.#swayX = p.idleSwayAmp * L * this.#swayW * (0.8 * Math.sin(sp) + 0.2 * Math.sin(2.618 * sp + 1));
     }
     const auth = B.baseAuthority(LEG_JOINTS[0].hip);
-    const roll = this.gait.roll * auth * (e ? e.sway : 1);
+    let roll = this.gait.roll * auth * (e ? e.sway : 1);
+    if (rx) roll += rx.roll;
     const totalRoll = roll + (inp.externalRoll ?? 0);
     const fx = Math.sin(yaw), fz = Math.cos(yaw);
     const exactLimit = g.thigh + g.shin - this.#chain.reachMargin - this.#chain.softness;
@@ -872,7 +1020,317 @@ export class Animator {
     }
     out.footPlant.left = out.feet[0].planted;
     out.footPlant.right = out.feet[1].planted;
+    // Wave FALL: the keyed fall / lying / get-up owns (or hands back) the body; else the exit blend.
+    out.rootTilt[0] = out.rootTilt[1] = out.rootTilt[2] = 0; out.rootTilt[3] = 1;
+    out.rootOffsetForward = 0; out.fallWeight = 0; out.groundBody = 0; out.wideLimits = false;
+    out.bodyShift[0] = out.bodyShift[1] = 0;
+    if (fallOwns) this.#fallFrame(h, inp, fin!, baseRootY, yaw);
+    else if (this.#fs.mode || this.#fs.exitT >= 0) this.#fallExit(h, inp, baseRootY, yaw);
     return out;
+  }
+
+  /** Wave FALL: spring the reaction toward this frame's targets; write the arm/neck layer values. */
+  #stepReact(h: number, inp: AnimatorInput, fin: AnimFallInput | null, yaw: number): void {
+    const fx = Math.sin(yaw), fz = Math.cos(yaw);
+    const fd = fin ? fin.dir : null, sd = inp.shove ? inp.shove.dir : null;
+    const df = fd ? fd[0] * fx + fd[1] * fz : 0, dl = fd ? fd[0] * fz - fd[1] * fx : 0;
+    const sdf = sd ? sd[0] * fx + sd[1] * fz : 0, sdl = sd ? sd[0] * fz - sd[1] * fx : 0;
+    const T = reactTargets(inp.shove, fin && (fin.phase === "stagger" || fin.phase === "stumble") ? fin : null, df, dl, sdf, sdl, this.#time, this.#reactTarget);
+    const R = this.#react, k = 1 - Math.exp(-16 * h);
+    R.lean += (T.lean - R.lean) * k; R.roll += (T.roll - R.roll) * k; R.crouch += (T.crouch - R.crouch) * k; R.neck += (T.neck - R.neck) * k;
+    for (let i = 0; i < 2; i++) { R.shoulder[i] += (T.shoulder[i] - R.shoulder[i]) * k; R.elbow[i] += (T.elbow[i] - R.elbow[i]) * k; }
+    const mag = Math.abs(R.lean) + Math.abs(R.roll) + Math.abs(R.crouch) + Math.abs(R.neck) +
+      Math.abs(R.shoulder[0]) + Math.abs(R.shoulder[1]) + Math.abs(R.elbow[0]) + Math.abs(R.elbow[1]);
+    const active = !!inp.shove || !!(fin && (fin.phase === "stagger" || fin.phase === "stumble"));
+    const rv = this.blender.values(LAYER.react);
+    if (!active && mag < 1e-5) {
+      // Fully released: exact zeros, so the motion is byte-identical to a fighter never shoved.
+      R.lean = R.roll = R.crouch = R.neck = 0; R.shoulder[0] = R.shoulder[1] = R.elbow[0] = R.elbow[1] = 0;
+      rv.fill(0);
+      this.#reactOn = false;
+      return;
+    }
+    this.#reactOn = true;
+    rv[JOINT_INDEX.shoulderL] = R.shoulder[0]; rv[JOINT_INDEX.shoulderR] = R.shoulder[1];
+    rv[JOINT_INDEX.elbowL] = R.elbow[0]; rv[JOINT_INDEX.elbowR] = R.elbow[1]; rv[NECK] = R.neck;
+  }
+
+  /** Wave FALL: hand the get-up's feet and heading to the gait / facing hold (once per rise). */
+  #handOff(bodyX: number, bodyZ: number): void {
+    const fs = this.#fs;
+    fs.handoff = true;
+    for (let i = 0; i < 2; i++) {
+      const b = SPHERE.ball[i] * 4;
+      // Ball sphere centre, rig-local -> world, from the last fall frame (stored in #sph / lastC).
+      qrot(fs.lastQ, this.#sph[b], this.#sph[b + 1], this.#sph[b + 2], this.#v3);
+      this.gait.plantAt(i as Side, bodyX + fs.lastC[0] + this.#v3[0], bodyZ + fs.lastC[1] + this.#v3[2], fs.lastYaw);
+      this.#plantYaw[i] = fs.lastYaw; this.#wasPlanted[i] = true; this.#pivot[i] = 0;
+    }
+    this.#heldYaw = fs.lastYaw; this.#heldInit = true; this.#refacing = false; this.#lastYawEff = fs.lastYaw;
+  }
+
+  /** Wave FALL: the heading the body falls / lies on for `pose` falling toward `dir`, and the landing side. */
+  #fallHeading(pose: string, dir: readonly [number, number], yawNow: number): { heading: number; side: number } {
+    const n = Math.hypot(dir[0], dir[1]);
+    const dx = n > 1e-6 ? dir[0] / n : -Math.sin(yawNow), dz = n > 1e-6 ? dir[1] / n : -Math.cos(yawNow);
+    if (pose === "front") return { heading: Math.atan2(dx, dz), side: 1 };
+    if (pose === "back") {
+      // Roll-over side for the get-up: toward the rig side the body already leans (+x when unknown).
+      return { heading: Math.atan2(-dx, -dz), side: 1 };
+    }
+    // Side: the rig's +x side lands when dir = local +x = (cos h, -sin h); the -x side when dir = -local x.
+    const h1 = Math.atan2(-dz, dx), h2 = Math.atan2(dz, -dx);
+    return Math.abs(wrapAngle(h1 - yawNow)) <= Math.abs(wrapAngle(h2 - yawNow)) ? { heading: h1, side: 1 } : { heading: h2, side: -1 };
+  }
+
+  /**
+   * Wave FALL: one frame of the keyed fall / lying / get-up. The normal pipeline already ran (its
+   * result is in `out`); this replaces it (blending back to it after the get-up's guard key):
+   *   pose     keys (FallMotion) -> joints + root tilt; any switch is inertialized (FALL_BLEND_TIME)
+   *   anchor   loaded contacts (feet, knees, hands, pelvis) latch where they touch down and the root
+   *            moves so they stay there (C = weighted mean of latch - current)
+   *   ground   the lowest body sphere (Rig.bodySpheres) sits on the floor under it
+   */
+  #fallFrame(h: number, inp: AnimatorInput, fin: AnimFallInput, baseRootY: number, yawN: number): void {
+    const fs = this.#fs, out = this.output, lim = this.#wide, A = this.#fallA, nA = this.#normA;
+    nA.set(out.angles); nA[16] = out.hipRoll[0]; nA[17] = out.hipRoll[1]; nA[18] = out.ankleRoll[0]; nA[19] = out.ankleRoll[1];
+    const yawNorm = inp.yaw + out.yawOffset;
+    const nLat = out.rootOffsetLateral, ncx = nLat * Math.cos(yawNorm), ncz = -nLat * Math.sin(yawNorm);
+    const nRootY = baseRootY + out.rootOffsetY;
+    const qN = qmul(qaxis(1, yawNorm, this.#qt), qaxis(2, out.rootRoll, this.#rawQ), new Float64Array(4));
+    void yawN;
+    let switched = false;
+    const t = clamp(fin.t01, 0, 1);
+    if (!fs.mode || (fin.phase === "falling" && fs.phase !== "falling")) {
+      // Enter (or fall again from a lying / rising body): snapshot the pose this frame shows.
+      const fromFall = fs.mode;
+      const yaw0 = fromFall ? fs.lastYaw : yawNorm;
+      const hd = this.#fallHeading(fin.pose, fin.dir, yaw0);
+      fs.pose = fin.pose; fs.heading = hd.heading; fs.yaw0 = yaw0;
+      fs.seq = fallSequences(fin.pose, hd.side);
+      const snapA = Float64Array.from((fromFall ? fs.last : nA).subarray(0, JOINT_COUNT));
+      const snapQ = fromFall ? qmul(qaxis(1, -yaw0, this.#qt), fs.lastQ, new Float64Array(4)) : qaxis(2, out.rootRoll);
+      const snapC = new Float64Array(CONTACT_COUNT);
+      fs.snapRoll.set((fromFall ? fs.last : nA).subarray(JOINT_COUNT, FV));
+      if (inp.grounded) { snapC[0] = snapC[1] = 1; }
+      fs.keys = [{ t: 0, angles: snapA, q: snapQ, contact: snapC, yawAdd: 0 }, ...fs.seq.falling];
+      // The first fall keys keep the snapshot's stance (stagger, step) on top of their own leg
+      // bend, so the planted feet buckle where they stand instead of sliding together.
+      const ref = fs.seq.rising[fs.seq.rising.length - 1].angles;
+      for (let k = 1; k <= 2 && k < fs.keys.length - 1; k++) {
+        const s = k === 1 ? 1 : 0.5;
+        for (const lj of LEG_JOINTS) {
+          for (const j of [lj.hip, lj.knee, lj.ankle, lj.toe]) fs.keys[k].angles[j] += (snapA[j] - ref[j]) * s;
+        }
+      }
+      if (!fromFall) {
+        fs.cx = ncx; fs.cz = ncz;
+        fs.last.set(nA); fs.lastQ.set(qN); fs.lastYaw = yawNorm; fs.lastC[0] = ncx; fs.lastC[1] = ncz; fs.lastC[2] = nRootY;
+      }
+      fs.latched.fill(0);
+      fs.handoff = false; fs.exitT = -1; fs.mode = true;
+      switched = true;
+    } else if (fin.phase !== fs.phase) {
+      fs.latched.fill(0);
+      switched = true;
+    }
+    if (switched && fin.phase === "rising") {
+      // On hands and knees the body turns to face the rival (the roll-over may have turned it away).
+      fs.turnTo = wrapAngle(inp.yaw - (fs.heading + fs.seq.yawAdd));
+    }
+    fs.phase = fin.phase;
+    // 1. Raw pose and heading.
+    const seq = fs.seq, rawQ = this.#rawQ, C = fs.contact;
+    let yawOut = fs.heading;
+    if (fin.phase === "falling") {
+      evalKeys(fs.keys, t, A, rawQ, C);
+      yawOut = fs.yaw0 + wrapAngle(fs.heading - fs.yaw0) * smoothstep(0, 0.6, t);
+    } else if (fin.phase === "down") {
+      A.set(seq.lie.angles); rawQ.set(seq.lie.q); C.set(seq.lie.contact);
+      // Breathing on the floor: the chest rises, the belly counters, shoulders follow.
+      const b = Math.sin(2 * Math.PI * 0.3 * this.#time);
+      A[SPINE] += 0.035 * b; A[ABD] -= 0.015 * b; A[JOINT_INDEX.shoulderL] -= 0.03 * b; A[JOINT_INDEX.shoulderR] -= 0.03 * b;
+    } else {
+      const i = evalKeys(seq.rising, t, A, rawQ, C);
+      const ks = seq.rising;
+      if (seq.yawAdd !== 0 && ks[i].yawAdd === seq.yawAdd && ks[i + 1].yawAdd === seq.yawAdd) {
+        // Rolled over: bake the heading turn into the yaw (world rotation unchanged).
+        yawOut = fs.heading + seq.yawAdd;
+        qmul(qaxis(1, -seq.yawAdd, this.#qt), rawQ, this.#qw); rawQ.set(this.#qw);
+      }
+      yawOut += fs.turnTo * smoothstep(seq.turnFrom, seq.turnUntil, t);
+    }
+    A[16] = A[17] = A[18] = A[19] = 0;
+    if (fin.phase === "falling") {
+      // Loaded feet keep the stance's abduction (the rolls go with the load: no sideways scuff).
+      for (let i = 0; i < 2; i++) { A[16 + i] = fs.snapRoll[i] * C[i]; A[18 + i] = fs.snapRoll[2 + i] * C[i]; }
+    } else if (fin.phase === "rising") {
+      // Standing up, the legs adduct from their bind abduction to the gait's stance width (feet
+      // under the hips, soles level): the stand the gait takes over is the one it would make.
+      const s = smoothstep(seq.standFrom, seq.guardAt, t);
+      for (let i = 0; i < 2; i++) { const r = -hipRestRollOf(this.geometry, i as Side) * s; A[16 + i] = r; A[18 + i] = -r; }
+    }
+    const qW = qmul(qaxis(1, yawOut, this.#qt), rawQ, this.#qw);
+    // 2. Inertialization of any switch: carry the last output's difference and let it decay.
+    if (switched) {
+      for (let j = 0; j < FV; j++) fs.off[j] = fs.last[j] - A[j];
+      const c = Float64Array.of(-qW[0], -qW[1], -qW[2], qW[3]);
+      qmul(fs.lastQ, c, fs.qOff);
+      fs.offT = 0;
+    }
+    if (fs.offT < FALL_BLEND_TIME) {
+      const d = 1 - smoothstep(0, FALL_BLEND_TIME, fs.offT);
+      for (let j = 0; j < FV; j++) A[j] += fs.off[j] * d;
+      const qi = qslerp(Float64Array.of(0, 0, 0, 1), fs.qOff, d, new Float64Array(4));
+      const tmp = qmul(qi, qW, new Float64Array(4)); qW.set(tmp);
+      fs.offT += h;
+    }
+    for (let j = 0; j < JOINT_COUNT; j++) A[j] = clamp(A[j], lim.min[j], lim.max[j]);
+    // Speed limits (continuity at any clip length): every joint at the blender's maxJointSpeed, the
+    // root tilt at FALL_ROOT_SPEED — relative to the last output (a switch is inertialized first).
+    {
+      const dj = this.blender.maxJointSpeed * h;
+      for (let j = 0; j < FV; j++) A[j] = clamp(A[j], fs.last[j] - dj, fs.last[j] + dj);
+      const d = Math.abs(fs.lastQ[0] * qW[0] + fs.lastQ[1] * qW[1] + fs.lastQ[2] * qW[2] + fs.lastQ[3] * qW[3]);
+      const ang = 2 * Math.acos(Math.min(1, d)), lim2 = FALL_ROOT_SPEED * h;
+      if (ang > lim2) { const tmp = qslerp(fs.lastQ, qW, lim2 / ang, new Float64Array(4)); qW.set(tmp); }
+    }
+    // 3. Body model, contact anchoring, grounding.
+    const S = bodySpheres(this.geometry, A, A.subarray(16, 18), A.subarray(18, 20), this.#sph, out.toeOut);
+    const v = this.#v3;
+    let sw = 0, sx = 0, sz = 0;
+    // A loaded FOOT outranks the other contacts (knees, hands, pelvis): the get-up must not slide a
+    // planted sole, while a knee or hand may scuff as the weight leaves it.
+    const footLoad = Math.min(1, C[0] + C[1]), other = 1 - footLoad;
+    for (let c = 0; c < CONTACT_COUNT; c++) {
+      // A contact anchors once it is mostly loaded (it latches where it has ARRIVED, not mid-travel).
+      const w = smoothstep(0.4, 0.9, c < 2 ? C[c] : C[c] * other);
+      this.#contactLocal(S, c, v);
+      qrot(qW, v[0], v[1], v[2], v);
+      if (w < 0.02) { fs.latched[c] = 0; continue; }
+      if (!fs.latched[c]) { fs.latchX[c] = fs.cx + v[0]; fs.latchZ[c] = fs.cz + v[2]; fs.latched[c] = 1; }
+      sw += w; sx += w * (fs.latchX[c] - v[0]); sz += w * (fs.latchZ[c] - v[2]);
+    }
+    if (sw > 0) {
+      const k = Math.min(1, sw);
+      fs.cx += (sx / sw - fs.cx) * k; fs.cz += (sz / sw - fs.cz) * k;
+    }
+    // Pull the body under the pelvis (bodyShift, applied by the caller right after this update):
+    // the root offset and every latch are body-relative, so they move back by the same shift and
+    // the pose stays where it is in the world. Everything below is relative to the MOVED body.
+    let bx = inp.x, bz = inp.z;
+    {
+      this.#contactLocal(S, 6, v);
+      qrot(qW, v[0], v[1], v[2], v);
+      // No pull in the get-up's hand-off: a moving body would set the gait walking under the stand.
+      const k = fin.phase === "rising" && t >= seq.guardAt ? 0 : 1 - Math.exp(-FALL_BODY_PULL * h);
+      const px = (fs.cx + v[0]) * k, pz = (fs.cz + v[2]) * k;
+      out.bodyShift[0] = px; out.bodyShift[1] = pz;
+      fs.cx -= px; fs.cz -= pz; bx += px; bz += pz;
+      for (let c = 0; c < CONTACT_COUNT; c++) { fs.latchX[c] -= px; fs.latchZ[c] -= pz; }
+    }
+    // Ground: the lowest sphere on the floor under it (the body's floor when airborne: a ledge fall).
+    const bodyFloor = baseRootY - this.#soleDepth;
+    let rootY = -Infinity;
+    for (let k = 0; k < SPHERE_COUNT; k++) {
+      qrot(qW, S[k * 4], S[k * 4 + 1], S[k * 4 + 2], v);
+      const floor = inp.grounded ? inp.groundHeight(bx + fs.cx + v[0], bz + fs.cz + v[2]) : bodyFloor;
+      rootY = Math.max(rootY, floor - (v[1] - S[k * 4 + 3]));
+    }
+    // 4. Hand back to the gait after the guard key (the get-up's last stretch).
+    const w = fin.phase === "rising" ? smoothstep(seq.guardAt, 1, t) : 0;
+    const yawF = yawOut + wrapAngle(yawNorm - yawOut) * w;
+    for (let j = 0; j < FV; j++) A[j] += (nA[j] - A[j]) * w;
+    const cx = fs.cx + (ncx - fs.cx) * w, cz = fs.cz + (ncz - fs.cz) * w, ry = rootY + (nRootY - rootY) * w;
+    const qF = w > 0 ? qslerp(qW, qN, w, new Float64Array(4)) : qW;
+    if (w > 0) {
+      // The hand-off blend obeys the same speed limits (a short rise reaches it with the pose lagging).
+      const dj = this.blender.maxJointSpeed * h;
+      for (let j = 0; j < FV; j++) A[j] = clamp(A[j], fs.last[j] - dj, fs.last[j] + dj);
+      const dq = Math.abs(fs.lastQ[0] * qF[0] + fs.lastQ[1] * qF[1] + fs.lastQ[2] * qF[2] + fs.lastQ[3] * qF[3]);
+      const ang = 2 * Math.acos(Math.min(1, dq)), lim2 = FALL_ROOT_SPEED * h;
+      if (ang > lim2) qF.set(qslerp(fs.lastQ, qF, lim2 / ang, new Float64Array(4)));
+    }
+    // 5. Output.
+    out.angles.set(A.subarray(0, JOINT_COUNT));
+    out.hipRoll[0] = A[16]; out.hipRoll[1] = A[17]; out.ankleRoll[0] = A[18]; out.ankleRoll[1] = A[19];
+    out.yawOffset = wrapAngle(yawF - inp.yaw);
+    qmul(qaxis(1, -yawF, this.#qt), qF, out.rootTilt);
+    out.rootRoll = 0;
+    out.rootOffsetY = ry - baseRootY;
+    out.rootOffsetLateral = cx * Math.cos(yawF) - cz * Math.sin(yawF);
+    out.rootOffsetForward = cx * Math.sin(yawF) + cz * Math.cos(yawF);
+    out.fallWeight = 1 - w; out.groundBody = 1 - w; out.wideLimits = true;
+    if (w < 0.5) {
+      for (let i = 0; i < 2; i++) {
+        const b = SPHERE.ball[i] * 4, o = out.feet[i];
+        qrot(qW, S[b], S[b + 1], S[b + 2], v);
+        o.x = bx + fs.cx + v[0]; o.z = bz + fs.cz + v[2]; o.y = rootY + v[1];
+        // "Planted" = fully anchored (the contact load is past the anchoring ramp's top, smoothstep 0.4..0.9).
+        o.planted = C[i] >= 0.9;
+      }
+      out.footPlant.left = out.feet[0].planted; out.footPlant.right = out.feet[1].planted;
+    }
+    fs.last.set(A); fs.lastQ.set(qF); fs.lastYaw = yawF; fs.lastC[0] = cx; fs.lastC[1] = cz; fs.lastC[2] = ry;
+    fs.clearance = 0;
+  }
+
+  /** Rig-local position of contact c (feet: the sole between heel and ball). */
+  #contactLocal(S: Float64Array, c: number, v: Float64Array): void {
+    const at = (k: number, w: number) => { v[0] += S[k * 4] * w; v[1] += S[k * 4 + 1] * w; v[2] += S[k * 4 + 2] * w; };
+    v[0] = v[1] = v[2] = 0;
+    if (c < 2) { at(SPHERE.heel[c], 0.5); at(SPHERE.ball[c], 0.5); }
+    else if (c < 4) at(SPHERE.knee[c - 2], 1);
+    else if (c < 6) at(SPHERE.hand[c - 4], 1);
+    else at(SPHERE.pelvis, 1);
+  }
+
+  /** Wave FALL: after the fall input ends, blend the last fall output into the gait's pose (inertialization). */
+  #fallExit(h: number, inp: AnimatorInput, baseRootY: number, _yaw: number): void {
+    const fs = this.#fs, out = this.output, nA = this.#normA, T = 0.25;
+    nA.set(out.angles); nA[16] = out.hipRoll[0]; nA[17] = out.hipRoll[1]; nA[18] = out.ankleRoll[0]; nA[19] = out.ankleRoll[1];
+    const yawNorm = inp.yaw + out.yawOffset;
+    const ncx = out.rootOffsetLateral * Math.cos(yawNorm), ncz = -out.rootOffsetLateral * Math.sin(yawNorm);
+    const qN = qmul(qaxis(1, yawNorm, this.#qt), qaxis(2, out.rootRoll, this.#rawQ), new Float64Array(4));
+    if (fs.mode) {
+      fs.mode = false; fs.phase = "stand";
+      for (let j = 0; j < FV; j++) fs.off[j] = fs.last[j] - nA[j];
+      qmul(fs.lastQ, Float64Array.of(-qN[0], -qN[1], -qN[2], qN[3]), fs.qOff);
+      fs.offC[0] = fs.lastC[0] - ncx; fs.offC[1] = fs.lastC[1] - ncz; fs.offC[2] = fs.lastC[2] - (baseRootY + out.rootOffsetY);
+      fs.exitT = 0;
+      if (!fs.handoff) this.gait.reset(inp.x, inp.z, yawNorm, 0);
+    }
+    if (fs.exitT < 0) return;
+    const d = 1 - smoothstep(0, T, fs.exitT);
+    fs.exitT += h;
+    if (d <= 0) {
+      // Done once the speed-limited output has caught up with the gait's pose (no last-frame snap).
+      let gap = 0;
+      for (let j = 0; j < FV; j++) gap = Math.max(gap, Math.abs(fs.last[j] - nA[j]));
+      const dq = Math.abs(fs.lastQ[0] * qN[0] + fs.lastQ[1] * qN[1] + fs.lastQ[2] * qN[2] + fs.lastQ[3] * qN[3]);
+      if (gap < 1e-3 && 2 * Math.acos(Math.min(1, dq)) < 1e-3) { fs.exitT = -1; return; }
+    }
+    // Same speed limits as the fall frames (a clip cut short must not snap back to the gait).
+    const dj = this.blender.maxJointSpeed * h, A = this.#fallA;
+    for (let j = 0; j < FV; j++) A[j] = clamp(nA[j] + fs.off[j] * d, fs.last[j] - dj, fs.last[j] + dj);
+    for (let j = 0; j < JOINT_COUNT; j++) out.angles[j] = clamp(A[j], this.#wide.min[j], this.#wide.max[j]);
+    out.hipRoll[0] = A[16]; out.hipRoll[1] = A[17]; out.ankleRoll[0] = A[18]; out.ankleRoll[1] = A[19];
+    const qi = qslerp(Float64Array.of(0, 0, 0, 1), fs.qOff, d, new Float64Array(4));
+    const qW = qmul(qi, qN, new Float64Array(4));
+    {
+      const dq = Math.abs(fs.lastQ[0] * qW[0] + fs.lastQ[1] * qW[1] + fs.lastQ[2] * qW[2] + fs.lastQ[3] * qW[3]);
+      const ang = 2 * Math.acos(Math.min(1, dq)), lim2 = FALL_ROOT_SPEED * h;
+      if (ang > lim2) qW.set(qslerp(fs.lastQ, qW, lim2 / ang, new Float64Array(4)));
+    }
+    fs.last.set(A); fs.last.set(out.angles.subarray(0, JOINT_COUNT)); fs.lastQ.set(qW);
+    // Keep the normal yaw; the carried rotation (incl. any heading difference) rides in the tilt.
+    qmul(qaxis(1, -yawNorm, this.#qt), qW, out.rootTilt);
+    out.rootRoll = 0;
+    const cx = ncx + fs.offC[0] * d, cz = ncz + fs.offC[1] * d;
+    out.rootOffsetLateral = cx * Math.cos(yawNorm) - cz * Math.sin(yawNorm);
+    out.rootOffsetForward = cx * Math.sin(yawNorm) + cz * Math.cos(yawNorm);
+    out.rootOffsetY += fs.offC[2] * d;
+    out.fallWeight = d; out.groundBody = 0; out.wideLimits = true;
   }
 
   /**

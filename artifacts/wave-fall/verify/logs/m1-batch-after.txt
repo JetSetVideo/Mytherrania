@@ -1,0 +1,86 @@
+{
+  "label": "after",
+  "root": ".",
+  "outcomeDigest": "a65819c44aa8a655",
+  "matches": 6000,
+  "seed": 4242,
+  "seconds": 38,
+  "errors": 0,
+  "reasons": {
+    "ringout": 4134,
+    "ko": 1576,
+    "time": 290
+  },
+  "ringOutShare": 0.689,
+  "koShare": 0.2627,
+  "medianDuelSeconds": 39.92,
+  "classWinShare": {
+    "Barbarian": 0.5196,
+    "Warrior": 0.5696,
+    "Rogue": 0.5393,
+    "Assassin": 0.5831,
+    "Mage": 0.4014,
+    "Necromancer": 0.4152,
+    "Archer": 0.5422,
+    "Priest": 0.437
+  },
+  "classMeanAbsDev": 0.0625,
+  "traceKinds": {
+    "swing": 432063,
+    "hit": 284051,
+    "ringout": 4142,
+    "skill": 44658,
+    "collision": 18546,
+    "fall": 14829,
+    "rise": 11403,
+    "wall": 9455
+  },
+  "fallsPerMatch": 2.4715,
+  "collisionsPerMatch": 3.091,
+  "telemetryFallsPerMatch": null,
+  "telemetryCollisionsPerMatch": null,
+  "downWindowOpensAfterFallS": 0.5,
+  "meanDownSeconds": 2.0571,
+  "downIntervals": 14411,
+  "strikesOnDownPerSec": 0.5842,
+  "strikesOnStandPerSec": 0.4429,
+  "strikesOnDown": 17319,
+  "strikesOnStand": 266732,
+  "downSeconds": 29644.3067,
+  "standSeconds": 602256,
+  "forces": {
+    "matches": 6000,
+    "collisionsPerMatch": 3.091,
+    "fallsPerMatch": 2.4715,
+    "downSecondsPerMatch": 4.8893,
+    "damageWhileDownPerMatch": 2593.2564,
+    "meanDownPerFall": 1.9783,
+    "causes": {
+      "hit": 10888,
+      "edge": 1329,
+      "collision": 1480,
+      "backstep": 1132
+    }
+  },
+  "traceFallNotes": {
+    "hit/back": 10888,
+    "edge/back": 1276,
+    "collision/back": 1480,
+    "edge/side": 53,
+    "backstep/side": 901,
+    "backstep/back": 93,
+    "backstep/front": 138
+  },
+  "damagePath": {
+    "attackerMatchPairs": 2713,
+    "medianDamageRatioDownOverStand": 1.3051,
+    "medianKnockbackRatioDownOverStand": 3.1529,
+    "critShareDown": 0.3206,
+    "critShareStand": 0.2108,
+    "plainStrikesDown": 15811,
+    "plainStrikesStand": 200742
+  },
+  "outcomeExtraKeys": [
+    "forces"
+  ]
+}

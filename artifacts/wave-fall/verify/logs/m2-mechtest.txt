@@ -1,0 +1,18 @@
+running 14 tests from ./tests/wave_fall_mech_test.ts
+collision: equal bodies give mirror outputs and conserve effective momentum ... ok (468µs)
+collision: heavier / stronger / more agile / higher level / armoured / guarding -> less pushback and shorter stagger ... ok (275µs)
+collision: deterministic, total, clamped; a downed body loses no more balance ... ok (596µs)
+collision: separating bodies do not collide (closing speed 0, no push) ... ok (56µs)
+fall: get-up law is monotone (heavier/armoured/wounded/tired slower, agile faster) and clamped ... ok (150µs)
+fall: state machine only takes legal transitions and its timings add up ... ok (363µs)
+fall: thresholds — small loss staggers, mid stumbles (roll decides), big falls; falling/down ignore triggers ... ok (173µs)
+fall: fall chance monotone, poses, gates and downed penalties ... ok (121µs)
+fall: edge teeter only at an open brink, not inside, not walled, not really outside; back-step and ledge ... ok (145µs)
+sim: falls on records forces, traces collision/fall/rise and is deterministic; falls off carries none ... ok (1s)
+AI: punish a downed enemy, never back to an open rim when shaken/tired, no tired head-on charge into a heavy body ... ok (492µs)
+AI: the fall-aware no-op control reads exactly 0.5, and the aware seat hits a downed enemy at a higher rate ... ok (2s)
+telemetry: force events fold into the summary, refuse non-finite, cap the log; report stays under its byte cap ... ok (962µs)
+ui: DOWN chip for falling/down/rising only; force callouts are fixed words ... ok (66µs)
+
+ok | 14 passed | 0 failed (3s)
+

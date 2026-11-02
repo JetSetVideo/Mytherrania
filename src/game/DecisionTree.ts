@@ -1,6 +1,29 @@
 import type { ArenaDigest } from "./arena/contracts.ts";
 import { engagement, type Stance } from "./Engagement.ts";
 import type { PoolKind, PoolLevel } from "./Potential.ts";
+import type { FallCause, FallPhase } from "./Fall.ts";
+
+/** Wave FALL (C-AI): one fighter's fall state as the brain reads it. */
+export interface FallView {
+  phase: FallPhase;
+  /** Progress 0..1 through the phase. */
+  t01: number;
+  /** On the floor (down / rising): the downed penalties apply. */
+  downed: boolean;
+  /** Off balance (stagger / stumble / falling). */
+  unbalanced: boolean;
+  cause: FallCause | null;
+}
+
+/** Wave FALL (C-AI): the latest body-on-body collision, from self's side. */
+export interface CollisionView {
+  /** Seconds since it happened. */
+  ago: number;
+  /** Self's and the enemy's pushback, m, and self's balance loss 0..1. */
+  selfPushback: number;
+  enemyPushback: number;
+  selfBalanceLoss: number;
+}
 
 /** Wave Y (C-AI): the seven primary attributes (runtime CombatStats scale). */
 export type AttributeKey = "vitality" | "resilience" | "focus" | "reflex" | "strength" | "intelligence" | "agility";
@@ -59,6 +82,15 @@ export interface CombatView {
   // every pool-aware hook decides exactly as before.
   self?: FighterKnowledge;
   enemy?: FighterKnowledge;
+  // Wave FALL (C-AI): both fighters' fall states, the last collision and each body's effective mass
+  // (Collision.effectiveMassOf, kg). Optional — absent, every tree decides exactly as before.
+  selfFall?: FallView;
+  enemyFall?: FallView;
+  lastCollision?: CollisionView;
+  selfStability?: number;
+  enemyStability?: number;
+  /** Self's stamina share now (0..1). */
+  selfStamina01?: number;
 }
 
 /** Distances the digest features report when the ray never meets an open edge (finite, for trees). */

@@ -19,7 +19,8 @@
 
 import { defaultTree, edgeAwareTree, type TreeNode } from "./DecisionTree.ts";
 import type { FightTelemetry } from "./FightTelemetry.ts";
-export type { DistanceBands, FightTelemetry, HitStat, StreakStats } from "./FightTelemetry.ts";
+export type { DistanceBands, FightTelemetry, ForceEvent, ForceSummary, HitStat, StreakStats } from "./FightTelemetry.ts";
+import type { ForceSummary } from "./FightTelemetry.ts";
 // Wave M integration: these types live in ONE place. Lanes M-D and M-E declared structural
 // copies while M-A's module was still in flight; now they re-export the real ones, so a drift
 // between the three is a compile error instead of a silent mismatch.
@@ -113,6 +114,24 @@ export interface MatchReport {
   outcome: string;
   /** The branch-tree node the match came from, when it grew from one (M-D). */
   tree?: { node: string; depth: number };
+  /** Wave FALL (C-LOG): the match's collisions / falls / rises (events capped at REPORT_FORCE_EVENTS). */
+  forces?: ForceSummary;
+}
+
+/** Wave FALL: force events a report carries (the rest are counted in `dropped`), keeping it under the byte cap. */
+export const REPORT_FORCE_EVENTS = 16;
+
+/** A force summary trimmed for the wire: events capped, numbers rounded to 0.01. */
+export function compactForces(f: ForceSummary, cap = REPORT_FORCE_EVENTS): ForceSummary {
+  const r = (v: number) => (Number.isFinite(v) ? Math.round(v * 100) / 100 : 0);
+  const kept = f.events.slice(0, cap).map((e) => ({
+    ...e, t: r(e.t), impulse: r(e.impulse), balance: r(e.balance), pushback: r(e.pushback), duration: r(e.duration), hp01: r(e.hp01), stamina01: r(e.stamina01),
+  }));
+  return {
+    ...f, downS: [r(f.downS[0]), r(f.downS[1])], meanDownS: r(f.meanDownS),
+    damageWhileDown: [r(f.damageWhileDown[0]), r(f.damageWhileDown[1])], causes: { ...f.causes },
+    events: kept, dropped: f.dropped + Math.max(0, f.events.length - cap),
+  };
 }
 
 /** Hard cap (bytes) on an encoded report for a fixed 180-second match. */
@@ -140,6 +159,8 @@ export interface BuildReportInput {
   outcome: string;
   /** Optional branch-tree provenance (M-D). */
   tree?: { node: string; depth: number };
+  /** Wave FALL: the match's force log (compacted by compactForces). */
+  forces?: ForceSummary;
 }
 
 /**
@@ -197,6 +218,7 @@ export function buildReport(o: BuildReportInput): MatchReport {
     outcome: o.outcome,
   };
   if (o.tree) report.tree = { node: o.tree.node, depth: num(o.tree.depth) };
+  if (o.forces) report.forces = compactForces(o.forces);
   return report;
 }
 

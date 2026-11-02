@@ -159,6 +159,30 @@ export interface LegGeometry {
    * along the sole, which reads as up to 2 cm of height (ork, toe -0.68 rad). Absent = 0.
    */
   toePivotHeight?: number;
+  /**
+   * Wave FALL: the upper body (chest, neck, head, arms) for the whole-body contact model
+   * (bodySpheres). Absent = estimated from the leg length (legacy rig). Never read by the gait/IK.
+   */
+  upper?: UpperGeometry;
+}
+
+/**
+ * Wave FALL: the parts above the hips, bind pose, metres. `chest` hangs off the spine pivot (the
+ * first trunk link) and turns with the spine joint; neck -> head chain above it; each arm hangs
+ * from its shoulder pivot along its own -y after the display roll about z (SkinnedHumanoid.update).
+ */
+export interface UpperGeometry {
+  /** Neck pivot from the spine pivot (y, z), head pivot from the neck pivot, head crown from the head pivot. */
+  neck: { y: number; z: number };
+  head: { y: number; z: number };
+  crown: { y: number; z: number };
+  /** Shoulder pivots [L, R] from the spine pivot (x, y, z). */
+  shoulder: readonly [readonly [number, number, number], readonly [number, number, number]];
+  /** Display roll (rad, about z) of each upper arm [L, R]. */
+  armRoll: readonly [number, number];
+  upperArm: number;
+  /** Elbow -> hand tip (the forearm bone runs to the mitten tip on lane A's body). */
+  foreArm: number;
 }
 
 /** Bind-pose abduction (rad) of leg `side`: hipRestRoll or 0. */
@@ -220,7 +244,9 @@ export function legacyLegGeometry(p: {
  * body exposes; `modelScale` the group scale (1 if the bones are already in world metres).
  * The trunk chain follows the bones' parent links from the hip upward (spine/abdomen only).
  */
-export function legGeometryFromBones(bones: readonly BoneSegment[], soleOffset: number, modelScale = 1): LegGeometry {
+export function legGeometryFromBones(
+  bones: readonly BoneSegment[], soleOffset: number, modelScale = 1, displayRoll?: (id: string) => number,
+): LegGeometry {
   const by = new Map(bones.map((b) => [b.id, b]));
   const need = (id: string): BoneSegment => {
     const b = by.get(id as BoneSegment["id"]);
@@ -265,6 +291,32 @@ export function legGeometryFromBones(bones: readonly BoneSegment[], soleOffset: 
     // Toe sole point: the tip inset by 0.04·foot = (0.04 / 0.75)·tipForward (lane A's sole point).
     toeForward: Math.max(0, (toeL.tail[2] - toeL.head[2]) * s - (0.04 / 0.75) * tipForward),
     toePivotHeight: Math.max(0, (toeL.head[1] - ankleL.head[1]) * s + soleOffset * s),
+    upper: upperFromBones(by, s, displayRoll),
+  };
+}
+
+/** Wave FALL: UpperGeometry from the bind bones (null-safe: absent when a bone is missing). */
+function upperFromBones(
+  by: Map<string, BoneSegment>, s: number, displayRoll?: (id: string) => number,
+): UpperGeometry | undefined {
+  const spine = by.get("spine"), neck = by.get("neck"), head = by.get("head");
+  const shL = by.get("shoulderL"), shR = by.get("shoulderR"), elL = by.get("elbowL");
+  if (!spine || !neck || !head || !shL || !shR || !elL) return undefined;
+  const d = (a: BoneSegment, b: readonly number[]) => Math.hypot(b[0] - a.head[0], b[1] - a.head[1], b[2] - a.head[2]);
+  // Lane A's arms DISPLAY at 0.4 of their bind abduction (Anatomy armDisplayAbduction): +x arm -> +roll.
+  const roll = (b: BoneSegment) => displayRoll ? displayRoll(b.id) : Math.atan2(b.tail[0] - b.head[0], b.head[1] - b.tail[1]) * 0.4;
+  const fore = d(elL, elL.tail);
+  return {
+    neck: { y: (neck.head[1] - spine.head[1]) * s, z: (neck.head[2] - spine.head[2]) * s },
+    head: { y: (head.head[1] - neck.head[1]) * s, z: (head.head[2] - neck.head[2]) * s },
+    crown: { y: (head.tail[1] - head.head[1]) * s, z: (head.tail[2] - head.head[2]) * s },
+    shoulder: [
+      [(shL.head[0] - spine.head[0]) * s, (shL.head[1] - spine.head[1]) * s, (shL.head[2] - spine.head[2]) * s],
+      [(shR.head[0] - spine.head[0]) * s, (shR.head[1] - spine.head[1]) * s, (shR.head[2] - spine.head[2]) * s],
+    ],
+    armRoll: [roll(shL), roll(shR)],
+    upperArm: d(shL, shL.tail) * s,
+    foreArm: fore * 0.97 * s,
   };
 }
 
@@ -435,4 +487,163 @@ export function worldToLocal(rootX: number, rootZ: number, yaw: number, wx: numb
   const dx = wx - rootX, dz = wz - rootZ;
   out[at] = dx * c - dz * s;
   out[at + 1] = dx * s + dz * c;
+}
+
+
+// ---------------------------------------------------------------------------------------------
+// Wave FALL: whole-body contact model. A fallen / rising body touches the floor with its back,
+// hips, knees, hands and head, not only its soles, so the animator needs every part's position.
+// bodySpheres() is the rig's forward kinematics (same chain, signs and roll orders as legFK3 and
+// SkinnedHumanoid.update) for 32 spheres: centre (rig-local x, y, z) + radius. The radii are
+// shares of the leg length L (calibrated against lane A's skin, tests/wave_fall_anim_test.ts F33);
+// the exact skin contact is SkinnedHumanoid.settleOnFloor — this model is what the pure animator
+// plans with (grounding, contact anchoring).
+// ---------------------------------------------------------------------------------------------
+
+/** Sphere indices of bodySpheres (4 floats each: x, y, z, r). Paired parts are [L, R]. */
+export const SPHERE = {
+  chest: 0, chest2: 1, neck: 2, head: 3, belly: 4, pelvis: 5,
+  hip: [6, 7], thigh: [8, 9], knee: [10, 11], shin: [12, 13], ankle: [14, 15],
+  heel: [16, 17], ball: [18, 19], toe: [20, 21],
+  shoulder: [22, 23], upperArm: [24, 25], elbow: [26, 27], foreArm: [28, 29], hand: [30, 31],
+} as const;
+/** Number of spheres bodySpheres writes. */
+export const SPHERE_COUNT = 32;
+
+/**
+ * Radius of each sphere (index = SPHERE order): trunk, arm and thigh spheres are shares of the
+ * shoulder half-span w (UpperGeometry.shoulder x: girth goes with the frame — a dwarf's chest is as
+ * deep as an elf's on a leg 30 % shorter), shins and feet shares of the leg length L. Calibrated on
+ * lane A's skin, every race and sex (tests/wave_fall_anim_test.ts F33): torso half-depth ~0.6 w.
+ */
+export const SPHERE_RADIUS_W: readonly number[] = [
+  0.6, 0.56, 0.3, 0, 0.56, 0.6,
+  0.45, 0.45, 0.45, 0.45, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0,
+  0.34, 0.34, 0.29, 0.29, 0.25, 0.25, 0.22, 0.22, 0.16, 0.16,
+];
+export const SPHERE_RADIUS_L: readonly number[] = [
+  0, 0, 0, 0.13, 0, 0,
+  0, 0, 0, 0, 0.068, 0.068, 0.06, 0.06, 0.05, 0.05,
+  0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+];
+
+/** Shoulder half-span w (m) of a geometry (upperOf). */
+export function shoulderHalfSpan(g: LegGeometry): number {
+  const up = upperOf(g);
+  return 0.5 * Math.abs(up.shoulder[1][0] - up.shoulder[0][0]);
+}
+
+/** The upper geometry, or one estimated from the leg length (legacy rig). */
+export function upperOf(g: LegGeometry): UpperGeometry {
+  if (g.upper) return g.upper;
+  const L = legLength(g), w = Math.abs(g.hipLateral[1] - g.hipLateral[0]) * 1.1 + 0.05 * L;
+  return {
+    neck: { y: 0.18 * L, z: 0 }, head: { y: 0.15 * L, z: 0 }, crown: { y: 0.22 * L, z: 0 },
+    shoulder: [[-w, 0.14 * L, 0], [w, 0.14 * L, 0]], armRoll: [-0.13, 0.13], upperArm: 0.36 * L, foreArm: 0.6 * L,
+  };
+}
+
+const V3 = new Float64Array(3);
+
+/** Push a point given in the frame of leg level (0 ankle, 1 shin/knee, 2 thigh/hip) to the rig origin. */
+function legLevelToRoot(g: LegGeometry, angles: Float64Array, side: Side, hipRoll: number, ankleRoll: number, level: 0 | 1 | 2, v: Float64Array): void {
+  const lj = LEG_JOINTS[side];
+  if (level === 0) { rotZ(v, ankleRoll); rotX(v, angles[lj.ankle]); v[1] -= g.shin; }
+  if (level <= 1) { rotX(v, RIG_ROTATION_SIGN.kneeL * angles[lj.knee]); v[1] -= g.thigh; }
+  rotX(v, RIG_ROTATION_SIGN.hipL * angles[lj.hip]); rotZ(v, hipRoll + hipRestRollOf(g, side));
+  v[0] += g.hipLateral[side]; v[1] += g.hipOffset.y; v[2] += g.hipOffset.z;
+  for (let k = g.trunk.length - 1; k >= 0; k--) {
+    const l = g.trunk[k];
+    rotX(v, angles[JOINT_INDEX[l.joint]] * RIG_ROTATION_SIGN[l.joint]);
+    v[1] += l.y; v[2] += l.z;
+  }
+}
+
+function put(out: Float64Array, i: number, v: Float64Array, r: number): void {
+  out[i * 4] = v[0]; out[i * 4 + 1] = v[1]; out[i * 4 + 2] = v[2]; out[i * 4 + 3] = r;
+}
+
+const FK3B = newLegFK3();
+
+/**
+ * Whole-body spheres (rig-local, the rig origin at the bind sole plane) for a pose: writes
+ * SPHERE_COUNT × (x, y, z, r) into `out` (length >= 4·SPHERE_COUNT) and returns it.
+ */
+export function bodySpheres(
+  g: LegGeometry, angles: Float64Array, hipRoll: ArrayLike<number>, ankleRoll: ArrayLike<number>, out: Float64Array,
+  toeOut: ArrayLike<number> = [0, 0],
+): Float64Array {
+  const L = legLength(g), up = upperOf(g), w = shoulderHalfSpan(g);
+  const rad = (i: number) => SPHERE_RADIUS_W[i] * w + SPHERE_RADIUS_L[i] * L;
+  const Rs = angles[JOINT_INDEX.spine] * RIG_ROTATION_SIGN.spine;
+  // Spine pivot (the first trunk link from the origin, unrotated) and the chest frame (rotX Rs).
+  const t0 = g.trunk[0], Sy = t0 ? t0.y : 0, Sz = t0 ? t0.z : 0;
+  const chestPt = (x: number, y: number, z: number, idx: number) => {
+    V3[0] = x; V3[1] = y; V3[2] = z; rotX(V3, Rs); V3[1] += Sy; V3[2] += Sz; put(out, idx, V3, rad(idx));
+  };
+  // Chest centres sit ~0.2 w IN FRONT of the spine pivot (the pivot is near the back: lane A's
+  // spine bone runs ~0.4 w inside the back surface, the chest is ~1.2 w deep).
+  chestPt(0, -0.25 * up.neck.y, 0.18 * w, SPHERE.chest);
+  chestPt(0, 0.45 * up.neck.y, 0.12 * w, SPHERE.chest2);
+  // Neck / head chain.
+  const Rn = Rs + angles[JOINT_INDEX.neck] * RIG_ROTATION_SIGN.neck, Rh = Rn + angles[JOINT_INDEX.head] * RIG_ROTATION_SIGN.head;
+  const ny = Sy + Math.cos(Rs) * up.neck.y - Math.sin(Rs) * up.neck.z, nz = Sz + Math.sin(Rs) * up.neck.y + Math.cos(Rs) * up.neck.z;
+  V3[0] = 0; V3[1] = ny; V3[2] = nz; put(out, SPHERE.neck, V3, rad(SPHERE.neck));
+  const hy = ny + Math.cos(Rn) * up.head.y - Math.sin(Rn) * up.head.z, hz = nz + Math.sin(Rn) * up.head.y + Math.cos(Rn) * up.head.z;
+  const cy = 0.5 * up.crown.y, cz = 0.5 * up.crown.z + 0.02 * L;
+  V3[0] = 0; V3[1] = hy + Math.cos(Rh) * cy - Math.sin(Rh) * cz; V3[2] = hz + Math.sin(Rh) * cy + Math.cos(Rh) * cz;
+  put(out, SPHERE.head, V3, Math.max(rad(SPHERE.head), 0.5 * Math.hypot(up.crown.y, up.crown.z)));
+  // Belly (abdomen pivot) and pelvis (between the hips, a little behind them: the buttocks).
+  hipPivot(g, angles[JOINT_INDEX.spine], angles[JOINT_INDEX.abdomen], HIP);
+  {
+    let y = 0, z = 0, Rr = 0;
+    for (let k = 0; k < g.trunk.length; k++) {
+      const l = g.trunk[k];
+      const c = Math.cos(Rr), s = Math.sin(Rr);
+      y += l.y * c - l.z * s; z += l.y * s + l.z * c;
+      Rr += angles[JOINT_INDEX[l.joint]] * RIG_ROTATION_SIGN[l.joint];
+      if (k === g.trunk.length - 1) {
+        // Belly: in front of the abdomen pivot by ~0.1 w (frame z = (-sin, cos) of the pelvis frame).
+        const cc = Math.cos(Rr), ss = Math.sin(Rr);
+        V3[0] = 0; V3[1] = y - 0.1 * w * ss; V3[2] = z + 0.1 * w * cc; put(out, SPHERE.belly, V3, rad(SPHERE.belly));
+      }
+    }
+    // The pelvis sphere: halfway between the abdomen pivot and the hip line, nudged back along the
+    // pelvis frame's -z (the buttocks). Frame z maps to (y, z) = (-sin Rr, cos Rr).
+    const c = Math.cos(Rr), s = Math.sin(Rr), back = 0.02 * w;
+    V3[0] = 0; V3[1] = 0.5 * (y + HIP[0]) + back * s; V3[2] = 0.5 * (z + HIP[1]) - back * c;
+    put(out, SPHERE.pelvis, V3, rad(SPHERE.pelvis));
+  }
+  for (let i = 0; i < 2; i++) {
+    const sd = i as Side, hr = hipRoll[i], ar = ankleRoll[i];
+    V3[0] = 0; V3[1] = 0; V3[2] = -0.05 * w; legLevelToRoot(g, angles, sd, hr, ar, 2, V3); put(out, SPHERE.hip[i], V3, rad(SPHERE.hip[i]));
+    V3[0] = 0; V3[1] = -0.5 * g.thigh; V3[2] = 0; legLevelToRoot(g, angles, sd, hr, ar, 2, V3); put(out, SPHERE.thigh[i], V3, rad(SPHERE.thigh[i]));
+    V3[0] = 0; V3[1] = 0; V3[2] = 0.01 * L; legLevelToRoot(g, angles, sd, hr, ar, 1, V3); put(out, SPHERE.knee[i], V3, rad(SPHERE.knee[i]));
+    V3[0] = 0; V3[1] = -0.5 * g.shin; V3[2] = -0.01 * L; legLevelToRoot(g, angles, sd, hr, ar, 1, V3); put(out, SPHERE.shin[i], V3, rad(SPHERE.shin[i]));
+    legFK3(g, angles, sd, hr, ar, FK3B, toeOut[i]);
+    put(out, SPHERE.ankle[i], FK3B.ankle, rad(SPHERE.ankle[i]));
+    put(out, SPHERE.heel[i], FK3B.heel, 0);
+    put(out, SPHERE.ball[i], FK3B.ball, 0);
+    put(out, SPHERE.toe[i], FK3B.toe, 0);
+    // Arm: shoulder pivot in the chest frame, then Rz(display roll)·Rx(shoulder), elbow Rx(elbow).
+    const aj = ARM_JOINTS[i], sh = up.shoulder[i];
+    const sa = angles[aj.shoulder] * RIG_ROTATION_SIGN.shoulderL, ea = angles[aj.elbow] * RIG_ROTATION_SIGN.elbowL;
+    const armPt = (along: number, fore: number, idx: number) => {
+      // Point `fore` down the forearm (after the elbow), `along` down the upper arm.
+      V3[0] = 0; V3[1] = -fore; V3[2] = 0;
+      rotX(V3, ea); V3[1] -= along;
+      rotX(V3, sa); rotZ(V3, up.armRoll[i]);
+      V3[0] += sh[0]; V3[1] += sh[1]; V3[2] += sh[2];
+      rotX(V3, Rs); V3[1] += Sy; V3[2] += Sz;
+      put(out, idx, V3, rad(idx));
+    };
+    armPt(0, 0, SPHERE.shoulder[i]);
+    armPt(0.5 * up.upperArm, 0, SPHERE.upperArm[i]);
+    armPt(up.upperArm, 0, SPHERE.elbow[i]);
+    armPt(up.upperArm, 0.45 * up.foreArm, SPHERE.foreArm[i]);
+    armPt(up.upperArm, up.foreArm, SPHERE.hand[i]);
+  }
+  return out;
 }

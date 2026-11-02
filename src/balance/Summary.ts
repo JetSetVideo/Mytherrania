@@ -98,6 +98,42 @@ export interface BatchSummary {
   /** gradient axis -> step position (as a string, e.g. "0.25") -> metric -> ColumnStats. */
   axes: Record<string, Record<string, Record<Metric, ColumnStats>>>;
   invariant: InvariantCheck;
+  /** Wave FALL (C-LOG): the batch's collisions and falls (records without `forces` are not counted). */
+  forces?: ForceAggregate;
+}
+
+/** Wave FALL (C-LOG): collisions / falls aggregated over a batch's records. */
+export interface ForceAggregate {
+  /** Records that carried a force tally. */
+  matches: number;
+  collisionsPerMatch: number;
+  fallsPerMatch: number;
+  /** Mean seconds downed per fall. */
+  meanDownS: number;
+  /** Damage taken while downed, total HP and share of all damage dealt. */
+  damageWhileDown: number;
+  damageWhileDownShare: number;
+  /** Falls by cause (counts). */
+  causes: Record<string, number>;
+}
+
+/** Aggregate the per-match ForceTally of a batch (undefined when no record carries one). */
+export function forceAggregate(records: readonly MatchRecord[]): ForceAggregate | undefined {
+  let n = 0, col = 0, fal = 0, down = 0, dd = 0, dmg = 0;
+  const causes: Record<string, number> = {};
+  for (const r of records) {
+    const f = r.outcome.forces;
+    if (!f) continue;
+    n++;
+    col += f.collisions[0]; fal += f.falls[0] + f.falls[1]; down += f.downS[0] + f.downS[1];
+    dd += f.damageWhileDown[0] + f.damageWhileDown[1]; dmg += r.outcome.damageDealt[0] + r.outcome.damageDealt[1];
+    for (const [k, v] of Object.entries(f.causes)) causes[k] = (causes[k] ?? 0) + v;
+  }
+  if (n === 0) return undefined;
+  return {
+    matches: n, collisionsPerMatch: col / n, fallsPerMatch: fal / n, meanDownS: fal > 0 ? down / fal : 0,
+    damageWhileDown: dd, damageWhileDownShare: dmg > 0 ? dd / dmg : 0, causes,
+  };
 }
 
 export function summarize(records: readonly MatchRecord[]): BatchSummary {
@@ -136,6 +172,7 @@ export function summarize(records: readonly MatchRecord[]): BatchSummary {
     cells,
     axes,
     invariant: invariantCheck(records),
+    ...(() => { const f = forceAggregate(records); return f ? { forces: f } : {}; })(),
   };
 }
 
@@ -164,6 +201,13 @@ export function summaryMarkdown(s: BatchSummary, title = "Batch summary"): strin
   for (const [k, t] of Object.entries(s.cells)) L.push(row(k, t));
   L.push("", "## Per gradient axis (seat A stepped, seat B at the median; arena axes step the arena)", "", head.replace("cell", "axis @ step"), sep);
   for (const [axis, steps] of Object.entries(s.axes)) for (const [p, t] of Object.entries(steps)) L.push(row(`${axis} @ ${p}`, t));
+  if (s.forces) {
+    const f = s.forces;
+    L.push("", "## Collisions and falls (Wave FALL)", "",
+      `${f.matches} matches · ${f.collisionsPerMatch.toFixed(2)} collisions and ${f.fallsPerMatch.toFixed(2)} falls per match · ` +
+        `${f.meanDownS.toFixed(2)} s down per fall · ${(f.damageWhileDownShare * 100).toFixed(1)} % of damage landed on a downed body · causes ` +
+        Object.entries(f.causes).map(([k, v]) => `${k} ${v}`).join(", "));
+  }
   L.push("", "Damage columns (min / median / max per cell) are in summary.json.");
   return L.join("\n") + "\n";
 }

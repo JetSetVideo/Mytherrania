@@ -404,6 +404,18 @@ export class Gait {
     this.#ready = true;
   }
 
+  /**
+   * Wave FALL: latch foot i at world (x, z) with heading `yaw` (the get-up hands its planted feet to
+   * the gait: the stand the rise ended in is kept, no re-plant snap). The phase goes to double support.
+   */
+  plantAt(i: Side, x: number, z: number, yaw: number): void {
+    const f = this.feet[i];
+    f.planted = true; f.x = x; f.z = z; f.lift = 0; f.pitch = 0; f.swing = 1; f.overdue = false;
+    f.toGoX = 0; f.toGoZ = 0; f.plantYaw = yaw; f.stanceTime = 0;
+    this.phase = 0.5 + 0.5 * (this.params.dutyWalk - 0.5);
+    this.speed = 0;
+  }
+
   #restSpot(i: Side, x: number, z: number, yaw: number, stagger: number): void {
     const f = this.feet[i];
     const lz = this.#hipRestZ + this.#hipShift + this.#geom.ballForward + (i === 0 ? 0.5 : -0.5) * stagger;

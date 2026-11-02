@@ -4,6 +4,7 @@
 
 import { clamp01 } from "../core/MathCore.ts";
 import { MATCH_TIME_LIMIT_S } from "./MatchControl.ts";
+import type { ForceSummary } from "./FightTelemetry.ts";
 
 export type Controller = "human" | "decision-tree";
 /** How a match ended. "ringout" (V03) = ejected from the arena and eliminated; "ring-out" is the legacy spelling in old records. "time-limit" = the clock called a tie. */
@@ -84,7 +85,16 @@ export interface MatchRecord {
   generation?: GenerationBlock;
   /** statGap.dominance, hoisted for the UI so a menu row need not dig. */
   margin?: number;
+  /**
+   * Wave FALL (C-LOG): the match's collisions / falls / rises. Absent on pre-Wave-FALL records. The
+   * events are capped at HISTORY_FORCE_EVENTS here (500 records live in localStorage); the full log
+   * rides in the MatchReport / debugFall.
+   */
+  forces?: ForceSummary;
 }
+
+/** Wave FALL: force events kept per history record. */
+export const HISTORY_FORCE_EVENTS = 12;
 
 export const HISTORY_KEY = "mytherrania-history-v2";
 export const HISTORY_CAP = 500;

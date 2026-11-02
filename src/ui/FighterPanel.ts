@@ -124,6 +124,13 @@ export interface FighterPanelData {
   status: string;
   /** Side: the player's panel is warm, opponents' cool. */
   side: "player" | "opponent";
+  /** Wave FALL: the fighter's fall phase (Fall.ts); "falling" / "down" / "rising" show the DOWN chip. */
+  fall?: string;
+}
+
+/** Wave FALL: the DOWN chip's text for a fall phase ("" = hidden). */
+export function fallChip(phase: string | undefined): string {
+  return phase === "falling" || phase === "down" || phase === "rising" ? "DOWN" : "";
 }
 
 /** "Human · Nomad · Warrior · Lv 3" (the sub-race left out when none was chosen). */
@@ -149,6 +156,7 @@ export class FighterPanel {
   readonly #status: HTMLDivElement;
   readonly #bars: Record<BarKind, BarEls>;
   readonly #exhaust: HTMLSpanElement;
+  readonly #down: HTMLSpanElement;
   #lastHead = "";
   #lastIdent = "";
   #lastStatus = "";
@@ -187,12 +195,25 @@ export class FighterPanel {
     this.#exhaust.textContent = "EXHAUSTED";
     this.#exhaust.style.display = "none";
     this.#status = el("div", "fp-status", this.root) as HTMLDivElement;
+    // Wave FALL: the DOWN chip sits in the head row (styled by .fp-down; CSSOM only, CSP style-src 'self').
+    this.#down = el("span", "fp-down", this.#head) as HTMLSpanElement;
+    this.#down.textContent = "DOWN";
+    this.#down.style.display = "none";
   }
 
   update(d: FighterPanelData): void {
     this.root.dataset.side = d.side;
     const head = `${d.who} — ${d.name}  ·  knockback ${Math.round(finiteNonNeg(d.knockbackPercent))}%`;
-    if (head !== this.#lastHead) this.#head.textContent = this.#lastHead = head;
+    if (head !== this.#lastHead) {
+      // The head's text node is the first child; the DOWN chip after it survives the update.
+      this.#lastHead = head;
+      const first = this.#head.firstChild;
+      if (first && first.nodeType === 3) first.nodeValue = head;
+      else this.#head.insertBefore(document.createTextNode(head), this.#head.firstChild);
+    }
+    const chip = fallChip(d.fall);
+    this.#down.style.display = chip ? "" : "none";
+    this.root.dataset.fall = d.fall ?? "stand";
     const ident = identityLine(d);
     if (ident !== this.#lastIdent) this.#ident.textContent = this.#lastIdent = ident;
     for (const k of BAR_KINDS) {

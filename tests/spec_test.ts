@@ -814,3 +814,205 @@ Deno.test("SPEC LL4: the Creator's dice button, preview canvas and the engine's 
   assert(engine.includes("new PreviewScene("), "the engine stands the live model on that canvas");
   assert(engine.includes("onRoll:"), "and follows the menu's roll hook");
 });
+
+// ─── Wave FALL (agent M): collisions, falls, downed penalties, AI and telemetry — SPEC FALL-F1..F29 ───────
+// Named "FALL-Fn" because plain "SPEC F1" is the face pin above. Relationships and measured bands, not literals.
+Deno.test("SPEC FALL-F1: a collision conserves momentum in the effective masses and mirrors equal inputs", async () => {
+  const { resolveCollision } = await import("../src/game/Collision.ts");
+  const b = (vx: number, o: Record<string, unknown> = {}) => ({ mass: 75, velocity: [vx, 0] as [number, number], strength: 5.5, agility: 5, level: 3, stamina01: 1, hp01: 1, weaponMass: 1, armourMass: 10, guarding: false, downed: false, ...o });
+  const r = resolveCollision(b(4), b(-4), [1, 0]);
+  assert(Math.abs(r.a.impulse[0] + r.b.impulse[0]) < 1e-9 && Math.abs(r.a.recoil - r.b.recoil) < 1e-12, "mirror + conserved");
+  const s = resolveCollision(b(3, { mass: 110 }), b(-5, { agility: 9 }), [1, 0]);
+  assert(Math.abs(s.a.effectiveMass * s.a.dv[0] + s.b.effectiveMass * s.b.dv[0]) < 1e-9, "Σ m_eff·Δv = 0");
+});
+Deno.test("SPEC FALL-F2: more mass / strength / agility / level / armour / weapon -> less recoil and no longer stagger", async () => {
+  const { resolveCollision } = await import("../src/game/Collision.ts");
+  const b = (o: Record<string, unknown> = {}) => ({ mass: 75, velocity: [0, 0] as [number, number], strength: 5.5, agility: 5, level: 3, stamina01: 1, hp01: 1, weaponMass: 1, armourMass: 10, guarding: false, downed: false, ...o });
+  const run = (o: Record<string, unknown>) => resolveCollision(b({ velocity: [4, 0], ...o }), b({ velocity: [-4, 0] }), [1, 0]).a;
+  const base = run({});
+  for (const o of [{ mass: 100 }, { strength: 9 }, { agility: 9 }, { level: 20 }, { armourMass: 25 }, { weaponMass: 3 }]) {
+    const r = run(o);
+    assert(r.recoil < base.recoil && r.stagger <= base.stagger, `${JSON.stringify(o)} pushes back less`);
+  }
+});
+Deno.test("SPEC FALL-F3: stagger and balance loss are clamped (STAGGER_MAX, 1) and finite for any input", async () => {
+  const { resolveCollision, STAGGER_MAX } = await import("../src/game/Collision.ts");
+  const b = (vx: number) => ({ mass: NaN, velocity: [vx, NaN] as [number, number], strength: -1, agility: NaN, level: Infinity, stamina01: -3, hp01: 9, weaponMass: NaN, armourMass: -5, guarding: false, downed: false });
+  const r = resolveCollision(b(500), b(-500));
+  for (const sd of [r.a, r.b]) assert(sd.stagger <= STAGGER_MAX && sd.balanceLoss <= 1 && Number.isFinite(sd.recoil), "clamped + finite");
+});
+Deno.test("SPEC FALL-F4: a charge needs contact and BOTH bodies closing (or one dashing); a walk into a standing body is a lean", async () => {
+  const { isCharge, CHARGE_MIN_CLOSING, DASH_CHARGE } = await import("../src/game/Collision.ts");
+  assert(isCharge(0.9, 0.9, CHARGE_MIN_CLOSING / 2, CHARGE_MIN_CLOSING / 2) && !isCharge(0.9, 0.9, 4.2, 0) && isCharge(0.9, 0.9, DASH_CHARGE, 0));
+  assert(DASH_CHARGE > 4.2 * 1.25, "the dash gate sits above a walk (AI_MOVE_SPEED 4.2)");
+});
+Deno.test("SPEC FALL-F5: armour mass is the armour-rating proxy and weapon mass is the weapon spec's", async () => {
+  const { armourMassOf, ARMOUR_KG_PER_POINT } = await import("../src/game/Collision.ts");
+  const { buildFighter } = await import("../src/balance/FighterBuild.ts");
+  const { resolveWeapon } = await import("../src/game/weapons/Loadout.ts");
+  const { WAVE_J_RULES } = await import("../src/balance/MatchRules.ts");
+  assert(armourMassOf(4) === 4 * ARMOUR_KG_PER_POINT && ARMOUR_KG_PER_POINT >= 1.5 && ARMOUR_KG_PER_POINT <= 4, "2.5 kg/pt: armour 8 ≈ 20 kg plate");
+  const spec = { name: "x", race: "human", subrace: null, className: "Warrior" as const, birthsign: null, level: 5, allocated: {}, weapon: { type: "random", seed: 7, quality: 0.5 }, strategy: "full" as const, aiLevel: 1 };
+  assert(buildFighter(spec, WAVE_J_RULES).weaponMass === resolveWeapon("Warrior", "random", 7).mass);
+});
+Deno.test("SPEC FALL-F6: PUSH_DECAY is the stone floor's slide decay within 15 % (ArenaPhysics 1.2 + 1/stop)", async () => {
+  const { PUSH_DECAY } = await import("../src/game/Collision.ts");
+  const { surfaceFor } = await import("../src/game/Terrain.ts");
+  const stone = 1.2 + 1 / surfaceFor("stone").stop;
+  assert(Math.abs(PUSH_DECAY - stone) / stone < 0.15, `${PUSH_DECAY} vs ${stone}`);
+});
+Deno.test("SPEC FALL-F7: a downed body loses no more balance and is DOWNED_KNOCKBACK × easier to push", async () => {
+  const { stabilityOf, balanceLossFor, hitBalanceLoss } = await import("../src/game/Collision.ts");
+  const { DOWNED_KNOCKBACK } = await import("../src/game/Fall.ts");
+  const b = { mass: 75, velocity: [0, 0] as [number, number], strength: 5.5, agility: 5, level: 3, stamina01: 1, hp01: 1, weaponMass: 1, armourMass: 10, guarding: false, downed: false };
+  assert(Math.abs(stabilityOf({ ...b, downed: true }) * DOWNED_KNOCKBACK - stabilityOf(b)) < 1e-9);
+  assert(balanceLossFor(20, 1, true) === 0 && hitBalanceLoss(20, { ...b, downed: true }) === 0);
+});
+Deno.test("SPEC FALL-F8: hit balance needs a hard blow — the 0 % knockback cap (4 m/s × floor 0.35) never costs balance", async () => {
+  const { hitBalanceLoss, HIT_BALANCE_DV0 } = await import("../src/game/Collision.ts");
+  const { WAVE_J_RULES } = await import("../src/balance/MatchRules.ts");
+  const b = { mass: 60, velocity: [0, 0] as [number, number], strength: 2, agility: 3, level: 1, stamina01: 1, hp01: 1, weaponMass: 0.3, armourMass: 2.5, guarding: false, downed: false };
+  assert(HIT_BALANCE_DV0 > 4 * WAVE_J_RULES.knockbackFloor && hitBalanceLoss(4 * WAVE_J_RULES.knockbackFloor, b) === 0);
+});
+Deno.test("SPEC FALL-F9: a guarding body is braced (GUARD_BRACE > 1): it recoils less than the same body unguarded", async () => {
+  const { GUARD_BRACE, resolveCollision } = await import("../src/game/Collision.ts");
+  const b = (g: boolean, vx: number) => ({ mass: 75, velocity: [vx, 0] as [number, number], strength: 5.5, agility: 5, level: 3, stamina01: 1, hp01: 1, weaponMass: 1, armourMass: 10, guarding: g, downed: false });
+  assert(GUARD_BRACE > 1 && GUARD_BRACE <= 1.6);
+  assert(resolveCollision(b(true, 4), b(false, -4), [1, 0]).a.recoil < resolveCollision(b(false, 4), b(false, -4), [1, 0]).a.recoil);
+});
+Deno.test("SPEC FALL-F10: the fall machine only takes LEGAL transitions under a random trigger/step fuzz", async () => {
+  const { LEGAL, standing, stepFall, triggerFall } = await import("../src/game/Fall.ts");
+  const { seededRng } = await import("../src/game/Items.ts");
+  const rng = seededRng(12345), s = standing();
+  const body = { armourMass: 10, bodyMass: 75, agility: 5, hp01: 0.7, stamina01: 0.5 };
+  for (let i = 0; i < 20000; i++) {
+    const from = s.phase;
+    if (rng() < 0.08) triggerFall(s, { balanceLoss: rng(), cause: "hit", dir: [rng() - 0.5, rng() - 0.5], facing: [1, 0], stagger: rng() * 0.5, roll: rng(), body });
+    else stepFall(s, rng() / 30);
+    assert(from === s.phase || LEGAL[from].includes(s.phase), `${from} -> ${s.phase} is illegal`);
+  }
+});
+Deno.test("SPEC FALL-F11: falling lasts FALL_SECONDS; down + rising = the get-up law's T; rising >= RISE_PHASE_MIN (lane A's foot-slide floor)", async () => {
+  const { DOWN_MIN, DOWN_SHARE, FALL_SECONDS, RISE_MIN, RISE_PHASE_MIN, risePlan, riseSeconds } = await import("../src/game/Fall.ts");
+  assert(RISE_MIN >= RISE_PHASE_MIN + DOWN_MIN && FALL_SECONDS > 0.3 && FALL_SECONDS < 0.8);
+  for (const b of [{ armourMass: 12, bodyMass: 88, agility: 4, hp01: 0.5, stamina01: 0.4 }, { armourMass: 0, bodyMass: 40, agility: 10, hp01: 1, stamina01: 1 }, { armourMass: 30, bodyMass: 120, agility: 1, hp01: 0.1, stamina01: 0 }]) {
+    const p = risePlan(b), T = riseSeconds(b.armourMass, b.bodyMass, b.agility, b.hp01, b.stamina01);
+    assert(Math.abs(p.down + p.rise - T) < 1e-12 && p.rise >= RISE_PHASE_MIN - 1e-12 && p.down >= DOWN_MIN - 1e-12, JSON.stringify({ p, T }));
+    if ((1 - DOWN_SHARE) * T >= RISE_PHASE_MIN) assert(Math.abs(p.down - DOWN_SHARE * T) < 1e-12, "the DOWN_SHARE split when the floor does not bind");
+  }
+});
+Deno.test("SPEC FALL-F12: get-up time is monotone (armour, mass, wounds, fatigue slower; agility faster) inside [RISE_MIN, RISE_MAX]", async () => {
+  const { riseSeconds, RISE_MAX, RISE_MIN } = await import("../src/game/Fall.ts");
+  const t = (a: number, m: number, g: number, h: number, s: number) => riseSeconds(a, m, g, h, s);
+  const base = t(10, 75, 5, 1, 1);
+  assert(t(20, 75, 5, 1, 1) > base && t(10, 95, 5, 1, 1) > base && t(10, 75, 5, 0.3, 1) > base && t(10, 75, 5, 1, 0.2) > base && t(10, 75, 8, 1, 1) < base);
+  assert(RISE_MIN >= 0.5 && RISE_MAX <= 4 && RISE_MIN < base && base < RISE_MAX, "the documented 1.2–3.5 s band");
+});
+Deno.test("SPEC FALL-F13: thresholds are ordered STAGGER < STUMBLE < FALL <= 1", async () => {
+  const { FALL_THRESHOLD, STAGGER_THRESHOLD, STUMBLE_THRESHOLD } = await import("../src/game/Fall.ts");
+  assert(0 < STAGGER_THRESHOLD && STAGGER_THRESHOLD < STUMBLE_THRESHOLD && STUMBLE_THRESHOLD < FALL_THRESHOLD && FALL_THRESHOLD <= 1);
+});
+Deno.test("SPEC FALL-F14: the edge rule — ring-out owns a body really outside; a walled rim never teeters", async () => {
+  const { teeterLoss } = await import("../src/game/Fall.ts");
+  assert(teeterLoss({ beyond: 0.36, footprint: 0.35, outwardSpeed: 5, open: true }) === null);
+  assert(teeterLoss({ beyond: 0, footprint: 0.35, outwardSpeed: 5, open: false }) === null);
+  assert(teeterLoss({ beyond: 0.1, footprint: 0.35, outwardSpeed: 5, open: true }) !== null);
+});
+Deno.test("SPEC FALL-F15: downed penalties — more damage, more crit, longer statuses, more knockback, all bounded", async () => {
+  const F = await import("../src/game/Fall.ts");
+  assert(F.DOWNED_DAMAGE_TAKEN > 1 && F.DOWNED_DAMAGE_TAKEN <= 1.5);
+  assert(F.DOWNED_CRIT_BONUS > 0 && F.DOWNED_CRIT_BONUS <= 0.25);
+  assert(F.DOWNED_STATUS_DURATION > 1 && F.DOWNED_STATUS_DURATION <= 2);
+  assert(F.DOWNED_KNOCKBACK > 1 && F.DOWNED_KNOCKBACK <= 2);
+});
+Deno.test("SPEC FALL-F16: only a standing fighter acts; a rising one may guard; down/rising are downed", async () => {
+  const { canActIn, canGuardIn, isDowned } = await import("../src/game/Fall.ts");
+  const ph = ["stand", "stagger", "stumble", "falling", "down", "rising"] as const;
+  const st = (phase: typeof ph[number]) => ({ phase, t: 0, duration: 1, dir: [0, 0] as [number, number], cause: null, pose: "back" as const });
+  assert(ph.filter((p) => canActIn(st(p))).join() === "stand" && ph.filter((p) => canGuardIn(st(p))).join() === "stand,rising" && ph.filter((p) => isDowned(st(p))).join() === "down,rising");
+});
+Deno.test("SPEC FALL-F17: MatchSim falls:false carries no force tally (the HEAD rules); falls on carries finite ones", async () => {
+  const { runBatch } = await import("../src/balance/Batch.ts");
+  const off = runBatch({ matches: 10, seed: 5, design: "random", sim: { falls: false } });
+  const on = runBatch({ matches: 10, seed: 5, design: "random" });
+  assert(off.every((r) => r.outcome.forces === undefined) && on.every((r) => r.outcome.forces !== undefined));
+  for (const r of on) for (const v of [...r.outcome.forces!.downS, ...r.outcome.forces!.damageWhileDown]) assert(Number.isFinite(v) && v >= 0);
+});
+Deno.test("SPEC FALL-F18: the sim and the engine share the laws (one Collision / Fall implementation, text pin)", async () => {
+  const sim = await Deno.readTextFile(new URL("../src/balance/MatchSim.ts", import.meta.url));
+  const eng = await Deno.readTextFile(new URL("../src/engine/Engine.ts", import.meta.url));
+  for (const src of [sim, eng]) {
+    for (const fn of ["resolveCollision(", "triggerFall(", "stepFall(", "hitBalanceLoss(", "downedDamageMul(", "downedKnockMul(", "downedStatusMul(", "teeterLoss(", "isCharge("]) assert(src.includes(fn), fn);
+  }
+});
+Deno.test("SPEC FALL-F19: the engine gates action on the fall state and fills lane A's fall/shove input (text pin)", async () => {
+  const eng = await Deno.readTextFile(new URL("../src/engine/Engine.ts", import.meta.url));
+  assert(/#canAct\(f: Fighter\): boolean \{[\s\S]{0,300}canActIn\(this\.#fallOf\(f\)\)/.test(eng), "#canAct reads the fall state");
+  assert(eng.includes("this.#animForces(f)") && eng.includes("out.fall = { phase: s.phase") && eng.includes("out.shove ="), "AnimatorInput.fall / .shove filled");
+  for (const hook of ["debugFall()", "debugForce(", "debugPush("]) assert(eng.includes(hook), hook);
+});
+Deno.test("SPEC FALL-F20: the fall-aware brain punishes a downed enemy and wraps trees transparently", async () => {
+  const { fallAwareTree, fallDecision } = await import("../src/game/AiBrain.ts");
+  const { decide, defaultTree } = await import("../src/game/DecisionTree.ts");
+  const v = { distance: 1, selfReach: 1.5, enemyReach: 1.5, selfHpRatio: 1, enemyHpRatio: 1, nearEdge: false, ready: true, enemyAttacking: 0, selfDamagePercent: 0, enemyDamagePercent: 0, roundTime: 5 };
+  assert(fallDecision({ ...v, enemyFall: { phase: "down", t01: 0.5, downed: true, unbalanced: false, cause: "hit" } }) === "attack");
+  assert(decide(fallAwareTree(defaultTree()), v) === decide(defaultTree(), v));
+});
+Deno.test("SPEC FALL-F21: the fall-aware no-op control scores exactly 0.5 (both passes identical)", async () => {
+  const { fallAwareStudy } = await import("../src/balance/FallStudy.ts");
+  assert(fallAwareStudy(40, 2, false).awareWinRate === 0.5);
+});
+Deno.test("SPEC FALL-F22: telemetry force log — finite only, capped at FORCE_EVENT_CAP, counted in `dropped`", async () => {
+  const { createTelemetry, FORCE_EVENT_CAP } = await import("../src/game/FightTelemetry.ts");
+  const acc = createTelemetry();
+  for (let i = 0; i < FORCE_EVENT_CAP + 3; i++) acc.force({ t: i, kind: "fall", who: 1, cause: "hit", phase: "falling", impulse: 0, balance: 1, pushback: 0, duration: 1.5, hp01: 1, stamina01: 1, outcome: "back" });
+  acc.force({ t: NaN, kind: "fall", who: 1, cause: "hit", phase: "falling", impulse: 0, balance: 1, pushback: 0, duration: 1.5, hp01: 1, stamina01: 1, outcome: "back" });
+  const f = acc.forceSummary();
+  assert(f.events.length === FORCE_EVENT_CAP && f.dropped === 3 && f.falls[1] === FORCE_EVENT_CAP + 3 && acc.refused === 1);
+});
+Deno.test("SPEC FALL-F23: a report carries at most REPORT_FORCE_EVENTS events and history at most HISTORY_FORCE_EVENTS", async () => {
+  const { REPORT_FORCE_EVENTS, compactForces } = await import("../src/game/MatchReport.ts");
+  const { HISTORY_FORCE_EVENTS, parseHistory } = await import("../src/game/MatchHistory.ts");
+  assert(HISTORY_FORCE_EVENTS <= REPORT_FORCE_EVENTS && REPORT_FORCE_EVENTS <= 32);
+  const ev = { t: 1.234567, kind: "collision" as const, who: 0 as const, cause: "charge", phase: "stagger", impulse: 1, balance: 0, pushback: 0, duration: 0, hp01: 1, stamina01: 1, outcome: "none" };
+  const big = { collisions: 40, falls: [0, 0] as [number, number], rises: [0, 0] as [number, number], downS: [0, 0] as [number, number], meanDownS: 0, damageWhileDown: [0, 0] as [number, number], causes: {}, events: Array.from({ length: 40 }, () => ev), dropped: 0 };
+  const c = compactForces(big, HISTORY_FORCE_EVENTS);
+  assert(c.events.length === HISTORY_FORCE_EVENTS && c.dropped === 40 - HISTORY_FORCE_EVENTS && c.events[0].t === 1.23);
+  const rec = parseHistory(JSON.stringify([{ id: 1, fighters: [{}, {}], forces: c }]))[0];
+  assert(rec.forces?.events.length === HISTORY_FORCE_EVENTS, "history keeps the force log through a parse");
+});
+Deno.test("SPEC FALL-F24: the batch summary aggregates falls per match, down time, damage while down and causes", async () => {
+  const { runBatch } = await import("../src/balance/Batch.ts");
+  const { summarize } = await import("../src/balance/Summary.ts");
+  const s = summarize(runBatch({ matches: 30, seed: 11, design: "random" }));
+  assert(s.forces !== undefined && s.forces.matches === 30 && Number.isFinite(s.forces.meanDownS) && s.forces.damageWhileDownShare >= 0 && s.forces.damageWhileDownShare < 1);
+});
+Deno.test("SPEC FALL-F25: a rising fall-aware seat guards (MatchSim), the DOWN chip covers falling/down/rising", async () => {
+  const sim = await Deno.readTextFile(new URL("../src/balance/MatchSim.ts", import.meta.url));
+  const { fallChip } = await import("../src/ui/FighterPanel.ts");
+  assert(/f\.fallAware && canGuardIn\(f\.fall\)[^\n]*f\.block = BLOCK_SECONDS/.test(sim), "guard while rising");
+  assert(fallChip("down") === "DOWN" && fallChip("rising") === "DOWN" && fallChip("falling") === "DOWN" && fallChip("stagger") === "");
+});
+Deno.test("SPEC FALL-F26: with falls on, the median decisive duel stays in the documented 25–55 s band (re-measured, MECHANICS.md)", async () => {
+  const { fallStudy } = await import("../src/balance/FallStudy.ts");
+  const s = fallStudy("pin", 300, 4242);
+  assert(s.medianDuelSeconds >= 25 && s.medianDuelSeconds <= 55, `${s.medianDuelSeconds} s`);
+  assert(s.fallsPerMatch > 0.5 && s.fallsPerMatch < 8, `${s.fallsPerMatch} falls/match (measured band, MECHANICS.md)`);
+});
+Deno.test("SPEC FALL-F27: a fall's stumble decides by agility and fatigue (fallChance monotone)", async () => {
+  const { fallChance } = await import("../src/game/Fall.ts");
+  assert(fallChance(0.6, 2, 1) > fallChance(0.6, 9, 1) && fallChance(0.6, 5, 0) > fallChance(0.6, 5, 1) && fallChance(0.79, 5, 1) > fallChance(0.41, 5, 1));
+});
+Deno.test("SPEC FALL-F28: the collision cooldown and the clash drive are bounded (one exchange per charge)", async () => {
+  const { CLASH_SPEED, COLLISION_COOLDOWN } = await import("../src/game/Collision.ts");
+  const { FALL_SECONDS } = await import("../src/game/Fall.ts");
+  assert(COLLISION_COOLDOWN >= FALL_SECONDS && COLLISION_COOLDOWN <= 2 && CLASH_SPEED > 0 && CLASH_SPEED <= 4.2);
+});
+Deno.test("SPEC FALL-F29: the get-up law uses the SAME agility factor as the collision law", async () => {
+  const { agilityFactor } = await import("../src/game/Collision.ts");
+  const { riseSeconds } = await import("../src/game/Fall.ts");
+  for (const g of [2, 4, 6, 9]) {
+    const ratio = riseSeconds(10, 75, 5, 1, 1) / riseSeconds(10, 75, g, 1, 1);
+    assert(Math.abs(ratio - agilityFactor(g) / agilityFactor(5)) < 1e-9, `agility ${g}`);
+  }
+});

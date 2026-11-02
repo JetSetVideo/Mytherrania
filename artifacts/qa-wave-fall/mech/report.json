@@ -1,0 +1,633 @@
+{
+  "root": "dist-mech",
+  "harness": {
+    "running": true
+  },
+  "equal": {
+    "force": {
+      "at": [
+        [
+          -0.7247153062503021,
+          3.20704578497477
+        ],
+        [
+          -0.702742844619774,
+          2.3073140411033566
+        ]
+      ],
+      "normal": [
+        0.024413846256142402,
+        -0.999701937634904
+      ],
+      "recoil": [
+        1.1675952698100232,
+        1.352404730189981
+      ],
+      "closingSpeed": 8.400000000000002,
+      "pushback": [
+        0.4490751037730858,
+        0.520155665457685
+      ],
+      "stagger": [
+        0.367975846051265,
+        0.39442093775882153
+      ],
+      "balance": [
+        0.32718438189083776,
+        0.36417559764294316
+      ],
+      "effectiveMass": [
+        135.38612847926063,
+        130.87985803194624
+      ],
+      "phases": [
+        "falling",
+        "falling"
+      ]
+    },
+    "measured": {
+      "seat0": {
+        "measuredSlideM": 0.119,
+        "offFeetS": 1.58,
+        "phases": [
+          "falling",
+          "down",
+          "rising"
+        ]
+      },
+      "seat1": {
+        "measuredSlideM": 0.636,
+        "offFeetS": 1.58,
+        "phases": [
+          "falling",
+          "down",
+          "rising"
+        ]
+      }
+    },
+    "shoveAnim": [
+      {
+        "phase": "brace",
+        "t01": 0,
+        "dir": [
+          -0.02441384625614237,
+          0.999701937634904
+        ],
+        "magnitude01": 0.3891984232700077
+      },
+      {
+        "phase": "brace",
+        "t01": 0,
+        "dir": [
+          0.02441384625614237,
+          -0.999701937634904
+        ],
+        "magnitude01": 0.4508015767299937
+      }
+    ]
+  },
+  "heavyLight": {
+    "heavy": {
+      "mass": 96,
+      "effectiveMass": 148.49765284846498
+    },
+    "light": {
+      "mass": 54,
+      "effectiveMass": 37.21477199594844
+    },
+    "force": {
+      "at": [
+        [
+          -1.3249543135822615,
+          2.80858158601143
+        ],
+        [
+          -0.47914312314048946,
+          2.501004879930699
+        ]
+      ],
+      "normal": [
+        0.9397902116019689,
+        -0.34175189564525654
+      ],
+      "recoil": [
+        0,
+        4.531749480218033
+      ],
+      "closingSpeed": 8.399999999999999,
+      "pushback": [
+        0,
+        1.742980569314628
+      ],
+      "stagger": [
+        0.020039493650472393,
+        1.2
+      ],
+      "balance": [
+        0,
+        1
+      ],
+      "effectiveMass": [
+        148.49765284846498,
+        37.21477199594844
+      ],
+      "phases": [
+        "stagger",
+        "falling"
+      ]
+    },
+    "measured": {
+      "seat0": {
+        "measuredSlideM": 0.25,
+        "offFeetS": 0,
+        "phases": [
+          "stagger",
+          "stand"
+        ]
+      },
+      "seat1": {
+        "measuredSlideM": 2.706,
+        "offFeetS": 1.58,
+        "phases": [
+          "falling",
+          "down",
+          "rising"
+        ]
+      }
+    }
+  },
+  "fall": {
+    "plan": {
+      "down": 0.5376026450205189,
+      "rise": 1
+    },
+    "timeline": [
+      {
+        "phase": "falling",
+        "at": 0
+      },
+      {
+        "phase": "down",
+        "at": 0.517
+      },
+      {
+        "phase": "rising",
+        "at": 1.101
+      },
+      {
+        "phase": "stand",
+        "at": 2.05
+      }
+    ],
+    "chipSeen": true,
+    "downText": true,
+    "forces": {
+      "collisions": 8,
+      "falls": [
+        1,
+        5
+      ],
+      "rises": [
+        1,
+        5
+      ],
+      "downS": [
+        2.2680000000000007,
+        8.68239999985695
+      ],
+      "meanDownS": 1.825066666642825,
+      "damageWhileDown": [
+        0,
+        0
+      ],
+      "causes": {
+        "collision": 5,
+        "hit": 1
+      },
+      "events": [
+        {
+          "kind": "fall",
+          "cause": "collision",
+          "phase": "falling",
+          "impulse": 0,
+          "balance": 1,
+          "pushback": 0,
+          "duration": 2.268307201416951,
+          "outcome": "back",
+          "t": 6.325200000047686,
+          "who": 0,
+          "hp01": 1,
+          "stamina01": 1
+        },
+        {
+          "kind": "collision",
+          "cause": "clash",
+          "phase": "falling",
+          "impulse": 1565.685424649064,
+          "balance": 1,
+          "pushback": 3.2392495582529377,
+          "duration": 1.0451193762864848,
+          "outcome": "fall",
+          "t": 6.325200000047686,
+          "who": 0,
+          "hp01": 1,
+          "stamina01": 1
+        },
+        {
+          "kind": "fall",
+          "cause": "collision",
+          "phase": "falling",
+          "impulse": 0,
+          "balance": 1,
+          "pushback": 0,
+          "duration": 2.367828933323989,
+          "outcome": "back",
+          "t": 6.325200000047686,
+          "who": 1,
+          "hp01": 1,
+          "stamina01": 0.8903127717391307
+        },
+        {
+          "kind": "collision",
+          "cause": "clash",
+          "phase": "falling",
+          "impulse": 1565.685424649064,
+          "balance": 1,
+          "pushback": 0,
+          "duration": 1.1307028804952943,
+          "outcome": "fall",
+          "t": 6.325200000047686,
+          "who": 1,
+          "hp01": 1,
+          "stamina01": 0.8903127717391307
+        },
+        {
+          "kind": "collision",
+          "cause": "qa",
+          "phase": "falling",
+          "impulse": 726.6979428231715,
+          "balance": 0.32718438189083776,
+          "pushback": 0.4490751037730858,
+          "duration": 0.367975846051265,
+          "outcome": "fall",
+          "t": 6.780800000190736,
+          "who": 0,
+          "hp01": 1,
+          "stamina01": 1
+        },
+        {
+          "kind": "collision",
+          "cause": "qa",
+          "phase": "falling",
+          "impulse": 726.6979428231715,
+          "balance": 0.36417559764294316,
+          "pushback": 0.520155665457685,
+          "duration": 0.39442093775882153,
+          "outcome": "fall",
+          "t": 6.780800000190736,
+          "who": 1,
+          "hp01": 1,
+          "stamina01": 0.9213847826086959
+        },
+        {
+          "kind": "rise",
+          "cause": "collision",
+          "phase": "stand",
+          "impulse": 0,
+          "balance": 0,
+          "pushback": 0,
+          "duration": 2.771200000047682,
+          "outcome": "rose",
+          "t": 9.096400000095368,
+          "who": 0,
+          "hp01": 1,
+          "stamina01": 1
+        },
+        {
+          "kind": "rise",
+          "cause": "collision",
+          "phase": "stand",
+          "impulse": 0,
+          "balance": 0,
+          "pushback": 0,
+          "duration": 2.8694999999999977,
+          "outcome": "rose",
+          "t": 9.194700000047684,
+          "who": 1,
+          "hp01": 1,
+          "stamina01": 1
+        },
+        {
+          "kind": "collision",
+          "cause": "clash",
+          "phase": "stagger",
+          "impulse": 430.6862966205192,
+          "balance": 0.028138796958722838,
+          "pushback": 0.24185859172085267,
+          "duration": 0.13157609216379718,
+          "outcome": "stagger",
+          "t": 9.812300000190735,
+          "who": 0,
+          "hp01": 0.9766056873206705,
+          "stamina01": 0.9922669999999997
+        },
+        {
+          "kind": "collision",
+          "cause": "clash",
+          "phase": "stagger",
+          "impulse": 430.6862966205192,
+          "balance": 0.06633177249327465,
+          "pushback": 0.3480639989668645,
+          "duration": 0.16373643468123017,
+          "outcome": "stagger",
+          "t": 9.812300000190735,
+          "who": 1,
+          "hp01": 0.9750701667372378,
+          "stamina01": 0.8221638586956521
+        },
+        {
+          "kind": "collision",
+          "cause": "qa",
+          "phase": "stagger",
+          "impulse": 324.95006603205536,
+          "balance": 0,
+          "pushback": 0,
+          "duration": 0.020039493650472393,
+          "outcome": "stagger",
+          "t": 10.195400000095363,
+          "who": 0,
+          "hp01": 0.9716924565508528,
+          "stamina01": 0.9834845999989499
+        },
+        {
+          "kind": "fall",
+          "cause": "collision",
+          "phase": "falling",
+          "impulse": 0,
+          "balance": 1,
+          "pushback": 0,
+          "duration": 1.6308332761091755,
+          "outcome": "back",
+          "t": 10.195400000095363,
+          "who": 1,
+          "hp01": 0.9750701667372378,
+          "stamina01": 0.8484155978292227
+        },
+        {
+          "kind": "collision",
+          "cause": "qa",
+          "phase": "falling",
+          "impulse": 324.95006603205536,
+          "balance": 1,
+          "pushback": 1.742980569314628,
+          "duration": 1.2,
+          "outcome": "fall",
+          "t": 10.195400000095363,
+          "who": 1,
+          "hp01": 0.9750701667372378,
+          "stamina01": 0.8484155978292227
+        },
+        {
+          "kind": "rise",
+          "cause": "collision",
+          "phase": "stand",
+          "impulse": 0,
+          "balance": 0,
+          "pushback": 0,
+          "duration": 2.1337999999523127,
+          "outcome": "rose",
+          "t": 12.329200000047676,
+          "who": 1,
+          "hp01": 0.9750701667372378,
+          "stamina01": 0.9875919021833196
+        },
+        {
+          "kind": "collision",
+          "cause": "clash",
+          "phase": "stand",
+          "impulse": 273.195834277818,
+          "balance": 0,
+          "pushback": 0,
+          "duration": 0,
+          "outcome": "none",
+          "t": 12.61330000019073,
+          "who": 0,
+          "hp01": 0.9440013796266019,
+          "stamina01": 0.9559777999982823
+        },
+        {
+          "kind": "fall",
+          "cause": "collision",
+          "phase": "falling",
+          "impulse": 0,
+          "balance": 1,
+          "pushback": 0,
+          "duration": 1.537602645020519,
+          "outcome": "back",
+          "t": 12.61330000019073,
+          "who": 1,
+          "hp01": 0.9750701667372378,
+          "stamina01": 1
+        },
+        {
+          "kind": "collision",
+          "cause": "clash",
+          "phase": "falling",
+          "impulse": 273.195834277818,
+          "balance": 1,
+          "pushback": 1.0734736361650843,
+          "duration": 1.2,
+          "outcome": "fall",
+          "t": 12.61330000019073,
+          "who": 1,
+          "hp01": 0.9750701667372378,
+          "stamina01": 1
+        },
+        {
+          "kind": "rise",
+          "cause": "collision",
+          "phase": "stand",
+          "impulse": 0,
+          "balance": 0,
+          "pushback": 0,
+          "duration": 2.0491999998092716,
+          "outcome": "rose",
+          "t": 14.662500000000001,
+          "who": 1,
+          "hp01": 0.9750701667372378,
+          "stamina01": 1
+        },
+        {
+          "kind": "collision",
+          "cause": "charge",
+          "phase": "stand",
+          "impulse": 252.987786982808,
+          "balance": 0,
+          "pushback": 0.5294364293415276,
+          "duration": 0,
+          "outcome": "none",
+          "t": 14.812600000143055,
+          "who": 0,
+          "hp01": 0.9440013796266019,
+          "stamina01": 0.9559777999982823
+        },
+        {
+          "kind": "fall",
+          "cause": "collision",
+          "phase": "falling",
+          "impulse": 0,
+          "balance": 1,
+          "pushback": 0,
+          "duration": 1.6117019226057345,
+          "outcome": "back",
+          "t": 14.812600000143055,
+          "who": 1,
+          "hp01": 0.9750701667372378,
+          "stamina01": 0.8795214130497497
+        },
+        {
+          "kind": "collision",
+          "cause": "charge",
+          "phase": "falling",
+          "impulse": 252.987786982808,
+          "balance": 1,
+          "pushback": 0.3982453319117369,
+          "duration": 1.2,
+          "outcome": "fall",
+          "t": 14.812600000143055,
+          "who": 1,
+          "hp01": 0.9750701667372378,
+          "stamina01": 0.8795214130497497
+        },
+        {
+          "kind": "collision",
+          "cause": "clash",
+          "phase": "stand",
+          "impulse": 247.15825171480103,
+          "balance": 0,
+          "pushback": 0,
+          "duration": 0,
+          "outcome": "none",
+          "t": 16.813200000047683,
+          "who": 0,
+          "hp01": 0.9440013796266019,
+          "stamina01": 0.9669177999982821
+        },
+        {
+          "kind": "collision",
+          "cause": "clash",
+          "phase": "rising",
+          "impulse": 247.15825171480103,
+          "balance": 0,
+          "pushback": 1.2962562347580624,
+          "duration": 1.0182134978104271,
+          "outcome": "none",
+          "t": 16.813200000047683,
+          "who": 1,
+          "hp01": 0.9750701667372378,
+          "stamina01": 1
+        },
+        {
+          "kind": "rise",
+          "cause": "collision",
+          "phase": "stand",
+          "impulse": 0,
+          "balance": 0,
+          "pushback": 0,
+          "duration": 2.1168999998569458,
+          "outcome": "rose",
+          "t": 16.9295,
+          "who": 1,
+          "hp01": 0.9750701667372378,
+          "stamina01": 1
+        },
+        {
+          "kind": "fall",
+          "cause": "hit",
+          "phase": "falling",
+          "impulse": 0,
+          "balance": 1,
+          "pushback": 0,
+          "duration": 1.537602645020519,
+          "outcome": "back",
+          "t": 17.078900000095373,
+          "who": 1,
+          "hp01": 0.9750701667372378,
+          "stamina01": 1
+        },
+        {
+          "kind": "collision",
+          "cause": "clash",
+          "phase": "stand",
+          "impulse": 183.4030543957162,
+          "balance": 0,
+          "pushback": 0,
+          "duration": 0,
+          "outcome": "none",
+          "t": 18.8282000002861,
+          "who": 0,
+          "hp01": 0.9440013796266019,
+          "stamina01": 0.9830474000005716
+        },
+        {
+          "kind": "collision",
+          "cause": "clash",
+          "phase": "rising",
+          "impulse": 183.4030543957162,
+          "balance": 0,
+          "pushback": 0.9320342871295306,
+          "duration": 0.6660832758043967,
+          "outcome": "none",
+          "t": 18.8282000002861,
+          "who": 1,
+          "hp01": 0.9677870732615541,
+          "stamina01": 1
+        },
+        {
+          "kind": "rise",
+          "cause": "hit",
+          "phase": "stand",
+          "impulse": 0,
+          "balance": 0,
+          "pushback": 0,
+          "duration": 2.05010000014304,
+          "outcome": "rose",
+          "t": 19.129000000238413,
+          "who": 1,
+          "hp01": 0.9677870732615541,
+          "stamina01": 1
+        }
+      ],
+      "dropped": 0
+    }
+  },
+  "verdict": {
+    "running": true,
+    "equalOrdered": true,
+    "momentumConserved": true,
+    "lightPushedFurther": true,
+    "lightStaggersLonger": true,
+    "fallPhases": "falling>down>rising>stand",
+    "downAtS": 0.517,
+    "risingAtS": 1.101,
+    "standAtS": 2.05,
+    "planTotalS": 2.038,
+    "timingWithin015": true,
+    "downChip": true,
+    "downCallout": true,
+    "forceLog": {
+      "falls": [
+        1,
+        5
+      ],
+      "rises": [
+        1,
+        5
+      ],
+      "collisions": 8,
+      "events": 28
+    },
+    "pageErrors": 0
+  },
+  "errors": []
+}

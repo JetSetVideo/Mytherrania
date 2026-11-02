@@ -62,6 +62,13 @@ import { randomSource } from "./ArenaHarness.ts";
 import { PropGrid, type PathPt } from "./SimPath.ts";
 import { createNavPilot, type NavPilot } from "../game/NavPilot.ts";
 import type { Obstacle } from "../world/PathFinder.ts";
+import { armourMassOf, type BodyState, CLASH_SPEED, COLLISION_COOLDOWN, effectiveMassOf, hitBalanceLoss, isCharge, resolveCollision, type CollisionResult } from "../game/Collision.ts";
+import {
+  backstepLoss, canActIn, canGuardIn, downedCritBonus, downedDamageMul, downedKnockMul, downedStatusMul, type FallCause, type FallState,
+  isDowned, standing, stepFall, teeterLoss, triggerFall,
+} from "../game/Fall.ts";
+import { fallAwareTree, fallSafeDecision, fallView } from "../game/AiBrain.ts";
+import type { ForceTally } from "../game/arena/contracts.ts";
 
 /** Engine constants the simulator shares (Engine.ts). */
 export const AI_MOVE_SPEED = 4.2;
@@ -107,6 +114,14 @@ export interface SimOptions {
   poolAware?: readonly [boolean, boolean];
   /** Measurement (Wave Y): which pool-aware decisions an aware seat uses (default both). */
   poolAwareParts?: { press: boolean; conserve: boolean };
+  /**
+   * Wave FALL (C-FORCE/C-FALL): body collisions (charges, clashes) with pushback and stagger, the
+   * stumble/fall/down/rise state machine, downed penalties and the edge / back-step triggers. Default
+   * true; false plays the pre-Wave-FALL rules exactly (the before/after switch).
+   */
+  falls?: boolean;
+  /** Wave FALL (C-AI): per seat, does the brain read falls/collisions (punish, edge/charge safety, guard while rising)? Default [true, true]. */
+  fallAware?: readonly [boolean, boolean];
   /** Debug/QA (Wave Y): both seats' potential states and hp when the match ends (measurement). */
   onFinish?: (seats: readonly { pot: PotentialState; hp: number; res: ResourceState }[]) => void;
 }
@@ -114,10 +129,12 @@ export interface SimOptions {
 /** One traced event (SimOptions.trace). Positions in m, damage in HP, knockback in m/s. */
 export interface SimEvent {
   t: number;
-  kind: "swing" | "skill" | "hit" | "wall" | "ringout" | "think";
+  kind: "swing" | "skill" | "hit" | "wall" | "ringout" | "think" | "collision" | "fall" | "rise";
   seat: 0 | 1;
   x: number; z: number;
   damage?: number; knockback?: number; percent?: number; hp?: number; note?: string;
+  /** Wave FALL: collision impulse (N·s), this seat's pushback (m), stagger / down duration (s), balance loss, stamina share. */
+  impulse?: number; pushback?: number; duration?: number; balance?: number; stamina01?: number; cause?: string; phase?: string;
 }
 
 interface SimFighter {
@@ -142,6 +159,11 @@ interface SimFighter {
   /** Wave N (lane N-A): the pilot's stuck detector / bounded escape, and the last position it saw. */
   pilot: NavPilot; navPrevX: number; navPrevZ: number;
   dealt: number; hits: number; swings: number; wallHits: number; edgeTime: number;
+  /** Wave FALL: the fall state machine, the position at the tick start (measured velocity), the brain's switch. */
+  fall: FallState; px: number; pz: number; mvx: number; mvz: number; fallAware: boolean; retreating: boolean;
+  /** Seconds the fall began (for the rise record), the last collision (for the view). */
+  fellAt: number; lastColl: { t: number; self: number; enemy: number; loss: number } | null;
+  struckAt: number;
 }
 
 const TAU = Math.PI * 2;
@@ -178,6 +200,13 @@ function run(cond: MatchConditions, opts: SimOptions): MatchOutcome {
   const solidProps = digest.props.filter((p) => p.solid);
   const trace = opts.trace;
   const potOn = opts.potentials !== false;
+  const fallsOn = opts.falls !== false;
+  const forces: ForceTally = {
+    collisions: [0, 0], staggers: [0, 0], stumbles: [0, 0], falls: [0, 0], downS: [0, 0], damageWhileDown: [0, 0], causes: {},
+  };
+  // A separate stream for the fall rolls, so the combat rolls of a falls-off match are untouched.
+  const fallRng = randomSource((Math.imul(cond.seed >>> 0, 0x2545f491) ^ 0x6a09e667) >>> 0);
+  let lastCollisionAt = -Infinity;
   // A* around props (the engine's GridPathFinder stand-in), built only when there are solid props.
   const grid = solidProps.length > 0
     ? new PropGrid(solidProps, Math.max(1, ...digest.rim) + 0.5, FOOTPRINT, (x, z) => Math.hypot(x, z) < ringRadiusAt(cfg, Math.atan2(z, x)) - FOOTPRINT)
@@ -189,7 +218,9 @@ function run(cond: MatchConditions, opts: SimOptions): MatchOutcome {
     const sp = digest.spawns.spawns[seat] ?? { x: seat === 0 ? -1 : 1, z: 0, yaw: 0 };
     const strat = b.spec.strategy;
     const aware = potOn && (opts.poolAware?.[seat] ?? true);
-    const base = strat === "basic" ? defaultTree() : strat === "full" ? edgeAwareTree(b.reach) : null;
+    const fallAware = fallsOn && (opts.fallAware?.[seat] ?? true);
+    const base0 = strat === "basic" ? defaultTree() : strat === "full" ? edgeAwareTree(b.reach) : null;
+    const base = base0 && fallAware ? fallAwareTree(base0) : base0;
     return {
       b, seat, x: sp.x, z: sp.z, vx: 0, vz: 0, hp: b.stats.maxHealth, dp: 0,
       cooldown: 0, stun: 0, block: 0, windup: 0, pendingSkill: null, skillClock: 0, skillDur: 0, skillStruck: false,
@@ -203,6 +234,8 @@ function run(cond: MatchConditions, opts: SimOptions): MatchOutcome {
       path: null, pathAge: 0, pathGoalX: 0, pathGoalZ: 0, edgeBlend: false,
       pilot: createNavPilot({}), navPrevX: sp.x, navPrevZ: sp.z,
       dealt: 0, hits: 0, swings: 0, wallHits: 0, edgeTime: 0,
+      fall: standing(), px: sp.x, pz: sp.z, mvx: 0, mvz: 0, fallAware, retreating: false,
+      fellAt: 0, lastColl: null, struckAt: -1,
     };
   };
   const F: [SimFighter, SimFighter] = [make(0), make(1)];
@@ -220,6 +253,12 @@ function run(cond: MatchConditions, opts: SimOptions): MatchOutcome {
     damageDealt: [round(F[0].dealt), round(F[1].dealt)],
     hits: [F[0].hits, F[1].hits], swings: [F[0].swings, F[1].swings],
     wallHits: [F[0].wallHits, F[1].wallHits], edgeTime: [round(F[0].edgeTime, 100), round(F[1].edgeTime, 100)],
+    ...(fallsOn ? {
+      forces: {
+        ...forces, downS: [round(forces.downS[0]), round(forces.downS[1])] as [number, number],
+        damageWhileDown: [round(forces.damageWhileDown[0]), round(forces.damageWhileDown[1])] as [number, number],
+      },
+    } : {}),
   });
 
   // ─── per-fighter steps (closures over the arena) ────────────────────────────────────────────
@@ -235,6 +274,13 @@ function run(cond: MatchConditions, opts: SimOptions): MatchOutcome {
     const dist = Math.hypot(dx, dz) || 1e-6;
     const ux = dx / dist, uz = dz / dist;
     if (Math.hypot(f.x, f.z) > rimAt(f.x, f.z) - NEAR_EDGE) f.edgeTime += dt;
+    f.retreating = false;
+    if (fallsOn && !canActIn(f.fall)) {
+      // Wave FALL: a staggered / stumbling / falling / downed body does nothing; a RISING fall-aware
+      // brain raises its guard when the enemy is within reach (the get-up ends in guard).
+      if (f.fallAware && canGuardIn(f.fall) && dist <= o.b.reach + 0.5) f.block = BLOCK_SECONDS;
+      return;
+    }
     if (f.stun > 0 || f.windup > 0) return;
     if (f.rt.active >= 0) { skillMotion(f, o, ux, uz, dist, dt); return; }
     const strat = f.b.spec.strategy;
@@ -256,6 +302,13 @@ function run(cond: MatchConditions, opts: SimOptions): MatchOutcome {
         if (strat === "full") Object.assign(view, arenaFeatures(digest, f, o));
         // Wave Y (C-AI): both fighters' attributes and pools, for the press / pace decisions.
         if (f.aware) { view.self = fighterKnowledge(f.b.stats, f.pot, f.hp, f.res); view.enemy = fighterKnowledge(o.b.stats, o.pot, o.hp, o.res); }
+        // Wave FALL (C-AI): both fall states, the last collision, effective masses and own stamina.
+        if (f.fallAware) {
+          view.selfFall = fallView(f.fall); view.enemyFall = fallView(o.fall);
+          if (f.lastColl) view.lastCollision = { ago: t - f.lastColl.t, selfPushback: f.lastColl.self, enemyPushback: f.lastColl.enemy, selfBalanceLoss: f.lastColl.loss };
+          view.selfStability = effectiveMassOf(bodyState(f)); view.enemyStability = effectiveMassOf(bodyState(o));
+          view.selfStamina01 = stamina01(f);
+        }
         // A straight advance always moves away from the drop behind; only a safe back may bend it.
         f.edgeBlend = strat === "full" && !((view.openBehind ?? 0) >= 0.5 && (view.rimBehind ?? Infinity) < 2.5);
         f.skillPick = strat === "full"
@@ -269,7 +322,8 @@ function run(cond: MatchConditions, opts: SimOptions): MatchOutcome {
           const cost = SKILL_RESOURCE_COST[f.rt.skills[f.skillPick].kind] ?? { mana: 0, stamina: 0 };
           if (!poolWiseSkill(cost, view, (k, c) => fatigueLossFor(f.pot, k, c))) f.skillPick = -1;
         }
-        const d = decide(f.tree!, view);
+        const d0 = decide(f.tree!, view);
+        const d = f.fallAware ? fallSafeDecision(d0, view) : d0;
         f.action = d === "attack" && dist > f.b.reach ? "advance" : d;
         f.strafe = 1;
         trace?.({ t, kind: "think", seat: f.seat, x: f.x, z: f.z, note: `${f.action} d${dist.toFixed(2)} ready${ready ? 1 : 0} open${view.openBehind ?? "-"} rim${view.rimBehind?.toFixed(2) ?? "-"} eopen${view.enemyOpenBehind ?? "-"}` });
@@ -331,7 +385,7 @@ function run(cond: MatchConditions, opts: SimOptions): MatchOutcome {
         walk(f, tx * step, tz * step, false, !routed);
         break;
       }
-      case "retreat": walk(f, -ux * step, -uz * step); break;
+      case "retreat": walk(f, -ux * step, -uz * step); f.retreating = true; break;
       case "flank": walk(f, -uz * f.strafe * step, ux * f.strafe * step); break;
       case "block": f.block = BLOCK_SECONDS; break;
       case "wait": break;
@@ -451,15 +505,19 @@ function run(cond: MatchConditions, opts: SimOptions): MatchOutcome {
 
   function strikeTick(f: SimFighter, o: SimFighter, dt: number): void {
     if (f.windup <= 0) return;
+    if (fallsOn && !canActIn(f.fall)) { f.windup = 0; return; } // a stagger or fall cancels the wind-up
     f.windup -= dt;
     if (f.windup > 0) return;
     f.windup = 0;
+    f.struckAt = tick;
     // The blow lands if the target is still inside the reach plus the swing's step-in.
     if (Math.hypot(o.x - f.x, o.z - f.z) <= f.b.reach + 0.25) resolveHit(f, o, null);
   }
 
   function resolveHit(a: SimFighter, d: SimFighter, skill: Skill | null): void {
-    const prof = a.b.profile;
+    const prof0 = a.b.profile;
+    const critBonus = fallsOn ? downedCritBonus(d.fall) : 0;
+    const prof = critBonus > 0 ? { ...prof0, critChance: Math.min(1, prof0.critChance + critBonus) } : prof0;
     const strike = rollStrike(prof, a.rng);
     if (strike.outcome === "miss") return;
     const dStats = effectiveStats(d.b.stats, d.rt);
@@ -470,8 +528,9 @@ function run(cond: MatchConditions, opts: SimOptions): MatchOutcome {
     const phys = physicsMultiplier(a.b.body, d.b.body, closing);
     const blocking = d.block > 0;
     const mul = skill?.payload.damageMul ?? 1;
-    const dmg = base * mul * phys * (blocking ? BLOCK_DAMAGE : 1);
+    const dmg = base * mul * phys * (blocking ? BLOCK_DAMAGE : 1) * (fallsOn ? downedDamageMul(d.fall) : 1);
     if (!Number.isFinite(dmg) || dmg <= 0) return;
+    if (fallsOn && isDowned(d.fall)) forces.damageWhileDown[d.seat] += dmg;
     d.hp -= dmg;
     // Wave Y: a share of the blow is a wound (lower health potential), deeper from a strong attacker.
     if (potOn) woundPotential(d.pot, dmg, a.b.stats.strength);
@@ -480,17 +539,19 @@ function run(cond: MatchConditions, opts: SimOptions): MatchOutcome {
     a.hits++;
     const steal = skill?.payload.lifesteal ?? 0;
     if (steal > 0) a.hp = Math.min(potOn ? capOf(a.pot, "health") : a.b.stats.maxHealth, a.hp + dmg * steal);
-    d.stun = Math.max(d.stun, stunDuration(dmg / DAMAGE_SCALE, 1.2, 0)) + (skill?.payload.stun ?? 0);
+    d.stun = (Math.max(d.stun, stunDuration(dmg / DAMAGE_SCALE, 1.2, 0)) + (skill?.payload.stun ?? 0)) * (fallsOn ? downedStatusMul(d.fall) : 1);
     // An interrupted wind-up is lost (the stun cancels it).
     if (d.stun > 0) d.windup = 0;
     const kb = knockbackSpeed(rules, prof.impact, a.b.stats.strength, d.b.mass, d.dp, a.b.level, d.b.level, skill?.payload.knockbackMul ?? 1)
-      * (blocking ? BLOCK_KNOCK : 1);
+      * (blocking ? BLOCK_KNOCK : 1) * (fallsOn ? downedKnockMul(d.fall) : 1);
     let kx = d.x - a.x, kz = d.z - a.z;
     const kl = Math.hypot(kx, kz);
     if (kl < 1e-9) { kx = 1; kz = 0; } else { kx /= kl; kz /= kl; }
     d.vx += kx * kb;
     d.vz += kz * kb;
-    trace?.({ t, kind: "hit", seat: a.seat, x: d.x, z: d.z, damage: dmg, knockback: kb, percent: d.dp, hp: d.hp, note: skill ? skill.id : strike.outcome });
+    // Wave FALL: a big blow costs balance (Collision.hitBalanceLoss) -> stagger / stumble / fall.
+    if (fallsOn) fallTrigger(d, hitBalanceLoss(kb, bodyState(d)), "hit", kx, kz, 0, a);
+    trace?.({ t, kind: "hit", seat: a.seat, x: d.x, z: d.z, damage: dmg, knockback: kb, percent: d.dp, hp: d.hp, note: skill ? skill.id : strike.outcome, ...(fallsOn ? { phase: d.fall.phase } : {}) });
   }
 
   function physics(f: SimFighter, hostile: boolean, dt: number): void {
@@ -534,6 +595,11 @@ function run(cond: MatchConditions, opts: SimOptions): MatchOutcome {
       if (r > rim) { if (f.exitAt === null) f.exitAt = t; } else f.exitAt = null;
       if (!standing || integrity[si] <= 0) {
         if (r > rim + FOOTPRINT && !f.out) { f.out = true; trace?.({ t, kind: "ringout", seat: f.seat, x: nx, z: nz, percent: f.dp, hp: f.hp }); }
+        // Wave FALL (edge rule): at an OPEN brink, not yet out, moving outward -> teeter.
+        if (fallsOn && !f.out && hostile) {
+          const loss = teeterLoss({ beyond: r - rim, footprint: FOOTPRINT, outwardSpeed: f.vx * cx + f.vz * cz, open: true });
+          if (loss !== null) fallTrigger(f, loss, "edge", cx, cz, 0, null);
+        }
       }
     } else f.exitAt = null;
     // Solid props (circles): push out radially, kill the inward velocity.
@@ -545,6 +611,11 @@ function run(cond: MatchConditions, opts: SimOptions): MatchOutcome {
         nx = p.x + ux * rr; nz = p.z + uz * rr;
         const vn = f.vx * ux + f.vz * uz;
         if (vn < 0) { f.vx -= vn * ux; f.vz -= vn * uz; }
+        // Wave FALL (back-step): backing into a solid obstacle trips the rear foot.
+        if (fallsOn && hostile && f.retreating) {
+          const loss = backstepLoss(true, 0, 0.3, true);
+          if (loss !== null) fallTrigger(f, loss, "backstep", -ux, -uz, 0, null);
+        }
       }
     }
     f.x = nx; f.z = nz;
@@ -567,6 +638,85 @@ function run(cond: MatchConditions, opts: SimOptions): MatchOutcome {
     c.x += ux * overlap * (1 - shareA); c.z += uz * overlap * (1 - shareA);
   }
 
+  // ─── Wave FALL helpers ─────────────────────────────────────────────────────────────────────────
+
+  function stamina01(f: SimFighter): number {
+    const st = f.res.stamina;
+    return st.max > 0 ? Math.max(0, Math.min(1, st.current / st.max)) : 1;
+  }
+
+  function bodyState(f: SimFighter): BodyState {
+    return {
+      mass: f.b.mass, velocity: [f.mvx + f.vx, f.mvz + f.vz], strength: f.b.stats.strength ?? 5.5, agility: f.b.stats.agility ?? 5,
+      level: f.b.level, stamina01: stamina01(f), hp01: Math.max(0, f.hp / f.b.stats.maxHealth), weaponMass: f.b.weaponMass,
+      armourMass: armourMassOf(f.b.stats.armor), guarding: f.block > 0, downed: isDowned(f.fall),
+    };
+  }
+
+  /** Apply a balance loss to `f` (direction (dx, dz) it is thrown) and record what it started. */
+  function fallTrigger(f: SimFighter, loss: number, cause: FallCause, dx: number, dz: number, stagger: number, by: SimFighter | null): void {
+    const before = f.fall.phase;
+    const facing: [number, number] = by ? [by.x - f.x, by.z - f.z] : [F[1 - f.seat].x - f.x, F[1 - f.seat].z - f.z];
+    const bs = bodyState(f);
+    triggerFall(f.fall, {
+      balanceLoss: loss, cause, dir: [dx, dz], facing, stagger, roll: fallRng(),
+      body: { armourMass: bs.armourMass, bodyMass: f.b.mass, agility: bs.agility, hp01: bs.hp01, stamina01: bs.stamina01 },
+    });
+    const now = f.fall.phase;
+    if (now === before) return;
+    f.windup = 0; // a wind-up does not survive losing the feet
+    if (now === "stagger") forces.staggers[f.seat]++;
+    else if (now === "stumble") forces.stumbles[f.seat]++;
+    else if (now === "falling") onFalling(f);
+  }
+
+  function onFalling(f: SimFighter): void {
+    // A technique does not survive losing the feet (the engine cancels the skill animation too).
+    if (f.rt.active >= 0) endSkill(f.rt);
+    forces.falls[f.seat]++;
+    const c = f.fall.cause ?? "hit";
+    forces.causes[c] = (forces.causes[c] ?? 0) + 1;
+    f.fellAt = t;
+    trace?.({ t, kind: "fall", seat: f.seat, x: f.x, z: f.z, hp: f.hp, cause: c, phase: "falling", stamina01: stamina01(f),
+      duration: f.fall.plan ? f.fall.plan.down + f.fall.plan.rise : 0, note: `${c}/${f.fall.pose}` });
+  }
+
+  /** One body-on-body exchange (charge or clash): pushback velocity into the knock channel, stagger/fall states. */
+  function collide(a: SimFighter, c: SimFighter, clash: boolean): CollisionResult {
+    const sa = bodyState(a), sc = bodyState(c);
+    let nx = c.x - a.x, nz = c.z - a.z;
+    const nl = Math.hypot(nx, nz) || 1;
+    nx /= nl; nz /= nl;
+    if (clash) {
+      // Both blows meet: each body drives toward the other at CLASH_SPEED (strength 0.6 of a full clash).
+      sa.velocity = [sa.velocity[0] + nx * CLASH_SPEED * 0.6, sa.velocity[1] + nz * CLASH_SPEED * 0.6];
+      sc.velocity = [sc.velocity[0] - nx * CLASH_SPEED * 0.6, sc.velocity[1] - nz * CLASH_SPEED * 0.6];
+    }
+    const r = resolveCollision(sa, sc, [nx, nz]);
+    // The walk is written straight into x/z, so the recoil (the post-contact speed away) is the push.
+    a.vx -= nx * r.a.recoil; a.vz -= nz * r.a.recoil;
+    c.vx += nx * r.b.recoil; c.vz += nz * r.b.recoil;
+    forces.collisions[0]++; forces.collisions[1]++;
+    a.lastColl = { t, self: r.a.pushback, enemy: r.b.pushback, loss: r.a.balanceLoss };
+    c.lastColl = { t, self: r.b.pushback, enemy: r.a.pushback, loss: r.b.balanceLoss };
+    for (const [f, sd, dx, dz] of [[a, r.a, -nx, -nz], [c, r.b, nx, nz]] as const) {
+      trace?.({ t, kind: "collision", seat: f.seat, x: f.x, z: f.z, impulse: r.impulse, pushback: sd.pushback, duration: sd.stagger,
+        balance: sd.balanceLoss, stamina01: stamina01(f), hp: f.hp, cause: clash ? "clash" : "charge", note: `${clash ? "clash" : "charge"} vc ${r.closingSpeed.toFixed(2)}` });
+      fallTrigger(f, sd.balanceLoss, "collision", dx, dz, sd.stagger, f === a ? c : a);
+    }
+    return r;
+  }
+
+  function fallTick(f: SimFighter, dt: number): void {
+    if (isDowned(f.fall)) forces.downS[f.seat] += dt;
+    const tr = stepFall(f.fall, dt);
+    if (!tr) return;
+    if (tr.to === "falling") onFalling(f);
+    if (tr.from === "rising" && tr.to === "stand") {
+      trace?.({ t, kind: "rise", seat: f.seat, x: f.x, z: f.z, hp: f.hp, cause: tr.cause ?? undefined, phase: "stand", duration: t - f.fellAt, stamina01: stamina01(f) });
+    }
+  }
+
   while (t < maxT) {
     t += dt;
     const hostile = t >= truce;
@@ -575,6 +725,7 @@ function run(cond: MatchConditions, opts: SimOptions): MatchOutcome {
       f.stun = Math.max(0, f.stun - dt);
       f.block = Math.max(0, f.block - dt);
       tickRuntime(f.rt, dt);
+      if (fallsOn) { fallTick(f, dt); f.px = f.x; f.pz = f.z; }
       if (potOn) {
         // Wave Y: rest recovery, the stun's drain (the engine turns a stun > 0.6 s into the
         // "stunned" status, which drains), then regen refills only up to the potential.
@@ -595,6 +746,18 @@ function run(cond: MatchConditions, opts: SimOptions): MatchOutcome {
     // Physics: slides, walls, ring-out, props, spacing.
     for (const f of F) physics(f, hostile, dt);
     separate(F[0], F[1]);
+    if (fallsOn) {
+      // Wave FALL: measured ground velocity this tick (walks, lunges and slides alike).
+      for (const f of F) { f.mvx = (f.x - f.px) / dt - f.vx; f.mvz = (f.z - f.pz) / dt - f.vz; }
+      if (hostile && t - lastCollisionAt >= COLLISION_COOLDOWN && !F[0].out && !F[1].out) {
+        const [a, c] = F;
+        const dx = c.x - a.x, dz = c.z - a.z, dist = Math.hypot(dx, dz) || 1e-6;
+        const ux = dx / dist, uz = dz / dist;
+        const appA = (a.mvx + a.vx) * ux + (a.mvz + a.vz) * uz, appC = -((c.mvx + c.vx) * ux + (c.mvz + c.vz) * uz);
+        const clash = a.struckAt === tick && c.struckAt === tick && dist <= Math.min(a.b.reach, c.b.reach) + 0.25;
+        if (clash || isCharge(dist, BODY_SPACING, appA, appC)) { collide(a, c, clash); lastCollisionAt = t; }
+      }
+    }
     // Ring-out (RingOut.ringOutLoser: the earlier exit loses, then the lower hp fraction, then seat 0).
     const outs = F.filter((f) => f.out);
     if (outs.length > 0) {

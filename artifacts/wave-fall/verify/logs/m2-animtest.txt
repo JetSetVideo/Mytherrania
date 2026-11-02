@@ -1,0 +1,16 @@
+running 12 tests from ./tests/wave_fall_anim_test.ts
+SPEC FALL-F30: fall/shove absent, null or phase 'stand' = today's motion, byte-identical (and no fall outputs) ... ok (25ms)
+SPEC FALL-F31: AnimatorInput.fall / .shove shapes match C-ANIM (M fills them from Fall.ts / the shove timeline) ... ok (145µs)
+SPEC FALL-F32: down — the lowest skin point is on the floor (|gap| <= 2 cm), every race, sex and pose; nothing below by a cell ... ok (14s)
+SPEC FALL-F33: down — the animator's OWN grounding (sphere model, before the skin settle) is within 6 cm of the skin ... ok (145µs)
+SPEC FALL-F34: down — the torso lies on the floor (back/front <= 5 cm; side <= 0.5 w: it lies on its shoulder) ... ok (173µs)
+SPEC FALL-F35: rising — a loaded foot stays planted (slide <= 20 mm for rises >= 1.3 s, <= 100 mm at the law's 0.44 s floor) ... ok (81µs)
+SPEC FALL-F36: continuity — joint step <= the blender's maxJointSpeed·dt, root turn <= FALL_ROOT_SPEED·dt (60 Hz, any rise time) ... ok (304µs)
+SPEC FALL-F37: the get-up ends in guard and hands back — gait-planted feet, soles on the floor, fall weight 0 ... ok (170µs)
+SPEC FALL-F38: shove / stagger / stumble — real recovery steps (1..6 lift-offs), planted feet slide <= 10 mm ... ok (81µs)
+SPEC FALL-F39: Skeleton.drive(..., wide) clamps to the widened fall windows; without it the base limits (unchanged) ... ok (107µs)
+SPEC FALL-F40: applyRootTilt — identity tilt leaves the group untouched; a tilt goes between yaw and roll ... ok (143µs)
+SPEC FALL-F41: every body falls, lies and rises without leaving the floor's band while down (measured table) ... ok (70µs)
+
+ok | 12 passed | 0 failed (14s)
+

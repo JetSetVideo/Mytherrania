@@ -184,6 +184,27 @@ export interface MatchOutcome {
   wallHits: [number, number];
   edgeTime: [number, number];
   error?: string;
+  /**
+   * Wave FALL (C-LOG): collisions and falls of the match, per seat. Present when the headless sim
+   * runs with falls on (SimOptions.falls, default) — absent on pre-Wave-FALL records.
+   */
+  forces?: ForceTally;
+}
+
+/** Wave FALL (C-LOG): per-seat tallies of body collisions and falls in one match. */
+export interface ForceTally {
+  /** Collisions each seat took part in (a charge or a clash counts once for both seats). */
+  collisions: [number, number];
+  /** Staggers (any phase change into stagger), stumbles and falls (reaching the floor) per seat. */
+  staggers: [number, number];
+  stumbles: [number, number];
+  falls: [number, number];
+  /** Seconds spent downed (down + rising) per seat. */
+  downS: [number, number];
+  /** Damage taken while downed per seat, HP. */
+  damageWhileDown: [number, number];
+  /** Falls by cause (collision / hit / edge / backstep / ledge / exhaustion). */
+  causes: Record<string, number>;
 }
 
 export interface MatchRecord {

@@ -1,0 +1,2 @@
+Task check deno check main.ts src/**/*.ts tests/*.ts tools/*.ts
+exit 0

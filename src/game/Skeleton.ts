@@ -16,6 +16,7 @@ import type { JointId } from "./BodyGraph.ts";
 import { boundsFor, raceScaled } from "./AxisEnvelope.ts";
 import { RACE_SILHOUETTE } from "./BodyProfile.ts";
 import { JOINT_ORDER } from "./anim/Rig.ts"; // Rig imports only TYPES from here: no runtime cycle
+import { WIDE_JOINT_LIMITS } from "./anim/FallMotion.ts"; // pure; imports Rig + MathCore only
 
 /**
  * Which side-independent constraint joint each bone answers to. Left and right share one
@@ -79,8 +80,12 @@ export class Skeleton {
    * clock (hit timing), kick spring, balance, grip, face and stance transitions keep
    * working. Pass null to return to pose easing.
    */
-  drive(angles: Float64Array | null, hipRoll?: ArrayLike<number>, ankleRoll?: ArrayLike<number>, toeOut?: ArrayLike<number>, kneeOut?: ArrayLike<number>): void {
+  drive(
+    angles: Float64Array | null, hipRoll?: ArrayLike<number>, ankleRoll?: ArrayLike<number>, toeOut?: ArrayLike<number>,
+    kneeOut?: ArrayLike<number>, wide?: boolean,
+  ): void {
     this.#driven = angles;
+    this.#wide = wide === true;
     if (kneeOut) { this.legRoll.kneeOut[0] = kneeOut[0]; this.legRoll.kneeOut[1] = kneeOut[1]; }
     if (hipRoll) { this.legRoll.hip[0] = hipRoll[0]; this.legRoll.hip[1] = hipRoll[1]; }
     if (ankleRoll) { this.legRoll.ankle[0] = ankleRoll[0]; this.legRoll.ankle[1] = ankleRoll[1]; }
@@ -88,6 +93,14 @@ export class Skeleton {
   }
   /** True while the Animator owns the joints. */
   isDriven(): boolean { return this.#driven !== null; }
+  /**
+   * Wave FALL: the driven angles come from a fall / lying / get-up pose (AnimatorOutput.wideLimits):
+   * clamp them to the widened windows (FallMotion.WIDE_JOINT_LIMITS: the KO trunk/knee window, hip
+   * flexion 1.9) instead of the standing base limits. Only ever set through drive(..., wide).
+   */
+  #wide = false;
+  /** True while the driven pose uses the widened fall windows. */
+  get wideLimits(): boolean { return this.#wide; }
   /**
    * Active skill animation, if any: normalised progress runs 0 -> 1. `stopIn` (s, null = none):
    * the clock is frozen and the skill ends when it runs out (stopSkillAfter: a weapon contact).
@@ -228,7 +241,10 @@ export class Skeleton {
       for (let i = 0; i < JOINT_ORDER.length; i++) {
         const name = JOINT_ORDER[i], j = this.#joints.get(name)!, b = this.#base.get(name)!;
         j.target = this.#driven[i];
-        j.angle = clamp(j.target + (this.#kick.get(name)?.off ?? 0), b.min, b.max);
+        const wl = this.#wide ? WIDE_JOINT_LIMITS[name] : undefined;
+        j.angle = wl
+          ? clamp(j.target + (this.#kick.get(name)?.off ?? 0), Math.min(b.min, wl.min), Math.max(b.max, wl.max))
+          : clamp(j.target + (this.#kick.get(name)?.off ?? 0), b.min, b.max);
       }
     }
     // Balance plates -> stance: when the composite tips past a threshold the body

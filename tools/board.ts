@@ -4,11 +4,13 @@ export {};
 //   deno run -A tools/board.ts read [SINCE_N] [--to NAME]             (prints messages after #SINCE_N)
 // Messages land in artifacts/wave-z/BOARD.md as "### [Z-n] FROM -> TO | TYPE | UTC" + body. Appends take an
 // exclusive lock file so two agents never interleave.
-const FILE = "artifacts/wave-z/BOARD.md";
+// BOARD_DIR selects the wave (default artifacts/wave-z); e.g. BOARD_DIR=artifacts/wave-fall.
+const DIR = Deno.env.get("BOARD_DIR") || "artifacts/wave-z";
+const FILE = `${DIR}/BOARD.md`;
 const LOCK = FILE + ".lock";
 
 async function withLock<T>(fn: () => Promise<T>): Promise<T> {
-  await Deno.mkdir("artifacts/wave-z", { recursive: true });
+  await Deno.mkdir(DIR, { recursive: true });
   for (let i = 0; i < 400; i++) {
     try {
       const f = await Deno.open(LOCK, { createNew: true, write: true });
@@ -26,7 +28,7 @@ async function withLock<T>(fn: () => Promise<T>): Promise<T> {
 }
 
 async function readAll(): Promise<string> {
-  return await Deno.readTextFile(FILE).catch(() => "# Wave Z swarm board\n");
+  return await Deno.readTextFile(FILE).catch(() => `# Swarm board (${DIR})\n`);
 }
 
 const [cmd, ...rest] = Deno.args;
