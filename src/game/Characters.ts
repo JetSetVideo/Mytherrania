@@ -25,6 +25,11 @@ export interface Appearance {
    * silhouette); set to "female" for the measured curves. Defaulted deterministically by the roll.
    */
   sex?: Sex;
+  /**
+   * Wave X: age in YEARS (Age.ts reads it relative to the race lifespan: lifeStage, greyFraction).
+   * Left unset, the character reads as a young adult (greyFraction 0).
+   */
+  age?: number;
 }
 
 export interface CharacterProfile {
