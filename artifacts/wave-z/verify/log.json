@@ -1,0 +1,109 @@
+{
+ "runs": [
+  {
+   "label": "baseline",
+   "at": "2026-11-02 19:5x UTC",
+   "lanes": "HEAD ef4fdf4 (git archive, before lanes)",
+   "gate": "n/a (baseline build of HEAD)",
+   "tally": "11/12/0"
+  },
+  {
+   "label": "S-r1 (Deno stats mode)",
+   "at": "2026-11-02 19:40 UTC",
+   "lanes": "S r1 Z-12",
+   "gate": "check 0, lint 635 files, S tests 34 passed 0 failed",
+   "tally": "recompute 390/390, StatSheet 0 issues"
+  },
+  {
+   "label": "S-r2 (Deno stats mode)",
+   "at": "2026-11-02 19:50 UTC",
+   "lanes": "S r2 Z-18",
+   "gate": "check 0, lint 636 files, tests 55 passed 0 failed",
+   "tally": "recompute 390/390, StatSheet 0 issues"
+  },
+  {
+   "label": "F-r1",
+   "at": "2026-11-02 20:10 UTC",
+   "lanes": "F r1 Z-21 (+S r2, G in progress)",
+   "gate": "check 0, lint 636 files, F tests 119/0",
+   "tally": "24/4/0"
+  },
+  {
+   "label": "G-r1",
+   "at": "2026-11-02 20:20 UTC",
+   "lanes": "G r1 Z-24 (+F in progress)",
+   "gate": "check 0, lint 636 files, G tests 17/0",
+   "tally": "24/4/0"
+  },
+  {
+   "label": "F-r2",
+   "at": "2026-11-02 20:29 UTC",
+   "lanes": "F r2 Z-32, G r2 Z-27, S r2",
+   "gate": "check 0, lint 636 files, F tests 119/0",
+   "tally": "26/3/0"
+  },
+  {
+   "label": "F-r3",
+   "at": "2026-11-02 20:46 UTC",
+   "lanes": "F r3 Z-37, G r3 Z-39, S r2 Z-18 (final)",
+   "gate": "check 0, lint 636 files, F+S tests 129/0, G tests 18/0",
+   "tally": "29/0/0"
+  }
+ ],
+ "posts": [
+  {
+   "id": "Z-13",
+   "lane": "S",
+   "type": "PASS",
+   "msg": "S r1 (Z-12): check 0, lint 635 files, S tests 34/0; recompute 390 rows 0 disagreements (control 27); StatSheet 780 rows 0 issues; note 32 derived rows, not 31"
+  },
+  {
+   "id": "Z-19",
+   "lane": "S",
+   "type": "PASS",
+   "msg": "S r2 (Z-18): check 0, lint 636 files, S tests 55/0; recompute 390/390 with graze = 1-1/dodgeDivisor; StatSheet 0 issues"
+  },
+  {
+   "id": "Z-23",
+   "lane": "F",
+   "type": "FAIL",
+   "msg": "F r1: Z-layout-wordbreak (tab names split mid-word at all widths) + Z-stage-fit (+New canvas h/w 2.3-3.0, not 3:4; 950 px tall at 844x390)"
+  },
+  {
+   "id": "Z-28",
+   "lane": "G",
+   "type": "FAIL",
+   "msg": "G r1: shadow under feet weaker than HEAD: on/off 0.75-0.93 vs 0.26-0.44 (5 rolls, 820), feet/rim up to 0.91; floor + 9.2\u00b0 key PASS"
+  },
+  {
+   "id": "Z-35",
+   "lane": "F",
+   "type": "FAIL",
+   "msg": "F r2: Density label split mid-word (.zs-label overflow-wrap:anywhere) at 390/2560; 844x390 + New feet/plinth under the pinned action bar (0/157 probe points on top)"
+  },
+  {
+   "id": "Z-41",
+   "lane": "F",
+   "type": "PASS",
+   "msg": "F r3: all 22 F claims PASS (wordbreak 0, 844x390 feet/plinth 124/29 on top)"
+  },
+  {
+   "id": "Z-42",
+   "lane": "G",
+   "type": "PASS",
+   "msg": "G r3: on/off 0.459-0.487 (7 widths), 5-roll 0.271-0.511, floor 28-31 rim pts, key 9.2\u00b0; Z-28 closed with semantics correction"
+  }
+ ],
+ "notes": [
+  "Baseline light angle reads the CURRENT PreviewScene.ts (G had already moved it 11.6\u00b0 -> 9.2\u00b0 when the baseline ran); the HEAD value is 11.6\u00b0.",
+  "Ellipsis truncation (text-overflow: ellipsis / line-clamp) is counted separately as intentional, not as clipping.",
+  "Overlaps involving a fixed/sticky bar passing over scrolled content are excluded (counted as stickyOverlaps); an overlap counts only when one of the pair is on top at the overlap centre (elementFromPoint) and both are painted.",
+  "Shadow pixels are read only where the canvas itself is on top (elementFromPoint), so a sticky bar or socket over the plinth is never read as floor.",
+  "Stats recompute uses Fighter.createFighter (the engine constructor) + V's own copy of Engine.#applyTweaks + applyLevel, createResources, and the engine's castFocus/CASTER_CLASSES call; mutation control (VZ_MUTATE=1 ignores the level) gives 27/390 disagreements, so the check has teeth.",
+  "Shadow strength cross-check (scratch wz-shadow.ts, 5 random + New rolls at 820x1180, normalised 3:4 box): HEAD on/off 0.256-0.436, G r1 0.753-0.927.",
+  "Z-stage-fit re-stated after F r2 (pitfall 10): the user-facing need is that the + New plate fits the viewport height and shows the plinth; the 1.2-1.45 aspect band was F's own 3:4 promise, so aspect is now reported, and a separate Z-stage-floor claim (>= 8 feet-ring and rim points on top as laid out) carries the visibility requirement.",
+  "G viewer claims are judged on a box normalised to 3:4 fully on screen, so F's layout cannot hide or fake the floor; F is judged on the as-laid box.",
+  "Semantics correction (Z-28): elementFromPoint ignores pointer-events:none layers, so F's foot scrim over the plinth was inside the shadow samples in G-r1/F-r2 and diluted on/off; G r3 both strengthened the umbra and reframed the plinth above the scrim (footReserve). The 5-roll cross-check on r3 reads on/off 0.271-0.511."
+ ],
+ "suite": "NO_COLOR=1 deno task test (started 2026-11-02 20:34 UTC on the shared tree: S r2, F r2, G r2)\nok | 1843 passed | 0 failed (5m21s)\nEXIT 0"
+}

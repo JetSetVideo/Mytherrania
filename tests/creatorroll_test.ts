@@ -19,6 +19,7 @@ import { applyRaceBonus, RACES, raceById } from "../src/game/Races.ts";
 import { applySecondary, secondaryPreview } from "../src/game/SecondaryStats.ts";
 import { applyLevel, attackDamage, CLASSES, createStats } from "../src/game/Stats.ts";
 import { weaponForClass } from "../src/game/Weapon.ts";
+import { startingStats } from "../src/game/Leveling.ts";
 
 function assert(ok: unknown, message = "assertion failed"): asserts ok {
   if (!ok) throw new Error(message);
@@ -98,9 +99,16 @@ Deno.test("the sheet's numbers come from the source functions (two+ rows compare
   assert(row(sheet.derived, "Attack Interval") === `${stats.attackInterval.toFixed(2)} s`, "Attack Interval");
   assert(row(sheet.derived, "Armour") === stats.armor.toFixed(1), `Armour ${row(sheet.derived, "Armour")} vs ${stats.armor.toFixed(1)}`);
 
-  // Primary rows vs the same stats.
-  assert(row(sheet.primary, "Reflex") === group(stats.reflex), "Reflex");
-  assert(row(sheet.primary, "Vitality") === group(stats.vitality), "Vitality");
+  // Primary rows: Wave Z shows the SHEET-scale attribute (DerivedSheet: class sheet + the modifier the
+  // fight applies, fightStats[attr] − createStats(class)[attr]) — the scale the tweak inputs edit —
+  // instead of the 1-10 runtime primary. Recomputed here from the source functions.
+  const cls = createStats(profile.className);
+  const classSheet = startingStats(profile.className, "", null).allocated;
+  for (const k of ["reflex", "vitality"] as const) {
+    const want = classSheet[k] + (stats[k] - cls[k]);
+    const label = k === "reflex" ? "Reflex" : "Vitality";
+    assert(Math.abs(Number(row(sheet.primary, label).replace("\u2212", "-")) - want) < 0.01, `${label} ${row(sheet.primary, label)} vs ${want}`);
+  }
 
   // Secondary rows vs SecondaryStats.secondaryPreview directly.
   const preview = secondaryPreview(profile.subrace, profile.birthsign);

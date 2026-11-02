@@ -176,7 +176,9 @@ Deno.test("OA6: Portrait, PreviewScene and PortraitStudio obey the house rules (
   const studio = await Deno.readTextFile(new URL("../src/graphics/PortraitStudio.ts", import.meta.url));
 
   // renderPortrait is a thin delegation to ONE module-level studio with an unchanged signature.
-  assert(portrait.includes("new PortraitStudio()") && portrait.includes("portraitOf(profile)"),
+  // Wave Z (lane G): the module studio now passes options (a 3:4 PNG for the sheet's png-only <img>); the pin is the
+  // delegation to ONE module-level studio, not the empty argument list.
+  assert(/const STUDIO = new PortraitStudio\(/.test(portrait) && portrait.includes("portraitOf(profile)"),
     "renderPortrait delegates to a module-level studio");
   assert(/export function renderPortrait\(profile: CharacterProfile\): string/.test(portrait),
     "the export signature is unchanged");

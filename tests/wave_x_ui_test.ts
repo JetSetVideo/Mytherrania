@@ -10,6 +10,7 @@ function assertEquals(a: unknown, b: unknown, msg = ""): void {
 }
 import { contrastRatio, paintTones, signed, TONE_BACKGROUNDS, TONE_HUE_NEG, toneAttrs, toneClass, toneFor, toneRgb, toneT } from "../src/ui/ValueTone.ts";
 import { ATTRS, attrBase, attrBounds, clampAttr, pointBudget, pointsLeft, silhouetteBand, SILHOUETTE_KEYS } from "../src/ui/CreatorTweak.ts";
+import { DAMAGE_SCALE, levelScale } from "../src/game/Stats.ts";
 import { creatorSheet, rerollPart, REROLL_PARTS, rollProfile, rolledStats, tweakedStats, withAncestry } from "../src/ui/CreatorRoll.ts";
 import { creatorSheetHtml, mulberry32, rerollButtonHtml, statGapHtml, steelSignHtml } from "../src/ui/Menu.ts";
 import { ageBounds } from "../src/game/Age.ts";
@@ -174,7 +175,14 @@ Deno.test("SPEC X38: the sheet follows a tweak live — the derived numbers move
   const q = { ...p, allocated: { ...p.allocated, vitality: base.vitality + 2, strength: base.strength + 2 } };
   const t = tweakedStats(q);
   assert(t.maxHealth > rolled.maxHealth, "more vitality, more health");
-  assert(t.attackPower > rolled.attackPower, "more strength, more power");
+  // Wave Z: the sheet now runs the ENGINE's tweak law (DerivedSheet.fightStats = Engine.#applyTweaks),
+  // which clamps power to 14·DAMAGE_SCALE (x level) — so at the ceiling a strength tweak cannot add
+  // power (this seed: a forge-dwarf Mage, rolled 728 above the window, tweaked 700). Before, the sheet
+  // skipped the clamp and promised power the duel never gave.
+  const cap = 14 * DAMAGE_SCALE * levelScale(q.level ?? 1);
+  // Wave Z (parent): the window clamps only what a tweak ADDS, so a sheet already above the ceiling keeps
+  // its power (728 stays 728; it used to drop to 700 — a +strength tweak must never LOWER power).
+  assert(t.attackPower > rolled.attackPower || Math.abs(t.attackPower - cap) < 1e-6 || (rolled.attackPower >= cap && t.attackPower === rolled.attackPower), `more strength, more power (or the engine's ceiling): ${rolled.attackPower} -> ${t.attackPower}`);
   const sheet = creatorSheet(q);
   const hp = sheet.derived.find((r) => r.label === "Max Health")!;
   assert(hp.delta && hp.delta.value > 0 && hp.delta.text.startsWith("+"), `the delta is shown: ${hp.delta?.text}`);

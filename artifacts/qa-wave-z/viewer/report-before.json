@@ -1,0 +1,606 @@
+{
+  "tag": "before",
+  "dist": "/Users/macmax/.hermes/cache/scratch/wz-head/dist-viewer",
+  "tree": "/Users/macmax/.hermes/cache/scratch/wz-head",
+  "pageErrors": [],
+  "preview": {
+    "rows": [
+      {
+        "race": "human",
+        "sex": "male",
+        "faceLum": 165.92,
+        "facePoints": 3,
+        "floor": {
+          "points": 64,
+          "meanAlpha": 34.31,
+          "meanLum": 11.17,
+          "visible": false
+        },
+        "light": {
+          "topLum": 73.52,
+          "wallLum": 86.65,
+          "topBrighter": false
+        },
+        "contact": {
+          "nearLum": 69.77,
+          "rimLum": 104.23,
+          "ratio": 0.669,
+          "coverage": 0.0341
+        },
+        "cast": {
+          "gridPoints": 356,
+          "darkPoints": 73,
+          "centroid": [
+            -0.124,
+            -0.109
+          ],
+          "iouAlongLight": 0.492,
+          "iouStraightDown": 0.195,
+          "lightXZ": [
+            0.049,
+            0.196
+          ],
+          "alongLight": true
+        },
+        "shadowPresent": true,
+        "frameMs": 4.495
+      },
+      {
+        "race": "human",
+        "sex": "female",
+        "faceLum": 164.12,
+        "facePoints": 3,
+        "floor": {
+          "points": 64,
+          "meanAlpha": 34.31,
+          "meanLum": 11.17,
+          "visible": false
+        },
+        "light": {
+          "topLum": 73.52,
+          "wallLum": 86.62,
+          "topBrighter": false
+        },
+        "contact": {
+          "nearLum": 71.25,
+          "rimLum": 103.26,
+          "ratio": 0.69,
+          "coverage": 0.0346
+        },
+        "cast": {
+          "gridPoints": 355,
+          "darkPoints": 73,
+          "centroid": [
+            -0.123,
+            -0.11
+          ],
+          "iouAlongLight": 0.481,
+          "iouStraightDown": 0.196,
+          "lightXZ": [
+            0.049,
+            0.196
+          ],
+          "alongLight": true
+        },
+        "shadowPresent": true,
+        "frameMs": 3.675
+      },
+      {
+        "race": "elf",
+        "sex": "male",
+        "faceLum": 181.92,
+        "facePoints": 3,
+        "floor": {
+          "points": 64,
+          "meanAlpha": 34.31,
+          "meanLum": 11.17,
+          "visible": false
+        },
+        "light": {
+          "topLum": 73.53,
+          "wallLum": 86.62,
+          "topBrighter": false
+        },
+        "contact": {
+          "nearLum": 72.2,
+          "rimLum": 101.34,
+          "ratio": 0.712,
+          "coverage": 0.0304
+        },
+        "cast": {
+          "gridPoints": 359,
+          "darkPoints": 64,
+          "centroid": [
+            -0.129,
+            -0.076
+          ],
+          "iouAlongLight": 0.425,
+          "iouStraightDown": 0.173,
+          "lightXZ": [
+            0.049,
+            0.196
+          ],
+          "alongLight": true
+        },
+        "shadowPresent": true,
+        "frameMs": 4.328
+      },
+      {
+        "race": "elf",
+        "sex": "female",
+        "faceLum": 190.86,
+        "facePoints": 3,
+        "floor": {
+          "points": 64,
+          "meanAlpha": 34.31,
+          "meanLum": 11.18,
+          "visible": false
+        },
+        "light": {
+          "topLum": 74.68,
+          "wallLum": 86.61,
+          "topBrighter": false
+        },
+        "contact": {
+          "nearLum": 70.82,
+          "rimLum": 104.14,
+          "ratio": 0.68,
+          "coverage": 0.0297
+        },
+        "cast": {
+          "gridPoints": 359,
+          "darkPoints": 62,
+          "centroid": [
+            -0.131,
+            -0.079
+          ],
+          "iouAlongLight": 0.441,
+          "iouStraightDown": 0.173,
+          "lightXZ": [
+            0.049,
+            0.196
+          ],
+          "alongLight": true
+        },
+        "shadowPresent": true,
+        "frameMs": 4.41
+      },
+      {
+        "race": "dwarf",
+        "sex": "male",
+        "faceLum": 135.04,
+        "facePoints": 3,
+        "floor": {
+          "points": 64,
+          "meanAlpha": 42.17,
+          "meanLum": 11.66,
+          "visible": false
+        },
+        "light": {
+          "topLum": 85.3,
+          "wallLum": 86.61,
+          "topBrighter": false
+        },
+        "contact": {
+          "nearLum": 69.08,
+          "rimLum": 94.44,
+          "ratio": 0.731,
+          "coverage": 0.0498
+        },
+        "cast": {
+          "gridPoints": 337,
+          "darkPoints": 101,
+          "centroid": [
+            -0.087,
+            -0.188
+          ],
+          "iouAlongLight": 0.631,
+          "iouStraightDown": 0.192,
+          "lightXZ": [
+            0.049,
+            0.196
+          ],
+          "alongLight": true
+        },
+        "shadowPresent": true,
+        "frameMs": 5.147
+      },
+      {
+        "race": "dwarf",
+        "sex": "female",
+        "faceLum": 133.95,
+        "facePoints": 3,
+        "floor": {
+          "points": 62,
+          "meanAlpha": 35.3,
+          "meanLum": 11,
+          "visible": false
+        },
+        "light": {
+          "topLum": 85.29,
+          "wallLum": 86.65,
+          "topBrighter": false
+        },
+        "contact": {
+          "nearLum": 67.01,
+          "rimLum": 90.61,
+          "ratio": 0.74,
+          "coverage": 0.0495
+        },
+        "cast": {
+          "gridPoints": 338,
+          "darkPoints": 99,
+          "centroid": [
+            -0.083,
+            -0.19
+          ],
+          "iouAlongLight": 0.612,
+          "iouStraightDown": 0.191,
+          "lightXZ": [
+            0.049,
+            0.196
+          ],
+          "alongLight": true
+        },
+        "shadowPresent": true,
+        "frameMs": 4.593
+      },
+      {
+        "race": "ork",
+        "sex": "male",
+        "faceLum": 116.95,
+        "facePoints": 3,
+        "floor": {
+          "points": 62,
+          "meanAlpha": 38.16,
+          "meanLum": 11.35,
+          "visible": false
+        },
+        "light": {
+          "topLum": 85.29,
+          "wallLum": 86.62,
+          "topBrighter": false
+        },
+        "contact": {
+          "nearLum": 66.67,
+          "rimLum": 94.38,
+          "ratio": 0.706,
+          "coverage": 0.0582
+        },
+        "cast": {
+          "gridPoints": 331,
+          "darkPoints": 98,
+          "centroid": [
+            -0.003,
+            -0.221
+          ],
+          "iouAlongLight": 0.646,
+          "iouStraightDown": 0.169,
+          "lightXZ": [
+            0.049,
+            0.196
+          ],
+          "alongLight": true
+        },
+        "shadowPresent": true,
+        "frameMs": 4.41
+      },
+      {
+        "race": "ork",
+        "sex": "female",
+        "faceLum": 131.52,
+        "facePoints": 3,
+        "floor": {
+          "points": 62,
+          "meanAlpha": 43.53,
+          "meanLum": 12.01,
+          "visible": false
+        },
+        "light": {
+          "topLum": 85.27,
+          "wallLum": 86.65,
+          "topBrighter": false
+        },
+        "contact": {
+          "nearLum": 67.35,
+          "rimLum": 91.92,
+          "ratio": 0.733,
+          "coverage": 0.0586
+        },
+        "cast": {
+          "gridPoints": 330,
+          "darkPoints": 95,
+          "centroid": [
+            -0.002,
+            -0.23
+          ],
+          "iouAlongLight": 0.63,
+          "iouStraightDown": 0.151,
+          "lightXZ": [
+            0.049,
+            0.196
+          ],
+          "alongLight": true
+        },
+        "shadowPresent": true,
+        "frameMs": 5.055
+      }
+    ],
+    "summary": {
+      "shadowPresent": "8/8",
+      "castAlongLight": "8/8",
+      "floorVisible": "0/8",
+      "topBrighterThanWall": "0/8",
+      "faceLumMean": 152.54,
+      "faceLumMin": 116.95,
+      "contactRatioMean": 0.71,
+      "frameMsMean": 4.51
+    }
+  },
+  "portrait": {
+    "firstMs": 1986.1,
+    "rows": [
+      {
+        "race": "human",
+        "sex": "male",
+        "ms": 549.2,
+        "drawMs": null,
+        "w": 256,
+        "h": 256,
+        "bytes": 82306,
+        "type": "image/png",
+        "badge": {
+          "mean": 23.6,
+          "sd": 3.9
+        },
+        "nameBand": {
+          "mean": 39,
+          "sd": 27.5
+        },
+        "figure": {
+          "mean": 106,
+          "sd": 46.7
+        },
+        "corners": {
+          "mean": 19.5,
+          "sd": 2.1
+        },
+        "file": "artifacts/qa-wave-z/viewer/before-portrait-human-male.png",
+        "faceLum": 155.17,
+        "facePoints": 3,
+        "headTopPct": 13.5,
+        "solePct": 95.33
+      },
+      {
+        "race": "human",
+        "sex": "female",
+        "ms": 530.5,
+        "drawMs": null,
+        "w": 256,
+        "h": 256,
+        "bytes": 82190,
+        "type": "image/png",
+        "badge": {
+          "mean": 23.6,
+          "sd": 3.9
+        },
+        "nameBand": {
+          "mean": 39.1,
+          "sd": 27.9
+        },
+        "figure": {
+          "mean": 103.2,
+          "sd": 45.5
+        },
+        "corners": {
+          "mean": 19.5,
+          "sd": 2.1
+        },
+        "file": "artifacts/qa-wave-z/viewer/before-portrait-human-female.png",
+        "faceLum": 148.5,
+        "facePoints": 3,
+        "headTopPct": 13.48,
+        "solePct": 95.33
+      },
+      {
+        "race": "elf",
+        "sex": "male",
+        "ms": 938.3,
+        "drawMs": null,
+        "w": 256,
+        "h": 256,
+        "bytes": 81394,
+        "type": "image/png",
+        "badge": {
+          "mean": 23.6,
+          "sd": 3.9
+        },
+        "nameBand": {
+          "mean": 38.8,
+          "sd": 29.2
+        },
+        "figure": {
+          "mean": 109.6,
+          "sd": 53.6
+        },
+        "corners": {
+          "mean": 19.5,
+          "sd": 2.1
+        },
+        "file": "artifacts/qa-wave-z/viewer/before-portrait-elf-male.png",
+        "faceLum": 173.17,
+        "facePoints": 3,
+        "headTopPct": 13.6,
+        "solePct": 95.36
+      },
+      {
+        "race": "elf",
+        "sex": "female",
+        "ms": 746.9,
+        "drawMs": null,
+        "w": 256,
+        "h": 256,
+        "bytes": 81378,
+        "type": "image/png",
+        "badge": {
+          "mean": 23.6,
+          "sd": 3.9
+        },
+        "nameBand": {
+          "mean": 39.1,
+          "sd": 29.8
+        },
+        "figure": {
+          "mean": 110.7,
+          "sd": 54.1
+        },
+        "corners": {
+          "mean": 19.5,
+          "sd": 2.1
+        },
+        "file": "artifacts/qa-wave-z/viewer/before-portrait-elf-female.png",
+        "faceLum": 174.23,
+        "facePoints": 3,
+        "headTopPct": 13.54,
+        "solePct": 95.36
+      },
+      {
+        "race": "dwarf",
+        "sex": "male",
+        "ms": 744.6,
+        "drawMs": null,
+        "w": 256,
+        "h": 256,
+        "bytes": 85726,
+        "type": "image/png",
+        "badge": {
+          "mean": 23.6,
+          "sd": 3.9
+        },
+        "nameBand": {
+          "mean": 41,
+          "sd": 28.6
+        },
+        "figure": {
+          "mean": 109.8,
+          "sd": 38.7
+        },
+        "corners": {
+          "mean": 19.5,
+          "sd": 2.1
+        },
+        "file": "artifacts/qa-wave-z/viewer/before-portrait-dwarf-male.png",
+        "faceLum": 135.69,
+        "facePoints": 3,
+        "headTopPct": 13.25,
+        "solePct": 95.4
+      },
+      {
+        "race": "dwarf",
+        "sex": "female",
+        "ms": 754.9,
+        "drawMs": null,
+        "w": 256,
+        "h": 256,
+        "bytes": 85814,
+        "type": "image/png",
+        "badge": {
+          "mean": 23.6,
+          "sd": 3.9
+        },
+        "nameBand": {
+          "mean": 40.9,
+          "sd": 28.4
+        },
+        "figure": {
+          "mean": 108.3,
+          "sd": 39.1
+        },
+        "corners": {
+          "mean": 19.5,
+          "sd": 2.1
+        },
+        "file": "artifacts/qa-wave-z/viewer/before-portrait-dwarf-female.png",
+        "faceLum": 139.71,
+        "facePoints": 3,
+        "headTopPct": 13.2,
+        "solePct": 95.39
+      },
+      {
+        "race": "ork",
+        "sex": "male",
+        "ms": 786.3,
+        "drawMs": null,
+        "w": 256,
+        "h": 256,
+        "bytes": 92162,
+        "type": "image/png",
+        "badge": {
+          "mean": 23.6,
+          "sd": 3.9
+        },
+        "nameBand": {
+          "mean": 41.9,
+          "sd": 29.1
+        },
+        "figure": {
+          "mean": 112.8,
+          "sd": 37.4
+        },
+        "corners": {
+          "mean": 19.5,
+          "sd": 2.1
+        },
+        "file": "artifacts/qa-wave-z/viewer/before-portrait-ork-male.png",
+        "faceLum": 120.47,
+        "facePoints": 3,
+        "headTopPct": 13.36,
+        "solePct": 95.32
+      },
+      {
+        "race": "ork",
+        "sex": "female",
+        "ms": 793.4,
+        "drawMs": null,
+        "w": 256,
+        "h": 256,
+        "bytes": 91838,
+        "type": "image/png",
+        "badge": {
+          "mean": 23.6,
+          "sd": 3.9
+        },
+        "nameBand": {
+          "mean": 41.8,
+          "sd": 29.1
+        },
+        "figure": {
+          "mean": 110.7,
+          "sd": 37.3
+        },
+        "corners": {
+          "mean": 19.5,
+          "sd": 2.1
+        },
+        "file": "artifacts/qa-wave-z/viewer/before-portrait-ork-female.png",
+        "faceLum": 129.28,
+        "facePoints": 3,
+        "headTopPct": 13.35,
+        "solePct": 95.32
+      }
+    ],
+    "stats": {
+      "renders": 9,
+      "cacheHits": 0,
+      "cached": 9
+    },
+    "summary": {
+      "renderMsMean": 730.51,
+      "drawEncodeMsMean": null,
+      "faceLumMean": 147.03,
+      "nameBandMean": 40.2,
+      "badgeMean": 23.6,
+      "bytesMean": 85351
+    }
+  }
+}

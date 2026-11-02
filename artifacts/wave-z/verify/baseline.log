@@ -1,0 +1,51 @@
+PASS F Z-layout-overflow      0 px at all 7 viewports
+PASS F Z-layout-clip          0 clipped boxes at all 7 viewports
+FAIL F Z-layout-overlap       2560:6 [button.stepper-arrow"" x summary.opt-head"Match terms2" 44x66; button.stepper-arrow"" x summary.opt-head"Match terms2" 44x66]
+PASS F Z-layout-wordbreak     0 broken words at all 7 viewports
+PASS F Z-layout-bottom        last content clears the bar at all 7 viewports
+PASS F Z-layout-font          320:11 390:11 820:11 1280:11 1920:11 2560:11 844x390:11
+PASS F Z-layout-touch         320:<24=0 <44=96 | 390:<24=0 <44=100 | 844x390:<24=0 <44=102
+FAIL F Z-head-removed         present at 390,820,1280,1920,2560,844x390
+FAIL F Z-roll-label           320:"Reroll hero" 390:"Reroll hero" 820:"Reroll hero" 1280:"Reroll hero" 1920:"Reroll hero" 2560:"Reroll hero" 844x390:"Reroll hero"
+FAIL F Z-roll-purple          320:h220/s0.051 390:h220/s0.051 820:h220/s0.051 1280:h220/s0.051 1920:h220/s0.051 2560:h220/s0.051 844x390:h220/s0.051
+FAIL F Z-lv-text              320:"Lv20" label=null 390:"Lv20" label=null 820:"Lv20" label=null 1280:"Lv20" label=null 1920:"Lv20" label=null 2560:"Lv20" label=null 844x390:"Lv20" label=null
+FAIL F Z-lv-topleft           320:dx-1 dy395 in 248x310 390:dx-1 dy382 in 256x320 820:dx298 dy-61 in 258x323 1280:dx303 dy-61 in 258x323 1920:dx310 dy-69 in 258x323 2560:dx317 dy-69 in 258x323 844x390:dx298 dy-61 in 258x323
+FAIL F Z-lv-tier              20:- 1:- 4:- 5:- 8:- 9:- 12:- 13:- 16:- 17:-
+FAIL F Z-lv-colours           platinum(139,72,43) bronze(139,72,43) copper(139,72,43) silver(139,72,43) gold(139,72,43) minDist 0.0
+FAIL F Z-pic-full             320:0.686/0.222 390:0.693/0.196 820:0.693/0.173 1280:0.689/0.163 1920:0.673/0.106 2560:0.663/0.078 844x390:0.693/0.168
+FAIL F Z-overlay-inside       320:name OUT tags 0/3 390:name OUT tags 0/3 820:name OUT tags 0/3 1280:name OUT tags 0/3 1920:name OUT tags 0/3 2560:name OUT tags 0/3 844x390:name OUT tags 0/3
+PASS F Z-overlay-contrast     320:med 4.76 p10 1.76 bare 5.02 390:med 4.86 p10 1.87 bare 4.96 820:med 4.87 p10 1.81 bare 5.09 1280:med 4.77 p10 1.74 bare 4.96 1920:med 4.96 p10 2.26 bare 5.10 2560:med 5.01 p10 2.20 bare 4.96 844x390:med 4.79 p10 1.75 bare 4.96
+FAIL S Z-stats-attr-delta     0/7 attributes
+PASS S Z-stats-count          derived 32, DOM rows 0 (visible 0), bad deltas 0
+FAIL F Z-stats-wiring         missing 39 [vitality,resilience,focus,reflex], mismatches 0
+PASS S Z-stats-recompute      8/8 rows agree (recipes 39)
+PASS G Z-view-shadow          320:feet/rim 0.469 on/off 0.451 390:feet/rim 0.511 on/off 0.482 820:feet/rim 0.478 on/off 0.449 1280:feet/rim 0.472 on/off 0.469 1920:feet/rim 0.455 on/off 0.419 2560:feet/rim 0.455 on/off 0.419 844x390:feet/rim 0.268 on/off 0.351
+PASS G Z-view-floor           320:rim 30 r=0.6 390:rim 30 r=0.6 820:rim 30 r=0.6 1280:rim 30 r=0.6 1920:rim 30 r=0.6 2560:rim 30 r=0.6 844x390:rim 17 r=0.6
+PASS F Z-page-errors          0
+page errors: 0
+── judged with baseline + light ──
+PASS F Z-layout-overflow    0 px at all 7 viewports
+PASS F Z-layout-clip        0 clipped boxes at all 7 viewports
+FAIL F Z-layout-overlap     2560:6 [button.stepper-arrow"" x summary.opt-head"Match terms2" 44x66; button.stepper-arrow"" x summary.opt-head"Match terms2" 44x66]
+PASS F Z-layout-wordbreak   0 broken words at all 7 viewports
+PASS F Z-layout-bottom      last content clears the bar at all 7 viewports
+PASS F Z-layout-font        320:11 390:11 820:11 1280:11 1920:11 2560:11 844x390:11
+PASS F Z-layout-touch       320:<24=0 <44=96 | 390:<24=0 <44=100 | 844x390:<24=0 <44=102
+FAIL F Z-head-removed       present at 390,820,1280,1920,2560,844x390
+FAIL F Z-roll-label         320:"Reroll hero" 390:"Reroll hero" 820:"Reroll hero" 1280:"Reroll hero" 1920:"Reroll hero" 2560:"Reroll hero" 844x390:"Reroll hero"
+FAIL F Z-roll-purple        320:h220/s0.051 390:h220/s0.051 820:h220/s0.051 1280:h220/s0.051 1920:h220/s0.051 2560:h220/s0.051 844x390:h220/s0.051
+FAIL F Z-lv-text            320:"Lv20" label=null 390:"Lv20" label=null 820:"Lv20" label=null 1280:"Lv20" label=null 1920:"Lv20" label=null 2560:"Lv20" label=null 844x390:"Lv20" label=null
+FAIL F Z-lv-topleft         320:dx-1 dy395 in 248x310 390:dx-1 dy382 in 256x320 820:dx298 dy-61 in 258x323 1280:dx303 dy-61 in 258x323 1920:dx310 dy-69 in 258x323 2560:dx317 dy-69 in 258x323 844x390:dx298 dy-61 in 258x323
+FAIL F Z-lv-tier            20:- 1:- 4:- 5:- 8:- 9:- 12:- 13:- 16:- 17:-
+FAIL F Z-lv-colours         platinum(139,72,43) bronze(139,72,43) copper(139,72,43) silver(139,72,43) gold(139,72,43) minDist 0.0
+FAIL F Z-pic-full           320:0.686/0.222 390:0.693/0.196 820:0.693/0.173 1280:0.689/0.163 1920:0.673/0.106 2560:0.663/0.078 844x390:0.693/0.168
+FAIL F Z-overlay-inside     320:name OUT tags 0/3 390:name OUT tags 0/3 820:name OUT tags 0/3 1280:name OUT tags 0/3 1920:name OUT tags 0/3 2560:name OUT tags 0/3 844x390:name OUT tags 0/3
+PASS F Z-overlay-contrast   320:med 4.76 p10 1.76 bare 5.02 390:med 4.86 p10 1.87 bare 4.96 820:med 4.87 p10 1.81 bare 5.09 1280:med 4.77 p10 1.74 bare 4.96 1920:med 4.96 p10 2.26 bare 5.10 2560:med 5.01 p10 2.20 bare 4.96 844x390:med 4.79 p10 1.75 bare 4.96
+FAIL S Z-stats-attr-delta   0/7 attributes
+PASS S Z-stats-count        derived 32, DOM rows 0 (visible 0), bad deltas 0
+FAIL F Z-stats-wiring       missing 39 [vitality,resilience,focus,reflex], mismatches 0
+PASS S Z-stats-recompute    8/8 rows agree (recipes 39)
+PASS G Z-view-shadow        320:feet/rim 0.469 on/off 0.451 390:feet/rim 0.511 on/off 0.482 820:feet/rim 0.478 on/off 0.449 1280:feet/rim 0.472 on/off 0.469 1920:feet/rim 0.455 on/off 0.419 2560:feet/rim 0.455 on/off 0.419 844x390:feet/rim 0.268 on/off 0.351
+PASS G Z-view-floor         320:rim 30 r=0.6 390:rim 30 r=0.6 820:rim 30 r=0.6 1280:rim 30 r=0.6 1920:rim 30 r=0.6 2560:rim 30 r=0.6 844x390:rim 17 r=0.6
+PASS G Z-view-top-light     PREVIEW_KEY_DIR:9.2°
+PASS F Z-page-errors        0

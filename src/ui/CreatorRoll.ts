@@ -22,7 +22,7 @@
 import type { Appearance, CharacterProfile } from "../game/Characters.ts";
 import { PALETTES } from "../game/Characters.ts";
 import { applyLevel, attackDamage, CLASSES, type CombatStats, createStats } from "../game/Stats.ts";
-import { applyRaceBonus, raceById, RACES, statDelta, type StatName } from "../game/Races.ts";
+import { applyRaceBonus, raceById, RACES, type StatName } from "../game/Races.ts";
 import { applySecondary, secondaryPreview } from "../game/SecondaryStats.ts";
 import { birthsignById, BIRTHSIGNS } from "../game/Birthsight.ts";
 import { weaponForClass } from "../game/Weapon.ts";
@@ -33,9 +33,10 @@ import { startingStats } from "../game/Leveling.ts";
 import { generateName } from "../game/NameGen.ts";
 import { lifeFraction, lifespanOf, rollAge } from "../game/Age.ts";
 import { rng32 } from "../core/MathCore.ts";
-import { ATTRS, attrBase, attrValue, pointBudget, rebaseAttrs } from "./CreatorTweak.ts";
+import { ATTRS, attrBase, pointBudget, rebaseAttrs } from "./CreatorTweak.ts";
 import { heightBand, weightBand } from "./CreatorSync.ts";
 import { spendBudget } from "../game/SpectateGen.ts";
+import { derivedSheet, type DerivedSheet, fightStats, referenceProfiles } from "../game/DerivedSheet.ts";
 
 export interface RolledProfile {
   profile: CharacterProfile;
@@ -128,6 +129,12 @@ export interface CreatorSheet {
   primary: SheetRow[]; // the seven attributes (Agility is the seventh, Wave X)
   derived: SheetRow[]; // max health, attack power, attack interval, armour
   secondary: SheetRow[]; // the birthsign/sub-species deltas
+  /**
+   * Wave Z (C-SHEET): the COMPLETE game-computed sheet (DerivedSheet.derivedSheet) — attributes with
+   * their modifier vs the class baseline and every derived number vs the field mean. The rows above
+   * read the SAME `fightStats` block, so the generator and the hero card can never disagree.
+   */
+  full?: DerivedSheet;
 }
 
 /** The stat sheet for a profile, computed with the REAL game maths. */
@@ -145,7 +152,16 @@ export function creatorSheet(profile: CharacterProfile): CreatorSheet {
   const weapon = weaponForClass(profile.className);
 
   const neutral = sheetNeutral();
-  const primary: SheetRow[] = ATTRS.map((s) => row(ATTR_LABEL[s], group(stats[s]), stats[s], rolled[s], neutral[s], ATTR_SPAN));
+  // Wave Z: the attributes are the SHEET-scale values of DerivedSheet (class sheet + every modifier
+  // the fight applies — the numbers the tweak inputs edit), not the 1-10 runtime primaries; the
+  // tone stays "deviation from the class x race mean" and the delta "change vs the rolled base".
+  const full = derivedSheet(profile);
+  const fullRolled = derivedSheet(untweaked(profile));
+  const attrOf = (sh: DerivedSheet, k: string) => sh.attributes.find((r) => r.key === k)!;
+  const primary: SheetRow[] = ATTRS.map((s) => {
+    const now = attrOf(full, s), was = attrOf(fullRolled, s);
+    return row(ATTR_LABEL[s], now.display, now.value, was.value, sheetAttrNeutral()[s], ATTR_SPAN, false, 0);
+  });
 
   // A representative blow against an even foe (the class baseline, no ancestry): the mid-roll,
   // non-crit hit — attackDamage with damageRoll 0.5 (variance 1) and a critRoll of 0.5, which is
@@ -174,6 +190,7 @@ export function creatorSheet(profile: CharacterProfile): CreatorSheet {
     primary,
     derived,
     secondary,
+    full,
   };
 }
 
@@ -201,10 +218,17 @@ function signedText(n: number, digits: number): string {
   return n > 0 ? `+${v}` : v.replace("-", "\u2212");
 }
 
-/** The class x race x sub-race x sign pipeline the fight runs (the ROLLED numbers, before any hand-tweak). */
+/** The profile with its hand-tweak removed (every attribute back at its rolled base). */
+function untweaked(profile: CharacterProfile): CharacterProfile {
+  return { ...profile, allocated: {} };
+}
+
+/**
+ * The class x race x sub-race x sign x level pipeline the fight runs (the ROLLED numbers, before any
+ * hand-tweak). Wave Z: delegates to DerivedSheet.fightStats, the Engine.#startFight order.
+ */
 export function rolledStats(profile: CharacterProfile): CombatStats {
-  const raced = applyRaceBonus(createStats(profile.className), profile.race, profile.subrace, profile.birthsign);
-  return applyLevel(applySecondary(raced, profile.subrace, profile.birthsign), profile.level ?? 1);
+  return fightStats(untweaked(profile));
 }
 
 /**
@@ -212,27 +236,23 @@ export function rolledStats(profile: CharacterProfile): CombatStats {
  * (CreatorTweak) goes through `Races.statDelta`, the same attribute -> derived law the spend path
  * (Engine.#applySpend, FighterBuild.fighterStats) adds. A fresh roll has no change: identity.
  */
-export function tweakedStats(profile: CharacterProfile, rolled = rolledStats(profile)): CombatStats {
-  const base = attrBase(profile);
-  const cur: Partial<Record<StatName, number>> = {};
-  let any = false;
-  for (const s of ATTRS) {
-    cur[s] = attrValue(profile, s);
-    if (cur[s] !== base[s]) any = true;
-  }
-  if (!any) return rolled;
-  // statDelta floors (strength / 2, resilience / 2), so the change is statDelta(now) - statDelta(base),
-  // never statDelta(now - base): one point of strength from 6 to 7 crosses a floor and must show.
-  const now = statDelta(cur), was = statDelta(base);
-  const out: CombatStats = { ...rolled };
-  for (const k of Object.keys(now) as (keyof CombatStats)[]) {
-    const a = now[k], b = was[k];
-    if (typeof a !== "number" || typeof b !== "number") continue;
-    out[k] = (out[k] ?? 0) + (a - b);
-  }
-  out.attackInterval = Math.max(0.3, out.attackInterval);
-  out.armor = Math.max(0, out.armor);
-  return out;
+export function tweakedStats(profile: CharacterProfile, _rolled?: CombatStats): CombatStats {
+  // Wave Z: the engine's own order (DerivedSheet.fightStats = Engine.#startFight): the tweak is
+  // added BEFORE the level growth and clamped with the race constitution, exactly as #applyTweaks.
+  // Before, the sheet applied the level first and clamped differently, so a tweaked level-5 hero's
+  // card could read a few hundred health away from the duel.
+  return fightStats(profile);
+}
+
+let ATTR_NEUTRAL: Record<string, number> | null = null;
+/** Wave Z: the neutral of a SHEET-scale attribute — its mean over the class x race reference fighters. */
+export function sheetAttrNeutral(): Record<string, number> {
+  if (ATTR_NEUTRAL) return ATTR_NEUTRAL;
+  const refs = referenceProfiles().map((p) => derivedSheet(p).attributes);
+  const acc: Record<string, number> = {};
+  for (const rows of refs) for (const r of rows) acc[r.key] = (acc[r.key] ?? 0) + r.value / refs.length;
+  ATTR_NEUTRAL = acc;
+  return acc;
 }
 
 let NEUTRAL: CombatStats | null = null;

@@ -1,0 +1,2473 @@
+{
+ "label": "baseline",
+ "dist": "artifacts/wave-z/verify/dist-base",
+ "at": "2026-11-02T20:00:45.813Z",
+ "seeded": [
+  {
+   "id": "PL-BBFB73",
+   "name": "Lanethil of House Aerith",
+   "level": 20,
+   "race": "elf",
+   "sub": "high",
+   "cls": "Assassin"
+  },
+  {
+   "id": "PL-02E569",
+   "name": "Galisëliae of House Elunar",
+   "level": 1,
+   "race": "elf",
+   "sub": "high",
+   "cls": "Barbarian"
+  },
+  {
+   "id": "PL-12CFC1",
+   "name": "Mulurid Echoborn",
+   "level": 4,
+   "race": "dwarf",
+   "sub": "deep",
+   "cls": "Barbarian"
+  },
+  {
+   "id": "PL-F1F574",
+   "name": "Uloulla Darkkin",
+   "level": 5,
+   "race": "dwarf",
+   "sub": "deep",
+   "cls": "Rogue"
+  },
+  {
+   "id": "PL-876377",
+   "name": "Rasaka of the Stepperunners",
+   "level": 8,
+   "race": "ork",
+   "sub": "bloodfang",
+   "cls": "Archer"
+  },
+  {
+   "id": "PL-3091AF",
+   "name": "Sylaennewyn Mossstep",
+   "level": 9,
+   "race": "elf",
+   "sub": "wood",
+   "cls": "Necromancer"
+  },
+  {
+   "id": "PL-D3959E",
+   "name": "Valor Severerian",
+   "level": 12,
+   "race": "human",
+   "sub": "imperial",
+   "cls": "Assassin"
+  },
+  {
+   "id": "PL-47B33F",
+   "name": "Zu'ug of the Marshgnawers",
+   "level": 13,
+   "race": "ork",
+   "sub": "greenhide",
+   "cls": "Assassin"
+  },
+  {
+   "id": "PL-267FE9",
+   "name": "Dwahild Bronzefist",
+   "level": 16,
+   "race": "dwarf",
+   "sub": "mountain",
+   "cls": "Necromancer"
+  },
+  {
+   "id": "PL-A1FE14",
+   "name": "Khur al-Barak",
+   "level": 17,
+   "race": "human",
+   "sub": "nomad",
+   "cls": "Priest"
+  }
+ ],
+ "vp": {
+  "320": {
+   "openMs": 6813,
+   "hero": {
+    "layout": {
+     "docOverflow": 0,
+     "scrOverflow": 0,
+     "offRight": [],
+     "textEls": 116,
+     "clipped": [],
+     "truncated": [
+      "strong. \"Lanethil of House Aerith\" sw203/cw77",
+      "strong. \"Galisëliae of House Elun\" sw198/cw77",
+      "strong. \"Mulurid Echoborn\" sw135/cw77",
+      "strong. \"Uloulla Darkkin\" sw121/cw77",
+      "strong. \"Rasaka of the Stepperunn\" sw210/cw77",
+      "strong. \"Sylaennewyn Mossstep\" sw171/cw77",
+      "strong. \"Valor Severerian\" sw122/cw77",
+      "strong. \"Zu'ug of the Marshgnawer\" sw201/cw77",
+      "strong. \"Dwahild Bronzefist\" sw144/cw77",
+      "strong. \"Khur al-Barak\" sw103/cw77"
+     ],
+     "minFont": 11,
+     "minFontAt": "span.sp-gen \"—\"",
+     "overlaps": [],
+     "stickyOverlaps": 0,
+     "wordBreaks": [],
+     "bottomHidden": 0,
+     "occluded": [],
+     "nBoxes": 49,
+     "targets": 37,
+     "small24": [],
+     "small44": 12,
+     "headPresent": false,
+     "chosenHeroHead": false,
+     "hasCard": true
+    },
+    "card": {
+     "present": true,
+     "tabId": "PL-BBFB73",
+     "heroName": "Lanethil of House Aerith",
+     "card": {
+      "x": 25,
+      "y": 235.53125,
+      "w": 270,
+      "h": 1280.234375,
+      "r": 295,
+      "b": 1515.765625
+     },
+     "pic": {
+      "x": 36,
+      "y": 305.796875,
+      "w": 248,
+      "h": 310,
+      "r": 284,
+      "b": 615.796875
+     },
+     "picTag": "img",
+     "plate": {
+      "x": 25,
+      "y": 235.53125,
+      "w": 270,
+      "h": 415.265625,
+      "r": 295,
+      "b": 650.796875
+     },
+     "plateClass": "hero-figure",
+     "name": {
+      "x": 81.59375,
+      "y": 675.1875,
+      "w": 203.40625,
+      "h": 57.1875,
+      "r": 285,
+      "b": 732.375
+     },
+     "nameTag": "strong.sheet-name",
+     "badge": {
+      "x": 35,
+      "y": 700.484375,
+      "w": 40.59375,
+      "h": 40.59375,
+      "r": 75.59375,
+      "b": 741.078125,
+      "tier": null,
+      "cls": "level-badge plate-copper",
+      "text": "Lv20",
+      "label": null,
+      "num": "20",
+      "labelBox": null,
+      "numBox": {
+       "x": 47.234375,
+       "y": 718.484375,
+       "w": 16.109375,
+       "h": 16.09375,
+       "r": 63.34375,
+       "b": 734.578125
+      }
+     },
+     "roll": {
+      "x": 35,
+      "y": 772.375,
+      "w": 121,
+      "h": 50,
+      "r": 156,
+      "b": 822.375,
+      "label": "Reroll hero",
+      "padding": [
+       8,
+       14,
+       8,
+       14
+      ],
+      "margin": [
+       0,
+       0,
+       0,
+       0
+      ],
+      "cls": "profile-action profile-action-manage hero-reroll btn-stone",
+      "bgImage": "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequenc",
+      "icon": {
+       "x": 51,
+       "y": 789.578125,
+       "w": 15.59375,
+       "h": 15.59375,
+       "r": 66.59375,
+       "b": 805.171875
+      }
+     },
+     "rows": []
+    },
+    "entry": {
+     "id": "PL-BBFB73",
+     "level": 20,
+     "name": "Lanethil of House Aerith"
+    },
+    "overlay": {
+     "picCoversPlate": 0.686,
+     "picVsCard": 0.222,
+     "nameInside": false,
+     "tags": [
+      {
+       "text": "Elf",
+       "cls": "steel-sign-race",
+       "inside": false
+      },
+      {
+       "text": "High Elf",
+       "cls": "steel-sign-sub",
+       "inside": false
+      },
+      {
+       "text": "Elf · High Elf · Assassin · Hidden Blade",
+       "cls": "sheet-meta",
+       "inside": false
+      }
+     ],
+     "tagsInside": 0,
+     "nTags": 3,
+     "contrast": {
+      "name": {
+       "eff": {
+        "median": 8.12,
+        "p10": 7.42,
+        "colour": "rgb(240, 207, 115)",
+        "back": "rgb(52,53,56)"
+       },
+       "bare": {
+        "median": 7.62,
+        "p10": 7.16,
+        "colour": "rgb(240, 207, 115)",
+        "back": "rgb(56,57,60)"
+       }
+      },
+      "tag0:Elf": {
+       "eff": {
+        "median": 4.88,
+        "p10": 2.21,
+        "colour": "rgb(37, 41, 46)",
+        "back": "rgb(144,150,158)"
+       },
+       "bare": {
+        "median": 5.09,
+        "p10": 4.03,
+        "colour": "rgb(37, 41, 46)",
+        "back": "rgb(146,153,163)"
+       }
+      },
+      "tag1:High Elf": {
+       "eff": {
+        "median": 4.76,
+        "p10": 1.76,
+        "colour": "rgb(51, 56, 63)",
+        "back": "rgb(159,165,172)"
+       },
+       "bare": {
+        "median": 5.02,
+        "p10": 3.84,
+        "colour": "rgb(51, 56, 63)",
+        "back": "rgb(163,170,177)"
+       }
+      },
+      "tag2:Elf · High Elf ·": {
+       "eff": {
+        "median": 8.06,
+        "p10": 7.61,
+        "colour": "rgb(223, 207, 165)",
+        "back": "rgb(51,52,54)"
+       },
+       "bare": {
+        "median": 8.06,
+        "p10": 7.61,
+        "colour": "rgb(223, 207, 165)",
+        "back": "rgb(51,52,54)"
+       }
+      }
+     }
+    },
+    "rollFace": {
+     "hue": 220,
+     "sat": 0.051,
+     "satShare": 0.19,
+     "rgb": [
+      48,
+      49,
+      51
+     ]
+    }
+   },
+   "gen": {
+    "layout": {
+     "docOverflow": 0,
+     "scrOverflow": 0,
+     "offRight": [],
+     "textEls": 404,
+     "clipped": [],
+     "truncated": [
+      "strong. \"Lanethil of House Aerith\" sw203/cw77",
+      "strong. \"Galisëliae of House Elun\" sw198/cw77",
+      "strong. \"Mulurid Echoborn\" sw135/cw77",
+      "strong. \"Uloulla Darkkin\" sw121/cw77",
+      "strong. \"Rasaka of the Stepperunn\" sw210/cw77",
+      "strong. \"Sylaennewyn Mossstep\" sw171/cw77",
+      "strong. \"Valor Severerian\" sw122/cw77",
+      "strong. \"Zu'ug of the Marshgnawer\" sw201/cw77",
+      "strong. \"Dwahild Bronzefist\" sw144/cw77",
+      "strong. \"Khur al-Barak\" sw103/cw77",
+      "span.group-summary \"Critical Strike — · Hast\" sw241/cw241"
+     ],
+     "minFont": 11,
+     "minFontAt": "p.bp-lore \"Carved from the worl\"",
+     "overlaps": [],
+     "stickyOverlaps": 3,
+     "wordBreaks": [],
+     "bottomHidden": 0,
+     "occluded": [],
+     "nBoxes": 142,
+     "targets": 131,
+     "small24": [],
+     "small44": 84,
+     "headPresent": false,
+     "chosenHeroHead": false,
+     "hasCard": true
+    },
+    "viewer": {
+     "hook": true,
+     "shadowProbe": true,
+     "canvas": {
+      "x": 85,
+      "y": 228.25,
+      "w": 149.984375,
+      "h": 183.3125
+     },
+     "nearPts": 127,
+     "rimPts": 30,
+     "shadowMap": true,
+     "coverage": 0.0326,
+     "ped": {
+      "radiusM": 0.6,
+      "heightM": 0.12,
+      "topY": 0
+     },
+     "nearOn": 0.06805071217010164,
+     "rimOn": 0.1450289497358212,
+     "nearOff": 0.15101520465700397,
+     "rimOff": 0.15101520465700397,
+     "feetVsRim": 0.469,
+     "feetVsRimOff": 1,
+     "onVsOff": 0.451
+    }
+   }
+  },
+  "390": {
+   "openMs": 6782,
+   "hero": {
+    "layout": {
+     "docOverflow": 0,
+     "scrOverflow": 0,
+     "offRight": [],
+     "textEls": 137,
+     "clipped": [],
+     "truncated": [
+      "strong. \"Lanethil of House Aerith\" sw203/cw77",
+      "strong. \"Galisëliae of House Elun\" sw198/cw77",
+      "strong. \"Mulurid Echoborn\" sw135/cw77",
+      "strong. \"Uloulla Darkkin\" sw121/cw77",
+      "strong. \"Rasaka of the Stepperunn\" sw210/cw77",
+      "strong. \"Sylaennewyn Mossstep\" sw171/cw77",
+      "strong. \"Valor Severerian\" sw122/cw77",
+      "strong. \"Zu'ug of the Marshgnawer\" sw201/cw77",
+      "strong. \"Dwahild Bronzefist\" sw144/cw77",
+      "strong. \"Khur al-Barak\" sw103/cw77"
+     ],
+     "minFont": 11,
+     "minFontAt": "span.sp-gen \"—\"",
+     "overlaps": [],
+     "stickyOverlaps": 4,
+     "wordBreaks": [],
+     "bottomHidden": 0,
+     "occluded": [],
+     "nBoxes": 49,
+     "targets": 37,
+     "small24": [],
+     "small44": 14,
+     "headPresent": true,
+     "chosenHeroHead": false,
+     "hasCard": true
+    },
+    "card": {
+     "present": true,
+     "tabId": "PL-BBFB73",
+     "heroName": "Lanethil of House Aerith",
+     "card": {
+      "x": 25.875,
+      "y": 254.40625,
+      "w": 338.25,
+      "h": 1237.640625,
+      "r": 364.125,
+      "b": 1492.046875
+     },
+     "pic": {
+      "x": 36.875,
+      "y": 324.671875,
+      "w": 256,
+      "h": 320,
+      "r": 292.875,
+      "b": 644.671875
+     },
+     "picTag": "img",
+     "plate": {
+      "x": 25.875,
+      "y": 254.40625,
+      "w": 278,
+      "h": 425.265625,
+      "r": 303.875,
+      "b": 679.671875
+     },
+     "plateClass": "hero-figure",
+     "name": {
+      "x": 82.46875,
+      "y": 704.0625,
+      "w": 266.1875,
+      "h": 28.59375,
+      "r": 348.65625,
+      "b": 732.65625
+     },
+     "nameTag": "strong.sheet-name",
+     "badge": {
+      "x": 35.875,
+      "y": 707.0625,
+      "w": 40.59375,
+      "h": 40.59375,
+      "r": 76.46875,
+      "b": 747.65625,
+      "tier": null,
+      "cls": "level-badge plate-copper",
+      "text": "Lv20",
+      "label": null,
+      "num": "20",
+      "labelBox": null,
+      "numBox": {
+       "x": 48.109375,
+       "y": 725.0625,
+       "w": 16.109375,
+       "h": 16.09375,
+       "r": 64.21875,
+       "b": 741.15625
+      }
+     },
+     "roll": {
+      "x": 35.875,
+      "y": 756.65625,
+      "w": 155.125,
+      "h": 42,
+      "r": 191,
+      "b": 798.65625,
+      "label": "Reroll hero",
+      "padding": [
+       8,
+       14,
+       8,
+       14
+      ],
+      "margin": [
+       0,
+       0,
+       0,
+       0
+      ],
+      "cls": "profile-action profile-action-manage hero-reroll btn-stone",
+      "bgImage": "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequenc",
+      "icon": {
+       "x": 66.984375,
+       "y": 769.859375,
+       "w": 15.59375,
+       "h": 15.59375,
+       "r": 82.578125,
+       "b": 785.453125
+      }
+     },
+     "rows": []
+    },
+    "entry": {
+     "id": "PL-BBFB73",
+     "level": 20,
+     "name": "Lanethil of House Aerith"
+    },
+    "overlay": {
+     "picCoversPlate": 0.693,
+     "picVsCard": 0.196,
+     "nameInside": false,
+     "tags": [
+      {
+       "text": "Elf",
+       "cls": "steel-sign-race",
+       "inside": false
+      },
+      {
+       "text": "High Elf",
+       "cls": "steel-sign-sub",
+       "inside": false
+      },
+      {
+       "text": "Elf · High Elf · Assassin · Hidden Blade",
+       "cls": "sheet-meta",
+       "inside": false
+      }
+     ],
+     "tagsInside": 0,
+     "nTags": 3,
+     "contrast": {
+      "name": {
+       "eff": {
+        "median": 8.63,
+        "p10": 7.42,
+        "colour": "rgb(240, 207, 115)",
+        "back": "rgb(48,49,51)"
+       },
+       "bare": {
+        "median": 7.51,
+        "p10": 7.12,
+        "colour": "rgb(240, 207, 115)",
+        "back": "rgb(57,58,61)"
+       }
+      },
+      "tag0:Elf": {
+       "eff": {
+        "median": 4.9,
+        "p10": 2.2,
+        "colour": "rgb(37, 41, 46)",
+        "back": "rgb(143,150,158)"
+       },
+       "bare": {
+        "median": 4.96,
+        "p10": 3.91,
+        "colour": "rgb(37, 41, 46)",
+        "back": "rgb(144,151,160)"
+       }
+      },
+      "tag1:High Elf": {
+       "eff": {
+        "median": 4.86,
+        "p10": 1.87,
+        "colour": "rgb(51, 56, 63)",
+        "back": "rgb(160,167,173)"
+       },
+       "bare": {
+        "median": 5.1,
+        "p10": 3.89,
+        "colour": "rgb(51, 56, 63)",
+        "back": "rgb(165,171,179)"
+       }
+      },
+      "tag2:Elf · High Elf ·": {
+       "eff": {
+        "median": 7.8,
+        "p10": 7.38,
+        "colour": "rgb(223, 207, 165)",
+        "back": "rgb(54,54,57)"
+       },
+       "bare": {
+        "median": 7.8,
+        "p10": 7.38,
+        "colour": "rgb(223, 207, 165)",
+        "back": "rgb(54,54,57)"
+       }
+      }
+     }
+    },
+    "rollFace": {
+     "hue": 220,
+     "sat": 0.051,
+     "satShare": 0.189,
+     "rgb": [
+      48,
+      49,
+      51
+     ]
+    }
+   },
+   "gen": {
+    "layout": {
+     "docOverflow": 0,
+     "scrOverflow": 0,
+     "offRight": [],
+     "textEls": 438,
+     "clipped": [],
+     "truncated": [
+      "strong. \"Lanethil of House Aerith\" sw203/cw77",
+      "strong. \"Galisëliae of House Elun\" sw198/cw77",
+      "strong. \"Mulurid Echoborn\" sw135/cw77",
+      "strong. \"Uloulla Darkkin\" sw121/cw77",
+      "strong. \"Rasaka of the Stepperunn\" sw210/cw77",
+      "strong. \"Sylaennewyn Mossstep\" sw171/cw77",
+      "strong. \"Valor Severerian\" sw122/cw77",
+      "strong. \"Zu'ug of the Marshgnawer\" sw201/cw77",
+      "strong. \"Dwahild Bronzefist\" sw144/cw77",
+      "strong. \"Khur al-Barak\" sw103/cw77",
+      "span.group-summary \"Critical Strike — · Hast\" sw305/cw305"
+     ],
+     "minFont": 11,
+     "minFontAt": "p.bp-lore \"Carved from the worl\"",
+     "overlaps": [],
+     "stickyOverlaps": 9,
+     "wordBreaks": [],
+     "bottomHidden": 0,
+     "occluded": [],
+     "nBoxes": 142,
+     "targets": 131,
+     "small24": [],
+     "small44": 86,
+     "headPresent": false,
+     "chosenHeroHead": false,
+     "hasCard": true
+    },
+    "viewer": {
+     "hook": true,
+     "shadowProbe": true,
+     "canvas": {
+      "x": 85.671875,
+      "y": 288.671875,
+      "w": 218.65625,
+      "h": 267.234375
+     },
+     "nearPts": 127,
+     "rimPts": 30,
+     "shadowMap": true,
+     "coverage": 0.0326,
+     "ped": {
+      "radiusM": 0.6,
+      "heightM": 0.12,
+      "topY": 0
+     },
+     "nearOn": 0.07374157696030195,
+     "rimOn": 0.14431763737549083,
+     "nearOff": 0.15308842329840097,
+     "rimOff": 0.1538222098849671,
+     "feetVsRim": 0.511,
+     "feetVsRimOff": 0.995,
+     "onVsOff": 0.482
+    }
+   }
+  },
+  "820": {
+   "openMs": 7046,
+   "hero": {
+    "layout": {
+     "docOverflow": 0,
+     "scrOverflow": 0,
+     "offRight": [],
+     "textEls": 138,
+     "clipped": [],
+     "truncated": [
+      "strong. \"Lanethil of House Aerith\" sw203/cw112",
+      "strong. \"Galisëliae of House Elun\" sw198/cw112",
+      "strong. \"Mulurid Echoborn\" sw135/cw112",
+      "strong. \"Uloulla Darkkin\" sw121/cw112",
+      "strong. \"Rasaka of the Stepperunn\" sw210/cw112",
+      "strong. \"Sylaennewyn Mossstep\" sw171/cw112",
+      "strong. \"Valor Severerian\" sw122/cw112",
+      "strong. \"Zu'ug of the Marshgnawer\" sw201/cw112",
+      "strong. \"Dwahild Bronzefist\" sw144/cw112"
+     ],
+     "minFont": 11,
+     "minFontAt": "span.sp-gen \"—\"",
+     "overlaps": [],
+     "stickyOverlaps": 0,
+     "wordBreaks": [],
+     "bottomHidden": 0,
+     "occluded": [],
+     "nBoxes": 49,
+     "targets": 37,
+     "small24": [],
+     "small44": 16,
+     "headPresent": true,
+     "chosenHeroHead": false,
+     "hasCard": true
+    },
+    "card": {
+     "present": true,
+     "tabId": "PL-BBFB73",
+     "heroName": "Lanethil of House Aerith",
+     "card": {
+      "x": 33.28125,
+      "y": 440.640625,
+      "w": 753.4375,
+      "h": 637.46875,
+      "r": 786.71875,
+      "b": 1078.109375
+     },
+     "pic": {
+      "x": 44.28125,
+      "y": 512.046875,
+      "w": 258,
+      "h": 322.5,
+      "r": 302.28125,
+      "b": 834.546875
+     },
+     "picTag": "img",
+     "plate": {
+      "x": 33.28125,
+      "y": 440.640625,
+      "w": 280,
+      "h": 428.90625,
+      "r": 313.28125,
+      "b": 869.546875
+     },
+     "plateClass": "hero-figure",
+     "name": {
+      "x": 389.859375,
+      "y": 447.59375,
+      "w": 266.1875,
+      "h": 28.59375,
+      "r": 656.046875,
+      "b": 476.1875
+     },
+     "nameTag": "strong.sheet-name",
+     "badge": {
+      "x": 342.296875,
+      "y": 450.59375,
+      "w": 40.59375,
+      "h": 40.59375,
+      "r": 382.890625,
+      "b": 491.1875,
+      "tier": null,
+      "cls": "level-badge plate-copper",
+      "text": "Lv20",
+      "label": null,
+      "num": "20",
+      "labelBox": null,
+      "numBox": {
+       "x": 354.53125,
+       "y": 468.59375,
+       "w": 16.109375,
+       "h": 16.09375,
+       "r": 370.640625,
+       "b": 484.6875
+      }
+     },
+     "roll": {
+      "x": 456.390625,
+      "y": 501.15625,
+      "w": 124.890625,
+      "h": 42,
+      "r": 581.28125,
+      "b": 543.15625,
+      "label": "Reroll hero",
+      "padding": [
+       8,
+       14,
+       8,
+       14
+      ],
+      "margin": [
+       0,
+       0,
+       0,
+       0
+      ],
+      "cls": "profile-action profile-action-manage hero-reroll btn-stone",
+      "bgImage": "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequenc",
+      "icon": {
+       "x": 472.390625,
+       "y": 514.359375,
+       "w": 15.59375,
+       "h": 15.59375,
+       "r": 487.984375,
+       "b": 529.953125
+      }
+     },
+     "rows": []
+    },
+    "entry": {
+     "id": "PL-BBFB73",
+     "level": 20,
+     "name": "Lanethil of House Aerith"
+    },
+    "overlay": {
+     "picCoversPlate": 0.693,
+     "picVsCard": 0.173,
+     "nameInside": false,
+     "tags": [
+      {
+       "text": "Elf",
+       "cls": "steel-sign-race",
+       "inside": false
+      },
+      {
+       "text": "High Elf",
+       "cls": "steel-sign-sub",
+       "inside": false
+      },
+      {
+       "text": "Elf · High Elf · Assassin · Hidden Blade",
+       "cls": "sheet-meta",
+       "inside": false
+      }
+     ],
+     "tagsInside": 0,
+     "nTags": 3,
+     "contrast": {
+      "name": {
+       "eff": {
+        "median": 8.69,
+        "p10": 7.47,
+        "colour": "rgb(240, 207, 115)",
+        "back": "rgb(47,48,51)"
+       },
+       "bare": {
+        "median": 7.52,
+        "p10": 7.15,
+        "colour": "rgb(240, 207, 115)",
+        "back": "rgb(57,58,61)"
+       }
+      },
+      "tag0:Elf": {
+       "eff": {
+        "median": 4.96,
+        "p10": 2.21,
+        "colour": "rgb(37, 41, 46)",
+        "back": "rgb(145,151,160)"
+       },
+       "bare": {
+        "median": 5.17,
+        "p10": 4.09,
+        "colour": "rgb(37, 41, 46)",
+        "back": "rgb(148,154,164)"
+       }
+      },
+      "tag1:High Elf": {
+       "eff": {
+        "median": 4.87,
+        "p10": 1.81,
+        "colour": "rgb(51, 56, 63)",
+        "back": "rgb(161,167,174)"
+       },
+       "bare": {
+        "median": 5.09,
+        "p10": 3.89,
+        "colour": "rgb(51, 56, 63)",
+        "back": "rgb(164,171,179)"
+       }
+      },
+      "tag2:Elf · High Elf ·": {
+       "eff": {
+        "median": 7.8,
+        "p10": 7.39,
+        "colour": "rgb(223, 207, 165)",
+        "back": "rgb(53,54,57)"
+       },
+       "bare": {
+        "median": 7.8,
+        "p10": 7.39,
+        "colour": "rgb(223, 207, 165)",
+        "back": "rgb(53,54,57)"
+       }
+      }
+     }
+    },
+    "rollFace": {
+     "hue": 220,
+     "sat": 0.051,
+     "satShare": 0.18,
+     "rgb": [
+      48,
+      49,
+      51
+     ]
+    }
+   },
+   "gen": {
+    "layout": {
+     "docOverflow": 0,
+     "scrOverflow": 0,
+     "offRight": [],
+     "textEls": 442,
+     "clipped": [],
+     "truncated": [
+      "strong. \"Lanethil of House Aerith\" sw203/cw112",
+      "strong. \"Galisëliae of House Elun\" sw198/cw112",
+      "strong. \"Mulurid Echoborn\" sw135/cw112",
+      "strong. \"Uloulla Darkkin\" sw121/cw112",
+      "strong. \"Rasaka of the Stepperunn\" sw210/cw112",
+      "strong. \"Sylaennewyn Mossstep\" sw171/cw112",
+      "strong. \"Valor Severerian\" sw122/cw112",
+      "strong. \"Zu'ug of the Marshgnawer\" sw201/cw112",
+      "strong. \"Dwahild Bronzefist\" sw144/cw112"
+     ],
+     "minFont": 11,
+     "minFontAt": "p.bp-lore \"Carved from the worl\"",
+     "overlaps": [],
+     "stickyOverlaps": 6,
+     "wordBreaks": [],
+     "bottomHidden": 0,
+     "occluded": [],
+     "nBoxes": 142,
+     "targets": 131,
+     "small24": [],
+     "small44": 86,
+     "headPresent": false,
+     "chosenHeroHead": false,
+     "hasCard": true
+    },
+    "viewer": {
+     "hook": true,
+     "shadowProbe": true,
+     "canvas": {
+      "x": 93.84375,
+      "y": 407.046875,
+      "w": 298.875,
+      "h": 365.28125
+     },
+     "nearPts": 127,
+     "rimPts": 30,
+     "shadowMap": true,
+     "coverage": 0.0326,
+     "ped": {
+      "radiusM": 0.6,
+      "heightM": 0.12,
+      "topY": 0
+     },
+     "nearOn": 0.0694531261790565,
+     "rimOn": 0.14518232062137257,
+     "nearOff": 0.1547236176732996,
+     "rimOff": 0.1538222098849671,
+     "feetVsRim": 0.478,
+     "feetVsRimOff": 1.006,
+     "onVsOff": 0.449
+    }
+   }
+  },
+  "1280": {
+   "openMs": 6979,
+   "hero": {
+    "layout": {
+     "docOverflow": 0,
+     "scrOverflow": 0,
+     "offRight": [],
+     "textEls": 138,
+     "clipped": [],
+     "truncated": [
+      "strong. \"Lanethil of House Aerith\" sw204/cw113",
+      "strong. \"Galisëliae of House Elun\" sw199/cw113",
+      "strong. \"Mulurid Echoborn\" sw136/cw113",
+      "strong. \"Uloulla Darkkin\" sw121/cw113",
+      "strong. \"Rasaka of the Stepperunn\" sw211/cw113",
+      "strong. \"Sylaennewyn Mossstep\" sw172/cw113",
+      "strong. \"Valor Severerian\" sw122/cw113",
+      "strong. \"Zu'ug of the Marshgnawer\" sw202/cw113",
+      "strong. \"Dwahild Bronzefist\" sw145/cw113"
+     ],
+     "minFont": 11,
+     "minFontAt": "span.sp-gen \"—\"",
+     "overlaps": [],
+     "stickyOverlaps": 0,
+     "wordBreaks": [],
+     "bottomHidden": 0,
+     "occluded": [],
+     "nBoxes": 49,
+     "targets": 37,
+     "small24": [],
+     "small44": 16,
+     "headPresent": true,
+     "chosenHeroHead": false,
+     "hasCard": true
+    },
+    "card": {
+     "present": true,
+     "tabId": "PL-BBFB73",
+     "heroName": "Lanethil of House Aerith",
+     "card": {
+      "x": 49.15625,
+      "y": 372.296875,
+      "w": 1181.6875,
+      "h": 431.5,
+      "r": 1230.84375,
+      "b": 803.796875
+     },
+     "pic": {
+      "x": 60.15625,
+      "y": 446.296875,
+      "w": 258,
+      "h": 322.5,
+      "r": 318.15625,
+      "b": 768.796875
+     },
+     "picTag": "img",
+     "plate": {
+      "x": 49.15625,
+      "y": 372.296875,
+      "w": 280,
+      "h": 431.5,
+      "r": 329.15625,
+      "b": 803.796875
+     },
+     "plateClass": "hero-figure",
+     "name": {
+      "x": 414.921875,
+      "y": 382.03125,
+      "w": 266.1875,
+      "h": 28.59375,
+      "r": 681.109375,
+      "b": 410.625
+     },
+     "nameTag": "strong.sheet-name",
+     "badge": {
+      "x": 363.234375,
+      "y": 384.921875,
+      "w": 40.8125,
+      "h": 40.8125,
+      "r": 404.046875,
+      "b": 425.734375,
+      "tier": null,
+      "cls": "level-badge plate-copper",
+      "text": "Lv20",
+      "label": null,
+      "num": "20",
+      "labelBox": null,
+      "numBox": {
+       "x": 375.546875,
+       "y": 402.984375,
+       "w": 16.1875,
+       "h": 16.1875,
+       "r": 391.734375,
+       "b": 419.171875
+      }
+     },
+     "roll": {
+      "x": 725.875,
+      "y": 384.328125,
+      "w": 124.890625,
+      "h": 42,
+      "r": 850.765625,
+      "b": 426.328125,
+      "label": "Reroll hero",
+      "padding": [
+       8,
+       14,
+       8,
+       14
+      ],
+      "margin": [
+       0,
+       0,
+       0,
+       0
+      ],
+      "cls": "profile-action profile-action-manage hero-reroll btn-stone",
+      "bgImage": "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequenc",
+      "icon": {
+       "x": 741.875,
+       "y": 397.53125,
+       "w": 15.59375,
+       "h": 15.59375,
+       "r": 757.46875,
+       "b": 413.125
+      }
+     },
+     "rows": []
+    },
+    "entry": {
+     "id": "PL-BBFB73",
+     "level": 20,
+     "name": "Lanethil of House Aerith"
+    },
+    "overlay": {
+     "picCoversPlate": 0.689,
+     "picVsCard": 0.163,
+     "nameInside": false,
+     "tags": [
+      {
+       "text": "Elf",
+       "cls": "steel-sign-race",
+       "inside": false
+      },
+      {
+       "text": "High Elf",
+       "cls": "steel-sign-sub",
+       "inside": false
+      },
+      {
+       "text": "Elf · High Elf · Assassin · Hidden Blade",
+       "cls": "sheet-meta",
+       "inside": false
+      }
+     ],
+     "tagsInside": 0,
+     "nTags": 3,
+     "contrast": {
+      "name": {
+       "eff": {
+        "median": 9.36,
+        "p10": 7.85,
+        "colour": "rgb(240, 207, 115)",
+        "back": "rgb(42,43,45)"
+       },
+       "bare": {
+        "median": 8.15,
+        "p10": 7.53,
+        "colour": "rgb(240, 207, 115)",
+        "back": "rgb(52,53,55)"
+       }
+      },
+      "tag0:Elf": {
+       "eff": {
+        "median": 4.77,
+        "p10": 2.15,
+        "colour": "rgb(37, 41, 46)",
+        "back": "rgb(142,148,156)"
+       },
+       "bare": {
+        "median": 4.96,
+        "p10": 4.02,
+        "colour": "rgb(37, 41, 46)",
+        "back": "rgb(144,151,160)"
+       }
+      },
+      "tag1:High Elf": {
+       "eff": {
+        "median": 4.81,
+        "p10": 1.74,
+        "colour": "rgb(51, 56, 63)",
+        "back": "rgb(161,166,174)"
+       },
+       "bare": {
+        "median": 5.09,
+        "p10": 3.99,
+        "colour": "rgb(51, 56, 63)",
+        "back": "rgb(164,171,179)"
+       }
+      },
+      "tag2:Elf · High Elf ·": {
+       "eff": {
+        "median": 9.28,
+        "p10": 8.7,
+        "colour": "rgb(223, 207, 165)",
+        "back": "rgb(42,42,43)"
+       },
+       "bare": {
+        "median": 9.28,
+        "p10": 8.7,
+        "colour": "rgb(223, 207, 165)",
+        "back": "rgb(42,42,43)"
+       }
+      }
+     }
+    },
+    "rollFace": {
+     "hue": 220,
+     "sat": 0.051,
+     "satShare": 0.179,
+     "rgb": [
+      48,
+      49,
+      51
+     ]
+    }
+   },
+   "tiers": [
+    {
+     "level": 20,
+     "expected": "platinum",
+     "tier": null,
+     "num": "20",
+     "label": null,
+     "text": "Lv20",
+     "face": {
+      "rgb": [
+       139,
+       72,
+       43
+      ],
+      "hue": 18.9795918367347,
+      "sat": 0.692,
+      "lum": 0.103
+     }
+    },
+    {
+     "level": 1,
+     "expected": "bronze",
+     "tier": null,
+     "num": "1",
+     "label": null,
+     "text": "Lv1",
+     "face": {
+      "rgb": [
+       139,
+       72,
+       43
+      ],
+      "hue": 18.9795918367347,
+      "sat": 0.692,
+      "lum": 0.103
+     }
+    },
+    {
+     "level": 4,
+     "expected": "bronze",
+     "tier": null,
+     "num": "4",
+     "label": null,
+     "text": "Lv4",
+     "face": {
+      "rgb": [
+       139,
+       72,
+       43
+      ],
+      "hue": 18.9795918367347,
+      "sat": 0.692,
+      "lum": 0.103
+     }
+    },
+    {
+     "level": 5,
+     "expected": "copper",
+     "tier": null,
+     "num": "5",
+     "label": null,
+     "text": "Lv5",
+     "face": {
+      "rgb": [
+       139,
+       72,
+       43
+      ],
+      "hue": 18.9795918367347,
+      "sat": 0.692,
+      "lum": 0.103
+     }
+    },
+    {
+     "level": 8,
+     "expected": "copper",
+     "tier": null,
+     "num": "8",
+     "label": null,
+     "text": "Lv8",
+     "face": {
+      "rgb": [
+       139,
+       72,
+       43
+      ],
+      "hue": 18.9795918367347,
+      "sat": 0.692,
+      "lum": 0.103
+     }
+    },
+    {
+     "level": 9,
+     "expected": "silver",
+     "tier": null,
+     "num": "9",
+     "label": null,
+     "text": "Lv9",
+     "face": {
+      "rgb": [
+       139,
+       72,
+       43
+      ],
+      "hue": 18.9795918367347,
+      "sat": 0.692,
+      "lum": 0.103
+     }
+    },
+    {
+     "level": 12,
+     "expected": "silver",
+     "tier": null,
+     "num": "12",
+     "label": null,
+     "text": "Lv12",
+     "face": {
+      "rgb": [
+       139,
+       72,
+       43
+      ],
+      "hue": 18.9795918367347,
+      "sat": 0.692,
+      "lum": 0.103
+     }
+    },
+    {
+     "level": 13,
+     "expected": "gold",
+     "tier": null,
+     "num": "13",
+     "label": null,
+     "text": "Lv13",
+     "face": {
+      "rgb": [
+       139,
+       72,
+       43
+      ],
+      "hue": 18.9795918367347,
+      "sat": 0.692,
+      "lum": 0.103
+     }
+    },
+    {
+     "level": 16,
+     "expected": "gold",
+     "tier": null,
+     "num": "16",
+     "label": null,
+     "text": "Lv16",
+     "face": {
+      "rgb": [
+       139,
+       72,
+       43
+      ],
+      "hue": 18.9795918367347,
+      "sat": 0.692,
+      "lum": 0.103
+     }
+    },
+    {
+     "level": 17,
+     "expected": "platinum",
+     "tier": null,
+     "num": "17",
+     "label": null,
+     "text": "Lv17",
+     "face": {
+      "rgb": [
+       139,
+       72,
+       43
+      ],
+      "hue": 18.9795918367347,
+      "sat": 0.692,
+      "lum": 0.103
+     }
+    }
+   ],
+   "gen": {
+    "layout": {
+     "docOverflow": 0,
+     "scrOverflow": 0,
+     "offRight": [],
+     "textEls": 442,
+     "clipped": [],
+     "truncated": [
+      "strong. \"Lanethil of House Aerith\" sw204/cw113",
+      "strong. \"Galisëliae of House Elun\" sw199/cw113",
+      "strong. \"Mulurid Echoborn\" sw136/cw113",
+      "strong. \"Uloulla Darkkin\" sw121/cw113",
+      "strong. \"Rasaka of the Stepperunn\" sw211/cw113",
+      "strong. \"Sylaennewyn Mossstep\" sw172/cw113",
+      "strong. \"Valor Severerian\" sw122/cw113",
+      "strong. \"Zu'ug of the Marshgnawer\" sw202/cw113",
+      "strong. \"Dwahild Bronzefist\" sw145/cw113",
+      "span.group-summary \"Doctrine and drill from \" sw228/cw228",
+      "span.group-summary \"Critical Strike — · Hast\" sw228/cw228"
+     ],
+     "minFont": 11,
+     "minFontAt": "p.bp-lore \"Carved from the worl\"",
+     "overlaps": [],
+     "stickyOverlaps": 1,
+     "wordBreaks": [],
+     "bottomHidden": 0,
+     "occluded": [],
+     "nBoxes": 142,
+     "targets": 131,
+     "small24": [],
+     "small44": 86,
+     "headPresent": false,
+     "chosenHeroHead": false,
+     "hasCard": true
+    },
+    "viewer": {
+     "hook": true,
+     "shadowProbe": true,
+     "canvas": {
+      "x": 135.15625,
+      "y": 224.296875,
+      "w": 288,
+      "h": 352
+     },
+     "nearPts": 127,
+     "rimPts": 30,
+     "shadowMap": true,
+     "coverage": 0.0326,
+     "ped": {
+      "radiusM": 0.6,
+      "heightM": 0.12,
+      "topY": 0
+     },
+     "nearOn": 0.0694531261790565,
+     "rimOn": 0.14720753537368528,
+     "nearOff": 0.14808191690404732,
+     "rimOff": 0.1538222098849671,
+     "feetVsRim": 0.472,
+     "feetVsRimOff": 0.963,
+     "onVsOff": 0.469
+    }
+   }
+  },
+  "1920": {
+   "openMs": 6751,
+   "hero": {
+    "layout": {
+     "docOverflow": 0,
+     "scrOverflow": 0,
+     "offRight": [],
+     "textEls": 138,
+     "clipped": [],
+     "truncated": [
+      "strong. \"Lanethil of House Aerith\" sw260/cw143",
+      "strong. \"Galisëliae of House Elun\" sw253/cw143",
+      "strong. \"Mulurid Echoborn\" sw173/cw143",
+      "strong. \"Uloulla Darkkin\" sw155/cw143",
+      "strong. \"Rasaka of the Stepperunn\" sw269/cw143",
+      "strong. \"Sylaennewyn Mossstep\" sw219/cw143",
+      "strong. \"Valor Severerian\" sw156/cw143",
+      "strong. \"Zu'ug of the Marshgnawer\" sw257/cw143",
+      "strong. \"Dwahild Bronzefist\" sw184/cw143"
+     ],
+     "minFont": 11,
+     "minFontAt": "span.sp-gen \"—\"",
+     "overlaps": [],
+     "stickyOverlaps": 0,
+     "wordBreaks": [],
+     "bottomHidden": 0,
+     "occluded": [],
+     "nBoxes": 49,
+     "targets": 37,
+     "small24": [],
+     "small44": 18,
+     "headPresent": true,
+     "chosenHeroHead": false,
+     "hasCard": true
+    },
+    "card": {
+     "present": true,
+     "tabId": "PL-BBFB73",
+     "heroName": "Lanethil of House Aerith",
+     "card": {
+      "x": 71.21875,
+      "y": 441.84375,
+      "w": 1777.5625,
+      "h": 441.78125,
+      "r": 1848.78125,
+      "b": 883.625
+     },
+     "pic": {
+      "x": 82.21875,
+      "y": 524.125,
+      "w": 258,
+      "h": 322.5,
+      "r": 340.21875,
+      "b": 846.625
+     },
+     "picTag": "img",
+     "plate": {
+      "x": 71.21875,
+      "y": 441.84375,
+      "w": 280,
+      "h": 441.78125,
+      "r": 351.21875,
+      "b": 883.625
+     },
+     "plateClass": "hero-figure",
+     "name": {
+      "x": 460.609375,
+      "y": 457.140625,
+      "w": 266.1875,
+      "h": 28.59375,
+      "r": 726.796875,
+      "b": 485.734375
+     },
+     "nameTag": "strong.sheet-name",
+     "badge": {
+      "x": 392.328125,
+      "y": 455.453125,
+      "w": 51.96875,
+      "h": 51.96875,
+      "r": 444.296875,
+      "b": 507.421875,
+      "tier": null,
+      "cls": "level-badge plate-copper",
+      "text": "Lv20",
+      "label": null,
+      "num": "20",
+      "labelBox": null,
+      "numBox": {
+       "x": 408,
+       "y": 477.703125,
+       "w": 20.625,
+       "h": 20.609375,
+       "r": 428.625,
+       "b": 498.3125
+      }
+     },
+     "roll": {
+      "x": 1266.75,
+      "y": 460.4375,
+      "w": 144.21875,
+      "h": 42,
+      "r": 1410.96875,
+      "b": 502.4375,
+      "label": "Reroll hero",
+      "padding": [
+       8,
+       14,
+       8,
+       14
+      ],
+      "margin": [
+       0,
+       0,
+       0,
+       0
+      ],
+      "cls": "profile-action profile-action-manage hero-reroll btn-stone",
+      "bgImage": "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequenc",
+      "icon": {
+       "x": 1282.75,
+       "y": 472.015625,
+       "w": 18.84375,
+       "h": 18.84375,
+       "r": 1301.59375,
+       "b": 490.859375
+      }
+     },
+     "rows": []
+    },
+    "entry": {
+     "id": "PL-BBFB73",
+     "level": 20,
+     "name": "Lanethil of House Aerith"
+    },
+    "overlay": {
+     "picCoversPlate": 0.673,
+     "picVsCard": 0.106,
+     "nameInside": false,
+     "tags": [
+      {
+       "text": "Elf",
+       "cls": "steel-sign-race",
+       "inside": false
+      },
+      {
+       "text": "High Elf",
+       "cls": "steel-sign-sub",
+       "inside": false
+      },
+      {
+       "text": "Elf · High Elf · Assassin · Hidden Blade",
+       "cls": "sheet-meta",
+       "inside": false
+      }
+     ],
+     "tagsInside": 0,
+     "nTags": 3,
+     "contrast": {
+      "name": {
+       "eff": {
+        "median": 9.36,
+        "p10": 7.9,
+        "colour": "rgb(240, 207, 115)",
+        "back": "rgb(42,43,45)"
+       },
+       "bare": {
+        "median": 8.21,
+        "p10": 7.63,
+        "colour": "rgb(240, 207, 115)",
+        "back": "rgb(51,52,55)"
+       }
+      },
+      "tag0:Elf": {
+       "eff": {
+        "median": 4.96,
+        "p10": 3.38,
+        "colour": "rgb(37, 41, 46)",
+        "back": "rgb(145,151,160)"
+       },
+       "bare": {
+        "median": 5.1,
+        "p10": 4.04,
+        "colour": "rgb(37, 41, 46)",
+        "back": "rgb(147,153,163)"
+       }
+      },
+      "tag1:High Elf": {
+       "eff": {
+        "median": 5.15,
+        "p10": 2.26,
+        "colour": "rgb(51, 56, 63)",
+        "back": "rgb(166,172,179)"
+       },
+       "bare": {
+        "median": 5.47,
+        "p10": 4.06,
+        "colour": "rgb(51, 56, 63)",
+        "back": "rgb(171,177,185)"
+       }
+      },
+      "tag2:Elf · High Elf ·": {
+       "eff": {
+        "median": 9.08,
+        "p10": 8.57,
+        "colour": "rgb(223, 207, 165)",
+        "back": "rgb(43,44,45)"
+       },
+       "bare": {
+        "median": 9.08,
+        "p10": 8.57,
+        "colour": "rgb(223, 207, 165)",
+        "back": "rgb(43,44,45)"
+       }
+      }
+     }
+    },
+    "rollFace": {
+     "hue": 220,
+     "sat": 0.051,
+     "satShare": 0.179,
+     "rgb": [
+      48,
+      49,
+      51
+     ]
+    }
+   },
+   "gen": {
+    "layout": {
+     "docOverflow": 0,
+     "scrOverflow": 0,
+     "offRight": [],
+     "textEls": 442,
+     "clipped": [],
+     "truncated": [
+      "strong. \"Lanethil of House Aerith\" sw260/cw143",
+      "strong. \"Galisëliae of House Elun\" sw253/cw143",
+      "strong. \"Mulurid Echoborn\" sw173/cw143",
+      "strong. \"Uloulla Darkkin\" sw155/cw143",
+      "strong. \"Rasaka of the Stepperunn\" sw269/cw143",
+      "strong. \"Sylaennewyn Mossstep\" sw219/cw143",
+      "strong. \"Valor Severerian\" sw156/cw143",
+      "strong. \"Zu'ug of the Marshgnawer\" sw257/cw143",
+      "strong. \"Dwahild Bronzefist\" sw184/cw143",
+      "span.group-summary \"Critical Strike — · Hast\" sw359/cw359"
+     ],
+     "minFont": 11,
+     "minFontAt": "p.bp-lore \"Carved from the worl\"",
+     "overlaps": [],
+     "stickyOverlaps": 0,
+     "wordBreaks": [],
+     "bottomHidden": 0,
+     "occluded": [],
+     "nBoxes": 142,
+     "targets": 131,
+     "small24": [],
+     "small44": 88,
+     "headPresent": false,
+     "chosenHeroHead": false,
+     "hasCard": true
+    },
+    "viewer": {
+     "hook": true,
+     "shadowProbe": true,
+     "canvas": {
+      "x": 161.21875,
+      "y": 320.125,
+      "w": 360,
+      "h": 440
+     },
+     "nearPts": 127,
+     "rimPts": 30,
+     "shadowMap": true,
+     "coverage": 0.0326,
+     "ped": {
+      "radiusM": 0.6,
+      "heightM": 0.12,
+      "topY": 0
+     },
+     "nearOn": 0.06449991618992297,
+     "rimOn": 0.14161243817041091,
+     "nearOff": 0.1538222098849671,
+     "rimOff": 0.15085736643939474,
+     "feetVsRim": 0.455,
+     "feetVsRimOff": 1.02,
+     "onVsOff": 0.419
+    }
+   }
+  },
+  "2560": {
+   "openMs": 7309,
+   "hero": {
+    "layout": {
+     "docOverflow": 0,
+     "scrOverflow": 0,
+     "offRight": [],
+     "textEls": 138,
+     "clipped": [],
+     "truncated": [
+      "strong. \"Lanethil of House Aerith\" sw290/cw160",
+      "strong. \"Galisëliae of House Elun\" sw282/cw160",
+      "strong. \"Mulurid Echoborn\" sw193/cw160",
+      "strong. \"Uloulla Darkkin\" sw173/cw160",
+      "strong. \"Rasaka of the Stepperunn\" sw301/cw160",
+      "strong. \"Sylaennewyn Mossstep\" sw244/cw160",
+      "strong. \"Valor Severerian\" sw174/cw160",
+      "strong. \"Zu'ug of the Marshgnawer\" sw287/cw160",
+      "strong. \"Dwahild Bronzefist\" sw206/cw160"
+     ],
+     "minFont": 11,
+     "minFontAt": "span.sp-gen \"—\"",
+     "overlaps": [
+      "button.stepper-arrow\"\" x summary.opt-head\"Match terms2\" 44x66",
+      "button.stepper-arrow\"\" x summary.opt-head\"Match terms2\" 44x66",
+      "button.stepper-arrow\"\" x summary.opt-head\"Walls2 optio\" 44x40",
+      "button.stepper-arrow\"\" x summary.opt-head\"Walls2 optio\" 44x40",
+      "button.stepper-arrow\"\" x summary.opt-head\"Walls2 optio\" 44x40",
+      "button.stepper-arrow\"\" x summary.opt-head\"Walls2 optio\" 44x40"
+     ],
+     "stickyOverlaps": 0,
+     "wordBreaks": [],
+     "bottomHidden": 0,
+     "occluded": [],
+     "nBoxes": 49,
+     "targets": 37,
+     "small24": [],
+     "small44": 10,
+     "headPresent": true,
+     "chosenHeroHead": false,
+     "hasCard": true
+    },
+    "card": {
+     "present": true,
+     "tabId": "PL-BBFB73",
+     "heroName": "Lanethil of House Aerith",
+     "card": {
+      "x": 93,
+      "y": 511.359375,
+      "w": 2374,
+      "h": 448.15625,
+      "r": 2467,
+      "b": 959.515625
+     },
+     "pic": {
+      "x": 104,
+      "y": 598.015625,
+      "w": 258,
+      "h": 322.5,
+      "r": 362,
+      "b": 920.515625
+     },
+     "picTag": "img",
+     "plate": {
+      "x": 93,
+      "y": 511.359375,
+      "w": 280,
+      "h": 448.15625,
+      "r": 373,
+      "b": 959.515625
+     },
+     "plateClass": "hero-figure",
+     "name": {
+      "x": 500.75,
+      "y": 532.453125,
+      "w": 266.1875,
+      "h": 28.59375,
+      "r": 766.9375,
+      "b": 561.046875
+     },
+     "nameTag": "strong.sheet-name",
+     "badge": {
+      "x": 421,
+      "y": 528.75,
+      "w": 58,
+      "h": 58,
+      "r": 479,
+      "b": 586.75,
+      "tier": null,
+      "cls": "level-badge plate-copper",
+      "text": "Lv20",
+      "label": null,
+      "num": "20",
+      "labelBox": null,
+      "numBox": {
+       "x": 438.5,
+       "y": 553.65625,
+       "w": 23,
+       "h": 23,
+       "r": 461.5,
+       "b": 576.65625
+      }
+     },
+     "roll": {
+      "x": 1831.46875,
+      "y": 535.25,
+      "w": 157.078125,
+      "h": 45,
+      "r": 1988.546875,
+      "b": 580.25,
+      "label": "Reroll hero",
+      "padding": [
+       8,
+       14,
+       8,
+       14
+      ],
+      "margin": [
+       0,
+       0,
+       0,
+       0
+      ],
+      "cls": "profile-action profile-action-manage hero-reroll btn-stone",
+      "bgImage": "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequenc",
+      "icon": {
+       "x": 1847.46875,
+       "y": 547.25,
+       "w": 21,
+       "h": 21,
+       "r": 1868.46875,
+       "b": 568.25
+      }
+     },
+     "rows": []
+    },
+    "entry": {
+     "id": "PL-BBFB73",
+     "level": 20,
+     "name": "Lanethil of House Aerith"
+    },
+    "overlay": {
+     "picCoversPlate": 0.663,
+     "picVsCard": 0.078,
+     "nameInside": false,
+     "tags": [
+      {
+       "text": "Elf",
+       "cls": "steel-sign-race",
+       "inside": false
+      },
+      {
+       "text": "High Elf",
+       "cls": "steel-sign-sub",
+       "inside": false
+      },
+      {
+       "text": "Elf · High Elf · Assassin · Hidden Blade",
+       "cls": "sheet-meta",
+       "inside": false
+      }
+     ],
+     "tagsInside": 0,
+     "nTags": 3,
+     "contrast": {
+      "name": {
+       "eff": {
+        "median": 9.36,
+        "p10": 7.99,
+        "colour": "rgb(240, 207, 115)",
+        "back": "rgb(42,43,45)"
+       },
+       "bare": {
+        "median": 8.23,
+        "p10": 7.72,
+        "colour": "rgb(240, 207, 115)",
+        "back": "rgb(51,52,54)"
+       }
+      },
+      "tag0:Elf": {
+       "eff": {
+        "median": 5.01,
+        "p10": 2.75,
+        "colour": "rgb(37, 41, 46)",
+        "back": "rgb(145,152,160)"
+       },
+       "bare": {
+        "median": 4.96,
+        "p10": 4.02,
+        "colour": "rgb(37, 41, 46)",
+        "back": "rgb(144,151,160)"
+       }
+      },
+      "tag1:High Elf": {
+       "eff": {
+        "median": 5.13,
+        "p10": 2.2,
+        "colour": "rgb(51, 56, 63)",
+        "back": "rgb(166,171,178)"
+       },
+       "bare": {
+        "median": 5.28,
+        "p10": 3.99,
+        "colour": "rgb(51, 56, 63)",
+        "back": "rgb(168,174,183)"
+       }
+      },
+      "tag2:Elf · High Elf ·": {
+       "eff": {
+        "median": 9,
+        "p10": 8.45,
+        "colour": "rgb(223, 207, 165)",
+        "back": "rgb(44,44,46)"
+       },
+       "bare": {
+        "median": 9,
+        "p10": 8.45,
+        "colour": "rgb(223, 207, 165)",
+        "back": "rgb(44,44,46)"
+       }
+      }
+     }
+    },
+    "rollFace": {
+     "hue": 220,
+     "sat": 0.051,
+     "satShare": 0.18,
+     "rgb": [
+      48,
+      49,
+      51
+     ]
+    }
+   },
+   "gen": {
+    "layout": {
+     "docOverflow": 0,
+     "scrOverflow": 0,
+     "offRight": [],
+     "textEls": 442,
+     "clipped": [],
+     "truncated": [
+      "strong. \"Lanethil of House Aerith\" sw290/cw160",
+      "strong. \"Galisëliae of House Elun\" sw282/cw160",
+      "strong. \"Mulurid Echoborn\" sw193/cw160",
+      "strong. \"Uloulla Darkkin\" sw173/cw160",
+      "strong. \"Rasaka of the Stepperunn\" sw301/cw160",
+      "strong. \"Sylaennewyn Mossstep\" sw244/cw160",
+      "strong. \"Valor Severerian\" sw174/cw160",
+      "strong. \"Zu'ug of the Marshgnawer\" sw287/cw160",
+      "strong. \"Dwahild Bronzefist\" sw206/cw160"
+     ],
+     "minFont": 11,
+     "minFontAt": "p.bp-lore \"Carved from the worl\"",
+     "overlaps": [],
+     "stickyOverlaps": 0,
+     "wordBreaks": [],
+     "bottomHidden": 0,
+     "occluded": [],
+     "nBoxes": 142,
+     "targets": 131,
+     "small24": [],
+     "small44": 84,
+     "headPresent": false,
+     "chosenHeroHead": false,
+     "hasCard": true
+    },
+    "viewer": {
+     "hook": true,
+     "shadowProbe": true,
+     "canvas": {
+      "x": 183,
+      "y": 500.015625,
+      "w": 360,
+      "h": 440
+     },
+     "nearPts": 127,
+     "rimPts": 30,
+     "shadowMap": true,
+     "coverage": 0.0326,
+     "ped": {
+      "radiusM": 0.6,
+      "heightM": 0.12,
+      "topY": 0
+     },
+     "nearOn": 0.06449991618992297,
+     "rimOn": 0.14161243817041091,
+     "nearOff": 0.1538222098849671,
+     "rimOff": 0.15085736643939474,
+     "feetVsRim": 0.455,
+     "feetVsRimOff": 1.02,
+     "onVsOff": 0.419
+    }
+   }
+  },
+  "844x390": {
+   "openMs": 6959,
+   "hero": {
+    "layout": {
+     "docOverflow": 0,
+     "scrOverflow": 0,
+     "offRight": [],
+     "textEls": 138,
+     "clipped": [],
+     "truncated": [
+      "strong. \"Lanethil of House Aerith\" sw203/cw112",
+      "strong. \"Galisëliae of House Elun\" sw198/cw112",
+      "strong. \"Mulurid Echoborn\" sw135/cw112",
+      "strong. \"Uloulla Darkkin\" sw121/cw112",
+      "strong. \"Rasaka of the Stepperunn\" sw210/cw112",
+      "strong. \"Sylaennewyn Mossstep\" sw171/cw112",
+      "strong. \"Valor Severerian\" sw122/cw112",
+      "strong. \"Zu'ug of the Marshgnawer\" sw201/cw112",
+      "strong. \"Dwahild Bronzefist\" sw144/cw112"
+     ],
+     "minFont": 11,
+     "minFontAt": "span.sp-gen \"—\"",
+     "overlaps": [],
+     "stickyOverlaps": 0,
+     "wordBreaks": [],
+     "bottomHidden": 0,
+     "occluded": [],
+     "nBoxes": 49,
+     "targets": 37,
+     "small24": [],
+     "small44": 16,
+     "headPresent": true,
+     "chosenHeroHead": false,
+     "hasCard": true
+    },
+    "card": {
+     "present": true,
+     "tabId": "PL-BBFB73",
+     "heroName": "Lanethil of House Aerith",
+     "card": {
+      "x": 34.109375,
+      "y": 442.8125,
+      "w": 775.765625,
+      "h": 637.953125,
+      "r": 809.875,
+      "b": 1080.765625
+     },
+     "pic": {
+      "x": 45.109375,
+      "y": 514.21875,
+      "w": 258,
+      "h": 322.5,
+      "r": 303.109375,
+      "b": 836.71875
+     },
+     "picTag": "img",
+     "plate": {
+      "x": 34.109375,
+      "y": 442.8125,
+      "w": 280,
+      "h": 428.90625,
+      "r": 314.109375,
+      "b": 871.71875
+     },
+     "plateClass": "hero-figure",
+     "name": {
+      "x": 391.15625,
+      "y": 449.90625,
+      "w": 266.1875,
+      "h": 28.59375,
+      "r": 657.34375,
+      "b": 478.5
+     },
+     "nameTag": "strong.sheet-name",
+     "badge": {
+      "x": 343.390625,
+      "y": 452.90625,
+      "w": 40.59375,
+      "h": 40.59375,
+      "r": 383.984375,
+      "b": 493.5,
+      "tier": null,
+      "cls": "level-badge plate-copper",
+      "text": "Lv20",
+      "label": null,
+      "num": "20",
+      "labelBox": null,
+      "numBox": {
+       "x": 355.625,
+       "y": 470.90625,
+       "w": 16.109375,
+       "h": 16.09375,
+       "r": 371.734375,
+       "b": 487
+      }
+     },
+     "roll": {
+      "x": 479.28125,
+      "y": 503.671875,
+      "w": 124.890625,
+      "h": 42,
+      "r": 604.171875,
+      "b": 545.671875,
+      "label": "Reroll hero",
+      "padding": [
+       8,
+       14,
+       8,
+       14
+      ],
+      "margin": [
+       0,
+       0,
+       0,
+       0
+      ],
+      "cls": "profile-action profile-action-manage hero-reroll btn-stone",
+      "bgImage": "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequenc",
+      "icon": {
+       "x": 495.28125,
+       "y": 516.875,
+       "w": 15.59375,
+       "h": 15.59375,
+       "r": 510.875,
+       "b": 532.46875
+      }
+     },
+     "rows": []
+    },
+    "entry": {
+     "id": "PL-BBFB73",
+     "level": 20,
+     "name": "Lanethil of House Aerith"
+    },
+    "overlay": {
+     "picCoversPlate": 0.693,
+     "picVsCard": 0.168,
+     "nameInside": false,
+     "tags": [
+      {
+       "text": "Elf",
+       "cls": "steel-sign-race",
+       "inside": false
+      },
+      {
+       "text": "High Elf",
+       "cls": "steel-sign-sub",
+       "inside": false
+      },
+      {
+       "text": "Elf · High Elf · Assassin · Hidden Blade",
+       "cls": "sheet-meta",
+       "inside": false
+      }
+     ],
+     "tagsInside": 0,
+     "nTags": 3,
+     "contrast": {
+      "name": {
+       "eff": {
+        "median": 8.69,
+        "p10": 7.47,
+        "colour": "rgb(240, 207, 115)",
+        "back": "rgb(47,48,51)"
+       },
+       "bare": {
+        "median": 7.52,
+        "p10": 7.15,
+        "colour": "rgb(240, 207, 115)",
+        "back": "rgb(57,58,61)"
+       }
+      },
+      "tag0:Elf": {
+       "eff": {
+        "median": 4.79,
+        "p10": 2.11,
+        "colour": "rgb(37, 41, 46)",
+        "back": "rgb(142,148,156)"
+       },
+       "bare": {
+        "median": 4.96,
+        "p10": 3.97,
+        "colour": "rgb(37, 41, 46)",
+        "back": "rgb(144,151,160)"
+       }
+      },
+      "tag1:High Elf": {
+       "eff": {
+        "median": 4.86,
+        "p10": 1.75,
+        "colour": "rgb(51, 56, 63)",
+        "back": "rgb(161,167,174)"
+       },
+       "bare": {
+        "median": 5.09,
+        "p10": 3.89,
+        "colour": "rgb(51, 56, 63)",
+        "back": "rgb(164,171,179)"
+       }
+      },
+      "tag2:Elf · High Elf ·": {
+       "eff": {
+        "median": 7.83,
+        "p10": 7.39,
+        "colour": "rgb(223, 207, 165)",
+        "back": "rgb(53,54,57)"
+       },
+       "bare": {
+        "median": 7.83,
+        "p10": 7.39,
+        "colour": "rgb(223, 207, 165)",
+        "back": "rgb(53,54,57)"
+       }
+      }
+     }
+    },
+    "rollFace": {
+     "hue": 220,
+     "sat": 0.051,
+     "satShare": 0.178,
+     "rgb": [
+      48,
+      49,
+      51
+     ]
+    }
+   },
+   "gen": {
+    "layout": {
+     "docOverflow": 0,
+     "scrOverflow": 0,
+     "offRight": [],
+     "textEls": 439,
+     "clipped": [],
+     "truncated": [
+      "strong. \"Lanethil of House Aerith\" sw203/cw112",
+      "strong. \"Galisëliae of House Elun\" sw198/cw112",
+      "strong. \"Mulurid Echoborn\" sw135/cw112",
+      "strong. \"Uloulla Darkkin\" sw121/cw112",
+      "strong. \"Rasaka of the Stepperunn\" sw210/cw112",
+      "strong. \"Sylaennewyn Mossstep\" sw171/cw112",
+      "strong. \"Valor Severerian\" sw122/cw112",
+      "strong. \"Zu'ug of the Marshgnawer\" sw201/cw112",
+      "strong. \"Dwahild Bronzefist\" sw144/cw112"
+     ],
+     "minFont": 11,
+     "minFontAt": "p.bp-lore \"Carved from the worl\"",
+     "overlaps": [],
+     "stickyOverlaps": 4,
+     "wordBreaks": [],
+     "bottomHidden": 0,
+     "occluded": [],
+     "nBoxes": 142,
+     "targets": 131,
+     "small24": [],
+     "small44": 86,
+     "headPresent": false,
+     "chosenHeroHead": false,
+     "hasCard": true
+    },
+    "viewer": {
+     "hook": true,
+     "shadowProbe": true,
+     "canvas": {
+      "x": 132.609375,
+      "y": 59.21875,
+      "w": 222.984375,
+      "h": 272.53125
+     },
+     "nearPts": 90,
+     "rimPts": 17,
+     "shadowMap": true,
+     "coverage": 0.0326,
+     "ped": {
+      "radiusM": 0.6,
+      "heightM": 0.12,
+      "topY": 0
+     },
+     "nearOn": 0.028656347969601564,
+     "rimOn": 0.10710317213506802,
+     "nearOff": 0.08174992265689199,
+     "rimOff": 0.11199502892456047,
+     "feetVsRim": 0.268,
+     "feetVsRimOff": 0.73,
+     "onVsOff": 0.351
+    }
+   }
+  }
+ },
+ "errors": [],
+ "stats": {
+  "available": true,
+  "attributes": 7,
+  "derived": 32,
+  "domRows": 0,
+  "domRowsVisible": 0,
+  "mismatch": [],
+  "badDelta": [],
+  "missing": [
+   "vitality",
+   "resilience",
+   "focus",
+   "reflex",
+   "strength",
+   "intelligence",
+   "agility",
+   "maxHealth",
+   "maxMana",
+   "maxStamina",
+   "manaRegen",
+   "staminaRegen",
+   "attackPower",
+   "attackInterval",
+   "swingInterval",
+   "attacksPerSecond",
+   "hit",
+   "critChance",
+   "woundDealt",
+   "armor",
+   "hitTaken",
+   "critTaken",
+   "dodge",
+   "woundTaken",
+   "staminaFatigue",
+   "effectiveAgility",
+   "moveSpeed",
+   "turnRate",
+   "dash",
+   "animSpeed",
+   "recovery",
+   "castTime",
+   "powerTail",
+   "manaFatigue",
+   "cooldown",
+   "mass",
+   "density",
+   "toughness",
+   "reach"
+  ],
+  "attrWithDelta": 0,
+  "recompute": {
+   "recipes": 39,
+   "picked": 8,
+   "ok": 8,
+   "rows": [
+    {
+     "key": "focus",
+     "sheet": 10,
+     "mine": 10,
+     "sheetDelta": 0,
+     "mineDelta": 0,
+     "ok": true
+    },
+    {
+     "key": "mass",
+     "sheet": 57.199999999999996,
+     "mine": 57.199999999999996,
+     "sheetDelta": -19.63749999999998,
+     "mineDelta": -19.63749999999998,
+     "ok": true
+    },
+    {
+     "key": "critChance",
+     "sheet": 15,
+     "mine": 15,
+     "sheetDelta": 0.745967741935484,
+     "mineDelta": 0.745967741935484,
+     "ok": true
+    },
+    {
+     "key": "recovery",
+     "sheet": 119.10000000000001,
+     "mine": 119.10000000000001,
+     "sheetDelta": 15.892187500000006,
+     "mineDelta": 15.892187500000006,
+     "ok": true
+    },
+    {
+     "key": "maxMana",
+     "sheet": 128,
+     "mine": 128,
+     "sheetDelta": 45.75,
+     "mineDelta": 45.75,
+     "ok": true
+    },
+    {
+     "key": "manaRegen",
+     "sheet": 1.50696,
+     "mine": 1.50696,
+     "sheetDelta": 0.40193999999999974,
+     "mineDelta": 0.40193999999999974,
+     "ok": true
+    },
+    {
+     "key": "woundTaken",
+     "sheet": 109.00000000000001,
+     "mine": 109.00000000000001,
+     "sheetDelta": 11.062500000000014,
+     "mineDelta": 11.062500000000014,
+     "ok": true
+    },
+    {
+     "key": "vitality",
+     "sheet": 7,
+     "mine": 7,
+     "sheetDelta": -2,
+     "mineDelta": -2,
+     "ok": true
+    }
+   ]
+  },
+  "sample": [
+   "attr:vitality=7(−2)",
+   "attr:resilience=7(0)",
+   "attr:focus=10(0)",
+   "attr:reflex=18(+2)",
+   "attr:strength=8(−1)",
+   "attr:intelligence=18(+7)",
+   "attr:agility=18(+2)",
+   "derived:maxHealth=26 879(+3 369)",
+   "derived:maxMana=128(+46)",
+   "derived:maxStamina=56(−29)",
+   "derived:manaRegen=1.51/s(+0.40)",
+   "derived:staminaRegen=3.99/s(−1.37)",
+   "derived:attackPower=626(+149)",
+   "derived:attackInterval=0.84 s(−0.23)",
+   "derived:swingInterval=0.44 s(−0.57)",
+   "derived:attacksPerSecond=2.30/s(+1.10)",
+   "derived:hit=534(+127)",
+   "derived:critChance=15.0%(+0.7)",
+   "derived:woundDealt=92%(−11)",
+   "derived:armor=4.0(0)",
+   "derived:hitTaken=383(−24)",
+   "derived:critTaken=15.0%(0)",
+   "derived:dodge=7.1%(+5.9)",
+   "derived:woundTaken=109%(+11)",
+   "derived:staminaFatigue=71%(−38)",
+   "derived:effectiveAgility=17.6(+6.4)",
+   "derived:moveSpeed=109.2%(+7.6)",
+   "derived:turnRate=122.9%(+19.1)",
+   "derived:dash=115.3%(+12.7)",
+   "derived:animSpeed=115.3%(+12.7)",
+   "derived:recovery=119.1%(+15.9)",
+   "derived:castTime=1.84 s(−0.18)",
+   "derived:powerTail=0.25 s(−0.04)",
+   "derived:manaFatigue=85%(−12)",
+   "derived:cooldown=7.50 s(+0.04)",
+   "derived:mass=57.2 kg(−19.6)",
+   "derived:density=957 kg/m³(−228)",
+   "derived:toughness=438(−107)",
+   "derived:reach=0.68 m(−2.13)"
+  ]
+ },
+ "light": [
+  {
+   "name": "PREVIEW_KEY_DIR",
+   "deg": 9.245973666550656
+  }
+ ]
+}

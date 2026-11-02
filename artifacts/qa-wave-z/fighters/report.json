@@ -1,0 +1,3255 @@
+{
+ "dist": "dist-fighters",
+ "generated": "2026-11-02T20:34:30.913Z",
+ "viewports": {
+  "320": {
+   "step": "[data-equip-close]",
+   "hero": {
+    "mode": "hero",
+    "tabs": 4,
+    "tabMidWordBreaks": [],
+    "textMidWordBreaks": [],
+    "tabBadges": [
+     "LV1:bronze",
+     "LV1:bronze",
+     "LV1:bronze"
+    ],
+    "panelHead": {
+     "rosterHead": false,
+     "chosenHeroText": false
+    },
+    "rerollLabelGone": true,
+    "plate": {
+     "present": true,
+     "plate": {
+      "w": 270,
+      "h": 360,
+      "aspectHW": 1.333
+     },
+     "picture": {
+      "coversPlate": true,
+      "w": 266,
+      "h": 356
+     },
+     "image": {
+      "natural": [
+       560,
+       747
+      ],
+      "fit": "cover",
+      "position": "50% 35%",
+      "src": "data:image/jpeg;base64"
+     },
+     "badge": {
+      "x": 6,
+      "y": 6,
+      "w": 51,
+      "h": 29,
+      "tier": "bronze",
+      "text": "LV1"
+     },
+     "badgeTopLeft": true,
+     "overlapBadgeName": 0,
+     "overlapBadgeTags": 0,
+     "overlapBadgeFoot": 0,
+     "overlapSocketsFoot": 0,
+     "overlapSocketsBadge": 0,
+     "nameAndTagsInside": true,
+     "badgeToNamePx": 201,
+     "tags": [
+      "race:Elf",
+      "subrace:Dark Elf",
+      "class:Barbarian",
+      "sign:The Moon",
+      "weapon:Greataxe"
+     ],
+     "socketSides": null,
+     "minSocket": null
+    },
+    "roll": {
+     "present": true,
+     "label": "Roll",
+     "action": "reroll (data-hero-reroll)",
+     "w": 270,
+     "h": 44,
+     "iconPx": 21.8,
+     "fontPx": 13,
+     "iconToFont": 1.68,
+     "padding": "3px 10px 3px 6px",
+     "purple": true,
+     "stone": 7
+    },
+    "sheet": {
+     "groups": [
+      "attributes",
+      "pools",
+      "offence",
+      "defence",
+      "mobility",
+      "magic",
+      "body"
+     ],
+     "rows": 39,
+     "inlineStyle": 0,
+     "toned": 39,
+     "sample": [
+      "VIT13(−1)",
+      "RES11(−1)",
+      "FOC10(+2)"
+     ]
+    },
+    "audit": {
+     "overflowN": 0,
+     "overflow": [],
+     "clippedN": 0,
+     "clipped": [],
+     "tinyN": 0,
+     "tiny": [],
+     "smallN": 0,
+     "small": []
+    },
+    "titles": {
+     "n": 10,
+     "maxDx": 0.01,
+     "maxDy": 0.7,
+     "within1": 10,
+     "worst": {
+      "sel": ".menu-screen.active .screen-head h2",
+      "text": "Fighters",
+      "dx": 0,
+      "dy": -0.7
+     }
+    },
+    "contrast": {
+     "hero name": {
+      "n": 1,
+      "min": 12.4,
+      "colour": "rgb(240, 207, 115)",
+      "back": "rgb(22, 17, 11)"
+     },
+     "tags": {
+      "n": 5,
+      "min": 16.19,
+      "colour": "rgb(251, 231, 176)",
+      "back": "rgb(14, 9, 5)"
+     },
+     "record": {
+      "n": 1,
+      "min": 14.68,
+      "colour": "rgb(234, 220, 184)",
+      "back": "rgb(11, 8, 4)"
+     },
+     "LV number": {
+      "n": 1,
+      "min": 8.37,
+      "colour": "rgb(255, 242, 216)",
+      "back": "rgb(98, 64, 22)"
+     },
+     "LV label": {
+      "n": 1,
+      "min": 6.74,
+      "colour": "rgb(255, 242, 216)",
+      "back": "rgb(117, 76, 30)"
+     },
+     "Roll": {
+      "n": 1,
+      "min": 10.59,
+      "colour": "rgb(251, 241, 255)",
+      "back": "rgb(65, 50, 83)"
+     },
+     "action bar": {
+      "n": 3,
+      "min": 6.46,
+      "colour": "rgb(240, 207, 115)",
+      "back": "rgb(67, 68, 68)"
+     },
+     "sheet title": {
+      "n": 6,
+      "min": 8.7,
+      "colour": "rgb(240, 207, 115)",
+      "back": "rgb(61, 45, 33)"
+     },
+     "sheet label": {
+      "n": 6,
+      "min": 11.06,
+      "colour": "rgb(243, 230, 196)",
+      "back": "rgb(58, 42, 30)"
+     },
+     "sheet value": {
+      "n": 6,
+      "min": 12.4,
+      "colour": "rgb(255, 243, 207)",
+      "back": "rgb(58, 42, 30)"
+     },
+     "sheet delta": {
+      "n": 6,
+      "min": 5.6,
+      "colour": "rgb(207, 152, 147)",
+      "back": "rgb(58, 42, 30)"
+     },
+     "tab name": {
+      "n": 4,
+      "min": 6.68,
+      "colour": "rgb(199, 179, 138)",
+      "back": "rgb(56, 43, 30)"
+     },
+     "tab LV": {
+      "n": 3,
+      "min": 9.34,
+      "colour": "rgb(255, 242, 216)",
+      "back": "rgb(90, 57, 18)"
+     }
+    },
+    "tiers": [
+     "bronze",
+     "copper",
+     "silver",
+     "gold",
+     "platinum"
+    ],
+    "tierContrast": {
+     "bronze": {
+      "num": 8.37,
+      "label": 6.74,
+      "rim": 5
+     },
+     "copper": {
+      "num": 8.27,
+      "label": 6.45,
+      "rim": 5
+     },
+     "silver": {
+      "num": 11.05,
+      "label": 12.81,
+      "rim": 5
+     },
+     "gold": {
+      "num": 9.96,
+      "label": 12.61,
+      "rim": 5
+     },
+     "platinum": {
+      "num": 13.62,
+      "label": 15.29,
+      "rim": 5
+     }
+    },
+    "afterRoll": {
+     "plate": {
+      "present": true,
+      "plate": {
+       "w": 270,
+       "h": 360,
+       "aspectHW": 1.333
+      },
+      "picture": {
+       "coversPlate": true,
+       "w": 266,
+       "h": 356
+      },
+      "image": {
+       "natural": [
+        560,
+        747
+       ],
+       "fit": "cover",
+       "position": "50% 35%",
+       "src": "data:image/jpeg;base64"
+      },
+      "badge": {
+       "x": 6,
+       "y": 6,
+       "w": 51,
+       "h": 29,
+       "tier": "bronze",
+       "text": "LV1"
+      },
+      "badgeTopLeft": true,
+      "overlapBadgeName": 0,
+      "overlapBadgeTags": 0,
+      "overlapBadgeFoot": 0,
+      "overlapSocketsFoot": 0,
+      "overlapSocketsBadge": 0,
+      "nameAndTagsInside": true,
+      "badgeToNamePx": 224,
+      "tags": [
+       "race:Dwarf",
+       "subrace:Deep",
+       "class:Mage",
+       "sign:The Serpent",
+       "weapon:Warped Staff"
+      ],
+      "socketSides": null,
+      "minSocket": null
+     },
+     "audit": {
+      "overflowN": 0,
+      "overflow": [],
+      "clippedN": 0,
+      "clipped": [],
+      "tinyN": 0,
+      "tiny": [],
+      "smallN": 0,
+      "small": []
+     }
+    },
+    "rollUndo": {
+     "before": "Xalvaith of House Vel'Draeth",
+     "afterRoll": "Thonamur Darkwarden",
+     "changed": true,
+     "undoOffered": true,
+     "afterUndo": "Xalvaith of House Vel'Draeth",
+     "restored": true
+    }
+   },
+   "creator": {
+    "plate": {
+     "present": true,
+     "plate": {
+      "w": 248,
+      "h": 437,
+      "aspectHW": 1.764
+     },
+     "picture": {
+      "coversPlate": true,
+      "w": 244,
+      "h": 433
+     },
+     "image": null,
+     "badge": {
+      "x": 6,
+      "y": 6,
+      "w": 51,
+      "h": 29,
+      "tier": "bronze",
+      "text": "LV1"
+     },
+     "badgeTopLeft": true,
+     "overlapBadgeName": 0,
+     "overlapBadgeTags": 0,
+     "overlapBadgeFoot": 0,
+     "overlapSocketsFoot": 0,
+     "overlapSocketsBadge": 0,
+     "nameAndTagsInside": true,
+     "badgeToNamePx": 280,
+     "tags": [
+      "race:Elf",
+      "subrace:Dark Elf",
+      "class:Barbarian",
+      "sign:The Moon",
+      "weapon:Greataxe"
+     ],
+     "socketSides": {
+      "leftGap": 5,
+      "rightGap": 5,
+      "middlePx": 146
+     },
+     "minSocket": 44
+    },
+    "sheet": {
+     "groups": [
+      "attributes",
+      "pools",
+      "offence",
+      "defence",
+      "mobility",
+      "magic",
+      "body"
+     ],
+     "rows": 39,
+     "inlineStyle": 0,
+     "toned": 39
+    },
+    "textMidWordBreaks": [],
+    "feetBandVisible": {
+     "visible": 25,
+     "of": 25,
+     "hits": {
+      "#creator-preview": 25
+     }
+    },
+    "plateFitsWindow": {
+     "h": 437,
+     "vh": 568,
+     "fits": true
+    },
+    "canvasDrawn": {
+     "css": [
+      244,
+      433
+     ],
+     "buffer": [
+      244,
+      433
+     ]
+    },
+    "audit": {
+     "overflowN": 0,
+     "overflow": [],
+     "clippedN": 0,
+     "clipped": [],
+     "tinyN": 0,
+     "tiny": [],
+     "smallN": 0,
+     "small": []
+    },
+    "contrast": {
+     "name": {
+      "n": 1,
+      "min": 12.76,
+      "colour": "rgb(240, 207, 115)",
+      "back": "rgb(18, 13, 9)"
+     },
+     "tags": {
+      "n": 5,
+      "min": 16.21,
+      "colour": "rgb(251, 231, 176)",
+      "back": "rgb(13, 9, 6)"
+     },
+     "LV number": {
+      "n": 1,
+      "min": 8.37,
+      "colour": "rgb(255, 242, 216)",
+      "back": "rgb(98, 64, 22)"
+     },
+     "caption": {
+      "n": 1,
+      "min": 14,
+      "colour": "rgb(230, 214, 176)",
+      "back": "rgb(9, 7, 4)"
+     },
+     "socket names": {
+      "n": 6,
+      "min": 7.26,
+      "colour": "rgb(199, 179, 138)",
+      "back": "rgb(40, 39, 40)"
+     },
+     "sheet label": {
+      "n": 6,
+      "min": 11.06,
+      "colour": "rgb(243, 230, 196)",
+      "back": "rgb(58, 42, 30)"
+     },
+     "sheet value": {
+      "n": 6,
+      "min": 12.4,
+      "colour": "rgb(255, 243, 207)",
+      "back": "rgb(58, 42, 30)"
+     }
+    },
+    "auditOpen": {
+     "overflowN": 0,
+     "overflow": [],
+     "clippedN": 0,
+     "clipped": [],
+     "tinyN": 0,
+     "tiny": [],
+     "smallN": 0,
+     "small": []
+    },
+    "titles": {
+     "n": 18,
+     "maxDx": 0.01,
+     "maxDy": 0.7,
+     "within1": 18,
+     "worst": {
+      "sel": ".menu-screen.active .screen-head h2",
+      "text": "Fighters",
+      "dx": 0,
+      "dy": -0.7
+     }
+    },
+    "picker": {
+     "open": true,
+     "coversPlate": true,
+     "items": 18
+    }
+   }
+  },
+  "390": {
+   "step": "[data-equip-close]",
+   "hero": {
+    "mode": "hero",
+    "tabs": 4,
+    "tabMidWordBreaks": [],
+    "textMidWordBreaks": [],
+    "tabBadges": [
+     "LV1:bronze",
+     "LV1:bronze",
+     "LV1:bronze"
+    ],
+    "panelHead": {
+     "rosterHead": false,
+     "chosenHeroText": false
+    },
+    "rerollLabelGone": true,
+    "plate": {
+     "present": true,
+     "plate": {
+      "w": 338,
+      "h": 451,
+      "aspectHW": 1.333
+     },
+     "picture": {
+      "coversPlate": true,
+      "w": 334,
+      "h": 447
+     },
+     "image": {
+      "natural": [
+       560,
+       747
+      ],
+      "fit": "cover",
+      "position": "50% 35%",
+      "src": "data:image/jpeg;base64"
+     },
+     "badge": {
+      "x": 6,
+      "y": 6,
+      "w": 51,
+      "h": 29,
+      "tier": "bronze",
+      "text": "LV1"
+     },
+     "badgeTopLeft": true,
+     "overlapBadgeName": 0,
+     "overlapBadgeTags": 0,
+     "overlapBadgeFoot": 0,
+     "overlapSocketsFoot": 0,
+     "overlapSocketsBadge": 0,
+     "nameAndTagsInside": true,
+     "badgeToNamePx": 308,
+     "tags": [
+      "race:Dwarf",
+      "subrace:Mountain",
+      "class:Assassin",
+      "sign:The Flame",
+      "weapon:Hidden Blade"
+     ],
+     "socketSides": null,
+     "minSocket": null
+    },
+    "roll": {
+     "present": true,
+     "label": "Roll",
+     "action": "reroll (data-hero-reroll)",
+     "w": 338,
+     "h": 44,
+     "iconPx": 21.8,
+     "fontPx": 13,
+     "iconToFont": 1.68,
+     "padding": "3px 12px 3px 7px",
+     "purple": true,
+     "stone": 7
+    },
+    "sheet": {
+     "groups": [
+      "attributes",
+      "pools",
+      "offence",
+      "defence",
+      "mobility",
+      "magic",
+      "body"
+     ],
+     "rows": 39,
+     "inlineStyle": 0,
+     "toned": 39,
+     "sample": [
+      "VIT10(+1)",
+      "RES11(+4)",
+      "FOC9(−1)"
+     ]
+    },
+    "audit": {
+     "overflowN": 0,
+     "overflow": [],
+     "clippedN": 0,
+     "clipped": [],
+     "tinyN": 0,
+     "tiny": [],
+     "smallN": 0,
+     "small": []
+    },
+    "titles": {
+     "n": 10,
+     "maxDx": 0.01,
+     "maxDy": 0.7,
+     "within1": 10,
+     "worst": {
+      "sel": ".menu-screen.active .screen-head h2",
+      "text": "Fighters",
+      "dx": 0,
+      "dy": -0.7
+     }
+    },
+    "contrast": {
+     "hero name": {
+      "n": 1,
+      "min": 12.38,
+      "colour": "rgb(240, 207, 115)",
+      "back": "rgb(23, 17, 10)"
+     },
+     "tags": {
+      "n": 5,
+      "min": 16.19,
+      "colour": "rgb(251, 231, 176)",
+      "back": "rgb(14, 9, 5)"
+     },
+     "record": {
+      "n": 1,
+      "min": 14.68,
+      "colour": "rgb(234, 220, 184)",
+      "back": "rgb(11, 8, 4)"
+     },
+     "LV number": {
+      "n": 1,
+      "min": 8.37,
+      "colour": "rgb(255, 242, 216)",
+      "back": "rgb(98, 64, 22)"
+     },
+     "LV label": {
+      "n": 1,
+      "min": 6.74,
+      "colour": "rgb(255, 242, 216)",
+      "back": "rgb(117, 76, 30)"
+     },
+     "Roll": {
+      "n": 1,
+      "min": 11.06,
+      "colour": "rgb(251, 241, 255)",
+      "back": "rgb(62, 48, 75)"
+     },
+     "action bar": {
+      "n": 3,
+      "min": 6.46,
+      "colour": "rgb(240, 207, 115)",
+      "back": "rgb(66, 68, 70)"
+     },
+     "sheet title": {
+      "n": 6,
+      "min": 8.7,
+      "colour": "rgb(240, 207, 115)",
+      "back": "rgb(61, 45, 33)"
+     },
+     "sheet label": {
+      "n": 6,
+      "min": 11.06,
+      "colour": "rgb(243, 230, 196)",
+      "back": "rgb(58, 42, 30)"
+     },
+     "sheet value": {
+      "n": 6,
+      "min": 12.4,
+      "colour": "rgb(255, 243, 207)",
+      "back": "rgb(58, 42, 30)"
+     },
+     "sheet delta": {
+      "n": 6,
+      "min": 5.45,
+      "colour": "rgb(222, 130, 122)",
+      "back": "rgb(48, 36, 25)"
+     },
+     "tab name": {
+      "n": 4,
+      "min": 6.45,
+      "colour": "rgb(199, 179, 138)",
+      "back": "rgb(60, 45, 31)"
+     },
+     "tab LV": {
+      "n": 3,
+      "min": 9.34,
+      "colour": "rgb(255, 242, 216)",
+      "back": "rgb(90, 57, 18)"
+     }
+    },
+    "tiers": [
+     "bronze",
+     "copper",
+     "silver",
+     "gold",
+     "platinum"
+    ],
+    "tierContrast": {
+     "bronze": {
+      "num": 8.37,
+      "label": 6.74,
+      "rim": 5
+     },
+     "copper": {
+      "num": 8.22,
+      "label": 6.45,
+      "rim": 5
+     },
+     "silver": {
+      "num": 11.05,
+      "label": 12.81,
+      "rim": 5
+     },
+     "gold": {
+      "num": 9.95,
+      "label": 12.61,
+      "rim": 5
+     },
+     "platinum": {
+      "num": 13.62,
+      "label": 15.29,
+      "rim": 5
+     }
+    },
+    "afterRoll": {
+     "plate": {
+      "present": true,
+      "plate": {
+       "w": 338,
+       "h": 451,
+       "aspectHW": 1.333
+      },
+      "picture": {
+       "coversPlate": true,
+       "w": 334,
+       "h": 447
+      },
+      "image": {
+       "natural": [
+        560,
+        747
+       ],
+       "fit": "cover",
+       "position": "50% 35%",
+       "src": "data:image/jpeg;base64"
+      },
+      "badge": {
+       "x": 6,
+       "y": 6,
+       "w": 51,
+       "h": 29,
+       "tier": "bronze",
+       "text": "LV1"
+      },
+      "badgeTopLeft": true,
+      "overlapBadgeName": 0,
+      "overlapBadgeTags": 0,
+      "overlapBadgeFoot": 0,
+      "overlapSocketsFoot": 0,
+      "overlapSocketsBadge": 0,
+      "nameAndTagsInside": true,
+      "badgeToNamePx": 279,
+      "tags": [
+       "race:Elf",
+       "subrace:Dark Elf",
+       "class:Barbarian",
+       "sign:The Void",
+       "weapon:Greataxe"
+      ],
+      "socketSides": null,
+      "minSocket": null
+     },
+     "audit": {
+      "overflowN": 0,
+      "overflow": [],
+      "clippedN": 0,
+      "clipped": [],
+      "tinyN": 0,
+      "tiny": [],
+      "smallN": 0,
+      "small": []
+     }
+    },
+    "rollUndo": {
+     "before": "Baidis Ironbrow",
+     "afterRoll": "Zilvezzizar of House Xor'Ithzal",
+     "changed": true,
+     "undoOffered": true,
+     "afterUndo": "Baidis Ironbrow",
+     "restored": true
+    }
+   },
+   "creator": {
+    "plate": {
+     "present": true,
+     "plate": {
+      "w": 316,
+      "h": 424,
+      "aspectHW": 1.341
+     },
+     "picture": {
+      "coversPlate": true,
+      "w": 312,
+      "h": 420
+     },
+     "image": null,
+     "badge": {
+      "x": 6,
+      "y": 6,
+      "w": 51,
+      "h": 29,
+      "tier": "bronze",
+      "text": "LV1"
+     },
+     "badgeTopLeft": true,
+     "overlapBadgeName": 0,
+     "overlapBadgeTags": 0,
+     "overlapBadgeFoot": 0,
+     "overlapSocketsFoot": 0,
+     "overlapSocketsBadge": 0,
+     "nameAndTagsInside": true,
+     "badgeToNamePx": 280,
+     "tags": [
+      "race:Dwarf",
+      "subrace:Mountain",
+      "class:Assassin",
+      "sign:The Flame",
+      "weapon:Hidden Blade"
+     ],
+     "socketSides": {
+      "leftGap": 5,
+      "rightGap": 5,
+      "middlePx": 215
+     },
+     "minSocket": 44
+    },
+    "sheet": {
+     "groups": [
+      "attributes",
+      "pools",
+      "offence",
+      "defence",
+      "mobility",
+      "magic",
+      "body"
+     ],
+     "rows": 39,
+     "inlineStyle": 0,
+     "toned": 39
+    },
+    "textMidWordBreaks": [],
+    "feetBandVisible": {
+     "visible": 25,
+     "of": 25,
+     "hits": {
+      "#creator-preview": 25
+     }
+    },
+    "plateFitsWindow": {
+     "h": 424,
+     "vh": 844,
+     "fits": true
+    },
+    "canvasDrawn": {
+     "css": [
+      312,
+      420
+     ],
+     "buffer": [
+      312,
+      420
+     ]
+    },
+    "audit": {
+     "overflowN": 0,
+     "overflow": [],
+     "clippedN": 0,
+     "clipped": [],
+     "tinyN": 0,
+     "tiny": [],
+     "smallN": 0,
+     "small": []
+    },
+    "contrast": {
+     "name": {
+      "n": 1,
+      "min": 12.52,
+      "colour": "rgb(240, 207, 115)",
+      "back": "rgb(20, 16, 10)"
+     },
+     "tags": {
+      "n": 5,
+      "min": 16.21,
+      "colour": "rgb(251, 231, 176)",
+      "back": "rgb(13, 9, 6)"
+     },
+     "LV number": {
+      "n": 1,
+      "min": 8.37,
+      "colour": "rgb(255, 242, 216)",
+      "back": "rgb(98, 64, 22)"
+     },
+     "caption": {
+      "n": 1,
+      "min": 13.98,
+      "colour": "rgb(230, 214, 176)",
+      "back": "rgb(10, 7, 4)"
+     },
+     "socket names": {
+      "n": 6,
+      "min": 7.19,
+      "colour": "rgb(199, 179, 138)",
+      "back": "rgb(40, 40, 40)"
+     },
+     "sheet label": {
+      "n": 6,
+      "min": 11.06,
+      "colour": "rgb(243, 230, 196)",
+      "back": "rgb(58, 42, 30)"
+     },
+     "sheet value": {
+      "n": 6,
+      "min": 12.4,
+      "colour": "rgb(255, 243, 207)",
+      "back": "rgb(58, 42, 30)"
+     }
+    },
+    "auditOpen": {
+     "overflowN": 0,
+     "overflow": [],
+     "clippedN": 0,
+     "clipped": [],
+     "tinyN": 0,
+     "tiny": [],
+     "smallN": 0,
+     "small": []
+    },
+    "titles": {
+     "n": 18,
+     "maxDx": 0.01,
+     "maxDy": 0.7,
+     "within1": 18,
+     "worst": {
+      "sel": ".menu-screen.active .screen-head h2",
+      "text": "Fighters",
+      "dx": 0,
+      "dy": -0.7
+     }
+    },
+    "picker": {
+     "open": true,
+     "coversPlate": true,
+     "items": 18
+    }
+   }
+  },
+  "820": {
+   "step": "[data-equip-close]",
+   "hero": {
+    "mode": "hero",
+    "tabs": 4,
+    "tabMidWordBreaks": [],
+    "textMidWordBreaks": [],
+    "tabBadges": [
+     "LV1:bronze",
+     "LV1:bronze",
+     "LV1:bronze"
+    ],
+    "panelHead": {
+     "rosterHead": false,
+     "chosenHeroText": false
+    },
+    "rerollLabelGone": true,
+    "plate": {
+     "present": true,
+     "plate": {
+      "w": 256,
+      "h": 342,
+      "aspectHW": 1.333
+     },
+     "picture": {
+      "coversPlate": true,
+      "w": 252,
+      "h": 338
+     },
+     "image": {
+      "natural": [
+       560,
+       747
+      ],
+      "fit": "cover",
+      "position": "50% 35%",
+      "src": "data:image/jpeg;base64"
+     },
+     "badge": {
+      "x": 7,
+      "y": 7,
+      "w": 52,
+      "h": 30,
+      "tier": "bronze",
+      "text": "LV1"
+     },
+     "badgeTopLeft": true,
+     "overlapBadgeName": 0,
+     "overlapBadgeTags": 0,
+     "overlapBadgeFoot": 0,
+     "overlapSocketsFoot": 0,
+     "overlapSocketsBadge": 0,
+     "nameAndTagsInside": true,
+     "badgeToNamePx": 202,
+     "tags": [
+      "race:Dwarf",
+      "subrace:Mountain",
+      "class:Mage",
+      "sign:The Serpent",
+      "weapon:Warped Staff"
+     ],
+     "socketSides": null,
+     "minSocket": null
+    },
+    "roll": {
+     "present": true,
+     "label": "Roll",
+     "action": "reroll (data-hero-reroll)",
+     "w": 76,
+     "h": 44,
+     "iconPx": 21.8,
+     "fontPx": 13,
+     "iconToFont": 1.68,
+     "padding": "3px 12px 3px 7px",
+     "purple": true,
+     "stone": 7
+    },
+    "sheet": {
+     "groups": [
+      "attributes",
+      "pools",
+      "offence",
+      "defence",
+      "mobility",
+      "magic",
+      "body"
+     ],
+     "rows": 39,
+     "inlineStyle": 0,
+     "toned": 39,
+     "sample": [
+      "Vitality7(0)",
+      "Resilience11(+4)",
+      "Focus14(0)"
+     ]
+    },
+    "audit": {
+     "overflowN": 0,
+     "overflow": [],
+     "clippedN": 0,
+     "clipped": [],
+     "tinyN": 0,
+     "tiny": [],
+     "smallN": 0,
+     "small": []
+    },
+    "titles": {
+     "n": 10,
+     "maxDx": 0.01,
+     "maxDy": 0.98,
+     "within1": 10,
+     "worst": {
+      "sel": ".menu-screen.active .screen-head h2",
+      "text": "Fighters",
+      "dx": 0,
+      "dy": -0.98
+     }
+    },
+    "contrast": {
+     "hero name": {
+      "n": 1,
+      "min": 12.09,
+      "colour": "rgb(240, 207, 115)",
+      "back": "rgb(25, 20, 14)"
+     },
+     "tags": {
+      "n": 5,
+      "min": 16.19,
+      "colour": "rgb(251, 231, 176)",
+      "back": "rgb(14, 9, 5)"
+     },
+     "record": {
+      "n": 1,
+      "min": 14.68,
+      "colour": "rgb(234, 220, 184)",
+      "back": "rgb(11, 8, 4)"
+     },
+     "LV number": {
+      "n": 1,
+      "min": 8.2,
+      "colour": "rgb(255, 242, 216)",
+      "back": "rgb(100, 65, 22)"
+     },
+     "LV label": {
+      "n": 1,
+      "min": 6.55,
+      "colour": "rgb(255, 242, 216)",
+      "back": "rgb(119, 78, 29)"
+     },
+     "Roll": {
+      "n": 1,
+      "min": 9.77,
+      "colour": "rgb(251, 241, 255)",
+      "back": "rgb(72, 54, 92)"
+     },
+     "action bar": {
+      "n": 3,
+      "min": 6.45,
+      "colour": "rgb(240, 207, 115)",
+      "back": "rgb(67, 68, 69)"
+     },
+     "sheet title": {
+      "n": 6,
+      "min": 8.73,
+      "colour": "rgb(240, 207, 115)",
+      "back": "rgb(60, 45, 33)"
+     },
+     "sheet label": {
+      "n": 6,
+      "min": 11.06,
+      "colour": "rgb(243, 230, 196)",
+      "back": "rgb(58, 42, 30)"
+     },
+     "sheet value": {
+      "n": 6,
+      "min": 12.4,
+      "colour": "rgb(255, 243, 207)",
+      "back": "rgb(58, 42, 30)"
+     },
+     "sheet delta": {
+      "n": 6,
+      "min": 6.39,
+      "colour": "rgb(203, 158, 154)",
+      "back": "rgb(48, 36, 25)"
+     },
+     "tab name": {
+      "n": 4,
+      "min": 6.39,
+      "colour": "rgb(199, 179, 138)",
+      "back": "rgb(60, 46, 32)"
+     },
+     "tab LV": {
+      "n": 3,
+      "min": 9.34,
+      "colour": "rgb(255, 242, 216)",
+      "back": "rgb(90, 57, 18)"
+     }
+    },
+    "tiers": [
+     "bronze",
+     "copper",
+     "silver",
+     "gold",
+     "platinum"
+    ],
+    "tierContrast": {
+     "bronze": {
+      "num": 8.2,
+      "label": 6.55,
+      "rim": 5
+     },
+     "copper": {
+      "num": 8.16,
+      "label": 6.4,
+      "rim": 5
+     },
+     "silver": {
+      "num": 11.26,
+      "label": 13.06,
+      "rim": 5
+     },
+     "gold": {
+      "num": 10.07,
+      "label": 12.7,
+      "rim": 5
+     },
+     "platinum": {
+      "num": 13.74,
+      "label": 15.43,
+      "rim": 5
+     }
+    },
+    "afterRoll": {
+     "plate": {
+      "present": true,
+      "plate": {
+       "w": 256,
+       "h": 342,
+       "aspectHW": 1.333
+      },
+      "picture": {
+       "coversPlate": true,
+       "w": 252,
+       "h": 338
+      },
+      "image": {
+       "natural": [
+        560,
+        747
+       ],
+       "fit": "cover",
+       "position": "50% 35%",
+       "src": "data:image/jpeg;base64"
+      },
+      "badge": {
+       "x": 7,
+       "y": 7,
+       "w": 52,
+       "h": 30,
+       "tier": "bronze",
+       "text": "LV1"
+      },
+      "badgeTopLeft": true,
+      "overlapBadgeName": 0,
+      "overlapBadgeTags": 0,
+      "overlapBadgeFoot": 0,
+      "overlapSocketsFoot": 0,
+      "overlapSocketsBadge": 0,
+      "nameAndTagsInside": true,
+      "badgeToNamePx": 202,
+      "tags": [
+       "race:Dwarf",
+       "subrace:Mountain",
+       "class:Necromancer",
+       "sign:The Storm",
+       "weapon:Bone Scythe"
+      ],
+      "socketSides": null,
+      "minSocket": null
+     },
+     "audit": {
+      "overflowN": 0,
+      "overflow": [],
+      "clippedN": 0,
+      "clipped": [],
+      "tinyN": 0,
+      "tiny": [],
+      "smallN": 0,
+      "small": []
+     }
+    },
+    "rollUndo": {
+     "before": "Dalor Stonehewer",
+     "afterRoll": "Thin Bronzebrow",
+     "changed": true,
+     "undoOffered": true,
+     "afterUndo": "Dalor Stonehewer",
+     "restored": true
+    }
+   },
+   "creator": {
+    "plate": {
+     "present": true,
+     "plate": {
+      "w": 398,
+      "h": 529,
+      "aspectHW": 1.33
+     },
+     "picture": {
+      "coversPlate": true,
+      "w": 394,
+      "h": 525
+     },
+     "image": null,
+     "badge": {
+      "x": 7,
+      "y": 7,
+      "w": 52,
+      "h": 30,
+      "tier": "bronze",
+      "text": "LV1"
+     },
+     "badgeTopLeft": true,
+     "overlapBadgeName": 0,
+     "overlapBadgeTags": 0,
+     "overlapBadgeFoot": 0,
+     "overlapSocketsFoot": 0,
+     "overlapSocketsBadge": 0,
+     "nameAndTagsInside": true,
+     "badgeToNamePx": 375,
+     "tags": [
+      "race:Dwarf",
+      "subrace:Mountain",
+      "class:Mage",
+      "sign:The Serpent",
+      "weapon:Warped Staff"
+     ],
+     "socketSides": {
+      "leftGap": 5,
+      "rightGap": 5,
+      "middlePx": 295
+     },
+     "minSocket": 44
+    },
+    "sheet": {
+     "groups": [
+      "attributes",
+      "pools",
+      "offence",
+      "defence",
+      "mobility",
+      "magic",
+      "body"
+     ],
+     "rows": 39,
+     "inlineStyle": 0,
+     "toned": 39
+    },
+    "textMidWordBreaks": [],
+    "feetBandVisible": {
+     "visible": 25,
+     "of": 25,
+     "hits": {
+      "#creator-preview": 25
+     }
+    },
+    "plateFitsWindow": {
+     "h": 529,
+     "vh": 1180,
+     "fits": true
+    },
+    "canvasDrawn": {
+     "css": [
+      394,
+      525
+     ],
+     "buffer": [
+      394,
+      525
+     ]
+    },
+    "audit": {
+     "overflowN": 0,
+     "overflow": [],
+     "clippedN": 0,
+     "clipped": [],
+     "tinyN": 0,
+     "tiny": [],
+     "smallN": 0,
+     "small": []
+    },
+    "contrast": {
+     "name": {
+      "n": 1,
+      "min": 12.58,
+      "colour": "rgb(240, 207, 115)",
+      "back": "rgb(20, 15, 11)"
+     },
+     "tags": {
+      "n": 5,
+      "min": 16.21,
+      "colour": "rgb(251, 231, 176)",
+      "back": "rgb(13, 9, 6)"
+     },
+     "LV number": {
+      "n": 1,
+      "min": 8.2,
+      "colour": "rgb(255, 242, 216)",
+      "back": "rgb(100, 65, 22)"
+     },
+     "caption": {
+      "n": 1,
+      "min": 13.9,
+      "colour": "rgb(230, 214, 176)",
+      "back": "rgb(11, 8, 5)"
+     },
+     "socket names": {
+      "n": 6,
+      "min": 7.27,
+      "colour": "rgb(199, 179, 138)",
+      "back": "rgb(40, 39, 39)"
+     },
+     "sheet label": {
+      "n": 6,
+      "min": 11.06,
+      "colour": "rgb(243, 230, 196)",
+      "back": "rgb(58, 42, 30)"
+     },
+     "sheet value": {
+      "n": 6,
+      "min": 12.39,
+      "colour": "rgb(255, 243, 207)",
+      "back": "rgb(58, 42, 31)"
+     }
+    },
+    "auditOpen": {
+     "overflowN": 0,
+     "overflow": [],
+     "clippedN": 0,
+     "clipped": [],
+     "tinyN": 0,
+     "tiny": [],
+     "smallN": 0,
+     "small": []
+    },
+    "titles": {
+     "n": 18,
+     "maxDx": 0.01,
+     "maxDy": 0.98,
+     "within1": 18,
+     "worst": {
+      "sel": ".menu-screen.active .screen-head h2",
+      "text": "Fighters",
+      "dx": 0,
+      "dy": -0.98
+     }
+    },
+    "picker": {
+     "open": true,
+     "coversPlate": true,
+     "items": 18
+    }
+   }
+  },
+  "1280": {
+   "step": "[data-equip-close]",
+   "hero": {
+    "mode": "hero",
+    "tabs": 4,
+    "tabMidWordBreaks": [],
+    "textMidWordBreaks": [],
+    "tabBadges": [
+     "LV1:bronze",
+     "LV1:bronze",
+     "LV1:bronze"
+    ],
+    "panelHead": {
+     "rosterHead": false,
+     "chosenHeroText": false
+    },
+    "rerollLabelGone": true,
+    "plate": {
+     "present": true,
+     "plate": {
+      "w": 402,
+      "h": 536,
+      "aspectHW": 1.333
+     },
+     "picture": {
+      "coversPlate": true,
+      "w": 398,
+      "h": 532
+     },
+     "image": {
+      "natural": [
+       560,
+       747
+      ],
+      "fit": "cover",
+      "position": "50% 35%",
+      "src": "data:image/jpeg;base64"
+     },
+     "badge": {
+      "x": 11,
+      "y": 11,
+      "w": 54,
+      "h": 31,
+      "tier": "bronze",
+      "text": "LV1"
+     },
+     "badgeTopLeft": true,
+     "overlapBadgeName": 0,
+     "overlapBadgeTags": 0,
+     "overlapBadgeFoot": 0,
+     "overlapSocketsFoot": 0,
+     "overlapSocketsBadge": 0,
+     "nameAndTagsInside": true,
+     "badgeToNamePx": 370,
+     "tags": [
+      "race:Dwarf",
+      "subrace:Mountain",
+      "class:Barbarian",
+      "sign:The Void",
+      "weapon:Greataxe"
+     ],
+     "socketSides": null,
+     "minSocket": null
+    },
+    "roll": {
+     "present": true,
+     "label": "Roll",
+     "action": "reroll (data-hero-reroll)",
+     "w": 76,
+     "h": 44,
+     "iconPx": 21.8,
+     "fontPx": 13,
+     "iconToFont": 1.68,
+     "padding": "3px 12px 3px 7px",
+     "purple": true,
+     "stone": 7
+    },
+    "sheet": {
+     "groups": [
+      "attributes",
+      "pools",
+      "offence",
+      "defence",
+      "mobility",
+      "magic",
+      "body"
+     ],
+     "rows": 39,
+     "inlineStyle": 0,
+     "toned": 39,
+     "sample": [
+      "Vitality14(0)",
+      "Resilience16(+4)",
+      "Focus10(+2)"
+     ]
+    },
+    "audit": {
+     "overflowN": 0,
+     "overflow": [],
+     "clippedN": 0,
+     "clipped": [],
+     "tinyN": 0,
+     "tiny": [],
+     "smallN": 0,
+     "small": []
+    },
+    "titles": {
+     "n": 10,
+     "maxDx": 0.01,
+     "maxDy": 0.81,
+     "within1": 10,
+     "worst": {
+      "sel": ".menu-screen.active .screen-head h2",
+      "text": "Fighters",
+      "dx": 0,
+      "dy": -0.81
+     }
+    },
+    "contrast": {
+     "hero name": {
+      "n": 1,
+      "min": 12.3,
+      "colour": "rgb(240, 207, 115)",
+      "back": "rgb(23, 18, 12)"
+     },
+     "tags": {
+      "n": 5,
+      "min": 16.19,
+      "colour": "rgb(251, 231, 176)",
+      "back": "rgb(14, 9, 5)"
+     },
+     "record": {
+      "n": 1,
+      "min": 14.68,
+      "colour": "rgb(234, 220, 184)",
+      "back": "rgb(11, 8, 4)"
+     },
+     "LV number": {
+      "n": 1,
+      "min": 8.2,
+      "colour": "rgb(255, 242, 216)",
+      "back": "rgb(100, 65, 22)"
+     },
+     "LV label": {
+      "n": 1,
+      "min": 6.75,
+      "colour": "rgb(255, 242, 216)",
+      "back": "rgb(117, 76, 28)"
+     },
+     "Roll": {
+      "n": 1,
+      "min": 9.88,
+      "colour": "rgb(251, 241, 255)",
+      "back": "rgb(71, 53, 93)"
+     },
+     "action bar": {
+      "n": 3,
+      "min": 6.45,
+      "colour": "rgb(240, 207, 115)",
+      "back": "rgb(66, 68, 72)"
+     },
+     "sheet title": {
+      "n": 6,
+      "min": 8.78,
+      "colour": "rgb(240, 207, 115)",
+      "back": "rgb(61, 44, 33)"
+     },
+     "sheet label": {
+      "n": 6,
+      "min": 11.11,
+      "colour": "rgb(243, 230, 196)",
+      "back": "rgb(57, 42, 30)"
+     },
+     "sheet value": {
+      "n": 6,
+      "min": 12.41,
+      "colour": "rgb(255, 243, 207)",
+      "back": "rgb(58, 42, 29)"
+     },
+     "sheet delta": {
+      "n": 6,
+      "min": 5.47,
+      "colour": "rgb(222, 130, 122)",
+      "back": "rgb(49, 35, 25)"
+     },
+     "tab name": {
+      "n": 4,
+      "min": 6.45,
+      "colour": "rgb(199, 179, 138)",
+      "back": "rgb(60, 45, 31)"
+     },
+     "tab LV": {
+      "n": 3,
+      "min": 8.93,
+      "colour": "rgb(255, 242, 216)",
+      "back": "rgb(93, 60, 19)"
+     }
+    },
+    "tiers": [
+     "bronze",
+     "copper",
+     "silver",
+     "gold",
+     "platinum"
+    ],
+    "tierContrast": {
+     "bronze": {
+      "num": 8.2,
+      "label": 6.75,
+      "rim": 5
+     },
+     "copper": {
+      "num": 8.18,
+      "label": 6.55,
+      "rim": 5
+     },
+     "silver": {
+      "num": 11.31,
+      "label": 12.94,
+      "rim": 5
+     },
+     "gold": {
+      "num": 10.09,
+      "label": 12.29,
+      "rim": 5
+     },
+     "platinum": {
+      "num": 13.74,
+      "label": 15.27,
+      "rim": 5
+     }
+    },
+    "afterRoll": {
+     "plate": {
+      "present": true,
+      "plate": {
+       "w": 402,
+       "h": 536,
+       "aspectHW": 1.333
+      },
+      "picture": {
+       "coversPlate": true,
+       "w": 398,
+       "h": 532
+      },
+      "image": {
+       "natural": [
+        560,
+        747
+       ],
+       "fit": "cover",
+       "position": "50% 35%",
+       "src": "data:image/jpeg;base64"
+      },
+      "badge": {
+       "x": 11,
+       "y": 11,
+       "w": 54,
+       "h": 31,
+       "tier": "bronze",
+       "text": "LV1"
+      },
+      "badgeTopLeft": true,
+      "overlapBadgeName": 0,
+      "overlapBadgeTags": 0,
+      "overlapBadgeFoot": 0,
+      "overlapSocketsFoot": 0,
+      "overlapSocketsBadge": 0,
+      "nameAndTagsInside": true,
+      "badgeToNamePx": 394,
+      "tags": [
+       "race:Elf",
+       "subrace:High Elf",
+       "class:Priest",
+       "sign:The Serpent",
+       "weapon:War Mace"
+      ],
+      "socketSides": null,
+      "minSocket": null
+     },
+     "audit": {
+      "overflowN": 0,
+      "overflow": [],
+      "clippedN": 0,
+      "clipped": [],
+      "tinyN": 0,
+      "tiny": [],
+      "smallN": 0,
+      "small": []
+     }
+    },
+    "rollUndo": {
+     "before": "Stoluhild Bronzefist",
+     "afterRoll": "Faielethil of House Elunar",
+     "changed": true,
+     "undoOffered": true,
+     "afterUndo": "Stoluhild Bronzefist",
+     "restored": true
+    }
+   },
+   "creator": {
+    "plate": {
+     "present": true,
+     "plate": {
+      "w": 438,
+      "h": 583,
+      "aspectHW": 1.33
+     },
+     "picture": {
+      "coversPlate": true,
+      "w": 434,
+      "h": 579
+     },
+     "image": null,
+     "badge": {
+      "x": 11,
+      "y": 11,
+      "w": 54,
+      "h": 31,
+      "tier": "bronze",
+      "text": "LV1"
+     },
+     "badgeTopLeft": true,
+     "overlapBadgeName": 0,
+     "overlapBadgeTags": 0,
+     "overlapBadgeFoot": 0,
+     "overlapSocketsFoot": 0,
+     "overlapSocketsBadge": 0,
+     "nameAndTagsInside": true,
+     "badgeToNamePx": 434,
+     "tags": [
+      "race:Dwarf",
+      "subrace:Mountain",
+      "class:Barbarian",
+      "sign:The Void",
+      "weapon:Greataxe"
+     ],
+     "socketSides": {
+      "leftGap": 8,
+      "rightGap": 8,
+      "middlePx": 329
+     },
+     "minSocket": 44
+    },
+    "sheet": {
+     "groups": [
+      "attributes",
+      "pools",
+      "offence",
+      "defence",
+      "mobility",
+      "magic",
+      "body"
+     ],
+     "rows": 39,
+     "inlineStyle": 0,
+     "toned": 39
+    },
+    "textMidWordBreaks": [],
+    "feetBandVisible": {
+     "visible": 25,
+     "of": 25,
+     "hits": {
+      "#creator-preview": 25
+     }
+    },
+    "plateFitsWindow": {
+     "h": 583,
+     "vh": 800,
+     "fits": true
+    },
+    "canvasDrawn": {
+     "css": [
+      434,
+      579
+     ],
+     "buffer": [
+      434,
+      579
+     ]
+    },
+    "audit": {
+     "overflowN": 0,
+     "overflow": [],
+     "clippedN": 0,
+     "clipped": [],
+     "tinyN": 0,
+     "tiny": [],
+     "smallN": 0,
+     "small": []
+    },
+    "contrast": {
+     "name": {
+      "n": 1,
+      "min": 12.7,
+      "colour": "rgb(240, 207, 115)",
+      "back": "rgb(18, 14, 9)"
+     },
+     "tags": {
+      "n": 5,
+      "min": 16.21,
+      "colour": "rgb(251, 231, 176)",
+      "back": "rgb(13, 9, 6)"
+     },
+     "LV number": {
+      "n": 1,
+      "min": 8.2,
+      "colour": "rgb(255, 242, 216)",
+      "back": "rgb(100, 65, 22)"
+     },
+     "caption": {
+      "n": 1,
+      "min": 13.82,
+      "colour": "rgb(230, 214, 176)",
+      "back": "rgb(12, 9, 5)"
+     },
+     "socket names": {
+      "n": 6,
+      "min": 7.26,
+      "colour": "rgb(199, 179, 138)",
+      "back": "rgb(40, 39, 40)"
+     },
+     "sheet label": {
+      "n": 6,
+      "min": 11.11,
+      "colour": "rgb(243, 230, 196)",
+      "back": "rgb(57, 42, 30)"
+     },
+     "sheet value": {
+      "n": 6,
+      "min": 12.45,
+      "colour": "rgb(255, 243, 207)",
+      "back": "rgb(57, 42, 30)"
+     }
+    },
+    "auditOpen": {
+     "overflowN": 0,
+     "overflow": [],
+     "clippedN": 0,
+     "clipped": [],
+     "tinyN": 0,
+     "tiny": [],
+     "smallN": 0,
+     "small": []
+    },
+    "titles": {
+     "n": 18,
+     "maxDx": 0.01,
+     "maxDy": 0.81,
+     "within1": 18,
+     "worst": {
+      "sel": ".menu-screen.active .screen-head h2",
+      "text": "Fighters",
+      "dx": 0,
+      "dy": -0.81
+     }
+    },
+    "picker": {
+     "open": true,
+     "coversPlate": true,
+     "items": 18
+    }
+   }
+  },
+  "1920": {
+   "step": "[data-equip-close]",
+   "hero": {
+    "mode": "hero",
+    "tabs": 4,
+    "tabMidWordBreaks": [],
+    "textMidWordBreaks": [],
+    "tabBadges": [
+     "LV1:bronze",
+     "LV1:bronze",
+     "LV1:bronze"
+    ],
+    "panelHead": {
+     "rosterHead": false,
+     "chosenHeroText": false
+    },
+    "rerollLabelGone": true,
+    "plate": {
+     "present": true,
+     "plate": {
+      "w": 533,
+      "h": 711,
+      "aspectHW": 1.333
+     },
+     "picture": {
+      "coversPlate": true,
+      "w": 529,
+      "h": 707
+     },
+     "image": {
+      "natural": [
+       560,
+       747
+      ],
+      "fit": "cover",
+      "position": "50% 35%",
+      "src": "data:image/jpeg;base64"
+     },
+     "badge": {
+      "x": 17,
+      "y": 17,
+      "w": 62,
+      "h": 37,
+      "tier": "bronze",
+      "text": "LV1"
+     },
+     "badgeTopLeft": true,
+     "overlapBadgeName": 0,
+     "overlapBadgeTags": 0,
+     "overlapBadgeFoot": 0,
+     "overlapSocketsFoot": 0,
+     "overlapSocketsBadge": 0,
+     "nameAndTagsInside": true,
+     "badgeToNamePx": 532,
+     "tags": [
+      "race:Ork",
+      "subrace:Ironhide",
+      "class:Barbarian",
+      "sign:The Serpent",
+      "weapon:Greataxe"
+     ],
+     "socketSides": null,
+     "minSocket": null
+    },
+    "roll": {
+     "present": true,
+     "label": "Roll",
+     "action": "reroll (data-hero-reroll)",
+     "w": 87,
+     "h": 44,
+     "iconPx": 26.4,
+     "fontPx": 15.708,
+     "iconToFont": 1.68,
+     "padding": "3px 12px 3px 7px",
+     "purple": true,
+     "stone": 7
+    },
+    "sheet": {
+     "groups": [
+      "attributes",
+      "pools",
+      "offence",
+      "defence",
+      "mobility",
+      "magic",
+      "body"
+     ],
+     "rows": 39,
+     "inlineStyle": 0,
+     "toned": 39,
+     "sample": [
+      "Vitality17(+3)",
+      "Resilience14(+2)",
+      "Focus7(−1)"
+     ]
+    },
+    "audit": {
+     "overflowN": 0,
+     "overflow": [],
+     "clippedN": 0,
+     "clipped": [],
+     "tinyN": 0,
+     "tiny": [],
+     "smallN": 0,
+     "small": []
+    },
+    "titles": {
+     "n": 10,
+     "maxDx": 0.01,
+     "maxDy": 0.91,
+     "within1": 10,
+     "worst": {
+      "sel": ".menu-screen.active .screen-head h2",
+      "text": "Fighters",
+      "dx": 0,
+      "dy": -0.91
+     }
+    },
+    "contrast": {
+     "hero name": {
+      "n": 1,
+      "min": 12.87,
+      "colour": "rgb(240, 207, 115)",
+      "back": "rgb(16, 12, 8)"
+     },
+     "tags": {
+      "n": 5,
+      "min": 16.21,
+      "colour": "rgb(251, 231, 176)",
+      "back": "rgb(13, 9, 5)"
+     },
+     "record": {
+      "n": 1,
+      "min": 14.66,
+      "colour": "rgb(234, 220, 184)",
+      "back": "rgb(12, 8, 4)"
+     },
+     "LV number": {
+      "n": 1,
+      "min": 8.2,
+      "colour": "rgb(255, 242, 216)",
+      "back": "rgb(100, 65, 22)"
+     },
+     "LV label": {
+      "n": 1,
+      "min": 6.55,
+      "colour": "rgb(255, 242, 216)",
+      "back": "rgb(119, 78, 29)"
+     },
+     "Roll": {
+      "n": 1,
+      "min": 9.85,
+      "colour": "rgb(251, 241, 255)",
+      "back": "rgb(72, 53, 93)"
+     },
+     "action bar": {
+      "n": 3,
+      "min": 6.45,
+      "colour": "rgb(240, 207, 115)",
+      "back": "rgb(67, 68, 69)"
+     },
+     "sheet title": {
+      "n": 6,
+      "min": 8.81,
+      "colour": "rgb(240, 207, 115)",
+      "back": "rgb(60, 44, 33)"
+     },
+     "sheet label": {
+      "n": 6,
+      "min": 11.11,
+      "colour": "rgb(243, 230, 196)",
+      "back": "rgb(57, 42, 30)"
+     },
+     "sheet value": {
+      "n": 6,
+      "min": 12.45,
+      "colour": "rgb(255, 243, 207)",
+      "back": "rgb(57, 42, 30)"
+     },
+     "sheet delta": {
+      "n": 6,
+      "min": 5.39,
+      "colour": "rgb(236, 112, 101)",
+      "back": "rgb(41, 32, 21)"
+     },
+     "tab name": {
+      "n": 4,
+      "min": 6.36,
+      "colour": "rgb(199, 179, 138)",
+      "back": "rgb(61, 46, 32)"
+     },
+     "tab LV": {
+      "n": 3,
+      "min": 9.06,
+      "colour": "rgb(255, 242, 216)",
+      "back": "rgb(92, 59, 20)"
+     }
+    },
+    "tiers": [
+     "bronze",
+     "copper",
+     "silver",
+     "gold",
+     "platinum"
+    ],
+    "tierContrast": {
+     "bronze": {
+      "num": 8.2,
+      "label": 6.55,
+      "rim": 5
+     },
+     "copper": {
+      "num": 8.22,
+      "label": 6.4,
+      "rim": 5
+     },
+     "silver": {
+      "num": 11.12,
+      "label": 13.06,
+      "rim": 5
+     },
+     "gold": {
+      "num": 10.05,
+      "label": 12.38,
+      "rim": 5
+     },
+     "platinum": {
+      "num": 13.62,
+      "label": 15.29,
+      "rim": 5
+     }
+    },
+    "afterRoll": {
+     "plate": {
+      "present": true,
+      "plate": {
+       "w": 533,
+       "h": 711,
+       "aspectHW": 1.333
+      },
+      "picture": {
+       "coversPlate": true,
+       "w": 529,
+       "h": 707
+      },
+      "image": {
+       "natural": [
+        560,
+        747
+       ],
+       "fit": "cover",
+       "position": "50% 35%",
+       "src": "data:image/jpeg;base64"
+      },
+      "badge": {
+       "x": 17,
+       "y": 17,
+       "w": 62,
+       "h": 37,
+       "tier": "bronze",
+       "text": "LV1"
+      },
+      "badgeTopLeft": true,
+      "overlapBadgeName": 0,
+      "overlapBadgeTags": 0,
+      "overlapBadgeFoot": 0,
+      "overlapSocketsFoot": 0,
+      "overlapSocketsBadge": 0,
+      "nameAndTagsInside": true,
+      "badgeToNamePx": 532,
+      "tags": [
+       "race:Human",
+       "subrace:Imperial",
+       "class:Warrior",
+       "sign:The Serpent",
+       "weapon:Longsword"
+      ],
+      "socketSides": null,
+      "minSocket": null
+     },
+     "audit": {
+      "overflowN": 0,
+      "overflow": [],
+      "clippedN": 0,
+      "clipped": [],
+      "tinyN": 0,
+      "tiny": [],
+      "smallN": 0,
+      "small": []
+     }
+    },
+    "rollUndo": {
+     "before": "Vrarkag of the Ironskulls",
+     "afterRoll": "Cassina Severellan",
+     "changed": true,
+     "undoOffered": true,
+     "afterUndo": "Vrarkag of the Ironskulls",
+     "restored": true
+    }
+   },
+   "creator": {
+    "plate": {
+     "present": true,
+     "plate": {
+      "w": 518,
+      "h": 689,
+      "aspectHW": 1.331
+     },
+     "picture": {
+      "coversPlate": true,
+      "w": 514,
+      "h": 685
+     },
+     "image": null,
+     "badge": {
+      "x": 17,
+      "y": 17,
+      "w": 62,
+      "h": 37,
+      "tier": "bronze",
+      "text": "LV1"
+     },
+     "badgeTopLeft": true,
+     "overlapBadgeName": 0,
+     "overlapBadgeTags": 0,
+     "overlapBadgeFoot": 0,
+     "overlapSocketsFoot": 0,
+     "overlapSocketsBadge": 0,
+     "nameAndTagsInside": true,
+     "badgeToNamePx": 505,
+     "tags": [
+      "race:Ork",
+      "subrace:Ironhide",
+      "class:Barbarian",
+      "sign:The Serpent",
+      "weapon:Greataxe"
+     ],
+     "socketSides": {
+      "leftGap": 13,
+      "rightGap": 13,
+      "middlePx": 398
+     },
+     "minSocket": 46
+    },
+    "sheet": {
+     "groups": [
+      "attributes",
+      "pools",
+      "offence",
+      "defence",
+      "mobility",
+      "magic",
+      "body"
+     ],
+     "rows": 39,
+     "inlineStyle": 0,
+     "toned": 39
+    },
+    "textMidWordBreaks": [],
+    "feetBandVisible": {
+     "visible": 25,
+     "of": 25,
+     "hits": {
+      "#creator-preview": 25
+     }
+    },
+    "plateFitsWindow": {
+     "h": 689,
+     "vh": 1080,
+     "fits": true
+    },
+    "canvasDrawn": {
+     "css": [
+      514,
+      685
+     ],
+     "buffer": [
+      514,
+      685
+     ]
+    },
+    "audit": {
+     "overflowN": 0,
+     "overflow": [],
+     "clippedN": 0,
+     "clipped": [],
+     "tinyN": 0,
+     "tiny": [],
+     "smallN": 0,
+     "small": []
+    },
+    "contrast": {
+     "name": {
+      "n": 1,
+      "min": 12.72,
+      "colour": "rgb(240, 207, 115)",
+      "back": "rgb(17, 14, 9)"
+     },
+     "tags": {
+      "n": 5,
+      "min": 16.21,
+      "colour": "rgb(251, 231, 176)",
+      "back": "rgb(13, 9, 6)"
+     },
+     "LV number": {
+      "n": 1,
+      "min": 8.2,
+      "colour": "rgb(255, 242, 216)",
+      "back": "rgb(100, 65, 22)"
+     },
+     "caption": {
+      "n": 1,
+      "min": 13.84,
+      "colour": "rgb(230, 214, 176)",
+      "back": "rgb(11, 9, 5)"
+     },
+     "socket names": {
+      "n": 6,
+      "min": 7.18,
+      "colour": "rgb(199, 179, 138)",
+      "back": "rgb(40, 40, 41)"
+     },
+     "sheet label": {
+      "n": 6,
+      "min": 11.11,
+      "colour": "rgb(243, 230, 196)",
+      "back": "rgb(57, 42, 30)"
+     },
+     "sheet value": {
+      "n": 6,
+      "min": 12.45,
+      "colour": "rgb(255, 243, 207)",
+      "back": "rgb(57, 42, 30)"
+     }
+    },
+    "auditOpen": {
+     "overflowN": 0,
+     "overflow": [],
+     "clippedN": 0,
+     "clipped": [],
+     "tinyN": 0,
+     "tiny": [],
+     "smallN": 0,
+     "small": []
+    },
+    "titles": {
+     "n": 18,
+     "maxDx": 0.01,
+     "maxDy": 0.91,
+     "within1": 18,
+     "worst": {
+      "sel": ".menu-screen.active .screen-head h2",
+      "text": "Fighters",
+      "dx": 0,
+      "dy": -0.91
+     }
+    },
+    "picker": {
+     "open": true,
+     "coversPlate": true,
+     "items": 18
+    }
+   }
+  },
+  "2560": {
+   "step": "[data-equip-close]",
+   "hero": {
+    "mode": "hero",
+    "tabs": 4,
+    "tabMidWordBreaks": [],
+    "textMidWordBreaks": [],
+    "tabBadges": [
+     "LV1:bronze",
+     "LV1:bronze",
+     "LV1:bronze"
+    ],
+    "panelHead": {
+     "rosterHead": false,
+     "chosenHeroText": false
+    },
+    "rerollLabelGone": true,
+    "plate": {
+     "present": true,
+     "plate": {
+      "w": 560,
+      "h": 747,
+      "aspectHW": 1.333
+     },
+     "picture": {
+      "coversPlate": true,
+      "w": 556,
+      "h": 743
+     },
+     "image": {
+      "natural": [
+       560,
+       747
+      ],
+      "fit": "cover",
+      "position": "50% 35%",
+      "src": "data:image/jpeg;base64"
+     },
+     "badge": {
+      "x": 22,
+      "y": 22,
+      "w": 66,
+      "h": 40,
+      "tier": "bronze",
+      "text": "LV1"
+     },
+     "badgeTopLeft": true,
+     "overlapBadgeName": 0,
+     "overlapBadgeTags": 0,
+     "overlapBadgeFoot": 0,
+     "overlapSocketsFoot": 0,
+     "overlapSocketsBadge": 0,
+     "nameAndTagsInside": true,
+     "badgeToNamePx": 543,
+     "tags": [
+      "race:Ork",
+      "subrace:Bloodfang",
+      "class:Mage",
+      "sign:The Void",
+      "weapon:Warped Staff"
+     ],
+     "socketSides": null,
+     "minSocket": null
+    },
+    "roll": {
+     "present": true,
+     "label": "Roll",
+     "action": "reroll (data-hero-reroll)",
+     "w": 95,
+     "h": 44,
+     "iconPx": 29.4,
+     "fontPx": 17.5,
+     "iconToFont": 1.68,
+     "padding": "3px 12px 3px 7px",
+     "purple": true,
+     "stone": 7
+    },
+    "sheet": {
+     "groups": [
+      "attributes",
+      "pools",
+      "offence",
+      "defence",
+      "mobility",
+      "magic",
+      "body"
+     ],
+     "rows": 39,
+     "inlineStyle": 0,
+     "toned": 39,
+     "sample": [
+      "Vitality11(+4)",
+      "Resilience7(0)",
+      "Focus13(−1)"
+     ]
+    },
+    "audit": {
+     "overflowN": 0,
+     "overflow": [],
+     "clippedN": 0,
+     "clipped": [],
+     "tinyN": 0,
+     "tiny": [],
+     "smallN": 0,
+     "small": []
+    },
+    "titles": {
+     "n": 10,
+     "maxDx": 0.01,
+     "maxDy": 0.77,
+     "within1": 10,
+     "worst": {
+      "sel": ".menu-screen.active .screen-head h2",
+      "text": "Fighters",
+      "dx": 0,
+      "dy": -0.77
+     }
+    },
+    "contrast": {
+     "hero name": {
+      "n": 1,
+      "min": 12.76,
+      "colour": "rgb(240, 207, 115)",
+      "back": "rgb(18, 13, 9)"
+     },
+     "tags": {
+      "n": 5,
+      "min": 16.21,
+      "colour": "rgb(251, 231, 176)",
+      "back": "rgb(13, 9, 5)"
+     },
+     "record": {
+      "n": 1,
+      "min": 14.66,
+      "colour": "rgb(234, 220, 184)",
+      "back": "rgb(12, 8, 4)"
+     },
+     "LV number": {
+      "n": 1,
+      "min": 8.33,
+      "colour": "rgb(255, 242, 216)",
+      "back": "rgb(99, 64, 22)"
+     },
+     "LV label": {
+      "n": 1,
+      "min": 6.46,
+      "colour": "rgb(255, 242, 216)",
+      "back": "rgb(120, 79, 29)"
+     },
+     "Roll": {
+      "n": 1,
+      "min": 9.82,
+      "colour": "rgb(251, 241, 255)",
+      "back": "rgb(72, 54, 89)"
+     },
+     "action bar": {
+      "n": 3,
+      "min": 6.45,
+      "colour": "rgb(240, 207, 115)",
+      "back": "rgb(67, 68, 69)"
+     },
+     "sheet title": {
+      "n": 6,
+      "min": 8.81,
+      "colour": "rgb(240, 207, 115)",
+      "back": "rgb(60, 44, 33)"
+     },
+     "sheet label": {
+      "n": 6,
+      "min": 11.11,
+      "colour": "rgb(243, 230, 196)",
+      "back": "rgb(57, 42, 30)"
+     },
+     "sheet value": {
+      "n": 6,
+      "min": 12.45,
+      "colour": "rgb(255, 243, 207)",
+      "back": "rgb(57, 42, 30)"
+     },
+     "sheet delta": {
+      "n": 6,
+      "min": 5.76,
+      "colour": "rgb(222, 130, 122)",
+      "back": "rgb(42, 32, 22)"
+     },
+     "tab name": {
+      "n": 4,
+      "min": 6.38,
+      "colour": "rgb(199, 179, 138)",
+      "back": "rgb(60, 46, 33)"
+     },
+     "tab LV": {
+      "n": 3,
+      "min": 8.97,
+      "colour": "rgb(255, 242, 216)",
+      "back": "rgb(92, 60, 21)"
+     }
+    },
+    "tiers": [
+     "bronze",
+     "copper",
+     "silver",
+     "gold",
+     "platinum"
+    ],
+    "tierContrast": {
+     "bronze": {
+      "num": 8.33,
+      "label": 6.46,
+      "rim": 5
+     },
+     "copper": {
+      "num": 8.27,
+      "label": 6.4,
+      "rim": 5
+     },
+     "silver": {
+      "num": 11.16,
+      "label": 13.06,
+      "rim": 5
+     },
+     "gold": {
+      "num": 10.24,
+      "label": 12.38,
+      "rim": 5
+     },
+     "platinum": {
+      "num": 13.77,
+      "label": 15.29,
+      "rim": 5
+     }
+    },
+    "afterRoll": {
+     "plate": {
+      "present": true,
+      "plate": {
+       "w": 560,
+       "h": 747,
+       "aspectHW": 1.333
+      },
+      "picture": {
+       "coversPlate": true,
+       "w": 556,
+       "h": 743
+      },
+      "image": {
+       "natural": [
+        560,
+        747
+       ],
+       "fit": "cover",
+       "position": "50% 35%",
+       "src": "data:image/jpeg;base64"
+      },
+      "badge": {
+       "x": 22,
+       "y": 22,
+       "w": 66,
+       "h": 40,
+       "tier": "bronze",
+       "text": "LV1"
+      },
+      "badgeTopLeft": true,
+      "overlapBadgeName": 0,
+      "overlapBadgeTags": 0,
+      "overlapBadgeFoot": 0,
+      "overlapSocketsFoot": 0,
+      "overlapSocketsBadge": 0,
+      "nameAndTagsInside": true,
+      "badgeToNamePx": 543,
+      "tags": [
+       "race:Dwarf",
+       "subrace:Mountain",
+       "class:Rogue",
+       "sign:The Storm",
+       "weapon:Twin Daggers"
+      ],
+      "socketSides": null,
+      "minSocket": null
+     },
+     "audit": {
+      "overflowN": 0,
+      "overflow": [],
+      "clippedN": 0,
+      "clipped": [],
+      "tinyN": 0,
+      "tiny": [],
+      "smallN": 0,
+      "small": []
+     }
+    },
+    "rollUndo": {
+     "before": "Skru'skiskisha",
+     "afterRoll": "Brundaira Anvilhewer",
+     "changed": true,
+     "undoOffered": true,
+     "afterUndo": "Skru'skiskisha",
+     "restored": true
+    }
+   },
+   "creator": {
+    "plate": {
+     "present": true,
+     "plate": {
+      "w": 518,
+      "h": 689,
+      "aspectHW": 1.331
+     },
+     "picture": {
+      "coversPlate": true,
+      "w": 514,
+      "h": 685
+     },
+     "image": null,
+     "badge": {
+      "x": 22,
+      "y": 22,
+      "w": 66,
+      "h": 40,
+      "tier": "bronze",
+      "text": "LV1"
+     },
+     "badgeTopLeft": true,
+     "overlapBadgeName": 0,
+     "overlapBadgeTags": 0,
+     "overlapBadgeFoot": 0,
+     "overlapSocketsFoot": 0,
+     "overlapSocketsBadge": 0,
+     "nameAndTagsInside": true,
+     "badgeToNamePx": 478,
+     "tags": [
+      "race:Ork",
+      "subrace:Bloodfang",
+      "class:Mage",
+      "sign:The Void",
+      "weapon:Warped Staff"
+     ],
+     "socketSides": {
+      "leftGap": 17,
+      "rightGap": 17,
+      "middlePx": 379
+     },
+     "minSocket": 51
+    },
+    "sheet": {
+     "groups": [
+      "attributes",
+      "pools",
+      "offence",
+      "defence",
+      "mobility",
+      "magic",
+      "body"
+     ],
+     "rows": 39,
+     "inlineStyle": 0,
+     "toned": 39
+    },
+    "textMidWordBreaks": [],
+    "feetBandVisible": {
+     "visible": 25,
+     "of": 25,
+     "hits": {
+      "#creator-preview": 25
+     }
+    },
+    "plateFitsWindow": {
+     "h": 689,
+     "vh": 1440,
+     "fits": true
+    },
+    "canvasDrawn": {
+     "css": [
+      514,
+      685
+     ],
+     "buffer": [
+      514,
+      685
+     ]
+    },
+    "audit": {
+     "overflowN": 0,
+     "overflow": [],
+     "clippedN": 0,
+     "clipped": [],
+     "tinyN": 0,
+     "tiny": [],
+     "smallN": 0,
+     "small": []
+    },
+    "contrast": {
+     "name": {
+      "n": 1,
+      "min": 12.76,
+      "colour": "rgb(240, 207, 115)",
+      "back": "rgb(18, 13, 9)"
+     },
+     "tags": {
+      "n": 5,
+      "min": 16.21,
+      "colour": "rgb(251, 231, 176)",
+      "back": "rgb(13, 9, 6)"
+     },
+     "LV number": {
+      "n": 1,
+      "min": 8.33,
+      "colour": "rgb(255, 242, 216)",
+      "back": "rgb(99, 64, 22)"
+     },
+     "caption": {
+      "n": 1,
+      "min": 13.9,
+      "colour": "rgb(230, 214, 176)",
+      "back": "rgb(11, 8, 5)"
+     },
+     "socket names": {
+      "n": 6,
+      "min": 7.18,
+      "colour": "rgb(199, 179, 138)",
+      "back": "rgb(40, 40, 41)"
+     },
+     "sheet label": {
+      "n": 6,
+      "min": 11.11,
+      "colour": "rgb(243, 230, 196)",
+      "back": "rgb(57, 42, 30)"
+     },
+     "sheet value": {
+      "n": 6,
+      "min": 12.45,
+      "colour": "rgb(255, 243, 207)",
+      "back": "rgb(57, 42, 30)"
+     }
+    },
+    "auditOpen": {
+     "overflowN": 0,
+     "overflow": [],
+     "clippedN": 0,
+     "clipped": [],
+     "tinyN": 0,
+     "tiny": [],
+     "smallN": 0,
+     "small": []
+    },
+    "titles": {
+     "n": 18,
+     "maxDx": 0.01,
+     "maxDy": 0.77,
+     "within1": 18,
+     "worst": {
+      "sel": ".menu-screen.active .screen-head h2",
+      "text": "Fighters",
+      "dx": 0,
+      "dy": -0.77
+     }
+    },
+    "picker": {
+     "open": true,
+     "coversPlate": true,
+     "items": 18
+    }
+   }
+  },
+  "844x390": {
+   "step": "[data-equip-close]",
+   "hero": {
+    "mode": "hero",
+    "tabs": 4,
+    "tabMidWordBreaks": [],
+    "textMidWordBreaks": [],
+    "tabBadges": [
+     "LV1:bronze",
+     "LV1:bronze",
+     "LV1:bronze"
+    ],
+    "panelHead": {
+     "rosterHead": false,
+     "chosenHeroText": false
+    },
+    "rerollLabelGone": true,
+    "plate": {
+     "present": true,
+     "plate": {
+      "w": 264,
+      "h": 352,
+      "aspectHW": 1.333
+     },
+     "picture": {
+      "coversPlate": true,
+      "w": 260,
+      "h": 348
+     },
+     "image": {
+      "natural": [
+       560,
+       747
+      ],
+      "fit": "cover",
+      "position": "50% 35%",
+      "src": "data:image/jpeg;base64"
+     },
+     "badge": {
+      "x": 7,
+      "y": 7,
+      "w": 52,
+      "h": 30,
+      "tier": "bronze",
+      "text": "LV1"
+     },
+     "badgeTopLeft": true,
+     "overlapBadgeName": 0,
+     "overlapBadgeTags": 0,
+     "overlapBadgeFoot": 0,
+     "overlapSocketsFoot": 0,
+     "overlapSocketsBadge": 0,
+     "nameAndTagsInside": true,
+     "badgeToNamePx": 211,
+     "tags": [
+      "race:Dwarf",
+      "subrace:Mountain",
+      "class:Barbarian",
+      "sign:The Flame",
+      "weapon:Greataxe"
+     ],
+     "socketSides": null,
+     "minSocket": null
+    },
+    "roll": {
+     "present": true,
+     "label": "Roll",
+     "action": "reroll (data-hero-reroll)",
+     "w": 76,
+     "h": 44,
+     "iconPx": 21.8,
+     "fontPx": 13,
+     "iconToFont": 1.68,
+     "padding": "3px 12px 3px 7px",
+     "purple": true,
+     "stone": 7
+    },
+    "sheet": {
+     "groups": [
+      "attributes",
+      "pools",
+      "offence",
+      "defence",
+      "mobility",
+      "magic",
+      "body"
+     ],
+     "rows": 39,
+     "inlineStyle": 0,
+     "toned": 39,
+     "sample": [
+      "Vitality15(+1)",
+      "Resilience16(+4)",
+      "Focus7(−1)"
+     ]
+    },
+    "audit": {
+     "overflowN": 0,
+     "overflow": [],
+     "clippedN": 0,
+     "clipped": [],
+     "tinyN": 0,
+     "tiny": [],
+     "smallN": 0,
+     "small": []
+    },
+    "titles": {
+     "n": 10,
+     "maxDx": 0.01,
+     "maxDy": 0.7,
+     "within1": 10,
+     "worst": {
+      "sel": ".menu-screen.active .screen-head h2",
+      "text": "Fighters",
+      "dx": 0,
+      "dy": -0.7
+     }
+    },
+    "contrast": {
+     "hero name": {
+      "n": 1,
+      "min": 12.2,
+      "colour": "rgb(240, 207, 115)",
+      "back": "rgb(24, 19, 13)"
+     },
+     "tags": {
+      "n": 5,
+      "min": 16.19,
+      "colour": "rgb(251, 231, 176)",
+      "back": "rgb(14, 9, 5)"
+     },
+     "record": {
+      "n": 1,
+      "min": 14.68,
+      "colour": "rgb(234, 220, 184)",
+      "back": "rgb(11, 8, 4)"
+     },
+     "LV number": {
+      "n": 1,
+      "min": 11.22,
+      "colour": "rgb(255, 242, 216)",
+      "back": "rgb(52, 52, 53)"
+     },
+     "LV label": {
+      "n": 1,
+      "min": 11.72,
+      "colour": "rgb(255, 242, 216)",
+      "back": "rgb(49, 49, 50)"
+     },
+     "Roll": {
+      "n": 1,
+      "min": 9.76,
+      "colour": "rgb(251, 241, 255)",
+      "back": "rgb(72, 55, 87)"
+     },
+     "action bar": {
+      "n": 3,
+      "min": 6.45,
+      "colour": "rgb(240, 207, 115)",
+      "back": "rgb(67, 68, 69)"
+     },
+     "sheet title": {
+      "n": 6,
+      "min": 8.73,
+      "colour": "rgb(240, 207, 115)",
+      "back": "rgb(60, 45, 33)"
+     },
+     "sheet label": {
+      "n": 6,
+      "min": 11.06,
+      "colour": "rgb(243, 230, 196)",
+      "back": "rgb(58, 42, 30)"
+     },
+     "sheet value": {
+      "n": 6,
+      "min": 12.45,
+      "colour": "rgb(255, 243, 207)",
+      "back": "rgb(57, 42, 30)"
+     },
+     "sheet delta": {
+      "n": 6,
+      "min": 5.45,
+      "colour": "rgb(222, 130, 122)",
+      "back": "rgb(48, 36, 25)"
+     },
+     "tab name": {
+      "n": 4,
+      "min": 6.39,
+      "colour": "rgb(199, 179, 138)",
+      "back": "rgb(60, 46, 32)"
+     },
+     "tab LV": {
+      "n": 3,
+      "min": 9.34,
+      "colour": "rgb(255, 242, 216)",
+      "back": "rgb(90, 57, 18)"
+     }
+    },
+    "tiers": [
+     "bronze",
+     "copper",
+     "silver",
+     "gold",
+     "platinum"
+    ],
+    "tierContrast": {
+     "bronze": {
+      "num": 8.2,
+      "label": 6.62,
+      "rim": 5
+     },
+     "copper": {
+      "num": 8.11,
+      "label": 6.49,
+      "rim": 5
+     },
+     "silver": {
+      "num": 11.24,
+      "label": 13.03,
+      "rim": 5
+     },
+     "gold": {
+      "num": 10.05,
+      "label": 12.6,
+      "rim": 5
+     },
+     "platinum": {
+      "num": 13.74,
+      "label": 15.34,
+      "rim": 5
+     }
+    },
+    "afterRoll": {
+     "plate": {
+      "present": true,
+      "plate": {
+       "w": 264,
+       "h": 352,
+       "aspectHW": 1.333
+      },
+      "picture": {
+       "coversPlate": true,
+       "w": 260,
+       "h": 348
+      },
+      "image": {
+       "natural": [
+        560,
+        747
+       ],
+       "fit": "cover",
+       "position": "50% 35%",
+       "src": "data:image/jpeg;base64"
+      },
+      "badge": {
+       "x": 7,
+       "y": 7,
+       "w": 52,
+       "h": 30,
+       "tier": "bronze",
+       "text": "LV1"
+      },
+      "badgeTopLeft": true,
+      "overlapBadgeName": 0,
+      "overlapBadgeTags": 0,
+      "overlapBadgeFoot": 0,
+      "overlapSocketsFoot": 0,
+      "overlapSocketsBadge": 0,
+      "nameAndTagsInside": true,
+      "badgeToNamePx": 211,
+      "tags": [
+       "race:Dwarf",
+       "subrace:Forge",
+       "class:Necromancer",
+       "sign:The Moon",
+       "weapon:Bone Scythe"
+      ],
+      "socketSides": null,
+      "minSocket": null
+     },
+     "audit": {
+      "overflowN": 0,
+      "overflow": [],
+      "clippedN": 0,
+      "clipped": [],
+      "tinyN": 0,
+      "tiny": [],
+      "smallN": 0,
+      "small": []
+     }
+    },
+    "rollUndo": {
+     "before": "Dimor Anvilfist",
+     "afterRoll": "Krozudun Slagforge",
+     "changed": true,
+     "undoOffered": true,
+     "afterUndo": "Dimor Anvilfist",
+     "restored": true
+    }
+   },
+   "creator": {
+    "plate": {
+     "present": true,
+     "plate": {
+      "w": 275,
+      "h": 383,
+      "aspectHW": 1.396
+     },
+     "picture": {
+      "coversPlate": true,
+      "w": 271,
+      "h": 379
+     },
+     "image": null,
+     "badge": {
+      "x": 7,
+      "y": 6,
+      "w": 52,
+      "h": 30,
+      "tier": "bronze",
+      "text": "LV1"
+     },
+     "badgeTopLeft": true,
+     "overlapBadgeName": 0,
+     "overlapBadgeTags": 0,
+     "overlapBadgeFoot": 0,
+     "overlapSocketsFoot": 0,
+     "overlapSocketsBadge": 0,
+     "nameAndTagsInside": true,
+     "badgeToNamePx": 263,
+     "tags": [
+      "race:Dwarf",
+      "subrace:Mountain",
+      "class:Barbarian",
+      "sign:The Flame",
+      "weapon:Greataxe"
+     ],
+     "socketSides": {
+      "leftGap": 6,
+      "rightGap": 6,
+      "middlePx": 171
+     },
+     "minSocket": 44
+    },
+    "sheet": {
+     "groups": [
+      "attributes",
+      "pools",
+      "offence",
+      "defence",
+      "mobility",
+      "magic",
+      "body"
+     ],
+     "rows": 39,
+     "inlineStyle": 0,
+     "toned": 39
+    },
+    "textMidWordBreaks": [],
+    "feetBandVisible": {
+     "visible": 25,
+     "of": 25,
+     "hits": {
+      "#creator-preview": 25
+     }
+    },
+    "plateFitsWindow": {
+     "h": 383,
+     "vh": 390,
+     "fits": true
+    },
+    "canvasDrawn": {
+     "css": [
+      271,
+      379
+     ],
+     "buffer": [
+      271,
+      379
+     ]
+    },
+    "audit": {
+     "overflowN": 0,
+     "overflow": [],
+     "clippedN": 0,
+     "clipped": [],
+     "tinyN": 0,
+     "tiny": [],
+     "smallN": 0,
+     "small": []
+    },
+    "contrast": {
+     "name": {
+      "n": 1,
+      "min": 11.88,
+      "colour": "rgb(240, 207, 115)",
+      "back": "rgb(27, 22, 15)"
+     },
+     "tags": {
+      "n": 5,
+      "min": 16.21,
+      "colour": "rgb(251, 231, 176)",
+      "back": "rgb(13, 9, 6)"
+     },
+     "LV number": {
+      "n": 1,
+      "min": 8.33,
+      "colour": "rgb(255, 242, 216)",
+      "back": "rgb(99, 64, 21)"
+     },
+     "caption": {
+      "n": 0,
+      "min": null,
+      "colour": "",
+      "back": ""
+     },
+     "socket names": {
+      "n": 6,
+      "min": 7.26,
+      "colour": "rgb(199, 179, 138)",
+      "back": "rgb(40, 39, 40)"
+     },
+     "sheet label": {
+      "n": 6,
+      "min": 11.06,
+      "colour": "rgb(243, 230, 196)",
+      "back": "rgb(58, 42, 30)"
+     },
+     "sheet value": {
+      "n": 6,
+      "min": 12.45,
+      "colour": "rgb(255, 243, 207)",
+      "back": "rgb(57, 42, 30)"
+     }
+    },
+    "auditOpen": {
+     "overflowN": 0,
+     "overflow": [],
+     "clippedN": 0,
+     "clipped": [],
+     "tinyN": 0,
+     "tiny": [],
+     "smallN": 0,
+     "small": []
+    },
+    "titles": {
+     "n": 18,
+     "maxDx": 0.01,
+     "maxDy": 0.7,
+     "within1": 18,
+     "worst": {
+      "sel": ".menu-screen.active .screen-head h2",
+      "text": "Fighters",
+      "dx": 0,
+      "dy": -0.7
+     }
+    },
+    "picker": {
+     "open": true,
+     "coversPlate": true,
+     "items": 18
+    }
+   }
+  }
+ },
+ "errors": []
+}

@@ -12,8 +12,12 @@ import type { CharacterProfile } from "../game/Characters.ts";
  * rather than a thrown error.
  */
 
-/** One studio for the whole page: one WebGL context, a cache that turns the sheet into a hit after the first. */
-const STUDIO = new PortraitStudio();
+/**
+ * One studio for the whole page: one WebGL context, a cache that turns the sheet into a hit after the first.
+ * Wave Z: the sheet's <img> (Menu, `.sheet-portrait`, 100 px object-fit cover) only accepts a PNG data URL, so this
+ * studio keeps PNG and a small 3:4 picture (the hero card's own studio, Engine's, renders the full-card JPEG).
+ */
+const STUDIO = new PortraitStudio({ width: 300, height: 400, type: "image/png" });
 
 /** A PNG data URL of `profile`'s upper body (head and shoulders), or "" when no GL context exists. */
 export function renderPortrait(profile: CharacterProfile): string {

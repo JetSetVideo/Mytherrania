@@ -1,0 +1,57 @@
+PASS F Z-layout-overflow      0 px at all 7 viewports
+PASS F Z-layout-clip          0 clipped boxes at all 7 viewports
+PASS F Z-layout-overlap       0 overlapping pairs at all 7 viewports
+PASS F Z-layout-wordbreak     0 broken words at all 7 viewports
+PASS F Z-layout-bottom        last content clears the bar at all 7 viewports
+PASS F Z-layout-font          320:11 390:11 820:11 1280:11 1920:11 2560:11 844x390:11
+PASS F Z-layout-touch         320:<24=0 <44=96 | 390:<24=0 <44=98 | 844x390:<24=0 <44=98
+PASS F Z-head-removed         absent at all 7 viewports
+PASS F Z-roll-label           "Roll" at all 7 viewports
+PASS F Z-roll-purple          320:h269/s0.4 390:h269/s0.395 820:h268/s0.4 1280:h268/s0.4 1920:h268/s0.4 2560:h268/s0.402 844x390:h268/s0.4
+PASS F Z-lv-text              320:"LV20" 390:"LV20" ... all 7
+PASS F Z-lv-topleft           320:dx6 dy6 in 266x356 390:dx6 dy6 in 334x447 820:dx7 dy7 in 252x338 1280:dx11 dy11 in 398x532 1920:dx17 dy17 in 529x707 2560:dx22 dy22 in 556x743 844x390:dx7 dy7 in 260x348
+PASS F Z-lv-tier              20:platinum 1:bronze 4:bronze 5:copper 8:copper 9:silver 12:silver 13:gold 16:gold 17:platinum
+PASS F Z-lv-colours           platinum(224,230,238) bronze(110,72,28) copper(129,63,34) silver(208,211,215) gold(231,200,117) minDist 21.9
+PASS F Z-pic-full             320:0.974/0.193 390:0.979/0.232 820:0.973/0.083 1280:0.983/0.223 1920:0.987/0.294 2560:0.988/0.233 844x390:0.974/0.153
+PASS F Z-overlay-inside       320:name in tags 4/4 390:name in tags 4/4 820:name in tags 4/4 1280:name in tags 4/4 1920:name in tags 4/4 2560:name in tags 4/4 844x390:name in tags 4/4
+PASS F Z-overlay-contrast     320:med 12.76 p10 11.81 bare 12.29 390:med 12.88 p10 11.71 bare 12.40 820:med 12.70 p10 11.27 bare 12.11 1280:med 13.09 p10 12.12 bare 12.79 1920:med 13.11 p10 12.20 bare 12.87 2560:med 13.03 p10 12.09 bare 12.76 844x390:med 12.72 p10 11.56 bare 12.19
+PASS S Z-stats-attr-delta     7/7 attributes
+PASS S Z-stats-count          derived 32, DOM rows 39 (visible 39), bad deltas 0
+PASS F Z-stats-wiring         missing 0, mismatches 0
+PASS S Z-stats-recompute      8/8 rows agree (recipes 39)
+PASS F Z-stage-fit            320:244x412 (h/w 1.69, vh 640) 390:312x420 (h/w 1.35, vh 844) 820:394x525 (h/w 1.33, vh 1180) 1280:434x579 (h/w 1.33, vh 800) 1920:514x685 (h/w 1.33, vh 1080) 2560:514x685 (h/w 1.33, vh 1440) 844x390:271x379 (h/w 1.40, vh 390)
+PASS F Z-stage-floor          320:129/30 390:128/30 820:128/31 1280:126/30 1920:129/31 2560:125/30 844x390:124/29
+PASS G Z-view-shadow          320:feet/rim 0.657 on/off 0.485 390:feet/rim 0.588 on/off 0.479 820:feet/rim 0.662 on/off 0.487 1280:feet/rim 0.585 on/off 0.459 1920:feet/rim 0.585 on/off 0.468 2560:feet/rim 0.582 on/off 0.459 844x390:feet/rim 0.586 on/off 0.472
+PASS G Z-view-floor           320:rim 30 r=0.612 390:rim 29 r=0.612 820:rim 28 r=0.612 1280:rim 30 r=0.612 1920:rim 30 r=0.612 2560:rim 30 r=0.612 844x390:rim 31 r=0.612
+PASS F Z-page-errors          0
+page errors: 0
+── judged with baseline + light ──
+PASS F Z-layout-overflow    0 px at all 7 viewports
+PASS F Z-layout-clip        0 clipped boxes at all 7 viewports
+PASS F Z-layout-overlap     0 overlapping pairs at all 7 viewports
+PASS F Z-layout-wordbreak   0 broken words at all 7 viewports
+PASS F Z-layout-bottom      last content clears the bar at all 7 viewports
+PASS F Z-layout-font        320:11 390:11 820:11 1280:11 1920:11 2560:11 844x390:11
+PASS F Z-layout-touch       320:<24=0 <44=96 | 390:<24=0 <44=98 | 844x390:<24=0 <44=98
+PASS F Z-head-removed       absent at all 7 viewports
+PASS F Z-roll-label         "Roll" at all 7 viewports
+PASS F Z-roll-purple        320:h269/s0.4 390:h269/s0.395 820:h268/s0.4 1280:h268/s0.4 1920:h268/s0.4 2560:h268/s0.402 844x390:h268/s0.4
+PASS F Z-roll-icon          320:243->476px² 390:243->476px² 820:243->476px² 1280:243->476px² 1920:355->696px² 2560:441->864px² 844x390:243->476px²
+PASS F Z-roll-padding       320:44->22px 390:44->25px 820:44->25px 1280:44->25px 1920:44->25px 2560:44->25px 844x390:44->25px
+PASS F Z-lv-text            320:"LV20" 390:"LV20" ... all 7
+PASS F Z-lv-topleft         320:dx6 dy6 in 266x356 390:dx6 dy6 in 334x447 820:dx7 dy7 in 252x338 1280:dx11 dy11 in 398x532 1920:dx17 dy17 in 529x707 2560:dx22 dy22 in 556x743 844x390:dx7 dy7 in 260x348
+PASS F Z-lv-tier            20:platinum 1:bronze 4:bronze 5:copper 8:copper 9:silver 12:silver 13:gold 16:gold 17:platinum
+PASS F Z-lv-colours         platinum(224,230,238) bronze(110,72,28) copper(129,63,34) silver(208,211,215) gold(231,200,117) minDist 21.9
+PASS F Z-pic-full           320:0.974/0.193 390:0.979/0.232 820:0.973/0.083 1280:0.983/0.223 1920:0.987/0.294 2560:0.988/0.233 844x390:0.974/0.153
+PASS F Z-overlay-inside     320:name in tags 4/4 390:name in tags 4/4 820:name in tags 4/4 1280:name in tags 4/4 1920:name in tags 4/4 2560:name in tags 4/4 844x390:name in tags 4/4
+PASS F Z-overlay-contrast   320:med 12.76 p10 11.81 bare 12.29 390:med 12.88 p10 11.71 bare 12.40 820:med 12.70 p10 11.27 bare 12.11 1280:med 13.09 p10 12.12 bare 12.79 1920:med 13.11 p10 12.20 bare 12.87 2560:med 13.03 p10 12.09 bare 12.76 844x390:med 12.72 p10 11.56 bare 12.19
+PASS S Z-stats-attr-delta   7/7 attributes
+PASS S Z-stats-count        derived 32, DOM rows 39 (visible 39), bad deltas 0
+PASS F Z-stats-wiring       missing 0, mismatches 0
+PASS S Z-stats-recompute    8/8 rows agree (recipes 39)
+PASS F Z-stage-fit          320:244x412 (h/w 1.69, vh 640) 390:312x420 (h/w 1.35, vh 844) 820:394x525 (h/w 1.33, vh 1180) 1280:434x579 (h/w 1.33, vh 800) 1920:514x685 (h/w 1.33, vh 1080) 2560:514x685 (h/w 1.33, vh 1440) 844x390:271x379 (h/w 1.40, vh 390)
+PASS F Z-stage-floor        320:129/30 390:128/30 820:128/31 1280:126/30 1920:129/31 2560:125/30 844x390:124/29
+PASS G Z-view-shadow        320:feet/rim 0.657 on/off 0.485 390:feet/rim 0.588 on/off 0.479 820:feet/rim 0.662 on/off 0.487 1280:feet/rim 0.585 on/off 0.459 1920:feet/rim 0.585 on/off 0.468 2560:feet/rim 0.582 on/off 0.459 844x390:feet/rim 0.586 on/off 0.472
+PASS G Z-view-floor         320:rim 30 r=0.612 390:rim 29 r=0.612 820:rim 28 r=0.612 1280:rim 30 r=0.612 1920:rim 30 r=0.612 2560:rim 30 r=0.612 844x390:rim 31 r=0.612
+PASS G Z-view-top-light     PREVIEW_KEY_DIR:9.2°
+PASS F Z-page-errors        0

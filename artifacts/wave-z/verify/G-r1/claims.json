@@ -1,0 +1,226 @@
+[
+ {
+  "id": "Z-layout-overflow",
+  "lane": "F",
+  "claim": "no horizontal overflow at any width",
+  "method": "documentElement.scrollWidth - innerWidth, hero + New tabs, 7 viewports",
+  "result": "PASS",
+  "evidence": "0 px at all 7 viewports"
+ },
+ {
+  "id": "Z-layout-clip",
+  "lane": "F",
+  "claim": "no clipped/spilled text",
+  "method": "text boxes with scrollWidth > clientWidth+1 (or hidden-overflow height)",
+  "result": "PASS",
+  "evidence": "0 clipped boxes at all 7 viewports"
+ },
+ {
+  "id": "Z-layout-overlap",
+  "lane": "F",
+  "claim": "interactive boxes / badges / name never overlap",
+  "method": "pairwise bbox intersection (>1x1 px) of buttons, tabs, inputs, LV badge, name",
+  "result": "PASS",
+  "evidence": "0 overlapping pairs at all 7 viewports"
+ },
+ {
+  "id": "Z-layout-wordbreak",
+  "lane": "F",
+  "claim": "no word broken mid-word across lines",
+  "method": "Range.getClientRects of every word >= 4 letters: more than one line top",
+  "result": "FAIL",
+  "evidence": "390:2 [\"Density\" in span.zs-label] | 2560:1 [\"Density\" in span.zs-label]"
+ },
+ {
+  "id": "Z-layout-bottom",
+  "lane": "F",
+  "claim": "scrolled to the end, no content stays under the pinned action bar",
+  "method": "every scroller at its end: leaf texts whose centre hit-tests to a fixed/sticky bar at the viewport bottom",
+  "result": "PASS",
+  "evidence": "last content clears the bar at all 7 viewports"
+ },
+ {
+  "id": "Z-layout-font",
+  "lane": "F",
+  "claim": "min font size >= 11 px",
+  "method": "min computed font-size of visible text boxes",
+  "result": "PASS",
+  "evidence": "320:11 390:11 820:11 1280:11 1920:11 2560:11 844x390:11"
+ },
+ {
+  "id": "Z-layout-touch",
+  "lane": "F",
+  "claim": "touch targets >= 24 px on phones (WCAG 2.5.8); <44 counted",
+  "method": "min(w,h) of buttons/tabs/inputs at 320, 390, 844x390",
+  "result": "PASS",
+  "evidence": "320:<24=0 <44=96 | 390:<24=0 <44=98 | 844x390:<24=0 <44=98"
+ },
+ {
+  "id": "Z-head-removed",
+  "lane": "F",
+  "claim": "'Chosen hero — Figure, record, statistics' head deleted",
+  "method": "document.body.innerText search",
+  "result": "PASS",
+  "evidence": "absent at all 7 viewports"
+ },
+ {
+  "id": "Z-roll-label",
+  "lane": "F",
+  "claim": "button reads 'Roll'",
+  "method": "textContent of [data-hero-reroll]",
+  "result": "PASS",
+  "evidence": "\"Roll\" at all 7 viewports"
+ },
+ {
+  "id": "Z-roll-purple",
+  "lane": "F",
+  "claim": "Roll is purple stone",
+  "method": "median hue of saturated face pixels (glyphs hidden, 3 px inset) in 250..335 and >=30% saturated pixels",
+  "result": "PASS",
+  "evidence": "320:h269/s0.4 390:h269/s0.395 820:h268/s0.4 1280:h268/s0.4 1920:h268/s0.4 2560:h268/s0.4 844x390:h268/s0.4"
+ },
+ {
+  "id": "Z-roll-icon",
+  "lane": "F",
+  "claim": "bigger icon than before",
+  "method": "svg bbox area vs baseline (HEAD ef4fdf4)",
+  "result": "PASS",
+  "evidence": "320:243->476px² 390:243->476px² 820:243->476px² 1280:243->476px² 1920:355->696px² 2560:441->864px² 844x390:243->476px²"
+ },
+ {
+  "id": "Z-roll-padding",
+  "lane": "F",
+  "claim": "smaller padding+margin than before",
+  "method": "sum of computed padding + |margin| vs baseline",
+  "result": "PASS",
+  "evidence": "320:44->22px 390:44->25px 820:44->25px 1280:44->25px 1920:44->25px 2560:44->25px 844x390:44->25px"
+ },
+ {
+  "id": "Z-lv-text",
+  "lane": "F",
+  "claim": "badge reads 'LV' with the number to its right",
+  "method": ".lv-label text 'LV', .lv-num digits, num.left >= label.right",
+  "result": "PASS",
+  "evidence": "320:\"LV20\" 390:\"LV20\" ... all 7"
+ },
+ {
+  "id": "Z-lv-topleft",
+  "lane": "F",
+  "claim": "badge in the top-left corner of the card picture",
+  "method": "badge left/top >= picture left/top and centre within the left 35% / top 20% of the picture",
+  "result": "PASS",
+  "evidence": "320:dx6 dy6 in 266x356 390:dx6 dy6 in 334x447 820:dx7 dy7 in 252x338 1280:dx11 dy11 in 398x532 1920:dx17 dy17 in 529x707 2560:dx22 dy22 in 556x743 844x390:dx7 dy7 in 260x348"
+ },
+ {
+  "id": "Z-lv-tier",
+  "lane": "F",
+  "claim": "tier per level band (1-4 bronze .. 17-20 platinum)",
+  "method": "click each of 10 seeded heroes (levels 1,4,5,8,9,12,13,16,17,20) at 1280; data-tier + number",
+  "result": "PASS",
+  "evidence": "20:platinum 1:bronze 4:bronze 5:copper 8:copper 9:silver 12:silver 13:gold 16:gold 17:platinum"
+ },
+ {
+  "id": "Z-lv-colours",
+  "lane": "F",
+  "claim": "the 5 metals look different on pixels",
+  "method": "median RGB of each tier's badge face (glyphs hidden); min pairwise RGB distance >= 20",
+  "result": "PASS",
+  "evidence": "platinum(224,230,238) bronze(110,72,28) copper(129,63,34) silver(208,211,215) gold(231,200,117) minDist 21.9"
+ },
+ {
+  "id": "Z-pic-full",
+  "lane": "F",
+  "claim": "picture fills the card plate",
+  "method": "img area / its plate (parent) area >= 0.95; img vs whole card reported",
+  "result": "PASS",
+  "evidence": "320:0.974/0.193 390:0.979/0.295 820:0.973/0.149 1280:0.983/0.297 1920:0.987/0.296 2560:0.988/0.233 844x390:0.974/0.153"
+ },
+ {
+  "id": "Z-overlay-inside",
+  "lane": "F",
+  "claim": "name and tags float over the picture",
+  "method": "name bbox and every race/class/sign tag bbox inside the picture bbox",
+  "result": "PASS",
+  "evidence": "320:name in tags 4/4 390:name in tags 4/4 820:name in tags 4/4 1280:name in tags 4/4 1920:name in tags 4/4 2560:name in tags 4/4 844x390:name in tags 4/4"
+ },
+ {
+  "id": "Z-overlay-contrast",
+  "lane": "F",
+  "claim": "name/tags legible on the picture (>= 4.5)",
+  "method": "pixel contrast vs the median backdrop pixel, glyphs hidden (text-shadow kept) >= 4.5; p10 = worst-decile pixel and bare = shadow also hidden (both info)",
+  "result": "PASS",
+  "evidence": "320:med 12.95 p10 12.14 bare 12.59 390:med 12.95 p10 12.09 bare 12.59 820:med 12.89 p10 11.79 bare 12.49 1280:med 13.13 p10 12.63 bare 12.95 1920:med 13.13 p10 12.61 bare 12.95 2560:med 13.11 p10 12.52 bare 12.87 844x390:med 13.00 p10 4.41 bare 12.59"
+ },
+ {
+  "id": "Z-stats-attr-delta",
+  "lane": "S",
+  "claim": "every attribute shows (+n)/(−n)/(0)",
+  "method": "DOM .zs-delta of each sheet.attributes key matches the format",
+  "result": "PASS",
+  "evidence": "7/7 attributes"
+ },
+ {
+  "id": "Z-stats-count",
+  "lane": "S",
+  "claim": "many derived statistics, each with a delta",
+  "method": "sheet.derived length and DOM rows",
+  "result": "PASS",
+  "evidence": "derived 32, DOM rows 39 (visible 39), bad deltas 0"
+ },
+ {
+  "id": "Z-stats-wiring",
+  "lane": "F",
+  "claim": "the card shows exactly derivedSheet(hero)",
+  "method": "every sheet row's display/deltaDisplay == DOM text (1280, level-20 hero)",
+  "result": "PASS",
+  "evidence": "missing 0, mismatches 0"
+ },
+ {
+  "id": "Z-stats-recompute",
+  "lane": "S",
+  "claim": "values = the game's own functions",
+  "method": ">= 5 random rows recomputed in Deno from the underlying game functions (value and delta)",
+  "result": "PASS",
+  "evidence": "8/8 rows agree (recipes 39)"
+ },
+ {
+  "id": "Z-stage-fit",
+  "lane": "F",
+  "claim": "+ New stage plate is 3:4 and fits the viewport height",
+  "method": "#creator-preview canvas box: h/w in 1.2..1.45 (F Z-11 promised aspect-ratio 3/4) and h <= viewport height",
+  "result": "FAIL",
+  "evidence": "320:244x416 (h/w 1.70, vh 640) 390:312x417 (h/w 1.34, vh 844) 820:394x525 (h/w 1.33, vh 1180) 1280:434x579 (h/w 1.33, vh 800) 1920:514x685 (h/w 1.33, vh 1080) 2560:514x685 (h/w 1.33, vh 1440) 844x390:271x380 (h/w 1.41, vh 390)"
+ },
+ {
+  "id": "Z-view-shadow",
+  "lane": "G",
+  "claim": "shadow under the feet",
+  "method": "Creator preview (box normalised to 3:4 on screen): median luminance on the feet ring (r 0.16-0.32 m) / rim (r 0.5 m) <= 0.85 and lighting on/off <= 0.9",
+  "result": "FAIL",
+  "evidence": "320:feet/rim 0.514 on/off 0.422 390:feet/rim 0.831 on/off 0.881 820:feet/rim 0.734 on/off 0.911 1280:feet/rim 0.562 on/off 0.701 1920:feet/rim 0.64 on/off 0.816 2560:feet/rim 0.833 on/off 0.891 844x390:feet/rim - on/off -"
+ },
+ {
+  "id": "Z-view-floor",
+  "lane": "G",
+  "claim": "a floor under the figure",
+  "method": "pedestal/floor present: >= 8 rim points (r 0.5 m) seen by the camera AND on top in the page, pedestal() radius",
+  "result": "FAIL",
+  "evidence": "320:rim 29 r=0.612 390:rim 29 r=0.612 820:rim 29 r=0.612 1280:rim 29 r=0.612 1920:rim 29 r=0.612 2560:rim 29 r=0.612 844x390:rim 3 r=0.612"
+ },
+ {
+  "id": "Z-view-top-light",
+  "lane": "G",
+  "claim": "key light from straight above",
+  "method": "angle of PREVIEW_KEY_DIR (and portrait key) from vertical <= 15°",
+  "result": "PASS",
+  "evidence": "PREVIEW_KEY_DIR:9.2°"
+ },
+ {
+  "id": "Z-page-errors",
+  "lane": "F",
+  "claim": "no page errors",
+  "method": "pageerror + console.error across all runs",
+  "result": "PASS",
+  "evidence": "0"
+ }
+]

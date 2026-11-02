@@ -31,6 +31,8 @@ uniform sampler2D uShadowMap;
 uniform mat4 uShadowMatrix;
 uniform float uShadowOn;
 uniform float uShadowTexel;
+uniform vec3 uFillDir;
+uniform vec3 uFillColor;
 float celShadow(vec3 world, vec3 worldN) {
   if (uShadowOn < 0.5) return 1.0;
   vec4 sc = uShadowMatrix * vec4(world + worldN * 0.035, 1.0);
@@ -67,7 +69,10 @@ vec3 celShade(vec3 base, vec3 n, vec3 l, vec3 viewPos, vec3 world, vec3 worldN, 
   vec3 mr = mangaRamp(ndl);
   float litFrac = clamp(band / 0.62, 0.0, 1.0); // 0.62 = CEL_BAND_WEIGHTS[0] + CEL_BAND_WEIGHTS[1]
   vec3 shadedBase = mix(base * mr.y, base, litFrac);
-  return shadedBase * (amb + lightColor * band + rim * (lightColor * mix(0.4, 1.0, sh) + ambientColor)) + lightColor * spec;
+  // Wave Z (lane G): a soft, unbanded FILL (world direction uFillDir, colour uFillColor) — the viewer's low warm
+  // face bounce under its overhead key. Black by default, so every other scene adds exactly 0.
+  float fillN = max(dot(normalize(worldN), uFillDir), 0.0);
+  return shadedBase * (amb + lightColor * band + rim * (lightColor * mix(0.4, 1.0, sh) + ambientColor)) + lightColor * spec + base * uFillColor * fillN;
 }
 `;
 
@@ -169,6 +174,9 @@ export const celLighting = {
   uShadowMatrix: { value: new THREE.Matrix4() },
   uShadowOn: { value: 0 },
   uShadowTexel: { value: 1 / 2048 },
+  /** Wave Z (lane G): a soft fill light (world direction, colour). Black = off: only the 3D viewer and the portrait set it. */
+  uFillDir: { value: new THREE.Vector3(0, 0, 1) },
+  uFillColor: { value: new THREE.Color(0, 0, 0) },
   ...Object.fromEntries(Object.entries(INK_UNIFORM_DEFAULTS).map(([k, v]) => [k, { value: v }])) as Record<string, THREE.IUniform>,
 };
 
