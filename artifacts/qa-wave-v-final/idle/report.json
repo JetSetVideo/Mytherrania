@@ -1,0 +1,145 @@
+{
+ "errors": [],
+ "report": [
+  {
+   "race": "human",
+   "subrace": "nomad",
+   "freezes": 3,
+   "sampleS": 5,
+   "feet": [
+    {
+     "side": "L",
+     "heelMaxMm": 4.280585199511454,
+     "heelMeanMm": 0.12070785946975654,
+     "ballMaxMm": 11.056440952445023,
+     "pitchMaxDeg": 4.2776754614641535,
+     "pitchMeanDeg": 2.1915317849996483,
+     "framesHeelUp": 0,
+     "frames": 144
+    },
+    {
+     "side": "R",
+     "heelMaxMm": 16.644716584749148,
+     "heelMeanMm": 9.97421238514277,
+     "ballMaxMm": 2.976753240317407,
+     "pitchMaxDeg": 4.305710857707958,
+     "pitchMeanDeg": 2.6644517689319716,
+     "framesHeelUp": 96,
+     "frames": 144
+    }
+   ],
+   "live": {
+    "seconds": 8,
+    "samples": 73,
+    "standing": 55,
+    "feet": [
+     {
+      "side": "L",
+      "heelMaxMm": 8.553362502269088,
+      "heelMeanMm": 0.46437183518141023,
+      "ballMaxMm": 2.7897342385131174,
+      "pitchMaxDeg": 2.70598810871636,
+      "pitchMeanDeg": 0.19306707958562688,
+      "framesHeelUp": 1,
+      "frames": 54
+     },
+     {
+      "side": "R",
+      "heelMaxMm": 25.316630586232126,
+      "heelMeanMm": 1.2640498981347923,
+      "ballMaxMm": 4.243357922566225,
+      "pitchMaxDeg": 8.314413938588862,
+      "pitchMeanDeg": 0.5205305798419726,
+      "framesHeelUp": 3,
+      "frames": 55
+     }
+    ]
+   },
+   "neckPtpMm": [
+    1.000000000000112,
+    0.9999999999998899,
+    0.9999999999998899
+   ],
+   "pelvisSwayPtpMm": [
+    1.8027756377317345,
+    1.1180339887500694,
+    0.9999999999998899
+   ],
+   "bind": {
+    "bindAngle": 0.3434833762785194,
+    "bindBallH": 0.027705566249570896,
+    "bindLen": 0.13571658810178047
+   }
+  },
+  {
+   "race": "ork",
+   "subrace": "ironhide",
+   "freezes": 3,
+   "sampleS": 5,
+   "feet": [
+    {
+     "side": "L",
+     "heelMaxMm": 24.290243425237787,
+     "heelMeanMm": -24.2902434252378,
+     "ballMaxMm": 58.09642103503844,
+     "pitchMaxDeg": 11.541460035955915,
+     "pitchMeanDeg": 11.54146003595592,
+     "framesHeelUp": 0,
+     "frames": 48
+    },
+    {
+     "side": "R",
+     "heelMaxMm": 14.281936250723836,
+     "heelMeanMm": -7.766166976326549,
+     "ballMaxMm": 6.222977110942038,
+     "pitchMaxDeg": 3.299847933376765,
+     "pitchMeanDeg": -2.8569128225866196,
+     "framesHeelUp": 0,
+     "frames": 97
+    }
+   ],
+   "live": {
+    "seconds": 8,
+    "samples": 77,
+    "standing": 49,
+    "feet": [
+     {
+      "side": "L",
+      "heelMaxMm": 10.538072927577637,
+      "heelMeanMm": 0.43993045287196036,
+      "ballMaxMm": 0.29969643213494795,
+      "pitchMaxDeg": 3.4782827895697106,
+      "pitchMeanDeg": 0.1709648275781183,
+      "framesHeelUp": 1,
+      "frames": 49
+     },
+     {
+      "side": "R",
+      "heelMaxMm": 10.94864231942244,
+      "heelMeanMm": 0.7918610469786329,
+      "ballMaxMm": 0.14849426432642782,
+      "pitchMaxDeg": 3.558286000095396,
+      "pitchMeanDeg": 0.22483486490406165,
+      "framesHeelUp": 1,
+      "frames": 49
+     }
+    ]
+   },
+   "neckPtpMm": [
+    4.0000000000000036,
+    0.9999999999998899,
+    4.0000000000000036
+   ],
+   "pelvisSwayPtpMm": [
+    17.923448328934573,
+    0.4999999999997229,
+    17.2699160391702
+   ],
+   "bind": {
+    "bindAngle": 0.22591344902757088,
+    "bindBallH": 0.042415112276568315,
+    "bindLen": 0.12628277078300704
+   }
+  }
+ ]
+}

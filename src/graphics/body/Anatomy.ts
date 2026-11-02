@@ -21,13 +21,14 @@
 
 import { rng32 } from "../../core/MathCore.ts";
 import { defaultHumanoid, type JointName } from "../../game/Skeleton.ts";
-import type { AnatomyPlan, BodySpec, BoneId, BoneSegment, Bounds, BrushStroke, SdfNode, SdfSample, Vec3 } from "./contracts.ts";
+import { type BilateralAsymmetry, bilateralAsymmetry, pairScales } from "../../game/BodyProfile.ts";
+import type { AnatomyPlan, BodySpec, BoneId, BoneSegment, Bounds, BrushStroke, Primitive, SdfNode, SdfSample, Vec3 } from "./contracts.ts";
 import { BONE_IDS, compileSdf, nodeBounds, type BodyField } from "./Sdf.ts";
 import { applyFieldBrushes, brushReach } from "./Brushes.ts";
 import { CELL_MAX, CELL_MIN, proportionsFor, TRIANGLE_TARGET, type BodyProportions } from "./Proportions.ts";
 import { countSignChanges } from "./Polygonize.ts";
 import {
-  armNode, type ArmAnchors, blendWidth, type FaceAnchors, headNode, legNode, type LegAnchors, neckNode, op, prim, torsoNode,
+  armNode, referenceForms, type ArmAnchors, blendWidth, type FaceAnchors, headNode, legNode, type LegAnchors, neckNode, op, prim, torsoNode,
 } from "./AnatomyParts.ts";
 
 /** Parent of every bone — the SAME tree as Humanoid.ts's pivots (spine is the top pivot). */
@@ -65,6 +66,39 @@ export interface DetailedAnatomy extends AnatomyPlan {
   face: FaceAnchors;
   arms: [ArmAnchors, ArmAnchors];
   legs: [LegAnchors, LegAnchors];
+  /** Wave V lane P: the final symmetry step's record (see finalSymmetryPass). */
+  symmetry: SymmetryRecord;
+  /**
+   * Wave V lane P: the RENDERED skin's tree — `root` plus the seeded natural asymmetry. `root` stays
+   * the exact mirror and is what the physics reads (Hitboxes, the ragdoll, the abduction solves):
+   * the combat-capsule fit is so sensitive that a 0.4 % thigh girth change moved a fitted torso
+   * capsule enough to swing a thrust's hand-to-torso clearance 32 -> -13 mm (measured), so the
+   * asymmetry is a LOOK, never a physical property. Equal to `root` when the asymmetry is off.
+   */
+  skinRoot: SdfNode;
+}
+
+/** What the final symmetry step found and did. */
+export interface SymmetryRecord {
+  /** Left/right primitive pairs found (ids ending L / R with the same stem). */
+  pairs: number;
+  /**
+   * Largest left-vs-mirrored-right difference BEFORE the mirror was enforced, relative to the
+   * pair's size (|Δparam| / max(r, size), max over pairs and params). 0 = already mirrored.
+   */
+  mirrorDeviationBefore: number;
+  /** The seeded asymmetry re-applied (null = the pass ran with asymmetry off). */
+  asymmetry: BilateralAsymmetry | null;
+  /** Primitives the asymmetry rescaled. */
+  scaled: number;
+}
+
+/** Options of anatomyFor (QA / measurement). */
+export interface AnatomyOptions {
+  /** Re-apply the seeded natural asymmetry after the mirror (default true). */
+  asymmetry?: boolean;
+  /** Run the final symmetry step at all (default true; false = the raw tree, for measurement). */
+  symmetryPass?: boolean;
 }
 
 const SIDES: [1, -1] = [1, -1];
@@ -176,20 +210,25 @@ function strokesFor(P: BodyProportions, t: ReturnType<typeof torsoNode>, face: F
 export const SOLE_FLATTEN_CELLS = 1;
 
 /** Contract entry point: the whole body plan for a spec (see the module comment). */
-export function anatomyFor(spec: BodySpec): DetailedAnatomy {
+export function anatomyFor(spec: BodySpec, opts: AnatomyOptions = {}): DetailedAnatomy {
   const P = proportionsFor(spec);
-  const first = buildPlan(P, spec.seed);
+  const asym = opts.asymmetry === false ? null : bilateralAsymmetry(spec.seed);
+  const pass = opts.symmetryPass !== false;
+  const first = buildPlan(P, spec.seed, asym, pass);
   // Refine the cell from the measured sign-change count at COARSE_FACTOR × the first estimate.
   const coarse = COARSE_FACTOR * P.cell;
-  const edges = countSignChanges(applyFieldBrushes(compileSdf(first.root), first.strokes), first.bounds, coarse);
+  // Wave V lane B: count on the REFERENCE (pre-wave) forms so surface detail never moves the cell
+  // (and with it every cell-scaled gap, the solved abductions and the grid phase of the pins).
+  const ref = referenceForms(() => buildPlan(P, spec.seed, asym, pass));
+  const edges = countSignChanges(applyFieldBrushes(compileSdf(ref.root), ref.strokes), ref.bounds, coarse);
   const cell = Math.min(CELL_MAX, Math.max(CELL_MIN, coarse * Math.sqrt(2 * edges / TRIANGLE_TARGET)));
   if (Math.abs(cell - P.cell) <= CELL_TOLERANCE * P.cell) return first;
   // Every cell-dependent size (gaps, minimum feature thickness, bounds) is rebuilt.
-  return buildPlan({ ...P, cell }, spec.seed);
+  return buildPlan({ ...P, cell }, spec.seed, asym, pass);
 }
 
 /** Assemble the plan for fixed proportions (the cell is part of the proportions). */
-function buildPlan(P: BodyProportions, seed: number): DetailedAnatomy {
+function buildPlan(P: BodyProportions, seed: number, asym: BilateralAsymmetry | null, pass = true): DetailedAnatomy {
   const h = P.head, c = P.cell, R = P.radius;
   const jitter = seedJitter(seed);
 
@@ -212,13 +251,19 @@ function buildPlan(P: BodyProportions, seed: number): DetailedAnatomy {
   // Display: forearm and hand clear the hips and thighs by a small margin when lowered.
   const armDisplayAbduction = solveArms(P, lowerField, DISPLAY_CLEARANCE_CELLS * c / 2, P.upperArm, armAbduction);
   const arms = SIDES.map((s) => armNode(P, s, armAbduction));
-  const body = op("smoothUnion", kShoulder, lower, arms[0].node, arms[1].node);
+  const bones = bonesFor(P, head.face, arms.map((a) => a.anchors), legs.map((l) => l.anchors), torso.backZ);
+  // Wave V lane P: the FINAL symmetry step — enforce the mirror, then the seeded natural asymmetry.
+  const rawBody = op("smoothUnion", kShoulder, lower, arms[0].node, arms[1].node);
+  const sym = pass ? finalSymmetryPass(rawBody, bones, asym, P)
+    : { node: rawBody, mirrored: rawBody, record: { pairs: 0, mirrorDeviationBefore: Number.NaN, asymmetry: null, scaled: 0 } };
+  const body = sym.mirrored;
 
   // The ground: the half-space y ≥ 0 as a box whose bottom face is the plane y = 0.
   const raw = nodeBounds(body);
   const span = Math.max(raw.max[0] - raw.min[0], raw.max[2] - raw.min[2], P.y.crown) + 1;
   const ground = prim("groundHalfSpace", "roundBox", "root", "sole", [0, span, 0], { size: [span, span, span], r: 0.001 });
   const root: SdfNode = op("intersect", 0, body, ground);
+  const skinRoot: SdfNode = sym.node === sym.mirrored ? root : op("intersect", 0, sym.node, ground);
 
   const strokes = strokesFor(P, torso, head.face, arms.map((a) => a.anchors), legs.map((l) => l.anchors));
   const pad = BOUNDS_PAD_CELLS * c + brushReach(strokes);
@@ -230,12 +275,178 @@ function buildPlan(P: BodyProportions, seed: number): DetailedAnatomy {
     min: [-(halfCells + 0.5) * c, -(BOUNDS_PAD_CELLS + 0.5) * c, raw.min[2] - pad],
     max: [(halfCells + 0.5) * c - 1e-9, Math.min(raw.max[1], P.y.crown + h) + pad, raw.max[2] + pad],
   };
-  const bones = bonesFor(P, head.face, arms.map((a) => a.anchors), legs.map((l) => l.anchors), torso.backZ);
   return {
     root, strokes, bones, bounds, cell: c,
     proportions: P, armAbduction, legAbduction, armDisplayAbduction, face: head.face,
     arms: [arms[0].anchors, arms[1].anchors], legs: [legs[0].anchors, legs[1].anchors],
+    symmetry: sym.record, skinRoot,
   };
+}
+
+// ---------------------------------------------------------------------------------------------
+// Wave V lane P — the final symmetry step (BodyProfile.bilateralAsymmetry has the WHY).
+
+/** Mirror of a primitive across the plane x = 0 (XYZ Euler: rx, −ry, −rz). */
+function mirrorPrimitive(p: Primitive, id: string): Primitive {
+  const m = (v: Vec3): Vec3 => [-v[0], v[1], v[2]];
+  return {
+    ...p, id, a: m(p.a), ...(p.b ? { b: m(p.b) } : {}), ...(p.size ? { size: [p.size[0], p.size[1], p.size[2]] as Vec3 } : {}),
+    ...(p.rot ? { rot: [p.rot[0], -p.rot[1], -p.rot[2]] as Vec3 } : {}),
+    bone: (p.bone.endsWith("L") ? `${p.bone.slice(0, -1)}R` : p.bone.endsWith("R") ? `${p.bone.slice(0, -1)}L` : p.bone) as BoneId,
+  };
+}
+
+/** Mean of two primitives' numeric parameters (same kind and topology). */
+function meanPrimitive(a: Primitive, b: Primitive): Primitive {
+  const v = (x: Vec3, y: Vec3): Vec3 => [(x[0] + y[0]) / 2, (x[1] + y[1]) / 2, (x[2] + y[2]) / 2];
+  return {
+    ...a, a: v(a.a, b.a), r: (a.r + b.r) / 2,
+    ...(a.b && b.b ? { b: v(a.b, b.b) } : {}), ...(a.r2 !== undefined && b.r2 !== undefined ? { r2: (a.r2 + b.r2) / 2 } : {}),
+    ...(a.size && b.size ? { size: v(a.size, b.size) } : {}), ...(a.rot && b.rot ? { rot: v(a.rot, b.rot) } : {}),
+  };
+}
+
+/** Columns of the rotation matrix of an XYZ Euler (THREE: M = Rx·Ry·Rz), row-major 3×3. */
+function eulerMatrix(r: Vec3 | undefined): number[] {
+  const [x, y, z] = r ?? [0, 0, 0];
+  const a = Math.cos(x), b = Math.sin(x), c = Math.cos(y), d = Math.sin(y), e = Math.cos(z), f = Math.sin(z);
+  return [c * e, -c * f, d, a * f + b * e * d, a * e - b * f * d, -b * c, b * f - a * e * d, b * e + a * f * d, a * c];
+}
+
+/**
+ * Largest |Δ| of two primitives' parameters relative to the primitive's size; orientations are
+ * compared as principal AXES up to sign (an ellipsoid / box turned 180° about an axis is the same
+ * solid, and the parts builder writes some mirrored ears that way).
+ */
+function primitiveDeviation(a: Primitive, b: Primitive): number {
+  const scale = Math.max(1e-6, a.r, ...(a.size ?? [0]), a.r2 ?? 0);
+  let d = Math.abs(a.r - b.r);
+  const vd = (x?: Vec3, y?: Vec3) => { if (x && y) for (let k = 0; k < 3; k++) d = Math.max(d, Math.abs(x[k] - y[k])); };
+  vd(a.a, b.a); vd(a.b, b.b); vd(a.size, b.size);
+  if (a.r2 !== undefined && b.r2 !== undefined) d = Math.max(d, Math.abs(a.r2 - b.r2));
+  let rd = 0;
+  if (a.rot || b.rot) {
+    const ma = eulerMatrix(a.rot), mb = eulerMatrix(b.rot);
+    for (let k = 0; k < 3; k++) rd = Math.max(rd, 1 - Math.abs(ma[k] * mb[k] + ma[3 + k] * mb[3 + k] + ma[6 + k] * mb[6 + k]));
+  }
+  return Math.max(d / scale, rd);
+}
+
+/** A pair whose deviation is under this is already a mirror and is left exactly as built. */
+export const MIRROR_TOLERANCE = 1e-9;
+
+/** Which asymmetry dimension a primitive belongs to, and whether it scales about its BONE line. */
+function asymmetryClass(p: Primitive): { key: keyof Omit<BilateralAsymmetry, "dominant">; aboutBone: boolean } | null {
+  if ((p.bone === "shoulderL" || p.bone === "shoulderR") && p.region === "upperArm") return { key: "arm", aboutBone: true };
+  if ((p.bone === "elbowL" || p.bone === "elbowR") && p.region === "foreArm") return { key: "foreArm", aboutBone: true };
+  if ((p.bone === "hipL" || p.bone === "hipR") && p.region === "thigh") return { key: "thigh", aboutBone: true };
+  if ((p.bone === "kneeL" || p.bone === "kneeR") && p.region === "shin") return { key: "shin", aboutBone: true };
+  if (p.region === "torso" && /^(pectoral|scapula)[LR]$/.test(p.id)) return { key: "chest", aboutBone: false };
+  if (p.region === "face" && /^(cheekbone|jaw|browRidge)[LR]$/.test(p.id)) return { key: "face", aboutBone: false };
+  return null; // hands, feet, soles, ears, neck, everything central: untouched
+}
+
+/**
+ * Scale a primitive's GIRTH by s: about the bone line (limbs: every point's offset from its
+ * projection on head->tail scales by s, so the joints and the lengths along the bone stay) or
+ * about its own centre (a muscle/face volume). Radii and sizes scale by s.
+ */
+function scalePrimitive(p: Primitive, s: number, bone: BoneSegment | null, taper: [number, number] | null = null): Primitive {
+  // Fraction of the way along the bone (head 0 -> tail 1) and the girth scale there: s, easing
+  // back to 1 over `taper` (bone fractions) so a distal joint (wrist, ankle) keeps its exact size.
+  const frac = (v: Vec3): number => {
+    if (!bone) return 0;
+    const h = bone.head, d: Vec3 = [bone.tail[0] - h[0], bone.tail[1] - h[1], bone.tail[2] - h[2]];
+    const dd = d[0] * d[0] + d[1] * d[1] + d[2] * d[2] || 1;
+    return ((v[0] - h[0]) * d[0] + (v[1] - h[1]) * d[1] + (v[2] - h[2]) * d[2]) / dd;
+  };
+  const sAt = (t: number): number => {
+    if (!taper) return s;
+    const u = Math.min(1, Math.max(0, (t - taper[0]) / Math.max(1e-9, taper[1] - taper[0])));
+    return 1 + (s - 1) * (1 - u * u * (3 - 2 * u));
+  };
+  const about = (v: Vec3): Vec3 => {
+    if (!bone) return v;
+    const h = bone.head, t = frac(v), k = sAt(t);
+    const q: Vec3 = [h[0] + t * (bone.tail[0] - h[0]), h[1] + t * (bone.tail[1] - h[1]), h[2] + t * (bone.tail[2] - h[2])];
+    return [q[0] + k * (v[0] - q[0]), q[1] + k * (v[1] - q[1]), q[2] + k * (v[2] - q[2])];
+  };
+  const ta = frac(p.a), tb = p.b ? frac(p.b) : ta, tc = (ta + tb) / 2;
+  const sc = sAt(tc);
+  return {
+    ...p, a: about(p.a), ...(p.b ? { b: about(p.b) } : {}), r: p.r * sAt(ta),
+    ...(p.r2 !== undefined ? { r2: p.r2 * sAt(tb) } : {}),
+    ...(p.size ? { size: [p.size[0] * sc, p.size[1] * sc, p.size[2] * sc] as Vec3 } : {}),
+  };
+}
+
+/**
+ * The final symmetry step of the generation: (1) every left/right primitive pair is made an exact
+ * mirror (left := mean of left and mirrored right, right := mirror of left), measuring how far apart
+ * they were; (2) the seeded natural asymmetry (BodyProfile.bilateralAsymmetry) rescales the girth of
+ * the arm, forearm, chest, thigh, shin and face pairs with area-preserving pair scales. Returns a NEW
+ * tree (the input primitives are never mutated). Joint positions and bone lengths never change.
+ */
+export function pairDeviations(root: SdfNode): { id: string; dev: number; l: Primitive; r: Primitive }[] {
+  const prims = new Map<string, Primitive>();
+  const collect = (n: SdfNode) => { if (n.type === "primitive") prims.set(n.primitive.id, n.primitive); else n.children.forEach(collect); };
+  collect(root);
+  const out: { id: string; dev: number; l: Primitive; r: Primitive }[] = [];
+  for (const [id, pl] of prims) {
+    if (!id.endsWith("L")) continue;
+    const pr = prims.get(`${id.slice(0, -1)}R`);
+    if (pr && pr.kind === pl.kind) out.push({ id, dev: primitiveDeviation(pl, mirrorPrimitive(pr, id)), l: pl, r: pr });
+  }
+  return out;
+}
+
+export function finalSymmetryPass(
+  root: SdfNode, bones: readonly BoneSegment[], asym: BilateralAsymmetry | null, P?: BodyProportions,
+): { node: SdfNode; mirrored: SdfNode; record: SymmetryRecord } {
+  const prims = new Map<string, Primitive>();
+  const collect = (n: SdfNode) => { if (n.type === "primitive") prims.set(n.primitive.id, n.primitive); else n.children.forEach(collect); };
+  collect(root);
+  const out = new Map<string, Primitive>();
+  let pairs = 0, dev = 0;
+  for (const [id, pl] of prims) {
+    if (!id.endsWith("L")) continue;
+    const pr = prims.get(`${id.slice(0, -1)}R`);
+    if (!pr || pr.kind !== pl.kind) continue;
+    pairs++;
+    const mr = mirrorPrimitive(pr, id);
+    const dv = primitiveDeviation(pl, mr);
+    dev = Math.max(dev, dv);
+    if (dv <= MIRROR_TOLERANCE) { out.set(id, pl); out.set(pr.id, pr); continue; } // already a mirror: untouched
+    const left = meanPrimitive(pl, mr);
+    out.set(id, left);
+    out.set(pr.id, mirrorPrimitive(left, pr.id));
+  }
+  const rebuildWith = (m: Map<string, Primitive>) => {
+    const rb = (n: SdfNode): SdfNode =>
+      n.type === "primitive" ? (m.has(n.primitive.id) ? { type: "primitive", primitive: m.get(n.primitive.id)! } : n)
+        : { ...n, children: n.children.map(rb) };
+    return rb;
+  };
+  // Already a mirror everywhere: the physics tree is the input itself (byte-identical plan).
+  const mirrored = dev <= MIRROR_TOLERANCE ? root : rebuildWith(out)(root);
+  let scaled = 0;
+  const skin = new Map(out);
+  if (asym) {
+    const boneOf = new Map(bones.map((b) => [b.id, b]));
+    // Distal tapers (bone fractions): the forearm's girth eases back to 1 before the wrist (the hand
+    // and its grip stay exact), the shin's before the ankle (the foot and sole contact stay exact).
+    const wrist = P ? P.foreArm / (P.foreArm + P.hand) : 0.6;
+    const TAPER: Partial<Record<string, [number, number]>> = { foreArm: [0.55 * wrist, wrist], shin: [0.6, 0.98] };
+    for (const [id, p] of out) {
+      const cls = asymmetryClass(p);
+      if (!cls || asym[cls.key] === 0) continue;
+      const [sl, sr] = pairScales(asym[cls.key]);
+      skin.set(id, scalePrimitive(p, id.endsWith("L") ? sl : sr, cls.aboutBone ? boneOf.get(p.bone) ?? null : null, TAPER[cls.key] ?? null));
+      scaled++;
+    }
+  }
+  const node = scaled > 0 ? rebuildWith(skin)(root) : mirrored;
+  return { node, mirrored, record: { pairs, mirrorDeviationBefore: dev, asymmetry: asym, scaled } };
 }
 
 /** One BoneSegment per JointName plus root, heads at the joint pivots, axes from the Skeleton. */

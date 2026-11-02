@@ -170,7 +170,7 @@ Deno.test("SwingDriver: the step adds up to the planned distance; grip blends fr
   const setup = swingSetupFor(spec, ARM);
   assert(weaponTip(spec) > 0.7, "longsword tip > 0.7 m");
   const d = new SwingDriver(setup, LIM);
-  const carry = d.gripPitch(0.1, -1, -1.45);
+  const carry = d.wristPitch(0.1, -1, -1.45); // lane G: the WANTED wrist; gripPitch maps it into the hand
   assertAlmostEquals(carry, gripPitchFor(GUARD_KEY.blade, 0.1, -1, -1.45, false), 1e-12);
   d.begin(setup.sweet + 0.4, 1);
   let stepped = 0;

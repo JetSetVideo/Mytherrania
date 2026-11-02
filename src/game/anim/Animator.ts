@@ -140,6 +140,45 @@ export interface AnimatorParams {
   pivotFall: number;
   /** A root jump longer than this (m) in one frame re-plants the feet (respawn, teleport). */
   teleportDistance: number;
+  /**
+   * Wave V lane P — idle FACING HOLD (only when the caller honours AnimatorOutput.yawOffset,
+   * AnimatorInput.honoursYawOffset). The legs have no yaw joint, so a body that keeps turning to
+   * face a swaying rival must either slide its planted feet or pivot them onto the balls (heel up:
+   * measured 18-27 mm, 8° sole pitch, 80 % of idle frames). Standing, the body instead HOLDS the
+   * heading its feet were planted at while the rival stays inside ±facingSlack (rad); past it, it
+   * re-faces: the heading eases toward the rival at facingRate (1/s) and every foot whose heading
+   * is more than facingReplant (rad) off steps in place (Gait replantYaw) until it is aligned.
+   * Moving / attacking / in a skill, the held heading is released toward the rival at
+   * facingRelease (1/s). `facingSlack` 0 disables the hold.
+   */
+  facingSlack: number;
+  facingRate: number;
+  facingReplant: number;
+  facingDone: number;
+  facingRelease: number;
+  /** Gait.moving below which the body counts as standing for the facing hold. */
+  facingStill: number;
+  /**
+   * Wave V lane P — breathing. The breath layer's weight while attacking or in a skill (share of
+   * the idle weight; moving fades it by (1 - moving) as before), the inhale skew k (phase warp
+   * ψ = φ + k·sin φ: the inhale takes (1 - k·2/π)/2 of the cycle, the exhale the rest), and the
+   * chest RISE: the pelvis rides up to breathRise·L lower on the exhale (never above the stance
+   * height, so the knees never straighten past the IK's exact range; the feet stay latched).
+   */
+  breathActiveShare: number;
+  breathSkew: number;
+  breathRise: number;
+  /**
+   * Wave V lane P — idle weight shift: the pelvis drifts sideways over the feet by up to
+   * idleSwayAmp·L (rig-local x; the IK keeps the soles latched) with a seeded period in
+   * [idleSwayPeriodMin, idleSwayPeriodMax] s, faded in at idleSwayLambda (1/s) when standing.
+   */
+  idleSwayAmp: number;
+  idleSwayPeriodMin: number;
+  idleSwayPeriodMax: number;
+  idleSwayLambda: number;
+  /** Rate (1/s) the idle sway fades OUT at when the fighter moves / strikes / is hit (a quick release). */
+  idleSwayRelease: number;
 }
 
 /** Defaults (see AnimatorParams for units). */
@@ -172,7 +211,7 @@ export const DEFAULT_ANIMATOR: AnimatorParams = {
   elbowBendWalk: 0.25,
   elbowBendRun: 1.3,
   headStabilise: 0.9,
-  breathRate: 0.25,
+  breathRate: 0.22,
   breathAmplitude: 0.025,
   popSmoothTime: 0.05,
   swingPassThrough: 0.7,
@@ -192,6 +231,20 @@ export const DEFAULT_ANIMATOR: AnimatorParams = {
   pivotFull: 0.04,
   pivotRise: 40,
   pivotFall: 12,
+  facingSlack: 0.1,
+  facingRate: 5,
+  facingReplant: 0.006,
+  facingDone: 0.004,
+  facingRelease: 20,
+  facingStill: 0.05,
+  breathActiveShare: 0.25,
+  breathSkew: 0.3,
+  breathRise: 0.0022,
+  idleSwayAmp: 0.011,
+  idleSwayPeriodMin: 6,
+  idleSwayPeriodMax: 9,
+  idleSwayLambda: 1.5,
+  idleSwayRelease: 6,
 };
 
 /** What the engine tells the animator each frame. World metres / radians / seconds. */
@@ -234,6 +287,12 @@ export interface AnimatorInput {
   groundHeight: GroundHeightFn;
   /** Roll (rad) the parent adds on its own (balance sway), so the IK keeps the soles down. */
   externalRoll?: number;
+  /**
+   * Wave V lane P: true when the caller ADDS AnimatorOutput.yawOffset to the rig's yaw (and to the
+   * lateral-offset direction). Only then may the animator hold an idle heading (facing hold);
+   * absent/false: yawOffset stays 0 and the motion is exactly as before.
+   */
+  honoursYawOffset?: boolean;
 }
 
 /** One foot as the animator placed it this frame (world metres). */
@@ -268,11 +327,22 @@ export interface AnimatorOutput {
   pelvisDrop: number;
   /** Gait phase in [0, 1). */
   phase: number;
+  /**
+   * Wave V lane P: add to the rig's yaw (rad). Non-zero only while the facing hold keeps the body
+   * on its planted heading (AnimatorInput.honoursYawOffset); the IK solved the legs for
+   * yaw + yawOffset, so a caller that ignores it would render the feet turned.
+   */
+  yawOffset: number;
+  /** Wave V lane P: this frame's breathing signal in [-1, 1] × the breath layer weight (QA). */
+  breath: number;
+  /** Wave V lane P: this frame's idle weight shift, rig-local x, m (QA; already in rootOffsetLateral). */
+  idleSway: number;
 }
 
 const SPINE = JOINT_INDEX.spine, ABD = JOINT_INDEX.abdomen, NECK = JOINT_INDEX.neck, HEAD = JOINT_INDEX.head;
 const TRUNK = makeMask(["spine", "abdomen"]);
 const HIP2 = new Float64Array(2);
+const HIP_NB = new Float64Array(2);
 /** Keep the solved ankle this far (rad) inside its limits so the final clamp never bites. */
 const ANKLE_MARGIN = 0.02;
 /** Same margin for the hip and knee windows handed to the IK. */
@@ -347,6 +417,14 @@ export class Animator {
   readonly #wasPlanted = [true, true];
   readonly #pivot = new Float64Array(2);
   #breathPh = 0;
+  /** Wave V lane P: facing hold, idle sway. */
+  #heldYaw = 0;
+  #heldInit = false;
+  #refacing = false;
+  #lastYawEff = 0;
+  #swayPh = 0;
+  #swayW = 0;
+  #swayX = 0;
 
   constructor(geometry: LegGeometry, limits: JointLimitTable, params: Partial<AnimatorParams> = {}) {
     this.geometry = geometry;
@@ -399,7 +477,7 @@ export class Animator {
       hipRoll: new Float64Array(2), ankleRoll: new Float64Array(2),
       footPlant: { left: true, right: true },
       feet: [{ x: 0, y: 0, z: 0, planted: true }, { x: 0, y: 0, z: 0, planted: true }],
-      pelvisDrop: 0, phase: 0,
+      pelvisDrop: 0, phase: 0, yawOffset: 0, breath: 0, idleSway: 0,
     };
   }
 
@@ -427,6 +505,14 @@ export class Animator {
     this.#pivot[0] = this.#pivot[1] = 0;
     this.#lastX = x; this.#lastZ = z; this.#hasLast = true;
     this.#primed = false;
+    this.#heldYaw = yaw; this.#heldInit = true; this.#refacing = false; this.#lastYawEff = yaw;
+  }
+
+  /** Wave V lane P: the idle sway period of this fighter, s (seeded by the style's breath phase). */
+  get idleSwayPeriod(): number {
+    const p = this.params, st = this.#style;
+    const u = st ? (st.breathPhase / (2 * Math.PI) * 7.31) % 1 : 0.5;
+    return p.idleSwayPeriodMin + (p.idleSwayPeriodMax - p.idleSwayPeriodMin) * u;
   }
 
   /** Advance by dt seconds and return the pose (the same object every frame). */
@@ -445,20 +531,50 @@ export class Animator {
       this.gait.params.strideGain = this.#strideB0 * e.strideScale;
     }
 
+    // 0. Facing hold (wave V lane P, AnimatorParams.facingSlack): standing, the body keeps the
+    //    heading its feet were planted at while the rival sways inside the slack, and re-faces with
+    //    a step past it. Every rig-frame computation below uses the EFFECTIVE yaw.
+    let yaw = inp.yaw, holdIdle = false;
+    if (inp.honoursYawOffset && p.facingSlack > 0) {
+      if (!this.#heldInit) { this.#heldYaw = inp.yaw; this.#heldInit = true; this.#lastYawEff = inp.yaw; }
+      holdIdle = inp.grounded && !inp.ko && !inp.attack && !inp.skill && !inp.attackPose && this.gait.moving < p.facingStill;
+      const err = wrapAngle(inp.yaw - this.#heldYaw);
+      if (holdIdle) {
+        if (Math.abs(err) > p.facingSlack) this.#refacing = true;
+        if (this.#refacing) {
+          this.#heldYaw = wrapAngle(this.#heldYaw + err * (1 - Math.exp(-p.facingRate * h)));
+          if (Math.abs(wrapAngle(inp.yaw - this.#heldYaw)) < p.facingDone) this.#refacing = false;
+        }
+      } else {
+        this.#refacing = false;
+        this.#heldYaw = Math.abs(err) < 1e-5 ? inp.yaw : wrapAngle(this.#heldYaw + err * (1 - Math.exp(-p.facingRelease * h)));
+      }
+      yaw = this.#heldYaw;
+    } else {
+      this.#heldYaw = inp.yaw; this.#heldInit = true; this.#refacing = false;
+    }
+    const yawOffset = wrapAngle(yaw - inp.yaw);
+    // The travel direction relative to the EFFECTIVE facing, and the effective turn rate.
+    const mdl = inp.honoursYawOffset ? wrapAngle(inp.moveDirLocal - yawOffset) : inp.moveDirLocal;
+    const turnRate = inp.honoursYawOffset ? (h > 0 ? wrapAngle(yaw - this.#lastYawEff) / h : 0) : inp.turnRate;
+    this.#lastYawEff = yaw;
+
     // 1. Gait.
     this.#stance = damp(this.#stance, inp.engaged || inp.block ? 1 : 0, 4, h);
     const prevSpeed = this.gait.speed;
-    const md = inp.yaw + inp.moveDirLocal;
+    const md = yaw + mdl;
     sampleGround(inp.groundHeight, inp.x, inp.z, Math.sin(md), Math.cos(md), 0.5 * L, GS_BODY);
     this.gait.update(h, {
-      x: inp.x, z: inp.z, yaw: inp.yaw, speed: inp.speed, moveDirLocal: inp.moveDirLocal,
+      x: inp.x, z: inp.z, yaw, speed: inp.speed, moveDirLocal: mdl,
       // The guard stagger fades out as the gait gets moving: a staggered stance is for standing
       // and shuffling; running with one foot's stance centred 0.15 L ahead demands extra reach.
-      grounded: inp.grounded, stagger: p.guardStagger * L * this.#stance * (1 - this.gait.moving), turnRate: inp.turnRate,
+      grounded: inp.grounded, stagger: p.guardStagger * L * this.#stance * (1 - this.gait.moving), turnRate,
       slopePitch: GS_BODY.slopePitch, hipShift: this.#hipShift,
+      // Facing hold: a foot left on an old heading steps in place to align (the re-facing shuffle).
+      replantYaw: holdIdle ? p.facingReplant : Infinity,
     });
     const sh = this.gait.shape, m = this.gait.moving, run = sh.runBlend;
-    const ahead = Math.cos(inp.moveDirLocal);
+    const ahead = Math.cos(mdl);
     this.#accel = damp(this.#accel, h > 0 ? (this.gait.speed - prevSpeed) / h : 0, p.accelLambda, h);
 
     // 2. Layer weights.
@@ -469,7 +585,8 @@ export class Animator {
     B.setTarget(LAYER.skill, skill ? 1 : 0);
     B.setTarget(LAYER.ko, inp.ko ? 1 : 0);
     B.setTarget(LAYER.hit, inp.hit && !inp.ko ? 1 : 0);
-    B.setTarget(LAYER.breath, inp.ko ? 0 : 1 - m);
+    // Breathing fades while moving (1 - m) and drops to breathActiveShare while striking / in a skill.
+    B.setTarget(LAYER.breath, inp.ko ? 0 : (1 - m) * (inp.attack || skill ? p.breathActiveShare : 1));
     B.stepWeights(h);
     if (skill) this.#fillSkill(skill, inp.skillProgress, h);
     if (e) {
@@ -510,13 +627,14 @@ export class Animator {
     const hunch = e ? e.hunch : 0;
     bal[SPINE] = accLean + hunch;
     bal[ABD] = counter * (accLean + hunch);
-    let breath: number;
-    if (e) {
-      // Integrated phase: a breathing rate that changes with fatigue must not jump the phase.
-      this.#breathPh += 2 * Math.PI * e.breathRate * h;
-      if (this.#breathPh > 2 * Math.PI) this.#breathPh -= 2 * Math.PI;
-      breath = e.breathAmp * Math.sin(this.#breathPh + st!.breathPhase);
-    } else breath = p.breathAmplitude * Math.sin(2 * Math.PI * p.breathRate * this.#time);
+    // Breathing (wave V lane P): integrated phase (a rate that changes with fatigue must not jump
+    // the phase), a skewed wave — a quicker inhale, a longer exhale — and the style's amplitude.
+    this.#breathPh += 2 * Math.PI * (e ? e.breathRate : p.breathRate) * h;
+    if (this.#breathPh > 2 * Math.PI) this.#breathPh -= 2 * Math.PI;
+    const bph = this.#breathPh + (st ? st.breathPhase : 0);
+    const wave = Math.sin(bph + p.breathSkew * Math.sin(bph));
+    const breathAmp = e ? e.breathAmp : p.breathAmplitude;
+    const breath = breathAmp * wave;
     const br = B.values(LAYER.breath);
     for (let j = 0; j < JOINT_COUNT; j++) br[j] = this.#breathUnit[j] * breath;
     B.evaluateJoint(SPINE, h, angles);
@@ -532,9 +650,15 @@ export class Animator {
     }
 
     // 4. Pelvis height: ride + bob, lowered so every (nearly) planted foot is reachable.
-    const pelvisR = hipPivot(g, angles[SPINE], angles[ABD], HIP2);
     // The feet step under the hips where the trunk lean actually put them (next frame's rest spots).
-    this.#hipShift = HIP2[1] - this.#hipRestZ;
+    // Wave V lane P: WITHOUT the breathing — a breath is not a lean, and letting it walk the rest
+    // spots (sub-mm) moved re-plant decisions across their thresholds (a frame-rate-dependent step).
+    {
+      const bs = B.weight(LAYER.breath) * breath;
+      hipPivot(g, angles[SPINE] - bs * this.#breathUnit[SPINE], angles[ABD] - bs * this.#breathUnit[ABD], HIP_NB);
+      this.#hipShift = HIP_NB[1] - this.#hipRestZ;
+    }
+    const pelvisR = hipPivot(g, angles[SPINE], angles[ABD], HIP2);
     const groundBody = inp.groundHeight(inp.x, inp.z);
     const baseRootY = inp.rootY ?? groundBody + this.#soleDepth;
     const exactRatio = 1 - p.reachMargin - p.softness;
@@ -543,11 +667,25 @@ export class Animator {
     // Lane M: the style's stance height, and the strike's leg drive — the pelvis sinks into the
     // planted feet ahead of the arm (the IK bends the knees; the feet stay latched).
     if (e) ride = Math.min(ride + e.crouch - e.legDrive * clamp(inp.attackDrive ?? 0, 0, 1), exactRatio - Math.abs(sh.bobAmplitude) / L - 0.004);
+    // Breath rise: the pelvis sits up to 2·breathRise·L lower on the exhale (inhale = the stance
+    // height), so the chest and shoulders lift with each breath while the feet stay latched.
+    const bw = B.weight(LAYER.breath);
+    ride -= p.breathRise * (breathAmp / p.breathAmplitude) * bw * (1 - wave);
+    out.breath = bw * wave;
     let rootY = groundBody + g.soleOffset + L * ride + this.gait.bob - HIP2[0];
+    // Idle weight shift: the pelvis drifts over one foot, then the other (seeded slow period).
+    {
+      const swayOn = inp.grounded && !inp.ko && !inp.hit && !inp.attack && !skill ? 1 - m : 0;
+      this.#swayW = damp(this.#swayW, swayOn, swayOn > this.#swayW ? p.idleSwayLambda : p.idleSwayRelease, h);
+      this.#swayPh += 2 * Math.PI * h / this.idleSwayPeriod;
+      if (this.#swayPh > 2 * Math.PI) this.#swayPh -= 2 * Math.PI;
+      const sp = this.#swayPh + (st ? 0.5 * st.breathPhase : 0);
+      this.#swayX = p.idleSwayAmp * L * this.#swayW * (0.8 * Math.sin(sp) + 0.2 * Math.sin(2.618 * sp + 1));
+    }
     const auth = B.baseAuthority(LEG_JOINTS[0].hip);
     const roll = this.gait.roll * auth * (e ? e.sway : 1);
     const totalRoll = roll + (inp.externalRoll ?? 0);
-    const fx = Math.sin(inp.yaw), fz = Math.cos(inp.yaw);
+    const fx = Math.sin(yaw), fz = Math.cos(yaw);
     const exactLimit = g.thigh + g.shin - this.#chain.reachMargin - this.#chain.softness;
     this.#setRoll(totalRoll, auth * (rootY - groundBody));
     // Reach radius of a swinging foot about its rest spot: 1.25·L·sin(θmax) (the gait's landing cap).
@@ -556,23 +694,23 @@ export class Animator {
     // Ball pivot (AnimatorParams.pivotPitch): heel up while the body has turned over a planted foot.
     for (let i = 0; i < 2; i++) {
       const f = this.gait.feet[i];
-      if (f.planted && !this.#wasPlanted[i]) this.#plantYaw[i] = inp.yaw;
+      if (f.planted && !this.#wasPlanted[i]) this.#plantYaw[i] = yaw;
       this.#wasPlanted[i] = f.planted;
-      const turned = f.planted ? Math.abs(wrapAngle(inp.yaw - this.#plantYaw[i])) : 0;
+      const turned = f.planted ? Math.abs(wrapAngle(yaw - this.#plantYaw[i])) : 0;
       const want = p.pivotPitch * smoothstep(p.pivotStart, p.pivotFull, turned);
       this.#pivot[i] = damp(this.#pivot[i], want, want > this.#pivot[i] ? p.pivotRise : p.pivotFall, h);
     }
     for (let i = 0; i < 2; i++) {
       const f = this.gait.feet[i], gs = this.#ground[i];
       sampleGround(inp.groundHeight, f.x, f.z, fx, fz, 0.5 * (g.ballForward + g.heelBack), gs);
-      worldToLocal(inp.x, inp.z, inp.yaw, f.x, f.z, P2);
+      worldToLocal(inp.x, inp.z, yaw, f.x, f.z, P2);
       if (!f.planted) {
         // A swinging foot may not wander out of reach of its rest spot: its horizontal offset r
         // is soft-clamped, r' = smoothMin(r, swingRadius, k). Exact for r <= swingRadius - k,
         // which contains every lift-off and landing spot, so the clamp only bends the mid-air
         // overshoot of a fast swing (the foot that would otherwise lock the knee straight).
         const rx0 = P2[0], rz0 = P2[1];
-        worldToLocal(inp.x, inp.z, inp.yaw, f.restX, f.restZ, P2);
+        worldToLocal(inp.x, inp.z, yaw, f.restX, f.restZ, P2);
         const ox = rx0 - P2[0], oz = rz0 - P2[1], rr = Math.hypot(ox, oz);
         const capped = smoothMin(rr, swingRadius, p.swingRadiusSoftness * L);
         const k = rr > 1e-9 ? capped / rr : 1;
@@ -597,7 +735,7 @@ export class Animator {
         // Where the landing spot will sit relative to the body AT TOUCHDOWN: the body still
         // travels toGo before the foot lands, so anticipate (land - toGo), not the spot as seen
         // from here (at 6.5 m/s that is ~0.65 m farther and would demand the full drop cap).
-        worldToLocal(inp.x, inp.z, inp.yaw, f.landX - f.toGoX, f.landZ - f.toGoZ, P2);
+        worldToLocal(inp.x, inp.z, yaw, f.landX - f.toGoX, f.landZ - f.toGoZ, P2);
         this.#ankleTarget(i, P2[0], GS_LAND.height, P2[1], -GS_LAND.slopePitch, g.ballForward, rootY);
         drop = Math.max(drop, late * pelvisDropFor(0, 0, D3[1], Math.hypot(D3[0], D3[2]), exactLimit));
       }
@@ -707,12 +845,14 @@ export class Animator {
     // 9. Sole guard (last line, lift only): no heel, ball or toe tip of the FINAL pose may sit
     //    below the ground under it. Transients the IK cannot follow (a 0 -> 6.5 m/s keyboard start,
     //    the speed limiter, a clamp) then hover a foot for a frame instead of sinking it.
-    const clearance = this.#soleClearance(inp, baseRootY + out.rootOffsetY, angles, out.hipRoll, out.ankleRoll);
+    const clearance = this.#soleClearance(inp, yaw, baseRootY + out.rootOffsetY, angles, out.hipRoll, out.ankleRoll);
     if (clearance < 0) out.rootOffsetY -= clearance;
     out.rootRoll = roll;
     out.rootOffsetLateral = this.#lateral;
     out.pelvisDrop = drop;
     out.phase = this.gait.phase;
+    out.yawOffset = yawOffset;
+    out.idleSway = this.#swayX;
     for (let i = 0; i < 2; i++) {
       const f = this.gait.feet[i], o = out.feet[i];
       o.x = f.x; o.z = f.z; o.y = this.#ballY[i];
@@ -747,15 +887,15 @@ export class Animator {
    * under it, for the rig origin at world height `rootWorldY` with this frame's roll and lateral
    * shift: world y = rootWorldY + x·sin ρ + y·cos ρ (the rig rolls about its local z).
    */
-  #soleClearance(inp: AnimatorInput, rootWorldY: number, angles: Float64Array, hipRoll: Float64Array, ankleRoll: Float64Array): number {
+  #soleClearance(inp: AnimatorInput, yaw: number, rootWorldY: number, angles: Float64Array, hipRoll: Float64Array, ankleRoll: Float64Array): number {
     let worst = Infinity;
-    const ox = inp.x + this.#lateral * Math.cos(inp.yaw), oz = inp.z - this.#lateral * Math.sin(inp.yaw);
+    const ox = inp.x + this.#lateral * Math.cos(yaw), oz = inp.z - this.#lateral * Math.sin(yaw);
     for (let i = 0; i < 2; i++) {
       legFK3(this.geometry, angles, i as Side, hipRoll[i], ankleRoll[i], FK3);
       for (let k = 0; k < 3; k++) {
         const pt = k === 0 ? FK3.ball : k === 1 ? FK3.heel : FK3.toe;
         const y = rootWorldY + pt[0] * this.#sinR + pt[1] * this.#cosR;
-        localToWorld(ox, oz, inp.yaw, pt[0] * this.#cosR - pt[1] * this.#sinR, pt[2], P2);
+        localToWorld(ox, oz, yaw, pt[0] * this.#cosR - pt[1] * this.#sinR, pt[2], P2);
         worst = Math.min(worst, y - inp.groundHeight(P2[0], P2[1]));
       }
     }
@@ -766,7 +906,7 @@ export class Animator {
   #setRoll(totalRoll: number, heightAboveGround: number): void {
     this.#sinR = Math.sin(totalRoll);
     this.#cosR = Math.cos(totalRoll);
-    this.#lateral = -heightAboveGround * this.#sinR;
+    this.#lateral = -heightAboveGround * this.#sinR + this.#swayX;
   }
 
   /**

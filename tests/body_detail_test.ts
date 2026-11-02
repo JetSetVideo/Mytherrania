@@ -4,7 +4,7 @@
 // @deno-types="@types/three"
 import * as THREE from "three";
 import { REGIONS, type BodySpec, type SkinData } from "../src/graphics/body/contracts.ts";
-import { generateBody } from "../src/graphics/body/BodyMesh.ts";
+import { generateBody, meshPlan } from "../src/graphics/body/BodyMesh.ts";
 import { BONE_IDS } from "../src/graphics/body/Sdf.ts";
 import { boneClass, computeSkinWeights, REGION_BONE_CLASSES, shoulderBands } from "../src/graphics/body/SkinWeights.ts";
 import { anatomyFor } from "../src/graphics/body/Anatomy.ts";
@@ -130,9 +130,9 @@ Deno.test("hands: palm, knuckles and a thumb that clears the fingers, mirror-ide
   }
 });
 
-Deno.test("the skin is mirror-symmetric (left and right limbs are built and sampled alike)", () => {
-  const body = generateBody(SPECS.dwarf);
-  const pos = body.mesh.positions, n = pos.length / 3, c = body.plan.cell;
+/** Mean distance (m) from each vertex's mirror image (x -> -x) to the nearest vertex of the mesh. */
+function meanMirrorDistance(pos: Float32Array, c: number): number {
+  const n = pos.length / 3;
   const grid = new Map<string, number[]>();
   const key = (x: number, y: number, z: number) => `${Math.floor(x / c)},${Math.floor(y / c)},${Math.floor(z / c)}`;
   for (let v = 0; v < n; v++) { const k = key(pos[v * 3], pos[v * 3 + 1], pos[v * 3 + 2]); (grid.get(k) ?? grid.set(k, []).get(k)!).push(v); }
@@ -146,7 +146,23 @@ Deno.test("the skin is mirror-symmetric (left and right limbs are built and samp
     }
     sum += best;
   }
-  assert(sum / n < 0.01 * c, `mean mirror distance ${(sum / n * 1000).toFixed(3)} mm`);
+  return sum / n;
+}
+
+Deno.test("the skin is mirror-symmetric (left and right limbs are built and sampled alike)", () => {
+  // Wave V lane P RESTATED this pin (it asserted the rendered skin is an exact mirror, which the
+  // user asked to change): the PHYSICS body — plan.root, what the hitboxes and the ragdoll read —
+  // keeps the pre-wave bound (< 1 % of a cell), and the RENDERED skin carries the seeded natural
+  // asymmetry of Anatomy.finalSymmetryPass, bounded: measured 0.662 mm (2.4 % of the dwarf's 27.3 mm cell)
+  // for seed 7; the bound is 6 % of a cell.
+  const body = generateBody(SPECS.dwarf);
+  const c = body.plan.cell;
+  const physicsPlan: typeof body.plan = { ...body.plan, skinRoot: body.plan.root };
+  const physics = meshPlan(physicsPlan).mesh;
+  const phys = meanMirrorDistance(physics.positions, c), skin = meanMirrorDistance(body.mesh.positions, c);
+  console.log(`mirror distance: physics ${(phys * 1000).toFixed(3)} mm, skin ${(skin * 1000).toFixed(3)} mm (cell ${(c * 1000).toFixed(1)} mm)`);
+  assert(phys < 0.01 * c, `physics mean mirror distance ${(phys * 1000).toFixed(3)} mm`);
+  assert(skin < 0.06 * c, `skin mean mirror distance ${(skin * 1000).toFixed(3)} mm`);
 });
 
 Deno.test("ears survive the grid on every race; elf ears are pointed and stand outside the hair cap", () => {

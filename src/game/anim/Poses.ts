@@ -43,11 +43,14 @@ export const AIR_POSE: SparsePose = {
 };
 
 /**
- * Breathing unit offsets (additive): multiplied by amplitude · sin(2π f t). The chest rises
- * (spine leans back a touch on the inhale), the abdomen and neck counter it so the head
- * stays level, the shoulders lift forward slightly.
+ * Breathing unit offsets (additive): multiplied by amplitude · wave(t) (Animator: a skewed sine).
+ * The chest opens (spine extends back a FRACTION of a degree on the inhale: 0.35 × the 0.025 rad
+ * default amplitude = 0.5°), the abdomen counters 40 % of it so the pelvis stays put, neck + head
+ * cancel the rest so the gaze stays level, and the arms lift forward a hair with the ribcage.
+ * The visible "rise" is the Animator's breathRise (the pelvis, chest and shoulders lift a few mm);
+ * wave V lane P cut the spine term from 1.0 (1.4° fresh, 3.9° exhausted: a rocking, not a breath).
  */
-export const BREATH_UNIT: SparsePose = { spine: -1, abdomen: 0.4, neck: 0.5, shoulderL: -0.35, shoulderR: -0.35 };
+export const BREATH_UNIT: SparsePose = { spine: -0.35, abdomen: 0.14, neck: 0.26, head: 0.07, shoulderL: -0.12, shoulderR: -0.12 };
 
 /**
  * Dense pose array in JOINT_ORDER. Override poses fill missing joints with the rest angle and

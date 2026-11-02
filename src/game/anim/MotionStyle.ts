@@ -91,7 +91,7 @@ export const NEUTRAL: Readonly<StyleCoeffs> = Object.freeze({
   crouch: 0, hunch: 0, guardDrop: 0, guardTuck: 0,
   strideScale: 1, armSwing: 1, sway: 1,
   // Animator defaults (DEFAULT_ANIMATOR.breathRate / breathAmplitude).
-  breathRate: 0.25, breathAmp: 0.025,
+  breathRate: 0.22, breathAmp: 0.025, // wave V lane P: 4.5 s fresh (was 4.0), panting ~2 s exhausted
   headDrop: 0,
   // 14 %: a counter-move that reads (a 1.6 rad arm pulls 0.22 rad back) without doubling the speed.
   anticipation: 0.14,

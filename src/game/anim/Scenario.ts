@@ -71,6 +71,16 @@ export interface ScenarioOptions {
   onFrame?: (t: number, out: AnimatorOutput, rig: RigPlacement) => void;
   /** Optional hook before each animator update (time in s): set live stats, styles, … */
   beforeFrame?: (t: number, an: Animator) => void;
+  /**
+   * Optional yaw offset (rad) added to the facing at time t (s) — e.g. an idle fighter whose rig
+   * keeps facing a rival that sways (Engine.#updatePose aims the rig at the rival every frame).
+   */
+  yawOffset?: (t: number) => number;
+  /**
+   * Wave V lane P: drive the animator like the PATCHED engine — it honours AnimatorOutput.yawOffset
+   * (the idle facing hold), so the rig is placed at yaw + yawOffset. Default false (today's engine).
+   */
+  holdFacing?: boolean;
 }
 
 /** What a run measured. Units: rad, rad/s, m. */
@@ -186,7 +196,7 @@ export function runScenario(an: Animator, segs: readonly ScenarioSegment[], opt:
       x += Math.sin(yaw) * st;
       z += Math.cos(yaw) * st;
     }
-    const rigYaw = yaw + (drv ? drv.yaw() : 0);
+    const rigYaw = yaw + (drv ? drv.yaw() : 0) + (opt.yawOffset ? opt.yawOffset(t) : 0);
     // With a swing the engine MEASURES the speed from positions (locomotion + step-in) and the
     // travel direction relative to the rig's (aimed) yaw: Engine.#updatePose.
     let speedIn = speed, dirIn = s.moveDirLocal ?? 0;
@@ -212,9 +222,10 @@ export function runScenario(an: Animator, segs: readonly ScenarioSegment[], opt:
       grounded: s.grounded ?? true, hit: !!s.hit, attack: !!s.attack || (drv ? drv.active : false), block: !!s.block, ko: !!s.ko,
       attackPose: drv ? drv.attackPose() : null, attackDrive: drv?.legDrive ? drv.legDrive() : 0,
       engaged: !!s.engaged, skill, skillProgress: progress, groundHeight: ground,
+      honoursYawOffset: !!opt.holdFacing,
     });
     lastRigYaw = rigYaw;
-    rig.x = x; rig.z = z; rig.yaw = rigYaw; rig.y = gy + soleDepth + out.rootOffsetY;
+    rig.x = x; rig.z = z; rig.yaw = rigYaw + (opt.holdFacing ? out.yawOffset : 0); rig.y = gy + soleDepth + out.rootOffsetY;
     rig.roll = out.rootRoll; rig.lateral = out.rootOffsetLateral;
     opt.onFrame?.(t, out, rig);
     const a = out.angles, lim = an.limits;

@@ -6,7 +6,7 @@
 // 11 px. Then one contact sheet per screen with all viewports side by side.
 //   deno task build && deno run -A tools/probe-ui-all.ts [outDir]
 import { chromium, type Page } from "playwright";
-import { encodeBase64 } from "jsr:@std/encoding@1/base64";
+import { encodeBase64 } from "@std/encoding/base64";
 import { serveAsset } from "./serve.ts";
 
 const OUT = Deno.args[0] ?? "artifacts/qa-ui-all";

@@ -27,7 +27,7 @@
 // touchdown when the swing progress u reaches 1, which is integrated so that it lands exactly
 // when φ wraps: u += (1 - u) · dφ / (1 - φ_old).
 
-import { clamp, clamp01, damp, lerp, smootherstep, smoothstep } from "../../core/MathCore.ts";
+import { clamp, clamp01, damp, lerp, smootherstep, smoothstep, wrapAngle } from "../../core/MathCore.ts";
 import { hipPivot, type LegGeometry, legLength, localToWorld, type Side, worldToLocal } from "./Rig.ts";
 
 /** Named base parameters of the gait. Units in each comment; see the header for the equations. */
@@ -105,6 +105,16 @@ export interface GaitParams {
   strideSlopeLoss: number;
   /** Speed (m/s) below which the body counts as standing still. */
   stillSpeed: number;
+  /**
+   * Wave V lane P — SETTLE: once the body has stood still (speed < stillSpeed, |turn rate| <
+   * settleTurnRate) for settleTime s, the re-plant thresholds shrink to settleShare of
+   * footErrorForward / footErrorLateral: a fighter tidies a foot a swing or a stop left near the
+   * edge of its stance. Without it, a foot sitting just under the threshold stepped or not
+   * depending on one frame of touchdown timing (the 30 / 60 / 144 Hz runs diverged).
+   */
+  settleTime: number;
+  settleShare: number;
+  settleTurnRate: number;
   /** Speed (m/s) above which the gait is fully "moving" (toe-off, sway, arm swing at full). */
   movingSpeed: number;
   /** Convergence rate (1/s) of the speed the gait shape follows (filters input jitter). */
@@ -141,6 +151,12 @@ export const DEFAULT_GAIT: GaitParams = {
   footErrorLateral: 0.045,
   strideSlopeLoss: 0.9,
   stillSpeed: 0.05,
+  settleTime: 0.25,
+  settleShare: 0.5,
+  // 0.05: after a swing the aim yaw eases back slowly, and a tighter gate (0.01) let the 30/60/144 Hz
+  // runs settle at different times again (0.0375 rad apart). In the UNPATCHED engine (no facing hold)
+  // a rival swaying ±3.4° can trigger an occasional settle step; the facing hold removes it.
+  settleTurnRate: 0.05,
   movingSpeed: 0.5,
   speedLambda: 5,
 };
@@ -274,12 +290,18 @@ export interface FootState {
   toGoZ: number;
   /** Seconds since this foot last touched down (grows while planted). */
   stanceTime: number;
+  /**
+   * Wave V lane P: the body yaw (rad) when this foot last touched down. The legs have no yaw
+   * joint, so a planted foot's heading IS the body yaw at touchdown; GaitInput.replantYaw re-plants
+   * a foot whose heading drifted from the body's (the idle re-facing shuffle).
+   */
+  plantYaw: number;
 }
 
 function newFoot(): FootState {
   return {
     planted: true, x: 0, z: 0, lift: 0, pitch: 0, swing: 1, liftX: 0, liftZ: 0, liftPitch: 0, landX: 0, landZ: 0,
-    restX: 0, restZ: 0, overdue: false, toGoX: 0, toGoZ: 0, stanceTime: 1,
+    restX: 0, restZ: 0, overdue: false, toGoX: 0, toGoZ: 0, stanceTime: 1, plantYaw: 0,
   };
 }
 
@@ -307,6 +329,12 @@ export interface GaitInput {
    * the hips, not under the chest. Default 0.
    */
   hipShift?: number;
+  /**
+   * Wave V lane P: a planted foot whose heading (FootState.plantYaw) differs from `yaw` by more
+   * than this (rad) needs re-planting — standing, it steps in place to face the body's way.
+   * Default Infinity (off: only position errors re-plant, today's behaviour).
+   */
+  replantYaw?: number;
 }
 
 const LEG_PHASE_OFFSET: readonly [number, number] = [0, 0.5];
@@ -343,6 +371,8 @@ export class Gait {
   #hipShift = 0;
   #lateral = 0;
   #back = 0;
+  /** Seconds the body has stood still (see GaitParams.settleTime). */
+  #stillTime = 0;
 
   constructor(geom: LegGeometry, params: Partial<GaitParams> = {}) {
     this.params = { ...DEFAULT_GAIT, ...params };
@@ -365,6 +395,7 @@ export class Gait {
       const f = this.feet[i];
       this.#restSpot(i, x, z, yaw, stagger);
       f.planted = true; f.x = f.restX; f.z = f.restZ; f.lift = 0; f.pitch = 0; f.swing = 1; f.overdue = false;
+      f.plantYaw = yaw;
     }
     this.phase = 0.5 + 0.5 * (this.params.dutyWalk - 0.5);
     this.speed = 0;
@@ -405,6 +436,7 @@ export class Gait {
       // Airborne: nothing planted; feet hang at their rest spots. On landing they latch there.
       for (const f of this.feet) {
         f.planted = true; f.x = f.restX; f.z = f.restZ; f.lift = 0; f.pitch = 0; f.swing = 1; f.overdue = false;
+        f.plantYaw = inp.yaw;
       }
       this.cycleRate = 0;
       this.bob = 0;
@@ -414,11 +446,13 @@ export class Gait {
 
     // Does a foot need re-planting? (turning in place, settling after a stop, shoves)
     let demand = false;
+    const tol = this.#stillTime >= p.settleTime ? p.settleShare : 1;
     for (let i = 0 as Side; i < 2; i = (i + 1) as Side) {
       const f = this.feet[i];
       if (!f.planted) { demand = true; continue; }
       worldToLocal(f.restX, f.restZ, inp.yaw, f.x, f.z, P2);
-      if (Math.abs(P2[0]) > p.footErrorLateral * L || Math.abs(P2[1]) > p.footErrorForward * L) demand = true;
+      if (Math.abs(P2[0]) > tol * p.footErrorLateral * L || Math.abs(P2[1]) > tol * p.footErrorForward * L) demand = true;
+      if (Math.abs(wrapAngle(inp.yaw - f.plantYaw)) > (inp.replantYaw ?? Infinity)) demand = true;
     }
     // Re-plant steps only matter as the body slows: while moving, the cycle itself re-plants,
     // and stride stays the derived λ (rate = cadence). Standing, a misplaced foot steps at
@@ -429,6 +463,7 @@ export class Gait {
     this.#lastX = inp.x;
     this.#lastZ = inp.z;
     const actualSpeed = h > 0 ? travelled / h : 0;
+    this.#stillTime = actualSpeed < p.stillSpeed && Math.abs(inp.turnRate) < p.settleTurnRate ? this.#stillTime + h : 0;
     const motionRate = actualSpeed / sh.stride;
     // Gate the re-plant rate on the ACTUAL speed: a body that stops dead still finishes its step.
     const actualMoving = smoothstep(p.stillSpeed, p.movingSpeed, actualSpeed);
@@ -506,13 +541,20 @@ export class Gait {
         // Vertical: sin²(π·u^k), C1 at both ends; k = lerp(1, 0.7, run) moves the apex from
         // mid-swing (walk) to ~37% (run: heel recovery right after toe-off).
         const u = f.swing, e = u * u * (3 - 2 * u);
-        f.x = lerp(f.liftX, f.landX, e);
-        f.z = lerp(f.liftZ, f.landZ, e);
+        // Wave V lane P: an IN-PLACE step (standing: re-plant, re-facing) lands ON its predicted
+        // spot over the last 40 % of the swing instead of the damped one. Standing, the prediction
+        // is the rest spot itself; the damping's lag (sampled per frame) left the foot a frame-rate
+        // dependent distance short — near the re-plant threshold, so whether ANOTHER step followed
+        // depended on the frame rate. Moving (actualMoving -> 1) the damped spot is used as before.
+        const pin = (1 - actualMoving) * smoothstep(0.6, 1, u);
+        f.x = lerp(f.liftX, lerp(f.landX, predX, pin), e);
+        f.z = lerp(f.liftZ, lerp(f.landZ, predZ, pin), e);
         const bump = Math.sin(Math.PI * Math.pow(u, lerp(1, 0.7, sh.runBlend))) ** 2;
         f.lift = sh.swingApex * bump;
         f.pitch = f.liftPitch * (1 - smootherstep(0, 0.5, u)) - p.swingDorsiflex * rollOff * bump;
         if (u >= 1) {
           f.planted = true; f.lift = 0; f.pitch = 0; f.overdue = false; f.toGoX = 0; f.toGoZ = 0; f.stanceTime = 0;
+          f.plantYaw = inp.yaw;
           // Touchdown should happen at φ = 0 (the wrap). A late (overdue) landing at φ = x < 0.5
           // re-synchronises the body phase by -x: otherwise the foot gets only the minimum
           // stance, lifts with too little phase left, is late again, and the gait locks into a

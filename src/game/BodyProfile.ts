@@ -519,3 +519,93 @@ export function silhouetteScore(s: RaceSilhouette): number {
   const section = 1 - Math.min(1, Math.abs(s.sectionN - 2.1) * 1.4);
   return Math.max(0, Math.min(1, (oval + waist + taper + stature + section) / 5));
 }
+
+
+// ---------------------------------------------------------------------------------------------
+// Wave V lane P — the FINAL SYMMETRY STEP of the generation. A generated body is built mirrored
+// (graphics/body/Anatomy.ts: every left/right primitive pair is one function called with side ±1,
+// on an x-symmetric grid), which reads as a CG mannequin. The final step first ENFORCES the mirror
+// (left := mirror of the pair's mean) and then re-applies a small, seeded, NATURAL asymmetry: a
+// dominant side (the weapon arm, right for RIGHT_HANDED_SHARE of seeds) a little fuller in the arm,
+// forearm and pectoral, the opposite (support) leg a touch fuller, one cheek/brow a hair fuller.
+// Every term is a GIRTH redistribution about the bone axis (the joints never move — a moved joint
+// breaks the planted-foot slide band and the ragdoll, CHANNEL MSG-12..14): the bigger side takes
+// (1 + δ) and the other side sqrt(2 - (1 + δ)²), so a pair's cross-section area (r²) is preserved.
+// Feet, soles and hands are NOT touched (ground contact and the grip contact).
+
+/** Signed fractions per bilateral dimension: + = the LEFT side (plan x > 0) fuller, − = the RIGHT. */
+export interface BilateralAsymmetry {
+  /** The dominant (weapon) side. */
+  dominant: "L" | "R";
+  /** Upper arm (shoulder bone: deltoid, biceps, triceps, the arm cone). */
+  arm: number;
+  /** Forearm (elbow bone, foreArm region only — the hand is excluded). */
+  foreArm: number;
+  /** Pectoral + scapula (the dominant side's chest muscle). */
+  chest: number;
+  /** Thigh (hip bone) and shin/calf (knee bone): the support leg. */
+  thigh: number;
+  shin: number;
+  /** Face: cheekbone, jaw and brow ridge of one side. */
+  face: number;
+}
+
+/** Largest |δ| of any bilateral dimension ("0-2 % per bilateral dimension"). */
+export const ASYMMETRY_MAX = 0.02;
+/** Share of seeds that are right-handed (the human population figure, ~0.88). */
+export const RIGHT_HANDED_SHARE = 0.88;
+/** Per-dimension magnitude bands [lo, hi] (fractions, ≤ ASYMMETRY_MAX). */
+export const ASYMMETRY_BAND = {
+  arm: [0.008, 0.02], foreArm: [0.005, 0.016], chest: [0.0, 0.012], thigh: [0.0, 0.012], shin: [0.0, 0.01], face: [0.0, 0.015],
+} as const;
+/** Probability the fuller leg is the SUPPORT (non-dominant) one. */
+export const SUPPORT_LEG_SHARE = 0.7;
+/**
+ * Per-dimension gain on the drawn |δ| (1 = the band as stated, 0 = that pair stays a mirror). The
+ * draw sequence never depends on it, so a gain change never shifts another dimension's value.
+ */
+export const ASYMMETRY_GAIN: Record<"arm" | "foreArm" | "chest" | "thigh" | "shin" | "face", number> = {
+  // foreArm 0: the ragdoll's forearm+hand segment sits just above the 2 % weld floor, and the
+  // non-dominant forearm's −0.6 % girth welded it (tests/ragdoll_model_test.ts: "welded light
+  // leaves: ankleL,ankleR,elbowL,…", measured). The draw is kept so the other dimensions'
+  // values never shift; the forearm pair stays a mirror.
+  arm: 1, foreArm: 0, chest: 1, thigh: 1, shin: 1, face: 1,
+};
+
+/** Salt that keeps the asymmetry stream independent of every other draw of the same seed. */
+const ASYM_SALT = 0x5a17e3c1;
+
+/** A tiny seeded stream (mulberry32; the same generator as core/MathCore.rng32). */
+function asymRng(seed: number): () => number {
+  let a = (seed ^ ASYM_SALT) >>> 0;
+  return () => {
+    a = (a + 0x6d2b79f5) >>> 0;
+    let t = a;
+    t = Math.imul(t ^ (t >>> 15), t | 1);
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+/** The seeded, natural left/right asymmetry of a body (deterministic per seed). */
+export function bilateralAsymmetry(seed: number): BilateralAsymmetry {
+  const r = asymRng(seed);
+  const dominant: "L" | "R" = r() < RIGHT_HANDED_SHARE ? "R" : "L";
+  const dom = dominant === "L" ? 1 : -1;
+  const band = (k: keyof typeof ASYMMETRY_BAND) => ASYMMETRY_GAIN[k] * (ASYMMETRY_BAND[k][0] + (ASYMMETRY_BAND[k][1] - ASYMMETRY_BAND[k][0]) * r());
+  const arm = dom * band("arm"), foreArm = dom * band("foreArm"), chest = dom * band("chest");
+  const legSign = r() < SUPPORT_LEG_SHARE ? -dom : dom;
+  const thigh = legSign * band("thigh"), shin = legSign * band("shin");
+  const face = (r() < 0.5 ? 1 : -1) * band("face");
+  return { dominant, arm, foreArm, chest, thigh, shin, face };
+}
+
+/**
+ * The girth scales of a pair for a signed δ: [left, right]. The fuller side takes 1 + |δ|, the
+ * other sqrt(2 − (1 + |δ|)²), so left² + right² = 2 (a pair's cross-section area is preserved:
+ * redistribution, not added volume).
+ */
+export function pairScales(delta: number): [number, number] {
+  const big = 1 + Math.min(Math.abs(delta), ASYMMETRY_MAX), small = Math.sqrt(Math.max(0, 2 - big * big));
+  return delta >= 0 ? [big, small] : [small, big];
+}

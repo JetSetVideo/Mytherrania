@@ -7,8 +7,9 @@
 
 import type { BoneId, Primitive, PrimitiveKind, Region, SdfNode, SdfSample, Vec3, VolumeOp } from "./contracts.ts";
 import type { BodyProportions } from "./Proportions.ts";
-import { compileSdf, primitiveDistance } from "./Sdf.ts";
+import { boneIndex, compileSdf, nodeBounds, primitiveDistance } from "./Sdf.ts";
 import { ancestryOf, type AncestryNode } from "../../game/Ancestry.ts";
+import { improvisationFor, knob, reshapeDepth, reshapeGirth, reshapeLong } from "./Improvise.ts";
 
 /** Smooth-union width at a joint: BLEND_FRACTION × the harmonic mean of the two radii (m). */
 export const BLEND_FRACTION = 0.5;
@@ -339,7 +340,7 @@ export function neckNode(P: BodyProportions): SdfNode {
   const column = prim("neck", "roundCone", "neck", "neck", [0, P.y.neckBase - 0.25 * h, -0.08 * h], { b: [0, P.y.headPivot + 0.05 * h, -0.04 * h], r: r * 1.25, r2: r });
   const scm = (s: 1 | -1) => prim(`sternocleidomastoid${s > 0 ? "L" : "R"}`, "capsule", "neck", "neck",
     [s * 0.22 * h, P.y.headPivot + 0.02 * h, -0.08 * h], { b: [s * 0.07 * h, P.y.sternalNotch + 0.06 * h, P.halfDepth.chest * 0.62], r: 0.07 * h * Math.sqrt(P.girth) });
-  return op("smoothUnion", 0.06 * h, column, scm(1), scm(-1));
+  return op("smoothUnion", 0.06 * h * (REFERENCE_FORMS ? 1 : knob(improvisationFor(P.spec.seed), "trunk.sternocleidomastoid.blend")), column, scm(1), scm(-1));
 }
 
 /** z of the front (+z) surface of an axis-aligned ellipsoid at height y. */
@@ -370,6 +371,8 @@ export interface TorsoOpts {
   /** Lane S-B shoulder-girdle forward offset, head heights (default SLOUCH_FWD_PER_HEAD; 0 = pre-wave). */
   slouchForwardPerHead?: number;
 }
+
+
 
 /**
  * Lane S-B "less slouch (a straighter upper spine)": the shoulder girdle is squared FORWARD over the
@@ -459,9 +462,143 @@ export function torsoNode(P: BodyProportions, opts: TorsoOpts = {}): { node: Sdf
 /** Where an arm's rigid parts mount: wrist, palm centre, grip point, fingertip (model space). */
 export interface ArmAnchors { shoulder: Vec3; elbow: Vec3; wrist: Vec3; palm: Vec3; grip: Vec3; fingertip: Vec3; frame: LimbFrame }
 
-/** One arm: deltoid, upper arm, biceps, triceps, elbow, forearm, brachioradialis, palm, finger mass, thumb. */
-export function armNode(P: BodyProportions, side: 1 | -1, abduction: number): { node: SdfNode; anchors: ArmAnchors } {
-  const h = P.head, R = P.radius, m = P.muscle, L = side > 0 ? "L" : "R";
+/**
+ * Wave V (lane B) joint forms. The pre-wave limbs were one round tube per segment with a round ball at
+ * each joint (an elbow SPHERE, a knee SPHERE), every muscle smooth-unioned at one width — "too round,
+ * too generated". The joint now reads as muscle masses meeting:
+ *   - the upper-arm core tube narrows into the elbow (UPPER_ARM_DISTAL_CORE) while the bellies grow to
+ *     keep the segment's volume, so the limb WAISTS between two masses instead of tapering as one tube
+ *     (the thigh keeps its medial extent: it is the leg-gap solve's input, see legForms);
+ *   - the elbow ball becomes the bony landmarks it stands for: an epicondyle bar (wide, shallow) and an
+ *     olecranon point behind; the knee ball becomes the femoral condyles (wide, flatter);
+ *   - the biceps ends in a TENDON into the elbow crease; the forearm carries a FLEXOR mass (medial-front)
+ *     beside the brachioradialis, so the forearm is widest just below the elbow;
+ *   - the vastus medialis TEARDROP sits above the knee (medial-front), the calf splits into its medial
+ *     (lower, bigger) and lateral (higher) gastrocnemius heads;
+ *   - GROOVES are carved by cutters (smoothSubtract): the cubital fossa in front of the elbow, the
+ *     popliteal hollow behind the knee. A cutter is not a positive primitive, so the hitbox/ragdoll
+ *     fit ignores it (Hitboxes.positivePrimitives) and no mass moves;
+ *   - muscle blend widths are VARIED (MUSCLE_K_*), sharper than the old single 0.35·R, so a belly keeps
+ *     an edge where it meets its neighbour.
+ * Every number is a fraction of a BodyProportions radius or length, and the 80/20 improvisation
+ * (Improvise.ts) moves them per seed. `preWave: true` rebuilds the exact pre-wave part for before/after.
+ */
+export interface LimbOpts { preWave?: boolean }
+
+/**
+ * Reference forms: while `fn` runs, every part builder here builds its exact PRE-WAVE form (no joint
+ * forms, no grooves, no improvisation, the pre-wave hand). For the anatomy's grid-cell refinement
+ * (Anatomy.anatomyFor counts sign changes of a first plan): counted on the reference forms, surface
+ * DETAIL can never move the polygonising cell — and with it every cell-scaled gap, the solved
+ * abductions and the grid phase of the sole/ear/hand pins (measured: the forms alone moved the elf male's
+ * cell 0.02271 -> 0.02286 m and its arm abduction by one bisection step). See docs/wave-v/lane-B-requests.md.
+ */
+let REFERENCE_FORMS = false;
+export function referenceForms<T>(fn: () => T): T {
+  const prev = REFERENCE_FORMS;
+  REFERENCE_FORMS = true;
+  try { return fn(); } finally { REFERENCE_FORMS = prev; }
+}
+/** True while referenceForms is running (exposed for tests). */
+export function buildingReferenceForms(): boolean { return REFERENCE_FORMS; }
+/** The upper-arm core tube's distal radius as a fraction of radius.upperArmDistal (the elbow waist). */
+export const UPPER_ARM_DISTAL_CORE = 0.95;
+/** Internal muscle blend widths as fractions of the segment radius (pre-wave: 0.35 arm, 0.3 leg). */
+export const MUSCLE_K_ARM = 0.24;
+/** The forearm core tube's root radius as a fraction of radius.foreArm (the flexors carry the rest). */
+export const FOREARM_CORE = 1.0;
+export const MUSCLE_K_LEG = 0.22;
+/** Cubital fossa cutter radius (× radius.upperArmDistal) and its depth into the elbow front. */
+export const FOSSA_R = 0.55;
+export const FOSSA_DEPTH = 0.2;
+/** Popliteal hollow cutter radius (× radius.knee) and its depth into the back of the knee. */
+export const POPLITEAL_R = 0.5;
+export const POPLITEAL_DEPTH = 0.2;
+
+/** One arm: deltoid, upper arm, biceps (+ tendon), triceps, epicondyles, olecranon, forearm, brachioradialis, flexors, palm, finger mass, thumb. */
+export function armNode(P: BodyProportions, side: 1 | -1, abduction: number, opts: LimbOpts = {}): { node: SdfNode; anchors: ArmAnchors } {
+  if (opts.preWave || REFERENCE_FORMS) return armForms(P, side, abduction, null);
+  return armForms(P, side, abduction, armGains(P));
+}
+
+/**
+ * The belly gains that keep each arm segment's MASS at its pre-wave value (mass neutral by
+ * construction): the upper-arm bellies (biceps, triceps) and the forearm masses (flexor,
+ * brachioradialis) are scaled in depth until the volume owned by the shoulder bone and by the elbow
+ * bone — measured as the physics does (boneVolumes) — equals the pre-wave arm's (secant, ≤ 4 steps,
+ * residual stated in ArmGains.residual). Cached per body (spec + cell): the abduction solve calls
+ * armNode dozens of times.
+ */
+export interface ArmGains { upper: number; fore: number; residual: [number, number] }
+/** Bounds of a solved belly gain (a belly never vanishes, never doubles). */
+export const GAIN_RANGE: [number, number] = [0.5, 1.8];
+/**
+ * The forearm keeps its pre-wave solid volume × this. Not added mass by intent: the ragdoll's segment
+ * mass is the CAPSULE fit of that solid, and the fit covers an offset belly (the flexor) less tightly
+ * than the old round elbow ball — at 1.00 the default Warrior's forearm fell to 1.93 % of the body,
+ * under RagdollModel.WELD_MASS_FRACTION (2 %), so the elbow welded. The bias restores the fitted share.
+ */
+export const FOREARM_MASS_BIAS = 1.06;
+const ARM_GAIN_CACHE = new Map<string, ArmGains>();
+export function armGains(P: BodyProportions): ArmGains {
+  const key = `${JSON.stringify(P.spec)}|${P.cell}|${P.build}`;
+  const hit = ARM_GAIN_CACHE.get(key);
+  if (hit) return hit;
+  const sb = boneIndex("shoulderL"), eb = boneIndex("elbowL");
+  const pre = boneVolumes(armForms(P, 1, 0, null).node, P.cell / 2, [sb, eb]);
+  const target = [pre[0], pre[1] * FOREARM_MASS_BIAS];
+  const solve = (which: 0 | 1, other: number): [number, number] => {
+    const vol = (g: number) => boneVolumes(armForms(P, 1, 0, which === 0 ? { upper: g, fore: other } : { upper: other, fore: g }).node, P.cell / 2, [sb, eb])[which];
+    let g0 = 1, v0 = vol(g0), g1 = 1.15, v1 = vol(g1);
+    for (let i = 0; i < 4 && Math.abs(v1 - target[which]) > 0.002 * target[which]; i++) {
+      const g2 = Math.max(GAIN_RANGE[0], Math.min(GAIN_RANGE[1], g1 + (target[which] - v1) * (g1 - g0) / ((v1 - v0) || 1e-12)));
+      g0 = g1; v0 = v1; g1 = g2; v1 = vol(g1);
+    }
+    return [g1, v1 / target[which] - 1];
+  };
+  const [fore] = solve(1, 1);
+  const [upper, ru] = solve(0, fore);
+  const rf = boneVolumes(armForms(P, 1, 0, { upper, fore }).node, P.cell / 2, [sb, eb])[1] / target[1] - 1;
+  const out: ArmGains = { upper, fore, residual: [ru, rf] };
+  ARM_GAIN_CACHE.set(key, out);
+  if (ARM_GAIN_CACHE.size > 64) ARM_GAIN_CACHE.delete(ARM_GAIN_CACHE.keys().next().value!);
+  return out;
+}
+
+/**
+ * Volume (m³) owned by each listed bone index, voxelised at `step` (voxel centres), measured the way
+ * the PHYSICS measures a body: the hard union of the node's POSITIVE primitives (cutters dropped, no
+ * smooth blend), each voxel owned by its deepest primitive — Hitboxes.fitPlan's rule, whose capsule
+ * volumes are the ragdoll's segment masses (and its 2 % weld floor).
+ */
+export function boneVolumes(node: SdfNode, step: number, bones: number[]): number[] {
+  const solid = op("union", 0, ...positiveNodes(node));
+  const F = compileSdf(solid), b = nodeBounds(solid), s: SdfSample = { d: 0, region: 0, bone: 0 };
+  const out = bones.map(() => 0), v = step * step * step;
+  for (let z = b.min[2] + step / 2; z < b.max[2]; z += step) {
+    for (let y = b.min[1] + step / 2; y < b.max[1]; y += step) {
+      for (let x = b.min[0] + step / 2; x < b.max[0]; x += step) {
+        if (F.sample(x, y, z, s).d > 0) continue;
+        const i = bones.indexOf(s.bone);
+        if (i >= 0) out[i] += v;
+      }
+    }
+  }
+  return out;
+}
+
+/** The primitives that ADD matter (the left operand of a subtract/intersect keeps, cutters do not). */
+export function positiveNodes(node: SdfNode, out: SdfNode[] = []): SdfNode[] {
+  if (node.type === "primitive") { out.push(node); return out; }
+  const keepAll = node.op === "union" || node.op === "smoothUnion";
+  node.children.forEach((c, i) => { if (keepAll || i === 0) positiveNodes(c, out); });
+  return out;
+}
+
+/** The arm's volumes; `gains` null = the exact pre-wave arm. */
+function armForms(P: BodyProportions, side: 1 | -1, abduction: number, gains: { upper: number; fore: number } | null): { node: SdfNode; anchors: ArmAnchors } {
+  const opts = { preWave: gains === null };
+  const h = P.head, R = P.radius, m = P.muscle, L = side > 0 ? "L" : "R", c = P.cell;
   const shoulder: Vec3 = [side * P.halfWidth.shoulderJoint, P.y.shoulder, -0.05 * h];
   const F = limbFrame(shoulder, abduction, side);
   const { d, o, f } = F;
@@ -477,20 +614,59 @@ export function armNode(P: BodyProportions, side: 1 | -1, abduction: number): { 
   // 56-61 mm against a 56.2 mm bound (or split the slim elf mesh into 3 components) — measured, so the
   // deltoid geometry stays pre-wave.
   const deltoid = prim(`deltoid${L}`, "ellipsoid", sb, "upperArm", sum(shoulder, mul(o, 0.08 * h), mul(d, 0.25 * h)), { size: [R.deltoid, 0.5 * h, R.deltoid * 1.05], rot });
-  const upper = prim(`upperArm${L}`, "roundCone", sb, "upperArm", shoulder, { b: elbow, r: R.upperArm, r2: R.upperArmDistal });
-  const biceps = prim(`biceps${L}`, "ellipsoid", sb, "upperArm", sum(shoulder, mul(d, 0.5 * P.upperArm), mul(f, 0.45 * R.upperArm)), { size: [0.62 * R.upperArm * m, 0.4 * P.upperArm, 0.58 * R.upperArm * m], rot });
-  const triceps = prim(`triceps${L}`, "ellipsoid", sb, "upperArm", sum(shoulder, mul(d, 0.4 * P.upperArm), mul(f, -0.42 * R.upperArm)), { size: [0.6 * R.upperArm * m, 0.42 * P.upperArm, 0.55 * R.upperArm * m], rot });
-  const upperGroup = op("smoothUnion", 0.35 * R.upperArm, upper, deltoid, biceps, triceps);
-  const elbowBall = prim(`elbow${L}`, "sphere", eb, "foreArm", elbow, { r: R.upperArmDistal * 0.95 });
-  const fore = prim(`foreArm${L}`, "roundCone", eb, "foreArm", elbow, { b: wrist, r: R.foreArm, r2: R.wrist });
-  const brachio = prim(`brachioradialis${L}`, "ellipsoid", eb, "foreArm", sum(elbow, mul(d, 0.25 * P.foreArm), mul(o, 0.15 * R.foreArm), mul(f, 0.15 * R.foreArm)), { size: [0.7 * R.foreArm * m, 0.3 * P.foreArm, 0.7 * R.foreArm * m], rot });
-  const foreGroup = op("smoothUnion", 0.35 * R.foreArm, elbowBall, fore, brachio);
-  const hand = handNode(P, side, wrist, F);
-  const arm = op("smoothUnion", blendWidth(R.upperArmDistal, R.foreArm), upperGroup, foreGroup);
-  const node = op("smoothUnion", blendWidth(R.wrist, hand.halfT), arm, hand.node);
+  const hand = handNode(P, side, wrist, F, gains === null);
   const palm = hand.palm;
   const grip = along(wrist, d, 0.45 * P.hand);
-  return { node, anchors: { shoulder, elbow, wrist, palm, grip, fingertip, frame: F } };
+  const anchors: ArmAnchors = { shoulder, elbow, wrist, palm, grip, fingertip, frame: F };
+  if (opts.preWave) {
+    const upper = prim(`upperArm${L}`, "roundCone", sb, "upperArm", shoulder, { b: elbow, r: R.upperArm, r2: R.upperArmDistal });
+    const biceps = prim(`biceps${L}`, "ellipsoid", sb, "upperArm", sum(shoulder, mul(d, 0.5 * P.upperArm), mul(f, 0.45 * R.upperArm)), { size: [0.62 * R.upperArm * m, 0.4 * P.upperArm, 0.58 * R.upperArm * m], rot });
+    const triceps = prim(`triceps${L}`, "ellipsoid", sb, "upperArm", sum(shoulder, mul(d, 0.4 * P.upperArm), mul(f, -0.42 * R.upperArm)), { size: [0.6 * R.upperArm * m, 0.42 * P.upperArm, 0.55 * R.upperArm * m], rot });
+    const upperGroup = op("smoothUnion", 0.35 * R.upperArm, upper, deltoid, biceps, triceps);
+    const elbowBall = prim(`elbow${L}`, "sphere", eb, "foreArm", elbow, { r: R.upperArmDistal * 0.95 });
+    const fore = prim(`foreArm${L}`, "roundCone", eb, "foreArm", elbow, { b: wrist, r: R.foreArm, r2: R.wrist });
+    const brachio = prim(`brachioradialis${L}`, "ellipsoid", eb, "foreArm", sum(elbow, mul(d, 0.25 * P.foreArm), mul(o, 0.15 * R.foreArm), mul(f, 0.15 * R.foreArm)), { size: [0.7 * R.foreArm * m, 0.3 * P.foreArm, 0.7 * R.foreArm * m], rot });
+    const foreGroup = op("smoothUnion", 0.35 * R.foreArm, elbowBall, fore, brachio);
+    const arm = op("smoothUnion", blendWidth(R.upperArmDistal, R.foreArm), upperGroup, foreGroup);
+    return { node: op("smoothUnion", blendWidth(R.wrist, hand.halfT), arm, hand.node), anchors };
+  }
+  const I = improvisationFor(P.spec.seed);
+  const kv = (id: string) => knob(I, id);
+  const Ru = R.upperArm, Rd = R.upperArmDistal, Rf = R.foreArm;
+  const kArm = MUSCLE_K_ARM * kv("arm.muscles.blend");
+  // Upper arm: the core narrows into the elbow; the bellies keep their pre-wave volume (reshape only).
+  const upper = prim(`upperArm${L}`, "roundCone", sb, "upperArm", shoulder, { b: elbow, r: Ru, r2: UPPER_ARM_DISTAL_CORE * Rd });
+  const gU = gains!.upper, gF = gains!.fore;
+  const bicepsSize = reshapeDepth([0.62 * Ru * m, 0.4 * P.upperArm, 0.58 * gU * Ru * m], 0.9 * kv("arm.biceps.shape"));
+  const bicepsAt = 0.5 * P.upperArm * kv("arm.biceps.place");
+  const biceps = prim(`biceps${L}`, "ellipsoid", sb, "upperArm", sum(shoulder, mul(d, bicepsAt), mul(f, 0.47 * Ru)), { size: bicepsSize, rot });
+  // The biceps tendon: from the belly's lower end into the elbow crease (radius >= MIN_PLATE_CELLS cells).
+  const tendonTop = sum(shoulder, mul(d, bicepsAt + 0.75 * bicepsSize[1]), mul(f, 0.4 * Ru));
+  const tendonEnd = sum(elbow, mul(d, 0.1 * P.foreArm), mul(f, 0.28 * Rd));
+  const tendon = prim(`bicepsTendon${L}`, "capsule", sb, "upperArm", tendonTop, { b: tendonEnd, r: Math.max(0.26 * Rd, MIN_PLATE_CELLS * c) });
+  const tricepsSize = reshapeDepth([0.6 * Ru * m, 0.42 * P.upperArm, 0.55 * gU * Ru * m], 0.92 * kv("arm.triceps.shape"));
+  const triceps = prim(`triceps${L}`, "ellipsoid", sb, "upperArm", sum(shoulder, mul(d, 0.37 * P.upperArm * kv("arm.triceps.place")), mul(f, -0.44 * Ru)), { size: tricepsSize, rot });
+  const bellies = op("smoothUnion", kArm * Ru, op("smoothUnion", kArm * kv("arm.biceps.blend") * Ru, upper, biceps), triceps);
+  const upperGroup = op("smoothUnion", 0.35 * Ru, bellies, deltoid);
+  // Elbow: the ball becomes an epicondyle bar (wide across, shallow front-to-back) and an olecranon point.
+  const epicondyles = prim(`elbow${L}`, "ellipsoid", eb, "foreArm", along(elbow, f, -0.08 * Rd), { size: [1.05 * Rd, 0.5 * Rd, 0.7 * Rd], rot });
+  const olecranon = prim(`olecranon${L}`, "ellipsoid", eb, "foreArm", sum(elbow, mul(f, -0.42 * Rd), mul(d, 0.04 * P.foreArm)), { size: [0.5 * Rd, 0.55 * Rd, Math.max(0.42 * Rd, MIN_PLATE_CELLS * c)], rot });
+  // Forearm: slimmer core; the brachioradialis (lateral-front) and the FLEXOR mass (medial-front) make it
+  // widest just below the elbow and taper it to the wrist.
+  const fore = prim(`foreArm${L}`, "roundCone", eb, "foreArm", elbow, { b: wrist, r: FOREARM_CORE * Rf, r2: R.wrist });
+  const brachio = prim(`brachioradialis${L}`, "ellipsoid", eb, "foreArm", sum(elbow, mul(d, 0.24 * P.foreArm), mul(o, 0.24 * Rf), mul(f, 0.18 * Rf)),
+    { size: reshapeGirth([0.7 * Rf * m, 0.3 * P.foreArm, 0.7 * gF * Rf * m], kv("arm.brachioradialis.girth")), rot });
+  const flexor = prim(`flexor${L}`, "ellipsoid", eb, "foreArm", sum(elbow, mul(d, 0.27 * P.foreArm * kv("arm.flexor.place")), mul(o, -0.1 * Rf), mul(f, 0.27 * Rf)),
+    { size: reshapeDepth([0.62 * Rf * m, 0.3 * P.foreArm, 0.68 * gF * Rf * m], kv("arm.flexor.shape")), rot });
+  const foreGroup = op("smoothUnion", kArm * Rf, op("smoothUnion", 0.3 * Rf, epicondyles, olecranon, fore), brachio, flexor);
+  const arm = op("smoothUnion", blendWidth(R.upperArmDistal, R.foreArm), upperGroup, foreGroup);
+  // The cubital fossa: a cutter in front of the elbow between the biceps tendon and the forearm masses;
+  // the tendon is unioned back AFTER the cut so it crosses the hollow as a cord.
+  const fossaR = Math.max(FOSSA_R * Rd, 0.8 * c);
+  const fossa = prim(`cubitalFossa${L}`, "sphere", eb, "foreArm", sum(elbow, mul(d, 0.06 * P.foreArm), mul(f, (1 - FOSSA_DEPTH * kv("arm.fossa.groove")) * Rd + fossaR)), { r: fossaR });
+  const carved = op("smoothSubtract", 0.5 * fossaR, arm, fossa);
+  const withTendon = op("smoothUnion", 0.5 * kArm * Rd, carved, tendon);
+  return { node: op("smoothUnion", blendWidth(R.wrist, hand.halfT), withTendon, hand.node), anchors };
 }
 
 /** Hand pronation (rad) about the forearm axis: the back of the hand turns forward-out, as in a relaxed stance. */
@@ -503,6 +679,8 @@ export const THUMB_SPLAY = 0.45;
 export const THUMB_NOTCH_CELLS = 1.4;
 /** Palm half-width floor as a multiple of the wrist radius (a palm is ~1.5 wrists wide). */
 export const PALM_PER_WRIST = 1.35;
+/** Smallest thumb-tip radius (cells): the tip stays one piece with the hand in the grid. */
+export const THUMB_TIP_MIN_CELLS = 0.7;
 /** Smallest palm half-width (cells): two cells across keeps the palm a plate, not a stick. */
 export const PALM_MIN_HALF_CELLS = 1.5;
 
@@ -517,7 +695,7 @@ export interface HandParts { node: SdfNode; palm: Vec3; thumbTip: Vec3; halfT: n
  * splay is SOLVED: it opens from THUMB_SPLAY until the thumb tip clears the finger mass by
  * THUMB_NOTCH_CELLS cells, so the thumb survives the grid as its own digit on both hands.
  */
-export function handNode(P: BodyProportions, side: 1 | -1, wrist: Vec3, F: LimbFrame): HandParts {
+export function handNode(P: BodyProportions, side: 1 | -1, wrist: Vec3, F: LimbFrame, preWave = false): HandParts {
   const R = P.radius, c = P.cell, L = side > 0 ? "L" : "R", eb = `elbow${L}` as BoneId;
   const d = F.d, cp = Math.cos(HAND_PRONATION), sp = Math.sin(HAND_PRONATION);
   const n = unit(sum(mul(F.o, cp), mul(F.f, sp)));      // back of the hand: out and forward
@@ -554,7 +732,9 @@ export function handNode(P: BodyProportions, side: 1 | -1, wrist: Vec3, F: LimbF
     notch = primitiveDistance(fingerPrim, tip) - 0.8 * thumbR;
     if (notch >= THUMB_NOTCH_CELLS * c) break;
   }
-  const thumb = prim(`thumb${L}`, "roundCone", eb, "hand", base, { b: tip, r: thumbR, r2: 0.8 * thumbR });
+  // The tip keeps >= THUMB_TIP_MIN_CELLS cells of radius: a 0.56-cell tip broke off the grid as its own
+  // 8-vertex component on the slim elf hand once the cell moved by 0.1 mm (wave V, measured).
+  const thumb = prim(`thumb${L}`, "roundCone", eb, "hand", base, { b: tip, r: thumbR, r2: preWave ? 0.8 * thumbR : Math.max(0.8 * thumbR, THUMB_TIP_MIN_CELLS * c) });
   const node = op("smoothUnion", 0.45 * halfT, palmBox, knuckles, fingers, thumb);
   return { node, palm, thumbTip: tip, halfT, halfW, splay, notch };
 }
@@ -567,12 +747,45 @@ export const SOLE_PAD_HALF_HEIGHT_CELLS = 0.9;
 /** Medial-arch lift as a fraction of the ankle-joint height (≈ 2 cm on a 7 cm ankle). */
 export const ARCH_LIFT = 0.3;
 
-/** One leg: thigh, quadriceps, hamstrings, knee, patella, shin, calf, ankle, heel, instep, forefoot, toes. */
-export function legNode(P: BodyProportions, side: 1 | -1, abduction: number): { node: SdfNode; anchors: LegAnchors } {
+/** One leg: thigh, quadriceps, vastus medialis, hamstrings, condyles, patella, popliteal hollow, shin, calf heads, ankle, heel, instep, forefoot, toes. */
+export function legNode(P: BodyProportions, side: 1 | -1, abduction: number, opts: LimbOpts = {}): { node: SdfNode; anchors: LegAnchors } {
+  if (opts.preWave || REFERENCE_FORMS) return legForms(P, side, abduction, null);
+  return legForms(P, side, abduction, legGains(P));
+}
+
+/** Leg belly gains (thigh bellies, calf heads) that keep the hip- and knee-bone volumes pre-wave (see ArmGains). */
+export interface LegGains { thigh: number; calf: number; residual: [number, number] }
+const LEG_GAIN_CACHE = new Map<string, LegGains>();
+export function legGains(P: BodyProportions): LegGains {
+  const key = `${JSON.stringify(P.spec)}|${P.cell}|${P.build}`;
+  const hit = LEG_GAIN_CACHE.get(key);
+  if (hit) return hit;
+  const hb = boneIndex("hipL"), kb = boneIndex("kneeL");
+  const step = P.cell / 2;
+  const target = boneVolumes(legForms(P, 1, 0, null).node, step, [hb, kb]);
+  const solve = (which: 0 | 1, other: number): [number, number] => {
+    const vol = (g: number) => boneVolumes(legForms(P, 1, 0, which === 0 ? { thigh: g, calf: other } : { thigh: other, calf: g }).node, step, [hb, kb])[which];
+    let g0 = 1, v0 = vol(g0), g1 = 1.12, v1 = vol(g1);
+    for (let i = 0; i < 4 && Math.abs(v1 - target[which]) > 0.002 * target[which]; i++) {
+      const g2 = Math.max(GAIN_RANGE[0], Math.min(GAIN_RANGE[1], g1 + (target[which] - v1) * (g1 - g0) / ((v1 - v0) || 1e-12)));
+      g0 = g1; v0 = v1; g1 = g2; v1 = vol(g1);
+    }
+    return [g1, v1 / target[which] - 1];
+  };
+  const [calf] = solve(1, 1);
+  const [thigh, rt] = solve(0, calf);
+  const rc = boneVolumes(legForms(P, 1, 0, { thigh, calf }).node, step, [hb, kb])[1] / target[1] - 1;
+  const out: LegGains = { thigh, calf, residual: [rt, rc] };
+  LEG_GAIN_CACHE.set(key, out);
+  if (LEG_GAIN_CACHE.size > 64) LEG_GAIN_CACHE.delete(LEG_GAIN_CACHE.keys().next().value!);
+  return out;
+}
+
+function legForms(P: BodyProportions, side: 1 | -1, abduction: number, gains: { thigh: number; calf: number } | null): { node: SdfNode; anchors: LegAnchors } {
   const R = P.radius, m = P.muscle, c = P.cell, L = side > 0 ? "L" : "R";
   const hip: Vec3 = [side * P.halfWidth.hipJoint, P.y.hipJoint, 0];
   const F = limbFrame(hip, abduction, side);
-  const { d, f } = F;
+  const { d, f, o } = F;
   const rot: Vec3 = [0, 0, F.roll];
   // The ankle sits on the abducted line at its own height; the knee splits hip→ankle thigh:shin.
   const drop = P.y.hipJoint - P.y.ankle;
@@ -581,17 +794,59 @@ export function legNode(P: BodyProportions, side: 1 | -1, abduction: number): { 
   const knee = along(hip, d, legLen * P.thigh / (P.thigh + P.shin));
   const hb = `hip${L}` as BoneId, kb = `knee${L}` as BoneId, ab = `ankle${L}` as BoneId, tb = `toe${L}` as BoneId;
   const rT = R.thighTop;
-  const thigh = prim(`thigh${L}`, "roundCone", hb, "thigh", hip, { b: knee, r: rT, r2: R.thighDistal });
   const thighLen = legLen * P.thigh / (P.thigh + P.shin);
-  const quads = prim(`quadriceps${L}`, "ellipsoid", hb, "thigh", sum(hip, mul(d, 0.5 * thighLen), mul(f, 0.3 * rT)), { size: [0.66 * rT * m, 0.36 * thighLen, 0.56 * rT * m], rot });
-  const hams = prim(`hamstrings${L}`, "ellipsoid", hb, "thigh", sum(hip, mul(d, 0.5 * thighLen), mul(f, -0.3 * rT)), { size: [0.6 * rT * m, 0.32 * thighLen, 0.5 * rT * m], rot });
-  const thighGroup = op("smoothUnion", 0.3 * rT, thigh, quads, hams);
-  const kneeBall = prim(`knee${L}`, "sphere", kb, "shin", knee, { r: R.knee });
-  const patella = prim(`patella${L}`, "ellipsoid", kb, "shin", along(knee, f, 0.75 * R.knee), { size: [0.45 * R.knee, 0.55 * R.knee, Math.max(0.3 * R.knee, 0.6 * c)] });
   const shinLen = legLen - thighLen;
-  const shin = prim(`shin${L}`, "roundCone", kb, "shin", knee, { b: ankle, r: R.knee * 0.95, r2: R.ankle });
-  const calf = prim(`calf${L}`, "ellipsoid", kb, "shin", sum(knee, mul(d, 0.3 * shinLen), mul(f, -0.45 * R.calf)), { size: [0.85 * R.calf * m, 0.32 * shinLen, 0.75 * R.calf * m], rot });
-  const shinGroup = op("smoothUnion", 0.3 * R.knee, kneeBall, patella, shin, calf);
+  const patellaSize: [number, number, number] = [0.45 * R.knee, 0.55 * R.knee, Math.max(0.3 * R.knee, 0.6 * c)];
+  const patella = prim(`patella${L}`, "ellipsoid", kb, "shin", along(knee, f, 0.75 * R.knee), {
+    size: gains === null ? patellaSize : reshapeLong(patellaSize, knob(improvisationFor(P.spec.seed), "leg.patella.shape")),
+  });
+  let thighGroup: SdfNode, shinGroup: SdfNode, popliteal: SdfNode | null = null;
+  if (gains === null) {
+    const thigh = prim(`thigh${L}`, "roundCone", hb, "thigh", hip, { b: knee, r: rT, r2: R.thighDistal });
+    const quads = prim(`quadriceps${L}`, "ellipsoid", hb, "thigh", sum(hip, mul(d, 0.5 * thighLen), mul(f, 0.3 * rT)), { size: [0.66 * rT * m, 0.36 * thighLen, 0.56 * rT * m], rot });
+    const hams = prim(`hamstrings${L}`, "ellipsoid", hb, "thigh", sum(hip, mul(d, 0.5 * thighLen), mul(f, -0.3 * rT)), { size: [0.6 * rT * m, 0.32 * thighLen, 0.5 * rT * m], rot });
+    thighGroup = op("smoothUnion", 0.3 * rT, thigh, quads, hams);
+    const kneeBall = prim(`knee${L}`, "sphere", kb, "shin", knee, { r: R.knee });
+    const shin = prim(`shin${L}`, "roundCone", kb, "shin", knee, { b: ankle, r: R.knee * 0.95, r2: R.ankle });
+    const calf = prim(`calf${L}`, "ellipsoid", kb, "shin", sum(knee, mul(d, 0.3 * shinLen), mul(f, -0.45 * R.calf)), { size: [0.85 * R.calf * m, 0.32 * shinLen, 0.75 * R.calf * m], rot });
+    shinGroup = op("smoothUnion", 0.3 * R.knee, kneeBall, patella, shin, calf);
+  } else {
+    const I = improvisationFor(P.spec.seed);
+    const kv = (id: string) => knob(I, id);
+    const gT = gains.thigh, gS = gains.calf, Rc = R.calf, Rk = R.knee;
+    const kLeg = MUSCLE_K_LEG * kv("leg.muscles.blend");
+    const thigh = prim(`thigh${L}`, "roundCone", hb, "thigh", hip, { b: knee, r: rT, r2: R.thighDistal });
+    // The thigh's MEDIAL extent is the leg-gap solve's input (Anatomy.solveLegs probes the midplane
+    // between the thighs): every thigh change keeps the pre-wave local-x (medial-lateral) semi-axes and
+    // centres, and moves volume only front-to-back (z) and along the bone (y) — measured: the solved leg
+    // abduction is bit-identical (tests/wave_v_body_forms_test.ts).
+    const quads = prim(`quadriceps${L}`, "ellipsoid", hb, "thigh", sum(hip, mul(d, 0.5 * thighLen), mul(f, 0.3 * rT)),
+      { size: [0.66 * rT * m, 0.36 * thighLen, 0.56 * gT * rT * m], rot });
+    // The vastus medialis teardrop: above the knee, front-medial; its medial reach stays inside the
+    // knee's own medial surface, so the leg-gap solve (Anatomy.solveLegs) reads the same field.
+    const vmo = prim(`vastusMedialis${L}`, "ellipsoid", hb, "thigh", sum(knee, mul(d, -0.2 * thighLen), mul(f, 0.42 * rT), mul(o, -0.06 * rT)),
+      { size: reshapeDepth([0.34 * rT * m, 0.17 * thighLen, 0.32 * rT * m], kv("leg.vastusMedialis.shape")), rot });
+    const hams = prim(`hamstrings${L}`, "ellipsoid", hb, "thigh", sum(hip, mul(d, 0.5 * thighLen), mul(f, -0.3 * rT)),
+      { size: [0.6 * rT * m, 0.32 * thighLen, 0.5 * gT * rT * m], rot });
+    // The thigh keeps its pre-wave blend width (its top is where the leg-gap solve binds); the teardrop
+    // joins it at the sharper muscle width.
+    thighGroup = op("smoothUnion", kLeg * rT, op("smoothUnion", 0.3 * rT, thigh, quads, hams), vmo);
+    // Knee: the ball becomes the femoral condyles — the same frontal outline (the leg-gap solve reads it),
+    // flatter front-to-back, so the patella and the popliteal hollow read in profile.
+    const condyles = prim(`knee${L}`, "ellipsoid", kb, "shin", along(knee, f, -0.04 * Rk), { size: [Rk, Rk, 0.84 * Rk * kv("leg.condyles.depth")], rot });
+    const shin = prim(`shin${L}`, "roundCone", kb, "shin", knee, { b: ankle, r: Rk * 0.95, r2: R.ankle });
+    // Gastrocnemius: the medial head lower and bigger, the lateral head higher; a valley between them.
+    const calfMed = prim(`calf${L}`, "ellipsoid", kb, "shin", sum(knee, mul(d, 0.35 * shinLen * kv("leg.calfMedial.place")), mul(f, -0.42 * Rc), mul(o, -0.24 * Rc)),
+      { size: reshapeLong([0.6 * gS * Rc * m, 0.3 * shinLen, 0.7 * gS * Rc * m], kv("leg.calfMedial.shape")), rot });
+    const calfLat = prim(`calfLateral${L}`, "ellipsoid", kb, "shin", sum(knee, mul(d, 0.27 * shinLen * kv("leg.calfLateral.place")), mul(f, -0.4 * Rc), mul(o, 0.26 * Rc)),
+      { size: reshapeGirth([0.52 * gS * Rc * m, 0.25 * shinLen, 0.62 * gS * Rc * m], kv("leg.calfLateral.girth")), rot });
+    const core = op("smoothUnion", 0.3 * Rk, condyles, patella, shin);
+    const shinSolid = op("smoothUnion", kLeg * Rk, core, calfMed, calfLat);
+    // The popliteal hollow: a cutter behind the knee between the hamstring tendons.
+    const popR = Math.max(POPLITEAL_R * Rk * kv("leg.poplitealWidth.groove"), 0.8 * c);
+    popliteal = prim(`popliteal${L}`, "sphere", kb, "shin", sum(knee, mul(d, -0.06 * thighLen), mul(f, -((1 - POPLITEAL_DEPTH * kv("leg.popliteal.groove")) * Rk + popR))), { r: popR });
+    shinGroup = shinSolid;
+  }
 
   // Foot along +z: heel back a quarter foot behind the ankle, ball at 72 % of the length.
   // Heel, forefoot and toes sink SOLE_CONTACT of their height below y = 0 (cut flat later).
@@ -626,7 +881,8 @@ export function legNode(P: BodyProportions, side: 1 | -1, abduction: number): { 
   const archZ = (heelBackZ + heelR + ballZ) / 2;
   const archCut = prim(`archHollow${L}`, "ellipsoid", ab, "foot", [ax - side * 0.95 * fw, 0, archZ], { size: [0.7 * fw, archLift, 0.26 * P.foot] });
   const footGroup = op("smoothSubtract", 0.4 * archLift, solid, archCut);
-  const leg = op("smoothUnion", blendWidth(R.thighDistal, R.knee), thighGroup, shinGroup);
+  const joined = op("smoothUnion", blendWidth(R.thighDistal, R.knee), thighGroup, shinGroup);
+  const leg = popliteal ? op("smoothSubtract", 0.5 * Math.max(POPLITEAL_R * R.knee, 0.8 * c), joined, popliteal) : joined;
   const node = op("smoothUnion", blendWidth(R.ankle, heelR), leg, footGroup);
   return {
     node,

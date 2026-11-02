@@ -39,6 +39,9 @@ import { RACES } from "../src/game/Races.ts";
 import { createFighter } from "../src/game/Fighter.ts";
 import type { CombatStats } from "../src/game/Stats.ts";
 import type { Appearance } from "../src/game/Characters.ts";
+import type { Sex } from "../src/game/BodyProfile.ts";
+import { footWorld, newFootWorld } from "../src/game/anim/Measure.ts";
+import { JOINT_INDEX } from "../src/game/anim/Rig.ts";
 import { type LiveState, type MotionStyle, motionStyleFor, styleDistance, styleVector, weaponMotionFromSpec } from "../src/game/anim/MotionStyle.ts";
 
 const DEG = 180 / Math.PI, MM = 1000;
@@ -61,9 +64,9 @@ export interface Body { race: string; subrace: string; rig: Rig; boxes: HitboxSe
 const TORSO = new Set(["chest", "abdomen", "pelvis"]);
 
 /** Lane A's rig with this weapon, for a race / subrace (built like Engine.#spawnMeshes). */
-export function buildBody(race: string, subrace: string, weapon: ArchetypeId): Body {
+export function buildBody(race: string, subrace: string, weapon: ArchetypeId, sex?: Sex): Body {
   const b = RACE_BODY[race] ?? RACE_BODY.human;
-  const app: Appearance = { body: "#ef7455", accent: "#dfaa55", height: b.height, weight: b.weight, hair: "#3a2a1a", eyes: "#2f6fb5", race, subrace };
+  const app: Appearance = { body: "#ef7455", accent: "#dfaa55", height: b.height, weight: b.weight, hair: "#3a2a1a", eyes: "#2f6fb5", race, subrace, ...(sex ? { sex } : {}) };
   const spec = weaponFromSeed(weapon, 7);
   const rig = buildSkinnedHumanoid(toGeneratedWeapon(spec), app, "fire", undefined, { paint: false, weaponSpec: spec });
   const ankleY = rig.plan.bones.find((x) => x.id === "ankleL")!.head[1];
@@ -270,6 +273,96 @@ export function measureLoop(body: Body, gait: "walk" | "run", live: string, styl
   };
 }
 
+// ---------------------------------------------------------------------------------------------
+// Wave V lane P: IDLE. A fighter standing still for 10 s (guard engaged or relaxed), with the
+// rig's yaw either fixed ("still") or slowly tracking a rival that shifts ("track": ±0.06 rad over
+// 5 s, what Engine.#updatePose feeds an idle fighter whose rival sways). Per foot per frame:
+// heel and ball height above the ground (mm), the sole pitch (deg, toe-down +), plus the planted
+// slide, the breathing (spine / shoulder peak-to-peak, deg) and the idle sway (pelvis lateral
+// peak-to-peak, mm).
+
+export interface IdleCase {
+  race: string; subrace: string; sex: string; live: string; mode: string;
+  /** Worst |heel - ground| and |ball - ground| over both feet and every frame after 1 s, mm. */
+  heelMaxMm: number; ballMaxMm: number; heelMeanMm: number;
+  /** Worst |sole pitch| (deg) and the mean (signed). */
+  pitchMaxDeg: number; pitchMeanDeg: number;
+  /** Planted-foot slide over the run, mm (max over stances). */
+  slideMaxMm: number;
+  /** Frames (after 1 s) with either heel > 5 mm up, of all frames × feet. */
+  heelUpShare: number;
+  /** Breathing: spine (chest) pitch and shoulder peak-to-peak, deg; the dominant period, s. */
+  spinePtpDeg: number; shoulderPtpDeg: number; breathPeriodS: number;
+  /** Idle weight shift: pelvis (rig origin + lateral) peak-to-peak sideways, mm. */
+  swayPtpMm: number;
+  /** Lowest sole point above the ground, mm (< 0 = under the floor). */
+  floorMinMm: number;
+}
+
+/** Idle (standing still 10 s) for a body, live state and mode. */
+export function measureIdle(body: Body, live: string, mode: "guard-still" | "guard-track" | "relaxed-still", styled = true, seconds = 10, holdFacing = true): IdleCase {
+  const lim = limitTableFrom(defaultHumanoid().limits());
+  const style = styled ? styleOf(body, "slash") : null;
+  const an = new Animator(body.geom, lim, styled ? {} : { pivotPitch: 0 });
+  if (style) { style.setLiveImmediate(LIVE_STATES[live]); an.setStyle(style); an.setLive(LIVE_STATES[live]); }
+  const engaged = mode !== "relaxed-still";
+  const track = mode === "guard-track";
+  const segs: ScenarioSegment[] = [{ duration: seconds, speed: 0, engaged }];
+  const fw = newFootWorld();
+  let heelMax = 0, ballMax = 0, pitchMax = 0, pitchSum = 0, heelSum = 0, n = 0, up = 0;
+  let spMin = Infinity, spMax = -Infinity, shMin = Infinity, shMax = -Infinity, lxMin = Infinity, lxMax = -Infinity;
+  const SP = JOINT_INDEX.spine, SH = JOINT_INDEX.shoulderL;
+  const spineSeries: number[] = [];
+  const hz = 60;
+  const res = runScenario(an, segs, {
+    hz, accel: ACCEL, holdFacing,
+    yawOffset: track ? (t: number) => 0.06 * Math.sin(2 * Math.PI * t / 5) : undefined,
+    onFrame: (t, out, pl) => {
+      if (t < 1) return;
+      for (let i = 0 as 0 | 1; i < 2; i = (i + 1) as 0 | 1) {
+        footWorld(body.geom, out.angles, i, pl, fw, out.hipRoll[i], out.ankleRoll[i]);
+        const hh = Math.abs(fw.heelY), bb = Math.abs(fw.ballY), pd = fw.pitch * DEG;
+        heelMax = Math.max(heelMax, hh); ballMax = Math.max(ballMax, bb); pitchMax = Math.max(pitchMax, Math.abs(pd));
+        pitchSum += pd; heelSum += hh; n++;
+        if (fw.heelY > 0.005) up++;
+      }
+      const sp = out.angles[SP], sh = out.angles[SH];
+      spineSeries.push(sp);
+      spMin = Math.min(spMin, sp); spMax = Math.max(spMax, sp); shMin = Math.min(shMin, sh); shMax = Math.max(shMax, sh);
+      // Sideways position of the pelvis: the rig origin's lateral shift plus the roll's swing of
+      // the hip-height point (the rig rolls about its ground pivot).
+      const lat = pl.lateral + Math.sin(pl.roll) * (pl.y + 0.5 * an.legLength);
+      lxMin = Math.min(lxMin, lat); lxMax = Math.max(lxMax, lat);
+    },
+  });
+  // Dominant breathing period: mean spacing of upward zero crossings of the de-meaned spine pitch.
+  const mean = spineSeries.reduce((a, b) => a + b, 0) / Math.max(1, spineSeries.length);
+  const ups: number[] = [];
+  for (let k = 1; k < spineSeries.length; k++) if (spineSeries[k - 1] - mean < 0 && spineSeries[k] - mean >= 0) ups.push(k / hz);
+  const period = ups.length >= 2 ? (ups[ups.length - 1] - ups[0]) / (ups.length - 1) : Number.NaN;
+  return {
+    race: body.race, subrace: body.subrace, sex: body.app.sex ?? "male", live, mode,
+    heelMaxMm: heelMax * MM, ballMaxMm: ballMax * MM, heelMeanMm: heelSum / Math.max(1, n) * MM,
+    pitchMaxDeg: pitchMax, pitchMeanDeg: pitchSum / Math.max(1, n),
+    slideMaxMm: Math.max(0, ...res.drift) * MM, heelUpShare: up / Math.max(1, n),
+    spinePtpDeg: (spMax - spMin) * DEG, shoulderPtpDeg: (shMax - shMin) * DEG, breathPeriodS: period,
+    swayPtpMm: (lxMax - lxMin) * MM, floorMinMm: res.soleMin * MM,
+  };
+}
+
+export const IDLE_MODES = ["guard-still", "guard-track", "relaxed-still"] as const;
+export const IDLE_LIVES = ["fresh", "exhausted"] as const;
+
+/** Every race × subrace × sex × live × idle mode. */
+export function idleSweep(styled = true, seconds = 10, holdFacing = true): IdleCase[] {
+  const out: IdleCase[] = [];
+  for (const race of RACES) for (const sub of race.subspecies) for (const sex of ["male", "female"] as const) {
+    const body = buildBody(race.id, sub.id, "longsword", sex);
+    for (const live of IDLE_LIVES) for (const mode of IDLE_MODES) out.push(measureIdle(body, live, mode, styled, seconds, holdFacing));
+  }
+  return out;
+}
+
 const f1 = (v: number) => (Number.isFinite(v) ? v.toFixed(1) : "-");
 const f2 = (v: number) => (Number.isFinite(v) ? v.toFixed(2) : "-");
 const f3 = (v: number) => (Number.isFinite(v) ? v.toFixed(3) : "-");
@@ -311,7 +404,112 @@ export function styleDifferences(bodies: Body[]): Record<string, unknown> {
   };
 }
 
-if (import.meta.main) {
+/** `--idle [--out=path]`: the idle sweep (wave V lane P) -> table + JSON. */
+async function idleMain(): Promise<void> {
+  const outArg = Deno.args.find((a) => a.startsWith("--out="));
+  const outPath = outArg ? outArg.slice(6) : "artifacts/anim-idle.json";
+  const secArg = Deno.args.find((a) => a.startsWith("--seconds="));
+  const t0 = performance.now();
+  // --unpatched: drive like today's engine (no facing hold: AnimatorOutput.yawOffset ignored).
+  const cases = idleSweep(true, secArg ? Number(secArg.slice(10)) : 10, !Deno.args.includes("--unpatched"));
+  const worst = (xs: IdleCase[], k: keyof IdleCase, min = false) => xs.reduce((m, x) => (min ? Math.min(m, x[k] as number) : Math.max(m, x[k] as number)), min ? Infinity : -Infinity);
+  console.log(`\n# Idle report (${cases.length} cases: race x subrace x sex x live x mode, 10 s each)\n`);
+  console.log("| race | mode | live | heel max/mean mm | ball max mm | pitch max/mean deg | heel-up share | slide mm | spine ptp deg | shoulder ptp deg | breath period s | sway ptp mm | floor min mm |");
+  console.log("|---|---|---|---|---|---|---|---|---|---|---|---|---|");
+  for (const race of RACES) for (const mode of IDLE_MODES) for (const live of IDLE_LIVES) {
+    const cs = cases.filter((c) => c.race === race.id && c.mode === mode && c.live === live);
+    console.log(`| ${race.id} | ${mode} | ${live} | ${f1(worst(cs, "heelMaxMm"))}/${f1(cs.reduce((a, c) => a + c.heelMeanMm, 0) / cs.length)} | ${f1(worst(cs, "ballMaxMm"))} | ${f2(worst(cs, "pitchMaxDeg"))}/${f2(cs.reduce((a, c) => a + c.pitchMeanDeg, 0) / cs.length)} | ${f2(worst(cs, "heelUpShare"))} | ${f2(worst(cs, "slideMaxMm"))} | ${f2(worst(cs, "spinePtpDeg"))} | ${f2(worst(cs, "shoulderPtpDeg"))} | ${f2(worst(cs, "breathPeriodS", true))}-${f2(worst(cs, "breathPeriodS"))} | ${f1(worst(cs, "swayPtpMm", true))}-${f1(worst(cs, "swayPtpMm"))} | ${f1(worst(cs, "floorMinMm", true))} |`);
+  }
+  const summary = {
+    heelMaxMm: worst(cases, "heelMaxMm"), ballMaxMm: worst(cases, "ballMaxMm"), pitchMaxDeg: worst(cases, "pitchMaxDeg"),
+    heelUpShareMax: worst(cases, "heelUpShare"), slideMaxMm: worst(cases, "slideMaxMm"), floorMinMm: worst(cases, "floorMinMm", true),
+    spinePtpMinDeg: worst(cases, "spinePtpDeg", true), spinePtpMaxDeg: worst(cases, "spinePtpDeg"),
+    shoulderPtpMaxDeg: worst(cases, "shoulderPtpDeg"),
+    breathPeriodMinS: worst(cases, "breathPeriodS", true), breathPeriodMaxS: worst(cases, "breathPeriodS"),
+    swayPtpMinMm: worst(cases, "swayPtpMm", true), swayPtpMaxMm: worst(cases, "swayPtpMm"),
+  };
+  console.log("\n## Summary\n");
+  for (const [k, v] of Object.entries(summary)) console.log(`  ${k.padEnd(22)} ${f2(v)}`);
+  await Deno.mkdir("artifacts", { recursive: true });
+  await Deno.writeTextFile(outPath, JSON.stringify({ generatedAt: new Date().toISOString(), summary, cases }, null, 1));
+  console.log(`\nwrote ${outPath} (${((performance.now() - t0) / 1000).toFixed(1)} s)`);
+}
+
+/**
+ * `--symmetry [--seeds=N]`: the final symmetry step of the generation, measured. For N seeds per
+ * race × sex: the raw tree's left/right mirror deviation (BEFORE the step), the seeded asymmetry
+ * drawn (per dimension |δ|, the dominant side), and — on a sampled field (1.2 cm grid) for the first
+ * seeds — the left vs right volume per limb band and the TOTAL volume before -> after (mass preserved).
+ */
+async function symmetryMain(): Promise<void> {
+  const { anatomyFor, pairDeviations } = await import("../src/graphics/body/Anatomy.ts");
+  const { compileSdf } = await import("../src/graphics/body/Sdf.ts");
+  const { bilateralAsymmetry } = await import("../src/game/BodyProfile.ts");
+  const seedsArg = Deno.args.find((a) => a.startsWith("--seeds="));
+  const N = seedsArg ? Number(seedsArg.slice(8)) : 200;
+  const t0 = performance.now();
+  // 1. The draws over many seeds (cheap: no meshing).
+  const dims = ["arm", "foreArm", "chest", "thigh", "shin", "face"] as const;
+  const absd: Record<string, number[]> = Object.fromEntries(dims.map((d) => [d, []]));
+  let right = 0, supportLeg = 0;
+  for (let k = 0; k < N * 8; k++) {
+    const a = bilateralAsymmetry(1000 + 7919 * k);
+    if (a.dominant === "R") right++;
+    for (const d of dims) absd[d].push(Math.abs(a[d]));
+    if (Math.sign(a.thigh) === -Math.sign(a.arm) && a.thigh !== 0) supportLeg++;
+  }
+  const st = (xs: number[]) => ({ mean: xs.reduce((s, x) => s + x, 0) / xs.length, max: Math.max(...xs), min: Math.min(...xs) });
+  console.log(`\n# Final symmetry step (${N * 8} seeded draws)\n`);
+  console.log(`  right-handed share ${(right / (N * 8)).toFixed(3)}, fuller support leg share ${(supportLeg / (N * 8)).toFixed(3)}`);
+  for (const d of dims) { const v = st(absd[d]); console.log(`  |delta| ${d.padEnd(8)} mean ${(100 * v.mean).toFixed(2)} %  min ${(100 * v.min).toFixed(2)} %  max ${(100 * v.max).toFixed(2)} %`); }
+  // 2. The raw trees' mirror deviation (before) on real bodies, and the field volumes.
+  const BODIES: [string, number, number][] = [["human", 1.7, 72], ["elf", 1.77, 60], ["dwarf", 1.39, 70], ["ork", 1.95, 120]];
+  const rows: Record<string, unknown>[] = [];
+  let devMax = 0;
+  for (const [race, h, w] of BODIES) for (const sex of ["male", "female"] as const) for (const seed of [7, 11]) {
+    const spec = { race, subrace: null, className: "Warrior", height: h, weight: w, seed, sex } as never;
+    const raw = anatomyFor(spec, { symmetryPass: false }), after = anatomyFor(spec);
+    for (const d of pairDeviations(raw.root)) devMax = Math.max(devMax, d.dev);
+    // Field volume, left (x > 0) vs right per height band, on a grid of cell c (mid-cell samples).
+    const vol = (root: typeof raw.root) => {
+      const f = compileSdf(root), smp = { d: 0, region: 0, bone: 0 }, c = 0.012, b = raw.bounds;
+      let L = 0, R = 0, armL = 0, armR = 0, legL = 0, legR = 0;
+      const hip = raw.proportions.y.hipJoint, sh = raw.proportions.y.shoulder, chestX = raw.proportions.halfWidth.chest;
+      for (let x = c / 2; x < b.max[0]; x += c) for (let y = 0.0005; y < b.max[1]; y += c) for (let z = b.min[2] + c / 2; z < b.max[2]; z += c) {
+        for (const sx of [1, -1]) {
+          if (f.sample(sx * x, y, z, smp).d >= 0) continue;
+          const v = c * c * c;
+          if (sx > 0) L += v; else R += v;
+          if (x > chestX && y < sh + 0.05 && y > hip * 0.6) { if (sx > 0) armL += v; else armR += v; }
+          if (y < hip - 0.05 && x > 0.02) { if (sx > 0) legL += v; else legR += v; }
+        }
+      }
+      return { L, R, armL, armR, legL, legR };
+    };
+    const v0 = vol(raw.root), v1 = vol(after.skinRoot), a = after.symmetry.asymmetry!;
+    // The physics tree after the step must be the raw tree itself (the asymmetry is the skin's only).
+    if (after.root.type !== raw.root.type) throw new Error("physics root changed");
+    const row = {
+      race, sex, seed, dominant: a.dominant,
+      totalBeforeL: v0.L + v0.R, totalAfter: v1.L + v1.R, totalChangePct: 100 * ((v1.L + v1.R) / (v0.L + v0.R) - 1),
+      armLRBeforePct: 100 * (v0.armL / v0.armR - 1), armLRAfterPct: 100 * (v1.armL / v1.armR - 1),
+      legLRBeforePct: 100 * (v0.legL / v0.legR - 1), legLRAfterPct: 100 * (v1.legL / v1.legR - 1),
+      deltaArmPct: 100 * a.arm, deltaThighPct: 100 * a.thigh,
+    };
+    rows.push(row);
+    console.log(`  ${race.padEnd(5)} ${sex.padEnd(6)} seed ${String(seed).padEnd(3)} dom ${a.dominant}  volume ${(1000 * row.totalBeforeL).toFixed(2)} -> ${(1000 * row.totalAfter).toFixed(2)} L (${row.totalChangePct.toFixed(3)} %)  arm L/R ${row.armLRBeforePct.toFixed(2)} -> ${row.armLRAfterPct.toFixed(2)} %  leg L/R ${row.legLRBeforePct.toFixed(2)} -> ${row.legLRAfterPct.toFixed(2)} %`);
+  }
+  console.log(`\n  raw-tree mirror deviation (before the step), max over pairs and bodies: ${devMax.toExponential(2)}`);
+  await Deno.mkdir("artifacts", { recursive: true });
+  await Deno.writeTextFile("artifacts/anim-symmetry.json", JSON.stringify({ generatedAt: new Date().toISOString(), draws: N * 8, rightShare: right / (N * 8), supportLeg: supportLeg / (N * 8), absDelta: Object.fromEntries(dims.map((d) => [d, st(absd[d])])), mirrorDeviationBefore: devMax, bodies: rows }, null, 1));
+  console.log(`wrote artifacts/anim-symmetry.json (${((performance.now() - t0) / 1000).toFixed(1)} s)`);
+}
+
+if (import.meta.main && Deno.args.includes("--symmetry")) {
+  await symmetryMain();
+} else if (import.meta.main && Deno.args.includes("--idle")) {
+  await idleMain();
+} else if (import.meta.main) {
   const before = Deno.args.includes("--before");
   const styled = !before;
   const outPath = before ? "artifacts/anim-report-before.json" : "artifacts/anim-report.json";

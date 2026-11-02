@@ -48,6 +48,8 @@ export interface PaintSubject {
   seed: number;
 }
 
+/** Regions the optional garment (tunic + breeches) covers; the form paint wears them as cloth. */
+export const GARMENT_REGIONS: readonly Region[] = ["torso", "pelvis", "thigh"];
 /** Default mesh vertex spacing (m): lane A's expected polygoniser cell. */
 export const DEFAULT_VERTEX_SPACING = 0.025;
 /** Nyquist: a pattern feature needs >= 2 vertices across it, or it aliases into speckle. */
@@ -317,7 +319,7 @@ export function stackFor(subject: PaintSubject): PaintStack {
   // the shoulder and read as a second line there (ork front 6/10 -> 3/10).
   if (subject.garment) {
     const cloth = boundColour(subject.garment, INK_BOUNDS);
-    const cover: Region[] = ["torso", "pelvis", "thigh"];
+    const cover: Region[] = [...GARMENT_REGIONS];
     layers.push(layer("garment", "solid", cloth, 1, 1, s(), { regions: cover }));
     layers.push(layer("garment-weave", "noise", shadeHex(cloth, 0.85), 0.35, size("sheen"), s(), {
       blend: "overlay",

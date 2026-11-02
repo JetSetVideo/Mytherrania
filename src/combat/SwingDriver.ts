@@ -12,15 +12,16 @@ import { profileTerms } from "../game/weapons/Profile.ts";
 import type { JointLimitTable } from "../game/anim/Rig.ts";
 import {
   AIM_PATTERN, type AimLine, aimYawForLine, type ArmGeometry, armIK, CONTACT_HOLD, COOLDOWN_SHARE, swingDuration, contactFraction, engageDistance, GUARD_KEY, gripPitchFor,
-  newSwingProfile, newSwingSample, planarAimLine, stepInFor, strikeDuration, strikeKeyAt, styledKeyAt, styledLegDrive, styledSwingTiming, sweetDistance,
+  newSwingProfile, newSwingSample, planarAimLine, stepInFor, strikeDuration, strikeKeyAt, styledKeyAt, styledLegDrive, styledSwingTiming,
   SWING_DOF_DEPTH, SWING_DOFS, SWING_SHAPES, type SwingKey, type SwingKind, swingKindOf, SwingPlayer, swingPose, type SwingShape, swingTiming,
-  swingWindow,
+  swingWindow, bladePoint, REACH_SAMPLES, SWEET_SHARE, TARGET_HALF_DEPTH, TORSO_BAND,
 } from "../game/anim/Swing.ts";
 import { clamp, lerp, smoothstep } from "../core/MathCore.ts";
 import { smoothMax, smoothMin } from "../game/anim/FootIK.ts";
 import { DEFAULT_GAIT } from "../game/anim/Gait.ts";
 import { JOINT_INDEX } from "../game/anim/Rig.ts";
-import { REST_GRIP } from "../game/GripStance.ts";
+import { type GripRule, gripRuleOf, REST_GRIP } from "../game/GripStance.ts";
+import { clampWristPitch, GRIP_SUPINATION_DEFAULT, gripEuler, PLAIN_HAND, type V3t, type WristBand } from "../game/PalmWeapon.ts";
 import { GUARD_POSE } from "../game/anim/Poses.ts";
 import { recoveryPeakRate } from "../game/AnimationCurve.ts";
 import { type LiveState, type MotionStyle, NEUTRAL } from "../game/anim/MotionStyle.ts";
@@ -34,7 +35,8 @@ export const HAMMER_GRIP = 1.6;
 /**
  * How much a skill's grip stance (GripStance: thrust −1.5, swing −0.5…−1.35, guard −0.12, rest
  * −0.35, authored for the legacy mesh) turns the blade from the hammer grip: a thrust stance
- * (−1.15 from rest) lays the blade along the forearm (HAMMER_GRIP + 1.15 ≈ 2.75 rad).
+ * (−1.15 from rest) asks for the blade along the forearm (HAMMER_GRIP + 1.15 ≈ 2.75 rad); lane G:
+ * the hand mapping (PalmWeapon.gripEuler) clamps it to the wrist band, so the handle stays in the fist.
  */
 export const SKILL_STANCE_GAIN = 1;
 
@@ -71,6 +73,20 @@ export interface SwingSetup {
    * (combat/SwingRig.measureAimLine), which includes the shoulder's display roll.
    */
   aimLine: AimLine;
+  /**
+   * Lane G (wave V): the right hand's frame [d finger axis, n back-of-hand normal, w across the palm
+   * toward the thumb] in the grip mount's space (RigAdapter.handFrameInMount; constant per rig). The
+   * wrist pitch/roll are mapped into it (PalmWeapon.gripEuler) so the handle lies across the palm.
+   * Default PLAIN_HAND (no pronation) until the engine measures the rig.
+   */
+  hand: [V3t, V3t, V3t];
+  /** Lane G: how this archetype is carried and how far the wrist may turn (GripStance.GRIP_RULES). */
+  rule: GripRule;
+  /**
+   * Lane G: forearm supination while gripping, rad (RigAdapter.applyForearmTwist). Default
+   * GRIP_SUPINATION_DEFAULT; SwingRig.solveGripTwist (run by measureAimLine) solves it per rig.
+   */
+  twist: number;
 }
 
 /** Tip distance of a weapon from its main grip, m: the farthest strike-feature point along +y. */
@@ -82,15 +98,50 @@ export function weaponTip(spec: WeaponSpec): number {
 
 /** The swing setup of a weapon in a body's hands (see SwingSetup). */
 export function swingSetupFor(spec: WeaponSpec, arm: ArmGeometry): SwingSetup {
-  const grip = preferredGrip(spec), terms = profileTerms(spec, grip);
+  // Lane G: only a weapon whose carry rule allows it may take the reverse (blade-down) grip.
+  const rule = gripRuleOf(spec.archetype);
+  const pref = preferredGrip(spec), grip = pref === "reverse" && !rule.reverseAllowed ? "forward" : pref;
+  const terms = profileTerms(spec, grip);
   const kind = swingKindOf(terms.mix, spec.weaponClass, spec.hands);
   const shape = SWING_SHAPES[kind], tip = weaponTip(spec);
-  const sweet = sweetDistance(shape, arm, tip);
+  const sweet = handSweetDistance(shape, arm, tip, rule, grip === "reverse");
   return {
     kind, shape, strike: strikeDuration(shape, terms.omega, terms.thrustTime), arm, reverse: grip === "reverse",
     twoHanded: terms.handsUsed === 2, tip, sweet, engage: engageDistance(sweet), aimLine: planarAimLine(arm, tip),
     choke: Math.max(0, ...spec.grips.filter((g) => g.id === "choke").map((g) => g.y)),
+    hand: PLAIN_HAND, rule, twist: GRIP_SUPINATION_DEFAULT,
   };
+}
+
+/**
+ * Lane G: the blade angle β the hand can actually hold for a key (Swing.ts arm-plane convention):
+ * the wanted wrist (gripPitchFor; a bow wants its limbs upright, β = 0) clamped to the archetype's
+ * wrist band (default: the strike's snap band), re-added to the forearm. The engine draws exactly this once the forearm is supinated
+ * (RigAdapter.GRIP_SUPINATION puts the palm's thumb axis in the arm plane).
+ */
+export function heldBlade(k: SwingKey, rule: GripRule, reverse: boolean, band: WristBand = rule.strikeBand): number {
+  const want = rule.carry === "upright-bow" ? 0 : k.blade;
+  const gp = clampWristPitch(gripPitchFor(want, k.lean, k.shoulder, k.elbow, reverse), band);
+  return gp + k.lean + k.shoulder + k.elbow + (reverse ? Math.PI : 0);
+}
+
+/**
+ * Swing.sweetDistance with the blade the hand can hold (heldBlade) at every strike sample instead
+ * of the key's wanted angle: before lane G the wrist reached any angle, so the planar sweet distance
+ * matched the drawn blade; with the handle kept in the fist the drawn blade differs, and an engage
+ * distance from the wanted angles let the plain attack whiff (measured: longsword/spear MISS at
+ * engage on the real rig).
+ */
+export function handSweetDistance(shape: SwingShape, arm: ArmGeometry, tip: number, rule: GripRule, reverse: boolean): number {
+  const k: SwingKey = { ...GUARD_KEY }, p: [number, number] = [0, 0];
+  let best = 0;
+  for (let i = 0; i <= REACH_SAMPLES; i++) {
+    strikeKeyAt(shape, arm, i / REACH_SAMPLES, k);
+    k.blade = heldBlade(k, rule, reverse);
+    bladePoint(arm, k, SWEET_SHARE * tip, p);
+    if (p[1] >= TORSO_BAND[0] && p[1] <= TORSO_BAND[1]) best = Math.max(best, p[0]);
+  }
+  return Math.max(0.4, best + TARGET_HALF_DEPTH);
 }
 
 /**
@@ -358,22 +409,71 @@ export class SwingDriver {
   }
 
   /**
-   * Wrist pitch (rig grip rotation.x) for the FINAL chest lean (spine) and right shoulder/elbow
-   * angles: the carry grip (blade at GUARD_KEY.blade in the world's vertical plane; a reverse grip
-   * carries it pointing down) blended toward the swing's blade angle by the swing's weight.
+   * The WANTED arm-plane wrist pitch (Swing.ts convention, π/2 = the hammer grip) for the FINAL chest
+   * lean (spine) and right shoulder/elbow angles: the carry grip (blade at GUARD_KEY.blade in the
+   * world's vertical plane; a reverse grip carries it pointing down) blended toward the swing's blade
+   * angle by the swing's weight. A bow (carry "upright-bow") always wants its limbs upright (β = 0).
+   * Unclamped: the hand's range is applied by gripEulerOf.
+   */
+  wristPitch(lean: number, shoulder: number, elbow: number): number {
+    const rev = this.setup.reverse, bow = this.setup.rule.carry === "upright-bow";
+    const rest = gripPitchFor(rev ? GUARD_KEY.blade + Math.PI : bow ? 0 : GUARD_KEY.blade, lean, shoulder, elbow, rev);
+    if (!this.player.active || bow) return rest;
+    return lerp(rest, gripPitchFor(this.sample.blade, lean, shoulder, elbow, rev), this.sample.weight);
+  }
+
+  /** Swing roll (+ toward the holder's outside), faded with its weight; the hand maps it as a forearm twist. */
+  wristRoll(): number { return this.player.active ? this.sample.weight * this.sample.roll : 0; }
+
+  readonly #euler: [number, number] = [0, 0];
+  readonly #band: WristBand = { radial: 0, ulnar: 0, roll: 0 };
+
+  /**
+   * Lane G: the strike's wrist snap now, 0..1 — opens over the second half of the wind-up, full
+   * through the strike (and a contact hold), closes over the first half of the recovery. The hand's
+   * ulnar range is lerp(rule.band, rule.strikeBand, snap): the carry keeps the haft across the palm,
+   * the blow lets the head overtake the hand.
+   */
+  wristSnap(): number {
+    const p = this.player;
+    if (!p.active) return 0;
+    const t = p.timing, w1 = t.windup, close = 0.5 * t.recover;
+    if (p.frozenAt !== null) return smoothstep(0.5 * w1, w1, p.frozenAt) * (1 - smoothstep(0, close, p.rebound));
+    const s1 = w1 + t.strike + (p.profile ? t.hold ?? 0 : 0);
+    return smoothstep(0.5 * w1, w1, p.clock) * (1 - smoothstep(0, close, p.clock - s1));
+  }
+
+  /** The wrist band this frame (wristSnap between the rule's carry and strike bands). */
+  wristBand(): WristBand {
+    const r = this.setup.rule, k = this.wristSnap(), b = this.#band;
+    b.radial = lerp(r.band.radial, r.strikeBand.radial, k);
+    b.ulnar = lerp(r.band.ulnar, r.strikeBand.ulnar, k);
+    b.roll = lerp(r.band.roll, r.strikeBand.roll, k);
+    return b;
+  }
+  /**
+   * Lane G: rig.setGrip arguments [rotation.x, rotation.z] for an arm-plane wrist pitch and roll —
+   * the handle laid across THIS rig's palm (setup.hand), turned inside the fist only as far as the
+   * archetype's wrist band allows (PalmWeapon.gripEuler). Writes and returns `out`.
+   */
+  gripEulerOf(pitch: number, roll: number, out: [number, number] = this.#euler): [number, number] {
+    return gripEuler(this.setup.hand, pitch, roll, this.wristBand(), out);
+  }
+
+  /**
+   * The grip group's rotation.x this frame (rig.setGrip's first argument): wristPitch mapped into
+   * the hand (gripEulerOf). Also caches the matching rotation.z for gripRoll() — call gripPitch
+   * first, as `rig.setGrip(drv.gripPitch(...), drv.gripRoll())` does.
    */
   gripPitch(lean: number, shoulder: number, elbow: number): number {
-    const rev = this.setup.reverse;
-    const rest = gripPitchFor(rev ? GUARD_KEY.blade + Math.PI : GUARD_KEY.blade, lean, shoulder, elbow, rev);
-    if (!this.player.active) return rest;
-    return lerp(rest, gripPitchFor(this.sample.blade, lean, shoulder, elbow, rev), this.sample.weight);
+    return this.gripEulerOf(this.wristPitch(lean, shoulder, elbow), this.wristRoll())[0];
   }
 
   /** Choke (m): slide the weapon this far DOWN through the hands (weapon node y = −choke). */
   chokeOffset(): number { return this.player.active ? this.sample.weight * this.#choke : 0; }
 
-  /** Grip roll (rig grip rotation.z) of the swing, faded with its weight. */
-  gripRoll(): number { return this.player.active ? this.sample.weight * this.sample.roll : 0; }
+  /** Grip roll (rig grip rotation.z) matching the last gripPitch() call (lane G: the hand mapping couples the two). */
+  gripRoll(): number { return this.#euler[1]; }
 
   #style: MotionStyle | null = null;
   #stepsStyle = false;

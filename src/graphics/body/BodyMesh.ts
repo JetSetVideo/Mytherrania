@@ -25,9 +25,18 @@ export function bodyField(plan: AnatomyPlan): BodyField {
   return applyFieldBrushes(compileSdf(plan.root), plan.strokes);
 }
 
+/**
+ * Wave V lane P: the RENDERED skin's field — the plan's skinRoot (the mirror plus the seeded natural
+ * asymmetry, Anatomy.finalSymmetryPass) wrapped by the same strokes. Physics keeps bodyField (the
+ * exact mirror: Hitboxes' full-field fit reads it, so the ragdoll and the combat capsules never move).
+ */
+export function skinField(plan: AnatomyPlan): BodyField {
+  return applyFieldBrushes(compileSdf((plan as Partial<DetailedAnatomy>).skinRoot ?? plan.root), plan.strokes);
+}
+
 /** Polygonise a plan at `cell` (default: the plan's own) and apply its mesh brushes. */
 export function meshPlan(plan: AnatomyPlan, cell = plan.cell): { mesh: MeshData; field: BodyField } {
-  const field = bodyField(plan);
+  const field = skinField(plan);
   const mesh = polygonizeField(field, plan.bounds, cell);
   applyMeshBrushes(mesh, plan.strokes);
   return { mesh, field };
@@ -38,7 +47,7 @@ export function generateBody(spec: BodySpec, cell?: number): BodyMesh {
   const t0 = performance.now();
   const plan = anatomyFor(spec);
   const t1 = performance.now();
-  const field = bodyField(plan);
+  const field = skinField(plan); // wave V lane P: the rendered skin (natural asymmetry)
   const mesh = polygonizeField(field, plan.bounds, cell ?? plan.cell);
   const t2 = performance.now();
   const sampleMs = lastPolygonizeTiming.sampleMs, corners = lastPolygonizeTiming.corners;

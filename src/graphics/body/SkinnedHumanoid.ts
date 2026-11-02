@@ -24,7 +24,9 @@ import { computeSkinWeights, MAX_INFLUENCES, shoulderBands } from "./SkinWeights
 import { boneBindRoll, boneDisplayRoll, type DetailedAnatomy } from "./Anatomy.ts";
 import { applyFaceMorph, buildFaceParts } from "./FaceParts.ts";
 import { paintVertices } from "../paint/Layers.ts";
-import { stackFor } from "../paint/Recipes.ts";
+import { GARMENT_REGIONS, stackFor } from "../paint/Recipes.ts";
+import { applyFormShade } from "../paint/FormShade.ts";
+import { formGainsFor } from "./Improvise.ts";
 import { RIG_ROTATION_SIGN } from "../../game/anim/Rig.ts";
 import type { WeaponSpec } from "../../combat/contracts.ts";
 import { buildWeaponModel } from "../weapons/WeaponModel.ts";
@@ -97,11 +99,14 @@ export function specFromAppearance(a: Appearance, className = "Warrior", birthsi
  * fighters stay told apart by their palette. Patterns are clamped to the mesh's vertex
  * spacing (the polygoniser cell). Returns LINEAR RGB, 3 floats per vertex.
  */
-export function paintSkin(mesh: MeshData, spec: BodySpec, a: Appearance, cell: number, garment: string = a.body): Float32Array {
-  return paintVertices(mesh, stackFor({
+export function paintSkin(mesh: MeshData, spec: BodySpec, a: Appearance, cell: number, garment: string = a.body, formShade = true): Float32Array {
+  const rgb = paintVertices(mesh, stackFor({
     race: spec.race, subrace: spec.subrace, className: spec.className, birthsign: spec.birthsign ?? null,
     hair: a.hair, accent: a.accent, garment, height: spec.height, vertexSpacing: cell, seed: spec.seed,
   }));
+  // Wave V (lane B): paint that follows the sculpted forms (grooves darker, bony points and worn cloth
+  // paler) so the muscle forms read under the cel bands. See paint/FormShade.ts.
+  return formShade ? applyFormShade(mesh, rgb, { cell, garment: garment ? GARMENT_REGIONS : [], regionGain: formGainsFor(spec.seed) }) : rgb;
 }
 
 /** Bodies already generated, keyed by spec (pure data; each rig still gets its own geometry). */
