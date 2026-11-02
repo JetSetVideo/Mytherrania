@@ -19,7 +19,7 @@ const HURT: LiveState = { hpFrac: 0.1, staminaFrac: 1, manaFrac: 1, exhausted: f
 const sword = (id: ArchetypeId = "longsword") => weaponMotionFromSpec(weaponFromSeed(id, 7), id === "warhammer" || id === "maul" ? "chop" : id === "spear" ? "thrust" : "slash");
 const base = (over: Partial<MotionStyleInput> = {}): MotionStyleInput => ({
   race: "human", subrace: null, seed: 1, body: { legLength: 0.85, height: 1.75, weight: 72 }, weapon: sword(),
-  stats: { strength: 7, reflex: 7, vitality: 7, resilience: 7, willpower: 7, intelligence: 7 }, ...over,
+  stats: { strength: 7, reflex: 7, vitality: 7, resilience: 7, focus: 7, intelligence: 7 }, ...over,
 });
 function inSafe(name: string, s: ReturnType<typeof motionStyleFor>): void {
   for (const k of COEFF_KEYS) {
@@ -40,7 +40,7 @@ Deno.test("style: random and extreme inputs give a finite style inside the safe 
       seed: w(Math.floor(r() * 1e9)),
       body: { legLength: w(0.4 + r()), height: w(1 + r()), weight: w(30 + 150 * r()) },
       weapon: { mass: w(0.1 + 6 * r()), length: w(0.2 + 2.5 * r()), grip: w(r()), hands: w(1 + r()), kind: pick(["slash", "chop", "thrust"] as const), balance: w(r()), inertia: w(2 * r()) },
-      stats: { strength: w(20 * r()), reflex: w(20 * r()), vitality: w(20 * r()), resilience: w(20 * r()), willpower: w(20 * r()), intelligence: w(20 * r()) },
+      stats: { strength: w(20 * r()), reflex: w(20 * r()), vitality: w(20 * r()), resilience: w(20 * r()), focus: w(20 * r()), intelligence: w(20 * r()) },
     });
     inSafe(`random ${i}`, s);
     s.setLiveImmediate({ hpFrac: w(r()), staminaFrac: w(r()), manaFrac: w(r()), exhausted: r() < 0.5, damagePercent: w(400 * r()) });

@@ -111,7 +111,7 @@ Deno.test("Menu.ts routes overrides through CreatorSync.applyEdit (the single ro
   assert(code.includes("this.#player = applyEdit(this.#player, { field, value })"), "the method is applyEdit's only caller");
   // The controls the merge exposes: name, race, class, weapon, birthsign, height, weight, sex, six attrs.
   for (const id of ["creator-height", "creator-weight", "creator-sex"]) assert(code.includes(`id="${id}"`), `the ${id} control is rendered`);
-  for (const a of ["vitality", "resilience", "willpower", "reflex", "strength", "intelligence"]) {
+  for (const a of ["vitality", "resilience", "focus", "reflex", "strength", "intelligence", "agility"]) {
     assert(code.includes(`"${a}"`), `the ${a} attribute is named in the override model`);
   }
   assert(code.includes("creator-attr-") && code.includes("ATTR_NAMES.map"), "the attribute controls are generated from the one list");
@@ -141,7 +141,7 @@ Deno.test("the override field names are REAL: applyEdit moves the profile for ea
 
 Deno.test("the six attribute controls name the keys a rolled profile's `allocated` carries", () => {
   const p = rolledElf();
-  for (const a of ["vitality", "resilience", "willpower", "reflex", "strength", "intelligence"]) {
+  for (const a of ["vitality", "resilience", "focus", "reflex", "strength", "intelligence", "agility"]) {
     assert(a in p.allocated, `allocated carries ${a}`);
     assert(Number.isFinite(p.allocated[a]), `${a} is a number`);
   }

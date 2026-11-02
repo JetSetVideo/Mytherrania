@@ -19,14 +19,15 @@ import type { StatName } from "./Races.ts";
 import { SKILLS_BY_CLASS } from "./Skills.ts";
 import { generationId } from "./MatchHistory.ts";
 
-/** The six primaries, in canonical order. Used everywhere a stable order is needed. */
+/** The seven primaries (wave X: + agility), in canonical order. Used everywhere a stable order is needed. */
 const STATS: readonly StatName[] = [
   "vitality",
   "resilience",
-  "willpower",
+  "focus",
   "reflex",
   "strength",
   "intelligence",
+  "agility",
 ];
 
 // ---------------------------------------------------------------------------
@@ -122,12 +123,12 @@ const JITTER_SPAN = 0.3;
 const LEAN: Record<ClassName, readonly StatName[]> = {
   Barbarian: ["vitality", "strength"],
   Warrior: ["vitality", "strength"],
-  Rogue: ["reflex"],
-  Assassin: ["reflex"],
-  Mage: ["intelligence", "willpower"],
-  Necromancer: ["intelligence", "willpower"],
+  Rogue: ["reflex", "agility"],
+  Assassin: ["agility", "reflex"],
+  Mage: ["intelligence", "focus"],
+  Necromancer: ["intelligence", "focus"],
   Archer: ["reflex", "resilience"],
-  Priest: ["willpower", "resilience"],
+  Priest: ["focus", "resilience"],
 };
 
 /**
@@ -206,7 +207,8 @@ const SIGNATURE: Record<StatName, string> = {
   reflex: "rogue-shadowstep", // mobility
   strength: "barbarian-skullsplitter", // power
   intelligence: "mage-arcane-nova", // arcane power
-  willpower: "priest-smite", // holy
+  agility: "archer-rollback", // evasion: the tumbling dash
+  focus: "priest-smite", // holy
   vitality: "warrior-bulwark", // sustain
   resilience: "necro-bone-armor", // defense
 };

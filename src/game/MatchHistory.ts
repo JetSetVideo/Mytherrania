@@ -17,7 +17,7 @@ export interface FighterRecord {
   weapon: string;
   level: number;
   controller: Controller;
-  stats: { vitality: number; resilience: number; willpower: number; reflex: number; strength: number; intelligence: number; maxHealth: number; attackPower: number; armor: number };
+  stats: { vitality: number; resilience: number; focus: number; reflex: number; strength: number; intelligence: number; agility?: number; maxHealth: number; attackPower: number; armor: number };
   dealt: number;     // damage dealt (the opponent's maxHealth - hp, per the glossary)
   hits: number;      // successful hits landed
   hpLeft: number;
@@ -36,7 +36,8 @@ export interface FighterRecord {
  */
 export interface StatGap {
   /** Per-stat difference (fighter 1 minus fighter 0), in each stat's own units. */
-  raw: { vitality: number; resilience: number; willpower: number; reflex: number; strength: number; intelligence: number };
+  /** Wave X: `agility` is absent on pre-agility records. */
+  raw: { vitality: number; resilience: number; focus: number; reflex: number; strength: number; intelligence: number; agility?: number };
   /** Per-stat difference in pooled standard deviations (0 anywhere both are equal). */
   z: Record<string, number>;
   /** Euclidean length of `z` — THE scalar "how far apart were these two builds". */
@@ -89,7 +90,7 @@ export const HISTORY_KEY = "mytherrania-history-v2";
 export const HISTORY_CAP = 500;
 
 /** The six primary stats, in menu order: the only ones the stat gap compares. */
-const PRIMARY_STATS = ["vitality", "resilience", "willpower", "reflex", "strength", "intelligence"] as const;
+const PRIMARY_STATS = ["vitality", "resilience", "focus", "reflex", "strength", "intelligence", "agility"] as const;
 type PrimaryStat = (typeof PRIMARY_STATS)[number];
 
 /** Floor (stat points) on the pooled SD, so a flat build never divides by 0. */
@@ -116,7 +117,8 @@ function safeDiv(numerator: number, denominator: number): number {
 
 /** Sample variance of a fighter's six primaries (0 when they are all equal). */
 function varianceOf(stats: FighterRecord["stats"]): number {
-  const vals = PRIMARY_STATS.map((k) => num(stats[k]));
+  // Wave X: a pre-agility record has no `agility`; only the primaries it carries count.
+  const vals = PRIMARY_STATS.filter((k) => stats[k] !== undefined).map((k) => num(stats[k]));
   const mean = vals.reduce((a, b) => a + b, 0) / vals.length;
   return vals.reduce((a, v) => a + (v - mean) ** 2, 0) / (vals.length - 1);
 }
@@ -129,8 +131,8 @@ function ancestryLabel(f: FighterRecord): string {
 /** The all-zero StatGap a pre-Wave-H record is read with. */
 function zeroStatGap(): StatGap {
   return {
-    raw: { vitality: 0, resilience: 0, willpower: 0, reflex: 0, strength: 0, intelligence: 0 },
-    z: { vitality: 0, resilience: 0, willpower: 0, reflex: 0, strength: 0, intelligence: 0 },
+    raw: { vitality: 0, resilience: 0, focus: 0, reflex: 0, strength: 0, intelligence: 0, agility: 0 },
+    z: { vitality: 0, resilience: 0, focus: 0, reflex: 0, strength: 0, intelligence: 0, agility: 0 },
     distance: 0,
     damageShare: 0,
     dominance: 0,
@@ -157,10 +159,11 @@ export function statGapOf(a: FighterRecord, b: FighterRecord, dealtA: number, de
   const raw = {
     vitality: diff(sb.vitality, sa.vitality),
     resilience: diff(sb.resilience, sa.resilience),
-    willpower: diff(sb.willpower, sa.willpower),
+    focus: diff(sb.focus, sa.focus),
     reflex: diff(sb.reflex, sa.reflex),
     strength: diff(sb.strength, sa.strength),
     intelligence: diff(sb.intelligence, sa.intelligence),
+    agility: diff(sb.agility ?? 0, sa.agility ?? 0),
   } satisfies Record<PrimaryStat, number>;
 
   const poolSd = Math.max(PRIMARY_STAT_SD_FLOOR, Math.sqrt((varianceOf(sa) + varianceOf(sb)) / 2));

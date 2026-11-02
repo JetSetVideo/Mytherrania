@@ -26,7 +26,7 @@ for (const c of CLASSES) {
   const s = applyRaceBonus(createStats(c), "human", null);
   const b = bodyFromStats(s);
   const vsW = s.attackPower * physicsMultiplier(b, bodyFromStats(warrior), 0);
-  row(c, s.strength, s.vitality, s.resilience, s.reflex, s.willpower, s.intelligence,
+  row(c, s.strength, s.vitality, s.resilience, s.reflex, s.focus, s.intelligence,
     Math.round(s.maxHealth), f(s.attackPower, 0), f(s.attackInterval, 3), f(s.armor, 2),
     f(totalMass(b)), f(density(b), 0), f(toughness(b), 0),
     f(warrior.maxHealth / vsW, 0), f(stunDuration(s.attackPower / DAMAGE_SCALE, 1.2, 0), 2));

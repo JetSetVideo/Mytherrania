@@ -49,7 +49,7 @@ export interface VariableDef {
 }
 
 /** The six primary attributes (FighterSpec.allocated keys), in StatName order. */
-export const STAT_NAMES: readonly StatName[] = ["vitality", "resilience", "willpower", "reflex", "strength", "intelligence"];
+export const STAT_NAMES: readonly StatName[] = ["vitality", "resilience", "focus", "reflex", "strength", "intelligence", "agility"];
 
 /**
  * Arena keys the headless pipeline reads (declared; tests/variables_test.ts verifies them against

@@ -535,19 +535,19 @@ const POWER_SPECS: PowerSpec[] = [
     blurb: "A widening cone of raw force that shoves everything out of the staff's arc." },
   { id: "mage-frostbolt", className: "Mage", shape: "projectile", element: "arcane", name: "Frostbolt", scale: { attribute: "intelligence", weapon: "balance" },
     blurb: "A shard of ice that slows whatever it stitches." },
-  { id: "mage-mana-ward", className: "Mage", shape: "aura", element: "arcane", name: "Mana Ward", scale: { attribute: "willpower", weapon: "balance" },
+  { id: "mage-mana-ward", className: "Mage", shape: "aura", element: "arcane", name: "Mana Ward", scale: { attribute: "focus", weapon: "balance" },
     blurb: "A humming ward around the caster that eats incoming blows.", extra: { armorMul: 1.7, speedMul: 0.85 } },
-  { id: "mage-arcane-surge", className: "Mage", shape: "self-buff", element: "arcane", name: "Arcane Surge", scale: { attribute: "willpower", weapon: "sharpness" },
+  { id: "mage-arcane-surge", className: "Mage", shape: "self-buff", element: "arcane", name: "Arcane Surge", scale: { attribute: "focus", weapon: "sharpness" },
     blurb: "Floods the channel with power: quicker casts and a quicker step.", extra: { attackIntervalMul: 0.8, speedMul: 1.1 } },
 
   // --------------------------------------------------------------------- Necromancer (no instant)
   { id: "necro-soul-bolt", className: "Necromancer", shape: "projectile", element: "necrotic", name: "Soul Bolt", scale: { attribute: "intelligence", weapon: "damage" },
     blurb: "A bolt of torn spirit that drinks what it loosens.", extra: { lifesteal: 0.2 } },
-  { id: "necro-plague-cloud", className: "Necromancer", shape: "aura", element: "poison", name: "Plague Cloud", scale: { attribute: "willpower", weapon: "knockback" },
+  { id: "necro-plague-cloud", className: "Necromancer", shape: "aura", element: "poison", name: "Plague Cloud", scale: { attribute: "focus", weapon: "knockback" },
     blurb: "A lingering cloud of rot that clings to a patch of ground.", extra: { armorMul: 1.3 } },
   { id: "necro-bone-armor-buff", className: "Necromancer", shape: "self-buff", element: "necrotic", name: "Bone Armor", scale: { attribute: "resilience", weapon: "weight" },
     blurb: "Plates of dead bone knit over the ribs — heavy, but very hard to break.", extra: { armorMul: 1.9, speedMul: 0.8 } },
-  { id: "necro-death-pulse", className: "Necromancer", shape: "cone", element: "necrotic", name: "Death Pulse", scale: { attribute: "willpower", weapon: "reach" },
+  { id: "necro-death-pulse", className: "Necromancer", shape: "cone", element: "necrotic", name: "Death Pulse", scale: { attribute: "focus", weapon: "reach" },
     blurb: "A wave of necrotic force rolls out in a cone, withering the living." },
   { id: "necro-grave-splinter", className: "Necromancer", shape: "projectile", element: "necrotic", name: "Grave Splinter", scale: { attribute: "intelligence", weapon: "sharpness" },
     blurb: "A shard of grave-bone fired at range; the gash drinks a little life.", extra: { lifesteal: 0.15 } },
@@ -565,15 +565,15 @@ const POWER_SPECS: PowerSpec[] = [
     blurb: "A snap shot at point-blank from the hip." },
 
   // ----------------------------------------------------------------------------- Priest (no instant)
-  { id: "priest-sanctuary", className: "Priest", shape: "aura", element: "holy", name: "Sanctuary", scale: { attribute: "willpower", weapon: "balance" },
+  { id: "priest-sanctuary", className: "Priest", shape: "aura", element: "holy", name: "Sanctuary", scale: { attribute: "focus", weapon: "balance" },
     blurb: "A consecrated circle that mends the priest while it holds the line.", extra: { armorMul: 1.7, speedMul: 0.9 } },
   { id: "priest-holy-nova", className: "Priest", shape: "cone", element: "holy", name: "Holy Nova", scale: { attribute: "intelligence", weapon: "reach" },
     blurb: "A burst of light rolls out in a cone, staggering the unholy." },
-  { id: "priest-divine-favor", className: "Priest", shape: "self-buff", element: "holy", name: "Divine Favor", scale: { attribute: "willpower", weapon: "weight" },
+  { id: "priest-divine-favor", className: "Priest", shape: "self-buff", element: "holy", name: "Divine Favor", scale: { attribute: "focus", weapon: "weight" },
     blurb: "A mantle of faith that turns aside the next blows.", extra: { armorMul: 1.5 } },
   { id: "priest-smite-bolt", className: "Priest", shape: "projectile", element: "holy", name: "Smite Bolt", scale: { attribute: "intelligence", weapon: "damage" },
     blurb: "A lance of holy light cast across the ring." },
-  { id: "priest-consecrate", className: "Priest", shape: "aura", element: "holy", name: "Consecrate", scale: { attribute: "willpower", weapon: "knockback" },
+  { id: "priest-consecrate", className: "Priest", shape: "aura", element: "holy", name: "Consecrate", scale: { attribute: "focus", weapon: "knockback" },
     blurb: "Hallows the ground; the holy fire sears whoever stands in it.", extra: { armorMul: 1.4 } },
 ];
 

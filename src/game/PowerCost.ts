@@ -37,8 +37,8 @@ export type PowerShape = "instant" | "projectile" | "cone" | "aura" | "self-buff
 export const POWER_SHAPES: readonly PowerShape[] = ["instant", "projectile", "cone", "aura", "self-buff"];
 
 /** The caster's own six attributes (Stats.PRIMARY). One of them is the SCALE of a power. */
-export type AttributeName = "vitality" | "resilience" | "willpower" | "reflex" | "strength" | "intelligence";
-export const ATTRIBUTES: readonly AttributeName[] = ["vitality", "resilience", "willpower", "reflex", "strength", "intelligence"];
+export type AttributeName = "vitality" | "resilience" | "focus" | "reflex" | "strength" | "intelligence" | "agility";
+export const ATTRIBUTES: readonly AttributeName[] = ["vitality", "resilience", "focus", "reflex", "strength", "intelligence", "agility"];
 
 /** Which physical property of the equipped weapon a power reads. One per power. */
 export type WeaponInput = "weight" | "balance" | "sharpness" | "damage" | "reach" | "knockback";
@@ -151,10 +151,10 @@ export function powerOf(o: {
 // ─── The channel law: reuse Cast.castSeconds ─────────────────────────────────────────────────────
 
 /** Seconds the power takes to channel before its release. Delegates to the Wave N cast law, so the
- *  willpower gain, the element weight and the clamps stay single-sourced. */
-export function castSecondsOf(o: { shape: PowerShape; element: string; willpower: number; hastePct: number }): number {
+ *  focus gain, the element weight and the clamps stay single-sourced. */
+export function castSecondsOf(o: { shape: PowerShape; element: string; focus: number; hastePct: number }): number {
   const row = SHAPE_BASE[o.shape];
-  return castSeconds({ base: row.castBase, willpower: o.willpower, hastePct: o.hastePct, element: o.element, heavy: row.heavy });
+  return castSeconds({ base: row.castBase, focus: o.focus, hastePct: o.hastePct, element: o.element, heavy: row.heavy });
 }
 
 // ─── The mana law: a smarter caster pays less ────────────────────────────────────────────────────
@@ -186,14 +186,14 @@ export function cooldownSecondsOf(o: { shape: PowerShape; reflex: number }): num
 
 // ─── The duration law: an aura / self-buff holds longer for a stronger will ───────────────────────
 
-/** Duration gain per point of willpower. 1/point. */
+/** Duration gain per point of focus. 1/point. */
 export const DURATION_WILL_GAIN = 0.02;
 
 /** Seconds an aura / self-buff holds; 0 for a shape that holds nothing. */
-export function durationSecondsOf(o: { shape: PowerShape; willpower: number }): number {
+export function durationSecondsOf(o: { shape: PowerShape; focus: number }): number {
   const base = SHAPE_BASE[o.shape].duration;
   if (base === 0) return 0;
-  const w = Number.isFinite(o.willpower) ? Math.max(0, o.willpower) : 0;
+  const w = Number.isFinite(o.focus) ? Math.max(0, o.focus) : 0;
   return Math.round(base * (1 + w * DURATION_WILL_GAIN) * 100) / 100;
 }
 
@@ -228,8 +228,8 @@ export function derivePower(o: {
   const weaponValue = o.weapon[o.scale.weapon];
   return {
     amplitude: powerOf({ shape: o.shape, element: o.element, attributeValue, weapon: o.scale.weapon, weaponValue }),
-    castSeconds: castSecondsOf({ shape: o.shape, element: o.element, willpower: o.stats.willpower, hastePct: o.hastePct ?? 0 }),
-    durationSeconds: durationSecondsOf({ shape: o.shape, willpower: o.stats.willpower }),
+    castSeconds: castSecondsOf({ shape: o.shape, element: o.element, focus: o.stats.focus, hastePct: o.hastePct ?? 0 }),
+    durationSeconds: durationSecondsOf({ shape: o.shape, focus: o.stats.focus }),
     manaCost: manaCostOf({ shape: o.shape, element: o.element, intelligence: o.stats.intelligence }),
     cooldownSeconds: cooldownSecondsOf({ shape: o.shape, reflex: o.stats.reflex }),
     stun: SHAPE_BASE[o.shape].stun,

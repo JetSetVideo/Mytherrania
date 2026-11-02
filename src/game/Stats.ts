@@ -9,8 +9,8 @@ export const CLASSES: readonly ClassName[] = [
 ];
 
 export interface CombatStats {
-  vitality: number; resilience: number; willpower: number;
-  reflex: number; strength: number; intelligence: number;
+  vitality: number; resilience: number; focus: number;
+  reflex: number; strength: number; intelligence: number; agility: number;
   maxHealth: number; attackPower: number; attackInterval: number; armor: number;
 }
 
@@ -22,15 +22,15 @@ export interface CombatStats {
 // DERIVED from them so the eight archetypes actually differ in a duel; before,
 // every class shared HP 45 / power 9 / interval 1.0 / armor 4, which made the
 // arena harness measure coin flips instead of balance.
-const PRIMARY: Record<ClassName, { vitality: number; resilience: number; willpower: number; reflex: number; strength: number; intelligence: number }> = {
-  Barbarian:   { vitality: 9, resilience: 7, willpower: 2, reflex: 2, strength: 9, intelligence: 1 },
-  Warrior:     { vitality: 7, resilience: 8, willpower: 4, reflex: 4, strength: 7, intelligence: 3 },
-  Rogue:       { vitality: 5, resilience: 4, willpower: 3, reflex: 8, strength: 5, intelligence: 4 },
-  Assassin:    { vitality: 3, resilience: 3, willpower: 2, reflex: 9, strength: 4, intelligence: 4 },
-  Mage:        { vitality: 4, resilience: 3, willpower: 8, reflex: 4, strength: 2, intelligence: 10 },
-  Necromancer: { vitality: 3, resilience: 4, willpower: 9, reflex: 3, strength: 2, intelligence: 8 },
-  Archer:      { vitality: 4, resilience: 4, willpower: 3, reflex: 9, strength: 5, intelligence: 3 },
-  Priest:      { vitality: 6, resilience: 5, willpower: 9, reflex: 3, strength: 3, intelligence: 7 },
+const PRIMARY: Record<ClassName, { vitality: number; resilience: number; focus: number; reflex: number; strength: number; intelligence: number; agility: number }> = {
+  Barbarian:   { vitality: 9, resilience: 7, focus: 2, reflex: 2, strength: 9, intelligence: 1, agility: 4 },
+  Warrior:     { vitality: 7, resilience: 8, focus: 4, reflex: 4, strength: 7, intelligence: 3, agility: 4 },
+  Rogue:       { vitality: 5, resilience: 4, focus: 3, reflex: 8, strength: 5, intelligence: 4, agility: 8 },
+  Assassin:    { vitality: 3, resilience: 3, focus: 2, reflex: 9, strength: 4, intelligence: 4, agility: 9 },
+  Mage:        { vitality: 4, resilience: 3, focus: 8, reflex: 4, strength: 2, intelligence: 10, agility: 3 },
+  Necromancer: { vitality: 3, resilience: 4, focus: 9, reflex: 3, strength: 2, intelligence: 8, agility: 3 },
+  Archer:      { vitality: 4, resilience: 4, focus: 3, reflex: 9, strength: 5, intelligence: 3, agility: 7 },
+  Priest:      { vitality: 6, resilience: 5, focus: 9, reflex: 3, strength: 3, intelligence: 7, agility: 3 },
 };
 
 // Tuning coefficients for the shape of each archetype. HP, attack speed and
@@ -127,7 +127,7 @@ export const POWER_CALIBRATION: Record<ClassName, number> = {
 // The field-average body every class's physics edge is priced against. Declared
 // BEFORE PRESETS, which calls deriveCombatStats at module load (TDZ otherwise).
 const AVERAGE_BODY: Body = (() => {
-  const keys = ["strength", "vitality", "resilience", "reflex", "willpower", "intelligence"] as const;
+  const keys = ["strength", "vitality", "resilience", "reflex", "focus", "intelligence", "agility"] as const;
   const mean = Object.fromEntries(keys.map((k) => [k, CLASSES.reduce((s, c) => s + PRIMARY[c][k], 0) / CLASSES.length])) as typeof PRIMARY[ClassName];
   return bodyFromStats({ ...mean, armor: shape(mean).armor });
 })();
@@ -146,7 +146,7 @@ export function createStats(name: ClassName): CombatStats {
 
 /**
  * Wave J: what a LEVEL is worth by itself. Before this a level was only a stat-point budget, and
- * points spent in intelligence/willpower move no combat stat (statDelta), so a level-20 mage was a
+ * points spent in intelligence/focus move no combat stat (statDelta), so a level-20 mage was a
  * level-1 mage; the budget is also clamped into the 30–60 k HP / 500–1 400 power window, so even a
  * strength build stopped growing by level ~8. A level now grows health and attack power by
  * LEVEL_GROWTH per level ON TOP of that window (level 20 = ×1.57 each), so progression is real for

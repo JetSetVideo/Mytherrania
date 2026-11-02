@@ -41,7 +41,7 @@ function styleOf(id: ArchetypeId, over: Partial<Parameters<typeof motionStyleFor
   const s = motionStyleFor({
     race: "human", subrace: null, seed: 5, body: { legLength: 0.85, height: 1.75, weight: 72 },
     weapon: weaponMotionFromSpec(weaponFromSeed(id, 7), KIND[id] ?? "slash"),
-    stats: { strength: 7, reflex: 7, vitality: 7, resilience: 7, willpower: 7, intelligence: 7 }, ...over,
+    stats: { strength: 7, reflex: 7, vitality: 7, resilience: 7, focus: 7, intelligence: 7 }, ...over,
   });
   s.setLiveImmediate(FRESH);
   return s;

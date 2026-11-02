@@ -92,7 +92,7 @@ if (grid?.axes) {
   p();
   p("Seat A's win rate per step (n ≈ 48 per step, ±0.07):");
   p();
-  for (const ax of ["A.fighter.level", "A.fighter.stat.strength", "A.fighter.stat.reflex", "A.fighter.stat.vitality", "A.fighter.stat.resilience", "A.fighter.stat.intelligence", "A.fighter.stat.willpower", "A.fighter.gear", "A.fighter.aiLevel", "A.fighter.strategy", "A.fighter.race", "A.fighter.class"]) {
+  for (const ax of ["A.fighter.level", "A.fighter.stat.strength", "A.fighter.stat.reflex", "A.fighter.stat.vitality", "A.fighter.stat.resilience", "A.fighter.stat.intelligence", "A.fighter.stat.focus", "A.fighter.gear", "A.fighter.aiLevel", "A.fighter.strategy", "A.fighter.race", "A.fighter.class"]) {
     const a = grid.axes[ax];
     if (!a) continue;
     const def = VARIABLE_BY_ID.get(ax.slice(2));
@@ -106,7 +106,7 @@ p("## The questions this inventory was built to answer");
 p();
 const qa: [string, string][] = [
   ["Which variables exist?", "All of the tables above, built from the sources; adding a PARAMS key, a race, a class, an archetype or a birthsign adds it here automatically."],
-  ["Which of them actually change a fight?", "The `sim` column for the headless batch. Twelve arena parameters change nothing anywhere (dead list). Of the six attributes, only strength and reflex move the headless win rate measurably; intelligence and willpower are flat (mana is close to inert in the simulator: wave S found the same), vitality and resilience are weak."],
+  ["Which of them actually change a fight?", "The `sim` column for the headless batch. Twelve arena parameters change nothing anywhere (dead list). Of the six attributes, only strength and reflex move the headless win rate measurably; intelligence and focus are flat (mana is close to inert in the simulator: wave S found the same), vitality and resilience are weak."],
   ["What is the \"max\" of an attribute?", "Its per-stat cap (60 points), but a fighter can never spend more than its level budget (12 + 6 per level). The vars designs ask for 0 or 60 per attribute and scale the request down to the budget (`legalAllocation`), so \"strength at max\" on a level-1 fighter is the whole level-1 budget in strength — a legal build, not an impossible one."],
   ["What is the max of a race, a class, a weapon, a birthsign?", "There is none: enums take a uniform value in vars-extreme and every value in vars-grid."],
   ["Do both fighters get their own extremes?", "Yes: every fighter variable is drawn per seat, so max-vs-max, min-vs-min and every mix occur for every attribute independently."],
@@ -115,7 +115,7 @@ const qa: [string, string][] = [
   ["Can the batch combine wall rules?", "It could not: the arena provider forced the second and third rule to −1. Fixed: the provider keeps the config's own rules (default −1, so the old designs are unchanged)."],
   ["Is an effect real or noise?", "Each effect carries its standard error, z and a Bonferroni flag; with 12 000 matches the arena variables' apparent 5–6 % effects on the win rate at 3 000 matches vanished (all noise), as they must on symmetric starts."],
   ["Does strategy make a fighter win, as the rules require?", "Only FULL strategy (edge play): against a middle opponent, none 0.60, basic 0.53, full 0.94. The basic decision tree is no better than walking in and swinging; it lengthens fights and adds ring-outs. Open: the tree needs work before \"no strategy loses\" holds for basic."],
-  ["Are the classes balanced?", "No, in the headless simulator: against a middle opponent the casters lose (Mage 0.34, Necromancer 0.23, Priest 0.22) and the physical classes win (Archer 0.83, Warrior 0.76, Assassin 0.72, Rogue 0.64; Barbarian 0.51). It is the same cause as the flat intelligence/willpower lines: the simulator's casting buys little (mana close to inert, wave S). Open: whether the live engine shows the same gap (the engine's casts have bars, pushback and powers the simulator does not model) — measure it with tools/probe-batch.ts runConditions before rebalancing."],
+  ["Are the classes balanced?", "No, in the headless simulator: against a middle opponent the casters lose (Mage 0.34, Necromancer 0.23, Priest 0.22) and the physical classes win (Archer 0.83, Warrior 0.76, Assassin 0.72, Rogue 0.64; Barbarian 0.51). It is the same cause as the flat intelligence/focus lines: the simulator's casting buys little (mana close to inert, wave S). Open: whether the live engine shows the same gap (the engine's casts have bars, pushback and powers the simulator does not model) — measure it with tools/probe-batch.ts runConditions before rebalancing."],
   ["What decides how a match ENDS?", "The arena: size (+68 s, −35 % ring-outs from min to max) and walls (+42 s, −24 % ring-outs, +9 % time-outs), then wall height, resistance, aspect and the curb height. Most rule parameters (towers, period, arc centre, symmetry, pit depth) have no measurable effect on the outcome."],
   ["Which variables are global constants, not match variables?", "The 68 ParameterBounds tunables (a balance edit) and the 7 MatchRules switches (compared as rule SETS by ablation, tools/batch.ts --rules)."],
 ];

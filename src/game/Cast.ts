@@ -29,9 +29,9 @@ export const CAST_ELEMENT_MUL: Record<string, number> = {
 export const CAST_ELEMENT_DEFAULT = 1.0;
 
 /**
- * Willpower shortens the channel as 1 / (1 + willpower · gain): 0 Willpower is the identity, and
- * the term is strictly decreasing and always positive, so a high-Willpower caster (a Mage is 8,
- * a Necromancer 9) is reliably faster to cast while no amount of Willpower can reach zero. Units:
+ * Focus shortens the channel as 1 / (1 + focus · gain): 0 Focus is the identity, and
+ * the term is strictly decreasing and always positive, so a high-Focus caster (a Mage is 8,
+ * a Necromancer 9) is reliably faster to cast while no amount of Focus can reach zero. Units:
  * 1/point.
  */
 export const CAST_WILL_GAIN = 0.03;
@@ -56,15 +56,15 @@ const nonNeg = (v: number): number => (Number.isFinite(v) && v > 0 ? v : 0);
 /**
  * How long a power takes to cast, s. MULTIPLICATIVE and monotone:
  *   seconds = base · elementMul · (heavy ? CAST_HEAVY_MUL : 1) · 1/(1+will·g) · 1/(1+haste/100)
- * so it RISES with the power's `base`, FALLS with the caster's willpower and haste, and is
+ * so it RISES with the power's `base`, FALLS with the caster's focus and haste, and is
  * clamped into [CAST_MIN_S, CAST_MAX_S]. A non-finite or non-positive `base` falls back to the
  * floor rather than producing a negative or NaN channel.
  */
-export function castSeconds(o: { base: number; willpower: number; hastePct: number; element: string; heavy: boolean }): number {
+export function castSeconds(o: { base: number; focus: number; hastePct: number; element: string; heavy: boolean }): number {
   const base = Number.isFinite(o.base) && o.base > 0 ? o.base : 0;
   const elem = CAST_ELEMENT_MUL[o.element] ?? CAST_ELEMENT_DEFAULT;
   const heavy = o.heavy ? CAST_HEAVY_MUL : 1;
-  const will = 1 / (1 + nonNeg(o.willpower) * CAST_WILL_GAIN);
+  const will = 1 / (1 + nonNeg(o.focus) * CAST_WILL_GAIN);
   const haste = 1 / (1 + nonNeg(o.hastePct) / CAST_HASTE_DIVISOR);
   return clamp(base * elem * heavy * will * haste, CAST_MIN_S, CAST_MAX_S);
 }
@@ -82,7 +82,7 @@ export interface CastSpec {
 export function castSpec(o: {
   skillId: string;
   base: number;
-  willpower: number;
+  focus: number;
   hastePct: number;
   element: string;
   heavy: boolean;

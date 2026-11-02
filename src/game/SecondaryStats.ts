@@ -1,7 +1,7 @@
 // Secondary (derived-preference) stats: the layer beneath the primary attributes.
 //
 // The user's stat hierarchy: a RACE modifies the primary core stats (vitality,
-// resilience, willpower, reflex, strength, intelligence — the six already in
+// resilience, focus, reflex, strength, intelligence — the six already in
 // Stats.ts). A SUB-SPECIES modifies the SECONDARY stats below — crit, haste,
 // mastery, physical/magic resistance, versatility — the percentage-based
 // modifiers a WoW-style sheet shows. A BIRTH SIGN nudges either layer, and the

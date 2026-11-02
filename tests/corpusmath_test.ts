@@ -70,7 +70,7 @@ Deno.test("keyVars coerces a non-finite record to finite output", () => {
         stats: {
           vitality: 5,
           resilience: 5,
-          willpower: 5,
+          focus: 5,
           reflex: 5,
           strength: 5,
           intelligence: 5,
@@ -82,7 +82,7 @@ Deno.test("keyVars coerces a non-finite record to finite output", () => {
         stats: {
           vitality: 5,
           resilience: 5,
-          willpower: 5,
+          focus: 5,
           reflex: 5,
           strength: 5,
           intelligence: 5,

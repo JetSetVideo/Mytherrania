@@ -36,13 +36,13 @@ function assert(ok: unknown, message = "assertion failed"): asserts ok {
   if (!ok) throw new Error(message);
 }
 
-const PRIMARY_KEYS = ["vitality", "resilience", "willpower", "reflex", "strength", "intelligence"] as const;
+const PRIMARY_KEYS = ["vitality", "resilience", "focus", "reflex", "strength", "intelligence", "agility"] as const;
 
 type Stats = FighterRecord["stats"];
 
 function statBlock(over: Partial<Stats> = {}): Stats {
   return {
-    vitality: 10, resilience: 10, willpower: 10, reflex: 10, strength: 10, intelligence: 10,
+    vitality: 10, resilience: 10, focus: 10, reflex: 10, strength: 10, intelligence: 10,
     maxHealth: 45000, attackPower: 1000, armor: 4, ...over,
   };
 }
@@ -55,7 +55,7 @@ function fighter(name: string, over: Partial<Stats> = {}, extra: Partial<Fighter
 }
 
 const zeroGap = (distance: number): StatGap => ({
-  raw: { vitality: 0, resilience: 0, willpower: 0, reflex: 0, strength: 0, intelligence: 0 },
+  raw: { vitality: 0, resilience: 0, focus: 0, reflex: 0, strength: 0, intelligence: 0 },
   z: {}, distance, damageShare: 0, dominance: 0,
 });
 
@@ -203,7 +203,7 @@ Deno.test("statGap is total: never NaN, dominance in [0,1] over 5000 random pair
   const mk = () => fighter("F", {
     vitality: Math.round(rng() * 200 - 50),
     resilience: Math.round(rng() * 200 - 50),
-    willpower: Math.round(rng() * 200 - 50),
+    focus: Math.round(rng() * 200 - 50),
     reflex: Math.round(rng() * 200 - 50),
     strength: Math.round(rng() * 200 - 50),
     intelligence: Math.round(rng() * 200 - 50),
@@ -272,8 +272,8 @@ const OLD_FORMAT = JSON.stringify([
     id: 7, at: "2026-01-01T10:00:00Z", hour: 10, phase: "dawn", place: "Old Field", arena: "ring",
     reason: "ko", duration: 42, firstStrike: "Old A", winner: 0,
     fighters: [
-      { name: "Old A", race: "human", subrace: null, className: "Warrior", weapon: "Longsword", level: 3, controller: "human", stats: { vitality: 10, resilience: 10, willpower: 10, reflex: 10, strength: 10, intelligence: 10, maxHealth: 45000, attackPower: 1000, armor: 4 }, dealt: 500, hits: 4, hpLeft: 0 },
-      { name: "Old B", race: "elf", subrace: "high", className: "Rogue", weapon: "Dagger", level: 3, controller: "decision-tree", stats: { vitality: 8, resilience: 12, willpower: 9, reflex: 14, strength: 7, intelligence: 13, maxHealth: 40000, attackPower: 900, armor: 3 }, dealt: 100, hits: 1, hpLeft: 30000 },
+      { name: "Old A", race: "human", subrace: null, className: "Warrior", weapon: "Longsword", level: 3, controller: "human", stats: { vitality: 10, resilience: 10, focus: 10, reflex: 10, strength: 10, intelligence: 10, maxHealth: 45000, attackPower: 1000, armor: 4 }, dealt: 500, hits: 4, hpLeft: 0 },
+      { name: "Old B", race: "elf", subrace: "high", className: "Rogue", weapon: "Dagger", level: 3, controller: "decision-tree", stats: { vitality: 8, resilience: 12, focus: 9, reflex: 14, strength: 7, intelligence: 13, maxHealth: 40000, attackPower: 900, armor: 3 }, dealt: 100, hits: 1, hpLeft: 30000 },
     ],
   },
 ]);

@@ -24,7 +24,7 @@ function fighter(over: Partial<FighterView> = {}): FighterView {
   return {
     seat: 0, name: "Ash", ancestry: "Human", subrace: "Nomad", className: "Warrior", level: 3,
     controller: "AI", weapon: "Falchion",
-    stats: { vitality: 8, resilience: 12, willpower: 12, reflex: 12, strength: 12, intelligence: 12 },
+    stats: { vitality: 8, resilience: 12, focus: 12, reflex: 12, strength: 12, intelligence: 12, agility: 12 },
     combat: { maxHealth: 120, attackPower: 24.5, attackInterval: 0.8, armor: 40 },
     hp: 90, mana: 30, manaMax: 60, stamina: 55, staminaMax: 70,
     dealt: 210, hits: 17, techniques: ["dash", "power"], generationId: null,
@@ -96,11 +96,11 @@ Deno.test("pickNearest: null outside every radius, the nearest inside, nearest c
 
 // ---- fighterCard -----------------------------------------------------------------------------
 
-Deno.test("fighterCard: 6 primary rows in a stable order and 3 bars", () => {
+Deno.test("fighterCard: 7 primary rows (wave X: + agility) in a stable order and 3 bars", () => {
   const card = fighterCard(fighter());
   const primaryLabels = new Set(Object.values(PRIMARY_ORDER).map((k) => k[0].toUpperCase() + k.slice(1)));
   const found = card.rows.filter((r) => primaryLabels.has(r.label)).map((r) => r.label);
-  assert(found.length === 6, `primary rows: ${found.length}`);
+  assert(found.length === 7, `primary rows: ${found.length}`);
   const want = PRIMARY_ORDER.map((k) => k[0].toUpperCase() + k.slice(1));
   assert(found.join(",") === want.join(","), `stable order: ${found.join(",")}`);
   assert(card.bars.length === 3, `bars: ${card.bars.length}`);

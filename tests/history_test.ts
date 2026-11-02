@@ -3,7 +3,7 @@ import { appendRecord, describe, HISTORY_CAP, parseHistory, summarize, wilson, t
 function assert(ok: boolean, message = "assertion failed") { if (!ok) throw new Error(message); }
 const near = (a: number, b: number, eps = 1e-6) => Math.abs(a - b) <= eps;
 
-const stats = { vitality: 10, resilience: 10, willpower: 10, reflex: 10, strength: 10, intelligence: 10, maxHealth: 45, attackPower: 9, armor: 4 };
+const stats = { vitality: 10, resilience: 10, focus: 10, reflex: 10, strength: 10, intelligence: 10, maxHealth: 45, attackPower: 9, armor: 4 };
 function rec(id: number, winner: 0 | 1, a: Partial<MatchRecord["fighters"][0]>, b: Partial<MatchRecord["fighters"][0]>, extra: Partial<MatchRecord> = {}): MatchRecord {
   const base = { subrace: null, weapon: "Longsword", level: 1, controller: "decision-tree" as const, stats, dealt: 10, hits: 2, hpLeft: 10 };
   return {

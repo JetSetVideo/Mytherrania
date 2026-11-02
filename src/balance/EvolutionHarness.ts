@@ -19,7 +19,7 @@ export function randomSource(seed: number): () => number {
 }
 
 const TYPES: WeaponType[] = ["axe", "sword", "dagger", "staff", "scythe", "bow", "mace"];
-const STAT_NAMES = ["vitality", "resilience", "willpower", "reflex", "strength", "intelligence"] as const;
+const STAT_NAMES = ["vitality", "resilience", "focus", "reflex", "strength", "intelligence", "agility"] as const;
 
 export function randomStats(rng: () => number): CombatStats {
   const primaries = Object.fromEntries(STAT_NAMES.map((n) => [n, 1 + Math.floor(rng() * 9)])) as Record<(typeof STAT_NAMES)[number], number>;

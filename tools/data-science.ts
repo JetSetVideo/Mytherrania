@@ -131,7 +131,7 @@ function synthesise(note: string): Loaded {
         stats: {
           vitality: j(base.vitality),
           resilience: j(base.resilience),
-          willpower: j(base.willpower),
+          focus: j(base.focus),
           reflex: j(base.reflex),
           strength: j(base.strength),
           intelligence: j(base.intelligence),

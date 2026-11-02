@@ -126,7 +126,7 @@ export function creatorSheet(profile: CharacterProfile): CreatorSheet {
   const primary: SheetRow[] = [
     { label: "Vitality", value: group(stats.vitality) },
     { label: "Resilience", value: group(stats.resilience) },
-    { label: "Willpower", value: group(stats.willpower) },
+    { label: "Focus", value: group(stats.focus) },
     { label: "Reflex", value: group(stats.reflex) },
     { label: "Strength", value: group(stats.strength) },
     { label: "Intelligence", value: group(stats.intelligence) },

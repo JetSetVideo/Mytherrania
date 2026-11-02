@@ -33,7 +33,7 @@ function seeded(seed: number): () => number {
   };
 }
 
-const STATS: StatName[] = ["vitality", "resilience", "willpower", "reflex", "strength", "intelligence"];
+const STATS: StatName[] = ["vitality", "resilience", "focus", "reflex", "strength", "intelligence", "agility"];
 
 // ---------------------------------------------------------------------------
 // budgetForLevel / levelForBudget: the inverse pair.
@@ -173,11 +173,11 @@ Deno.test("techniquesFor is deterministic for the same spent map", () => {
 });
 
 Deno.test("stats drive the unlocked extras: reflex -> mobility, strength -> power", () => {
-  const reflexHeavy: Record<StatName, number> = { vitality: 0, resilience: 0, willpower: 0, reflex: 30, strength: 0, intelligence: 0 };
+  const reflexHeavy: Record<StatName, number> = { vitality: 0, resilience: 0, focus: 0, reflex: 30, strength: 0, intelligence: 0, agility: 0 };
   assert(techniquesFor(reflexHeavy, "Mage").includes("rogue-shadowstep"), "reflex unlocks the mobility dash");
-  const strengthHeavy: Record<StatName, number> = { vitality: 0, resilience: 0, willpower: 0, reflex: 0, strength: 30, intelligence: 0 };
+  const strengthHeavy: Record<StatName, number> = { vitality: 0, resilience: 0, focus: 0, reflex: 0, strength: 30, intelligence: 0, agility: 0 };
   assert(techniquesFor(strengthHeavy, "Mage").includes("barbarian-skullsplitter"), "strength unlocks the power strike");
-  const intHeavy: Record<StatName, number> = { vitality: 0, resilience: 0, willpower: 0, reflex: 0, strength: 0, intelligence: 30 };
+  const intHeavy: Record<StatName, number> = { vitality: 0, resilience: 0, focus: 0, reflex: 0, strength: 0, intelligence: 30, agility: 0 };
   assert(techniquesFor(intHeavy, "Warrior").includes("mage-arcane-nova"), "intelligence unlocks the arcane power");
 });
 
@@ -192,12 +192,12 @@ Deno.test("a bigger budget unlocks at least as many techniques (monotonicity)", 
 });
 
 Deno.test("an unknown class falls back to a sane default rather than throwing", () => {
-  const spent: Record<StatName, number> = { vitality: 5, resilience: 5, willpower: 5, reflex: 5, strength: 5, intelligence: 5 };
+  const spent: Record<StatName, number> = { vitality: 5, resilience: 5, focus: 5, reflex: 5, strength: 5, intelligence: 5, agility: 0 };
   const list = techniquesFor(spent, "Wizard");
   assert(list.length >= 3 && list.length <= 6, `unknown class length ${list.length} in [3,6]`);
   for (const id of list) assert(typeof id === "string" && id.length > 0, "ids are non-empty strings");
   // NaN inside the spent map must not throw either.
-  const nanSpent: Record<StatName, number> = { vitality: NaN, resilience: 0, willpower: 0, reflex: 0, strength: 0, intelligence: 0 };
+  const nanSpent: Record<StatName, number> = { vitality: NaN, resilience: 0, focus: 0, reflex: 0, strength: 0, intelligence: 0, agility: 0 };
   assert(techniquesFor(nanSpent, "Nope").length >= 3, "NaN spent map still yields >= 3");
 });
 

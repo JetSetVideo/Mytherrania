@@ -96,7 +96,7 @@ const FIXTURE: CreatorSheet = {
   primary: [
     { label: "Vitality", value: "47 100" },
     { label: "Resilience", value: "42" },
-    { label: "Willpower", value: "38" },
+    { label: "Focus", value: "38" },
     { label: "Reflex", value: "55" },
     { label: "Strength", value: "40" },
     { label: "Intelligence", value: "36" },
@@ -130,7 +130,7 @@ Deno.test("creator sheet: three columns, every row labelled, the hint carries th
 Deno.test("the real pipeline: a seeded roll's sheet is reproduced by creatorSheetHtml", () => {
   const rolled = rollProfile(mulberry32(20261031));
   const sheet = creatorSheet(rolled.profile);
-  eq(sheet.primary.map((r) => r.label), ["Vitality", "Resilience", "Willpower", "Reflex", "Strength", "Intelligence"]);
+  eq(sheet.primary.map((r) => r.label), ["Vitality", "Resilience", "Focus", "Reflex", "Strength", "Intelligence"]);
   eq(sheet.derived.map((r) => r.label), ["Max Health", "Attack Power", "Attack Interval", "Armour"]);
   const html = creatorSheetHtml(sheet);
   assert(html.includes(`>${sheet.name}<`), "the rolled name is on the sheet");

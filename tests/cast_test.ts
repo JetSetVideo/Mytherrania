@@ -1,5 +1,5 @@
 // Wave N, lane N-D — the cast system and its bar. Proven here with no DOM and no engine:
-//   1. castSeconds is MONOTONE in the power's base, FALLS with willpower and haste, and is clamped
+//   1. castSeconds is MONOTONE in the power's base, FALLS with focus and haste, and is clamped
 //      into [CAST_MIN_S, CAST_MAX_S] — with a printed table across the casters and weights;
 //   2. pushbackSeconds is bounded and MONOTONE in damage share and in the angle the hit came from
 //      (from behind pushes more) — with a printed damage-share x angle grid;
@@ -33,42 +33,42 @@ function powerSkill(c: ClassName): Skill {
   return s;
 }
 
-// ─── castSeconds: monotone, falling with willpower/haste, bounded ─────────────────────────────
+// ─── castSeconds: monotone, falling with focus/haste, bounded ─────────────────────────────
 
 Deno.test("castSeconds: clamped into [CAST_MIN_S, CAST_MAX_S] and monotone in base", () => {
   let prev = -Infinity;
   for (let base = -2; base <= 6; base += 0.1) {
-    const s = castSeconds({ base, willpower: 5, hastePct: 20, element: "arcane", heavy: true });
+    const s = castSeconds({ base, focus: 5, hastePct: 20, element: "arcane", heavy: true });
     assert(Number.isFinite(s) && s >= 0.35 && s <= 3.2, `in band: base=${base} -> ${s}`);
     assert(s >= prev - 1e-12, `non-decreasing: base=${base}`);
     prev = s;
   }
   // Strictly rising and to the floor/ceiling with the extremes.
-  assert(castSeconds({ base: 0, willpower: 0, hastePct: 0, element: "fury", heavy: false }) === 0.35, "floor");
-  assert(castSeconds({ base: 99, willpower: 0, hastePct: 0, element: "arcane", heavy: true }) === 3.2, "ceiling");
+  assert(castSeconds({ base: 0, focus: 0, hastePct: 0, element: "fury", heavy: false }) === 0.35, "floor");
+  assert(castSeconds({ base: 99, focus: 0, hastePct: 0, element: "arcane", heavy: true }) === 3.2, "ceiling");
 });
 
 Deno.test("castSeconds: a NaN or non-positive base falls back to the floor, never NaN", () => {
   for (const base of [NaN, Infinity, -1, 0]) {
-    const s = castSeconds({ base, willpower: 4, hastePct: 0, element: "fire", heavy: false });
+    const s = castSeconds({ base, focus: 4, hastePct: 0, element: "fire", heavy: false });
     assert(Number.isFinite(s) && s >= 0.35, `finite: base=${base} -> ${s}`);
   }
 });
 
-Deno.test("castSeconds: strictly FALLS with willpower and with haste", () => {
-  const at = (willpower: number, hastePct: number) => castSeconds({ base: 2.1, willpower, hastePct, element: "arcane", heavy: true });
-  assert(at(0, 0) > at(4, 0) && at(4, 0) > at(9, 0), `willpower: ${at(0, 0)} ${at(4, 0)} ${at(9, 0)}`);
+Deno.test("castSeconds: strictly FALLS with focus and with haste", () => {
+  const at = (focus: number, hastePct: number) => castSeconds({ base: 2.1, focus, hastePct, element: "arcane", heavy: true });
+  assert(at(0, 0) > at(4, 0) && at(4, 0) > at(9, 0), `focus: ${at(0, 0)} ${at(4, 0)} ${at(9, 0)}`);
   assert(at(8, 0) > at(8, 15) && at(8, 15) > at(8, 40), `haste: ${at(8, 0)} ${at(8, 15)} ${at(8, 40)}`);
-  // No finite willpower/haste can reach zero — the channel stays positive.
+  // No finite focus/haste can reach zero — the channel stays positive.
   assert(at(1000, 1000) > 0, "never zero");
 });
 
 Deno.test("castSeconds: the element and the heavy flag move the channel", () => {
-  const arcane = castSeconds({ base: 2, willpower: 0, hastePct: 0, element: "arcane", heavy: false });
-  const fury = castSeconds({ base: 2, willpower: 0, hastePct: 0, element: "fury", heavy: false });
+  const arcane = castSeconds({ base: 2, focus: 0, hastePct: 0, element: "arcane", heavy: false });
+  const fury = castSeconds({ base: 2, focus: 0, hastePct: 0, element: "fury", heavy: false });
   assert(arcane > fury, `arcane heavier than fury: ${arcane} vs ${fury}`);
-  assert(castSeconds({ base: 2, willpower: 0, hastePct: 0, element: "arcane", heavy: true }) > arcane, "heavy longer than light");
-  assert(castSeconds({ base: 2, willpower: 0, hastePct: 0, element: "mystery", heavy: false }) === arcane / 1.15, "unknown element is neutral");
+  assert(castSeconds({ base: 2, focus: 0, hastePct: 0, element: "arcane", heavy: true }) > arcane, "heavy longer than light");
+  assert(castSeconds({ base: 2, focus: 0, hastePct: 0, element: "mystery", heavy: false }) === arcane / 1.15, "unknown element is neutral");
 });
 
 // ─── pushbackSeconds: bounded, monotone in damage share and in angle ──────────────────────────
@@ -111,7 +111,7 @@ Deno.test("pushbackSeconds: monotone up in damage share and in the angle it came
 
 // ─── the state machine: advance, complete, refuse, interrupt ──────────────────────────────────
 
-const SPEC = castSpec({ skillId: "mage-arcane-nova", base: 2.1, willpower: 8, hastePct: 0, element: "arcane", heavy: true });
+const SPEC = castSpec({ skillId: "mage-arcane-nova", base: 2.1, focus: 8, hastePct: 0, element: "arcane", heavy: true });
 
 Deno.test("tickCast: advances, completes at seconds + pushback, and freezes once ended", () => {
   let s = beginCast(SPEC);
@@ -206,17 +206,17 @@ Deno.test("PRINT: cast seconds across the casters and weights", () => {
     const skill = powerSkill(c);
     const st = createStats(c);
     const heavy = c === "Mage" || c === "Necromancer" || c === "Priest";
-    const spec = castSpec({ skillId: skill.id, base: 2.1, willpower: st.willpower, hastePct: 0, element: skill.element, heavy });
+    const spec = castSpec({ skillId: skill.id, base: 2.1, focus: st.focus, hastePct: 0, element: skill.element, heavy });
     rows.push(
       `${c.padEnd(12)} ${skill.id.padEnd(24)} ${skill.element.padEnd(9)} heavy=${String(heavy).padEnd(5)} ` +
-        `will=${String(st.willpower).padStart(2)} haste=0   -> ${spec.seconds.toFixed(3)} s`,
+        `will=${String(st.focus).padStart(2)} haste=0   -> ${spec.seconds.toFixed(3)} s`,
     );
   }
   // A mage's heavy spell, with and without haste, to show haste shortens the channel.
   const mage = createStats("Mage");
   for (const hastePct of [0, 20, 50]) {
-    const spec = castSpec({ skillId: "mage-arcane-nova", base: 2.1, willpower: mage.willpower, hastePct, element: "arcane", heavy: true });
-    rows.push(`${"Mage*".padEnd(12)} ${"mage-arcane-nova".padEnd(24)} ${"arcane".padEnd(9)} heavy=true  will=${String(mage.willpower).padStart(2)} haste=${String(hastePct).padStart(2)}   -> ${spec.seconds.toFixed(3)} s`);
+    const spec = castSpec({ skillId: "mage-arcane-nova", base: 2.1, focus: mage.focus, hastePct, element: "arcane", heavy: true });
+    rows.push(`${"Mage*".padEnd(12)} ${"mage-arcane-nova".padEnd(24)} ${"arcane".padEnd(9)} heavy=true  will=${String(mage.focus).padStart(2)} haste=${String(hastePct).padStart(2)}   -> ${spec.seconds.toFixed(3)} s`);
   }
   console.log("\nCAST SECONDS (base 2.1, power kind)\n" + rows.join("\n"));
 });

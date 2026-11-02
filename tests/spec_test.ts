@@ -398,7 +398,7 @@ function fightRec(o: Partial<FighterRecord> = {}): FighterRecord {
   return {
     name: "A", race: "human", subrace: null, className: "Warrior", weapon: "sword", level: 1,
     controller: "decision-tree",
-    stats: { vitality: 8, resilience: 8, willpower: 8, reflex: 8, strength: 8, intelligence: 8, maxHealth: 40000, attackPower: 900, armor: 4 },
+    stats: { vitality: 8, resilience: 8, focus: 8, reflex: 8, strength: 8, intelligence: 8, maxHealth: 40000, attackPower: 900, armor: 4 },
     dealt: 0, hits: 0, hpLeft: 40000, ...o,
   };
 }
@@ -432,7 +432,7 @@ Deno.test("SPEC HD3: the History page and the record layer agree on which match 
     id, at: "2026-10-31T12:00:00.000Z", hour: 12, phase: "day", place: "Sunspire", arena: "ring",
     reason: reason as MatchRecord["reason"], duration, firstStrike: null, winner: tie ? null : 0,
     limitS: 180, tie, margin: dominance,
-    statGap: { raw: { vitality: 0, resilience: 0, willpower: 0, reflex: 0, strength: 0, intelligence: 0 }, z: {}, distance, damageShare: dominance, dominance },
+    statGap: { raw: { vitality: 0, resilience: 0, focus: 0, reflex: 0, strength: 0, intelligence: 0 }, z: {}, distance, damageShare: dominance, dominance },
     generation: { seed: id, id: generationId(id), arena: "ring", budget: 12, techniques: [], ancestry: ["human", "ork"] },
     fighters: [fightRec({ dealt: 100, hpLeft: tie ? 10000 : 1 }), fightRec({ dealt: tie ? 90 : 0 })],
   });
@@ -476,8 +476,8 @@ Deno.test("SPEC HF1: the corpus standardises NaN-free and its principal componen
   const rows = Array.from({ length: 200 }, (_, i) => keyVars({
     duration: 20 + rng() * 160, reason: rng() < 0.5 ? "ko" : "time-limit", winner: i % 7 === 0 ? null : (i % 2) as 0 | 1,
     fighters: [
-      { stats: { vitality: 8, resilience: 8, willpower: 8, reflex: 8 + Math.round(rng() * 8), strength: 8, intelligence: 8 }, dealt: Math.round(rng() * 500) },
-      { stats: { vitality: 8, resilience: 8, willpower: 8, reflex: 8, strength: 8 + Math.round(rng() * 8), intelligence: 8 }, dealt: Math.round(rng() * 500) },
+      { stats: { vitality: 8, resilience: 8, focus: 8, reflex: 8 + Math.round(rng() * 8), strength: 8, intelligence: 8 }, dealt: Math.round(rng() * 500) },
+      { stats: { vitality: 8, resilience: 8, focus: 8, reflex: 8, strength: 8 + Math.round(rng() * 8), intelligence: 8 }, dealt: Math.round(rng() * 500) },
     ],
   }));
   const { rows: z } = standardise(rows);
@@ -578,7 +578,7 @@ Deno.test("SPEC IB1: the inspect card anchors on screen, the cursor's blob follo
   assert(pickNearest([{ id: "a", x: 10, y: 10, r: 40 }, { id: "b", x: 20, y: 10, r: 40 }], { x: 18, y: 10 }) === "b", "two overlapping: the nearer centre wins");
   const card = fighterCard({
     seat: 0, name: "A", ancestry: "elf/high", subrace: "high", className: "Mage", level: 3, controller: "AI",
-    weapon: "staff", stats: { vitality: 6, resilience: 6, willpower: 12, reflex: 10, strength: 4, intelligence: 14 },
+    weapon: "staff", stats: { vitality: 6, resilience: 6, focus: 12, reflex: 10, strength: 4, intelligence: 14, agility: 9 },
     combat: { maxHealth: 40000, attackPower: 900, attackInterval: 1, armor: 4 },
     hp: 30000, mana: 40, manaMax: 60, stamina: 20, staminaMax: 30, dealt: 1200, hits: 9,
     techniques: ["mage-blink"], generationId: "GEN-ABCDEF",

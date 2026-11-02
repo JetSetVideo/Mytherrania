@@ -11,7 +11,7 @@ export interface Birthsign {
 export const BIRTHSIGNS: Birthsign[] = [
   {
     id: "serpent", name: "The Serpent", symbol: "🐍",
-    mods: { reflex: 2, willpower: 1 },
+    mods: { reflex: 2, focus: 1 },
     lore: "Born under the Shedding Moon — quick to strike, slow to yield.",
   },
   {
@@ -36,7 +36,7 @@ export const BIRTHSIGNS: Birthsign[] = [
   },
   {
     id: "void", name: "The Void", symbol: "🕳",
-    mods: { willpower: 3 },
+    mods: { focus: 3 },
     lore: "The space between stars claims you — your will outlasts the flesh.",
   },
 ];

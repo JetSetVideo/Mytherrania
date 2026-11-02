@@ -1,6 +1,6 @@
 import type { ClassName } from "./Stats.ts";
 
-export type StatName = "vitality" | "resilience" | "willpower" | "reflex" | "strength" | "intelligence";
+export type StatName = "vitality" | "resilience" | "focus" | "reflex" | "strength" | "intelligence" | "agility";
 
 export interface Subrace {
   id: string;
@@ -66,10 +66,11 @@ export interface StatRange {
 export interface RaceStats {
   vitality: StatRange;
   resilience: StatRange;
-  willpower: StatRange;
+  focus: StatRange;
   reflex: StatRange;
   strength: StatRange;
   intelligence: StatRange;
+  agility: StatRange;
 }
 
 // Compute stat distributions — assumes class base stats ± race mods with
@@ -84,10 +85,11 @@ export function computeRaceStats(race: RaceDef, subrace: Subrace | null): RaceSt
   return {
     vitality: range("vitality"),
     resilience: range("resilience"),
-    willpower: range("willpower"),
+    focus: range("focus"),
     reflex: range("reflex"),
     strength: range("strength"),
     intelligence: range("intelligence"),
+    agility: range("agility"),
   };
 }
 
@@ -97,11 +99,11 @@ export const RACES: RaceDef[] = [
   {
     id: "human",
     name: "Human",
-    mods: { vitality: 1, resilience: 1, willpower: 1, reflex: 1, strength: 1, intelligence: 1 },
+    mods: { vitality: 1, resilience: 1, focus: 1, reflex: 1, strength: 1, intelligence: 1, agility: 1 },
     subspecies: [
       { id: "imperial", name: "Imperial", desc: "Tacticians of the Golden Citadel — raised on doctrine and drill, with minds honed for command.", tweak: { intelligence: 2, vitality: -1 }, affinity: { manaFlow: 0.05 } },
-      { id: "nomad",   name: "Nomad",   desc: "Wind-walkers of the Sunken Plains — fast, lean, never in one place long enough to be caught.",  tweak: { reflex: 2, resilience: -1 }, affinity: { endurance: 0.05 } },
-      { id: "islander", name: "Islander", desc: "Tideborn from the Sapphire Archipelago — hardened by salt, sea, and storm.",  tweak: { vitality: 2, willpower: -1 }, affinity: { health: 0.03 } },
+      { id: "nomad",   name: "Nomad",   desc: "Wind-walkers of the Sunken Plains — fast, lean, never in one place long enough to be caught.",  tweak: { reflex: 2, resilience: -1, agility: 1 }, affinity: { endurance: 0.05 } },
+      { id: "islander", name: "Islander", desc: "Tideborn from the Sapphire Archipelago — hardened by salt, sea, and storm.",  tweak: { vitality: 2, focus: -1 }, affinity: { health: 0.03 } },
     ],
     traits: ["Adaptable — humans gain +1 to all stats (balanced)."],
     lore: "The youngest race. Short-lived but prolific, humans build empires on ambition and sheer numbers.",
@@ -111,11 +113,11 @@ export const RACES: RaceDef[] = [
   {
     id: "elf",
     name: "Elf",
-    mods: { reflex: 2, intelligence: 2, strength: -1, vitality: -1 },
+    mods: { reflex: 2, intelligence: 2, strength: -1, vitality: -1, agility: 2 },
     subspecies: [
       { id: "high",  name: "High Elf",  desc: "Star-touched scholars of Elun-Dar — their magic is old as the sky.",   tweak: { intelligence: 2, vitality: -1 }, affinity: { manaFlow: 0.08 } },
-      { id: "wood",  name: "Wood Elf",  desc: "Silent guardians of the Elderwood — they speak with root and vine.",    tweak: { reflex: 2, strength: -1 }, affinity: { endurance: 0.04 } },
-      { id: "dark",  name: "Dark Elf",  desc: "Exiles of the Obsidian Halls — shadow, steel, and cold ambition.",      tweak: { willpower: 2, resilience: -1 }, affinity: { health: 0.02 } },
+      { id: "wood",  name: "Wood Elf",  desc: "Silent guardians of the Elderwood — they speak with root and vine.",    tweak: { reflex: 2, strength: -1, agility: 1 }, affinity: { endurance: 0.04 } },
+      { id: "dark",  name: "Dark Elf",  desc: "Exiles of the Obsidian Halls — shadow, steel, and cold ambition.",      tweak: { focus: 2, resilience: -1 }, affinity: { health: 0.02 } },
     ],
     traits: ["Keen Senses — elves see farther and react faster (+2 reflex, +2 intelligence)."],
     lore: "The First Children. Millennia-old souls bound to the cycles of the world. Graceful, aloof, and dangerous.",
@@ -125,11 +127,11 @@ export const RACES: RaceDef[] = [
   {
     id: "dwarf",
     name: "Dwarf",
-    mods: { resilience: 2, strength: 2, reflex: -1, willpower: -1 },
+    mods: { resilience: 2, strength: 2, reflex: -1, focus: -1, agility: -1 },
     subspecies: [
       { id: "mountain", name: "Mountain", desc: "Stone-boned clans of the Iron Reach — unbreakable.",             tweak: { resilience: 2, reflex: -1 }, affinity: { health: 0.02, endurance: 0.03 } },
-      { id: "forge",    name: "Forge",    desc: "Rune-smiths of Khaz-Barad — fire and steel are their prayers.",   tweak: { strength: 2, intelligence: 1, willpower: -2 }, affinity: { manaFlow: 0.06 } },
-      { id: "deep",     name: "Deep",     desc: "Delvers of the Rootways — they hear the stone whisper.",          tweak: { willpower: 2, reflex: -1 }, affinity: { manaFlow: 0.04 } },
+      { id: "forge",    name: "Forge",    desc: "Rune-smiths of Khaz-Barad — fire and steel are their prayers.",   tweak: { strength: 2, intelligence: 1, focus: -2 }, affinity: { manaFlow: 0.06 } },
+      { id: "deep",     name: "Deep",     desc: "Delvers of the Rootways — they hear the stone whisper.",          tweak: { focus: 2, reflex: -1 }, affinity: { manaFlow: 0.04 } },
     ],
     traits: ["Stone Skin — natural armor (+2 resilience, +2 strength)."],
     lore: "Born of fire and mountain. Dwarves craft wonders in the deep places and hold grudges longer than human memory.",
@@ -139,11 +141,11 @@ export const RACES: RaceDef[] = [
   {
     id: "ork",
     name: "Ork",
-    mods: { vitality: 3, strength: 3, intelligence: -2, willpower: -2 },
+    mods: { vitality: 3, strength: 3, intelligence: -2, focus: -2 },
     subspecies: [
       { id: "greenhide", name: "Greenhide", desc: "Born in the Blood Marshes — pure, unthinking violence.",       tweak: { vitality: 2, intelligence: -1 }, affinity: { health: 0.03 } },
       { id: "ironhide",  name: "Ironhide",  desc: "War-forged in the Slag Pits — their skin is armor.",           tweak: { resilience: 2, strength: 1, intelligence: -2 }, affinity: { endurance: 0.04 } },
-      { id: "bloodfang", name: "Bloodfang", desc: "Swift killers of the Red Steppe — they strike before you blink.", tweak: { reflex: 2, vitality: 1, willpower: -2 }, affinity: { endurance: 0.03 } },
+      { id: "bloodfang", name: "Bloodfang", desc: "Swift killers of the Red Steppe — they strike before you blink.", tweak: { reflex: 2, vitality: 1, focus: -2, agility: 1 }, affinity: { endurance: 0.03 } },
     ],
     traits: ["Blood Rage — Orks hit harder and last longer in a fight (+3 vitality, +3 strength)."],
     lore: "Forged in the crucible of ancient wars. Orks live for the thrill of battle and measure worth in scars.",
@@ -194,10 +196,10 @@ import { birthsignById } from "./Birthsight.ts";
  */
 export function statDelta(b: Partial<Record<StatName, number>>): Partial<CombatStats> {
   const v = b.vitality ?? 0, rn = b.resilience ?? 0, rf = b.reflex ?? 0, s = b.strength ?? 0,
-        w = b.willpower ?? 0, i = b.intelligence ?? 0;
+        w = b.focus ?? 0, i = b.intelligence ?? 0, ag = b.agility ?? 0;
   return {
     // Primary stats move too, so derived rolls (crit from reflex vs resilience) see them.
-    vitality: v, resilience: rn, willpower: w, reflex: rf, strength: s, intelligence: i,
+    vitality: v, resilience: rn, focus: w, reflex: rf, strength: s, intelligence: i, agility: ag,
     maxHealth: (v * 2 + Math.floor(s / 2)) * HEALTH_SCALE,
     attackPower: Math.floor(s / 2) * DAMAGE_SCALE,
     armor: Math.floor(rn / 2),

@@ -48,7 +48,7 @@ export function inspectBarSegments(b: InspectBar, segments = BAR_SEGMENTS): BarS
 export interface FighterView {
   seat: 0 | 1; name: string; ancestry: string; subrace: string | null; className: string; level: number;
   controller: string; weapon: string;
-  stats: { vitality: number; resilience: number; willpower: number; reflex: number; strength: number; intelligence: number };
+  stats: { vitality: number; resilience: number; focus: number; reflex: number; strength: number; intelligence: number; agility: number };
   combat: { maxHealth: number; attackPower: number; attackInterval: number; armor: number };
   hp: number; mana: number; manaMax: number; stamina: number; staminaMax: number;
   dealt: number; hits: number; techniques: string[]; generationId: string | null;
@@ -62,12 +62,12 @@ export interface ObjectView {
 }
 
 /** The six primary attributes, in one stable order for the sheet. */
-export const PRIMARY_ORDER = ["vitality", "resilience", "willpower", "reflex", "strength", "intelligence"] as const;
+export const PRIMARY_ORDER = ["vitality", "resilience", "focus", "reflex", "strength", "intelligence", "agility"] as const;
 type PrimaryKey = typeof PRIMARY_ORDER[number];
 
 const PRIMARY_LABEL: Record<PrimaryKey, string> = {
-  vitality: "Vitality", resilience: "Resilience", willpower: "Willpower",
-  reflex: "Reflex", strength: "Strength", intelligence: "Intelligence",
+  vitality: "Vitality", resilience: "Resilience", focus: "Focus",
+  reflex: "Reflex", strength: "Strength", intelligence: "Intelligence", agility: "Agility",
 };
 
 /** Bar colours, matching the HUD's life/mana/stamina tints. */

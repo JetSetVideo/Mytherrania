@@ -27,7 +27,7 @@ Words below have exactly one meaning in code, tests and docs.
 | Term | Definition |
 | --- | --- |
 | **Fighter** | One combatant: stats + body + weapon + runtime state (`src/game/Fighter.ts`). |
-| **Primary attribute** | One of six integer stats: Vitality, Resilience, Willpower, Reflex, Strength, Intelligence. Range 1–20. |
+| **Primary attribute** | One of six integer stats: Vitality, Resilience, Focus, Reflex, Strength, Intelligence. Range 1–20. |
 | **Combat stat** | A value *derived* from primaries: maxHealth, attackPower, attackInterval, armor. Never set directly. |
 | **Body** | The physical model of a fighter: a list of **parts**, each with mass (kg), volume (m³) and frontal area (m²). |
 | **Density ρ** | Total body mass ÷ total body volume, kg/m³. Composite: parts are summed first, then divided. |
@@ -80,7 +80,7 @@ Status of all: **OPEN**.
 | --- | --- |
 | Vitality | maxHealth (+1.7 base units/pt, ×1000), body mass (+1.4 kg/pt). |
 | Resilience | armor (+0.32/pt), crit defence, body mass (+1.1 kg/pt). |
-| Willpower | damage solve for casters (through the power index), status resistance (not yet). |
+| Focus | damage solve for casters (through the power index), status resistance (not yet). |
 | Reflex | attackInterval (−0.046 s/pt), crit chance, limb area. |
 | Strength | maxHealth (+0.55 base units/pt), body mass (+3.5 kg/pt) **and** volume (+0.0016 m³/pt), torso area. |
 | Intelligence | damage solve for casters (through the power index). |

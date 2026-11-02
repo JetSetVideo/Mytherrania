@@ -62,7 +62,7 @@ Deno.test("mana regen really clamps, having actually been drained first", () => 
 /** A minimal stat block; only intelligence and vitality feed the resource pools. */
 function stats(intelligence: number, vitality: number): CombatStats {
   return {
-    vitality, resilience: 5, willpower: 5, reflex: 5, strength: 5, intelligence,
+    vitality, resilience: 5, focus: 5, reflex: 5, strength: 5, intelligence, agility: 5,
     maxHealth: 100, attackPower: 10, attackInterval: 1, armor: 4,
   };
 }

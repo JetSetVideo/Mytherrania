@@ -55,10 +55,12 @@ export type StandardRow = Record<keyof KeyVars, number>;
 export interface MatchStatsLike {
   vitality: number;
   resilience: number;
-  willpower: number;
+  focus: number;
   reflex: number;
   strength: number;
   intelligence: number;
+  /** Wave X: absent on pre-agility records (read as 0 on both sides). */
+  agility?: number;
 }
 
 export interface MatchFighterLike {
@@ -81,7 +83,7 @@ export interface MatchLike {
   generation?: { id?: string };
 }
 
-const SIX = ["vitality", "resilience", "willpower", "reflex", "strength", "intelligence"] as const;
+const SIX = ["vitality", "resilience", "focus", "reflex", "strength", "intelligence", "agility"] as const;
 type SixStat = typeof SIX[number];
 
 /** A finite number or the fallback. The single place NaN/Infinity is stopped at the source. */

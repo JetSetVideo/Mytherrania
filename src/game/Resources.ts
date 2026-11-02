@@ -33,12 +33,12 @@ export interface ResourceState {
  * Regen is per second; `regenResources` applies it against dt.
  *
  * Wave J: regeneration is no longer one flat number. It is computed from the fighter:
- *   manaRegen    = 1.2 · manaFlow(race, sub-race) · f(willpower)  · gear
+ *   manaRegen    = 1.2 · manaFlow(race, sub-race) · f(focus)  · gear
  *   staminaRegen = 5.0 · endurance(race, sub-race) · f(resilience) · gear
  *   f(s) = clamp(1 + 0.03 · (s − 5), 0.7, 1.6)       gear = 1 + 0.1 · quality (0..1)
- * Class and level enter through the primaries (willpower, resilience) the stats carry. Mana was
+ * Class and level enter through the primaries (focus, resilience) the stats carry. Mana was
  * 3 /s flat: a 20-mana power every 6.7 s from regen alone, a full low-INT pool back in 16 s, so a
- * caster never ran dry inside a 180 s match. At 1.2 /s a human warrior (WIL 5, max 72) refills
+ * caster never ran dry inside a 180 s match. At 1.2 /s a human warrior (FOC 5, max 72) refills
  * from empty in 60 s — one third of the match limit — and a power costs ~17 s of regen.
  */
 const RESOURCE_TABLE: Record<ResourceKind, {
@@ -49,7 +49,7 @@ const RESOURCE_TABLE: Record<ResourceKind, {
   /** The primary that scales regen (the pool's "recovery" stat). */
   regenStat: keyof CombatStats;
 }> = {
-  mana: { stat: "intelligence", base: 40, perPoint: 8, regenPerSecond: 1.2, regenStat: "willpower" },
+  mana: { stat: "intelligence", base: 40, perPoint: 8, regenPerSecond: 1.2, regenStat: "focus" },
   stamina: { stat: "vitality", base: 50, perPoint: 6, regenPerSecond: 5, regenStat: "resilience" },
 };
 

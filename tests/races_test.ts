@@ -16,7 +16,7 @@ Deno.test("every race has three subspecies", () => {
 
 Deno.test("human is balanced with +1 all mods", () => {
   const h = raceById("human")!;
-  for (const k of ["vitality","resilience","willpower","reflex","strength","intelligence"])
+  for (const k of ["vitality","resilience","focus","reflex","strength","intelligence", "agility"])
     assert((h.mods as Record<string,number>)[k] === 1, `human ${k} mod is 1`);
 });
 
@@ -46,7 +46,7 @@ Deno.test("elf wood subrace doubles strength penalty", () => {
 Deno.test("stat ranges are well-ordered", () => {
   for (const r of RACES) {
     const s = computeRaceStats(r, null);
-    for (const stat of ["vitality","resilience","willpower","reflex","strength","intelligence"]) {
+    for (const stat of ["vitality","resilience","focus","reflex","strength","intelligence", "agility"]) {
       const v = (s as unknown as Record<string, {min:number,max:number,avg:number,median:number}>)[stat];
       assert(v.min > 0, `${r.id} ${stat} min positive`);
       assert(v.max >= v.min, `${r.id} ${stat} max>=min`);

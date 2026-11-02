@@ -183,8 +183,8 @@ export const STAT_GAIN = {
   vitalityBreath: 0.15, vitalityRecover: 0.04,
   /** Resilience: a sturdier, lower stance and less sway. */
   resilienceCrouch: 0.006, resilienceSway: 0.1,
-  /** Willpower: steadier — less seeded jitter and less overshoot. */
-  willpowerJitter: 0.3, willpowerOvershoot: 0.08,
+  /** Focus: steadier — less seeded jitter and less overshoot. */
+  focusJitter: 0.3, focusOvershoot: 0.08,
   /** Intelligence: economical — telegraphs less (smaller skill counter-move). */
   intelligenceAnticipation: 0.1,
 } as const;
@@ -341,7 +341,7 @@ export interface MotionStyleInput {
   seed: number;
   body?: BodyMotionInput;
   weapon?: WeaponMotion;
-  stats?: Partial<Pick<CombatStats, "vitality" | "resilience" | "willpower" | "reflex" | "strength" | "intelligence">>;
+  stats?: Partial<Pick<CombatStats, "vitality" | "resilience" | "focus" | "reflex" | "strength" | "intelligence">>;
 }
 
 const statN = (v: number | undefined) => Math.tanh(((Number.isFinite(v) ? v! : STAT_CENTRE) - STAT_CENTRE) / STAT_SPREAD);
@@ -505,10 +505,10 @@ export function motionStyleFor(input: MotionStyleInput): MotionStyle {
   if (subrace) applyTemperament(c, SUBRACE_TWIST[subrace]);
   // Stats.
   const st = input.stats ?? {}, SG = STAT_GAIN;
-  const S = statN(st.strength), R = statN(st.reflex), V = statN(st.vitality), Re = statN(st.resilience), W = statN(st.willpower), In = statN(st.intelligence);
+  const S = statN(st.strength), R = statN(st.reflex), V = statN(st.vitality), Re = statN(st.resilience), W = statN(st.focus), In = statN(st.intelligence);
   c.windupDepth *= 1 + SG.strengthWindup * S;
   c.followThrough *= 1 + SG.strengthFollow * S;
-  c.overshoot *= (1 + SG.strengthOvershoot * S) * (1 - SG.willpowerOvershoot * W);
+  c.overshoot *= (1 + SG.strengthOvershoot * S) * (1 - SG.focusOvershoot * W);
   c.holdTime *= 1 + SG.strengthHold * S;
   c.strikeTime *= 1 - SG.reflexStrike * R;
   c.windupTime *= 1 - SG.reflexWindup * R;
@@ -559,7 +559,7 @@ export function motionStyleFor(input: MotionStyleInput): MotionStyle {
   }
   applyTemperament(c, KIND_TWEAK[kind]);
   clampAll(c);
-  return new MotionStyle(c, input.seed, 1 - STAT_GAIN.willpowerJitter * W, kind, race, subrace);
+  return new MotionStyle(c, input.seed, 1 - STAT_GAIN.focusJitter * W, kind, race, subrace);
 }
 
 // ─── Measuring how different styles are ──────────────────────────────────────────────────────

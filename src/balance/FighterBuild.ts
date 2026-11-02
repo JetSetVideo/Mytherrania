@@ -48,7 +48,7 @@ export interface BuiltFighter {
   resourceCtx: ResourceContext;
 }
 
-const STAT_ORDER: readonly StatName[] = ["vitality", "resilience", "willpower", "reflex", "strength", "intelligence"];
+const STAT_ORDER: readonly StatName[] = ["vitality", "resilience", "focus", "reflex", "strength", "intelligence", "agility"];
 
 /**
  * A deterministic allocation of `fraction` (0..1) of the level's point budget, spent along the

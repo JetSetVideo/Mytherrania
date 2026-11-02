@@ -365,7 +365,7 @@ function computeStatsLine(race: RaceDef, subrace: Subrace | null): string {
   return [
     `VIT ${Math.round(stats.vitality.avg)}`,
     `RES ${Math.round(stats.resilience.avg)}`,
-    `WIL ${Math.round(stats.willpower.avg)}`,
+    `FOC ${Math.round(stats.focus.avg)}`,
     `REF ${Math.round(stats.reflex.avg)}`,
     `STR ${Math.round(stats.strength.avg)}`,
     `INT ${Math.round(stats.intelligence.avg)}`,
