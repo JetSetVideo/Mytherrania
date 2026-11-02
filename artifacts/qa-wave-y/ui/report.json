@@ -1,0 +1,2578 @@
+{
+ "dist": "dist-ui",
+ "viewports": {
+  "390": {
+   "tokens": {
+    "t3": 13,
+    "t4": 11.5,
+    "frameW": 2.3,
+    "frameWLg": 3,
+    "bevel": 1.38,
+    "radiusPlate": 5.17,
+    "socket": 44,
+    "metals": [
+     [
+      "--metal-steel",
+      3
+     ],
+     [
+      "--metal-bronze",
+      3
+     ],
+     [
+      "--metal-copper",
+      3
+     ],
+     [
+      "--stone",
+      4
+     ]
+    ]
+   },
+   "titleScreen": {
+    "n": 1,
+    "maxDx": 0.01,
+    "maxDy": 0.09,
+    "within1": 1,
+    "worst": {
+     "sel": ".menu-screen.active .menu-title",
+     "text": "MYTHERRANIA",
+     "dx": -0.01,
+     "dy": -0.09
+    },
+    "rows": [
+     {
+      "sel": ".menu-screen.active .menu-title",
+      "text": "MYTHERRANIA",
+      "dx": -0.01,
+      "dy": -0.09
+     }
+    ]
+   },
+   "titlesHero": {
+    "n": 8,
+    "maxDx": 0.01,
+    "maxDy": 0.7,
+    "within1": 8,
+    "worst": {
+     "sel": ".menu-screen.active .screen-head h2",
+     "text": "Fighters",
+     "dx": 0,
+     "dy": -0.7
+    },
+    "rows": [
+     {
+      "sel": ".menu-screen.active .screen-head h2",
+      "text": "Fighters",
+      "dx": 0,
+      "dy": -0.7
+     },
+     {
+      "sel": ".menu-screen.active .panel-head",
+      "text": "OpponentRival and terms.",
+      "dx": 0,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .panel-head",
+      "text": "ArenaShape, walls, props a",
+      "dx": -0.01,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .panel-head",
+      "text": "Chosen heroFigure, record,",
+      "dx": -0.01,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .sheet-col-head",
+      "text": "Attributes",
+      "dx": 0,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .sheet-col-head",
+      "text": "Derived",
+      "dx": 0,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .sheet-col-head",
+      "text": "Modifiers",
+      "dx": -0.01,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .steel-sign",
+      "text": "Human",
+      "dx": 0,
+      "dy": -0.7
+     }
+    ]
+   },
+   "heroBar": {
+    "present": true,
+    "verbsInBar": [
+     true,
+     true,
+     true,
+     true
+    ],
+    "deleteOutsideBar": true,
+    "rightGapPx": 0,
+    "verbsRightOfName": false,
+    "badge": {
+     "level": "1",
+     "w": 41,
+     "h": 41,
+     "gapToNamePx": 6,
+     "sameRow": true,
+     "round": "50%"
+    },
+    "tabsWithBadge": 1,
+    "tabs": 1
+   },
+   "contrastHero": {
+    "hero name": {
+     "n": 1,
+     "min": 7.51,
+     "colour": "rgb(240, 207, 115)",
+     "back": "rgb(57, 58, 62)"
+    },
+    "hero meta": {
+     "n": 1,
+     "min": 7.79,
+     "colour": "rgb(223, 207, 165)",
+     "back": "rgb(54, 54, 59)"
+    },
+    "bar verbs": {
+     "n": 4,
+     "min": 6.45,
+     "colour": "rgb(240, 207, 115)",
+     "back": "rgb(67, 68, 69)"
+    },
+    "level medallion": {
+     "n": 1,
+     "min": 6.52,
+     "colour": "rgb(255, 244, 230)",
+     "back": "rgb(140, 68, 36)"
+    },
+    "tab medallion": {
+     "n": 1,
+     "min": 5.43,
+     "colour": "rgb(255, 244, 230)",
+     "back": "rgb(154, 80, 45)"
+    },
+    "screen title": {
+     "n": 1,
+     "min": 8.15,
+     "colour": "rgb(240, 207, 115)",
+     "back": "rgb(70, 48, 30)"
+    },
+    "panel head": {
+     "n": 3,
+     "min": 8.73,
+     "colour": "rgb(240, 207, 115)",
+     "back": "rgb(60, 45, 33)"
+    },
+    "primary (stone)": {
+     "n": 1,
+     "min": 9.59,
+     "colour": "rgb(251, 241, 216)",
+     "back": "rgb(65, 61, 55)"
+    }
+   },
+   "reroll": {
+    "before": {
+     "name": "Hero",
+     "meta": "Human · Warrior · Longsword",
+     "level": "1",
+     "undo": false,
+     "tab": "Hero",
+     "stored": [
+      "Hero"
+     ]
+    },
+    "after": {
+     "name": "Che'xavira of House Q'Ral",
+     "meta": "Elf · Dark Elf · Mage · Warped Staff · The Void",
+     "level": "1",
+     "undo": true,
+     "tab": "Che'xavira of House Q'Ral",
+     "stored": [
+      "Che'xavira of House Q'Ral"
+     ]
+    },
+    "afterUndo": {
+     "name": "Hero",
+     "meta": "Human · Warrior · Longsword",
+     "level": "1",
+     "undo": false,
+     "tab": "Hero",
+     "stored": [
+      "Hero"
+     ]
+    },
+    "changed": true,
+    "levelKept": true,
+    "undoOffered": true,
+    "undoRestored": true,
+    "persisted": true,
+    "undoPersisted": true
+   },
+   "titlesCreator": {
+    "n": 16,
+    "maxDx": 0.01,
+    "maxDy": 0.7,
+    "within1": 16,
+    "worst": {
+     "sel": ".menu-screen.active .screen-head h2",
+     "text": "Fighters",
+     "dx": 0,
+     "dy": -0.7
+    },
+    "rows": [
+     {
+      "sel": ".menu-screen.active .screen-head h2",
+      "text": "Fighters",
+      "dx": 0,
+      "dy": -0.7
+     },
+     {
+      "sel": ".menu-screen.active .panel-head",
+      "text": "AncestryPeople and nation:",
+      "dx": -0.01,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .panel-head",
+      "text": "CallingClass, weapon, tech",
+      "dx": 0,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .panel-head",
+      "text": "Star signBirthsign and its",
+      "dx": 0,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .panel-head",
+      "text": "OpponentRival and terms.",
+      "dx": 0,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .panel-head",
+      "text": "ArenaShape, walls, props a",
+      "dx": -0.01,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .panel-head",
+      "text": "PreviewThe roll and its st",
+      "dx": 0,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .sheet-col-head",
+      "text": "Attributes",
+      "dx": 0,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .sheet-col-head",
+      "text": "Derived",
+      "dx": 0,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .sheet-col-head",
+      "text": "Modifiers",
+      "dx": -0.01,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .group-head",
+      "text": "Override by hand",
+      "dx": -0.01,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .group-head",
+      "text": "Attributes 12 of 12 points",
+      "dx": -0.01,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .group-head",
+      "text": "Silhouette",
+      "dx": 0,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .group-head",
+      "text": "Palette",
+      "dx": 0,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .skills-head",
+      "text": "Warrior techniques",
+      "dx": -0.01,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .steel-sign",
+      "text": "HumanImperial",
+      "dx": 0,
+      "dy": -0.47
+     }
+    ]
+   },
+   "ring": {
+    "slots": [
+     "helmet",
+     "armor",
+     "gloves",
+     "belt",
+     "legs",
+     "weapon",
+     "offhand",
+     "cape",
+     "boots"
+    ],
+    "leftN": 5,
+    "rightN": 4,
+    "leftOfCanvas": true,
+    "rightOfCanvas": true,
+    "minSlotPx": 44,
+    "canvas": {
+     "w": 219,
+     "h": 267
+    },
+    "weaponIcon": "icon icon-weapon icon-weapon-longsword equip-slot-icon",
+    "caption": "Weapon: Longsword (class default)"
+   },
+   "sockets": {
+    "helmet": {
+     "open": true,
+     "slot": "helmet",
+     "items": 3,
+     "disabled": 3,
+     "title": "Helmet",
+     "stillOpenAfterGreyClick": true,
+     "closed": true
+    },
+    "armor": {
+     "open": true,
+     "slot": "armor",
+     "items": 3,
+     "disabled": 3,
+     "title": "Armour",
+     "stillOpenAfterGreyClick": true,
+     "closed": true
+    },
+    "gloves": {
+     "open": true,
+     "slot": "gloves",
+     "items": 3,
+     "disabled": 3,
+     "title": "Gloves",
+     "stillOpenAfterGreyClick": true,
+     "closed": true
+    },
+    "belt": {
+     "open": true,
+     "slot": "belt",
+     "items": 3,
+     "disabled": 3,
+     "title": "Belt",
+     "stillOpenAfterGreyClick": true,
+     "closed": true
+    },
+    "legs": {
+     "open": true,
+     "slot": "legs",
+     "items": 3,
+     "disabled": 3,
+     "title": "Legs",
+     "stillOpenAfterGreyClick": true,
+     "closed": true
+    },
+    "offhand": {
+     "open": true,
+     "slot": "offhand",
+     "items": 3,
+     "disabled": 3,
+     "title": "Off hand",
+     "stillOpenAfterGreyClick": true,
+     "closed": true
+    },
+    "cape": {
+     "open": true,
+     "slot": "cape",
+     "items": 3,
+     "disabled": 3,
+     "title": "Cape",
+     "stillOpenAfterGreyClick": true,
+     "closed": true
+    },
+    "boots": {
+     "open": true,
+     "slot": "boots",
+     "items": 3,
+     "disabled": 3,
+     "title": "Boots",
+     "stillOpenAfterGreyClick": true,
+     "closed": true
+    }
+   },
+   "titlesPicker": {
+    "n": 1,
+    "maxDx": 0,
+    "maxDy": 0,
+    "within1": 1,
+    "worst": {
+     "sel": ".equip-picker-title",
+     "text": "Weapon",
+     "dx": 0,
+     "dy": 0
+    },
+    "rows": [
+     {
+      "sel": ".equip-picker-title",
+      "text": "Weapon",
+      "dx": 0,
+      "dy": 0
+     }
+    ]
+   },
+   "weaponGrid": {
+    "tiles": 18,
+    "withIcon": 18,
+    "enabled": 18,
+    "ids": [
+     "",
+     "dagger",
+     "shortsword",
+     "sabre",
+     "rapier",
+     "longsword",
+     "greatsword",
+     "spear",
+     "halberd",
+     "scythe",
+     "staff",
+     "axe",
+     "greataxe",
+     "mace",
+     "flail",
+     "warhammer",
+     "maul",
+     "bow"
+    ]
+   },
+   "weapon": {
+    "target": "maul",
+    "before": {
+     "table": "",
+     "icon": "icon icon-weapon icon-weapon-longsword equip-slot-icon",
+     "caption": "Weapon: Longsword (class default)",
+     "builds": 0
+    },
+    "after": {
+     "table": "maul",
+     "icon": "icon icon-weapon icon-weapon-maul equip-slot-icon",
+     "caption": "Weapon: Maul",
+     "builds": 1,
+     "pickerClosed": true,
+     "sheetWeapon": "Human · Imperial · Warrior | Longsword · sign The Mountain"
+    },
+    "tableFollows": true,
+    "iconFollows": true,
+    "previewRebuilt": true,
+    "canvasChanged": true,
+    "hashes": [
+     "ad00f8f7d421",
+     "c16dfd2286b1"
+    ],
+    "backToDefault": {
+     "table": "",
+     "caption": "Weapon: Longsword (class default)"
+    }
+   },
+   "contrastCreator": {
+    "socket names": {
+     "n": 4,
+     "min": 7.26,
+     "colour": "rgb(199, 179, 138)",
+     "back": "rgb(40, 39, 40)"
+    },
+    "caption": {
+     "n": 1,
+     "min": 8.71,
+     "colour": "rgb(199, 179, 138)",
+     "back": "rgb(30, 22, 14)"
+    },
+    "sheet col head": {
+     "n": 3,
+     "min": 11.53,
+     "colour": "rgb(240, 207, 115)",
+     "back": "rgb(33, 24, 17)"
+    },
+    "group head": {
+     "n": 4,
+     "min": 9.73,
+     "colour": "rgb(185, 201, 200)",
+     "back": "rgb(38, 28, 21)"
+    },
+    "dice (stone)": {
+     "n": 1,
+     "min": 10.39,
+     "colour": "rgb(243, 230, 255)",
+     "back": "rgb(59, 47, 74)"
+    }
+   },
+   "contrastPicker": {
+    "weapon names": {
+     "n": 4,
+     "min": 7.25,
+     "colour": "rgb(240, 207, 115)",
+     "back": "rgb(76, 57, 32)"
+    },
+    "picker title": {
+     "n": 1,
+     "min": 10.25,
+     "colour": "rgb(240, 207, 115)",
+     "back": "rgb(45, 34, 24)"
+    }
+   },
+   "pools": {
+    "frameW": "2px",
+    "metalFrame": 4,
+    "lostHatched": true,
+    "lostFromPotentialToMax": true
+   },
+   "titlesHistory": {
+    "n": 1,
+    "maxDx": 0.01,
+    "maxDy": 0.7,
+    "within1": 1,
+    "worst": {
+     "sel": ".menu-screen.active > h2",
+     "text": "Match History",
+     "dx": -0.01,
+     "dy": -0.7
+    },
+    "rows": [
+     {
+      "sel": ".menu-screen.active > h2",
+      "text": "Match History",
+      "dx": -0.01,
+      "dy": -0.7
+     }
+    ]
+   },
+   "titlesSettings": {
+    "n": 9,
+    "maxDx": 0.01,
+    "maxDy": 0.7,
+    "within1": 9,
+    "worst": {
+     "sel": "#settings-dialog:not([hidden]) h2",
+     "text": "Settings",
+     "dx": 0,
+     "dy": -0.7
+    },
+    "rows": [
+     {
+      "sel": "#settings-dialog:not([hidden]) .settings-section h3",
+      "text": "Game",
+      "dx": -0.01,
+      "dy": 0
+     },
+     {
+      "sel": "#settings-dialog:not([hidden]) .settings-section h3",
+      "text": "Controls",
+      "dx": -0.01,
+      "dy": 0
+     },
+     {
+      "sel": "#settings-dialog:not([hidden]) .settings-section h3",
+      "text": "Camera",
+      "dx": -0.01,
+      "dy": 0
+     },
+     {
+      "sel": "#settings-dialog:not([hidden]) .settings-section h3",
+      "text": "Display",
+      "dx": 0,
+      "dy": 0
+     },
+     {
+      "sel": "#settings-dialog:not([hidden]) .settings-section h3",
+      "text": "Graphics",
+      "dx": 0,
+      "dy": 0
+     },
+     {
+      "sel": "#settings-dialog:not([hidden]) .settings-section h3",
+      "text": "Audio",
+      "dx": 0,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .menu-title",
+      "text": "MYTHERRANIA",
+      "dx": -0.01,
+      "dy": -0.09
+     },
+     {
+      "sel": "#settings-dialog:not([hidden]) h2",
+      "text": "Settings",
+      "dx": 0,
+      "dy": -0.7
+     },
+     {
+      "sel": "#settings-dialog:not([hidden]) .settings-title",
+      "text": "Settings",
+      "dx": 0,
+      "dy": -0.7
+     }
+    ]
+   }
+  },
+  "820": {
+   "tokens": {
+    "t3": 13,
+    "t4": 11.5,
+    "frameW": 2.3,
+    "frameWLg": 3,
+    "bevel": 1.38,
+    "radiusPlate": 5.17,
+    "socket": 44,
+    "metals": [
+     [
+      "--metal-steel",
+      3
+     ],
+     [
+      "--metal-bronze",
+      3
+     ],
+     [
+      "--metal-copper",
+      3
+     ],
+     [
+      "--stone",
+      4
+     ]
+    ]
+   },
+   "titleScreen": {
+    "n": 1,
+    "maxDx": 0,
+    "maxDy": 0.42,
+    "within1": 1,
+    "worst": {
+     "sel": ".menu-screen.active .menu-title",
+     "text": "MYTHERRANIA",
+     "dx": 0,
+     "dy": -0.42
+    },
+    "rows": [
+     {
+      "sel": ".menu-screen.active .menu-title",
+      "text": "MYTHERRANIA",
+      "dx": 0,
+      "dy": -0.42
+     }
+    ]
+   },
+   "titlesHero": {
+    "n": 8,
+    "maxDx": 0.01,
+    "maxDy": 0.98,
+    "within1": 8,
+    "worst": {
+     "sel": ".menu-screen.active .screen-head h2",
+     "text": "Fighters",
+     "dx": 0,
+     "dy": -0.98
+    },
+    "rows": [
+     {
+      "sel": ".menu-screen.active .screen-head h2",
+      "text": "Fighters",
+      "dx": 0,
+      "dy": -0.98
+     },
+     {
+      "sel": ".menu-screen.active .panel-head",
+      "text": "OpponentRival and terms.",
+      "dx": 0,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .panel-head",
+      "text": "ArenaShape, walls, props a",
+      "dx": -0.01,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .panel-head",
+      "text": "Chosen heroFigure, record,",
+      "dx": -0.01,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .sheet-col-head",
+      "text": "Attributes",
+      "dx": 0,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .sheet-col-head",
+      "text": "Derived",
+      "dx": 0,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .sheet-col-head",
+      "text": "Modifiers",
+      "dx": -0.01,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .steel-sign",
+      "text": "Human",
+      "dx": 0,
+      "dy": -0.71
+     }
+    ]
+   },
+   "heroBar": {
+    "present": true,
+    "verbsInBar": [
+     true,
+     true,
+     true,
+     true
+    ],
+    "deleteOutsideBar": true,
+    "rightGapPx": 0,
+    "verbsRightOfName": true,
+    "badge": {
+     "level": "1",
+     "w": 41,
+     "h": 41,
+     "gapToNamePx": 7,
+     "sameRow": true,
+     "round": "50%"
+    },
+    "tabsWithBadge": 1,
+    "tabs": 1
+   },
+   "contrastHero": {
+    "hero name": {
+     "n": 1,
+     "min": 7.52,
+     "colour": "rgb(240, 207, 115)",
+     "back": "rgb(57, 58, 61)"
+    },
+    "hero meta": {
+     "n": 1,
+     "min": 7.8,
+     "colour": "rgb(223, 207, 165)",
+     "back": "rgb(54, 54, 57)"
+    },
+    "bar verbs": {
+     "n": 4,
+     "min": 6.44,
+     "colour": "rgb(240, 207, 115)",
+     "back": "rgb(67, 68, 70)"
+    },
+    "level medallion": {
+     "n": 1,
+     "min": 6.52,
+     "colour": "rgb(255, 244, 230)",
+     "back": "rgb(140, 68, 36)"
+    },
+    "tab medallion": {
+     "n": 1,
+     "min": 5.5,
+     "colour": "rgb(255, 244, 230)",
+     "back": "rgb(150, 81, 47)"
+    },
+    "screen title": {
+     "n": 1,
+     "min": 8.5,
+     "colour": "rgb(240, 207, 115)",
+     "back": "rgb(67, 45, 29)"
+    },
+    "panel head": {
+     "n": 3,
+     "min": 8.78,
+     "colour": "rgb(240, 207, 115)",
+     "back": "rgb(61, 44, 33)"
+    },
+    "primary (stone)": {
+     "n": 1,
+     "min": 9.22,
+     "colour": "rgb(251, 241, 216)",
+     "back": "rgb(69, 63, 58)"
+    }
+   },
+   "reroll": {
+    "before": {
+     "name": "Hero",
+     "meta": "Human · Warrior · Longsword",
+     "level": "1",
+     "undo": false,
+     "tab": "Hero",
+     "stored": [
+      "Hero"
+     ]
+    },
+    "after": {
+     "name": "Maului Tidecaller",
+     "meta": "Human · Islander · Rogue · Twin Daggers · The Serpent",
+     "level": "1",
+     "undo": true,
+     "tab": "Maului Tidecaller",
+     "stored": [
+      "Maului Tidecaller"
+     ]
+    },
+    "afterUndo": {
+     "name": "Hero",
+     "meta": "Human · Warrior · Longsword",
+     "level": "1",
+     "undo": false,
+     "tab": "Hero",
+     "stored": [
+      "Hero"
+     ]
+    },
+    "changed": true,
+    "levelKept": true,
+    "undoOffered": true,
+    "undoRestored": true,
+    "persisted": true,
+    "undoPersisted": true
+   },
+   "titlesCreator": {
+    "n": 16,
+    "maxDx": 0.01,
+    "maxDy": 0.98,
+    "within1": 16,
+    "worst": {
+     "sel": ".menu-screen.active .screen-head h2",
+     "text": "Fighters",
+     "dx": 0,
+     "dy": -0.98
+    },
+    "rows": [
+     {
+      "sel": ".menu-screen.active .screen-head h2",
+      "text": "Fighters",
+      "dx": 0,
+      "dy": -0.98
+     },
+     {
+      "sel": ".menu-screen.active .panel-head",
+      "text": "AncestryPeople and nation:",
+      "dx": -0.01,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .panel-head",
+      "text": "CallingClass, weapon, tech",
+      "dx": 0,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .panel-head",
+      "text": "Star signBirthsign and its",
+      "dx": 0,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .panel-head",
+      "text": "OpponentRival and terms.",
+      "dx": 0,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .panel-head",
+      "text": "ArenaShape, walls, props a",
+      "dx": -0.01,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .panel-head",
+      "text": "PreviewThe roll and its st",
+      "dx": 0,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .sheet-col-head",
+      "text": "Attributes",
+      "dx": 0,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .sheet-col-head",
+      "text": "Derived",
+      "dx": 0,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .sheet-col-head",
+      "text": "Modifiers",
+      "dx": -0.01,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .group-head",
+      "text": "Override by hand",
+      "dx": -0.01,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .group-head",
+      "text": "Attributes 12 of 12 points",
+      "dx": -0.01,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .group-head",
+      "text": "Silhouette",
+      "dx": 0,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .group-head",
+      "text": "Palette",
+      "dx": 0,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .skills-head",
+      "text": "Warrior techniques",
+      "dx": -0.01,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .steel-sign",
+      "text": "HumanImperial",
+      "dx": 0,
+      "dy": -0.47
+     }
+    ]
+   },
+   "ring": {
+    "slots": [
+     "helmet",
+     "armor",
+     "gloves",
+     "belt",
+     "legs",
+     "weapon",
+     "offhand",
+     "cape",
+     "boots"
+    ],
+    "leftN": 5,
+    "rightN": 4,
+    "leftOfCanvas": true,
+    "rightOfCanvas": true,
+    "minSlotPx": 44,
+    "canvas": {
+     "w": 299,
+     "h": 365
+    },
+    "weaponIcon": "icon icon-weapon icon-weapon-longsword equip-slot-icon",
+    "caption": "Weapon: Longsword (class default)"
+   },
+   "sockets": {
+    "helmet": {
+     "open": true,
+     "slot": "helmet",
+     "items": 3,
+     "disabled": 3,
+     "title": "Helmet",
+     "stillOpenAfterGreyClick": true,
+     "closed": true
+    },
+    "armor": {
+     "open": true,
+     "slot": "armor",
+     "items": 3,
+     "disabled": 3,
+     "title": "Armour",
+     "stillOpenAfterGreyClick": true,
+     "closed": true
+    },
+    "gloves": {
+     "open": true,
+     "slot": "gloves",
+     "items": 3,
+     "disabled": 3,
+     "title": "Gloves",
+     "stillOpenAfterGreyClick": true,
+     "closed": true
+    },
+    "belt": {
+     "open": true,
+     "slot": "belt",
+     "items": 3,
+     "disabled": 3,
+     "title": "Belt",
+     "stillOpenAfterGreyClick": true,
+     "closed": true
+    },
+    "legs": {
+     "open": true,
+     "slot": "legs",
+     "items": 3,
+     "disabled": 3,
+     "title": "Legs",
+     "stillOpenAfterGreyClick": true,
+     "closed": true
+    },
+    "offhand": {
+     "open": true,
+     "slot": "offhand",
+     "items": 3,
+     "disabled": 3,
+     "title": "Off hand",
+     "stillOpenAfterGreyClick": true,
+     "closed": true
+    },
+    "cape": {
+     "open": true,
+     "slot": "cape",
+     "items": 3,
+     "disabled": 3,
+     "title": "Cape",
+     "stillOpenAfterGreyClick": true,
+     "closed": true
+    },
+    "boots": {
+     "open": true,
+     "slot": "boots",
+     "items": 3,
+     "disabled": 3,
+     "title": "Boots",
+     "stillOpenAfterGreyClick": true,
+     "closed": true
+    }
+   },
+   "titlesPicker": {
+    "n": 1,
+    "maxDx": 0,
+    "maxDy": 0,
+    "within1": 1,
+    "worst": {
+     "sel": ".equip-picker-title",
+     "text": "Weapon",
+     "dx": 0,
+     "dy": 0
+    },
+    "rows": [
+     {
+      "sel": ".equip-picker-title",
+      "text": "Weapon",
+      "dx": 0,
+      "dy": 0
+     }
+    ]
+   },
+   "weaponGrid": {
+    "tiles": 18,
+    "withIcon": 18,
+    "enabled": 18,
+    "ids": [
+     "",
+     "dagger",
+     "shortsword",
+     "sabre",
+     "rapier",
+     "longsword",
+     "greatsword",
+     "spear",
+     "halberd",
+     "scythe",
+     "staff",
+     "axe",
+     "greataxe",
+     "mace",
+     "flail",
+     "warhammer",
+     "maul",
+     "bow"
+    ]
+   },
+   "weapon": {
+    "target": "maul",
+    "before": {
+     "table": "",
+     "icon": "icon icon-weapon icon-weapon-longsword equip-slot-icon",
+     "caption": "Weapon: Longsword (class default)",
+     "builds": 0
+    },
+    "after": {
+     "table": "maul",
+     "icon": "icon icon-weapon icon-weapon-maul equip-slot-icon",
+     "caption": "Weapon: Maul",
+     "builds": 1,
+     "pickerClosed": true,
+     "sheetWeapon": "Human · Imperial · Warrior | Longsword · sign The Mountain"
+    },
+    "tableFollows": true,
+    "iconFollows": true,
+    "previewRebuilt": true,
+    "canvasChanged": true,
+    "hashes": [
+     "77f7e436a5b6",
+     "5e4c61bf6762"
+    ],
+    "backToDefault": {
+     "table": "",
+     "caption": "Weapon: Longsword (class default)"
+    }
+   },
+   "contrastCreator": {
+    "socket names": {
+     "n": 4,
+     "min": 7.26,
+     "colour": "rgb(199, 179, 138)",
+     "back": "rgb(40, 39, 40)"
+    },
+    "caption": {
+     "n": 1,
+     "min": 8.54,
+     "colour": "rgb(199, 179, 138)",
+     "back": "rgb(32, 24, 15)"
+    },
+    "sheet col head": {
+     "n": 3,
+     "min": 10.99,
+     "colour": "rgb(240, 207, 115)",
+     "back": "rgb(39, 28, 20)"
+    },
+    "group head": {
+     "n": 4,
+     "min": 9.73,
+     "colour": "rgb(185, 201, 200)",
+     "back": "rgb(38, 28, 21)"
+    },
+    "dice (stone)": {
+     "n": 1,
+     "min": 10.39,
+     "colour": "rgb(243, 230, 255)",
+     "back": "rgb(59, 47, 74)"
+    }
+   },
+   "contrastPicker": {
+    "weapon names": {
+     "n": 4,
+     "min": 7.25,
+     "colour": "rgb(240, 207, 115)",
+     "back": "rgb(76, 57, 32)"
+    },
+    "picker title": {
+     "n": 1,
+     "min": 10.17,
+     "colour": "rgb(240, 207, 115)",
+     "back": "rgb(45, 35, 24)"
+    }
+   },
+   "pools": {
+    "frameW": "2px",
+    "metalFrame": 4,
+    "lostHatched": true,
+    "lostFromPotentialToMax": true
+   },
+   "titlesHistory": {
+    "n": 1,
+    "maxDx": 0.01,
+    "maxDy": 0.98,
+    "within1": 1,
+    "worst": {
+     "sel": ".menu-screen.active > h2",
+     "text": "Match History",
+     "dx": -0.01,
+     "dy": -0.98
+    },
+    "rows": [
+     {
+      "sel": ".menu-screen.active > h2",
+      "text": "Match History",
+      "dx": -0.01,
+      "dy": -0.98
+     }
+    ]
+   },
+   "titlesSettings": {
+    "n": 9,
+    "maxDx": 0.01,
+    "maxDy": 0.98,
+    "within1": 9,
+    "worst": {
+     "sel": "#settings-dialog:not([hidden]) h2",
+     "text": "Settings",
+     "dx": 0,
+     "dy": -0.98
+    },
+    "rows": [
+     {
+      "sel": "#settings-dialog:not([hidden]) .settings-section h3",
+      "text": "Game",
+      "dx": -0.01,
+      "dy": 0
+     },
+     {
+      "sel": "#settings-dialog:not([hidden]) .settings-section h3",
+      "text": "Controls",
+      "dx": -0.01,
+      "dy": 0
+     },
+     {
+      "sel": "#settings-dialog:not([hidden]) .settings-section h3",
+      "text": "Camera",
+      "dx": -0.01,
+      "dy": 0
+     },
+     {
+      "sel": "#settings-dialog:not([hidden]) .settings-section h3",
+      "text": "Display",
+      "dx": 0,
+      "dy": 0
+     },
+     {
+      "sel": "#settings-dialog:not([hidden]) .settings-section h3",
+      "text": "Graphics",
+      "dx": 0,
+      "dy": 0
+     },
+     {
+      "sel": "#settings-dialog:not([hidden]) .settings-section h3",
+      "text": "Audio",
+      "dx": 0,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .menu-title",
+      "text": "MYTHERRANIA",
+      "dx": 0,
+      "dy": -0.42
+     },
+     {
+      "sel": "#settings-dialog:not([hidden]) h2",
+      "text": "Settings",
+      "dx": 0,
+      "dy": -0.98
+     },
+     {
+      "sel": "#settings-dialog:not([hidden]) .settings-title",
+      "text": "Settings",
+      "dx": 0,
+      "dy": -0.98
+     }
+    ]
+   }
+  },
+  "1280": {
+   "tokens": {
+    "t3": 13,
+    "t4": 11.5,
+    "frameW": 2.3,
+    "frameWLg": 3,
+    "bevel": 1.38,
+    "radiusPlate": 5.17,
+    "socket": 44,
+    "metals": [
+     [
+      "--metal-steel",
+      3
+     ],
+     [
+      "--metal-bronze",
+      3
+     ],
+     [
+      "--metal-copper",
+      3
+     ],
+     [
+      "--stone",
+      4
+     ]
+    ]
+   },
+   "titleScreen": {
+    "n": 1,
+    "maxDx": 0.01,
+    "maxDy": 0.38,
+    "within1": 1,
+    "worst": {
+     "sel": ".menu-screen.active .menu-title",
+     "text": "MYTHERRANIA",
+     "dx": -0.01,
+     "dy": -0.38
+    },
+    "rows": [
+     {
+      "sel": ".menu-screen.active .menu-title",
+      "text": "MYTHERRANIA",
+      "dx": -0.01,
+      "dy": -0.38
+     }
+    ]
+   },
+   "titlesHero": {
+    "n": 8,
+    "maxDx": 0.01,
+    "maxDy": 0.81,
+    "within1": 8,
+    "worst": {
+     "sel": ".menu-screen.active .screen-head h2",
+     "text": "Fighters",
+     "dx": 0,
+     "dy": -0.81
+    },
+    "rows": [
+     {
+      "sel": ".menu-screen.active .screen-head h2",
+      "text": "Fighters",
+      "dx": 0,
+      "dy": -0.81
+     },
+     {
+      "sel": ".menu-screen.active .panel-head",
+      "text": "OpponentRival and terms.",
+      "dx": 0,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .panel-head",
+      "text": "ArenaShape, walls, props a",
+      "dx": -0.01,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .panel-head",
+      "text": "Chosen heroFigure, record,",
+      "dx": 0,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .sheet-col-head",
+      "text": "Attributes",
+      "dx": 0,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .sheet-col-head",
+      "text": "Derived",
+      "dx": 0,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .sheet-col-head",
+      "text": "Modifiers",
+      "dx": -0.01,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .steel-sign",
+      "text": "Human",
+      "dx": -0.01,
+      "dy": -0.75
+     }
+    ]
+   },
+   "heroBar": {
+    "present": true,
+    "verbsInBar": [
+     true,
+     true,
+     true,
+     true
+    ],
+    "deleteOutsideBar": true,
+    "rightGapPx": 0,
+    "verbsRightOfName": true,
+    "badge": {
+     "level": "1",
+     "w": 41,
+     "h": 41,
+     "gapToNamePx": 11,
+     "sameRow": true,
+     "round": "50%"
+    },
+    "tabsWithBadge": 1,
+    "tabs": 1
+   },
+   "contrastHero": {
+    "hero name": {
+     "n": 1,
+     "min": 8.2,
+     "colour": "rgb(240, 207, 115)",
+     "back": "rgb(52, 52, 55)"
+    },
+    "hero meta": {
+     "n": 1,
+     "min": 9.26,
+     "colour": "rgb(223, 207, 165)",
+     "back": "rgb(43, 42, 43)"
+    },
+    "bar verbs": {
+     "n": 4,
+     "min": 6.44,
+     "colour": "rgb(240, 207, 115)",
+     "back": "rgb(67, 68, 70)"
+    },
+    "level medallion": {
+     "n": 1,
+     "min": 6.51,
+     "colour": "rgb(255, 244, 230)",
+     "back": "rgb(137, 70, 39)"
+    },
+    "tab medallion": {
+     "n": 1,
+     "min": 5.43,
+     "colour": "rgb(255, 244, 230)",
+     "back": "rgb(154, 80, 45)"
+    },
+    "screen title": {
+     "n": 1,
+     "min": 8.27,
+     "colour": "rgb(240, 207, 115)",
+     "back": "rgb(69, 47, 29)"
+    },
+    "panel head": {
+     "n": 3,
+     "min": 8.78,
+     "colour": "rgb(240, 207, 115)",
+     "back": "rgb(61, 44, 33)"
+    },
+    "primary (stone)": {
+     "n": 1,
+     "min": 9.23,
+     "colour": "rgb(251, 241, 216)",
+     "back": "rgb(69, 63, 57)"
+    }
+   },
+   "reroll": {
+    "before": {
+     "name": "Hero",
+     "meta": "Human · Warrior · Longsword",
+     "level": "1",
+     "undo": false,
+     "tab": "Hero",
+     "stored": [
+      "Hero"
+     ]
+    },
+    "after": {
+     "name": "Gu'ka",
+     "meta": "Ork · Greenhide · Assassin · Hidden Blade · The Storm",
+     "level": "1",
+     "undo": true,
+     "tab": "Gu'ka",
+     "stored": [
+      "Gu'ka"
+     ]
+    },
+    "afterUndo": {
+     "name": "Hero",
+     "meta": "Human · Warrior · Longsword",
+     "level": "1",
+     "undo": false,
+     "tab": "Hero",
+     "stored": [
+      "Hero"
+     ]
+    },
+    "changed": true,
+    "levelKept": true,
+    "undoOffered": true,
+    "undoRestored": true,
+    "persisted": true,
+    "undoPersisted": true
+   },
+   "titlesCreator": {
+    "n": 16,
+    "maxDx": 0.01,
+    "maxDy": 0.81,
+    "within1": 16,
+    "worst": {
+     "sel": ".menu-screen.active .screen-head h2",
+     "text": "Fighters",
+     "dx": 0,
+     "dy": -0.81
+    },
+    "rows": [
+     {
+      "sel": ".menu-screen.active .screen-head h2",
+      "text": "Fighters",
+      "dx": 0,
+      "dy": -0.81
+     },
+     {
+      "sel": ".menu-screen.active .panel-head",
+      "text": "AncestryPeople and nation:",
+      "dx": 0,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .panel-head",
+      "text": "CallingClass, weapon, tech",
+      "dx": 0,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .panel-head",
+      "text": "Star signBirthsign and its",
+      "dx": -0.01,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .panel-head",
+      "text": "OpponentRival and terms.",
+      "dx": -0.01,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .panel-head",
+      "text": "ArenaShape, walls, props a",
+      "dx": 0,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .panel-head",
+      "text": "PreviewThe roll and its st",
+      "dx": 0,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .sheet-col-head",
+      "text": "Attributes",
+      "dx": -0.01,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .sheet-col-head",
+      "text": "Derived",
+      "dx": -0.01,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .sheet-col-head",
+      "text": "Modifiers",
+      "dx": -0.01,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .group-head",
+      "text": "Override by hand",
+      "dx": -0.01,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .group-head",
+      "text": "Attributes 12 of 12 points",
+      "dx": -0.01,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .group-head",
+      "text": "Silhouette",
+      "dx": 0,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .group-head",
+      "text": "Palette",
+      "dx": 0,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .skills-head",
+      "text": "Warrior techniques",
+      "dx": 0,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .steel-sign",
+      "text": "HumanImperial",
+      "dx": -0.01,
+      "dy": -0.48
+     }
+    ]
+   },
+   "ring": {
+    "slots": [
+     "helmet",
+     "armor",
+     "gloves",
+     "belt",
+     "legs",
+     "weapon",
+     "offhand",
+     "cape",
+     "boots"
+    ],
+    "leftN": 5,
+    "rightN": 4,
+    "leftOfCanvas": true,
+    "rightOfCanvas": true,
+    "minSlotPx": 44,
+    "canvas": {
+     "w": 288,
+     "h": 352
+    },
+    "weaponIcon": "icon icon-weapon icon-weapon-longsword equip-slot-icon",
+    "caption": "Weapon: Longsword (class default)"
+   },
+   "sockets": {
+    "helmet": {
+     "open": true,
+     "slot": "helmet",
+     "items": 3,
+     "disabled": 3,
+     "title": "Helmet",
+     "stillOpenAfterGreyClick": true,
+     "closed": true
+    },
+    "armor": {
+     "open": true,
+     "slot": "armor",
+     "items": 3,
+     "disabled": 3,
+     "title": "Armour",
+     "stillOpenAfterGreyClick": true,
+     "closed": true
+    },
+    "gloves": {
+     "open": true,
+     "slot": "gloves",
+     "items": 3,
+     "disabled": 3,
+     "title": "Gloves",
+     "stillOpenAfterGreyClick": true,
+     "closed": true
+    },
+    "belt": {
+     "open": true,
+     "slot": "belt",
+     "items": 3,
+     "disabled": 3,
+     "title": "Belt",
+     "stillOpenAfterGreyClick": true,
+     "closed": true
+    },
+    "legs": {
+     "open": true,
+     "slot": "legs",
+     "items": 3,
+     "disabled": 3,
+     "title": "Legs",
+     "stillOpenAfterGreyClick": true,
+     "closed": true
+    },
+    "offhand": {
+     "open": true,
+     "slot": "offhand",
+     "items": 3,
+     "disabled": 3,
+     "title": "Off hand",
+     "stillOpenAfterGreyClick": true,
+     "closed": true
+    },
+    "cape": {
+     "open": true,
+     "slot": "cape",
+     "items": 3,
+     "disabled": 3,
+     "title": "Cape",
+     "stillOpenAfterGreyClick": true,
+     "closed": true
+    },
+    "boots": {
+     "open": true,
+     "slot": "boots",
+     "items": 3,
+     "disabled": 3,
+     "title": "Boots",
+     "stillOpenAfterGreyClick": true,
+     "closed": true
+    }
+   },
+   "titlesPicker": {
+    "n": 1,
+    "maxDx": 0,
+    "maxDy": 0,
+    "within1": 1,
+    "worst": {
+     "sel": ".equip-picker-title",
+     "text": "Weapon",
+     "dx": 0,
+     "dy": 0
+    },
+    "rows": [
+     {
+      "sel": ".equip-picker-title",
+      "text": "Weapon",
+      "dx": 0,
+      "dy": 0
+     }
+    ]
+   },
+   "weaponGrid": {
+    "tiles": 18,
+    "withIcon": 18,
+    "enabled": 18,
+    "ids": [
+     "",
+     "dagger",
+     "shortsword",
+     "sabre",
+     "rapier",
+     "longsword",
+     "greatsword",
+     "spear",
+     "halberd",
+     "scythe",
+     "staff",
+     "axe",
+     "greataxe",
+     "mace",
+     "flail",
+     "warhammer",
+     "maul",
+     "bow"
+    ]
+   },
+   "weapon": {
+    "target": "maul",
+    "before": {
+     "table": "",
+     "icon": "icon icon-weapon icon-weapon-longsword equip-slot-icon",
+     "caption": "Weapon: Longsword (class default)",
+     "builds": 0
+    },
+    "after": {
+     "table": "maul",
+     "icon": "icon icon-weapon icon-weapon-maul equip-slot-icon",
+     "caption": "Weapon: Maul",
+     "builds": 1,
+     "pickerClosed": true,
+     "sheetWeapon": "Human · Imperial · Warrior | Longsword · sign The Mountain"
+    },
+    "tableFollows": true,
+    "iconFollows": true,
+    "previewRebuilt": true,
+    "canvasChanged": true,
+    "hashes": [
+     "4670c48d241f",
+     "e75cd6c8ce6e"
+    ],
+    "backToDefault": {
+     "table": "",
+     "caption": "Weapon: Longsword (class default)"
+    }
+   },
+   "contrastCreator": {
+    "socket names": {
+     "n": 4,
+     "min": 7.26,
+     "colour": "rgb(199, 179, 138)",
+     "back": "rgb(40, 39, 40)"
+    },
+    "caption": {
+     "n": 1,
+     "min": 8.48,
+     "colour": "rgb(199, 179, 138)",
+     "back": "rgb(32, 25, 15)"
+    },
+    "sheet col head": {
+     "n": 3,
+     "min": 10.99,
+     "colour": "rgb(240, 207, 115)",
+     "back": "rgb(39, 28, 20)"
+    },
+    "group head": {
+     "n": 4,
+     "min": 9.73,
+     "colour": "rgb(185, 201, 200)",
+     "back": "rgb(38, 28, 21)"
+    },
+    "dice (stone)": {
+     "n": 1,
+     "min": 10.39,
+     "colour": "rgb(243, 230, 255)",
+     "back": "rgb(59, 47, 74)"
+    }
+   },
+   "contrastPicker": {
+    "weapon names": {
+     "n": 4,
+     "min": 7.25,
+     "colour": "rgb(240, 207, 115)",
+     "back": "rgb(76, 57, 32)"
+    },
+    "picker title": {
+     "n": 1,
+     "min": 10.22,
+     "colour": "rgb(240, 207, 115)",
+     "back": "rgb(46, 34, 24)"
+    }
+   },
+   "pools": {
+    "frameW": "2px",
+    "metalFrame": 4,
+    "lostHatched": true,
+    "lostFromPotentialToMax": true
+   },
+   "titlesHistory": {
+    "n": 1,
+    "maxDx": 0.01,
+    "maxDy": 0.81,
+    "within1": 1,
+    "worst": {
+     "sel": ".menu-screen.active > h2",
+     "text": "Match History",
+     "dx": -0.01,
+     "dy": -0.81
+    },
+    "rows": [
+     {
+      "sel": ".menu-screen.active > h2",
+      "text": "Match History",
+      "dx": -0.01,
+      "dy": -0.81
+     }
+    ]
+   },
+   "titlesSettings": {
+    "n": 9,
+    "maxDx": 0.01,
+    "maxDy": 0.81,
+    "within1": 9,
+    "worst": {
+     "sel": "#settings-dialog:not([hidden]) h2",
+     "text": "Settings",
+     "dx": 0,
+     "dy": -0.81
+    },
+    "rows": [
+     {
+      "sel": "#settings-dialog:not([hidden]) .settings-section h3",
+      "text": "Game",
+      "dx": 0,
+      "dy": 0
+     },
+     {
+      "sel": "#settings-dialog:not([hidden]) .settings-section h3",
+      "text": "Controls",
+      "dx": 0,
+      "dy": 0
+     },
+     {
+      "sel": "#settings-dialog:not([hidden]) .settings-section h3",
+      "text": "Camera",
+      "dx": -0.01,
+      "dy": 0
+     },
+     {
+      "sel": "#settings-dialog:not([hidden]) .settings-section h3",
+      "text": "Display",
+      "dx": -0.01,
+      "dy": 0
+     },
+     {
+      "sel": "#settings-dialog:not([hidden]) .settings-section h3",
+      "text": "Graphics",
+      "dx": -0.01,
+      "dy": 0
+     },
+     {
+      "sel": "#settings-dialog:not([hidden]) .settings-section h3",
+      "text": "Audio",
+      "dx": 0,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .menu-title",
+      "text": "MYTHERRANIA",
+      "dx": -0.01,
+      "dy": -0.38
+     },
+     {
+      "sel": "#settings-dialog:not([hidden]) h2",
+      "text": "Settings",
+      "dx": 0,
+      "dy": -0.81
+     },
+     {
+      "sel": "#settings-dialog:not([hidden]) .settings-title",
+      "text": "Settings",
+      "dx": 0,
+      "dy": -0.81
+     }
+    ]
+   }
+  },
+  "1920": {
+   "tokens": {
+    "t3": 15.7,
+    "t4": 13.14,
+    "frameW": 2.63,
+    "frameWLg": 3.45,
+    "bevel": 1.58,
+    "radiusPlate": 5.91,
+    "socket": 45.55,
+    "metals": [
+     [
+      "--metal-steel",
+      3
+     ],
+     [
+      "--metal-bronze",
+      3
+     ],
+     [
+      "--metal-copper",
+      3
+     ],
+     [
+      "--stone",
+      4
+     ]
+    ]
+   },
+   "titleScreen": {
+    "n": 1,
+    "maxDx": 0,
+    "maxDy": 0.42,
+    "within1": 1,
+    "worst": {
+     "sel": ".menu-screen.active .menu-title",
+     "text": "MYTHERRANIA",
+     "dx": 0,
+     "dy": -0.42
+    },
+    "rows": [
+     {
+      "sel": ".menu-screen.active .menu-title",
+      "text": "MYTHERRANIA",
+      "dx": 0,
+      "dy": -0.42
+     }
+    ]
+   },
+   "titlesHero": {
+    "n": 8,
+    "maxDx": 0.01,
+    "maxDy": 0.91,
+    "within1": 8,
+    "worst": {
+     "sel": ".menu-screen.active .screen-head h2",
+     "text": "Fighters",
+     "dx": 0,
+     "dy": -0.91
+    },
+    "rows": [
+     {
+      "sel": ".menu-screen.active .screen-head h2",
+      "text": "Fighters",
+      "dx": 0,
+      "dy": -0.91
+     },
+     {
+      "sel": ".menu-screen.active .panel-head",
+      "text": "OpponentRival and terms.",
+      "dx": 0,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .panel-head",
+      "text": "ArenaShape, walls, props a",
+      "dx": 0,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .panel-head",
+      "text": "Chosen heroFigure, record,",
+      "dx": -0.01,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .sheet-col-head",
+      "text": "Attributes",
+      "dx": -0.01,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .sheet-col-head",
+      "text": "Derived",
+      "dx": 0,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .sheet-col-head",
+      "text": "Modifiers",
+      "dx": -0.01,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .steel-sign",
+      "text": "Human",
+      "dx": 0,
+      "dy": -0.85
+     }
+    ]
+   },
+   "heroBar": {
+    "present": true,
+    "verbsInBar": [
+     true,
+     true,
+     true,
+     true
+    ],
+    "deleteOutsideBar": true,
+    "rightGapPx": 0,
+    "verbsRightOfName": true,
+    "badge": {
+     "level": "1",
+     "w": 52,
+     "h": 52,
+     "gapToNamePx": 16,
+     "sameRow": true,
+     "round": "50%"
+    },
+    "tabsWithBadge": 1,
+    "tabs": 1
+   },
+   "contrastHero": {
+    "hero name": {
+     "n": 1,
+     "min": 8.21,
+     "colour": "rgb(240, 207, 115)",
+     "back": "rgb(52, 52, 54)"
+    },
+    "hero meta": {
+     "n": 1,
+     "min": 9.07,
+     "colour": "rgb(223, 207, 165)",
+     "back": "rgb(43, 44, 44)"
+    },
+    "bar verbs": {
+     "n": 4,
+     "min": 6.44,
+     "colour": "rgb(240, 207, 115)",
+     "back": "rgb(67, 68, 70)"
+    },
+    "level medallion": {
+     "n": 1,
+     "min": 6.36,
+     "colour": "rgb(255, 244, 230)",
+     "back": "rgb(138, 72, 40)"
+    },
+    "tab medallion": {
+     "n": 1,
+     "min": 5.33,
+     "colour": "rgb(255, 244, 230)",
+     "back": "rgb(156, 81, 46)"
+    },
+    "screen title": {
+     "n": 1,
+     "min": 8.23,
+     "colour": "rgb(240, 207, 115)",
+     "back": "rgb(70, 47, 30)"
+    },
+    "panel head": {
+     "n": 3,
+     "min": 8.78,
+     "colour": "rgb(240, 207, 115)",
+     "back": "rgb(61, 44, 33)"
+    },
+    "primary (stone)": {
+     "n": 1,
+     "min": 9.12,
+     "colour": "rgb(251, 241, 216)",
+     "back": "rgb(69, 64, 58)"
+    }
+   },
+   "reroll": {
+    "before": {
+     "name": "Hero",
+     "meta": "Human · Warrior · Longsword",
+     "level": "1",
+     "undo": false,
+     "tab": "Hero",
+     "stored": [
+      "Hero"
+     ]
+    },
+    "after": {
+     "name": "Ilmaendior of House Dawnsong",
+     "meta": "Elf · High Elf · Necromancer · Bone Scythe · The Moon",
+     "level": "1",
+     "undo": true,
+     "tab": "Ilmaendior of House Dawnsong",
+     "stored": [
+      "Ilmaendior of House Dawnsong"
+     ]
+    },
+    "afterUndo": {
+     "name": "Hero",
+     "meta": "Human · Warrior · Longsword",
+     "level": "1",
+     "undo": false,
+     "tab": "Hero",
+     "stored": [
+      "Hero"
+     ]
+    },
+    "changed": true,
+    "levelKept": true,
+    "undoOffered": true,
+    "undoRestored": true,
+    "persisted": true,
+    "undoPersisted": true
+   },
+   "titlesCreator": {
+    "n": 16,
+    "maxDx": 0.01,
+    "maxDy": 0.91,
+    "within1": 16,
+    "worst": {
+     "sel": ".menu-screen.active .screen-head h2",
+     "text": "Fighters",
+     "dx": 0,
+     "dy": -0.91
+    },
+    "rows": [
+     {
+      "sel": ".menu-screen.active .screen-head h2",
+      "text": "Fighters",
+      "dx": 0,
+      "dy": -0.91
+     },
+     {
+      "sel": ".menu-screen.active .panel-head",
+      "text": "AncestryPeople and nation:",
+      "dx": -0.01,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .panel-head",
+      "text": "CallingClass, weapon, tech",
+      "dx": 0,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .panel-head",
+      "text": "Star signBirthsign and its",
+      "dx": 0,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .panel-head",
+      "text": "OpponentRival and terms.",
+      "dx": -0.01,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .panel-head",
+      "text": "ArenaShape, walls, props a",
+      "dx": -0.01,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .panel-head",
+      "text": "PreviewThe roll and its st",
+      "dx": -0.01,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .sheet-col-head",
+      "text": "Attributes",
+      "dx": -0.01,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .sheet-col-head",
+      "text": "Derived",
+      "dx": 0,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .sheet-col-head",
+      "text": "Modifiers",
+      "dx": -0.01,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .group-head",
+      "text": "Override by hand",
+      "dx": 0,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .group-head",
+      "text": "Attributes 12 of 12 points",
+      "dx": 0,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .group-head",
+      "text": "Silhouette",
+      "dx": 0,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .group-head",
+      "text": "Palette",
+      "dx": 0,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .skills-head",
+      "text": "Warrior techniques",
+      "dx": -0.01,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .steel-sign",
+      "text": "HumanImperial",
+      "dx": 0,
+      "dy": -0.03
+     }
+    ]
+   },
+   "ring": {
+    "slots": [
+     "helmet",
+     "armor",
+     "gloves",
+     "belt",
+     "legs",
+     "weapon",
+     "offhand",
+     "cape",
+     "boots"
+    ],
+    "leftN": 5,
+    "rightN": 4,
+    "leftOfCanvas": true,
+    "rightOfCanvas": true,
+    "minSlotPx": 46,
+    "canvas": {
+     "w": 360,
+     "h": 440
+    },
+    "weaponIcon": "icon icon-weapon icon-weapon-longsword equip-slot-icon",
+    "caption": "Weapon: Longsword (class default)"
+   },
+   "sockets": {
+    "helmet": {
+     "open": true,
+     "slot": "helmet",
+     "items": 3,
+     "disabled": 3,
+     "title": "Helmet",
+     "stillOpenAfterGreyClick": true,
+     "closed": true
+    },
+    "armor": {
+     "open": true,
+     "slot": "armor",
+     "items": 3,
+     "disabled": 3,
+     "title": "Armour",
+     "stillOpenAfterGreyClick": true,
+     "closed": true
+    },
+    "gloves": {
+     "open": true,
+     "slot": "gloves",
+     "items": 3,
+     "disabled": 3,
+     "title": "Gloves",
+     "stillOpenAfterGreyClick": true,
+     "closed": true
+    },
+    "belt": {
+     "open": true,
+     "slot": "belt",
+     "items": 3,
+     "disabled": 3,
+     "title": "Belt",
+     "stillOpenAfterGreyClick": true,
+     "closed": true
+    },
+    "legs": {
+     "open": true,
+     "slot": "legs",
+     "items": 3,
+     "disabled": 3,
+     "title": "Legs",
+     "stillOpenAfterGreyClick": true,
+     "closed": true
+    },
+    "offhand": {
+     "open": true,
+     "slot": "offhand",
+     "items": 3,
+     "disabled": 3,
+     "title": "Off hand",
+     "stillOpenAfterGreyClick": true,
+     "closed": true
+    },
+    "cape": {
+     "open": true,
+     "slot": "cape",
+     "items": 3,
+     "disabled": 3,
+     "title": "Cape",
+     "stillOpenAfterGreyClick": true,
+     "closed": true
+    },
+    "boots": {
+     "open": true,
+     "slot": "boots",
+     "items": 3,
+     "disabled": 3,
+     "title": "Boots",
+     "stillOpenAfterGreyClick": true,
+     "closed": true
+    }
+   },
+   "titlesPicker": {
+    "n": 1,
+    "maxDx": 0,
+    "maxDy": 0,
+    "within1": 1,
+    "worst": {
+     "sel": ".equip-picker-title",
+     "text": "Weapon",
+     "dx": 0,
+     "dy": 0
+    },
+    "rows": [
+     {
+      "sel": ".equip-picker-title",
+      "text": "Weapon",
+      "dx": 0,
+      "dy": 0
+     }
+    ]
+   },
+   "weaponGrid": {
+    "tiles": 18,
+    "withIcon": 18,
+    "enabled": 18,
+    "ids": [
+     "",
+     "dagger",
+     "shortsword",
+     "sabre",
+     "rapier",
+     "longsword",
+     "greatsword",
+     "spear",
+     "halberd",
+     "scythe",
+     "staff",
+     "axe",
+     "greataxe",
+     "mace",
+     "flail",
+     "warhammer",
+     "maul",
+     "bow"
+    ]
+   },
+   "weapon": {
+    "target": "maul",
+    "before": {
+     "table": "",
+     "icon": "icon icon-weapon icon-weapon-longsword equip-slot-icon",
+     "caption": "Weapon: Longsword (class default)",
+     "builds": 0
+    },
+    "after": {
+     "table": "maul",
+     "icon": "icon icon-weapon icon-weapon-maul equip-slot-icon",
+     "caption": "Weapon: Maul",
+     "builds": 1,
+     "pickerClosed": true,
+     "sheetWeapon": "Human · Imperial · Warrior | Longsword · sign The Mountain"
+    },
+    "tableFollows": true,
+    "iconFollows": true,
+    "previewRebuilt": true,
+    "canvasChanged": true,
+    "hashes": [
+     "3d64f28acc31",
+     "9c3e1f0edf6e"
+    ],
+    "backToDefault": {
+     "table": "",
+     "caption": "Weapon: Longsword (class default)"
+    }
+   },
+   "contrastCreator": {
+    "socket names": {
+     "n": 4,
+     "min": 7.16,
+     "colour": "rgb(199, 179, 138)",
+     "back": "rgb(42, 40, 38)"
+    },
+    "caption": {
+     "n": 1,
+     "min": 8.46,
+     "colour": "rgb(199, 179, 138)",
+     "back": "rgb(33, 25, 16)"
+    },
+    "sheet col head": {
+     "n": 3,
+     "min": 10.99,
+     "colour": "rgb(240, 207, 115)",
+     "back": "rgb(39, 28, 20)"
+    },
+    "group head": {
+     "n": 4,
+     "min": 9.73,
+     "colour": "rgb(185, 201, 200)",
+     "back": "rgb(38, 28, 20)"
+    },
+    "dice (stone)": {
+     "n": 1,
+     "min": 10.39,
+     "colour": "rgb(243, 230, 255)",
+     "back": "rgb(59, 47, 74)"
+    }
+   },
+   "contrastPicker": {
+    "weapon names": {
+     "n": 4,
+     "min": 7.58,
+     "colour": "rgb(240, 207, 115)",
+     "back": "rgb(73, 54, 30)"
+    },
+    "picker title": {
+     "n": 1,
+     "min": 10.17,
+     "colour": "rgb(240, 207, 115)",
+     "back": "rgb(45, 35, 24)"
+    }
+   },
+   "pools": {
+    "frameW": "2px",
+    "metalFrame": 4,
+    "lostHatched": true,
+    "lostFromPotentialToMax": true
+   },
+   "titlesHistory": {
+    "n": 1,
+    "maxDx": 0.01,
+    "maxDy": 0.91,
+    "within1": 1,
+    "worst": {
+     "sel": ".menu-screen.active > h2",
+     "text": "Match History",
+     "dx": -0.01,
+     "dy": -0.91
+    },
+    "rows": [
+     {
+      "sel": ".menu-screen.active > h2",
+      "text": "Match History",
+      "dx": -0.01,
+      "dy": -0.91
+     }
+    ]
+   },
+   "titlesSettings": {
+    "n": 9,
+    "maxDx": 0.01,
+    "maxDy": 0.91,
+    "within1": 9,
+    "worst": {
+     "sel": "#settings-dialog:not([hidden]) h2",
+     "text": "Settings",
+     "dx": 0,
+     "dy": -0.91
+    },
+    "rows": [
+     {
+      "sel": "#settings-dialog:not([hidden]) .settings-section h3",
+      "text": "Game",
+      "dx": -0.01,
+      "dy": 0
+     },
+     {
+      "sel": "#settings-dialog:not([hidden]) .settings-section h3",
+      "text": "Controls",
+      "dx": 0,
+      "dy": 0
+     },
+     {
+      "sel": "#settings-dialog:not([hidden]) .settings-section h3",
+      "text": "Camera",
+      "dx": -0.01,
+      "dy": 0
+     },
+     {
+      "sel": "#settings-dialog:not([hidden]) .settings-section h3",
+      "text": "Display",
+      "dx": -0.01,
+      "dy": 0
+     },
+     {
+      "sel": "#settings-dialog:not([hidden]) .settings-section h3",
+      "text": "Graphics",
+      "dx": -0.01,
+      "dy": 0
+     },
+     {
+      "sel": "#settings-dialog:not([hidden]) .settings-section h3",
+      "text": "Audio",
+      "dx": 0,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .menu-title",
+      "text": "MYTHERRANIA",
+      "dx": 0,
+      "dy": -0.42
+     },
+     {
+      "sel": "#settings-dialog:not([hidden]) h2",
+      "text": "Settings",
+      "dx": 0,
+      "dy": -0.91
+     },
+     {
+      "sel": "#settings-dialog:not([hidden]) .settings-title",
+      "text": "Settings",
+      "dx": 0,
+      "dy": -0.91
+     }
+    ]
+   }
+  }
+ },
+ "errors": []
+}

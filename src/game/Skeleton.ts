@@ -1,6 +1,7 @@
 export type PoseName = "idle" | "walk" | "attack" | "hit" | "ko" | "skill";
 
 import { TOE_OUT_RAD } from "./anim/FootTurnout.ts";
+import { KNEE_OUT_SHARE } from "./anim/KneeOut.ts";
 import { poseAt } from "./AnimationCurve.ts";
 import type { SkillAnimation } from "./Skills.ts";
 import { BalancePlate } from "./Balance.ts";
@@ -64,8 +65,13 @@ export class Skeleton {
    * Wave X: `toeOut` = each foot's turn-out magnitude (rad, + = toes outward, applied about the
    * vertical through the ankle, toward the foot's own side: FootTurnout.ts). It rests at TOE_OUT_RAD, so an undriven
    * skeleton (a preview, a pinned pose) stands with the feet turned out too.
+   * Wave Y: `kneeOut` = each knee's outward offset from its hip-ankle line as a share of the leg (KneeOut.ts),
+   * rendered as a swivel of the leg about that line with the foot turned back (no sole point moves).
    */
-  readonly legRoll = { hip: new Float64Array(2), ankle: new Float64Array(2), toeOut: Float64Array.of(TOE_OUT_RAD, TOE_OUT_RAD) };
+  readonly legRoll = {
+    hip: new Float64Array(2), ankle: new Float64Array(2), toeOut: Float64Array.of(TOE_OUT_RAD, TOE_OUT_RAD),
+    kneeOut: Float64Array.of(KNEE_OUT_SHARE, KNEE_OUT_SHARE),
+  };
   /**
    * Drive the joints from the procedural Animator (src/game/anim). The Animator already
    * smoothed and clamped everything, so the Skeleton's own 14/s easing must not run on
@@ -73,8 +79,9 @@ export class Skeleton {
    * clock (hit timing), kick spring, balance, grip, face and stance transitions keep
    * working. Pass null to return to pose easing.
    */
-  drive(angles: Float64Array | null, hipRoll?: ArrayLike<number>, ankleRoll?: ArrayLike<number>, toeOut?: ArrayLike<number>): void {
+  drive(angles: Float64Array | null, hipRoll?: ArrayLike<number>, ankleRoll?: ArrayLike<number>, toeOut?: ArrayLike<number>, kneeOut?: ArrayLike<number>): void {
     this.#driven = angles;
+    if (kneeOut) { this.legRoll.kneeOut[0] = kneeOut[0]; this.legRoll.kneeOut[1] = kneeOut[1]; }
     if (hipRoll) { this.legRoll.hip[0] = hipRoll[0]; this.legRoll.hip[1] = hipRoll[1]; }
     if (ankleRoll) { this.legRoll.ankle[0] = ankleRoll[0]; this.legRoll.ankle[1] = ankleRoll[1]; }
     if (toeOut) { this.legRoll.toeOut[0] = toeOut[0]; this.legRoll.toeOut[1] = toeOut[1]; }

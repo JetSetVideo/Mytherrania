@@ -1,0 +1,27 @@
+{
+  "tag": "before",
+  "dist": "dist-pose",
+  "shots": [
+    "/Users/macmax/Desktop/Mytherrania/artifacts/qa-wave-y/pose/before-weapon-longsword-side.png",
+    "/Users/macmax/Desktop/Mytherrania/artifacts/qa-wave-y/pose/before-weapon-longsword-3q.png",
+    "/Users/macmax/Desktop/Mytherrania/artifacts/qa-wave-y/pose/before-weapon-axe-side.png",
+    "/Users/macmax/Desktop/Mytherrania/artifacts/qa-wave-y/pose/before-weapon-axe-3q.png",
+    "/Users/macmax/Desktop/Mytherrania/artifacts/qa-wave-y/pose/before-weapon-mace-side.png",
+    "/Users/macmax/Desktop/Mytherrania/artifacts/qa-wave-y/pose/before-weapon-mace-3q.png",
+    "/Users/macmax/Desktop/Mytherrania/artifacts/qa-wave-y/pose/before-weapon-spear-side.png",
+    "/Users/macmax/Desktop/Mytherrania/artifacts/qa-wave-y/pose/before-weapon-spear-3q.png",
+    "/Users/macmax/Desktop/Mytherrania/artifacts/qa-wave-y/pose/before-weapon-staff-side.png",
+    "/Users/macmax/Desktop/Mytherrania/artifacts/qa-wave-y/pose/before-weapon-staff-3q.png",
+    "/Users/macmax/Desktop/Mytherrania/artifacts/qa-wave-y/pose/before-weapon-scythe-side.png",
+    "/Users/macmax/Desktop/Mytherrania/artifacts/qa-wave-y/pose/before-weapon-scythe-3q.png",
+    "/Users/macmax/Desktop/Mytherrania/artifacts/qa-wave-y/pose/before-weapon-dagger-side.png",
+    "/Users/macmax/Desktop/Mytherrania/artifacts/qa-wave-y/pose/before-weapon-dagger-3q.png",
+    "/Users/macmax/Desktop/Mytherrania/artifacts/qa-wave-y/pose/before-weapon-bow-side.png",
+    "/Users/macmax/Desktop/Mytherrania/artifacts/qa-wave-y/pose/before-weapon-bow-3q.png",
+    "/Users/macmax/Desktop/Mytherrania/artifacts/qa-wave-y/pose/before-knees-human-front.png",
+    "/Users/macmax/Desktop/Mytherrania/artifacts/qa-wave-y/pose/before-knees-elf-front.png",
+    "/Users/macmax/Desktop/Mytherrania/artifacts/qa-wave-y/pose/before-knees-dwarf-front.png",
+    "/Users/macmax/Desktop/Mytherrania/artifacts/qa-wave-y/pose/before-knees-ork-front.png"
+  ],
+  "errors": []
+}

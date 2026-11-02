@@ -1,0 +1,1242 @@
+{
+ "dist": "/Users/macmax/.hermes/cache/scratch/head-y/dist-ui",
+ "viewports": {
+  "390": {
+   "tokens": {
+    "t3": 13,
+    "t4": 11.5,
+    "frameW": 390,
+    "frameWLg": 390,
+    "bevel": 390,
+    "radiusPlate": 390,
+    "socket": 390,
+    "metals": [
+     [
+      "--metal-steel",
+      0
+     ],
+     [
+      "--metal-bronze",
+      0
+     ],
+     [
+      "--metal-copper",
+      0
+     ],
+     [
+      "--stone",
+      0
+     ]
+    ]
+   },
+   "titleScreen": {
+    "n": 1,
+    "maxDx": 14.19,
+    "maxDy": 0,
+    "within1": 0,
+    "worst": {
+     "sel": ".menu-screen.active .menu-title",
+     "text": "MYTHERRANIA",
+     "dx": 14.19,
+     "dy": 0
+    },
+    "rows": [
+     {
+      "sel": ".menu-screen.active .menu-title",
+      "text": "MYTHERRANIA",
+      "dx": 14.19,
+      "dy": 0
+     }
+    ]
+   },
+   "titlesHero": {
+    "n": 8,
+    "maxDx": 122.25,
+    "maxDy": 0.7,
+    "within1": 5,
+    "worst": {
+     "sel": ".menu-screen.active .sheet-col-head",
+     "text": "Derived",
+     "dx": -122.25,
+     "dy": 0
+    },
+    "rows": [
+     {
+      "sel": ".menu-screen.active .screen-head h2",
+      "text": "Fighters",
+      "dx": 0,
+      "dy": -0.7
+     },
+     {
+      "sel": ".menu-screen.active .panel-head",
+      "text": "OpponentRival and terms.",
+      "dx": 0,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .panel-head",
+      "text": "ArenaShape, walls, props a",
+      "dx": 0,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .panel-head",
+      "text": "Chosen heroFigure, record,",
+      "dx": 0,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .sheet-col-head",
+      "text": "Attributes",
+      "dx": -108.97,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .sheet-col-head",
+      "text": "Derived",
+      "dx": -122.25,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .sheet-col-head",
+      "text": "Modifiers",
+      "dx": -113.1,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .steel-sign",
+      "text": "Human",
+      "dx": 0,
+      "dy": -0.7
+     }
+    ]
+   },
+   "titlesCreator": {
+    "n": 16,
+    "maxDx": 122.25,
+    "maxDy": 0.7,
+    "within1": 9,
+    "worst": {
+     "sel": ".menu-screen.active .sheet-col-head",
+     "text": "Derived",
+     "dx": -122.25,
+     "dy": 0
+    },
+    "rows": [
+     {
+      "sel": ".menu-screen.active .screen-head h2",
+      "text": "Fighters",
+      "dx": 0,
+      "dy": -0.7
+     },
+     {
+      "sel": ".menu-screen.active .panel-head",
+      "text": "AncestryPeople and nation:",
+      "dx": 0,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .panel-head",
+      "text": "CallingClass, weapon, tech",
+      "dx": 0,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .panel-head",
+      "text": "Star signBirthsign and its",
+      "dx": 0,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .panel-head",
+      "text": "OpponentRival and terms.",
+      "dx": 0,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .panel-head",
+      "text": "ArenaShape, walls, props a",
+      "dx": 0,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .panel-head",
+      "text": "PreviewThe roll and its st",
+      "dx": 0,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .sheet-col-head",
+      "text": "Attributes",
+      "dx": -108.97,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .sheet-col-head",
+      "text": "Derived",
+      "dx": -122.25,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .sheet-col-head",
+      "text": "Modifiers",
+      "dx": -113.1,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .group-head",
+      "text": "Override by hand",
+      "dx": -73.77,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .group-head",
+      "text": "Attributes 12 of 12 points",
+      "dx": -12.05,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .group-head",
+      "text": "Silhouette",
+      "dx": -104.66,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .group-head",
+      "text": "Palette",
+      "dx": 0,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .skills-head",
+      "text": "Warrior techniques",
+      "dx": -70.79,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .steel-sign",
+      "text": "HumanImperial",
+      "dx": 0,
+      "dy": -0.47
+     }
+    ]
+   },
+   "titlesHistory": {
+    "n": 1,
+    "maxDx": 0.01,
+    "maxDy": 0.7,
+    "within1": 1,
+    "worst": {
+     "sel": ".menu-screen.active > h2",
+     "text": "Match History",
+     "dx": -0.01,
+     "dy": -0.7
+    },
+    "rows": [
+     {
+      "sel": ".menu-screen.active > h2",
+      "text": "Match History",
+      "dx": -0.01,
+      "dy": -0.7
+     }
+    ]
+   },
+   "titlesSettings": {
+    "n": 9,
+    "maxDx": 129.74,
+    "maxDy": 0.7,
+    "within1": 0,
+    "worst": {
+     "sel": "#settings-dialog:not([hidden]) .settings-section h3",
+     "text": "Game",
+     "dx": -129.74,
+     "dy": 0
+    },
+    "rows": [
+     {
+      "sel": "#settings-dialog:not([hidden]) .settings-section h3",
+      "text": "Game",
+      "dx": -129.74,
+      "dy": 0
+     },
+     {
+      "sel": "#settings-dialog:not([hidden]) .settings-section h3",
+      "text": "Controls",
+      "dx": -106.1,
+      "dy": 0
+     },
+     {
+      "sel": "#settings-dialog:not([hidden]) .settings-section h3",
+      "text": "Camera",
+      "dx": -117.27,
+      "dy": 0
+     },
+     {
+      "sel": "#settings-dialog:not([hidden]) .settings-section h3",
+      "text": "Display",
+      "dx": -118.14,
+      "dy": 0
+     },
+     {
+      "sel": "#settings-dialog:not([hidden]) .settings-section h3",
+      "text": "Graphics",
+      "dx": -108.69,
+      "dy": 0
+     },
+     {
+      "sel": "#settings-dialog:not([hidden]) .settings-section h3",
+      "text": "Audio",
+      "dx": -125.88,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .menu-title",
+      "text": "MYTHERRANIA",
+      "dx": 14.19,
+      "dy": 0
+     },
+     {
+      "sel": "#settings-dialog:not([hidden]) h2",
+      "text": "Settings",
+      "dx": -102.16,
+      "dy": -0.7
+     },
+     {
+      "sel": "#settings-dialog:not([hidden]) .settings-title",
+      "text": "Settings",
+      "dx": -102.16,
+      "dy": -0.7
+     }
+    ]
+   }
+  },
+  "820": {
+   "tokens": {
+    "t3": 13,
+    "t4": 11.5,
+    "frameW": 820,
+    "frameWLg": 820,
+    "bevel": 820,
+    "radiusPlate": 820,
+    "socket": 820,
+    "metals": [
+     [
+      "--metal-steel",
+      0
+     ],
+     [
+      "--metal-bronze",
+      0
+     ],
+     [
+      "--metal-copper",
+      0
+     ],
+     [
+      "--stone",
+      0
+     ]
+    ]
+   },
+   "titleScreen": {
+    "n": 1,
+    "maxDx": 0,
+    "maxDy": 0.42,
+    "within1": 1,
+    "worst": {
+     "sel": ".menu-screen.active .menu-title",
+     "text": "MYTHERRANIA",
+     "dx": 0,
+     "dy": -0.42
+    },
+    "rows": [
+     {
+      "sel": ".menu-screen.active .menu-title",
+      "text": "MYTHERRANIA",
+      "dx": 0,
+      "dy": -0.42
+     }
+    ]
+   },
+   "titlesHero": {
+    "n": 8,
+    "maxDx": 63.48,
+    "maxDy": 0.98,
+    "within1": 5,
+    "worst": {
+     "sel": ".menu-screen.active .sheet-col-head",
+     "text": "Derived",
+     "dx": -63.48,
+     "dy": 0
+    },
+    "rows": [
+     {
+      "sel": ".menu-screen.active .screen-head h2",
+      "text": "Fighters",
+      "dx": 0,
+      "dy": -0.98
+     },
+     {
+      "sel": ".menu-screen.active .panel-head",
+      "text": "OpponentRival and terms.",
+      "dx": 0,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .panel-head",
+      "text": "ArenaShape, walls, props a",
+      "dx": 0,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .panel-head",
+      "text": "Chosen heroFigure, record,",
+      "dx": 0,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .sheet-col-head",
+      "text": "Attributes",
+      "dx": -50.2,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .sheet-col-head",
+      "text": "Derived",
+      "dx": -63.48,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .sheet-col-head",
+      "text": "Modifiers",
+      "dx": -54.34,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .steel-sign",
+      "text": "Human",
+      "dx": 0,
+      "dy": -0.71
+     }
+    ]
+   },
+   "titlesCreator": {
+    "n": 16,
+    "maxDx": 114.58,
+    "maxDy": 0.98,
+    "within1": 9,
+    "worst": {
+     "sel": ".menu-screen.active .group-head",
+     "text": "Silhouette",
+     "dx": -114.58,
+     "dy": 0
+    },
+    "rows": [
+     {
+      "sel": ".menu-screen.active .screen-head h2",
+      "text": "Fighters",
+      "dx": 0,
+      "dy": -0.98
+     },
+     {
+      "sel": ".menu-screen.active .panel-head",
+      "text": "AncestryPeople and nation:",
+      "dx": 0,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .panel-head",
+      "text": "CallingClass, weapon, tech",
+      "dx": 0,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .panel-head",
+      "text": "Star signBirthsign and its",
+      "dx": 0,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .panel-head",
+      "text": "OpponentRival and terms.",
+      "dx": 0,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .panel-head",
+      "text": "ArenaShape, walls, props a",
+      "dx": 0,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .panel-head",
+      "text": "PreviewThe roll and its st",
+      "dx": 0,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .sheet-col-head",
+      "text": "Attributes",
+      "dx": -45.7,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .sheet-col-head",
+      "text": "Derived",
+      "dx": -58.98,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .sheet-col-head",
+      "text": "Modifiers",
+      "dx": -49.84,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .group-head",
+      "text": "Override by hand",
+      "dx": -83.7,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .group-head",
+      "text": "Attributes 12 of 12 points",
+      "dx": -21.98,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .group-head",
+      "text": "Silhouette",
+      "dx": -114.58,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .group-head",
+      "text": "Palette",
+      "dx": 0,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .skills-head",
+      "text": "Warrior techniques",
+      "dx": -80.71,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .steel-sign",
+      "text": "HumanImperial",
+      "dx": 0,
+      "dy": -0.47
+     }
+    ]
+   },
+   "titlesHistory": {
+    "n": 1,
+    "maxDx": 0.01,
+    "maxDy": 0.98,
+    "within1": 1,
+    "worst": {
+     "sel": ".menu-screen.active > h2",
+     "text": "Match History",
+     "dx": -0.01,
+     "dy": -0.98
+    },
+    "rows": [
+     {
+      "sel": ".menu-screen.active > h2",
+      "text": "Match History",
+      "dx": -0.01,
+      "dy": -0.98
+     }
+    ]
+   },
+   "titlesSettings": {
+    "n": 9,
+    "maxDx": 293.62,
+    "maxDy": 0.98,
+    "within1": 1,
+    "worst": {
+     "sel": "#settings-dialog:not([hidden]) .settings-section h3",
+     "text": "Game",
+     "dx": -293.62,
+     "dy": 0
+    },
+    "rows": [
+     {
+      "sel": "#settings-dialog:not([hidden]) .settings-section h3",
+      "text": "Game",
+      "dx": -293.62,
+      "dy": 0
+     },
+     {
+      "sel": "#settings-dialog:not([hidden]) .settings-section h3",
+      "text": "Controls",
+      "dx": -98.48,
+      "dy": 0
+     },
+     {
+      "sel": "#settings-dialog:not([hidden]) .settings-section h3",
+      "text": "Camera",
+      "dx": -109.65,
+      "dy": 0
+     },
+     {
+      "sel": "#settings-dialog:not([hidden]) .settings-section h3",
+      "text": "Display",
+      "dx": -110.52,
+      "dy": 0
+     },
+     {
+      "sel": "#settings-dialog:not([hidden]) .settings-section h3",
+      "text": "Graphics",
+      "dx": -101.06,
+      "dy": 0
+     },
+     {
+      "sel": "#settings-dialog:not([hidden]) .settings-section h3",
+      "text": "Audio",
+      "dx": -118.25,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .menu-title",
+      "text": "MYTHERRANIA",
+      "dx": 0,
+      "dy": -0.42
+     },
+     {
+      "sel": "#settings-dialog:not([hidden]) h2",
+      "text": "Settings",
+      "dx": -262.1,
+      "dy": -0.98
+     },
+     {
+      "sel": "#settings-dialog:not([hidden]) .settings-title",
+      "text": "Settings",
+      "dx": -262.1,
+      "dy": -0.98
+     }
+    ]
+   }
+  },
+  "1280": {
+   "tokens": {
+    "t3": 13,
+    "t4": 11.5,
+    "frameW": 1280,
+    "frameWLg": 1280,
+    "bevel": 1280,
+    "radiusPlate": 1280,
+    "socket": 1280,
+    "metals": [
+     [
+      "--metal-steel",
+      0
+     ],
+     [
+      "--metal-bronze",
+      0
+     ],
+     [
+      "--metal-copper",
+      0
+     ],
+     [
+      "--stone",
+      0
+     ]
+    ]
+   },
+   "titleScreen": {
+    "n": 1,
+    "maxDx": 0.01,
+    "maxDy": 0.38,
+    "within1": 1,
+    "worst": {
+     "sel": ".menu-screen.active .menu-title",
+     "text": "MYTHERRANIA",
+     "dx": -0.01,
+     "dy": -0.38
+    },
+    "rows": [
+     {
+      "sel": ".menu-screen.active .menu-title",
+      "text": "MYTHERRANIA",
+      "dx": -0.01,
+      "dy": -0.38
+     }
+    ]
+   },
+   "titlesHero": {
+    "n": 8,
+    "maxDx": 95.89,
+    "maxDy": 0.81,
+    "within1": 5,
+    "worst": {
+     "sel": ".menu-screen.active .sheet-col-head",
+     "text": "Derived",
+     "dx": -95.89,
+     "dy": 0
+    },
+    "rows": [
+     {
+      "sel": ".menu-screen.active .screen-head h2",
+      "text": "Fighters",
+      "dx": 0,
+      "dy": -0.81
+     },
+     {
+      "sel": ".menu-screen.active .panel-head",
+      "text": "OpponentRival and terms.",
+      "dx": 0,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .panel-head",
+      "text": "ArenaShape, walls, props a",
+      "dx": 0,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .panel-head",
+      "text": "Chosen heroFigure, record,",
+      "dx": 0,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .sheet-col-head",
+      "text": "Attributes",
+      "dx": -82.53,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .sheet-col-head",
+      "text": "Derived",
+      "dx": -95.89,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .sheet-col-head",
+      "text": "Modifiers",
+      "dx": -86.7,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .steel-sign",
+      "text": "Human",
+      "dx": -0.01,
+      "dy": -0.75
+     }
+    ]
+   },
+   "titlesCreator": {
+    "n": 16,
+    "maxDx": 86.23,
+    "maxDy": 0.81,
+    "within1": 8,
+    "worst": {
+     "sel": ".menu-screen.active .sheet-col-head",
+     "text": "Derived",
+     "dx": -86.23,
+     "dy": 0
+    },
+    "rows": [
+     {
+      "sel": ".menu-screen.active .screen-head h2",
+      "text": "Fighters",
+      "dx": 0,
+      "dy": -0.81
+     },
+     {
+      "sel": ".menu-screen.active .panel-head",
+      "text": "AncestryPeople and nation:",
+      "dx": -9.68,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .panel-head",
+      "text": "CallingClass, weapon, tech",
+      "dx": 0,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .panel-head",
+      "text": "Star signBirthsign and its",
+      "dx": 0,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .panel-head",
+      "text": "OpponentRival and terms.",
+      "dx": 0,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .panel-head",
+      "text": "ArenaShape, walls, props a",
+      "dx": 0,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .panel-head",
+      "text": "PreviewThe roll and its st",
+      "dx": 0,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .sheet-col-head",
+      "text": "Attributes",
+      "dx": -72.87,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .sheet-col-head",
+      "text": "Derived",
+      "dx": -86.23,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .sheet-col-head",
+      "text": "Modifiers",
+      "dx": -77.02,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .group-head",
+      "text": "Override by hand",
+      "dx": -27.52,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .group-head",
+      "text": "Attributes 12 of 12 points",
+      "dx": -6.91,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .group-head",
+      "text": "Silhouette",
+      "dx": -58.56,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .group-head",
+      "text": "Palette",
+      "dx": 0,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .skills-head",
+      "text": "Warrior techniques",
+      "dx": -24.97,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .steel-sign",
+      "text": "HumanImperial",
+      "dx": -0.01,
+      "dy": -0.48
+     }
+    ]
+   },
+   "titlesHistory": {
+    "n": 1,
+    "maxDx": 0.01,
+    "maxDy": 0.81,
+    "within1": 1,
+    "worst": {
+     "sel": ".menu-screen.active > h2",
+     "text": "Match History",
+     "dx": -0.01,
+     "dy": -0.81
+    },
+    "rows": [
+     {
+      "sel": ".menu-screen.active > h2",
+      "text": "Match History",
+      "dx": -0.01,
+      "dy": -0.81
+     }
+    ]
+   },
+   "titlesSettings": {
+    "n": 9,
+    "maxDx": 444.08,
+    "maxDy": 0.81,
+    "within1": 1,
+    "worst": {
+     "sel": "#settings-dialog:not([hidden]) .settings-section h3",
+     "text": "Game",
+     "dx": -444.08,
+     "dy": 0
+    },
+    "rows": [
+     {
+      "sel": "#settings-dialog:not([hidden]) .settings-section h3",
+      "text": "Game",
+      "dx": -444.08,
+      "dy": 0
+     },
+     {
+      "sel": "#settings-dialog:not([hidden]) .settings-section h3",
+      "text": "Controls",
+      "dx": -89.16,
+      "dy": 0
+     },
+     {
+      "sel": "#settings-dialog:not([hidden]) .settings-section h3",
+      "text": "Camera",
+      "dx": -100.93,
+      "dy": 0
+     },
+     {
+      "sel": "#settings-dialog:not([hidden]) .settings-section h3",
+      "text": "Display",
+      "dx": -101.85,
+      "dy": 0
+     },
+     {
+      "sel": "#settings-dialog:not([hidden]) .settings-section h3",
+      "text": "Graphics",
+      "dx": -91.88,
+      "dy": 0
+     },
+     {
+      "sel": "#settings-dialog:not([hidden]) .settings-section h3",
+      "text": "Audio",
+      "dx": -110,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .menu-title",
+      "text": "MYTHERRANIA",
+      "dx": -0.01,
+      "dy": -0.38
+     },
+     {
+      "sel": "#settings-dialog:not([hidden]) h2",
+      "text": "Settings",
+      "dx": -399.33,
+      "dy": -0.81
+     },
+     {
+      "sel": "#settings-dialog:not([hidden]) .settings-title",
+      "text": "Settings",
+      "dx": -399.33,
+      "dy": -0.81
+     }
+    ]
+   }
+  },
+  "1920": {
+   "tokens": {
+    "t3": 15.7,
+    "t4": 13.14,
+    "frameW": 1920,
+    "frameWLg": 1920,
+    "bevel": 1920,
+    "radiusPlate": 1920,
+    "socket": 1920,
+    "metals": [
+     [
+      "--metal-steel",
+      0
+     ],
+     [
+      "--metal-bronze",
+      0
+     ],
+     [
+      "--metal-copper",
+      0
+     ],
+     [
+      "--stone",
+      0
+     ]
+    ]
+   },
+   "titleScreen": {
+    "n": 1,
+    "maxDx": 0,
+    "maxDy": 0.42,
+    "within1": 1,
+    "worst": {
+     "sel": ".menu-screen.active .menu-title",
+     "text": "MYTHERRANIA",
+     "dx": 0,
+     "dy": -0.42
+    },
+    "rows": [
+     {
+      "sel": ".menu-screen.active .menu-title",
+      "text": "MYTHERRANIA",
+      "dx": 0,
+      "dy": -0.42
+     }
+    ]
+   },
+   "titlesHero": {
+    "n": 8,
+    "maxDx": 185.06,
+    "maxDy": 0.91,
+    "within1": 5,
+    "worst": {
+     "sel": ".menu-screen.active .sheet-col-head",
+     "text": "Derived",
+     "dx": -185.06,
+     "dy": 0
+    },
+    "rows": [
+     {
+      "sel": ".menu-screen.active .screen-head h2",
+      "text": "Fighters",
+      "dx": 0,
+      "dy": -0.91
+     },
+     {
+      "sel": ".menu-screen.active .panel-head",
+      "text": "OpponentRival and terms.",
+      "dx": 0,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .panel-head",
+      "text": "ArenaShape, walls, props a",
+      "dx": 0,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .panel-head",
+      "text": "Chosen heroFigure, record,",
+      "dx": 0,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .sheet-col-head",
+      "text": "Attributes",
+      "dx": -168.05,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .sheet-col-head",
+      "text": "Derived",
+      "dx": -185.06,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .sheet-col-head",
+      "text": "Modifiers",
+      "dx": -173.35,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .steel-sign",
+      "text": "Human",
+      "dx": 0,
+      "dy": -0.85
+     }
+    ]
+   },
+   "titlesCreator": {
+    "n": 16,
+    "maxDx": 165.4,
+    "maxDy": 0.91,
+    "within1": 10,
+    "worst": {
+     "sel": ".menu-screen.active .sheet-col-head",
+     "text": "Derived",
+     "dx": -165.4,
+     "dy": 0
+    },
+    "rows": [
+     {
+      "sel": ".menu-screen.active .screen-head h2",
+      "text": "Fighters",
+      "dx": 0,
+      "dy": -0.91
+     },
+     {
+      "sel": ".menu-screen.active .panel-head",
+      "text": "AncestryPeople and nation:",
+      "dx": 0,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .panel-head",
+      "text": "CallingClass, weapon, tech",
+      "dx": 0,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .panel-head",
+      "text": "Star signBirthsign and its",
+      "dx": 0,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .panel-head",
+      "text": "OpponentRival and terms.",
+      "dx": 0,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .panel-head",
+      "text": "ArenaShape, walls, props a",
+      "dx": 0,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .panel-head",
+      "text": "PreviewThe roll and its st",
+      "dx": 0,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .sheet-col-head",
+      "text": "Attributes",
+      "dx": -148.39,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .sheet-col-head",
+      "text": "Derived",
+      "dx": -165.4,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .sheet-col-head",
+      "text": "Modifiers",
+      "dx": -153.68,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .group-head",
+      "text": "Override by hand",
+      "dx": -63,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .group-head",
+      "text": "Attributes 12 of 12 points",
+      "dx": -0.78,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .group-head",
+      "text": "Silhouette",
+      "dx": -102.53,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .group-head",
+      "text": "Palette",
+      "dx": 0,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .skills-head",
+      "text": "Warrior techniques",
+      "dx": -83.51,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .steel-sign",
+      "text": "HumanImperial",
+      "dx": 0,
+      "dy": -0.03
+     }
+    ]
+   },
+   "titlesHistory": {
+    "n": 1,
+    "maxDx": 0.01,
+    "maxDy": 0.91,
+    "within1": 1,
+    "worst": {
+     "sel": ".menu-screen.active > h2",
+     "text": "Match History",
+     "dx": -0.01,
+     "dy": -0.91
+    },
+    "rows": [
+     {
+      "sel": ".menu-screen.active > h2",
+      "text": "Match History",
+      "dx": -0.01,
+      "dy": -0.91
+     }
+    ]
+   },
+   "titlesSettings": {
+    "n": 9,
+    "maxDx": 691.37,
+    "maxDy": 0.91,
+    "within1": 1,
+    "worst": {
+     "sel": "#settings-dialog:not([hidden]) .settings-section h3",
+     "text": "Game",
+     "dx": -691.37,
+     "dy": 0
+    },
+    "rows": [
+     {
+      "sel": "#settings-dialog:not([hidden]) .settings-section h3",
+      "text": "Game",
+      "dx": -691.37,
+      "dy": 0
+     },
+     {
+      "sel": "#settings-dialog:not([hidden]) .settings-section h3",
+      "text": "Controls",
+      "dx": -158.52,
+      "dy": 0
+     },
+     {
+      "sel": "#settings-dialog:not([hidden]) .settings-section h3",
+      "text": "Camera",
+      "dx": -173.73,
+      "dy": 0
+     },
+     {
+      "sel": "#settings-dialog:not([hidden]) .settings-section h3",
+      "text": "Display",
+      "dx": -174.9,
+      "dy": 0
+     },
+     {
+      "sel": "#settings-dialog:not([hidden]) .settings-section h3",
+      "text": "Graphics",
+      "dx": -162.02,
+      "dy": 0
+     },
+     {
+      "sel": "#settings-dialog:not([hidden]) .settings-section h3",
+      "text": "Audio",
+      "dx": -185.44,
+      "dy": 0
+     },
+     {
+      "sel": ".menu-screen.active .menu-title",
+      "text": "MYTHERRANIA",
+      "dx": 0,
+      "dy": -0.42
+     },
+     {
+      "sel": "#settings-dialog:not([hidden]) h2",
+      "text": "Settings",
+      "dx": -633.66,
+      "dy": -0.91
+     },
+     {
+      "sel": "#settings-dialog:not([hidden]) .settings-title",
+      "text": "Settings",
+      "dx": -633.66,
+      "dy": -0.91
+     }
+    ]
+   }
+  }
+ },
+ "errors": []
+}

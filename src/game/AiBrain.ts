@@ -11,7 +11,9 @@
 // Pure module: no Three.js, no DOM. decideBrain() is the single entry point the
 // Engine calls each tick.
 
-import { decide, defaultTree, type CombatView, type Decision, type TreeNode } from "./DecisionTree.ts";
+import { ATTRIBUTE_KEYS, decide, defaultTree, type AttributeKey, type CombatView, type Decision, type FighterKnowledge, type TreeNode } from "./DecisionTree.ts";
+import { fatigueReading, poolLevels, type PotentialState, type SpendKind } from "./Potential.ts";
+import type { ResourceState } from "./Resources.ts";
 import { NeuralPolicy, toFeatures } from "../balance/NeuralPolicy.ts";
 import type { TelemetryDigest } from "./AiStats.ts";
 import type { ArenaDigest } from "./arena/contracts.ts";
@@ -272,4 +274,102 @@ export function sensibleSkill(
   if (view.distance - lunge > view.selfReach) return false;
   if (view.openBehind === undefined || view.rimBehind === undefined) return true;
   return !(view.openBehind >= 0.5 && -lunge + 0.35 >= view.rimBehind);
+}
+
+
+// ---------------------------------------------------------------------------
+// Wave Y (lane P, C-AI): attributes + pool potentials in the AI's view, and the decisions that use them.
+// ---------------------------------------------------------------------------
+
+/** What the AI is told about a fighter: 7 attributes, 3 pools {max, potential, current}, fatigue. */
+export function fighterKnowledge(
+  stats: Partial<Record<AttributeKey, number>>,
+  pot: PotentialState,
+  hp: number,
+  res: ResourceState | null | undefined,
+): FighterKnowledge {
+  const attributes = {} as Record<AttributeKey, number>;
+  for (const k of ATTRIBUTE_KEYS) { const v = stats[k]; attributes[k] = typeof v === "number" && Number.isFinite(v) ? v : 0; }
+  return {
+    attributes,
+    pools: poolLevels(pot, hp, res),
+    exhausted: !!res?.exhausted,
+    fatigue: { mana: fatigueReading(pot, "mana").overload, stamina: fatigueReading(pot, "stamina").overload },
+  };
+}
+
+/** Enemy stamina potential (share of max) at or below which the enemy reads as worn. */
+export const PRESS_STAMINA_POTENTIAL = 0.9;
+/** Enemy stamina NOW (share of max) at or below which the enemy reads as winded. */
+export const PRESS_STAMINA_CURRENT = 0.35;
+/** Enemy health potential (share of max) at or below which the enemy reads as wounded. */
+export const PRESS_HEALTH_POTENTIAL = 0.94;
+/** Own stamina potential (share of max) below which a stamina spend waits unless it finishes. */
+export const PACE_STAMINA_POTENTIAL = 0.6;
+/** A skill whose spend would burn more than this share of a pool's max in fatigue is skipped. */
+export const CONSERVE_LOSS_SHARE = 0.02;
+/** Enemy hp ratio under which any spend is worth it (the finisher exception). */
+export const FINISHER_HP = 0.25;
+
+const share = (v: number, max: number) => (max > 0 ? v / max : 1);
+
+/** True when a fighter is worn: exhausted, winded, fatigued below the press potential, or wounded. */
+export function isWorn(k: FighterKnowledge): boolean {
+  const st = k.pools.stamina, hp = k.pools.health;
+  return k.exhausted
+    || share(st.current, st.max) <= PRESS_STAMINA_CURRENT
+    || share(st.potential, st.max) <= PRESS_STAMINA_POTENTIAL
+    || share(hp.potential, hp.max) <= PRESS_HEALTH_POTENTIAL;
+}
+
+/**
+ * PRESS a worn opponent: when the enemy is worn (isWorn) and self is no worse off (not exhausted,
+ * hp ratio no lower than the enemy's − 0.05), strike when ready and in reach, close in when out of
+ * reach — instead of the default tree's block / retreat. Never with self's back to an open edge
+ * (the edge-aware survival rules keep that case). Undefined = let the tree decide.
+ */
+export function pressDecision(view: CombatView): Decision | undefined {
+  const s = view.self, e = view.enemy;
+  if (!s || !e) return undefined;
+  if (view.nearEdge && (view.openBehind ?? 1) >= 0.5) return undefined;
+  if (!isWorn(e) || s.exhausted || view.selfHpRatio < view.enemyHpRatio - 0.05) return undefined;
+  if (view.distance > view.selfReach) return "advance";
+  return view.ready ? "attack" : undefined;
+}
+
+/**
+ * Wrap a tree with the press hook at its root (DecisionTree's `compute` hook). Without the Wave Y
+ * knowledge in the view the hook returns undefined and the wrapped tree decides exactly as before.
+ */
+export function poolAwareTree(tree: TreeNode): TreeNode {
+  // `distance` is always >= 0 > -1, so the field comparison always walks into `tree`.
+  return { kind: "branch", field: "distance", threshold: -1, missing: "greater", compute: pressDecision, less: tree, greater: tree };
+}
+
+/**
+ * PACE / CONSERVE a technique's spend: skip it when
+ *   - paying it would burn more than CONSERVE_LOSS_SHARE of a pool's max in fatigue (a caster does
+ *     not overspend mana into fatigue; a dasher does not chain stamina spends), or
+ *   - it costs stamina while self's stamina potential is under PACE_STAMINA_POTENTIAL and its
+ *     current under half (pace a worn body),
+ * unless the enemy is nearly down (enemy hp ratio < FINISHER_HP). `lossFor` is
+ * Potential.fatigueLossFor bound to self's state. Without the knowledge it always allows.
+ */
+export function poolWiseSkill(
+  cost: { mana: number; stamina: number },
+  view: Pick<CombatView, "self" | "enemyHpRatio">,
+  lossFor: (k: SpendKind, cost: number) => number,
+): boolean {
+  const s = view.self;
+  if (!s || view.enemyHpRatio < FINISHER_HP) return true;
+  for (const k of ["mana", "stamina"] as const) {
+    const c = cost[k];
+    if (!(c > 0)) continue;
+    if (lossFor(k, c) > CONSERVE_LOSS_SHARE * s.pools[k].max) return false;
+  }
+  if (cost.stamina > 0) {
+    const st = s.pools.stamina;
+    if (share(st.potential, st.max) < PACE_STAMINA_POTENTIAL && share(st.current, st.max) < 0.5) return false;
+  }
+  return true;
 }

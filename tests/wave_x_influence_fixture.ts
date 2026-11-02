@@ -14,6 +14,7 @@ import { knockbackSpeed, WAVE_J_RULES } from "../src/balance/MatchRules.ts";
 import { bodyFromStats, totalMass } from "../src/game/Physics.ts";
 import { weaponForClass } from "../src/game/Weapon.ts";
 import { budgetForLevel, spendBudget } from "../src/game/SpectateGen.ts";
+import { createPotential, recordSpend, tickPotential, traitsOf, woundPotential } from "../src/game/Potential.ts";
 
 
 export const BASE = createStats("Warrior");
@@ -56,7 +57,17 @@ const PROBE: Record<string, (s: CombatStats) => number> = {
   "cast.pushback": (s) => pushbackSeconds({ damageFracOfMax: 0.2, angleDeg: 90, stamina: 6, heavy: false, agility: effectiveAgility(s) }),
   "focus.cast": (s) => castFocus(s),
   "intelligence.mana": (s) => manaIntelligence(s),
+  // Wave Y: the potential law. A reference blow (1000 HP) and a reference burst (5 x 12 every 0.3 s).
+  "potential.woundTaken": (s) => { const p = createPotential({ health: 1e5, mana: 80, stamina: 90 }, traitsOf(s)); woundPotential(p, 1000, 5); return 1e5 - p.potential.health; },
+  "potential.woundDealt": (s) => { const p = createPotential({ health: 1e5, mana: 80, stamina: 90 }, traitsOf(BASE)); woundPotential(p, 1000, s.strength); return 1e5 - p.potential.health; },
+  "potential.manaFatigue": (s) => burst(s, "mana"),
+  "potential.staminaFatigue": (s) => burst(s, "stamina"),
 };
+function burst(s: CombatStats, k: "mana" | "stamina"): number {
+  const p = createPotential({ health: 1e5, mana: 80, stamina: 90 }, traitsOf(s));
+  for (let i = 0; i < 4; i++) { recordSpend(p, k, 12); tickPotential(p, 0.3); }
+  return p.lost[k].fatigue;
+}
 for (const a of ATTRIBUTE_NODES) {
   PROBE[`technique.amplitude[${a}]`] = (s) =>
     derivePower({ shape: "self-buff", element: "wind", scale: { attribute: a as AttributeName, weapon: "weight" }, stats: s, weapon: WEAPON }).amplitude;

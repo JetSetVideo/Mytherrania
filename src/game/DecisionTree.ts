@@ -1,5 +1,22 @@
 import type { ArenaDigest } from "./arena/contracts.ts";
 import { engagement, type Stance } from "./Engagement.ts";
+import type { PoolKind, PoolLevel } from "./Potential.ts";
+
+/** Wave Y (C-AI): the seven primary attributes (runtime CombatStats scale). */
+export type AttributeKey = "vitality" | "resilience" | "focus" | "reflex" | "strength" | "intelligence" | "agility";
+export const ATTRIBUTE_KEYS: readonly AttributeKey[] = ["vitality", "resilience", "focus", "reflex", "strength", "intelligence", "agility"];
+
+/**
+ * Wave Y (C-AI): what the AI knows about one fighter beyond hp — all seven attributes and each
+ * pool's {max, potential, current} (Potential.ts), plus the exhaustion flag and the fatigue
+ * overload of the spend pools (Potential.fatigueReading, 0 = a sustainable pace).
+ */
+export interface FighterKnowledge {
+  attributes: Record<AttributeKey, number>;
+  pools: Record<PoolKind, PoolLevel>;
+  exhausted: boolean;
+  fatigue: { mana: number; stamina: number };
+}
 
 export type Decision = "attack" | "advance" | "retreat" | "block" | "wait" | "flank";
 
@@ -38,6 +55,10 @@ export interface CombatView {
   quietS?: number;
   /** The fighter's stance, shaping the engagement intent. */
   stance?: Stance;
+  // Wave Y (lane P, C-AI): both fighters' attributes and pools. Optional — absent, every tree and
+  // every pool-aware hook decides exactly as before.
+  self?: FighterKnowledge;
+  enemy?: FighterKnowledge;
 }
 
 /** Distances the digest features report when the ray never meets an open edge (finite, for trees). */

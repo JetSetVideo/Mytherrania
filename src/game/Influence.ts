@@ -22,6 +22,10 @@
 //   technique           technique.castSeconds technique.duration technique.manaCost technique.cooldown
 //                       technique.amplitude[<attribute>] technique.recoveryTail cast.channel cast.pushback
 //   casting side nodes  focus.cast (PowerCost.castFocus)  intelligence.mana (PowerCost.manaIntelligence)
+//   potential (Wave Y)  potential.woundTaken potential.woundDealt potential.manaFatigue potential.staminaFatigue
+//                       (Potential.ts: health potential lost to a reference blow; mana / stamina potential
+//                       lost to a reference over-paced burst). Race ENDURANCE also softens stamina fatigue,
+//                       but it is a race affinity, not a stat block field: tests/wave_y_potential_test.ts Y5.
 // `weight` is a NOMINAL strength 0..1 for display (how much of `to` this edge drives); the test
 // checks the sign, not the weight.
 
@@ -120,6 +124,12 @@ export const INFLUENCES: readonly Influence[] = [
   { dir: "up", from: "agility", to: "technique.amplitude[agility]", sign: 1, weight: 1, why: "Whirlwind, Sprint, Vanish, Shadow Sprint, Killing Spree scale on agility" },
   { dir: "up", from: "agility", to: "technique.recoveryTail", sign: -1, weight: 0.5, why: "a power's release-and-return tail ÷ Agility.recovery" },
   { dir: "up", from: "agility", to: "cast.pushback", sign: -1, weight: 0.5, why: "a shoved channel recovers sooner (Cast.pushbackSeconds)" },
+  // ─── UP (Wave Y): the pool POTENTIAL law (Potential.ts) ──────────────────────────────────────
+  { dir: "up", from: "vitality", to: "potential.woundTaken", sign: -1, weight: 0.5, why: "a sturdy body takes shallower wounds (Potential.woundFactor)" },
+  { dir: "up", from: "resilience", to: "potential.woundTaken", sign: -1, weight: 0.5, why: "hardened flesh: less health potential lost per blow" },
+  { dir: "up", from: "strength", to: "potential.woundDealt", sign: 1, weight: 0.6, why: "a strong enemy wounds deeper (+4 %/point)" },
+  { dir: "up", from: "focus", to: "potential.manaFatigue", sign: -1, weight: 0.6, why: "a steady mind tires less from fast casting (Potential.fatigueResist)" },
+  { dir: "up", from: "vitality", to: "potential.staminaFatigue", sign: -1, weight: 0.6, why: "fit lungs: less stamina potential burnt by over-paced effort" },
 
   // ─── SIDE: strength vs agility (body mass); focus <-> intelligence (casting) ──────────────────
   { dir: "side", from: "strength", to: "agility.effective", sign: -1, weight: 0.6, why: "muscle is mass: 0.05 agility per kg above 70 kg" },

@@ -1,0 +1,419 @@
+{
+  "root": "dist-pools",
+  "harness": {
+    "runningAfterResume": true
+  },
+  "before": {
+    "pools": [
+      {
+        "seat": 0,
+        "name": "QA-A",
+        "pools": {
+          "health": {
+            "max": 28450,
+            "potential": 28450,
+            "current": 28450
+          },
+          "mana": {
+            "max": 64,
+            "potential": 64,
+            "current": 64
+          },
+          "stamina": {
+            "max": 110,
+            "potential": 110,
+            "current": 110
+          }
+        },
+        "lost": {
+          "health": {
+            "wound": 0,
+            "status": 0,
+            "fatigue": 0,
+            "recovered": 0
+          },
+          "mana": {
+            "wound": 0,
+            "status": 0,
+            "fatigue": 0,
+            "recovered": 0
+          },
+          "stamina": {
+            "wound": 0,
+            "status": 0,
+            "fatigue": 0,
+            "recovered": 0
+          }
+        },
+        "fatigue": {
+          "mana": 0,
+          "stamina": 0
+        },
+        "exhausted": false,
+        "invariant": true
+      },
+      {
+        "seat": 1,
+        "name": "QA-B",
+        "pools": {
+          "health": {
+            "max": 25625,
+            "potential": 25596.913,
+            "current": 25489.316
+          },
+          "mana": {
+            "max": 80,
+            "potential": 80,
+            "current": 56.672
+          },
+          "stamina": {
+            "max": 98,
+            "potential": 98,
+            "current": 85.022
+          }
+        },
+        "lost": {
+          "health": {
+            "wound": 28.086658413212717,
+            "status": 0,
+            "fatigue": 0,
+            "recovered": 0
+          },
+          "mana": {
+            "wound": 0,
+            "status": 0,
+            "fatigue": 0,
+            "recovered": 0
+          },
+          "stamina": {
+            "wound": 0,
+            "status": 0,
+            "fatigue": 0,
+            "recovered": 0
+          }
+        },
+        "fatigue": {
+          "mana": 0,
+          "stamina": 0
+        },
+        "exhausted": false,
+        "invariant": true
+      }
+    ],
+    "bars": [
+      {
+        "seat": "0",
+        "pool": "health",
+        "max": 28450,
+        "potential": 28450,
+        "current": 28450,
+        "potentialW": "100%",
+        "currentW": "100%",
+        "lostLeft": "100%",
+        "lostW": "0%",
+        "text": "100% · ceiling 100%",
+        "inPanel": true,
+        "rendered": true,
+        "inlineStyleAttr": ""
+      },
+      {
+        "seat": "0",
+        "pool": "mana",
+        "max": 64,
+        "potential": 64,
+        "current": 64,
+        "potentialW": "100%",
+        "currentW": "100%",
+        "lostLeft": "100%",
+        "lostW": "0%",
+        "text": "100% · ceiling 100%",
+        "inPanel": true,
+        "rendered": true,
+        "inlineStyleAttr": ""
+      },
+      {
+        "seat": "0",
+        "pool": "stamina",
+        "max": 110,
+        "potential": 110,
+        "current": 110,
+        "potentialW": "100%",
+        "currentW": "100%",
+        "lostLeft": "100%",
+        "lostW": "0%",
+        "text": "100% · ceiling 100%",
+        "inPanel": true,
+        "rendered": true,
+        "inlineStyleAttr": ""
+      },
+      {
+        "seat": "1",
+        "pool": "health",
+        "max": 25625,
+        "potential": 25597,
+        "current": 25489,
+        "potentialW": "99.89%",
+        "currentW": "99.47%",
+        "lostLeft": "99.89%",
+        "lostW": "0.11%",
+        "text": "99% · ceiling 100%",
+        "inPanel": true,
+        "rendered": true,
+        "inlineStyleAttr": ""
+      },
+      {
+        "seat": "1",
+        "pool": "mana",
+        "max": 80,
+        "potential": 80,
+        "current": 57,
+        "potentialW": "100%",
+        "currentW": "70.76%",
+        "lostLeft": "100%",
+        "lostW": "0%",
+        "text": "71% · ceiling 100%",
+        "inPanel": true,
+        "rendered": true,
+        "inlineStyleAttr": ""
+      },
+      {
+        "seat": "1",
+        "pool": "stamina",
+        "max": 98,
+        "potential": 98,
+        "current": 85,
+        "potentialW": "100%",
+        "currentW": "86.45%",
+        "lostLeft": "100%",
+        "lostW": "0%",
+        "text": "86% · ceiling 100%",
+        "inPanel": true,
+        "rendered": true,
+        "inlineStyleAttr": ""
+      }
+    ],
+    "clock": {
+      "sinceStart": 7.13,
+      "hostile": 1.13,
+      "limitS": 180,
+      "decided": false,
+      "winner": null
+    }
+  },
+  "presses": {
+    "dash": 4,
+    "defense": 2,
+    "power": 4
+  },
+  "after": {
+    "pools": [
+      {
+        "seat": 0,
+        "name": "QA-A",
+        "pools": {
+          "health": {
+            "max": 28450,
+            "potential": 27562.349,
+            "current": 23740.11
+          },
+          "mana": {
+            "max": 64,
+            "potential": 49.244,
+            "current": 19.754
+          },
+          "stamina": {
+            "max": 110,
+            "potential": 95.505,
+            "current": 90.099
+          }
+        },
+        "lost": {
+          "health": {
+            "wound": 887.6510744975967,
+            "status": 0,
+            "fatigue": 0,
+            "recovered": 0
+          },
+          "mana": {
+            "wound": 0,
+            "status": 1.289536000061048,
+            "fatigue": 14.75328947368422,
+            "recovered": 1.2864768000182636
+          },
+          "stamina": {
+            "wound": 0,
+            "status": 9.670265000891703,
+            "fatigue": 5.000000000000014,
+            "recovered": 0.17564800012590354
+          }
+        },
+        "fatigue": {
+          "mana": 0.172,
+          "stamina": 0.333
+        },
+        "exhausted": false,
+        "invariant": true
+      },
+      {
+        "seat": 1,
+        "name": "QA-B",
+        "pools": {
+          "health": {
+            "max": 25625,
+            "potential": 25426.348,
+            "current": 23491.751
+          },
+          "mana": {
+            "max": 80,
+            "potential": 79.011,
+            "current": 39.451
+          },
+          "stamina": {
+            "max": 98,
+            "potential": 86.603,
+            "current": 77.95
+          }
+        },
+        "lost": {
+          "health": {
+            "wound": 441.5825583945043,
+            "status": 0,
+            "fatigue": 0,
+            "recovered": 242.9304073038329
+          },
+          "mana": {
+            "wound": 0,
+            "status": 1.1202399999617967,
+            "fatigue": 0.7894736842105203,
+            "recovered": 0.9203999999998587
+          },
+          "stamina": {
+            "wound": 0,
+            "status": 10.92337399995371,
+            "fatigue": 0.4737609329446002,
+            "recovered": 0
+          }
+        },
+        "fatigue": {
+          "mana": 0,
+          "stamina": 0
+        },
+        "exhausted": false,
+        "invariant": true
+      }
+    ],
+    "bars": [
+      {
+        "seat": "0",
+        "pool": "health",
+        "max": 28450,
+        "potential": 27562,
+        "current": 23740,
+        "potentialW": "96.88%",
+        "currentW": "83.45%",
+        "lostLeft": "96.88%",
+        "lostW": "3.12%",
+        "text": "83% · ceiling 97%",
+        "inPanel": true,
+        "rendered": true,
+        "inlineStyleAttr": ""
+      },
+      {
+        "seat": "0",
+        "pool": "mana",
+        "max": 64,
+        "potential": 49,
+        "current": 20,
+        "potentialW": "76.94%",
+        "currentW": "30.87%",
+        "lostLeft": "76.94%",
+        "lostW": "23.06%",
+        "text": "31% · ceiling 77%",
+        "inPanel": true,
+        "rendered": true,
+        "inlineStyleAttr": ""
+      },
+      {
+        "seat": "0",
+        "pool": "stamina",
+        "max": 110,
+        "potential": 96,
+        "current": 90,
+        "potentialW": "86.82%",
+        "currentW": "81.91%",
+        "lostLeft": "86.82%",
+        "lostW": "13.18%",
+        "text": "82% · ceiling 87%",
+        "inPanel": true,
+        "rendered": true,
+        "inlineStyleAttr": ""
+      },
+      {
+        "seat": "1",
+        "pool": "health",
+        "max": 25625,
+        "potential": 25426,
+        "current": 23492,
+        "potentialW": "99.22%",
+        "currentW": "91.68%",
+        "lostLeft": "99.22%",
+        "lostW": "0.78%",
+        "text": "92% · ceiling 99%",
+        "inPanel": true,
+        "rendered": true,
+        "inlineStyleAttr": ""
+      },
+      {
+        "seat": "1",
+        "pool": "mana",
+        "max": 80,
+        "potential": 79,
+        "current": 39,
+        "potentialW": "98.76%",
+        "currentW": "49.31%",
+        "lostLeft": "98.76%",
+        "lostW": "1.24%",
+        "text": "49% · ceiling 99%",
+        "inPanel": true,
+        "rendered": true,
+        "inlineStyleAttr": ""
+      },
+      {
+        "seat": "1",
+        "pool": "stamina",
+        "max": 98,
+        "potential": 87,
+        "current": 78,
+        "potentialW": "88.37%",
+        "currentW": "79.54%",
+        "lostLeft": "88.37%",
+        "lostW": "11.63%",
+        "text": "80% · ceiling 88%",
+        "inPanel": true,
+        "rendered": true,
+        "inlineStyleAttr": ""
+      }
+    ],
+    "clock": {
+      "sinceStart": 22.49,
+      "hostile": 16.49,
+      "limitS": 180,
+      "decided": false,
+      "winner": null
+    }
+  },
+  "verdict": {
+    "barsFor6Pools": true,
+    "invariantBefore": true,
+    "invariantAfter": true,
+    "healthPotentialFell": true,
+    "staminaOrManaPotentialFell": true,
+    "lostRegionGrew": true,
+    "barWidthsMatchPools": true,
+    "noInlineStyleOnBar": true,
+    "pageErrors": 0,
+    "cspErrors": 0
+  },
+  "errors": [],
+  "csp": []
+}

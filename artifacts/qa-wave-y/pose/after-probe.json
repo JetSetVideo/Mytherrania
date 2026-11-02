@@ -1,0 +1,27 @@
+{
+  "tag": "after",
+  "dist": "dist-pose",
+  "shots": [
+    "artifacts/qa-wave-y/pose/after-weapon-longsword-side.png",
+    "artifacts/qa-wave-y/pose/after-weapon-longsword-3q.png",
+    "artifacts/qa-wave-y/pose/after-weapon-axe-side.png",
+    "artifacts/qa-wave-y/pose/after-weapon-axe-3q.png",
+    "artifacts/qa-wave-y/pose/after-weapon-mace-side.png",
+    "artifacts/qa-wave-y/pose/after-weapon-mace-3q.png",
+    "artifacts/qa-wave-y/pose/after-weapon-spear-side.png",
+    "artifacts/qa-wave-y/pose/after-weapon-spear-3q.png",
+    "artifacts/qa-wave-y/pose/after-weapon-staff-side.png",
+    "artifacts/qa-wave-y/pose/after-weapon-staff-3q.png",
+    "artifacts/qa-wave-y/pose/after-weapon-scythe-side.png",
+    "artifacts/qa-wave-y/pose/after-weapon-scythe-3q.png",
+    "artifacts/qa-wave-y/pose/after-weapon-dagger-side.png",
+    "artifacts/qa-wave-y/pose/after-weapon-dagger-3q.png",
+    "artifacts/qa-wave-y/pose/after-weapon-bow-side.png",
+    "artifacts/qa-wave-y/pose/after-weapon-bow-3q.png",
+    "artifacts/qa-wave-y/pose/after-knees-human-front.png",
+    "artifacts/qa-wave-y/pose/after-knees-elf-front.png",
+    "artifacts/qa-wave-y/pose/after-knees-dwarf-front.png",
+    "artifacts/qa-wave-y/pose/after-knees-ork-front.png"
+  ],
+  "errors": []
+}

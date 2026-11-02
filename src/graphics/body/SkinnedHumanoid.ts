@@ -34,6 +34,11 @@ import { attachHands, type HandRigApi } from "./HandRig.ts";
 import { createJointHelpers, creaseBands, creaseWeights, type JointHelper, syncJointHelpers } from "./JointHelpers.ts";
 import { gripModeRotation, preferredGrip } from "../../game/weapons/Generate.ts";
 import { toeOutYaw } from "../../game/anim/FootTurnout.ts";
+import { kneeSwivel } from "../../game/anim/KneeOut.ts";
+import { GUARD_KEY, gripPitchFor } from "../../game/anim/Swing.ts";
+import { gripEuler, type V3t } from "../../game/PalmWeapon.ts";
+import { gripRuleOf } from "../../game/GripStance.ts";
+import { applyForearmTwist, GRIP_SUPINATION, handFrameInMount } from "../../combat/RigAdapter.ts";
 
 /** What the skinned rig adds to HumanoidRig. */
 export interface SkinnedExtras {
@@ -85,6 +90,14 @@ export interface SkinnedHumanoidOptions {
    * blended SKIN tone, so it must pass the profile's original palette colour here.
    */
   garment?: string;
+  /**
+   * Wave Y: the rig STANDS ON ITS OWN (the Creator preview, the portrait studio: buildPreviewRig) — nobody
+   * runs the combat grip or the Animator on it. Then update() (a) applies the engine's weapon carry until a
+   * caller takes the grip (setGrip), and (b) applies the knee-out (KneeOut.ts) on an undriven Skeleton too.
+   * Off by default: a bare rig (tests, the ragdoll fixtures) keeps the plain Skeleton pose — the forearm
+   * supination and the leg swivel are render-side bone edits the hinge-only ragdoll cannot seed from.
+   */
+  restPose?: boolean;
 }
 
 const DEFAULT_APPEARANCE: Appearance = { body: "#ef7455", accent: "#dfaa55", height: 1.7, weight: 70, hair: "#172128", beard: false, moustache: false, eyes: "#172128" };
@@ -309,8 +322,57 @@ export function buildSkinnedHumanoid(
     side, bone: bones.get(a)!, lateral: bones.get(h)!.position.x,
   }));
   const qToeG = new THREE.Quaternion(), qToeP = new THREE.Quaternion(), qToeY = new THREE.Quaternion();
+  // Wave Y: the knee-out swivel (KneeOut.ts) per leg: hip, knee and ankle bones, and the hip's outward sign in the rig.
+  const kneeLegs = ([[0, "hipL", "kneeL", "ankleL"], [1, "hipR", "kneeR", "ankleR"]] as const).map(([side, h, k, a]) => ({
+    side, hip: bones.get(h)!, knee: bones.get(k)!, ankle: bones.get(a)!, out: bones.get(h)!.position.x < 0 ? -1 : 1,
+  }));
+  const kH = new THREE.Vector3(), kK = new THREE.Vector3(), kA = new THREE.Vector3(), kAx = new THREE.Vector3(), kU = new THREE.Vector3();
+  const kO = new THREE.Vector3(), qKA = new THREE.Quaternion(), qKR = new THREE.Quaternion(), qKP = new THREE.Quaternion();
+  /** Swivel each leg about its hip->ankle line so the knee sits `legRoll.kneeOut` of the leg outward; the foot keeps its world rotation. */
+  const applyKneeOut = (sk: GameSkeleton): void => {
+    const share = sk.legRoll.kneeOut;
+    if (!share) return;
+    for (const L of kneeLegs) {
+      if (!(share[L.side] > 0)) continue;
+      L.hip.updateWorldMatrix(true, true);
+      L.hip.getWorldPosition(kH); L.knee.getWorldPosition(kK); L.ankle.getWorldPosition(kA);
+      const legLen = kK.distanceTo(kH) + kA.distanceTo(kK);
+      kAx.copy(kA).sub(kH).normalize();
+      kU.copy(kK).sub(kH);
+      kU.addScaledVector(kAx, -kU.dot(kAx));
+      const s = kneeSwivel(share[L.side], legLen, kU.length());
+      if (s === 0) continue;
+      // Outward = the hip's own side of the rig (+x left), in the world.
+      group.getWorldQuaternion(qKP);
+      kO.set(L.out, 0, 0).applyQuaternion(qKP);
+      const sign = kO.dot(kU.clone().crossVectors(kAx, kU)) >= 0 ? 1 : -1;
+      L.ankle.getWorldQuaternion(qKA); // the foot's planted world rotation, kept
+      qKR.setFromAxisAngle(kAx, sign * s);
+      L.hip.parent!.getWorldQuaternion(qKP);
+      // local' = P⁻¹·R·P·local: the world rotation R about an axis through the hip joint (the bone origin).
+      L.hip.quaternion.premultiply(qKP.clone().invert().multiply(qKR).multiply(qKP));
+      L.hip.updateWorldMatrix(false, true);
+      L.knee.getWorldQuaternion(qKP);
+      L.ankle.quaternion.copy(qKP.invert().multiply(qKA));
+      L.ankle.updateWorldMatrix(false, true);
+    }
+  };
 
-  return {
+  // Wave Y: the rig's OWN carry (options.restPose). The engine sets the grip every frame (forearm supination + the swing
+  // driver's wrist laid across the palm: SwingDriver.gripEulerOf); a surface that only calls update()
+  // (the Creator preview, the portrait studio) used to show the build-time grip — rotation.x = −0.35
+  // about the MOUNT's x with a pronated hand — which stood the blade up and BACK over the shoulder
+  // (forward share −0.56, the tip 34-48 cm behind the grip) and the handle out of the palm. Until a caller
+  // takes the grip (setGrip), a restPose rig's update() applies the engine's carry: the same supination, the same carry
+  // wrist (Swing.gripPitchFor at GUARD_KEY.blade, a reverse dagger's blade down, a bow's limbs upright)
+  // and the archetype's wrist band — so every surface holds the weapon the way the arena holds it.
+  const carryRule = gripRuleOf(options.weaponSpec?.archetype);
+  const carryReverse = options.weaponSpec ? preferredGrip(options.weaponSpec) === "reverse" : false;
+  const carryBlade = carryReverse ? GUARD_KEY.blade + Math.PI : carryRule.carry === "upright-bow" ? 0 : GUARD_KEY.blade;
+  let gripTaken = false, carryHand: [V3t, V3t, V3t] | null = null;
+  const carryEuler: [number, number] = [0, 0];
+
+  const rig: HumanoidRig & SkinnedExtras = {
     group,
     triangleCount,
     weaponNode: weaponMesh.group,
@@ -333,6 +395,7 @@ export function buildSkinnedHumanoid(
     secondaryMasses: face.secondary,
     setEffect(strength: number, time: number): void { weaponMesh.setEffect(strength, time); },
     setGrip(pitch: number, roll: number): void {
+      gripTaken = true; // the caller owns the grip from now on (wave Y: update() stops applying the rest carry)
       grip.rotation.x = pitch; grip.rotation.z = roll;
       // The joints are final by now (twist/guard ran): re-read the creases, re-close the hands.
       syncJointHelpers(helpers);
@@ -377,10 +440,20 @@ export function buildSkinnedHumanoid(
         qToeP.copy(qToeG).invert().multiply(qToeY).multiply(qToeG);
         t.bone.quaternion.premultiply(qToeP);
       }
+      // The knee-out rides the Animator's stance (a driven Skeleton) or a rig that stands on its own.
+      if (sk.isDriven() || options.restPose) applyKneeOut(sk);
+      if (options.restPose && !gripTaken) {
+        applyForearmTwist(rig, sk.joint("elbowR").angle, GRIP_SUPINATION);
+        carryHand ??= handFrameInMount(rig);
+        const pitch = gripPitchFor(carryBlade, sk.joint("spine").angle, sk.joint("shoulderR").angle, sk.joint("elbowR").angle, carryReverse);
+        gripEuler(carryHand, pitch, 0, carryRule.band, carryEuler);
+        grip.rotation.x = carryEuler[0]; grip.rotation.z = carryEuler[1];
+      }
       applyFaceMorph(face, sk.face.face());
       soleOffset = measureSoles();
       syncJointHelpers(helpers);
       hands.update();
     },
   };
+  return rig;
 }

@@ -16,6 +16,17 @@ export interface ResourcePool {
   current: number;
   max: number;
   regenPerSecond: number;
+  /**
+   * Wave Y (C-POT): the ceiling regen and grants may refill `current` to this match
+   * (Potential.withPotentials writes it). Absent = `max`, so every pre-Wave-Y caller is unchanged.
+   */
+  potential?: number;
+}
+
+/** The refill ceiling of a pool: its potential when set (never above max), else its max. */
+export function refillCap(pool: ResourcePool): number {
+  const max = finite(pool.max);
+  return pool.potential === undefined ? max : Math.min(max, finite(pool.potential));
 }
 
 export interface ResourceState {
@@ -145,7 +156,10 @@ export function regenResources(state: ResourceState, dt: number): ResourceState 
   const regen = (pool: ResourcePool, kind: ResourceKind): ResourcePool => {
     const mul = kind === "stamina" && state.exhausted ? EXHAUST_REGEN_MUL : 1;
     const grown = finite(pool.current) + finite(pool.regenPerSecond) * mul * step;
-    return { ...pool, current: Math.min(finite(pool.max), Math.max(0, grown)) };
+    // Wave Y: regen fills only up to the potential (and never pulls a current above it down here:
+    // Potential.withPotentials owns that clamp).
+    const cap = Math.max(refillCap(pool), Math.min(finite(pool.max), finite(pool.current)));
+    return { ...pool, current: Math.min(cap, Math.max(0, grown)) };
   };
   return withExhaustion({
     ...state,
@@ -167,7 +181,7 @@ export function grantResource(state: ResourceState, kind: ResourceKind, amount: 
   const pool = state[kind];
   const filled: ResourcePool = {
     ...pool,
-    current: Math.min(finite(pool.max), finite(pool.current) + finite(amount)),
+    current: Math.min(Math.max(refillCap(pool), Math.min(finite(pool.max), finite(pool.current))), finite(pool.current) + finite(amount)),
   };
   return withExhaustion(kind === "mana" ? { ...state, mana: filled } : { ...state, stamina: filled });
 }

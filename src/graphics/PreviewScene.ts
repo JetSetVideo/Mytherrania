@@ -237,7 +237,7 @@ export function buildPreviewRig(profile: CharacterProfile): { rig: HumanoidRig &
     sex: app.sex ?? null,
     // Wave X: the Creator's explicit (rolled/tweaked) silhouette shapes the rendered body.
     silhouette: profile.appearance.silhouette ?? null,
-  }, { garment: profile.appearance.body, weaponSpec: fighter.weaponSpec });
+  }, { garment: profile.appearance.body, weaponSpec: fighter.weaponSpec, restPose: true }); // wave Y: carry + knees out on its own
   return { rig, fighter };
 }
 

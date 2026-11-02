@@ -47,7 +47,8 @@ import { hitWall, physicsMultiplier } from "../game/Physics.ts";
 import { rollStrike } from "../game/weapons/Profile.ts";
 import { regenResources, trySpend, type ResourceState } from "../game/Resources.ts";
 import { arenaFeatures, decide, defaultTree, edgeAwareTree, type CombatView, type Decision, type TreeNode } from "../game/DecisionTree.ts";
-import { edgePlayTarget, sensibleSkill, strafeToward } from "../game/AiBrain.ts";
+import { edgePlayTarget, fighterKnowledge, poolAwareTree, poolWiseSkill, sensibleSkill, strafeToward } from "../game/AiBrain.ts";
+import { capOf, fatigueLossFor, fighterPotential, recordSpend, statusDrain, tickPotential, withPotentials, woundPotential, type PotentialState } from "../game/Potential.ts";
 import { beginSkill, chooseAiSkill, createRuntime, effectiveStats, endSkill, movementMul, tickRuntime, type SkillRuntime } from "../game/SkillRuntime.ts";
 import type { Skill } from "../game/Skills.ts";
 import { stunDuration } from "../physics/SmashPhysics.ts";
@@ -94,6 +95,20 @@ export interface SimOptions {
   rules?: MatchRules;
   /** Debug/QA: every swing, hit, skill, wall blow and ring-out as it happens. */
   trace?: (e: SimEvent) => void;
+  /**
+   * Wave Y (C-POT): the potential law (wounds, stun drain, fatigue, refill ceilings). Default true;
+   * false plays the pre-Wave-Y rules exactly (the before/after measurement switch).
+   */
+  potentials?: boolean;
+  /**
+   * Wave Y (C-AI): per seat, does the brain read the attributes + pools (press a worn enemy,
+   * pace/conserve its spends)? Default [true, true]; the AI-effect batch sets one seat false.
+   */
+  poolAware?: readonly [boolean, boolean];
+  /** Measurement (Wave Y): which pool-aware decisions an aware seat uses (default both). */
+  poolAwareParts?: { press: boolean; conserve: boolean };
+  /** Debug/QA (Wave Y): both seats' potential states and hp when the match ends (measurement). */
+  onFinish?: (seats: readonly { pot: PotentialState; hp: number; res: ResourceState }[]) => void;
 }
 
 /** One traced event (SimOptions.trace). Positions in m, damage in HP, knockback in m/s. */
@@ -113,6 +128,8 @@ interface SimFighter {
   cooldown: number; stun: number; block: number;
   windup: number; pendingSkill: Skill | null; skillClock: number; skillDur: number; skillStruck: boolean;
   res: ResourceState; rt: SkillRuntime;
+  /** Wave Y: the pools' potentials (Potential.ts) and whether this seat's brain reads them. */
+  pot: PotentialState; aware: boolean;
   rng: () => number;
   think: number; action: Decision; strafe: -1 | 0 | 1; skillPick: number;
   tree: TreeNode | null;
@@ -160,6 +177,7 @@ function run(cond: MatchConditions, opts: SimOptions): MatchOutcome {
   const integrity = walls.segments.map(() => 1);
   const solidProps = digest.props.filter((p) => p.solid);
   const trace = opts.trace;
+  const potOn = opts.potentials !== false;
   // A* around props (the engine's GridPathFinder stand-in), built only when there are solid props.
   const grid = solidProps.length > 0
     ? new PropGrid(solidProps, Math.max(1, ...digest.rim) + 0.5, FOOTPRINT, (x, z) => Math.hypot(x, z) < ringRadiusAt(cfg, Math.atan2(z, x)) - FOOTPRINT)
@@ -170,13 +188,16 @@ function run(cond: MatchConditions, opts: SimOptions): MatchOutcome {
     const b = buildFighter(cond.fighters[seat], rules);
     const sp = digest.spawns.spawns[seat] ?? { x: seat === 0 ? -1 : 1, z: 0, yaw: 0 };
     const strat = b.spec.strategy;
+    const aware = potOn && (opts.poolAware?.[seat] ?? true);
+    const base = strat === "basic" ? defaultTree() : strat === "full" ? edgeAwareTree(b.reach) : null;
     return {
       b, seat, x: sp.x, z: sp.z, vx: 0, vz: 0, hp: b.stats.maxHealth, dp: 0,
       cooldown: 0, stun: 0, block: 0, windup: 0, pendingSkill: null, skillClock: 0, skillDur: 0, skillStruck: false,
       res: b.resources, rt: createRuntime(strat === "full" ? b.skills : []),
+      pot: fighterPotential(b.stats.maxHealth, b.resources, b.stats, b.spec.race, b.spec.subrace), aware,
       rng: randomSource((Math.imul(cond.seed >>> 0, 0x9e3779b1) ^ (seat === 0 ? 0x85ebca6b : 0xc2b2ae35)) >>> 0),
       think: 0, action: "wait", strafe: 1, skillPick: -1,
-      tree: strat === "basic" ? defaultTree() : strat === "full" ? edgeAwareTree(b.reach) : null,
+      tree: base && aware && (opts.poolAwareParts?.press ?? true) ? poolAwareTree(base) : base,
       exitAt: null, out: false, moving: false,
       detourProp: -1, detourSign: 1, detourUntil: 0,
       path: null, pathAge: 0, pathGoalX: 0, pathGoalZ: 0, edgeBlend: false,
@@ -188,7 +209,11 @@ function run(cond: MatchConditions, opts: SimOptions): MatchOutcome {
   let t = 0, tick = 0;
   const maxT = truce + limit + dt;
 
-  const finish = (winner: 0 | 1 | null, reason: MatchOutcome["reason"]): MatchOutcome => ({
+  const finish = (winner: 0 | 1 | null, reason: MatchOutcome["reason"]): MatchOutcome => {
+    opts.onFinish?.(F.map((f) => ({ pot: f.pot, hp: f.hp, res: f.res })));
+    return finishOutcome(winner, reason);
+  };
+  const finishOutcome = (winner: 0 | 1 | null, reason: MatchOutcome["reason"]): MatchOutcome => ({
     winner, reason, duration: round(t),
     hpLeft: [round(Math.max(0, F[0].hp)), round(Math.max(0, F[1].hp))],
     hpFracLeft: [round(Math.max(0, F[0].hp) / F[0].b.stats.maxHealth, 1e4), round(Math.max(0, F[1].hp) / F[1].b.stats.maxHealth, 1e4)],
@@ -229,6 +254,8 @@ function run(cond: MatchConditions, opts: SimOptions): MatchOutcome {
           selfDamagePercent: f.dp, enemyDamagePercent: o.dp, roundTime: hostileT,
         };
         if (strat === "full") Object.assign(view, arenaFeatures(digest, f, o));
+        // Wave Y (C-AI): both fighters' attributes and pools, for the press / pace decisions.
+        if (f.aware) { view.self = fighterKnowledge(f.b.stats, f.pot, f.hp, f.res); view.enemy = fighterKnowledge(o.b.stats, o.pot, o.hp, o.res); }
         // A straight advance always moves away from the drop behind; only a safe back may bend it.
         f.edgeBlend = strat === "full" && !((view.openBehind ?? 0) >= 0.5 && (view.rimBehind ?? Infinity) < 2.5);
         f.skillPick = strat === "full"
@@ -237,6 +264,11 @@ function run(cond: MatchConditions, opts: SimOptions): MatchOutcome {
         // The full brain never starts a backward roll toward its own open edge, a backward roll out
         // of reach, or a slowing stance out of reach (AiBrain.sensibleSkill).
         if (f.skillPick >= 0 && !sensibleSkill(f.rt.skills[f.skillPick], view)) f.skillPick = -1;
+        // Wave Y: pace / conserve — no spend that would burn the potential in fatigue (finisher excepted).
+        if (f.skillPick >= 0 && f.aware && (opts.poolAwareParts?.conserve ?? true)) {
+          const cost = SKILL_RESOURCE_COST[f.rt.skills[f.skillPick].kind] ?? { mana: 0, stamina: 0 };
+          if (!poolWiseSkill(cost, view, (k, c) => fatigueLossFor(f.pot, k, c))) f.skillPick = -1;
+        }
         const d = decide(f.tree!, view);
         f.action = d === "attack" && dist > f.b.reach ? "advance" : d;
         f.strafe = 1;
@@ -387,6 +419,12 @@ function run(cond: MatchConditions, opts: SimOptions): MatchOutcome {
     if (!s) return false;
     if (!beginSkill(f.rt, index)) return false;
     f.res = s;
+    // Wave Y: the spend is recorded; over-paced spending lowers the potential (fatigue).
+    if (potOn) {
+      if (cost.mana > 0) recordSpend(f.pot, "mana", cost.mana);
+      if (cost.stamina > 0) recordSpend(f.pot, "stamina", cost.stamina);
+      f.res = withPotentials(f.res, f.pot);
+    }
     f.skillClock = 0;
     f.skillDur = Math.max(0.1, skill.animation.duration);
     f.skillStruck = false;
@@ -435,11 +473,13 @@ function run(cond: MatchConditions, opts: SimOptions): MatchOutcome {
     const dmg = base * mul * phys * (blocking ? BLOCK_DAMAGE : 1);
     if (!Number.isFinite(dmg) || dmg <= 0) return;
     d.hp -= dmg;
+    // Wave Y: a share of the blow is a wound (lower health potential), deeper from a strong attacker.
+    if (potOn) woundPotential(d.pot, dmg, a.b.stats.strength);
     d.dp += meterGain(rules, dmg, d.b.stats.maxHealth, DAMAGE_SCALE);
     a.dealt += dmg;
     a.hits++;
     const steal = skill?.payload.lifesteal ?? 0;
-    if (steal > 0) a.hp = Math.min(a.b.stats.maxHealth, a.hp + dmg * steal);
+    if (steal > 0) a.hp = Math.min(potOn ? capOf(a.pot, "health") : a.b.stats.maxHealth, a.hp + dmg * steal);
     d.stun = Math.max(d.stun, stunDuration(dmg / DAMAGE_SCALE, 1.2, 0)) + (skill?.payload.stun ?? 0);
     // An interrupted wind-up is lost (the stun cancels it).
     if (d.stun > 0) d.windup = 0;
@@ -482,6 +522,7 @@ function run(cond: MatchConditions, opts: SimOptions): MatchOutcome {
             if (hostile && hit.selfDamage > 0) {
               const hurt = hit.selfDamage * DAMAGE_SCALE;
               f.hp -= hurt;
+              if (potOn) woundPotential(f.pot, hurt);
               f.stun = Math.max(f.stun, stunDuration(hurt / DAMAGE_SCALE, 1.2, 1));
             }
           }
@@ -534,6 +575,13 @@ function run(cond: MatchConditions, opts: SimOptions): MatchOutcome {
       f.stun = Math.max(0, f.stun - dt);
       f.block = Math.max(0, f.block - dt);
       tickRuntime(f.rt, dt);
+      if (potOn) {
+        // Wave Y: rest recovery, the stun's drain (the engine turns a stun > 0.6 s into the
+        // "stunned" status, which drains), then regen refills only up to the potential.
+        tickPotential(f.pot, dt);
+        if (hostile && f.stun > 0.6) statusDrain(f.pot, ["stunned"], dt);
+        f.res = withPotentials(f.res, f.pot);
+      }
       f.res = regenResources(f.res, dt);
     }
     if (hostile) {

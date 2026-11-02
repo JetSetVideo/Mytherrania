@@ -1,0 +1,1296 @@
+Check tests/autoattack_combattext_test.ts
+Check tests/bars_test.ts
+Check tests/batchpanel_test.ts
+Check tests/cast_test.ts
+Check tests/creatorroll_test.ts
+Check tests/creatorsync_test.ts
+Check tests/disclosure_test.ts
+Check tests/engine_wavej_test.ts
+Check tests/facehierarchy_test.ts
+Check tests/fighter_panel_test.ts
+Check tests/historyui_test.ts
+Check tests/inspectoverlay_test.ts
+Check tests/menu_creator_test.ts
+Check tests/menu_entry_test.ts
+Check tests/minimap_math_test.ts
+Check tests/minimap_render_test.ts
+Check tests/profilelibrary_test.ts
+Check tests/profilepanel_test.ts
+Check tests/racebanners_test.ts
+Check tests/sex_wire_test.ts
+Check tests/spec_test.ts
+Check tests/stepper_test.ts
+Check tests/ui_ancestry_test.ts
+Check tests/ui_arena_size_test.ts
+Check tests/ui_icons_test.ts
+Check tests/ui_navstack_test.ts
+Check tests/ui_settings_test.ts
+Check tests/ui_skillbar_test.ts
+Check tests/ui_wave_u_test.ts
+Check tests/uitree_test.ts
+Check tests/wave_m_wiring_test.ts
+Check tests/wave_x_ui_test.ts
+Check tests/wave_y_ui_test.ts
+Check tests/ui_wave_w_test.ts
+running 15 tests from ./tests/autoattack_combattext_test.ts
+autoAttackDue: due once the interval elapsed, in reach and able ... ok (248µs)
+autoAttackDue: refused while stunned or casting ... ok (36µs)
+autoAttackDue: reach boundary is inclusive, out of reach refuses ... ok (95µs)
+autoAttackDue: NaN clock or reach is refused (never reads as due) ... ok (66µs)
+advanceAutoAttack: next = atS + interval, interval clamped, target preserved ... ok (74µs)
+formatHit: thousands grouped with a space, like the repo's "47 100" ... ok (76µs)
+hitStyle: the six outcomes classify from the statistics ... ok (229µs)
+hitStyle: the six outcomes are separable without hue (glyph + boldness + size) ... ok (134µs)
+hitStyle: a crit is bolder, bigger and brighter than the same normal hit ... ok (64µs)
+hitStyle: monotone in the hit's share of the pool (bigger = bigger/brighter/bolder/faster) ... ok (64µs)
+hitStyle: a bigger weapon and haste lift the style (bounded) ... ok (72µs)
+hitStyle: hue comes from the element and differs between elements ... ok (54µs)
+hitStyle: every field finite and bounded for NaN/Infinity/negative/over-pool ... ok (149µs)
+CombatText: class names, custom properties and text the parent applies ... ok (117µs)
+STYLE TABLE across the hit range ...
+------- output -------
+outcome   | glyph    | sizePx | weight | hue  | light | riseMs | lifeMs
+small     | hit      |   17.8 |    408 |   13 | 0.467 |    880 |    687
+average   | hit      |   29.7 |    457 |   13 | 0.579 |    751 |    921
+huge      | hit      |   49.9 |    541 |   13 | 0.768 |    533 |   1321
+crit      | crit     |   48.2 |    759 |   13 | 0.805 |    555 |   1285
+absorbed  | absorbed |   16.0 |    550 |   13 | 0.450 |    900 |    650
+resisted  | resisted |   16.0 |    477 |   13 | 0.454 |    896 |    658
+miss      | miss     |   16.0 |    400 |   13 | 0.450 |    900 |    650
+immune    | immune   |   16.0 |    425 |   13 | 0.450 |    900 |    650
+----- output end -----
+STYLE TABLE across the hit range ... ok (313µs)
+running 9 tests from ./tests/bars_test.ts
+barLabel: the 'value / max · pct%' format ... ok (236µs)
+barLabel: value above max is clamped (never reads past 100 %) ... ok (32µs)
+barLabel: max == 0 and NaN never leak NaN/Infinity ... ok (49µs)
+barModel.text is barLabel(nominal, max) for every edge ... ok (55µs)
+barSegments: 12 squares of an empty, half and full bar ... ok (121µs)
+barSegments: the LAST square is exact (a partial edge) and the fills sum to the bar ... ok (61µs)
+barSegments: a square is full only when the fill reaches its FAR edge ... ok (34µs)
+barSegments: total for a nonsense segment count and for a 1 px-wide bar ... ok (90µs)
+FighterPanel.ts and styles.css still carry the square + inside-number hooks ... ok (7ms)
+running 8 tests from ./tests/batchpanel_test.ts
+M-C P1: the button offers 10/20/50/100 and nothing else ... ok (206µs)
+M-C P2: batchPlan — one job per match, a distinct seed each, and the promised cost ... ok (151µs)
+M-C P3: batchPlan is total — 0, negative and non-finite sizes yield an empty plan ... ok (50µs)
+M-C P4: batchProgress — fraction, done, total and the ETA the plan promises ... ok (113µs)
+M-C P5: batchProgress is total — clamps, an empty batch reads complete, no NaN ETA ... ok (65µs)
+M-C P6: batchSummary — known numbers, and describe() is the source of the core six ... ok (7ms)
+M-C P7: batchSummary — every variable, the end-reason tally, and totals over empty/NaN ... ok (209µs)
+M-C P8: the summary is total over every end reason ... ok (95µs)
+running 16 tests from ./tests/cast_test.ts
+castSeconds: clamped into [CAST_MIN_S, CAST_MAX_S] and monotone in base ... ok (311µs)
+castSeconds: a NaN or non-positive base falls back to the floor, never NaN ... ok (43µs)
+castSeconds: strictly FALLS with focus and with haste ... ok (49µs)
+castSeconds: the element and the heavy flag move the channel ... ok (32µs)
+pushbackSeconds: bounded to [0, PUSH_MAX_S] for every input ... ok (1ms)
+pushbackSeconds: monotone up in damage share and in the angle it came from ... ok (97µs)
+tickCast: advances, completes at seconds + pushback, and freezes once ended ... ok (69µs)
+tickCast: a NaN / Infinity / negative dt is REFUSED (state untouched) ... ok (35µs)
+tickCast: exhaustion — elapsed 0, and elapsed far beyond the cast ... ok (95µs)
+pushback extends the cast: elapsed must reach seconds + pushback ... ok (50µs)
+interrupt: ends the cast at once, names who did it, and is not a done ... ok (38µs)
+addPushback: bounded by PUSH_CAP_S over repeated hits ... ok (42µs)
+castBarView: total, states and fractions ... ok (68µs)
+CastBar.ts carries the class hooks and writes NO inline style attribute ... ok (286µs)
+PRINT: cast seconds across the casters and weights ...
+------- post-test output -------
+
+CAST SECONDS (base 2.1, power kind)
+Mage         mage-arcane-nova         arcane    heavy=true  will= 8 haste=0   -> 2.629 s
+Necromancer  necro-soul-rend          necrotic  heavy=true  will= 9 haste=0   -> 2.456 s
+Priest       priest-smite             holy      heavy=true  will= 9 haste=0   -> 2.344 s
+Warrior      warrior-crushing-blow    fire      heavy=false will= 4 haste=0   -> 1.875 s
+Barbarian    barbarian-skullsplitter  fury      heavy=false will= 2 haste=0   -> 1.684 s
+Rogue        rogue-venom-strike       poison    heavy=false will= 3 haste=0   -> 1.734 s
+Assassin     assassin-execution       shadow    heavy=false will= 2 haste=0   -> 1.882 s
+Archer       archer-piercing-shot     wind      heavy=false will= 3 haste=0   -> 1.734 s
+Mage*        mage-arcane-nova         arcane    heavy=true  will= 8 haste= 0   -> 2.629 s
+Mage*        mage-arcane-nova         arcane    heavy=true  will= 8 haste=20   -> 2.191 s
+Mage*        mage-arcane-nova         arcane    heavy=true  will= 8 haste=50   -> 1.753 s
+----- post-test output end -----
+PRINT: cast seconds across the casters and weights ... ok (245µs)
+PRINT: pushback seconds across damage share x angle (heavy weapon, stamina 8) ...
+------- post-test output -------
+
+PUSHBACK SECONDS (heavy, stamina 8)  cap/one-hit=0.9s  cap/cast=1.5s
+dmg\ang       0      45      90     135     180
+   0.00  0.0000  0.0000  0.0000  0.0000  0.0000
+   0.25  0.0782  0.0977  0.1173  0.1368  0.1563
+   0.50  0.1563  0.1954  0.2345  0.2736  0.3127
+   0.75  0.2345  0.2931  0.3518  0.4104  0.4690
+   1.00  0.3127  0.3908  0.4690  0.5472  0.6253
+----- post-test output end -----
+PRINT: pushback seconds across damage share x angle (heavy weapon, stamina 8) ... ok (199µs)
+running 7 tests from ./tests/creatorroll_test.ts
+a rolled fighter is legal: class, sub-species, weapon and birthsign ... ok (5ms)
+the same seed yields the same profile and the same seed (two runs agree) ... ok (109µs)
+diversity: over 200 rolls, all 4 races and at least 6 of the 8 classes appear ... ok (2ms)
+the sheet's numbers come from the source functions (two+ rows compared directly) ... ok (1ms)
+the sheet never hard-codes the pool size (it reads the scaled health) ... ok (749µs)
+grouping: a five-digit pool reads like the stat bars' "47 100" ... ok (45µs)
+CreatorRoll.ts is pure: no Math.random and no DOM ... ok (393µs)
+running 13 tests from ./tests/creatorsync_test.ts
+CREATOR_GROUP_IDS is exactly the Creator screen's groups, in tree order ... ok (213µs)
+every Creator group id resolves to a NON-EMPTY summary, for a rolled elf and a dwarf ...
+------- post-test output -------
+
+── group summaries for Ilmirëndithas of House Silverbough (elf/high) ──
+  race       Elf — 3 sub-species
+  subrace    High Elf · Star-touched scholars of Elun-Dar
+  hero       VIT 7 · RES 9 · FOC 9 · REF 11 · STR 8 · INT 13
+  lore       Star-touched scholars of Elun-Dar, taller even than their kin, with a haughtier brow.
+  class      Mage — Warped Staff
+  weapon     Warped Staff (staff)
+  skills     Blink · Arcane Nova · Mana Shield
+  birthsign  The Moon
+  secondary  Critical Strike — · Haste — · Mastery +5% · Physical Resistance — · Magic Resistance +4% · Versatility —
+  rival      AI opponent — its calling is rolled per match
+  terms      Match terms — length and win condition rolled per match
+  spectate   Spectator card — generated when an AI-vs-AI match runs
+  inspect    Inspect overlay — click a fighter or prop in spectate
+  field      Arena field — shape and size rolled per match
+  walls      Walls — present on ~90% of arenas, with their own resistance
+  pickups    Pickups — coins and power-ups spawn in the field
+
+── group summaries for Durdogrim Stonebeard (dwarf/mountain) ──
+  race       Dwarf — 3 sub-species
+  subrace    Mountain · Stone-boned clans of the Iron Reach
+  hero       VIT 9 · RES 13 · FOC 8 · REF 7 · STR 11 · INT 9
+  lore       Stone-boned clans of the Iron Reach, the tallest and longest-legged of dwarf-kind.
+  class      Necromancer — Bone Scythe
+  weapon     Bone Scythe (scythe)
+  skills     Grave Step · Soul Rend · Bone Armor
+  birthsign  The Flame
+  secondary  Critical Strike — · Haste +2% · Mastery +1% · Physical Resistance +4% · Magic Resistance — · Versatility +1%
+  rival      AI opponent — its calling is rolled per match
+  terms      Match terms — length and win condition rolled per match
+  spectate   Spectator card — generated when an AI-vs-AI match runs
+  inspect    Inspect overlay — click a fighter or prop in spectate
+  field      Arena field — shape and size rolled per match
+  walls      Walls — present on ~90% of arenas, with their own resistance
+  pickups    Pickups — coins and power-ups spawn in the field
+----- post-test output end -----
+every Creator group id resolves to a NON-EMPTY summary, for a rolled elf and a dwarf ... ok (820µs)
+groupSummary also answers when the caller passes race/subrace as null (falls back to p.race) ... ok (57µs)
+an unknown group id still yields a non-empty line (total) ... ok (22µs)
+the tone relation is the paint stacks' own shadeHex/tintHex ... ok (131µs)
+editing the skin tone drags its crease/paint and eye tones with it ... ok (207µs)
+height/weight edits clamp into the race's own band ... ok (87µs)
+a race edit synchronises subrace: a foreign sub-species is cleared ... ok (66µs)
+applyEdit is TOTAL: no field, good or bad, throws ... ok (141µs)
+applyEdit is DETERMINISTIC and never mutates its input ... ok (58µs)
+applying the same edit twice IS idempotent ... ok (121µs)
+no edit can produce NaN or an out-of-range number ... ok (225µs)
+the rule table states which field moves which, and by what relation ...
+------- post-test output -------
+
+── sync rule table ──
+  race -> subrace
+      a new race clears a sub-species that does not belong to it (a dwarf cannot hold an elf's nation)
+  appearance.body -> appearance.accent, appearance.eyes
+      accent = shadeHex(body, 0.58) (creasing/paint); eyes = tintHex(body, 0.22) (eye tone); both keep the hue and scale chroma, the paint stacks' crease/ink relation
+----- post-test output end -----
+the rule table states which field moves which, and by what relation ... ok (100µs)
+running 12 tests from ./tests/disclosure_test.ts
+the storage key is the frozen localStorage key ... ok (237µs)
+groupKey is the screen/panel/group path ... ok (61µs)
+the ENTRY groups are default-open, and none of them is empty ... ok (120µs)
+every other group is closed in the initial state ... ok (7ms)
+initialDisclosure follows an injected tree's defaultOpen marks ... ok (119µs)
+toggle / openGroup flip one group and leave the rest alone ... ok (123µs)
+a fresh (unknown) key toggles to open ... ok (56µs)
+encode/decode round-trips, including the default-open group ... ok (169µs)
+encodeDisclosure is stable: equal states encode identically ... ok (95µs)
+a corrupt, absent or wrong-shaped payload yields the initial state and never throws ... ok (441µs)
+decode keeps only real booleans and only keys the current tree knows ... ok (110µs)
+the model covers the tree: one entry per real group, closed by default ... ok (138µs)
+running 10 tests from ./tests/engine_wavej_test.ts
+J-E WALLS: an opening (height 0) lets a thrown body leave the ring — no wall event, no contact ... ok (4ms)
+J-E WALLS: a curb (< WALL_BLOCK_HEIGHT) trips a BLOW over but a LEAN slides along it ... ok (1ms)
+J-E WALLS: a mid wall (block height .. centre of mass) topples a HARD knock, holds a softer blow ... ok (950µs)
+J-E WALLS: a tall segment holds; a breach wears ONE segment, integrity is the minimum, the rest stand ... ok (923µs)
+J-E WALLS: without a plan the legacy single wall is read (cfg.wallHeight, cfg resistance) ... ok (72µs)
+J-E WALLS: a generated plan's openings are exactly where wallHeightAtXZ reads 0 (48 segments, 3 seeds × 8 rules) ... ok (3ms)
+J-E SPEED: substeps never exceed 1/60 s and add up to the scaled frame time when the budget allows ... ok (235µs)
+J-E SPEED: an expensive substep is CAPPED to the frame budget and the dropped time is reported ... ok (55µs)
+J-E SPEED: the controls step through the table and clamp at its ends; labels read as the HUD shows them ... ok (70µs)
+J-E MINIMAP: edge classes follow the wall rule's thresholds ... ok (35µs)
+running 7 tests from ./tests/facehierarchy_test.ts
+face block: every node carries all 17 measures, each a strict 1..16 permutation ... ok (8ms)
+rankMetric: 16 rows, unique ranks, most first; the race-block structure is readable ... ok (257µs)
+faceRatios: finite, positive; a dwarf jaw beats an elf jaw on chin-to-mouth ... ok (187µs)
+rankRatio: biggest first across all 16 nodes ... ok (367µs)
+compare: criteria stated in order, signs antisymmetric, self-comparison is a tie ... ok (255µs)
+hair/beard law: elves lightest+longest, dwarves fullest+always bearded, humans widest, orks baldest ... ok (517µs)
+printed ranked tables (generated from the data) ...
+------- post-test output -------
+
+== chin length (rank 1 = most; mm - forward projection of the chin past the lower lip) ==
+   1. mountain   [dwarf]
+   2. forge      [dwarf]
+   3. deep       [dwarf]
+   4. dwarf      [dwarf]
+   5. ironhide   [ork]
+   6. bloodfang  [ork]
+   7. greenhide  [ork]
+   8. ork        [ork]
+   9. imperial   [human]
+  10. nomad      [human]
+  11. islander   [human]
+  12. human      [human]
+  13. high       [elf]
+  14. wood       [elf]
+  15. dark       [elf]
+  16. elf        [elf]
+
+== mouth width (rank 1 = most; mm - mouth corner to corner) ==
+   1. ironhide   [ork]
+   2. bloodfang  [ork]
+   3. greenhide  [ork]
+   4. ork        [ork]
+   5. imperial   [human]
+   6. nomad      [human]
+   7. islander   [human]
+   8. human      [human]
+   9. mountain   [dwarf]
+  10. forge      [dwarf]
+  11. deep       [dwarf]
+  12. dwarf      [dwarf]
+  13. high       [elf]
+  14. wood       [elf]
+  15. dark       [elf]
+  16. elf        [elf]
+
+== nose length (rank 1 = most; mm - bridge (nasion) to tip) ==
+   1. high       [elf]
+   2. wood       [elf]
+   3. dark       [elf]
+   4. elf        [elf]
+   5. imperial   [human]
+   6. nomad      [human]
+   7. islander   [human]
+   8. human      [human]
+   9. ironhide   [ork]
+  10. bloodfang  [ork]
+  11. greenhide  [ork]
+  12. ork        [ork]
+  13. mountain   [dwarf]
+  14. forge      [dwarf]
+  15. deep       [dwarf]
+  16. dwarf      [dwarf]
+
+== brow prominence (rank 1 = most; mm - forward projection of the brow ridge) ==
+   1. mountain   [dwarf]
+   2. forge      [dwarf]
+   3. deep       [dwarf]
+   4. dwarf      [dwarf]
+   5. ironhide   [ork]
+   6. bloodfang  [ork]
+   7. greenhide  [ork]
+   8. ork        [ork]
+   9. imperial   [human]
+  10. nomad      [human]
+  11. islander   [human]
+  12. human      [human]
+  13. high       [elf]
+  14. wood       [elf]
+  15. dark       [elf]
+  16. elf        [elf]
+
+== forehead height (rank 1 = most; mm - hairline to the brow ridge) ==
+   1. high       [elf]
+   2. wood       [elf]
+   3. dark       [elf]
+   4. elf        [elf]
+   5. imperial   [human]
+   6. nomad      [human]
+   7. islander   [human]
+   8. human      [human]
+   9. ironhide   [ork]
+  10. bloodfang  [ork]
+  11. greenhide  [ork]
+  12. ork        [ork]
+  13. mountain   [dwarf]
+  14. forge      [dwarf]
+  15. deep       [dwarf]
+  16. dwarf      [dwarf]
+
+== chin-to-mouth (ratio, biggest first; chin length / mouth width) ==
+  dwarf      2.600  [dwarf]
+  deep       2.333  [dwarf]
+  forge      2.143  [dwarf]
+  mountain   2.000  [dwarf]
+  dark       1.000  [elf]
+  elf        1.000  [elf]
+  high       1.000  [elf]
+  wood       1.000  [elf]
+  ironhide   0.750  [ork]
+  bloodfang  0.733  [ork]
+  greenhide  0.714  [ork]
+  ork        0.692  [ork]
+  imperial   0.667  [human]
+  nomad      0.636  [human]
+  islander   0.600  [human]
+  human      0.556  [human]
+
+== the hair/beard law (lightest first) ==
+  id         race    light  lenTier massKg  spread  bald  full  reqd
+  high       elf     0.820  4       0.70    78      0.00  0.12  false
+  elf        elf     0.800  4       0.70    62      0.00  0.15  false
+  wood       elf     0.780  3       0.40    63      0.00  0.15  false
+  dark       elf     0.660  3       0.40    61      0.00  0.15  false
+  nomad      human   0.580  3       0.40    190     0.20  0.74  false
+  human      human   0.550  2       0.15    190     0.25  0.70  false
+  imperial   human   0.520  2       0.15    191     0.20  0.68  false
+  islander   human   0.500  2       0.15    160     0.30  0.40  false
+  deep       dwarf   0.400  1       0.05    109     0.25  0.90  true
+  dwarf      dwarf   0.360  1       0.05    143     0.20  0.95  true
+  mountain   dwarf   0.340  1       0.05    114     0.20  0.94  true
+  forge      dwarf   0.330  1       0.05    126     0.15  0.92  true
+  bloodfang  ork     0.220  1       0.05    27      0.60  0.40  false
+  ork        ork     0.200  1       0.05    58      0.55  0.35  false
+  greenhide  ork     0.180  1       0.05    42      0.55  0.30  false
+  ironhide   ork     0.160  1       0.05    47      0.50  0.35  false
+
+== the debate criteria, in order ==
+  chinToMouth        = chin length / mouth width
+  mouthToNose        = mouth width / nose width
+  eyeToBrow          = eye spacing / brow prominence
+  noseLengthToWidth  = nose length / nose width
+  browToForehead     = brow prominence / forehead height
+  jawToCheek         = jaw width / cheek height
+  skullWidthToDepth  = skull width / skull depth
+  eyeHeightToSize    = eye aperture height / eye size
+  earSizeToAngle     = ear size / ear angle
+  chinHeightToLength = chin height / chin length
+
+== dwarf vs elf (verdict elf; score 4-5, ties 1) ==
+  chinToMouth        dwarf 2.600  elf 1.000  -> dwarf
+  mouthToNose        dwarf 0.385  elf 1.000  -> elf
+  eyeToBrow          dwarf 0.385  elf 1.000  -> elf
+  noseLengthToWidth  dwarf 0.077  elf 13.000  -> elf
+  browToForehead     dwarf 13.000  elf 0.077  -> dwarf
+  jawToCheek         dwarf 0.692  elf 1.000  -> elf
+  skullWidthToDepth  dwarf 1.444  elf 1.000  -> dwarf
+  eyeHeightToSize    dwarf 1.000  elf 1.444  -> elf
+  earSizeToAngle     dwarf 5.000  elf 1.000  -> dwarf
+  chinHeightToLength dwarf 1.000  elf 1.000  -> tie
+----- post-test output end -----
+printed ranked tables (generated from the data) ... ok (1ms)
+running 3 tests from ./tests/fighter_panel_test.ts
+barModel: nominal over potential, fractions of the capacity ... ok (306µs)
+barModel: total and ordered for garbage (NaN, negative, nominal > potential > max, max 0) ... ok (227µs)
+identityLine: race · sub-race · class · level ... ok (57µs)
+running 8 tests from ./tests/historyui_test.ts
+HistoryView: every sort order, over the six-row fixture ... ok (7ms)
+HistoryView: sorts never mutate the input and are total ... ok (68µs)
+HistoryView: badges for every case, and none for a legacy row ... ok (94µs)
+HistoryView: highlightsOf matches the BRIEF 1.4 semantics ... ok (95µs)
+HistoryView: highlightSummary names the fastest, the gap, ties and timeouts ... ok (138µs)
+HistoryFilter: the new orders honour duration, gap distance and dominance ... ok (176µs)
+HistoryFilter: back-compat — an old query and an old record still filter and summarize ... ok (123µs)
+the menu markup names every new UI key (a silent removal fails here) ... ok (11ms)
+running 13 tests from ./tests/inspectoverlay_test.ts
+anchorCard: 2000 random triples never leave the viewport ... ok (8ms)
+anchorCard: flips to the left when the right side would overflow ... ok (57µs)
+anchorCard: vertically centred on the anchor when it fits, clamped when it does not ... ok (34µs)
+pickNearest: null outside every radius, the nearest inside, nearest centre on overlap ... ok (64µs)
+fighterCard: 7 primary rows (wave X: + agility) in a stable order and 3 bars ... ok (377µs)
+fighterCard: tone bad only for a stat below the fighter's own average ... ok (68µs)
+fighterCard: generation id when carried, else only the controller badge ... ok (59µs)
+objectCard: names the boon and states the real effect ... ok (96µs)
+objectCard: with no boon says what the object is for ... ok (55µs)
+stepCursor: converges within 1 px after 1 s of 60 Hz steps ... ok (82µs)
+stepCursor: dt-independent (1 x 0.1 s agrees with 10 x 0.01 s within 1%) ... ok (31µs)
+stepCursor: finite for a huge dt, and the lag constant is set ... ok (24µs)
+blobRadius: bigger down and hovering than at rest, always finite ... ok (35µs)
+running 10 tests from ./tests/menu_creator_test.ts
+opt-group: closed by default, open only when Disclosure says so ... ok (389µs)
+opt-group: header carries the glyph, label, count, hint and chevron; body holds the controls ... ok (58µs)
+optionCount: singular for one, plural otherwise (never negative-NA) ... ok (21µs)
+dice button: the rocky violet classes, the dice icon and data-action="dice" ... ok (51µs)
+mulberry32: deterministic, in [0,1), and different seeds diverge ... ok (80µs)
+creator sheet: three columns, every row labelled, the hint carries the WHY ... ok (176µs)
+the real pipeline: a seeded roll's sheet is reproduced by creatorSheetHtml ... ok (2ms)
+no inline style, no <script> in any builder output (the page CSP is style-src 'self') ... ok (100µs)
+styles.css declares the new components and survives all four breakpoints ... ok (1ms)
+Menu.ts renders the new keys the UI tree and the design promise (a silent removal fails here) ... ok (620µs)
+running 10 tests from ./tests/menu_entry_test.ts
+the title tree has ONE entry: the modes group carries it, the profiles group holds only the picker ... ok (342µs)
+the two entry groups stay default-open (the merge must not hide a way in) ... ok (112µs)
+Menu.ts renders exactly ONE entry button and NO separate profiles button ... ok (250µs)
+the roster and the generator are ONE screen: no standalone profiles screen, #profiles-body is inside select ... ok (167µs)
+Menu.ts routes overrides through CreatorSync.applyEdit (the single route) ... ok (174µs)
+the override field names are REAL: applyEdit moves the profile for each ... ok (963µs)
+the six attribute controls name the keys a rolled profile's `allocated` carries ... ok (211µs)
+the save/discard decision is explicit: a Save control, a Discard control, and a re-roll ... ok (135µs)
+the new markup is CSP-safe: no inline style attribute, no Math.random ... ok (128µs)
+styles.css declares the merged-entry and override classes and keeps the four breakpoints ... ok (282µs)
+running 15 tests from ./tests/minimap_math_test.ts
+projection: world → map → world round-trips in both orientations ... ok (7ms)
+projection: north-up puts north (−z) straight up and east to the right ... ok (61µs)
+headingOf agrees with Senses.bearing and names the four cardinal points ... ok (195µs)
+player-up: the player's facing points straight up for every heading ... ok (352µs)
+edge clamp: on-map points pass through, off-map points sit on the inset rim along the same ray ... ok (698µs)
+zoom: overview fits the ring; follow zoom derives from sight range and never zooms out past overview ... ok (53µs)
+nice numbers: niceFloor returns 1/2/5×10^n ≤ x, and the next nice number is > x ... ok (926µs)
+scale bar: a nice number of metres that fits the allowed width and is at least 40 % of it ... ok (224µs)
+contours: interval is nice; ≥80 % of 5000 random ranges give 6-10 lines, none outside 4-11 ... ok (4ms)
+hillshade: brightest when the surface faces the light, ambient when it faces away ... ok (795µs)
+hypsometric tint: endpoints are the ramp's ends; input is clamped ... ok (69µs)
+fading: ghost alpha holds at its floor; pings expire ... ok (36µs)
+relief bake: a NW-facing slope is brighter than a SE-facing one; contours appear; flat has none ... ok (7ms)
+samplerFromGrid: bilinear is exact on a plane, clamps outside, maps feature bits ... ok (354µs)
+lane E contract: feature bits match, and a real generated heightfield adapts and bakes ...
+------- post-test output -------
+lane E field 121x121 @0.5 m: 227 flagged nodes; relief -3.43..5.28 m, interval 1 m, 9 lines, 249 feature px
+----- post-test output end -----
+lane E contract: feature bits match, and a real generated heightfield adapts and bakes ... ok (107ms)
+running 8 tests from ./tests/minimap_render_test.ts
+HiDPI: backing store = css size × devicePixelRatio ... ok (30ms)
+static layer is baked ONCE across 100 draw() calls ... ok (32ms)
+a marker is drawn for each pickup, each item and both fighters ... ok (20ms)
+player-up: the self arrow is drawn pointing straight up ... ok (24ms)
+rival: a ghost that fades when unseen; an edge arrow when off-map ... ok (23ms)
+hit pings expand and expire; path and scale bar are drawn ... ok (14ms)
+a click cycles overview → follow → heading → overview and updates the accessible name ... ok (15ms)
+steady state: every draw issues the same number of canvas calls (bounded work per tick) ... ok (21ms)
+running 11 tests from ./tests/profilelibrary_test.ts
+migration: a legacy stored profile becomes a real character with a resolved look ... ok (1ms)
+determinism: the same record always yields the same look ... ok (390µs)
+precedence: a stored appearance is never overwritten (and survives a rename) ... ok (346µs)
+the random roll reuses rollProfile (same seed -> the same fighter is saved) ... ok (739µs)
+ids stay unique: 100 rolls in a row never collide (collision count 0) ...
+------- post-test output -------
+collision count over 100 rolled ids: 0
+----- post-test output end -----
+ids stay unique: 100 rolls in a row never collide (collision count 0) ... ok (17ms)
+the library never empties: deleting the last profile is refused ... ok (315µs)
+rename trims, refuses an empty name, and never changes the id ... ok (77µs)
+duplicate: a new id that keeps the source's look ... ok (149µs)
+setActive selects a live profile; false for an unknown/removed one ... ok (103µs)
+printed library after roll x3, rename, duplicate, delete and setActive ...
+------- post-test output -------
+PL-13986B  Ash the Renamed    dwarf/deep  Rogue       lv1  0 W·0L  body=#2a2f3a h=1.51m
+PL-0F04E1  Bramble (copy)     dwarf/mountain  Necromancer lv1  0 W·0L  body=#e8dcc8 h=1.68m
+PL-97B108  Bramble            dwarf/mountain  Necromancer lv1  0 W·0L  body=#e8dcc8 h=1.68m
+summary: {"count":3,"names":["Ash the Renamed","Bramble (copy)","Bramble"],"activeId":"PL-13986B"}
+----- post-test output end -----
+printed library after roll x3, rename, duplicate, delete and setActive ... ok (347µs)
+ProfileLibrary.ts is pure: no Math.random and no DOM ... ok (338µs)
+running 11 tests from ./tests/profilepanel_test.ts
+empty library: a real, actionable empty state and no rows ... ok (272µs)
+two profiles, one selected: rows, flags, and the sheet is creatorSheet's own output ... ok (1ms)
+the manage reasons: load/delete off on the ACTIVE row, delete off on the LAST profile ... ok (246µs)
+a stale selectedId falls back to the active, then to the first ... ok (245µs)
+the row cap: 500 profiles in, 100 rows out, count stays 500 ... ok (2ms)
+a name with markup characters is carried as DATA, never injected ... ok (188µs)
+an unknown race: no broken glyph, and the raw id is shown ... ok (97µs)
+hostile telemetry is total: NaN/negative wins, losses and level ... ok (93µs)
+the class vocabulary is exposed for the parent and is stable ... ok (109µs)
+ProfilePanel.ts is pure: no Math.random, no DOM, no inline style, no innerHTML ... ok (375µs)
+record the three evidence views to artifacts/profiles/panel-views.json ...
+------- post-test output -------
+{
+  "empty": {
+    "title": "Profiles",
+    "hint": "Your saved fighters — roll a random one, build a specific one, or select a row to see its statistics.",
+    "count": 0,
+    "empty": {
+      "show": true,
+      "text": "No profiles yet. Roll a random fighter, or build one in the Creator.",
+      "action": "new-random"
+    },
+    "rows": [],
+    "selected": null,
+    "actions": [
+      {
+        "id": "new-random",
+        "label": "Roll a fighter",
+        "hint": "Roll a random fighter and save it to the library.",
+        "kind": "random",
+        "disabled": false
+      },
+      {
+        "id": "new-specific",
+        "label": "Create a fighter",
+        "hint": "Build a specific fighter in the Creator, then save it.",
+        "kind": "specific",
+        "disabled": false
+      }
+    ]
+  },
+  "twoSelected": {
+    "title": "Profiles",
+    "hint": "Your saved fighters — roll a random one, build a specific one, or select a row to see its statistics.",
+    "count": 2,
+    "empty": {
+      "show": false,
+      "text": "No profiles yet. Roll a random fighter, or build one in the Creator.",
+      "action": "new-random"
+    },
+    "rows": [
+      {
+        "playerId": "PL-000001",
+        "name": "Aldric",
+        "raceLabel": "Human",
+        "subraceLabel": "Imperial",
+        "className": "Warrior",
+        "banner": "<svg class=\"banner banner-human\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 96 120\" width=\"96\" height=\"120\" data-cadency=\"saltire\" aria-hidden=\"true\" focusable=\"false\"><rect x=\"4\" y=\"4\" width=\"88\" height=\"112\" fill=\"#d99a70\"/><path d=\"M4 4 L92 116 M92 4 L4 116\" fill=\"none\" stroke=\"#d98e37\" stroke-width=\"8\"/><g class=\"banner-charge\" fill=\"#6b4130\" stroke=\"#6b4130\" stroke-width=\"3\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M16 44 L16 90 L80 90 L80 44 L64 66 L57 26 L48 60 L39 26 L32 66 Z\"/></g><rect x=\"4\" y=\"4\" width=\"88\" height=\"112\" fill=\"none\" stroke=\"#d98e37\" stroke-width=\"6\"/></svg>",
+        "portraitKey": "Aldric|human|imperial|Warrior||1.8000|90.0000|#172128|mountain",
+        "level": 4,
+        "record": "12 W · 4 L",
+        "active": true,
+        "selected": false
+      },
+      {
+        "playerId": "PL-000002",
+        "name": "Vex",
+        "raceLabel": "Elf",
+        "subraceLabel": "Dark Elf",
+        "className": "Rogue",
+        "banner": "<svg class=\"banner banner-elf\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 96 120\" width=\"96\" height=\"120\" data-cadency=\"chevron\" aria-hidden=\"true\" focusable=\"false\"><rect x=\"4\" y=\"4\" width=\"88\" height=\"112\" fill=\"#cdc0d6\"/><path d=\"M4 78 L48 34 L92 78\" fill=\"none\" stroke=\"#577793\" stroke-width=\"10\"/><g class=\"banner-charge\" fill=\"#2f3d63\" stroke=\"#2f3d63\" stroke-width=\"3\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M48 24 L56.82 47.87 L82.24 48.88 L62.27 64.63 L69.16 89.12 L48 75 L26.84 89.12 L33.73 64.63 L13.76 48.88 L39.18 47.87 Z\"/></g><rect x=\"4\" y=\"4\" width=\"88\" height=\"112\" fill=\"none\" stroke=\"#577793\" stroke-width=\"6\"/></svg>",
+        "portraitKey": "Vex|elf|dark|Rogue||1.8000|90.0000|#172128|mountain",
+        "level": 2,
+        "record": "3 W · 7 L",
+        "active": false,
+        "selected": true
+      }
+    ],
+    "selected": {
+      "playerId": "PL-000002",
+      "name": "Vex",
+      "portraitKey": "Vex|elf|dark|Rogue||1.8000|90.0000|#172128|mountain",
+      "sheet": {
+        "name": "Vex",
+        "raceLabel": "Elf",
+        "subraceLabel": "Dark Elf",
+        "className": "Rogue",
+        "weaponLabel": "Twin Daggers",
+        "signLabel": "The Mountain",
+        "primary": [
+          {
+            "label": "Vitality",
+            "value": "4",
+            "tone": {
+              "value": 4,
+              "neutral": 5.875,
+              "span": 4
+            }
+          },
+          {
+            "label": "Resilience",
+            "value": "6",
+            "tone": {
+              "value": 6,
+              "neutral": 5.5,
+              "span": 4
+            }
+          },
+          {
+            "label": "Focus",
+            "value": "5",
+            "tone": {
+              "value": 5,
+              "neutral": 4.5,
+              "span": 4
+            }
+          },
+          {
+            "label": "Reflex",
+            "value": "10",
+            "tone": {
+              "value": 10.375,
+              "neutral": 5.75,
+              "span": 4
+            }
+          },
+          {
+            "label": "Strength",
+            "value": "4",
+            "tone": {
+              "value": 4,
+              "neutral": 5.875,
+              "span": 4
+            }
+          },
+          {
+            "label": "Intelligence",
+            "value": "6",
+            "tone": {
+              "value": 6,
+              "neutral": 5.25,
+              "span": 4
+            }
+          },
+          {
+            "label": "Agility",
+            "value": "10",
+            "tone": {
+              "value": 10,
+              "neutral": 5.625,
+              "span": 4
+            }
+          }
+        ],
+        "derived": [
+          {
+            "label": "Max Health",
+            "value": "21 031",
+            "tone": {
+              "value": 21031.3125,
+              "neutral": 23509.953125,
+              "span": 5877.48828125
+            }
+          },
+          {
+            "label": "Attack Power",
+            "value": "341",
+            "tone": {
+              "value": 340.7674912623697,
+              "neutral": 477.1691993395405,
+              "span": 119.29229983488513
+            },
+            "hint": "≈ 288 a blow vs. an even foe"
+          },
+          {
+            "label": "Attack Interval",
+            "value": "0.89 s",
+            "tone": {
+              "value": 0.8913453457870608,
+              "neutral": 1.0711422837898854,
+              "span": 0.2,
+              "invert": true
+            }
+          },
+          {
+            "label": "Armour",
+            "value": "4.9",
+            "tone": {
+              "value": 4.880000000000001,
+              "neutral": 3.97,
+              "span": 2
+            }
+          }
+        ],
+        "secondary": [
+          {
+            "label": "Critical Strike",
+            "value": "+3%",
+            "tone": {
+              "value": 0.03,
+              "neutral": 0,
+              "span": 0.05
+            }
+          },
+          {
+            "label": "Haste",
+            "value": "—",
+            "tone": {
+              "value": 0,
+              "neutral": 0,
+              "span": 0.05
+            }
+          },
+          {
+            "label": "Mastery",
+            "value": "—",
+            "tone": {
+              "value": 0,
+              "neutral": 0,
+              "span": 0.05
+            }
+          },
+          {
+            "label": "Physical Resistance",
+            "value": "+3%",
+            "tone": {
+              "value": 0.03,
+              "neutral": 0,
+              "span": 0.05
+            }
+          },
+          {
+            "label": "Magic Resistance",
+            "value": "+1%",
+            "tone": {
+              "value": 0.01,
+              "neutral": 0,
+              "span": 0.05
+            }
+          },
+          {
+            "label": "Versatility",
+            "value": "-1%",
+            "tone": {
+              "value": -0.01,
+              "neutral": 0,
+              "span": 0.05
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "id": "load",
+          "label": "Load",
+          "hint": "Make this the fighter you play.",
+          "kind": "manage",
+          "disabled": false
+        },
+        {
+          "id": "duplicate",
+          "label": "Duplicate",
+          "hint": "Copy this fighter into a new profile.",
+          "kind": "manage",
+          "disabled": false
+        },
+        {
+          "id": "rename",
+          "label": "Rename",
+          "hint": "Give this fighter a new name.",
+          "kind": "manage",
+          "disabled": false
+        },
+        {
+          "id": "delete",
+          "label": "Delete",
+          "hint": "Remove this fighter for good.",
+          "kind": "manage",
+          "disabled": false
+        }
+      ]
+    },
+    "actions": [
+      {
+        "id": "new-random",
+        "label": "Roll a fighter",
+        "hint": "Roll a random fighter and save it to the library.",
+        "kind": "random",
+        "disabled": false
+      },
+      {
+        "id": "new-specific",
+        "label": "Create a fighter",
+        "hint": "Build a specific fighter in the Creator, then save it.",
+        "kind": "specific",
+        "disabled": false
+      },
+      {
+        "id": "load",
+        "label": "Load",
+        "hint": "Make this the fighter you play.",
+        "kind": "manage",
+        "disabled": false
+      },
+      {
+        "id": "duplicate",
+        "label": "Duplicate",
+        "hint": "Copy this fighter into a new profile.",
+        "kind": "manage",
+        "disabled": false
+      },
+      {
+        "id": "rename",
+        "label": "Rename",
+        "hint": "Give this fighter a new name.",
+        "kind": "manage",
+        "disabled": false
+      },
+      {
+        "id": "delete",
+        "label": "Delete",
+        "hint": "Remove this fighter for good.",
+        "kind": "manage",
+        "disabled": false
+      }
+    ]
+  },
+  "staleSelected": {
+    "title": "Profiles",
+    "hint": "Your saved fighters — roll a random one, build a specific one, or select a row to see its statistics.",
+    "count": 2,
+    "empty": {
+      "show": false,
+      "text": "No profiles yet. Roll a random fighter, or build one in the Creator.",
+      "action": "new-random"
+    },
+    "rows": [
+      {
+        "playerId": "PL-000001",
+        "name": "Aldric",
+        "raceLabel": "Human",
+        "subraceLabel": "Imperial",
+        "className": "Warrior",
+        "banner": "<svg class=\"banner banner-human\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 96 120\" width=\"96\" height=\"120\" data-cadency=\"saltire\" aria-hidden=\"true\" focusable=\"false\"><rect x=\"4\" y=\"4\" width=\"88\" height=\"112\" fill=\"#d99a70\"/><path d=\"M4 4 L92 116 M92 4 L4 116\" fill=\"none\" stroke=\"#d98e37\" stroke-width=\"8\"/><g class=\"banner-charge\" fill=\"#6b4130\" stroke=\"#6b4130\" stroke-width=\"3\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M16 44 L16 90 L80 90 L80 44 L64 66 L57 26 L48 60 L39 26 L32 66 Z\"/></g><rect x=\"4\" y=\"4\" width=\"88\" height=\"112\" fill=\"none\" stroke=\"#d98e37\" stroke-width=\"6\"/></svg>",
+        "portraitKey": "Aldric|human|imperial|Warrior||1.8000|90.0000|#172128|mountain",
+        "level": 4,
+        "record": "12 W · 4 L",
+        "active": true,
+        "selected": false
+      },
+      {
+        "playerId": "PL-000002",
+        "name": "Vex",
+        "raceLabel": "Elf",
+        "subraceLabel": "Dark Elf",
+        "className": "Rogue",
+        "banner": "<svg class=\"banner banner-elf\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 96 120\" width=\"96\" height=\"120\" data-cadency=\"chevron\" aria-hidden=\"true\" focusable=\"false\"><rect x=\"4\" y=\"4\" width=\"88\" height=\"112\" fill=\"#cdc0d6\"/><path d=\"M4 78 L48 34 L92 78\" fill=\"none\" stroke=\"#577793\" stroke-width=\"10\"/><g class=\"banner-charge\" fill=\"#2f3d63\" stroke=\"#2f3d63\" stroke-width=\"3\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M48 24 L56.82 47.87 L82.24 48.88 L62.27 64.63 L69.16 89.12 L48 75 L26.84 89.12 L33.73 64.63 L13.76 48.88 L39.18 47.87 Z\"/></g><rect x=\"4\" y=\"4\" width=\"88\" height=\"112\" fill=\"none\" stroke=\"#577793\" stroke-width=\"6\"/></svg>",
+        "portraitKey": "Vex|elf|dark|Rogue||1.8000|90.0000|#172128|mountain",
+        "level": 2,
+        "record": "3 W · 7 L",
+        "active": false,
+        "selected": false
+      }
+    ],
+    "selected": {
+      "playerId": "PL-000001",
+      "name": "Aldric",
+      "portraitKey": "Aldric|human|imperial|Warrior||1.8000|90.0000|#172128|mountain",
+      "sheet": {
+        "name": "Aldric",
+        "raceLabel": "Human",
+        "subraceLabel": "Imperial",
+        "className": "Warrior",
+        "weaponLabel": "Longsword",
+        "signLabel": "The Mountain",
+        "primary": [
+          {
+            "label": "Vitality",
+            "value": "7",
+            "tone": {
+              "value": 7,
+              "neutral": 5.875,
+              "span": 4
+            }
+          },
+          {
+            "label": "Resilience",
+            "value": "12",
+            "tone": {
+              "value": 12,
+              "neutral": 5.5,
+              "span": 4
+            }
+          },
+          {
+            "label": "Focus",
+            "value": "5",
+            "tone": {
+              "value": 5,
+              "neutral": 4.5,
+              "span": 4
+            }
+          },
+          {
+            "label": "Reflex",
+            "value": "5",
+            "tone": {
+              "value": 5,
+              "neutral": 5.75,
+              "span": 4
+            }
+          },
+          {
+            "label": "Strength",
+            "value": "8",
+            "tone": {
+              "value": 8,
+              "neutral": 5.875,
+              "span": 4
+            }
+          },
+          {
+            "label": "Intelligence",
+            "value": "6",
+            "tone": {
+              "value": 6,
+              "neutral": 5.25,
+              "span": 4
+            }
+          },
+          {
+            "label": "Agility",
+            "value": "5",
+            "tone": {
+              "value": 5,
+              "neutral": 5.625,
+              "span": 4
+            }
+          }
+        ],
+        "derived": [
+          {
+            "label": "Max Health",
+            "value": "26 569",
+            "tone": {
+              "value": 26568.750000000004,
+              "neutral": 23509.953125,
+              "span": 5877.48828125
+            }
+          },
+          {
+            "label": "Attack Power",
+            "value": "415",
+            "tone": {
+              "value": 415.48621886317835,
+              "neutral": 477.1691993395405,
+              "span": 119.29229983488513
+            },
+            "hint": "≈ 352 a blow vs. an even foe"
+          },
+          {
+            "label": "Attack Interval",
+            "value": "1.12 s",
+            "tone": {
+              "value": 1.1243425431002034,
+              "neutral": 1.0711422837898854,
+              "span": 0.2,
+              "invert": true
+            }
+          },
+          {
+            "label": "Armour",
+            "value": "7.2",
+            "tone": {
+              "value": 7.16,
+              "neutral": 3.97,
+              "span": 2
+            }
+          }
+        ],
+        "secondary": [
+          {
+            "label": "Critical Strike",
+            "value": "—",
+            "tone": {
+              "value": 0,
+              "neutral": 0,
+              "span": 0.05
+            }
+          },
+          {
+            "label": "Haste",
+            "value": "—",
+            "tone": {
+              "value": 0,
+              "neutral": 0,
+              "span": 0.05
+            }
+          },
+          {
+            "label": "Mastery",
+            "value": "+2%",
+            "tone": {
+              "value": 0.02,
+              "neutral": 0,
+              "span": 0.05
+            }
+          },
+          {
+            "label": "Physical Resistance",
+            "value": "+3%",
+            "tone": {
+              "value": 0.03,
+              "neutral": 0,
+              "span": 0.05
+            }
+          },
+          {
+            "label": "Magic Resistance",
+            "value": "+1%",
+            "tone": {
+              "value": 0.01,
+              "neutral": 0,
+              "span": 0.05
+            }
+          },
+          {
+            "label": "Versatility",
+            "value": "+2%",
+            "tone": {
+              "value": 0.02,
+              "neutral": 0,
+              "span": 0.05
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "id": "load",
+          "label": "Load",
+          "hint": "Already the active fighter.",
+          "kind": "manage",
+          "disabled": true
+        },
+        {
+          "id": "duplicate",
+          "label": "Duplicate",
+          "hint": "Copy this fighter into a new profile.",
+          "kind": "manage",
+          "disabled": false
+        },
+        {
+          "id": "rename",
+          "label": "Rename",
+          "hint": "Give this fighter a new name.",
+          "kind": "manage",
+          "disabled": false
+        },
+        {
+          "id": "delete",
+          "label": "Delete",
+          "hint": "The active fighter cannot be deleted.",
+          "kind": "manage",
+          "disabled": true
+        }
+      ]
+    },
+    "actions": [
+      {
+        "id": "new-random",
+        "label": "Roll a fighter",
+        "hint": "Roll a random fighter and save it to the library.",
+        "kind": "random",
+        "disabled": false
+      },
+      {
+        "id": "new-specific",
+        "label": "Create a fighter",
+        "hint": "Build a specific fighter in the Creator, then save it.",
+        "kind": "specific",
+        "disabled": false
+      },
+      {
+        "id": "load",
+        "label": "Load",
+        "hint": "Already the active fighter.",
+        "kind": "manage",
+        "disabled": true
+      },
+      {
+        "id": "duplicate",
+        "label": "Duplicate",
+        "hint": "Copy this fighter into a new profile.",
+        "kind": "manage",
+        "disabled": false
+      },
+      {
+        "id": "rename",
+        "label": "Rename",
+        "hint": "Give this fighter a new name.",
+        "kind": "manage",
+        "disabled": false
+      },
+      {
+        "id": "delete",
+        "label": "Delete",
+        "hint": "The active fighter cannot be deleted.",
+        "kind": "manage",
+        "disabled": true
+      }
+    ]
+  }
+}
+----- post-test output end -----
+record the three evidence views to artifacts/profiles/panel-views.json ... ok (1ms)
+running 9 tests from ./tests/racebanners_test.ts
+banners: the standard is a 4:5 hanging field ... ok (251µs)
+banners: each race bears its ancestry's charge, and the four are distinct ... ok (176µs)
+banners: the palette is read from ancestry (skin base / crease) plus a lore trim ... ok (351µs)
+banners: unknown ids return nothing; a foreign sub-species is refused ... ok (34µs)
+banners: every standard is well-formed markup with no style attribute ... ok (709µs)
+banners: the charge reads at 32 px — >=40% of the field, centred within +/-8 units ... ok (588µs)
+banners: the 4 race + 12 sub-species standards are all distinct, 0 duplicates ... ok (256µs)
+banners: deterministic — the same ids give the identical string ... ok (80µs)
+banners: write the per-race table + distinctness to artifacts/design/race-banners.json ... ok (3ms)
+running 4 tests from ./tests/sex_wire_test.ts
+the sex reaches the body spec the renderer builds from ... ok (294µs)
+the female body is measurably curvier than the male, on the same spec ... ok (730µs)
+applyEdit takes the sex override the generator exposes, and refuses nonsense ... ok (189µs)
+applyEdit takes a hand-set attribute, clamped into the game's own band ... ok (89µs)
+running 40 tests from ./tests/spec_test.ts
+SPEC L1: luminosity is monotonic in sun elevation and bounded, for every cloud cover ... ok (593µs)
+SPEC L2: cloud cover dims light by at most 45% ... ok (32µs)
+SPEC S1: night shortens sight and lengthens hearing (the coupling, end to end) ... ok (139µs)
+SPEC P1: strength makes a body DENSER, not only heavier ... ok (32µs)
+SPEC P2: the physics multiplier is bounded and equals 0.935 for equal bodies at rest ... ok (715µs)
+SPEC P3: every class has a distinct body, and the heaviest is the Barbarian ... ok (72µs)
+SPEC P4: closing speed only ever raises the multiplier, saturating at |v| = 2 ... ok (32µs)
+SPEC P5: closing speed is relative — a fleeing defender softens the blow, a slow one does not ... ok (39µs)
+SPEC H1: every class's average hit stuns 0.05-0.25 s (scale-corrected), never seconds ... ok (309µs)
+SPEC H2: every class needs 18-90 average hits to kill every other class (armour, crit, physics) ... ok (1ms)
+SPEC D1: the truce is exactly 6 s (3 friendly + 3 neutral) ... ok (47µs)
+SPEC R1: orks underbite and elves have the longest ears; hair length is monotonic ... ok (72µs)
+SPEC SS1: secondary layers stack additively ... ok (108µs)
+SPEC SP1: the spine is 33 vertebrae and adjacent curves meet at zero offset ... ok (116µs)
+SPEC F1: every face pose is clamped and the neutral pose is inside its limits ... ok (131µs)
+SPEC T1: every class's powers have finite, bounded sin/cos/tan tensors ... ok (7ms)
+SPEC AI3: an upset moves more MMR than an expected win ... ok (89µs)
+SPEC AN1: a stance key hits its start, peak and end angles, and is continuous at the peak ... ok (188µs)
+SPEC SS2: secondary stats feed the combat equations ... ok (92µs)
+SPEC HA1: every ancestry is complete and the four races are strictly ordered on every metric ... ok (224µs)
+SPEC HA2: the ancestry look reads from the silhouette alone (hair, beard, tusks, ears, skull) ... ok (144µs)
+SPEC HA3: hair physics mass follows length and curl, is seed-stable and never NaN ... ok (2ms)
+SPEC HD1: the match time limit is 180 s by default and the bell is a TIE, never a win ... ok (73µs)
+SPEC HD2: the stat gap is a bounded measure, zero for a mirror match, and the generation id is stable ... ok (607µs)
+SPEC HD3: the History page and the record layer agree on which match is the fastest and the widest ... ok (163µs)
+SPEC HE1: a spectator card round-trips level<->budget and its techniques always include the class's three ... ok (541µs)
+SPEC HF1: the corpus standardises NaN-free and its principal components explain exactly the variance ... ok (4ms)
+SPEC HX1: a generated stat budget can never push a fighter outside the balance window ... ok (5ms)
+SPEC IA1: a spectator angle the user sets STAYS set, and every preset is legal ... ok (1ms)
+SPEC IB1: the inspect card anchors on screen, the cursor's blob follows the reticle, and the pick is nearest-wins ... ok (1ms)
+SPEC IC1: a prop cannot float (seated on the footprint's high point) and its apron reaches the terrain ... ok (1ms)
+SPEC ID1: two moving blades within reach clash once, at a bounded strength, and the spark pool never overflows ... ok (24ms)
+SPEC IE1: the effects governor answers sustained load slowly, recovers slower, and never flaps ... ok (1ms)
+SPEC KK1: mana costs are 20% above the balance pass's table, and a dash costs no mana ... ok (54µs)
+SPEC KK2: every stat bar is cut into squares and carries its numbers inside, with no inline style attribute ... ok (203µs)
+SPEC KK3: the card's bars are written through CSSOM, never an inline style attribute ... ok (1ms)
+SPEC LL1: every race and every sub-species flies its own standard, drawn without a style attribute ... ok (349µs)
+SPEC LL2: the options are CLOSED trees on arrival, with the one entry group open ... ok (422µs)
+SPEC LL3: the dice rolls a legal fighter and the sheet shows the game's own numbers ... ok (3ms)
+SPEC LL4: the Creator's dice button, preview canvas and the engine's live model are wired (text pin) ... ok (1ms)
+running 33 tests from ./tests/stepper_test.ts
+stepIndex: no wrap clamps at both ends ... ok (237µs)
+stepIndex: wrap turns over only from the end being left ... ok (46µs)
+stepIndex: garbage never throws and stays in range ... ok (47µs)
+stepIndex: -1 is 'nothing selected' (a select with selectedIndex -1) ... ok (21µs)
+stepEnabled over an all-enabled list IS stepIndex (every n, index, delta, wrap) ... ok (1ms)
+stepEnabled: skips disabled options like a native select ... ok (65µs)
+stepperModel: label, ends and which arrows act ... ok (152µs)
+stepperModel: garbage resolves to an empty or blank model ... ok (71µs)
+toLabel: the formatter hook accepts strings, numbers, labels; garbage falls back ... ok (55µs)
+stepNumber: no float drift on a decimal grid ... ok (2ms)
+stepNumber: the grid starts at min, max snaps down onto it ... ok (78µs)
+stepNumber: clamps, and wraps only from the end being left ... ok (73µs)
+stepNumber: off-grid values step to the next grid point in the step's direction ... ok (44µs)
+stepNumber: garbage — NaN value, outside range, step 0, min > max, open ends ... ok (96µs)
+numberModel and formatStepNumber ... ok (124µs)
+keyAction: the keyboard map ... ok (67µs)
+stepperView / stepState / stepStateTo: aria values without a DOM ... ok (431µs)
+Stepper: markup, aria, classes and disabled ends ... ok (754µs)
+Stepper: keyboard map, handled keys do not reach the menu, modifiers pass through ... ok (411µs)
+Stepper: wrap keeps both arrows live; wheel is off by default ... ok (169µs)
+Stepper: mouse press-and-hold repeats after 350 ms then every 60 ms; the click is not double-counted ... ok (392µs)
+Stepper: a hold stops at a closed end, on pointerleave, and when the stepper is detached ... ok (248µs)
+Stepper: touch steps on the tap's click, repeats only when held ... ok (161µs)
+Stepper: disabled state, set() and destroy() ... ok (172µs)
+upgradeSelect: the select stays the source of truth, a step fires input+change once ... ok (979µs)
+upgradeSelect: rebuilt options, disabled options and select.disabled follow via the observer ... ok (11ms)
+upgradeSelect: a change listener that re-sets the value wins; destroy restores the select ... ok (345µs)
+upgradeRange: min/max/step, the linked <output> is mirrored and hidden ... ok (5ms)
+upgradeRange: defaults 0..100, step=any, a formatter wins over the output ... ok (195µs)
+upgradeNumber: open ends, decimals, programmatic writes ... ok (455µs)
+upgradeAll: upgrades each element once, honours skip and data-stepper=off ... ok (1ms)
+focus: the hidden native control forwards focus; a re-render hands focus back ... ok (595µs)
+autoUpgrade: every re-render is upgraded after the observer's microtask; stop() ends it ... ok (5ms)
+running 7 tests from ./tests/ui_ancestry_test.ts
+ancestry: the selected race starts expanded with its own sub-species ... ok (261µs)
+ancestry: one box expanded at a time, through any click sequence ... ok (340µs)
+ancestry: expanding another race selects it with its first sub-species ... ok (25µs)
+ancestry: selecting a sub-species selects its race (and only real pairs) ... ok (89µs)
+ancestry: header label merges race and sub-species without repeating the race ... ok (56µs)
+ancestry: arrow keys rove the headers and wrap; other keys are ignored ... ok (119µs)
+ancestry: the game's real races all build a valid accordion ... ok (175µs)
+running 3 tests from ./tests/ui_arena_size_test.ts
+arena minimum: the derivation's terms and result ...
+------- post-test output -------
+LIVE_ARENA_MIN = 34 m (half 16.10 m: spawn 2.5 + dash 3.4 + slide 4.90 + prop 3.80 + 3r 1.5)
+----- post-test output end -----
+arena minimum: the derivation's terms and result ... ok (330µs)
+arena size: the slider's bottom notch and anything below the minimum are random ... ok (67µs)
+arena size: the engine clamp puts every random size inside the live range ... ok (44µs)
+running 5 tests from ./tests/ui_icons_test.ts
+icons: every icon is a well-formed <svg> on the 24-unit grid ... ok (7ms)
+icons: no style attribute and no hard-coded colour anywhere (CSP + white via CSS) ... ok (296µs)
+icons: every coordinate in every path stays inside the 24-unit grid ... ok (318µs)
+icons: every birth sign in the game has an icon, and unknown ids draw nothing ... ok (55µs)
+icons: the three skill kinds and the Back chevron exist; unknown kinds fall back ... ok (49µs)
+running 10 tests from ./tests/ui_navstack_test.ts
+navstack: starts at the root with depth 1 and no way back ... ok (231µs)
+navstack: title -> select -> back returns to title ... ok (70µs)
+navstack: back never pops below the root ... ok (33µs)
+navstack: victory -> sheet -> back returns to victory ... ok (32µs)
+navstack: pushing the current screen is a no-op (one Back click is enough) ... ok (55µs)
+navstack: pushing the root resets the trail ... ok (44µs)
+navstack: replace swaps the top without growing the trail ... ok (46µs)
+navstack: replace keeps the root at the bottom ... ok (23µs)
+navstack: replace onto the entry below collapses the duplicate ... ok (29µs)
+navstack: reset returns the root; trail() is a copy ... ok (43µs)
+running 12 tests from ./tests/ui_settings_test.ts
+settings schema: unknown keys dropped, wrong types and enums -> default ... ok (374µs)
+settings schema: out-of-range numbers clamp and snap; non-finite -> default ... ok (171µs)
+settings storage: version mismatch, broken JSON or nothing -> defaults; round trip ... ok (367µs)
+settings helpers: pixel budget, effect density, FOV, look rates, layout ... ok (73µs)
+panel: gear is icon-only but named; open/close/toggle drive state and callbacks ... ok (1ms)
+panel: give up needs a confirm; Yes forfeits once without resuming ... ok (386µs)
+panel: No and Esc back out one level; Esc on the panel resumes ... ok (315µs)
+panel: the Esc that opened the panel (pointer-lock release) does not close it ... ok (236µs)
+panel: from the menu only settings + Close; spectating has no Give up ... ok (604µs)
+panel: Restart and Main menu close without resuming ... ok (153µs)
+panel: controls validate, save under the versioned key and report onChange ... ok (334µs)
+panel: Tab is trapped inside the dialog (and inside the confirm while it shows) ... ok (213µs)
+running 10 tests from ./tests/ui_skillbar_test.ts
+skillbar: the first update builds one chip per skill with key, name, kind, cooldown ... ok (7ms)
+skillbar: update() with identical data performs ZERO DOM writes ... ok (1ms)
+skillbar: a cooldown change writes only that chip (text + sweep), nothing else ... ok (232µs)
+skillbar: recharging flips the state classes once, then goes quiet ... ok (163µs)
+skillbar: key labels come from the caller (AZERTY A vs QWERTY Q), not hard-coded ... ok (129µs)
+skillbar: art replaces the kind icon, and the chip list grows and shrinks in place ... ok (213µs)
+skillbar: legacy markup in the container is cleared once on first build ... ok (102µs)
+skillbar: cooldown text and sweep helpers ... ok (35µs)
+skillbar: with onActivate, pressing a chip fires its slot index (mouse-only play) ... ok (187µs)
+skillbar: without onActivate the bar is display-only ... ok (137µs)
+running 5 tests from ./tests/ui_wave_u_test.ts
+wave U: an inactive flat screen is hidden (the Creator used to render beside every screen) ... ok (192µs)
+wave U: every menu and the settings dialog upgrade their dropdowns / sliders / numbers to steppers ... ok (290µs)
+wave U: the sex override reads appearance.sex (it read a missing top-level field and reverted every change) ... ok (85µs)
+wave U: the creator's statistics sit beside the model; the look tools sit under it ... ok (70µs)
+wave U: one glyph family — no emoji left on the menu buttons ... ok (72µs)
+running 5 tests from ./tests/uitree_test.ts
+every control has a unique key and a full path ... ok (7ms)
+the tree is deep enough: every screen has panels, every panel has groups ... ok (167µs)
+the creator is split into five panels, not one long scroll ... ok (70µs)
+importance is declared, and the essential controls are always reachable ... ok (394µs)
+every control declares its owner and when it applies ... ok (97µs)
+running 4 tests from ./tests/wave_m_wiring_test.ts
+M wiring: the seat projection keeps one seat's numbers and the shared spatial ones ... ok (715µs)
+M wiring: the engine's report is compact, private and drawn from real strategy ids ... ok (748µs)
+M wiring: the reading page's batch plan, progress and summary agree with a real run ... ok (95ms)
+M wiring: the engine feeds the accumulator, the AI view and the batch button (text pin) ... ok (2ms)
+running 17 tests from ./tests/wave_x_ui_test.ts
+SPEC X30: toneFor is green above neutral, red below, grey at it ... ok (420µs)
+SPEC X31: toneFor is smooth and monotone in the value (no jumps, saturates at the span) ... ok (523µs)
+SPEC X32: every tone reaches WCAG 4.5:1 on its surface's reference backgrounds ... ok (981µs)
+signed / toneClass / toneAttrs ... ok (119µs)
+paintTones writes the colour through CSSOM, with the parchment inks inside a stepper ... ok (129µs)
+SPEC X33: the creator sheet carries all SEVEN attributes (Agility, Focus) and tones every number ... ok (3ms)
+SPEC X34: a rolled name speaks its race + sub-race phonology; the roll is seeded and draws an age in ageBounds ... ok (2ms)
+SPEC X35: reroll ONE part changes that part and keeps the rest ... ok (1ms)
+SPEC X36: a new ancestry regenerates an untyped name in the new phonology, keeps a typed one ... ok (143µs)
+SPEC X37: attribute tweaks stay inside the floor, the per-stat cap and the level budget ... ok (502µs)
+SPEC X38: the sheet follows a tweak live — the derived numbers move by the game's own statDelta ... ok (208µs)
+SPEC X39: silhouette tweak bands sit around the race's own value, inside SILHOUETTE_TOP ... ok (78µs)
+SPEC X40: the forged-steel sign and the reroll dice are CSP-safe markup with the race + sub-race ... ok (83µs)
+SPEC X41: History's stat cell names FOC and AGI and tones each gap ... ok (155µs)
+SPEC X42: the inspect card tones the primaries both ways and keeps 'bad' for below-average ... ok (215µs)
+SPEC X43: the UI tree describes seven attributes (Agility) and no Willpower ... ok (109µs)
+SPEC X44: combat text wears the negative tone's hue in styles.css; misses are neutral ... ok (1ms)
+running 7 tests from ./tests/wave_y_ui_test.ts
+SPEC Y30: the catalogue has the nine sockets; weapons = every real archetype (available), the rest = future pieces (greyed) ... ok (468µs)
+SPEC Y31: equip() writes weaponType for a weapon, refuses placeholders/unknown ids, and reads legacy types ... ok (203µs)
+SPEC Y32: one line icon per archetype and per socket, inside the 24-unit grid, CSP-safe ... ok (466µs)
+SPEC Y33: Reroll hero is a seeded whole-hero roll that keeps the level and the equipment ... ok (2ms)
+SPEC Y34: heroRecordPatch replaces the hero in place through ProfileRepo.update (id + record kept) ... ok (723µs)
+SPEC Y35: medallion, sockets and picker markup — classes only, the viewer canvas once, 5 | 4 sockets ... ok (524µs)
+SPEC Y36: the metal/stone tokens are named equations of the type scale, and the recipes exist ... ok (1ms)
+running 3 tests from ./tests/ui_wave_w_test.ts
+wave W: the type scale falls with depth at every width (L0 > L1 > L2 > L3 > L4) ... ok (2ms)
+wave W: every screen spans the window minus a gutter; the title, victory and settings keep >= 80 % ... ok (130µs)
+wave W: icons are 1.2 × their label and sit beside it ... ok (30µs)
+
+ok | 360 passed | 0 failed (1s)
+

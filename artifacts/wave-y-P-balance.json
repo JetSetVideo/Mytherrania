@@ -1,0 +1,226 @@
+{
+  "generatedBy": "src/balance/pools-study.ts",
+  "design": "random",
+  "before": {
+    "label": "before (potentials off)",
+    "matches": 6000,
+    "seed": 4242,
+    "decisive": 5904,
+    "reasons": {
+      "ringout": 3895,
+      "ko": 1668,
+      "time": 437
+    },
+    "classWinShare": {
+      "Barbarian": 0.5228,
+      "Warrior": 0.5608,
+      "Rogue": 0.5264,
+      "Assassin": 0.5765,
+      "Mage": 0.4104,
+      "Necromancer": 0.4369,
+      "Archer": 0.5317,
+      "Priest": 0.4404
+    },
+    "meanAbsDev": 0.0538,
+    "medianDuration": 50.97,
+    "medianDuelSeconds": 44.97,
+    "endPotential": {
+      "health": 1,
+      "mana": 1,
+      "stamina": 1
+    },
+    "lostShare": {
+      "health": {
+        "wound": 0,
+        "status": 0,
+        "fatigue": 0,
+        "recovered": 0
+      },
+      "mana": {
+        "wound": 0,
+        "status": 0,
+        "fatigue": 0,
+        "recovered": 0
+      },
+      "stamina": {
+        "wound": 0,
+        "status": 0,
+        "fatigue": 0,
+        "recovered": 0
+      }
+    }
+  },
+  "after": {
+    "label": "after (potentials on, pool-aware AI)",
+    "matches": 6000,
+    "seed": 4242,
+    "decisive": 5908,
+    "reasons": {
+      "ringout": 3908,
+      "ko": 1724,
+      "time": 368
+    },
+    "classWinShare": {
+      "Barbarian": 0.5008,
+      "Warrior": 0.5595,
+      "Rogue": 0.538,
+      "Assassin": 0.582,
+      "Mage": 0.4232,
+      "Necromancer": 0.4338,
+      "Archer": 0.5313,
+      "Priest": 0.437
+    },
+    "meanAbsDev": 0.0522,
+    "medianDuration": 51.39,
+    "medianDuelSeconds": 45.39,
+    "endPotential": {
+      "health": 0.9193,
+      "mana": 0.9959,
+      "stamina": 0.9879
+    },
+    "lostShare": {
+      "health": {
+        "wound": 0.0987,
+        "status": 0,
+        "fatigue": 0,
+        "recovered": 0.0179
+      },
+      "mana": {
+        "wound": 0,
+        "status": 0.0037,
+        "fatigue": 0.0057,
+        "recovered": 0.0053
+      },
+      "stamina": {
+        "wound": 0,
+        "status": 0.0037,
+        "fatigue": 0.02,
+        "recovered": 0.0116
+      }
+    }
+  },
+  "aware": {
+    "matches": 3000,
+    "seed": 777,
+    "counted": 2676,
+    "decisive": 2602,
+    "awareWins": 1287,
+    "awareWinRate": 0.4946,
+    "se": 0.0098,
+    "byStrategy": {
+      "full-vs-basic": {
+        "decisive": 659,
+        "awareWins": 553,
+        "rate": 0.8392
+      },
+      "full-vs-full": {
+        "decisive": 726,
+        "awareWins": 344,
+        "rate": 0.4738
+      },
+      "basic-vs-full": {
+        "decisive": 659,
+        "awareWins": 104,
+        "rate": 0.1578
+      },
+      "basic-vs-basic": {
+        "decisive": 558,
+        "awareWins": 286,
+        "rate": 0.5125
+      }
+    }
+  },
+  "pressOnly": {
+    "matches": 3000,
+    "seed": 777,
+    "counted": 2676,
+    "decisive": 2598,
+    "awareWins": 1297,
+    "awareWinRate": 0.4992,
+    "se": 0.0098,
+    "byStrategy": {
+      "full-vs-basic": {
+        "decisive": 658,
+        "awareWins": 549,
+        "rate": 0.8343
+      },
+      "full-vs-full": {
+        "decisive": 723,
+        "awareWins": 358,
+        "rate": 0.4952
+      },
+      "basic-vs-full": {
+        "decisive": 659,
+        "awareWins": 104,
+        "rate": 0.1578
+      },
+      "basic-vs-basic": {
+        "decisive": 558,
+        "awareWins": 286,
+        "rate": 0.5125
+      }
+    }
+  },
+  "conserveOnly": {
+    "matches": 3000,
+    "seed": 777,
+    "counted": 2676,
+    "decisive": 2598,
+    "awareWins": 1279,
+    "awareWinRate": 0.4923,
+    "se": 0.0098,
+    "byStrategy": {
+      "full-vs-basic": {
+        "decisive": 658,
+        "awareWins": 556,
+        "rate": 0.845
+      },
+      "full-vs-full": {
+        "decisive": 726,
+        "awareWins": 345,
+        "rate": 0.4752
+      },
+      "basic-vs-full": {
+        "decisive": 658,
+        "awareWins": 100,
+        "rate": 0.152
+      },
+      "basic-vs-basic": {
+        "decisive": 556,
+        "awareWins": 278,
+        "rate": 0.5
+      }
+    }
+  },
+  "noopControl": {
+    "matches": 1000,
+    "seed": 777,
+    "counted": 914,
+    "decisive": 902,
+    "awareWins": 451,
+    "awareWinRate": 0.5,
+    "se": 0.0166,
+    "byStrategy": {
+      "full-vs-basic": {
+        "decisive": 219,
+        "awareWins": 192,
+        "rate": 0.8767
+      },
+      "full-vs-full": {
+        "decisive": 252,
+        "awareWins": 126,
+        "rate": 0.5
+      },
+      "basic-vs-full": {
+        "decisive": 219,
+        "awareWins": 27,
+        "rate": 0.1233
+      },
+      "basic-vs-basic": {
+        "decisive": 212,
+        "awareWins": 106,
+        "rate": 0.5
+      }
+    }
+  }
+}

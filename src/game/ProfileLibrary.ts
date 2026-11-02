@@ -11,7 +11,7 @@
 //
 // Units, named once: heights are metres, weights are kilograms (matching Characters.Appearance).
 
-import type { Appearance, CharacterProfile } from "./Characters.ts";
+import type { Appearance, CharacterProfile, EquipmentSlots } from "./Characters.ts";
 import { PALETTES } from "./Characters.ts";
 import { createProfile, type Profile, type ProfileRepo } from "./Profiles.ts";
 import type { ClassName } from "./Stats.ts";
@@ -43,6 +43,10 @@ type StoredProfile = Profile & {
   level?: number;
   /** The character's weapon type (a rolled fighter has one), kept so a loadout can match the model. */
   weaponType?: string;
+  /** Wave Y: the Creator's hand-tweaked attribute values (absent = the class/race starting sheet). */
+  allocated?: Record<string, number>;
+  /** Wave Y: equipment ids per slot (EquipmentCatalog; stored, not yet applied in combat). */
+  equip?: EquipmentSlots;
   /** True once the profile has been deleted from the library (see deleteProfile for WHY). */
   removed?: boolean;
 };
@@ -137,8 +141,9 @@ function toCharacter(profile: Profile): CharacterProfile {
     // A legacy record has no level; the fight starts every fighter at level 1.
     level: stored.level ?? 1,
     // The same allocation the Creator's own default uses (Characters.defaultAlloc), from Leveling.
-    allocated: startingStats(profile.className, profile.race, profile.subrace).allocated,
+    allocated: stored.allocated ? { ...stored.allocated } : startingStats(profile.className, profile.race, profile.subrace).allocated,
     weaponType: stored.weaponType,
+    ...(stored.equip ? { equip: { ...stored.equip } } : {}),
   };
 }
 
@@ -180,6 +185,8 @@ function storedFromCharacter(
     palette: c.palette,
     level: c.level,
     weaponType: c.weaponType,
+    allocated: { ...c.allocated },
+    ...(c.equip ? { equip: { ...c.equip } } : {}),
     // The caller stamps the time, so the module stays free of Date().
     createdAt: nowIso,
   };
@@ -257,6 +264,8 @@ export function duplicateProfile(repo: ProfileRepo, playerId: string, nowIso: st
     palette: character.palette,
     level: character.level,
     weaponType: character.weaponType,
+    allocated: { ...character.allocated },
+    ...(character.equip ? { equip: { ...character.equip } } : {}),
   };
   repo.add(copy);
   return entryOf(copy);
