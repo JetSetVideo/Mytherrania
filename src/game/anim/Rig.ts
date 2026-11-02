@@ -30,6 +30,7 @@
 // forward: a reversed "bird" knee). RIG_ROTATION_SIGN is the fix: rotation.x = sign * angle.
 
 import type { JointName } from "../Skeleton.ts";
+import { toeOutYaw } from "./FootTurnout.ts";
 import type { BoneSegment } from "../../graphics/body/contracts.ts";
 
 /** Every Skeleton joint, in the order every per-joint Float64Array of this lane uses. */
@@ -362,6 +363,13 @@ function rotX(v: Float64Array, R: number): void {
   v[2] = y * s + z * c;
 }
 
+/** Rotate point `p` about the vertical through `pivot` (right-handed +y: +R turns +z toward +x). */
+function yawAbout(pivot: Float64Array, p: Float64Array, R: number): void {
+  const c = Math.cos(R), s = Math.sin(R), x = p[0] - pivot[0], z = p[2] - pivot[2];
+  p[0] = pivot[0] + x * c + z * s;
+  p[2] = pivot[2] - x * s + z * c;
+}
+
 function rotZ(v: Float64Array, R: number): void {
   const c = Math.cos(R), s = Math.sin(R), x = v[0], y = v[1];
   v[0] = x * c - y * s;
@@ -387,7 +395,7 @@ function chainToRoot(g: LegGeometry, angles: Float64Array, side: Side, hipRoll: 
  * top of the geometry's hipRestRoll) and ankle counter-roll `ankleRoll` (Euler XYZ on the ankle),
  * rig-local metres. With both rolls 0 and no rest roll it equals legFK (plus the hip's lateral x).
  */
-export function legFK3(g: LegGeometry, angles: Float64Array, side: Side, hipRoll: number, ankleRoll: number, out: LegFK3): LegFK3 {
+export function legFK3(g: LegGeometry, angles: Float64Array, side: Side, hipRoll: number, ankleRoll: number, out: LegFK3, toeOut = 0): LegFK3 {
   Q[0] = 0; Q[1] = 0; Q[2] = 0;
   chainToRoot(g, angles, side, hipRoll, ankleRoll, Q); out.ankle.set(Q);
   Q[0] = 0; Q[1] = -g.soleOffset; Q[2] = g.ballForward;
@@ -400,6 +408,12 @@ export function legFK3(g: LegGeometry, angles: Float64Array, side: Side, hipRoll
   const ct = Math.cos(ta), st = Math.sin(ta);
   Q[0] = 0; Q[1] = -g.soleOffset + r + (-r * ct - tf * st); Q[2] = g.ballForward + (-r * st + tf * ct);
   chainToRoot(g, angles, side, hipRoll, ankleRoll, Q); out.toe.set(Q);
+  // Wave X: `toeOut` (rad, magnitude, + = toes outward) turns the foot toward its own side
+  // (FootTurnout.toeOutYaw) about the VERTICAL through the ankle: the sole points' horizontal
+  // offsets from the ankle rotate, their heights do not — so every sole height, pitch and the
+  // planted-ball IK (Animator #ankleTarget) are exactly the pre-wave-X ones; 0 is the old foot.
+  const yaw = toeOutYaw(g.hipLateral[side], toeOut);
+  if (yaw !== 0) for (const p of [out.ball, out.heel, out.toe]) yawAbout(out.ankle, p, yaw);
   return out;
 }
 

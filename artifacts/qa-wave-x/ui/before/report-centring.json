@@ -1,0 +1,403 @@
+{
+ "dist": "/Users/macmax/.hermes/cache/scratch/wx-before/dist",
+ "mode": "centring",
+ "viewports": {
+  "390": {
+   "heroCard": {
+    "sign": false,
+    "signAbovePortrait": false,
+    "text": null
+   },
+   "centring": {
+    "sub-race chips": {
+     "n": 12,
+     "maxDx": 0,
+     "maxDy": 0,
+     "worst": ""
+    },
+    "sign chips": {
+     "n": 6,
+     "maxDx": 0,
+     "maxDy": 0,
+     "worst": ""
+    },
+    "hero tabs": {
+     "n": 2,
+     "maxDx": 2,
+     "maxDy": 1.2,
+     "worst": "\"HeroWarrior · lv 1\" dx -2.0 dy 1.0"
+    },
+    "palette chips": {
+     "n": 0,
+     "maxDx": 0,
+     "maxDy": 0,
+     "worst": ""
+    },
+    "preset buttons": {
+     "n": 3,
+     "maxDx": 0,
+     "maxDy": 0,
+     "worst": "\"Vex\" dx -0.0 dy 0.0"
+    },
+    "reroll dice": {
+     "n": 0,
+     "maxDx": 0,
+     "maxDy": 0,
+     "worst": ""
+    },
+    "dice": {
+     "n": 2,
+     "maxDx": 0,
+     "maxDy": 0,
+     "worst": ""
+    },
+    "profile chips": {
+     "n": 0,
+     "maxDx": 0,
+     "maxDy": 0,
+     "worst": ""
+    },
+    "steel sign": {
+     "n": 0,
+     "maxDx": 0,
+     "maxDy": 0,
+     "worst": ""
+    },
+    "stepper value": {
+     "n": 16,
+     "maxDx": 0,
+     "maxDy": 1,
+     "worst": "\"1.80\" dx -0.0 dy -1.0"
+    },
+    "title mode buttons": {
+     "n": 0,
+     "maxDx": 0,
+     "maxDy": 0,
+     "worst": ""
+    },
+    "skill chips": {
+     "n": 3,
+     "maxDx": 131.6,
+     "maxDy": 0,
+     "worst": "\"Dashfire\" dx -131.6 dy 0.0"
+    },
+    "race tiles (banner|text|chevron)": {
+     "n": 4,
+     "maxDx": 1,
+     "maxDy": 0,
+     "worst": "\"Human · ImperialAdapta\" dx 1.0 dy 0.0"
+    },
+    "class tiles (table rows)": {
+     "n": 8,
+     "maxDx": 0,
+     "maxDy": 0,
+     "worst": ""
+    },
+    "stat tiles (sheet columns)": {
+     "n": 3,
+     "maxDx": 0,
+     "maxDy": 1,
+     "worst": ""
+    }
+   }
+  },
+  "820": {
+   "heroCard": {
+    "sign": false,
+    "signAbovePortrait": false,
+    "text": null
+   },
+   "centring": {
+    "sub-race chips": {
+     "n": 12,
+     "maxDx": 0,
+     "maxDy": 0,
+     "worst": ""
+    },
+    "sign chips": {
+     "n": 6,
+     "maxDx": 0,
+     "maxDy": 0,
+     "worst": ""
+    },
+    "hero tabs": {
+     "n": 2,
+     "maxDx": 3,
+     "maxDy": 1.2,
+     "worst": "\"HeroWarrior · lv 1\" dx -3.0 dy 1.0"
+    },
+    "palette chips": {
+     "n": 0,
+     "maxDx": 0,
+     "maxDy": 0,
+     "worst": ""
+    },
+    "preset buttons": {
+     "n": 3,
+     "maxDx": 0,
+     "maxDy": 0,
+     "worst": "\"Sir Aldric\" dx -0.0 dy 0.0"
+    },
+    "reroll dice": {
+     "n": 0,
+     "maxDx": 0,
+     "maxDy": 0,
+     "worst": ""
+    },
+    "dice": {
+     "n": 2,
+     "maxDx": 0,
+     "maxDy": 0,
+     "worst": ""
+    },
+    "profile chips": {
+     "n": 0,
+     "maxDx": 0,
+     "maxDy": 0,
+     "worst": ""
+    },
+    "steel sign": {
+     "n": 0,
+     "maxDx": 0,
+     "maxDy": 0,
+     "worst": ""
+    },
+    "stepper value": {
+     "n": 16,
+     "maxDx": 0,
+     "maxDy": 1,
+     "worst": "\"1.80\" dx -0.0 dy -1.0"
+    },
+    "title mode buttons": {
+     "n": 0,
+     "maxDx": 0,
+     "maxDy": 0,
+     "worst": ""
+    },
+    "skill chips": {
+     "n": 3,
+     "maxDx": 0,
+     "maxDy": 0,
+     "worst": ""
+    },
+    "race tiles (banner|text|chevron)": {
+     "n": 4,
+     "maxDx": 1,
+     "maxDy": 0,
+     "worst": "\"Human · ImperialAdapta\" dx 1.0 dy 0.0"
+    },
+    "class tiles (table rows)": {
+     "n": 8,
+     "maxDx": 0,
+     "maxDy": 0,
+     "worst": ""
+    },
+    "stat tiles (sheet columns)": {
+     "n": 3,
+     "maxDx": 0,
+     "maxDy": 13,
+     "worst": ""
+    }
+   }
+  },
+  "1280": {
+   "heroCard": {
+    "sign": false,
+    "signAbovePortrait": false,
+    "text": null
+   },
+   "centring": {
+    "sub-race chips": {
+     "n": 12,
+     "maxDx": 0,
+     "maxDy": 0,
+     "worst": ""
+    },
+    "sign chips": {
+     "n": 6,
+     "maxDx": 0,
+     "maxDy": 0,
+     "worst": ""
+    },
+    "hero tabs": {
+     "n": 2,
+     "maxDx": 3,
+     "maxDy": 1.2,
+     "worst": "\"HeroWarrior · lv 1\" dx -3.0 dy 1.0"
+    },
+    "palette chips": {
+     "n": 0,
+     "maxDx": 0,
+     "maxDy": 0,
+     "worst": ""
+    },
+    "preset buttons": {
+     "n": 3,
+     "maxDx": 0,
+     "maxDy": 0,
+     "worst": "\"Merideth\" dx -0.0 dy 0.0"
+    },
+    "reroll dice": {
+     "n": 0,
+     "maxDx": 0,
+     "maxDy": 0,
+     "worst": ""
+    },
+    "dice": {
+     "n": 2,
+     "maxDx": 0,
+     "maxDy": 0,
+     "worst": ""
+    },
+    "profile chips": {
+     "n": 0,
+     "maxDx": 0,
+     "maxDy": 0,
+     "worst": ""
+    },
+    "steel sign": {
+     "n": 0,
+     "maxDx": 0,
+     "maxDy": 0,
+     "worst": ""
+    },
+    "stepper value": {
+     "n": 12,
+     "maxDx": 0,
+     "maxDy": 1,
+     "worst": "\"1.80\" dx -0.0 dy -1.0"
+    },
+    "title mode buttons": {
+     "n": 0,
+     "maxDx": 0,
+     "maxDy": 0,
+     "worst": ""
+    },
+    "skill chips": {
+     "n": 3,
+     "maxDx": 0,
+     "maxDy": 0,
+     "worst": ""
+    },
+    "race tiles (banner|text|chevron)": {
+     "n": 4,
+     "maxDx": 1,
+     "maxDy": 0,
+     "worst": "\"Human · ImperialAdapta\" dx 1.0 dy 0.0"
+    },
+    "class tiles (table rows)": {
+     "n": 8,
+     "maxDx": 0,
+     "maxDy": 0,
+     "worst": ""
+    },
+    "stat tiles (sheet columns)": {
+     "n": 3,
+     "maxDx": 0,
+     "maxDy": 13,
+     "worst": ""
+    }
+   }
+  },
+  "1920": {
+   "heroCard": {
+    "sign": false,
+    "signAbovePortrait": false,
+    "text": null
+   },
+   "centring": {
+    "sub-race chips": {
+     "n": 12,
+     "maxDx": 0,
+     "maxDy": 0,
+     "worst": ""
+    },
+    "sign chips": {
+     "n": 6,
+     "maxDx": 0,
+     "maxDy": 0,
+     "worst": ""
+    },
+    "hero tabs": {
+     "n": 2,
+     "maxDx": 3,
+     "maxDy": 1.4,
+     "worst": "\"HeroWarrior · lv 1\" dx -3.0 dy 1.4"
+    },
+    "palette chips": {
+     "n": 0,
+     "maxDx": 0,
+     "maxDy": 0,
+     "worst": ""
+    },
+    "preset buttons": {
+     "n": 3,
+     "maxDx": 0,
+     "maxDy": 0,
+     "worst": "\"Merideth\" dx -0.0 dy 0.0"
+    },
+    "reroll dice": {
+     "n": 0,
+     "maxDx": 0,
+     "maxDy": 0,
+     "worst": ""
+    },
+    "dice": {
+     "n": 2,
+     "maxDx": 0,
+     "maxDy": 0,
+     "worst": ""
+    },
+    "profile chips": {
+     "n": 0,
+     "maxDx": 0,
+     "maxDy": 0,
+     "worst": ""
+    },
+    "steel sign": {
+     "n": 0,
+     "maxDx": 0,
+     "maxDy": 0,
+     "worst": ""
+    },
+    "stepper value": {
+     "n": 16,
+     "maxDx": 0,
+     "maxDy": 17.5,
+     "worst": "\"90\" dx -0.0 dy -0.5"
+    },
+    "title mode buttons": {
+     "n": 0,
+     "maxDx": 0,
+     "maxDy": 0,
+     "worst": ""
+    },
+    "skill chips": {
+     "n": 3,
+     "maxDx": 0,
+     "maxDy": 0,
+     "worst": ""
+    },
+    "race tiles (banner|text|chevron)": {
+     "n": 4,
+     "maxDx": 1,
+     "maxDy": 0,
+     "worst": "\"Human · ImperialAdapta\" dx 1.0 dy 0.0"
+    },
+    "class tiles (table rows)": {
+     "n": 8,
+     "maxDx": 0,
+     "maxDy": 0,
+     "worst": ""
+    },
+    "stat tiles (sheet columns)": {
+     "n": 3,
+     "maxDx": 0,
+     "maxDy": 16,
+     "worst": ""
+    }
+   }
+  }
+ },
+ "errors": []
+}

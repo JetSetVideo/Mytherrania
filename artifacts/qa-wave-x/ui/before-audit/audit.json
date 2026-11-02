@@ -1,0 +1,1097 @@
+{
+ "errors": [],
+ "shots": [
+  {
+   "screen": "title",
+   "vp": "phone",
+   "file": "artifacts/qa-wave-x/ui/before-audit/title-phone.png",
+   "viewport": [
+    390,
+    844
+   ],
+   "controls": 6,
+   "kinds": {
+    "button": 6
+   },
+   "smallTargets": 0,
+   "smallSample": [],
+   "overflow": [],
+   "overflowN": 0,
+   "clipped": [],
+   "clippedN": 0,
+   "tinyText": [],
+   "tinyTextN": 0,
+   "panels": [
+    "section.ui-panel.ui-panel-title[panel=start]",
+    "details.opt-group",
+    "details.opt-group"
+   ],
+   "scrollers": [],
+   "docHeight": 844,
+   "tree": [
+    "div.opt-body > div#profile-picker.profile-picker > button.profile-chip.selected \"HeroWarrior\"",
+    "div.opt-body > div#profile-picker.profile-picker > button.profile-chip.profile-chip-new \"New heroroll one\"",
+    "div.opt-body > div.title-modes > button.menu-btn.menu-btn-primary \"FightersYour heroes and \"",
+    "div.title-modes > div.title-modes-row > button.menu-btn.menu-btn-alt \"History\"",
+    "div.title-modes > div.title-modes-row > button.menu-btn.menu-btn-alt \"Spectate\"",
+    "div.title-modes > div.title-modes-row > button.menu-btn.menu-btn-alt \"Settings\""
+   ],
+   "widthUse": 0.975,
+   "levelPx": {
+    "0": 40,
+    "1": null,
+    "2": 14,
+    "3": 13,
+    "4": 11.5
+   },
+   "monotone": true,
+   "textChars": 242,
+   "iconFit": [
+    1.2,
+    1.2,
+    1.2,
+    1.2,
+    1.2
+   ],
+   "iconOffMax": 0
+  },
+  {
+   "screen": "digest",
+   "vp": "phone",
+   "file": "artifacts/qa-wave-x/ui/before-audit/history-phone.png",
+   "viewport": [
+    390,
+    844
+   ],
+   "controls": 10,
+   "kinds": {
+    "button": 9,
+    "stepper": 1
+   },
+   "smallTargets": 0,
+   "smallSample": [],
+   "overflow": [],
+   "overflowN": 0,
+   "clipped": [],
+   "clippedN": 0,
+   "tinyText": [],
+   "tinyTextN": 0,
+   "panels": [
+    "section#batch-bar.batch-bar"
+   ],
+   "scrollers": [],
+   "docHeight": 844,
+   "tree": [
+    "div.menu-screen.active[screen=digest] > div.screen-nav > button.screen-back \"Back\"",
+    "section#batch-bar.batch-bar > div#batch-sizes.batch-sizes > button.batch-btn.selected \"10\"",
+    "section#batch-bar.batch-bar > div#batch-sizes.batch-sizes > button.batch-btn \"20\"",
+    "section#batch-bar.batch-bar > div#batch-sizes.batch-sizes > button.batch-btn \"50\"",
+    "section#batch-bar.batch-bar > div#batch-sizes.batch-sizes > button.batch-btn \"100\"",
+    "section#batch-bar.batch-bar > div#batch-sizes.batch-sizes > button.dice-btn.dice-btn-rocky \"Run\"",
+    "div#digest-body.digest-body > div.history-sort > div.stepper \"Newest\"",
+    "div.history-sort > div.stepper > button.stepper-arrow.stepper-prev \"\"",
+    "div.history-sort > div.stepper > button.stepper-arrow.stepper-next \"\"",
+    "div#menu > div.menu-screen.active[screen=digest] > button.menu-btn.menu-btn-alt \"Main menu\""
+   ],
+   "widthUse": 0.975,
+   "levelPx": {
+    "0": 28,
+    "1": null,
+    "2": null,
+    "3": 13,
+    "4": null
+   },
+   "monotone": true,
+   "textChars": 275,
+   "iconFit": [
+    1.38,
+    1.6,
+    1.2
+   ],
+   "iconOffMax": 0
+  },
+  {
+   "screen": "select",
+   "vp": "phone",
+   "file": "artifacts/qa-wave-x/ui/before-audit/creator-phone.png",
+   "viewport": [
+    390,
+    844
+   ],
+   "controls": 26,
+   "kinds": {
+    "button": 20,
+    "stepper": 6
+   },
+   "smallTargets": 0,
+   "smallSample": [],
+   "overflow": [],
+   "overflowN": 0,
+   "clipped": [],
+   "clippedN": 0,
+   "tinyText": [],
+   "tinyTextN": 0,
+   "panels": [
+    "section.ui-panel[panel=opponent]",
+    "details.opt-group",
+    "details.opt-group",
+    "details.opt-group",
+    "section#spectate-card.spectate-card",
+    "details.opt-group",
+    "section.ui-panel[panel=arena]",
+    "details.opt-group",
+    "details.opt-group",
+    "details.opt-group",
+    "section.ui-panel.ui-panel-roster[panel=roster]"
+   ],
+   "scrollers": [
+    "div.menu-screen.active[screen=select] 2323/830"
+   ],
+   "docHeight": 844,
+   "tree": [
+    "div.menu-screen.active[screen=select] > div.screen-nav > button.screen-back \"Back\"",
+    "div.menu-screen.active[screen=select] > nav#hero-tabs.hero-tabs > button.hero-tab.is-on \"HeroWarrior · lv 1\"",
+    "div.menu-screen.active[screen=select] > nav#hero-tabs.hero-tabs > button.hero-tab.hero-tab-new \"+Newgenerator\"",
+    "div.opt-body > label.field > div.stepper \"Gromm the Unyielding (Ba\"",
+    "label.field > div.stepper > button.stepper-arrow.stepper-prev \"\"",
+    "label.field > div.stepper > button.stepper-arrow.stepper-next \"\"",
+    "div.opt-body > label.field > div.stepper \"Standard\"",
+    "label.field > div.stepper > button.stepper-arrow.stepper-prev \"\"",
+    "label.field > div.stepper > button.stepper-arrow.stepper-next \"\"",
+    "div.arena-pick > label > div.stepper \"Random\"",
+    "label > div.stepper > button.stepper-arrow.stepper-prev \"\"",
+    "label > div.stepper > button.stepper-arrow.stepper-next \"\"",
+    "div.arena-pick > label > div.stepper \"random\"",
+    "label > div.stepper > button.stepper-arrow.stepper-prev \"\"",
+    "label > div.stepper > button.stepper-arrow.stepper-next \"\"",
+    "div.arena-pick > label > div.stepper \"Random (90% walled)\"",
+    "label > div.stepper > button.stepper-arrow.stepper-prev \"\"",
+    "label > div.stepper > button.stepper-arrow.stepper-next \"\"",
+    "div.arena-pick > label > div.stepper \"random\"",
+    "label > div.stepper > button.stepper-arrow.stepper-prev \"\"",
+    "label > div.stepper > button.stepper-arrow.stepper-next \"\"",
+    "div.hero-stats > div.hero-verbs > button.profile-action.profile-action-manage \"Playing this hero\"",
+    "div.hero-stats > div.hero-verbs > button.profile-action.profile-action-manage \"Duplicate\"",
+    "div.hero-stats > div.hero-verbs > button.profile-action.profile-action-manage \"Rename\"",
+    "div.hero-stats > div.hero-verbs > button.profile-action.profile-action-manage \"Delete\"",
+    "div.menu-screen.active[screen=select] > div.screen-actions > button.menu-btn.menu-btn-primary \"Enter the ring as Hero\""
+   ],
+   "widthUse": 0.975,
+   "levelPx": {
+    "0": 28,
+    "1": 15.5,
+    "2": 14,
+    "3": 13,
+    "4": 11.5
+   },
+   "monotone": true,
+   "textChars": 1199,
+   "iconFit": [
+    1.38,
+    1.2
+   ],
+   "iconOffMax": 0
+  },
+  {
+   "screen": "select",
+   "vp": "phone",
+   "file": "artifacts/qa-wave-x/ui/before-audit/creator-end-phone.png",
+   "viewport": [
+    390,
+    844
+   ],
+   "controls": 26,
+   "kinds": {
+    "button": 20,
+    "stepper": 6
+   },
+   "smallTargets": 0,
+   "smallSample": [],
+   "overflow": [],
+   "overflowN": 0,
+   "clipped": [],
+   "clippedN": 0,
+   "tinyText": [],
+   "tinyTextN": 0,
+   "panels": [
+    "section.ui-panel[panel=opponent]",
+    "details.opt-group",
+    "details.opt-group",
+    "details.opt-group",
+    "section#spectate-card.spectate-card",
+    "details.opt-group",
+    "section.ui-panel[panel=arena]",
+    "details.opt-group",
+    "details.opt-group",
+    "details.opt-group",
+    "section.ui-panel.ui-panel-roster[panel=roster]"
+   ],
+   "scrollers": [
+    "div.menu-screen.active[screen=select] 2323/830"
+   ],
+   "docHeight": 844,
+   "tree": [
+    "div.menu-screen.active[screen=select] > div.screen-nav > button.screen-back \"Back\"",
+    "div.menu-screen.active[screen=select] > nav#hero-tabs.hero-tabs > button.hero-tab.is-on \"HeroWarrior · lv 1\"",
+    "div.menu-screen.active[screen=select] > nav#hero-tabs.hero-tabs > button.hero-tab.hero-tab-new \"+Newgenerator\"",
+    "div.opt-body > label.field > div.stepper \"Gromm the Unyielding (Ba\"",
+    "label.field > div.stepper > button.stepper-arrow.stepper-prev \"\"",
+    "label.field > div.stepper > button.stepper-arrow.stepper-next \"\"",
+    "div.opt-body > label.field > div.stepper \"Standard\"",
+    "label.field > div.stepper > button.stepper-arrow.stepper-prev \"\"",
+    "label.field > div.stepper > button.stepper-arrow.stepper-next \"\"",
+    "div.arena-pick > label > div.stepper \"Random\"",
+    "label > div.stepper > button.stepper-arrow.stepper-prev \"\"",
+    "label > div.stepper > button.stepper-arrow.stepper-next \"\"",
+    "div.arena-pick > label > div.stepper \"random\"",
+    "label > div.stepper > button.stepper-arrow.stepper-prev \"\"",
+    "label > div.stepper > button.stepper-arrow.stepper-next \"\"",
+    "div.arena-pick > label > div.stepper \"Random (90% walled)\"",
+    "label > div.stepper > button.stepper-arrow.stepper-prev \"\"",
+    "label > div.stepper > button.stepper-arrow.stepper-next \"\"",
+    "div.arena-pick > label > div.stepper \"random\"",
+    "label > div.stepper > button.stepper-arrow.stepper-prev \"\"",
+    "label > div.stepper > button.stepper-arrow.stepper-next \"\"",
+    "div.hero-stats > div.hero-verbs > button.profile-action.profile-action-manage \"Playing this hero\"",
+    "div.hero-stats > div.hero-verbs > button.profile-action.profile-action-manage \"Duplicate\"",
+    "div.hero-stats > div.hero-verbs > button.profile-action.profile-action-manage \"Rename\"",
+    "div.hero-stats > div.hero-verbs > button.profile-action.profile-action-manage \"Delete\"",
+    "div.menu-screen.active[screen=select] > div.screen-actions > button.menu-btn.menu-btn-primary \"Enter the ring as Hero\""
+   ],
+   "widthUse": 0.975,
+   "levelPx": {
+    "0": 28,
+    "1": 15.5,
+    "2": 14,
+    "3": 13,
+    "4": 11.5
+   },
+   "monotone": true,
+   "textChars": 1199,
+   "iconFit": [
+    1.38,
+    1.2
+   ],
+   "iconOffMax": 0
+  },
+  {
+   "screen": "title",
+   "vp": "tablet",
+   "file": "artifacts/qa-wave-x/ui/before-audit/title-tablet.png",
+   "viewport": [
+    820,
+    1180
+   ],
+   "controls": 6,
+   "kinds": {
+    "button": 6
+   },
+   "smallTargets": 0,
+   "smallSample": [],
+   "overflow": [],
+   "overflowN": 0,
+   "clipped": [],
+   "clippedN": 0,
+   "tinyText": [],
+   "tinyTextN": 0,
+   "panels": [
+    "section.ui-panel.ui-panel-title[panel=start]",
+    "details.opt-group",
+    "details.opt-group"
+   ],
+   "scrollers": [],
+   "docHeight": 1180,
+   "tree": [
+    "div.opt-body > div#profile-picker.profile-picker > button.profile-chip.selected \"HeroWarrior\"",
+    "div.opt-body > div#profile-picker.profile-picker > button.profile-chip.profile-chip-new \"New heroroll one\"",
+    "div.opt-body > div.title-modes > button.menu-btn.menu-btn-primary \"FightersYour heroes and \"",
+    "div.title-modes > div.title-modes-row > button.menu-btn.menu-btn-alt \"History\"",
+    "div.title-modes > div.title-modes-row > button.menu-btn.menu-btn-alt \"Spectate\"",
+    "div.title-modes > div.title-modes-row > button.menu-btn.menu-btn-alt \"Settings\""
+   ],
+   "widthUse": 0.8,
+   "levelPx": {
+    "0": 56.84,
+    "1": null,
+    "2": 14,
+    "3": 13,
+    "4": 11.5
+   },
+   "monotone": true,
+   "textChars": 242,
+   "iconFit": [
+    1.2,
+    1.2,
+    1.2,
+    1.2,
+    1.2
+   ],
+   "iconOffMax": 0
+  },
+  {
+   "screen": "digest",
+   "vp": "tablet",
+   "file": "artifacts/qa-wave-x/ui/before-audit/history-tablet.png",
+   "viewport": [
+    820,
+    1180
+   ],
+   "controls": 10,
+   "kinds": {
+    "button": 9,
+    "stepper": 1
+   },
+   "smallTargets": 0,
+   "smallSample": [],
+   "overflow": [],
+   "overflowN": 0,
+   "clipped": [],
+   "clippedN": 0,
+   "tinyText": [],
+   "tinyTextN": 0,
+   "panels": [
+    "section#batch-bar.batch-bar"
+   ],
+   "scrollers": [],
+   "docHeight": 1180,
+   "tree": [
+    "div.menu-screen.active[screen=digest] > div.screen-nav > button.screen-back \"Back\"",
+    "section#batch-bar.batch-bar > div#batch-sizes.batch-sizes > button.batch-btn.selected \"10\"",
+    "section#batch-bar.batch-bar > div#batch-sizes.batch-sizes > button.batch-btn \"20\"",
+    "section#batch-bar.batch-bar > div#batch-sizes.batch-sizes > button.batch-btn \"50\"",
+    "section#batch-bar.batch-bar > div#batch-sizes.batch-sizes > button.batch-btn \"100\"",
+    "section#batch-bar.batch-bar > div#batch-sizes.batch-sizes > button.dice-btn.dice-btn-rocky \"Run\"",
+    "div#digest-body.digest-body > div.history-sort > div.stepper \"Newest\"",
+    "div.history-sort > div.stepper > button.stepper-arrow.stepper-prev \"\"",
+    "div.history-sort > div.stepper > button.stepper-arrow.stepper-next \"\"",
+    "div#menu > div.menu-screen.active[screen=digest] > button.menu-btn.menu-btn-alt \"Main menu\""
+   ],
+   "widthUse": 0.975,
+   "levelPx": {
+    "0": 30.45,
+    "1": null,
+    "2": null,
+    "3": 13,
+    "4": null
+   },
+   "monotone": true,
+   "textChars": 296,
+   "iconFit": [
+    1.38,
+    1.6,
+    1.2
+   ],
+   "iconOffMax": 0
+  },
+  {
+   "screen": "select",
+   "vp": "tablet",
+   "file": "artifacts/qa-wave-x/ui/before-audit/creator-tablet.png",
+   "viewport": [
+    820,
+    1180
+   ],
+   "controls": 26,
+   "kinds": {
+    "button": 20,
+    "stepper": 6
+   },
+   "smallTargets": 0,
+   "smallSample": [],
+   "overflow": [],
+   "overflowN": 0,
+   "clipped": [],
+   "clippedN": 0,
+   "tinyText": [],
+   "tinyTextN": 0,
+   "panels": [
+    "section.ui-panel[panel=opponent]",
+    "details.opt-group",
+    "details.opt-group",
+    "details.opt-group",
+    "section#spectate-card.spectate-card",
+    "details.opt-group",
+    "section.ui-panel[panel=arena]",
+    "details.opt-group",
+    "details.opt-group",
+    "details.opt-group",
+    "section.ui-panel.ui-panel-roster[panel=roster]"
+   ],
+   "scrollers": [
+    "div.menu-screen.active[screen=select] 1298/1154"
+   ],
+   "docHeight": 1180,
+   "tree": [
+    "div.menu-screen.active[screen=select] > div.screen-nav > button.screen-back \"Back\"",
+    "div.menu-screen.active[screen=select] > nav#hero-tabs.hero-tabs > button.hero-tab.is-on \"HeroWarrior · lv 1\"",
+    "div.menu-screen.active[screen=select] > nav#hero-tabs.hero-tabs > button.hero-tab.hero-tab-new \"+Newgenerator\"",
+    "div.opt-body > label.field > div.stepper \"Gromm the Unyielding (Ba\"",
+    "label.field > div.stepper > button.stepper-arrow.stepper-prev \"\"",
+    "label.field > div.stepper > button.stepper-arrow.stepper-next \"\"",
+    "div.opt-body > label.field > div.stepper \"Standard\"",
+    "label.field > div.stepper > button.stepper-arrow.stepper-prev \"\"",
+    "label.field > div.stepper > button.stepper-arrow.stepper-next \"\"",
+    "div.arena-pick > label > div.stepper \"Random\"",
+    "label > div.stepper > button.stepper-arrow.stepper-prev \"\"",
+    "label > div.stepper > button.stepper-arrow.stepper-next \"\"",
+    "div.arena-pick > label > div.stepper \"random\"",
+    "label > div.stepper > button.stepper-arrow.stepper-prev \"\"",
+    "label > div.stepper > button.stepper-arrow.stepper-next \"\"",
+    "div.arena-pick > label > div.stepper \"Random (90% walled)\"",
+    "label > div.stepper > button.stepper-arrow.stepper-prev \"\"",
+    "label > div.stepper > button.stepper-arrow.stepper-next \"\"",
+    "div.arena-pick > label > div.stepper \"random\"",
+    "label > div.stepper > button.stepper-arrow.stepper-prev \"\"",
+    "label > div.stepper > button.stepper-arrow.stepper-next \"\"",
+    "div.hero-stats > div.hero-verbs > button.profile-action.profile-action-manage \"Playing this hero\"",
+    "div.hero-stats > div.hero-verbs > button.profile-action.profile-action-manage \"Duplicate\"",
+    "div.hero-stats > div.hero-verbs > button.profile-action.profile-action-manage \"Rename\"",
+    "div.hero-stats > div.hero-verbs > button.profile-action.profile-action-manage \"Delete\"",
+    "div.menu-screen.active[screen=select] > div.screen-actions > button.menu-btn.menu-btn-primary \"Enter the ring as Hero\""
+   ],
+   "widthUse": 0.975,
+   "levelPx": {
+    "0": 30.45,
+    "1": 15.5,
+    "2": 14,
+    "3": 13,
+    "4": 11.5
+   },
+   "monotone": true,
+   "textChars": 1215,
+   "iconFit": [
+    1.38,
+    1.2
+   ],
+   "iconOffMax": 0
+  },
+  {
+   "screen": "select",
+   "vp": "tablet",
+   "file": "artifacts/qa-wave-x/ui/before-audit/creator-end-tablet.png",
+   "viewport": [
+    820,
+    1180
+   ],
+   "controls": 26,
+   "kinds": {
+    "button": 20,
+    "stepper": 6
+   },
+   "smallTargets": 0,
+   "smallSample": [],
+   "overflow": [],
+   "overflowN": 0,
+   "clipped": [],
+   "clippedN": 0,
+   "tinyText": [],
+   "tinyTextN": 0,
+   "panels": [
+    "section.ui-panel[panel=opponent]",
+    "details.opt-group",
+    "details.opt-group",
+    "details.opt-group",
+    "section#spectate-card.spectate-card",
+    "details.opt-group",
+    "section.ui-panel[panel=arena]",
+    "details.opt-group",
+    "details.opt-group",
+    "details.opt-group",
+    "section.ui-panel.ui-panel-roster[panel=roster]"
+   ],
+   "scrollers": [
+    "div.menu-screen.active[screen=select] 1298/1154"
+   ],
+   "docHeight": 1180,
+   "tree": [
+    "div.menu-screen.active[screen=select] > div.screen-nav > button.screen-back \"Back\"",
+    "div.menu-screen.active[screen=select] > nav#hero-tabs.hero-tabs > button.hero-tab.is-on \"HeroWarrior · lv 1\"",
+    "div.menu-screen.active[screen=select] > nav#hero-tabs.hero-tabs > button.hero-tab.hero-tab-new \"+Newgenerator\"",
+    "div.opt-body > label.field > div.stepper \"Gromm the Unyielding (Ba\"",
+    "label.field > div.stepper > button.stepper-arrow.stepper-prev \"\"",
+    "label.field > div.stepper > button.stepper-arrow.stepper-next \"\"",
+    "div.opt-body > label.field > div.stepper \"Standard\"",
+    "label.field > div.stepper > button.stepper-arrow.stepper-prev \"\"",
+    "label.field > div.stepper > button.stepper-arrow.stepper-next \"\"",
+    "div.arena-pick > label > div.stepper \"Random\"",
+    "label > div.stepper > button.stepper-arrow.stepper-prev \"\"",
+    "label > div.stepper > button.stepper-arrow.stepper-next \"\"",
+    "div.arena-pick > label > div.stepper \"random\"",
+    "label > div.stepper > button.stepper-arrow.stepper-prev \"\"",
+    "label > div.stepper > button.stepper-arrow.stepper-next \"\"",
+    "div.arena-pick > label > div.stepper \"Random (90% walled)\"",
+    "label > div.stepper > button.stepper-arrow.stepper-prev \"\"",
+    "label > div.stepper > button.stepper-arrow.stepper-next \"\"",
+    "div.arena-pick > label > div.stepper \"random\"",
+    "label > div.stepper > button.stepper-arrow.stepper-prev \"\"",
+    "label > div.stepper > button.stepper-arrow.stepper-next \"\"",
+    "div.hero-stats > div.hero-verbs > button.profile-action.profile-action-manage \"Playing this hero\"",
+    "div.hero-stats > div.hero-verbs > button.profile-action.profile-action-manage \"Duplicate\"",
+    "div.hero-stats > div.hero-verbs > button.profile-action.profile-action-manage \"Rename\"",
+    "div.hero-stats > div.hero-verbs > button.profile-action.profile-action-manage \"Delete\"",
+    "div.menu-screen.active[screen=select] > div.screen-actions > button.menu-btn.menu-btn-primary \"Enter the ring as Hero\""
+   ],
+   "widthUse": 0.975,
+   "levelPx": {
+    "0": 30.45,
+    "1": 15.5,
+    "2": 14,
+    "3": 13,
+    "4": 11.5
+   },
+   "monotone": true,
+   "textChars": 1215,
+   "iconFit": [
+    1.38,
+    1.2
+   ],
+   "iconOffMax": 0
+  },
+  {
+   "screen": "title",
+   "vp": "laptop",
+   "file": "artifacts/qa-wave-x/ui/before-audit/title-laptop.png",
+   "viewport": [
+    1280,
+    800
+   ],
+   "controls": 6,
+   "kinds": {
+    "button": 6
+   },
+   "smallTargets": 0,
+   "smallSample": [],
+   "overflow": [],
+   "overflowN": 0,
+   "clipped": [],
+   "clippedN": 0,
+   "tinyText": [],
+   "tinyTextN": 0,
+   "panels": [
+    "section.ui-panel.ui-panel-title[panel=start]",
+    "details.opt-group",
+    "details.opt-group"
+   ],
+   "scrollers": [],
+   "docHeight": 800,
+   "tree": [
+    "div.opt-body > div#profile-picker.profile-picker > button.profile-chip.selected \"HeroWarrior\"",
+    "div.opt-body > div#profile-picker.profile-picker > button.profile-chip.profile-chip-new \"New heroroll one\"",
+    "div.opt-body > div.title-modes > button.menu-btn.menu-btn-primary \"FightersYour heroes and \"",
+    "div.title-modes > div.title-modes-row > button.menu-btn.menu-btn-alt \"History\"",
+    "div.title-modes > div.title-modes-row > button.menu-btn.menu-btn-alt \"Spectate\"",
+    "div.title-modes > div.title-modes-row > button.menu-btn.menu-btn-alt \"Settings\""
+   ],
+   "widthUse": 0.8,
+   "levelPx": {
+    "0": 77.76,
+    "1": null,
+    "2": 14.076,
+    "3": 13,
+    "4": 11.5
+   },
+   "monotone": true,
+   "textChars": 242,
+   "iconFit": [
+    1.2,
+    1.2,
+    1.2,
+    1.2,
+    1.2
+   ],
+   "iconOffMax": 0
+  },
+  {
+   "screen": "digest",
+   "vp": "laptop",
+   "file": "artifacts/qa-wave-x/ui/before-audit/history-laptop.png",
+   "viewport": [
+    1280,
+    800
+   ],
+   "controls": 10,
+   "kinds": {
+    "button": 9,
+    "stepper": 1
+   },
+   "smallTargets": 0,
+   "smallSample": [],
+   "overflow": [],
+   "overflowN": 0,
+   "clipped": [],
+   "clippedN": 0,
+   "tinyText": [],
+   "tinyTextN": 0,
+   "panels": [
+    "section#batch-bar.batch-bar"
+   ],
+   "scrollers": [],
+   "docHeight": 800,
+   "tree": [
+    "div.menu-screen.active[screen=digest] > div.screen-nav > button.screen-back \"Back\"",
+    "section#batch-bar.batch-bar > div#batch-sizes.batch-sizes > button.batch-btn.selected \"10\"",
+    "section#batch-bar.batch-bar > div#batch-sizes.batch-sizes > button.batch-btn \"20\"",
+    "section#batch-bar.batch-bar > div#batch-sizes.batch-sizes > button.batch-btn \"50\"",
+    "section#batch-bar.batch-bar > div#batch-sizes.batch-sizes > button.batch-btn \"100\"",
+    "section#batch-bar.batch-bar > div#batch-sizes.batch-sizes > button.dice-btn.dice-btn-rocky \"Run\"",
+    "div#digest-body.digest-body > div.history-sort > div.stepper \"Newest\"",
+    "div.history-sort > div.stepper > button.stepper-arrow.stepper-prev \"\"",
+    "div.history-sort > div.stepper > button.stepper-arrow.stepper-next \"\"",
+    "div#menu > div.menu-screen.active[screen=digest] > button.menu-btn.menu-btn-alt \"Main menu\""
+   ],
+   "widthUse": 0.975,
+   "levelPx": {
+    "0": 39.65,
+    "1": null,
+    "2": null,
+    "3": 13,
+    "4": null
+   },
+   "monotone": true,
+   "textChars": 296,
+   "iconFit": [
+    1.38,
+    1.6,
+    1.2
+   ],
+   "iconOffMax": 0
+  },
+  {
+   "screen": "select",
+   "vp": "laptop",
+   "file": "artifacts/qa-wave-x/ui/before-audit/creator-laptop.png",
+   "viewport": [
+    1280,
+    800
+   ],
+   "controls": 26,
+   "kinds": {
+    "button": 20,
+    "stepper": 6
+   },
+   "smallTargets": 0,
+   "smallSample": [],
+   "overflow": [],
+   "overflowN": 0,
+   "clipped": [],
+   "clippedN": 0,
+   "tinyText": [],
+   "tinyTextN": 0,
+   "panels": [
+    "section.ui-panel[panel=opponent]",
+    "details.opt-group",
+    "details.opt-group",
+    "details.opt-group",
+    "section#spectate-card.spectate-card",
+    "details.opt-group",
+    "section.ui-panel[panel=arena]",
+    "details.opt-group",
+    "details.opt-group",
+    "details.opt-group",
+    "section.ui-panel.ui-panel-roster[panel=roster]"
+   ],
+   "scrollers": [
+    "div.menu-screen.active[screen=select] 1340/762"
+   ],
+   "docHeight": 800,
+   "tree": [
+    "div.menu-screen.active[screen=select] > div.screen-nav > button.screen-back \"Back\"",
+    "div.menu-screen.active[screen=select] > nav#hero-tabs.hero-tabs > button.hero-tab.is-on \"HeroWarrior · lv 1\"",
+    "div.menu-screen.active[screen=select] > nav#hero-tabs.hero-tabs > button.hero-tab.hero-tab-new \"+Newgenerator\"",
+    "div.opt-body > label.field > div.stepper \"Gromm the Unyielding (Ba\"",
+    "label.field > div.stepper > button.stepper-arrow.stepper-prev \"\"",
+    "label.field > div.stepper > button.stepper-arrow.stepper-next \"\"",
+    "div.opt-body > label.field > div.stepper \"Standard\"",
+    "label.field > div.stepper > button.stepper-arrow.stepper-prev \"\"",
+    "label.field > div.stepper > button.stepper-arrow.stepper-next \"\"",
+    "div.arena-pick > label > div.stepper \"Random\"",
+    "label > div.stepper > button.stepper-arrow.stepper-prev \"\"",
+    "label > div.stepper > button.stepper-arrow.stepper-next \"\"",
+    "div.arena-pick > label > div.stepper \"random\"",
+    "label > div.stepper > button.stepper-arrow.stepper-prev \"\"",
+    "label > div.stepper > button.stepper-arrow.stepper-next \"\"",
+    "div.arena-pick > label > div.stepper \"Random (90% walled)\"",
+    "label > div.stepper > button.stepper-arrow.stepper-prev \"\"",
+    "label > div.stepper > button.stepper-arrow.stepper-next \"\"",
+    "div.arena-pick > label > div.stepper \"random\"",
+    "label > div.stepper > button.stepper-arrow.stepper-prev \"\"",
+    "label > div.stepper > button.stepper-arrow.stepper-next \"\"",
+    "div.hero-stats > div.hero-verbs > button.profile-action.profile-action-manage \"Playing this hero\"",
+    "div.hero-stats > div.hero-verbs > button.profile-action.profile-action-manage \"Duplicate\"",
+    "div.hero-stats > div.hero-verbs > button.profile-action.profile-action-manage \"Rename\"",
+    "div.hero-stats > div.hero-verbs > button.profile-action.profile-action-manage \"Delete\"",
+    "div.menu-screen.active[screen=select] > div.screen-actions > button.menu-btn.menu-btn-primary \"Enter the ring as Hero\""
+   ],
+   "widthUse": 0.975,
+   "levelPx": {
+    "0": 39.65,
+    "1": 16.34,
+    "2": 14.076,
+    "3": 13,
+    "4": 11.5
+   },
+   "monotone": true,
+   "textChars": 1215,
+   "iconFit": [
+    1.38,
+    1.2
+   ],
+   "iconOffMax": 0
+  },
+  {
+   "screen": "select",
+   "vp": "laptop",
+   "file": "artifacts/qa-wave-x/ui/before-audit/creator-end-laptop.png",
+   "viewport": [
+    1280,
+    800
+   ],
+   "controls": 26,
+   "kinds": {
+    "button": 20,
+    "stepper": 6
+   },
+   "smallTargets": 0,
+   "smallSample": [],
+   "overflow": [],
+   "overflowN": 0,
+   "clipped": [],
+   "clippedN": 0,
+   "tinyText": [],
+   "tinyTextN": 0,
+   "panels": [
+    "section.ui-panel[panel=opponent]",
+    "details.opt-group",
+    "details.opt-group",
+    "details.opt-group",
+    "section#spectate-card.spectate-card",
+    "details.opt-group",
+    "section.ui-panel[panel=arena]",
+    "details.opt-group",
+    "details.opt-group",
+    "details.opt-group",
+    "section.ui-panel.ui-panel-roster[panel=roster]"
+   ],
+   "scrollers": [
+    "div.menu-screen.active[screen=select] 1340/762"
+   ],
+   "docHeight": 800,
+   "tree": [
+    "div.menu-screen.active[screen=select] > div.screen-nav > button.screen-back \"Back\"",
+    "div.menu-screen.active[screen=select] > nav#hero-tabs.hero-tabs > button.hero-tab.is-on \"HeroWarrior · lv 1\"",
+    "div.menu-screen.active[screen=select] > nav#hero-tabs.hero-tabs > button.hero-tab.hero-tab-new \"+Newgenerator\"",
+    "div.opt-body > label.field > div.stepper \"Gromm the Unyielding (Ba\"",
+    "label.field > div.stepper > button.stepper-arrow.stepper-prev \"\"",
+    "label.field > div.stepper > button.stepper-arrow.stepper-next \"\"",
+    "div.opt-body > label.field > div.stepper \"Standard\"",
+    "label.field > div.stepper > button.stepper-arrow.stepper-prev \"\"",
+    "label.field > div.stepper > button.stepper-arrow.stepper-next \"\"",
+    "div.arena-pick > label > div.stepper \"Random\"",
+    "label > div.stepper > button.stepper-arrow.stepper-prev \"\"",
+    "label > div.stepper > button.stepper-arrow.stepper-next \"\"",
+    "div.arena-pick > label > div.stepper \"random\"",
+    "label > div.stepper > button.stepper-arrow.stepper-prev \"\"",
+    "label > div.stepper > button.stepper-arrow.stepper-next \"\"",
+    "div.arena-pick > label > div.stepper \"Random (90% walled)\"",
+    "label > div.stepper > button.stepper-arrow.stepper-prev \"\"",
+    "label > div.stepper > button.stepper-arrow.stepper-next \"\"",
+    "div.arena-pick > label > div.stepper \"random\"",
+    "label > div.stepper > button.stepper-arrow.stepper-prev \"\"",
+    "label > div.stepper > button.stepper-arrow.stepper-next \"\"",
+    "div.hero-stats > div.hero-verbs > button.profile-action.profile-action-manage \"Playing this hero\"",
+    "div.hero-stats > div.hero-verbs > button.profile-action.profile-action-manage \"Duplicate\"",
+    "div.hero-stats > div.hero-verbs > button.profile-action.profile-action-manage \"Rename\"",
+    "div.hero-stats > div.hero-verbs > button.profile-action.profile-action-manage \"Delete\"",
+    "div.menu-screen.active[screen=select] > div.screen-actions > button.menu-btn.menu-btn-primary \"Enter the ring as Hero\""
+   ],
+   "widthUse": 0.975,
+   "levelPx": {
+    "0": 39.65,
+    "1": 16.34,
+    "2": 14.076,
+    "3": 13,
+    "4": 11.5
+   },
+   "monotone": true,
+   "textChars": 1215,
+   "iconFit": [
+    1.38,
+    1.2
+   ],
+   "iconOffMax": 0
+  },
+  {
+   "screen": "title",
+   "vp": "desktop",
+   "file": "artifacts/qa-wave-x/ui/before-audit/title-desktop.png",
+   "viewport": [
+    1920,
+    1080
+   ],
+   "controls": 6,
+   "kinds": {
+    "button": 6
+   },
+   "smallTargets": 0,
+   "smallSample": [],
+   "overflow": [],
+   "overflowN": 0,
+   "clipped": [],
+   "clippedN": 0,
+   "tinyText": [],
+   "tinyTextN": 0,
+   "panels": [
+    "section.ui-panel.ui-panel-title[panel=start]",
+    "details.opt-group",
+    "details.opt-group"
+   ],
+   "scrollers": [],
+   "docHeight": 1080,
+   "tree": [
+    "div.opt-body > div#profile-picker.profile-picker > button.profile-chip.selected \"HeroWarrior\"",
+    "div.opt-body > div#profile-picker.profile-picker > button.profile-chip.profile-chip-new \"New heroroll one\"",
+    "div.opt-body > div.title-modes > button.menu-btn.menu-btn-primary \"FightersYour heroes and \"",
+    "div.title-modes > div.title-modes-row > button.menu-btn.menu-btn-alt \"History\"",
+    "div.title-modes > div.title-modes-row > button.menu-btn.menu-btn-alt \"Spectate\"",
+    "div.title-modes > div.title-modes-row > button.menu-btn.menu-btn-alt \"Settings\""
+   ],
+   "widthUse": 0.8,
+   "levelPx": {
+    "0": 107.84,
+    "1": null,
+    "2": 17.924,
+    "3": 15.708,
+    "4": 13.152
+   },
+   "monotone": true,
+   "textChars": 242,
+   "iconFit": [
+    1.2,
+    1.2,
+    1.2,
+    1.2,
+    1.2
+   ],
+   "iconOffMax": 0
+  },
+  {
+   "screen": "digest",
+   "vp": "desktop",
+   "file": "artifacts/qa-wave-x/ui/before-audit/history-desktop.png",
+   "viewport": [
+    1920,
+    1080
+   ],
+   "controls": 10,
+   "kinds": {
+    "button": 9,
+    "stepper": 1
+   },
+   "smallTargets": 0,
+   "smallSample": [],
+   "overflow": [],
+   "overflowN": 0,
+   "clipped": [],
+   "clippedN": 0,
+   "tinyText": [],
+   "tinyTextN": 0,
+   "panels": [
+    "section#batch-bar.batch-bar"
+   ],
+   "scrollers": [],
+   "docHeight": 1080,
+   "tree": [
+    "div.menu-screen.active[screen=digest] > div.screen-nav > button.screen-back \"Back\"",
+    "section#batch-bar.batch-bar > div#batch-sizes.batch-sizes > button.batch-btn.selected \"10\"",
+    "section#batch-bar.batch-bar > div#batch-sizes.batch-sizes > button.batch-btn \"20\"",
+    "section#batch-bar.batch-bar > div#batch-sizes.batch-sizes > button.batch-btn \"50\"",
+    "section#batch-bar.batch-bar > div#batch-sizes.batch-sizes > button.batch-btn \"100\"",
+    "section#batch-bar.batch-bar > div#batch-sizes.batch-sizes > button.dice-btn.dice-btn-rocky \"Run\"",
+    "div#digest-body.digest-body > div.history-sort > div.stepper \"Newest\"",
+    "div.history-sort > div.stepper > button.stepper-arrow.stepper-prev \"\"",
+    "div.history-sort > div.stepper > button.stepper-arrow.stepper-next \"\"",
+    "div#menu > div.menu-screen.active[screen=digest] > button.menu-btn.menu-btn-alt \"Main menu\""
+   ],
+   "widthUse": 0.975,
+   "levelPx": {
+    "0": 53.15,
+    "1": null,
+    "2": null,
+    "3": 15.708,
+    "4": null
+   },
+   "monotone": true,
+   "textChars": 296,
+   "iconFit": [
+    1.38,
+    1.6,
+    1.2
+   ],
+   "iconOffMax": 0
+  },
+  {
+   "screen": "select",
+   "vp": "desktop",
+   "file": "artifacts/qa-wave-x/ui/before-audit/creator-desktop.png",
+   "viewport": [
+    1920,
+    1080
+   ],
+   "controls": 26,
+   "kinds": {
+    "button": 20,
+    "stepper": 6
+   },
+   "smallTargets": 0,
+   "smallSample": [],
+   "overflow": [],
+   "overflowN": 0,
+   "clipped": [],
+   "clippedN": 0,
+   "tinyText": [],
+   "tinyTextN": 0,
+   "panels": [
+    "section.ui-panel[panel=opponent]",
+    "details.opt-group",
+    "details.opt-group",
+    "details.opt-group",
+    "section#spectate-card.spectate-card",
+    "details.opt-group",
+    "section.ui-panel[panel=arena]",
+    "details.opt-group",
+    "details.opt-group",
+    "details.opt-group",
+    "section.ui-panel.ui-panel-roster[panel=roster]"
+   ],
+   "scrollers": [
+    "div.menu-screen.active[screen=select] 1454/1026"
+   ],
+   "docHeight": 1080,
+   "tree": [
+    "div.menu-screen.active[screen=select] > div.screen-nav > button.screen-back \"Back\"",
+    "div.menu-screen.active[screen=select] > nav#hero-tabs.hero-tabs > button.hero-tab.is-on \"HeroWarrior · lv 1\"",
+    "div.menu-screen.active[screen=select] > nav#hero-tabs.hero-tabs > button.hero-tab.hero-tab-new \"+Newgenerator\"",
+    "div.opt-body > label.field > div.stepper \"Gromm the Unyielding (Ba\"",
+    "label.field > div.stepper > button.stepper-arrow.stepper-prev \"\"",
+    "label.field > div.stepper > button.stepper-arrow.stepper-next \"\"",
+    "div.opt-body > label.field > div.stepper \"Standard\"",
+    "label.field > div.stepper > button.stepper-arrow.stepper-prev \"\"",
+    "label.field > div.stepper > button.stepper-arrow.stepper-next \"\"",
+    "div.arena-pick > label > div.stepper \"Random\"",
+    "label > div.stepper > button.stepper-arrow.stepper-prev \"\"",
+    "label > div.stepper > button.stepper-arrow.stepper-next \"\"",
+    "div.arena-pick > label > div.stepper \"random\"",
+    "label > div.stepper > button.stepper-arrow.stepper-prev \"\"",
+    "label > div.stepper > button.stepper-arrow.stepper-next \"\"",
+    "div.arena-pick > label > div.stepper \"Random (90% walled)\"",
+    "label > div.stepper > button.stepper-arrow.stepper-prev \"\"",
+    "label > div.stepper > button.stepper-arrow.stepper-next \"\"",
+    "div.arena-pick > label > div.stepper \"random\"",
+    "label > div.stepper > button.stepper-arrow.stepper-prev \"\"",
+    "label > div.stepper > button.stepper-arrow.stepper-next \"\"",
+    "div.hero-stats > div.hero-verbs > button.profile-action.profile-action-manage \"Playing this hero\"",
+    "div.hero-stats > div.hero-verbs > button.profile-action.profile-action-manage \"Duplicate\"",
+    "div.hero-stats > div.hero-verbs > button.profile-action.profile-action-manage \"Rename\"",
+    "div.hero-stats > div.hero-verbs > button.profile-action.profile-action-manage \"Delete\"",
+    "div.menu-screen.active[screen=select] > div.screen-actions > button.menu-btn.menu-btn-primary \"Enter the ring as Hero\""
+   ],
+   "widthUse": 0.975,
+   "levelPx": {
+    "0": 53.15,
+    "1": 21.1,
+    "2": 17.924,
+    "3": 15.708,
+    "4": 13.152
+   },
+   "monotone": true,
+   "textChars": 1215,
+   "iconFit": [
+    1.38,
+    1.2
+   ],
+   "iconOffMax": 0
+  },
+  {
+   "screen": "select",
+   "vp": "desktop",
+   "file": "artifacts/qa-wave-x/ui/before-audit/creator-end-desktop.png",
+   "viewport": [
+    1920,
+    1080
+   ],
+   "controls": 26,
+   "kinds": {
+    "button": 20,
+    "stepper": 6
+   },
+   "smallTargets": 0,
+   "smallSample": [],
+   "overflow": [],
+   "overflowN": 0,
+   "clipped": [],
+   "clippedN": 0,
+   "tinyText": [],
+   "tinyTextN": 0,
+   "panels": [
+    "section.ui-panel[panel=opponent]",
+    "details.opt-group",
+    "details.opt-group",
+    "details.opt-group",
+    "section#spectate-card.spectate-card",
+    "details.opt-group",
+    "section.ui-panel[panel=arena]",
+    "details.opt-group",
+    "details.opt-group",
+    "details.opt-group",
+    "section.ui-panel.ui-panel-roster[panel=roster]"
+   ],
+   "scrollers": [
+    "div.menu-screen.active[screen=select] 1454/1026"
+   ],
+   "docHeight": 1080,
+   "tree": [
+    "div.menu-screen.active[screen=select] > div.screen-nav > button.screen-back \"Back\"",
+    "div.menu-screen.active[screen=select] > nav#hero-tabs.hero-tabs > button.hero-tab.is-on \"HeroWarrior · lv 1\"",
+    "div.menu-screen.active[screen=select] > nav#hero-tabs.hero-tabs > button.hero-tab.hero-tab-new \"+Newgenerator\"",
+    "div.opt-body > label.field > div.stepper \"Gromm the Unyielding (Ba\"",
+    "label.field > div.stepper > button.stepper-arrow.stepper-prev \"\"",
+    "label.field > div.stepper > button.stepper-arrow.stepper-next \"\"",
+    "div.opt-body > label.field > div.stepper \"Standard\"",
+    "label.field > div.stepper > button.stepper-arrow.stepper-prev \"\"",
+    "label.field > div.stepper > button.stepper-arrow.stepper-next \"\"",
+    "div.arena-pick > label > div.stepper \"Random\"",
+    "label > div.stepper > button.stepper-arrow.stepper-prev \"\"",
+    "label > div.stepper > button.stepper-arrow.stepper-next \"\"",
+    "div.arena-pick > label > div.stepper \"random\"",
+    "label > div.stepper > button.stepper-arrow.stepper-prev \"\"",
+    "label > div.stepper > button.stepper-arrow.stepper-next \"\"",
+    "div.arena-pick > label > div.stepper \"Random (90% walled)\"",
+    "label > div.stepper > button.stepper-arrow.stepper-prev \"\"",
+    "label > div.stepper > button.stepper-arrow.stepper-next \"\"",
+    "div.arena-pick > label > div.stepper \"random\"",
+    "label > div.stepper > button.stepper-arrow.stepper-prev \"\"",
+    "label > div.stepper > button.stepper-arrow.stepper-next \"\"",
+    "div.hero-stats > div.hero-verbs > button.profile-action.profile-action-manage \"Playing this hero\"",
+    "div.hero-stats > div.hero-verbs > button.profile-action.profile-action-manage \"Duplicate\"",
+    "div.hero-stats > div.hero-verbs > button.profile-action.profile-action-manage \"Rename\"",
+    "div.hero-stats > div.hero-verbs > button.profile-action.profile-action-manage \"Delete\"",
+    "div.menu-screen.active[screen=select] > div.screen-actions > button.menu-btn.menu-btn-primary \"Enter the ring as Hero\""
+   ],
+   "widthUse": 0.975,
+   "levelPx": {
+    "0": 53.15,
+    "1": 21.1,
+    "2": 17.924,
+    "3": 15.708,
+    "4": 13.152
+   },
+   "monotone": true,
+   "textChars": 1215,
+   "iconFit": [
+    1.38,
+    1.2
+   ],
+   "iconOffMax": 0
+  }
+ ]
+}

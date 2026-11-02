@@ -31,7 +31,14 @@ export type { BarModel, BarSegments };
 export type InspectTarget = { kind: "fighter"; seat: 0 | 1 } | { kind: "object"; id: string };
 
 /** One labelled line of a card. `tone` paints it (bad = below the fighter's own average). */
-export interface InspectRow { label: string; value: string; tone?: "good" | "bad" | "muted" }
+export interface InspectRow {
+  label: string; value: string; tone?: "good" | "bad" | "muted";
+  /** Wave X: the signed deviation the tone came from (ValueTone.toneFor input, span 4). */
+  toneValue?: number;
+}
+
+/** Wave X: a primary at least this many points above the fighter's own average is toned good. */
+export const INSPECT_GOOD_DEV = 1;
 /** One resource bar: the value now and the most it can reach, in the given colour. */
 export interface InspectBar { label: string; value: number; max: number; colour: string }
 /** The whole card: a title, a subtitle, badges, text rows and bars. */
@@ -61,7 +68,7 @@ export interface ObjectView {
   radiusM: number; heightM: number; scale: number; boon: string | null;
 }
 
-/** The six primary attributes, in one stable order for the sheet. */
+/** The seven primary attributes, in one stable order for the sheet. */
 export const PRIMARY_ORDER = ["vitality", "resilience", "focus", "reflex", "strength", "intelligence", "agility"] as const;
 type PrimaryKey = typeof PRIMARY_ORDER[number];
 
@@ -89,14 +96,21 @@ function controllerBadge(controller: string): string {
   return c.includes("player") || c.includes("human") ? "PLAYER" : "AI";
 }
 
-/** The fighter's card: identity, the six primaries (bad-toned below the average of the six), the
+/** The fighter's card: identity, the seven primaries (toned by their deviation from the average), the
  *  four derived combat numbers, the fight telemetry, the techniques, and hp/mana/stamina bars. */
 export function fighterCard(v: FighterView): InspectCard {
   const values = PRIMARY_ORDER.map((k) => v.stats[k]);
   const avg = values.reduce((a, b) => a + b, 0) / PRIMARY_ORDER.length;
+  // Wave X (C-TONE): a primary is toned by its deviation from the fighter's own average — red
+  // below, green at least INSPECT_GOOD_DEV above (a hair above the mean stays neutral), and the
+  // signed deviation rides on the row (`toneValue`) for a renderer that paints the smooth ramp.
   const statRows: InspectRow[] = PRIMARY_ORDER.map((k) => {
     const value = num(v.stats[k]);
-    return v.stats[k] < avg ? { label: PRIMARY_LABEL[k], value, tone: "bad" } : { label: PRIMARY_LABEL[k], value };
+    const dev = v.stats[k] - avg;
+    const row: InspectRow = { label: PRIMARY_LABEL[k], value, toneValue: Number.isFinite(dev) ? +dev.toFixed(3) : 0 };
+    if (v.stats[k] < avg) row.tone = "bad";
+    else if (dev >= INSPECT_GOOD_DEV) row.tone = "good";
+    return row;
   });
   const derived: InspectRow[] = [
     { label: "Max Health", value: num(v.combat.maxHealth) },

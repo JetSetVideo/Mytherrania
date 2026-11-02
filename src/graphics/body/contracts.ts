@@ -26,6 +26,7 @@
 //   export function paintVertices(mesh: MeshData, stack: PaintStack): Float32Array; // RGB per vertex, 0..1
 
 import type { JointName } from "../../game/Skeleton.ts";
+import type { RaceSilhouette } from "../../game/BodyProfile.ts";
 
 /** A point or direction in metres (bind-pose model space). */
 export type Vec3 = [number, number, number];
@@ -163,6 +164,16 @@ export interface BodySpec {
    * `Appearance.sex`, and without that copy the curve existed only in the maths and never on screen.
    */
   sex?: "male" | "female" | null;
+  /**
+   * Wave X lane B: the rendered fat belly, 0..1 (0 = none). Optional: an unset belly is the SEEDED
+   * rare roll (BodyProfile.fatBellyFor(seed, race)); a number overrides it (a creator's tweak, a test).
+   */
+  belly?: number | null;
+  /**
+   * Wave X (parent): an explicit silhouette (the Creator's rolled/tweaked body proportions). Unset =
+   * the race's own (`raceSilhouette`), so every pre-wave spec builds exactly as before.
+   */
+  silhouette?: RaceSilhouette | null;
 }
 
 /** The full generated body: volumes, brushes, bones and the box to polygonise. */

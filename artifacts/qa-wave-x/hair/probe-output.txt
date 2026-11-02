@@ -1,0 +1,506 @@
+[0m[32mTask[0m [0m[36mbuild[0m deno run -A tools/build.ts
+⚠️  [0m[36mdeno bundle[0m is experimental and subject to changes
+[0m[33mbundler warning[0m: Duplicate key "subraces" in object literal[duplicate-object-key] 
+    at [0m[36mfile:///Users/macmax/Desktop/Mytherrania/artifacts/design/race-genes.json[0m:[0m[33m9494[0m:[0m[33m4[0m
+    [0m[35mnote[0m: The original key "subraces" is here:
+        [0m[36mfile:///Users/macmax/Desktop/Mytherrania/artifacts/design/race-genes.json[0m:[0m[33m390[0m:[0m[33m4[0m
+[0m[33mbundler warning[0m: Duplicate key "subraceNotes" in object literal[duplicate-object-key] 
+    at [0m[36mfile:///Users/macmax/Desktop/Mytherrania/artifacts/design/race-genes.json[0m:[0m[33m12204[0m:[0m[33m4[0m
+    [0m[35mnote[0m: The original key "subraceNotes" is here:
+        [0m[36mfile:///Users/macmax/Desktop/Mytherrania/artifacts/design/race-genes.json[0m:[0m[33m3100[0m:[0m[33m4[0m
+[0m[33mbundler warning[0m: Duplicate key "trig" in object literal[duplicate-object-key] 
+    at [0m[36mfile:///Users/macmax/Desktop/Mytherrania/artifacts/design/race-genes.json[0m:[0m[33m12218[0m:[0m[33m4[0m
+    [0m[35mnote[0m: The original key "trig" is here:
+        [0m[36mfile:///Users/macmax/Desktop/Mytherrania/artifacts/design/race-genes.json[0m:[0m[33m3114[0m:[0m[33m4[0m
+[0m[33mbundler warning[0m: Duplicate key "trigNotes" in object literal[duplicate-object-key] 
+    at [0m[36mfile:///Users/macmax/Desktop/Mytherrania/artifacts/design/race-genes.json[0m:[0m[33m18596[0m:[0m[33m4[0m
+    [0m[35mnote[0m: The original key "trigNotes" is here:
+        [0m[36mfile:///Users/macmax/Desktop/Mytherrania/artifacts/design/race-genes.json[0m:[0m[33m9492[0m:[0m[33m4[0m
+[0m[33mbundler warning[0m: Duplicate key "subraces" in object literal[duplicate-object-key] 
+    at [0m[36mfile:///Users/macmax/Desktop/Mytherrania/artifacts/design/race-genes.json[0m:[0m[33m18598[0m:[0m[33m4[0m
+    [0m[35mnote[0m: The original key "subraces" is here:
+        [0m[36mfile:///Users/macmax/Desktop/Mytherrania/artifacts/design/race-genes.json[0m:[0m[33m390[0m:[0m[33m4[0m
+[0m[33mbundler warning[0m: Duplicate key "subraceNotes" in object literal[duplicate-object-key] 
+    at [0m[36mfile:///Users/macmax/Desktop/Mytherrania/artifacts/design/race-genes.json[0m:[0m[33m21308[0m:[0m[33m4[0m
+    [0m[35mnote[0m: The original key "subraceNotes" is here:
+        [0m[36mfile:///Users/macmax/Desktop/Mytherrania/artifacts/design/race-genes.json[0m:[0m[33m3100[0m:[0m[33m4[0m
+[0m[33mbundler warning[0m: Duplicate key "trig" in object literal[duplicate-object-key] 
+    at [0m[36mfile:///Users/macmax/Desktop/Mytherrania/artifacts/design/race-genes.json[0m:[0m[33m21322[0m:[0m[33m4[0m
+    [0m[35mnote[0m: The original key "trig" is here:
+        [0m[36mfile:///Users/macmax/Desktop/Mytherrania/artifacts/design/race-genes.json[0m:[0m[33m3114[0m:[0m[33m4[0m
+[0m[33mbundler warning[0m: Duplicate key "trigNotes" in object literal[duplicate-object-key] 
+    at [0m[36mfile:///Users/macmax/Desktop/Mytherrania/artifacts/design/race-genes.json[0m:[0m[33m27700[0m:[0m[33m4[0m
+    [0m[35mnote[0m: The original key "trigNotes" is here:
+        [0m[36mfile:///Users/macmax/Desktop/Mytherrania/artifacts/design/race-genes.json[0m:[0m[33m9492[0m:[0m[33m4[0m
+[0m[32mBundled[0m 264 modules in 370ms
+  [0m[35mdist-hair/app.js.map[0m [0m[38;5;245m9.32MB[0m
+  [0m[36mdist-hair/app.js    [0m [0m[38;5;245m1.95MB[0m
+
+Built local browser bundle: 2040498 bytes. Static from-URL check passed; runtime network isolation requires browser verification.
+⚠️  [0m[36mdeno bundle[0m is experimental and subject to changes
+[0m[33mbundler warning[0m: Duplicate key "subraces" in object literal[duplicate-object-key] 
+    at [0m[36mfile:///Users/macmax/Desktop/Mytherrania/artifacts/design/race-genes.json[0m:[0m[33m9494[0m:[0m[33m4[0m
+    [0m[35mnote[0m: The original key "subraces" is here:
+        [0m[36mfile:///Users/macmax/Desktop/Mytherrania/artifacts/design/race-genes.json[0m:[0m[33m390[0m:[0m[33m4[0m
+[0m[33mbundler warning[0m: Duplicate key "subraceNotes" in object literal[duplicate-object-key] 
+    at [0m[36mfile:///Users/macmax/Desktop/Mytherrania/artifacts/design/race-genes.json[0m:[0m[33m12204[0m:[0m[33m4[0m
+    [0m[35mnote[0m: The original key "subraceNotes" is here:
+        [0m[36mfile:///Users/macmax/Desktop/Mytherrania/artifacts/design/race-genes.json[0m:[0m[33m3100[0m:[0m[33m4[0m
+[0m[33mbundler warning[0m: Duplicate key "trig" in object literal[duplicate-object-key] 
+    at [0m[36mfile:///Users/macmax/Desktop/Mytherrania/artifacts/design/race-genes.json[0m:[0m[33m12218[0m:[0m[33m4[0m
+    [0m[35mnote[0m: The original key "trig" is here:
+        [0m[36mfile:///Users/macmax/Desktop/Mytherrania/artifacts/design/race-genes.json[0m:[0m[33m3114[0m:[0m[33m4[0m
+[0m[33mbundler warning[0m: Duplicate key "trigNotes" in object literal[duplicate-object-key] 
+    at [0m[36mfile:///Users/macmax/Desktop/Mytherrania/artifacts/design/race-genes.json[0m:[0m[33m18596[0m:[0m[33m4[0m
+    [0m[35mnote[0m: The original key "trigNotes" is here:
+        [0m[36mfile:///Users/macmax/Desktop/Mytherrania/artifacts/design/race-genes.json[0m:[0m[33m9492[0m:[0m[33m4[0m
+[0m[33mbundler warning[0m: Duplicate key "subraces" in object literal[duplicate-object-key] 
+    at [0m[36mfile:///Users/macmax/Desktop/Mytherrania/artifacts/design/race-genes.json[0m:[0m[33m18598[0m:[0m[33m4[0m
+    [0m[35mnote[0m: The original key "subraces" is here:
+        [0m[36mfile:///Users/macmax/Desktop/Mytherrania/artifacts/design/race-genes.json[0m:[0m[33m390[0m:[0m[33m4[0m
+[0m[33mbundler warning[0m: Duplicate key "subraceNotes" in object literal[duplicate-object-key] 
+    at [0m[36mfile:///Users/macmax/Desktop/Mytherrania/artifacts/design/race-genes.json[0m:[0m[33m21308[0m:[0m[33m4[0m
+    [0m[35mnote[0m: The original key "subraceNotes" is here:
+        [0m[36mfile:///Users/macmax/Desktop/Mytherrania/artifacts/design/race-genes.json[0m:[0m[33m3100[0m:[0m[33m4[0m
+[0m[33mbundler warning[0m: Duplicate key "trig" in object literal[duplicate-object-key] 
+    at [0m[36mfile:///Users/macmax/Desktop/Mytherrania/artifacts/design/race-genes.json[0m:[0m[33m21322[0m:[0m[33m4[0m
+    [0m[35mnote[0m: The original key "trig" is here:
+        [0m[36mfile:///Users/macmax/Desktop/Mytherrania/artifacts/design/race-genes.json[0m:[0m[33m3114[0m:[0m[33m4[0m
+[0m[33mbundler warning[0m: Duplicate key "trigNotes" in object literal[duplicate-object-key] 
+    at [0m[36mfile:///Users/macmax/Desktop/Mytherrania/artifacts/design/race-genes.json[0m:[0m[33m27700[0m:[0m[33m4[0m
+    [0m[35mnote[0m: The original key "trigNotes" is here:
+        [0m[36mfile:///Users/macmax/Desktop/Mytherrania/artifacts/design/race-genes.json[0m:[0m[33m9492[0m:[0m[33m4[0m
+[0m[32mBundled[0m 89 modules in 177ms
+  [0m[36mdist-hair/hairqa.js[0m [0m[38;5;245m1.01MB[0m
+
+{
+  "shots": 93,
+  "pageErrors": [],
+  "consoleErrors": [
+    "Failed to load resource: the server responded with a status of 404 (Not Found)"
+  ],
+  "maxHairTris": 1098,
+  "maxRigTris": 11234,
+  "table": [
+    {
+      "who": "human male young",
+      "years": 18,
+      "style": "bob",
+      "tier": "shoulder",
+      "braids": 0,
+      "follicles": 576,
+      "clumps": 60,
+      "grey": 0,
+      "recession": 0,
+      "minClearanceMm": 0.45,
+      "hairTris": 1090,
+      "rigTris": 10654,
+      "meshes": "hair-under,hair-scalp,hair-lock1,hair-lock4,hair-lock3,hair-lock0,hair-lock2"
+    },
+    {
+      "who": "human male elder",
+      "years": 84,
+      "style": "bob",
+      "tier": "shoulder",
+      "braids": 0,
+      "follicles": 539,
+      "clumps": 60,
+      "grey": 0.92,
+      "recession": 0.49495,
+      "minClearanceMm": 0.45,
+      "hairTris": 1096,
+      "rigTris": 10660,
+      "meshes": "hair-under,hair-scalp,hair-lock4,hair-lock1,hair-lock0,hair-lock3,hair-lock2"
+    },
+    {
+      "who": "human female young",
+      "years": 18,
+      "style": "crop",
+      "tier": "short",
+      "braids": 0,
+      "follicles": 576,
+      "clumps": 68,
+      "grey": 0,
+      "recession": 0,
+      "minClearanceMm": 0.45,
+      "hairTris": 1090,
+      "rigTris": 10658,
+      "meshes": "hair-under,hair-scalp,hair-lock4,hair-lock0,hair-lock2,hair-lock1,hair-lock3"
+    },
+    {
+      "who": "human female elder",
+      "years": 84,
+      "style": "crop",
+      "tier": "short",
+      "braids": 0,
+      "follicles": 576,
+      "clumps": 68,
+      "grey": 0.92,
+      "recession": 0,
+      "minClearanceMm": 0.45,
+      "hairTris": 1090,
+      "rigTris": 10658,
+      "meshes": "hair-under,hair-scalp,hair-lock4,hair-lock0,hair-lock2,hair-lock1,hair-lock3"
+    },
+    {
+      "who": "elf male young",
+      "years": 142,
+      "style": "bob",
+      "tier": "shoulder",
+      "braids": 0,
+      "follicles": 317,
+      "clumps": 71,
+      "grey": 0,
+      "recession": 0,
+      "minClearanceMm": 0.44,
+      "hairTris": 1079,
+      "rigTris": 11195,
+      "meshes": "hair-under,hair-scalp,hair-lock1,hair-lock4,hair-lock0,hair-lock3,hair-lock2"
+    },
+    {
+      "who": "elf male elder",
+      "years": 732,
+      "style": "bob",
+      "tier": "shoulder",
+      "braids": 0,
+      "follicles": 317,
+      "clumps": 71,
+      "grey": 0.6,
+      "recession": 0,
+      "minClearanceMm": 0.44,
+      "hairTris": 1079,
+      "rigTris": 11195,
+      "meshes": "hair-under,hair-scalp,hair-lock1,hair-lock4,hair-lock0,hair-lock3,hair-lock2"
+    },
+    {
+      "who": "elf female young",
+      "years": 142,
+      "style": "braided",
+      "tier": "long",
+      "braids": 1,
+      "follicles": 317,
+      "clumps": 78,
+      "grey": 0,
+      "recession": 0,
+      "minClearanceMm": 0.22,
+      "hairTris": 1097,
+      "rigTris": 11093,
+      "meshes": "hair-under,hair-scalp,hair-braid0"
+    },
+    {
+      "who": "elf female elder",
+      "years": 732,
+      "style": "braided",
+      "tier": "long",
+      "braids": 1,
+      "follicles": 317,
+      "clumps": 78,
+      "grey": 0.6,
+      "recession": 0,
+      "minClearanceMm": 0.22,
+      "hairTris": 1097,
+      "rigTris": 11093,
+      "meshes": "hair-under,hair-scalp,hair-braid0"
+    },
+    {
+      "who": "dwarf male young",
+      "years": 62,
+      "style": "wild",
+      "tier": "short",
+      "braids": 0,
+      "follicles": 919,
+      "clumps": 64,
+      "grey": 0,
+      "recession": 0,
+      "minClearanceMm": 0.51,
+      "hairTris": 1090,
+      "rigTris": 11234,
+      "meshes": "hair-under,hair-scalp,hair-lock0,hair-lock3,hair-lock4,hair-lock1,hair-lock2"
+    },
+    {
+      "who": "dwarf male elder",
+      "years": 314,
+      "style": "wild",
+      "tier": "short",
+      "braids": 0,
+      "follicles": 772,
+      "clumps": 63,
+      "grey": 0.92,
+      "recession": 0.9148499999999999,
+      "minClearanceMm": 0.51,
+      "hairTris": 1055,
+      "rigTris": 11199,
+      "meshes": "hair-under,hair-scalp,hair-lock0,hair-lock3,hair-lock4,hair-lock1,hair-lock2"
+    },
+    {
+      "who": "dwarf female young",
+      "years": 62,
+      "style": "wild",
+      "tier": "shoulder",
+      "braids": 1,
+      "follicles": 919,
+      "clumps": 44,
+      "grey": 0,
+      "recession": 0,
+      "minClearanceMm": 0.25,
+      "hairTris": 1078,
+      "rigTris": 11154,
+      "meshes": "hair-under,hair-scalp,hair-lock1,hair-lock4,hair-lock0,hair-lock3,hair-lock2,hair-braid0"
+    },
+    {
+      "who": "dwarf female elder",
+      "years": 314,
+      "style": "wild",
+      "tier": "shoulder",
+      "braids": 1,
+      "follicles": 919,
+      "clumps": 44,
+      "grey": 0.92,
+      "recession": 0,
+      "minClearanceMm": 0.25,
+      "hairTris": 1078,
+      "rigTris": 11154,
+      "meshes": "hair-under,hair-scalp,hair-lock1,hair-lock4,hair-lock0,hair-lock3,hair-lock2,hair-braid0"
+    },
+    {
+      "who": "ork male young",
+      "years": 13,
+      "style": "mohawk",
+      "tier": "short",
+      "braids": 0,
+      "follicles": 559,
+      "clumps": 72,
+      "grey": 0,
+      "recession": 0,
+      "minClearanceMm": 0.49,
+      "hairTris": 1092,
+      "rigTris": 11156,
+      "meshes": "hair-under,hair-scalp,hair-lock1,hair-lock4,hair-lock2,hair-lock0,hair-lock3"
+    },
+    {
+      "who": "ork male elder",
+      "years": 58,
+      "style": "mohawk",
+      "tier": "short",
+      "braids": 0,
+      "follicles": 436,
+      "clumps": 73,
+      "grey": 0.92,
+      "recession": 0.9987,
+      "minClearanceMm": 0.49,
+      "hairTris": 1068,
+      "rigTris": 11132,
+      "meshes": "hair-under,hair-scalp,hair-lock1,hair-lock4,hair-lock2,hair-lock0,hair-lock3"
+    },
+    {
+      "who": "ork female young",
+      "years": 13,
+      "style": "shaved",
+      "tier": "buzz",
+      "braids": 0,
+      "follicles": 559,
+      "clumps": 0,
+      "grey": 0,
+      "recession": 0,
+      "minClearanceMm": 1.42,
+      "hairTris": 214,
+      "rigTris": 10246,
+      "meshes": "hair-under"
+    },
+    {
+      "who": "ork female elder",
+      "years": 58,
+      "style": "shaved",
+      "tier": "buzz",
+      "braids": 0,
+      "follicles": 559,
+      "clumps": 0,
+      "grey": 0.92,
+      "recession": 0,
+      "minClearanceMm": 1.42,
+      "hairTris": 214,
+      "rigTris": 10246,
+      "meshes": "hair-under"
+    },
+    {
+      "who": "human/nomad male young",
+      "years": 18,
+      "style": "topknot",
+      "tier": "long",
+      "braids": 0,
+      "follicles": 528,
+      "clumps": 72,
+      "grey": 0,
+      "recession": 0,
+      "minClearanceMm": 0.45,
+      "hairTris": 1090,
+      "rigTris": 10654,
+      "meshes": "hair-under,hair-scalp,hair-bun"
+    },
+    {
+      "who": "human/nomad male elder",
+      "years": 84,
+      "style": "topknot",
+      "tier": "long",
+      "braids": 0,
+      "follicles": 475,
+      "clumps": 74,
+      "grey": 0.92,
+      "recession": 0.76015,
+      "minClearanceMm": 0.45,
+      "hairTris": 1098,
+      "rigTris": 10662,
+      "meshes": "hair-under,hair-scalp,hair-bun"
+    },
+    {
+      "who": "human/nomad female young",
+      "years": 18,
+      "style": "ponytail",
+      "tier": "long",
+      "braids": 0,
+      "follicles": 528,
+      "clumps": 45,
+      "grey": 0,
+      "recession": 0,
+      "minClearanceMm": 0.23,
+      "hairTris": 1098,
+      "rigTris": 10678,
+      "meshes": "hair-under,hair-scalp,hair-tail"
+    },
+    {
+      "who": "human/nomad female elder",
+      "years": 84,
+      "style": "ponytail",
+      "tier": "long",
+      "braids": 0,
+      "follicles": 528,
+      "clumps": 45,
+      "grey": 0.92,
+      "recession": 0,
+      "minClearanceMm": 0.23,
+      "hairTris": 1098,
+      "rigTris": 10678,
+      "meshes": "hair-under,hair-scalp,hair-tail"
+    },
+    {
+      "who": "elf/wood male young",
+      "years": 142,
+      "style": "bob",
+      "tier": "shoulder",
+      "braids": 0,
+      "follicles": 349,
+      "clumps": 68,
+      "grey": 0,
+      "recession": 0,
+      "minClearanceMm": 0.44,
+      "hairTris": 1087,
+      "rigTris": 11211,
+      "meshes": "hair-under,hair-scalp,hair-lock2,hair-lock0,hair-lock4,hair-lock1,hair-lock3"
+    },
+    {
+      "who": "elf/wood male elder",
+      "years": 732,
+      "style": "bob",
+      "tier": "shoulder",
+      "braids": 0,
+      "follicles": 349,
+      "clumps": 68,
+      "grey": 0.6,
+      "recession": 0,
+      "minClearanceMm": 0.44,
+      "hairTris": 1087,
+      "rigTris": 11211,
+      "meshes": "hair-under,hair-scalp,hair-lock2,hair-lock0,hair-lock4,hair-lock1,hair-lock3"
+    },
+    {
+      "who": "elf/wood female young",
+      "years": 142,
+      "style": "braided",
+      "tier": "long",
+      "braids": 3,
+      "follicles": 349,
+      "clumps": 39,
+      "grey": 0,
+      "recession": 0,
+      "minClearanceMm": 0.22,
+      "hairTris": 1087,
+      "rigTris": 11107,
+      "meshes": "hair-under,hair-scalp,hair-braid0,hair-braid1,hair-braid2"
+    },
+    {
+      "who": "elf/wood female elder",
+      "years": 732,
+      "style": "braided",
+      "tier": "long",
+      "braids": 3,
+      "follicles": 349,
+      "clumps": 39,
+      "grey": 0.6,
+      "recession": 0,
+      "minClearanceMm": 0.22,
+      "hairTris": 1087,
+      "rigTris": 11107,
+      "meshes": "hair-under,hair-scalp,hair-braid0,hair-braid1,hair-braid2"
+    },
+    {
+      "who": "dwarf/mountain male young",
+      "years": 62,
+      "style": "braided",
+      "tier": "shoulder",
+      "braids": 2,
+      "follicles": 919,
+      "clumps": 68,
+      "grey": 0,
+      "recession": 0,
+      "minClearanceMm": 0.25,
+      "hairTris": 1088,
+      "rigTris": 11188,
+      "meshes": "hair-under,hair-scalp,hair-braid0,hair-braid1"
+    },
+    {
+      "who": "dwarf/mountain male elder",
+      "years": 314,
+      "style": "braided",
+      "tier": "shoulder",
+      "braids": 2,
+      "follicles": 801,
+      "clumps": 73,
+      "grey": 0.92,
+      "recession": 0.8479,
+      "minClearanceMm": 0.25,
+      "hairTris": 1096,
+      "rigTris": 11196,
+      "meshes": "hair-under,hair-scalp,hair-braid0,hair-braid1"
+    },
+    {
+      "who": "dwarf/mountain female young",
+      "years": 62,
+      "style": "braided",
+      "tier": "shoulder",
+      "braids": 3,
+      "follicles": 919,
+      "clumps": 51,
+      "grey": 0,
+      "recession": 0,
+      "minClearanceMm": 0.25,
+      "hairTris": 1086,
+      "rigTris": 11194,
+      "meshes": "hair-under,hair-scalp,hair-braid0,hair-braid1,hair-braid2"
+    },
+    {
+      "who": "dwarf/mountain female elder",
+      "years": 314,
+      "style": "braided",
+      "tier": "shoulder",
+      "braids": 3,
+      "follicles": 919,
+      "clumps": 51,
+      "grey": 0.92,
+      "recession": 0,
+      "minClearanceMm": 0.25,
+      "hairTris": 1086,
+      "rigTris": 11194,
+      "meshes": "hair-under,hair-scalp,hair-braid0,hair-braid1,hair-braid2"
+    }
+  ]
+}

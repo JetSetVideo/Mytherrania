@@ -1,0 +1,26 @@
+{
+  "dwarf": {
+    "rolls": 2000,
+    "fat": 249,
+    "rate": 0.1245,
+    "chance": 0.12
+  },
+  "ork": {
+    "rolls": 2000,
+    "fat": 141,
+    "rate": 0.0705,
+    "chance": 0.07
+  },
+  "human": {
+    "rolls": 2000,
+    "fat": 86,
+    "rate": 0.043,
+    "chance": 0.04
+  },
+  "elf": {
+    "rolls": 2000,
+    "fat": 0,
+    "rate": 0,
+    "chance": 0
+  }
+}

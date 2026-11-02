@@ -249,7 +249,7 @@ export function runScenario(an: Animator, segs: readonly ScenarioSegment[], opt:
     }
     res.pelvisDrop.push(out.pelvisDrop);
     for (let i = 0 as Side; i < 2; i = (i + 1) as Side) {
-      footWorld(an.geometry, a, i, rig, fw, out.hipRoll[i], out.ankleRoll[i]);
+      footWorld(an.geometry, a, i, rig, fw, out.hipRoll[i], out.ankleRoll[i], out.toeOut[i]);
       const gb = ground(fw.ballX, fw.ballZ), gh = ground(fw.heelX, fw.heelZ);
       const planted = out.feet[i].planted;
       if (an.gait.feet[i].planted && (s.grounded ?? true) && !skill && !s.ko && an.blender.baseAuthority(LEG_JOINTS[i].hip) > 0.98) {

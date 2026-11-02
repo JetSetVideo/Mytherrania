@@ -1,0 +1,192 @@
+{
+  "tag": "before",
+  "dist": "dist-before",
+  "canvasVisible": true,
+  "hook": false,
+  "shots": 12,
+  "pedestalRadii": [
+    null
+  ],
+  "cameraDistances": [
+    3.912,
+    3.89,
+    4.036,
+    4.067
+  ],
+  "pedestalEqual": false,
+  "cameraEqual": false,
+  "shadowUnderFeet": "0/12 views darker beside the feet than at the rim (ratio < 0.8)",
+  "timing": null,
+  "pageErrors": 0,
+  "errors": [],
+  "rows": [
+    {
+      "race": "human",
+      "sex": "male",
+      "view": "front",
+      "framing": {
+        "heightM": 2.254,
+        "distanceM": 3.912,
+        "yaw": 0,
+        "pitch": 0.12
+      },
+      "pedestal": null,
+      "shadow": null,
+      "shot": "/Users/macmax/Desktop/Mytherrania/artifacts/qa-wave-x/body/before-human-male-front.png"
+    },
+    {
+      "race": "human",
+      "sex": "male",
+      "view": "three-quarter",
+      "framing": {
+        "heightM": 2.254,
+        "distanceM": 3.912,
+        "yaw": 0.7,
+        "pitch": 0.12
+      },
+      "pedestal": null,
+      "shadow": null,
+      "shot": "/Users/macmax/Desktop/Mytherrania/artifacts/qa-wave-x/body/before-human-male-three-quarter.png"
+    },
+    {
+      "race": "human",
+      "sex": "male",
+      "view": "side",
+      "framing": {
+        "heightM": 2.254,
+        "distanceM": 3.912,
+        "yaw": 1.571,
+        "pitch": 0.12
+      },
+      "pedestal": null,
+      "shadow": null,
+      "shot": "/Users/macmax/Desktop/Mytherrania/artifacts/qa-wave-x/body/before-human-male-side.png"
+    },
+    {
+      "race": "elf",
+      "sex": "male",
+      "view": "front",
+      "framing": {
+        "heightM": 2.239,
+        "distanceM": 3.89,
+        "yaw": 0,
+        "pitch": 0.12
+      },
+      "pedestal": null,
+      "shadow": null,
+      "shot": "/Users/macmax/Desktop/Mytherrania/artifacts/qa-wave-x/body/before-elf-male-front.png"
+    },
+    {
+      "race": "elf",
+      "sex": "male",
+      "view": "three-quarter",
+      "framing": {
+        "heightM": 2.239,
+        "distanceM": 3.89,
+        "yaw": 0.7,
+        "pitch": 0.12
+      },
+      "pedestal": null,
+      "shadow": null,
+      "shot": "/Users/macmax/Desktop/Mytherrania/artifacts/qa-wave-x/body/before-elf-male-three-quarter.png"
+    },
+    {
+      "race": "elf",
+      "sex": "male",
+      "view": "side",
+      "framing": {
+        "heightM": 2.239,
+        "distanceM": 3.89,
+        "yaw": 1.571,
+        "pitch": 0.12
+      },
+      "pedestal": null,
+      "shadow": null,
+      "shot": "/Users/macmax/Desktop/Mytherrania/artifacts/qa-wave-x/body/before-elf-male-side.png"
+    },
+    {
+      "race": "dwarf",
+      "sex": "male",
+      "view": "front",
+      "framing": {
+        "heightM": 2.34,
+        "distanceM": 4.036,
+        "yaw": 0,
+        "pitch": 0.12
+      },
+      "pedestal": null,
+      "shadow": null,
+      "shot": "/Users/macmax/Desktop/Mytherrania/artifacts/qa-wave-x/body/before-dwarf-male-front.png"
+    },
+    {
+      "race": "dwarf",
+      "sex": "male",
+      "view": "three-quarter",
+      "framing": {
+        "heightM": 2.34,
+        "distanceM": 4.036,
+        "yaw": 0.7,
+        "pitch": 0.12
+      },
+      "pedestal": null,
+      "shadow": null,
+      "shot": "/Users/macmax/Desktop/Mytherrania/artifacts/qa-wave-x/body/before-dwarf-male-three-quarter.png"
+    },
+    {
+      "race": "dwarf",
+      "sex": "male",
+      "view": "side",
+      "framing": {
+        "heightM": 2.34,
+        "distanceM": 4.036,
+        "yaw": 1.57,
+        "pitch": 0.12
+      },
+      "pedestal": null,
+      "shadow": null,
+      "shot": "/Users/macmax/Desktop/Mytherrania/artifacts/qa-wave-x/body/before-dwarf-male-side.png"
+    },
+    {
+      "race": "ork",
+      "sex": "male",
+      "view": "front",
+      "framing": {
+        "heightM": 2.361,
+        "distanceM": 4.067,
+        "yaw": 0,
+        "pitch": 0.12
+      },
+      "pedestal": null,
+      "shadow": null,
+      "shot": "/Users/macmax/Desktop/Mytherrania/artifacts/qa-wave-x/body/before-ork-male-front.png"
+    },
+    {
+      "race": "ork",
+      "sex": "male",
+      "view": "three-quarter",
+      "framing": {
+        "heightM": 2.361,
+        "distanceM": 4.067,
+        "yaw": 0.7,
+        "pitch": 0.12
+      },
+      "pedestal": null,
+      "shadow": null,
+      "shot": "/Users/macmax/Desktop/Mytherrania/artifacts/qa-wave-x/body/before-ork-male-three-quarter.png"
+    },
+    {
+      "race": "ork",
+      "sex": "male",
+      "view": "side",
+      "framing": {
+        "heightM": 2.361,
+        "distanceM": 4.067,
+        "yaw": 1.571,
+        "pitch": 0.12
+      },
+      "pedestal": null,
+      "shadow": null,
+      "shot": "/Users/macmax/Desktop/Mytherrania/artifacts/qa-wave-x/body/before-ork-male-side.png"
+    }
+  ]
+}

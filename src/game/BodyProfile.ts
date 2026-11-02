@@ -576,8 +576,8 @@ export const ASYMMETRY_GAIN: Record<"arm" | "foreArm" | "chest" | "thigh" | "shi
 const ASYM_SALT = 0x5a17e3c1;
 
 /** A tiny seeded stream (mulberry32; the same generator as core/MathCore.rng32). */
-function asymRng(seed: number): () => number {
-  let a = (seed ^ ASYM_SALT) >>> 0;
+function asymRng(seed: number, salt = ASYM_SALT): () => number {
+  let a = (seed ^ salt) >>> 0;
   return () => {
     a = (a + 0x6d2b79f5) >>> 0;
     let t = a;
@@ -608,4 +608,33 @@ export function bilateralAsymmetry(seed: number): BilateralAsymmetry {
 export function pairScales(delta: number): [number, number] {
   const big = 1 + Math.min(Math.abs(delta), ASYMMETRY_MAX), small = Math.sqrt(Math.max(0, 2 - big * big));
   return delta >= 0 ? [big, small] : [small, big];
+}
+
+// ---------------------------------------------------------------------------------------------
+// Wave X lane B — the RARE fat belly. "A fat belly only in rare generations, dwarves > orks > humans >
+// elves, elves practically never." Before this wave every heavy build (the ork, the ironhide, the
+// mountain dwarf, the islander) wore a big belly by construction (BuildRow.fat x girth^1.4 on the
+// abdomen depth), so a fat belly was the RULE for those races. The rendered skin now caps the belly's
+// depth under the chest (graphics/body/Physique.ts) and a fat belly is a separate, seeded, rare roll.
+//
+// The roll is its OWN stream (salted seed), drawn nowhere else: randomSilhouette's draws, the
+// asymmetry's draws and every pre-wave per-seed value are untouched (no shifted later draws).
+
+/** Chance of a fat belly per race (an unknown race uses the human's). Elves: never. */
+export const FAT_BELLY_CHANCE: Record<string, number> = { dwarf: 0.12, ork: 0.07, human: 0.04, elf: 0 };
+/** A rolled fat belly's amount is uniform in this band (0 = none, 1 = the fullest belly). */
+export const FAT_BELLY_AMOUNT: [number, number] = [0.6, 1.0];
+/** Salt of the belly stream (independent of the asymmetry's and the silhouette's). */
+export const FAT_BELLY_SALT = 0x6b3e11f7;
+
+/** Roll a fat belly from a stream: 0 (the common case) or an amount in FAT_BELLY_AMOUNT. Two draws, always. */
+export function rollFatBelly(rng: () => number, raceId: string): number {
+  const p = FAT_BELLY_CHANCE[raceId] ?? FAT_BELLY_CHANCE.human;
+  const hit = rng(), amount = rng();
+  return hit < p ? FAT_BELLY_AMOUNT[0] + (FAT_BELLY_AMOUNT[1] - FAT_BELLY_AMOUNT[0]) * amount : 0;
+}
+
+/** The fat belly a body seed wears (deterministic per seed and race; see rollFatBelly). */
+export function fatBellyFor(seed: number, raceId: string): number {
+  return rollFatBelly(asymRng(seed, FAT_BELLY_SALT), raceId);
 }

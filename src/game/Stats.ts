@@ -1,4 +1,5 @@
 import { bodyFromStats, physicsMultiplier, type Body } from "./Physics.ts";
+import { AGILITY_CADENCE, agilityOf, dodgeDivisor } from "./Agility.ts";
 export type ClassName =
   | "Barbarian" | "Warrior" | "Rogue" | "Assassin"
   | "Mage" | "Necromancer" | "Archer" | "Priest";
@@ -82,7 +83,9 @@ function shape(p: typeof PRIMARY[ClassName]) {
   const clamp = (v: number, lo: number, hi: number) => Math.max(lo, Math.min(hi, v));
   return {
     maxHealth: clamp(COEF.hpBase + p.vitality * COEF.hpPerVit + p.strength * COEF.hpPerStr, 34, 58) * HEALTH_SCALE,
-    attackInterval: clamp(COEF.intervalBase - p.reflex * COEF.intervalPerReflex, 0.85, 1.35),
+    // Wave X: reflex sets the cadence; agility (body speed) buys a small share of it
+    // (Agility.AGILITY_CADENCE), so the two never collapse into one number.
+    attackInterval: clamp((COEF.intervalBase - p.reflex * COEF.intervalPerReflex) / (1 + AGILITY_CADENCE * (agilityOf(p).animSpeed - 1)), 0.85, 1.35),
     armor: clamp(COEF.armorBase + p.resilience * COEF.armorPerRes, 2, 6.5),
   };
 }
@@ -90,7 +93,8 @@ function shape(p: typeof PRIMARY[ClassName]) {
 /** Derive combat stats from primary attributes (pure, so it is unit-testable). */
 export function deriveCombatStats(p: typeof PRIMARY[ClassName], className?: ClassName): CombatStats {
   const { maxHealth, attackInterval, armor } = shape(p);
-  const ehp = maxHealth * (1 + armor * 0.04);
+  // Wave X: agility's graze (Agility.dodgeDivisor) is effective HP exactly as armour is.
+  const ehp = maxHealth * (1 + armor * 0.04) * dodgeDivisor(p);
   // Damage that gives this class the target index, adjusted for its crit rate.
   const raw = TARGET_POWER_INDEX * POWER_SCALE * attackInterval / ehp;
   // ...and for its BODY. Physics multiplies every blow by mass/density ratios, so a
@@ -107,21 +111,21 @@ export function deriveCombatStats(p: typeof PRIMARY[ClassName], className?: Clas
 
 /** DPS x effective HP — the quantity the tuner equalises. */
 export function powerIndex(s: CombatStats): number {
-  return (s.attackPower / s.attackInterval) * s.maxHealth * (1 + s.armor * 0.04);
+  return (s.attackPower / s.attackInterval) * s.maxHealth * (1 + s.armor * 0.04) * dodgeDivisor(s);
 }
 
 // Per-class damage calibration fitted by tools/tune-balance.ts against the
-// arena harness (3 seeds x 1500 fights/pair). Applied on top of the solved
+// arena harness (3 seeds x 3000 fights/pair). Applied on top of the solved
 // power so each archetype's win rate against the field lands near 50%.
 export const POWER_CALIBRATION: Record<ClassName, number> = {
-  Barbarian: 0.0101,
-  Warrior: 0.0163,
-  Rogue: 0.0010,
-  Assassin: -0.0091,
-  Mage: -0.0095,
-  Necromancer: -0.0079,
-  Archer: -0.0032,
-  Priest: 0.0024,
+  Barbarian: 0.0208,
+  Warrior: 0.0245,
+  Rogue: 0.0011,
+  Assassin: -0.0164,
+  Mage: -0.0163,
+  Necromancer: -0.0163,
+  Archer: -0.0056,
+  Priest: 0.0082,
 };
 
 // The field-average body every class's physics edge is priced against. Declared
@@ -178,5 +182,7 @@ export const DAMAGE_SPREAD = 0.55;
 export function attackDamage(attacker: CombatStats, defender: CombatStats, critRoll: number, damageRoll = 0.5): number {
   const crit = critRoll < criticalChance(attacker.reflex, defender.resilience) ? 1.40 : 1;
   const variance = 1 + DAMAGE_SPREAD * (damageRoll - 0.5) * 2;
-  return attacker.attackPower * crit * variance / (1 + defender.armor * 0.04);
+  // Wave X: the defender's agility grazes the blow (deterministic: no extra rng draw, so every
+  // caller — Engine, MatchSim, ArenaHarness, BattleCorpus — keeps its random stream).
+  return attacker.attackPower * crit * variance / (1 + defender.armor * 0.04) / dodgeDivisor(defender);
 }

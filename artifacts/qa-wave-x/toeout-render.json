@@ -1,0 +1,58 @@
+{
+ "human": {
+  "beforeDeg": [
+   1.21,
+   1.21
+  ],
+  "afterDeg": [
+   10.21,
+   10.21
+  ],
+  "soleOffsetMm": [
+   34.88,
+   34.88
+  ]
+ },
+ "elf": {
+  "beforeDeg": [
+   1.07,
+   1.07
+  ],
+  "afterDeg": [
+   10.07,
+   10.07
+  ],
+  "soleOffsetMm": [
+   35.82,
+   35.82
+  ]
+ },
+ "dwarf": {
+  "beforeDeg": [
+   1.55,
+   1.55
+  ],
+  "afterDeg": [
+   10.55,
+   10.55
+  ],
+  "soleOffsetMm": [
+   31.4,
+   31.4
+  ]
+ },
+ "ork": {
+  "beforeDeg": [
+   2.49,
+   2.49
+  ],
+  "afterDeg": [
+   11.49,
+   11.49
+  ],
+  "soleOffsetMm": [
+   33.23,
+   33.23
+  ]
+ }
+}

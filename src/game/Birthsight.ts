@@ -11,8 +11,9 @@ export interface Birthsign {
 export const BIRTHSIGNS: Birthsign[] = [
   {
     id: "serpent", name: "The Serpent", symbol: "🐍",
-    mods: { reflex: 2, focus: 1 },
-    lore: "Born under the Shedding Moon — quick to strike, slow to yield.",
+    // Wave X: the serpent is SUPPLE — one point of its reflex became agility (sum still 3).
+    mods: { reflex: 1, focus: 1, agility: 1 },
+    lore: "Born under the Shedding Moon — supple, quick to strike, slow to yield.",
   },
   {
     id: "mountain", name: "The Mountain", symbol: "⛰",

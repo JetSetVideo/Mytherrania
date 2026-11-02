@@ -197,6 +197,30 @@ export function durationSecondsOf(o: { shape: PowerShape; focus: number }): numb
   return Math.round(base * (1 + w * DURATION_WILL_GAIN) * 100) / 100;
 }
 
+// ─── Wave X: the focus <-> intelligence side edge (casting) ──────────────────────────────────────
+
+/**
+ * Share of intelligence that counts as Focus for the CHANNEL: knowing the form steadies the cast.
+ * Focus stays the channel's driver (1 point = 1 point); intelligence lends a quarter.
+ */
+export const CAST_INT_SHARE = 0.25;
+/** Share of focus that counts as intelligence for the MANA discount: a steady mind wastes less. */
+export const MANA_FOCUS_SHARE = 0.25;
+
+/** The Focus the channel reads (Cast.castSeconds): focus + CAST_INT_SHARE · intelligence. */
+export function castFocus(s: { focus?: number; intelligence?: number }): number {
+  const f = Number.isFinite(s.focus) ? Math.max(0, s.focus!) : 0;
+  const i = Number.isFinite(s.intelligence) ? Math.max(0, s.intelligence!) : 0;
+  return f + CAST_INT_SHARE * i;
+}
+
+/** The intelligence the mana discount reads: intelligence + MANA_FOCUS_SHARE · focus. */
+export function manaIntelligence(s: { focus?: number; intelligence?: number }): number {
+  const f = Number.isFinite(s.focus) ? Math.max(0, s.focus!) : 0;
+  const i = Number.isFinite(s.intelligence) ? Math.max(0, s.intelligence!) : 0;
+  return i + MANA_FOCUS_SHARE * f;
+}
+
 // ─── The one call a power makes: the whole derivation from stats + weapon ─────────────────────────
 
 /** The five derived numbers a power carries, plus the two payload numbers that read the shape. */
@@ -228,9 +252,9 @@ export function derivePower(o: {
   const weaponValue = o.weapon[o.scale.weapon];
   return {
     amplitude: powerOf({ shape: o.shape, element: o.element, attributeValue, weapon: o.scale.weapon, weaponValue }),
-    castSeconds: castSecondsOf({ shape: o.shape, element: o.element, focus: o.stats.focus, hastePct: o.hastePct ?? 0 }),
+    castSeconds: castSecondsOf({ shape: o.shape, element: o.element, focus: castFocus(o.stats), hastePct: o.hastePct ?? 0 }),
     durationSeconds: durationSecondsOf({ shape: o.shape, focus: o.stats.focus }),
-    manaCost: manaCostOf({ shape: o.shape, element: o.element, intelligence: o.stats.intelligence }),
+    manaCost: manaCostOf({ shape: o.shape, element: o.element, intelligence: manaIntelligence(o.stats) }),
     cooldownSeconds: cooldownSecondsOf({ shape: o.shape, reflex: o.stats.reflex }),
     stun: SHAPE_BASE[o.shape].stun,
     knockbackMul: SHAPE_BASE[o.shape].knockback * weaponFactor("weight", o.weapon.weight),

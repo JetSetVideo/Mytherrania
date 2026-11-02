@@ -1,0 +1,87 @@
+{
+  "label": "before",
+  "fightsPerPair": 1000,
+  "seeds": [
+    20261009,
+    777,
+    31337
+  ],
+  "arena_human": {
+    "shares": {
+      "Barbarian": 0.4398,
+      "Warrior": 0.459,
+      "Rogue": 0.5126,
+      "Assassin": 0.5239,
+      "Mage": 0.5295,
+      "Necromancer": 0.5405,
+      "Archer": 0.5143,
+      "Priest": 0.4804
+    },
+    "balancedPairs": "19/84",
+    "meanAbsDev": 0.0302,
+    "min": 0.4398,
+    "max": 0.5405
+  },
+  "arena_elf": {
+    "shares": {
+      "Barbarian": 0.5619,
+      "Warrior": 0.5099,
+      "Rogue": 0.4826,
+      "Assassin": 0.4414,
+      "Mage": 0.4957,
+      "Necromancer": 0.5243,
+      "Archer": 0.4433,
+      "Priest": 0.541
+    },
+    "balancedPairs": "15/84",
+    "meanAbsDev": 0.0343,
+    "min": 0.4414,
+    "max": 0.5619
+  },
+  "arena_dwarf": {
+    "shares": {
+      "Barbarian": 0.4951,
+      "Warrior": 0.6472,
+      "Rogue": 0.6149,
+      "Assassin": 0.5308,
+      "Mage": 0.4499,
+      "Necromancer": 0.2737,
+      "Archer": 0.5791,
+      "Priest": 0.4092
+    },
+    "balancedPairs": "3/84",
+    "meanAbsDev": 0.093,
+    "min": 0.2737,
+    "max": 0.6472
+  },
+  "arena_ork": {
+    "shares": {
+      "Barbarian": 0.0918,
+      "Warrior": 0.5195,
+      "Rogue": 0.5997,
+      "Assassin": 0.6315,
+      "Mage": 0.5811,
+      "Necromancer": 0.4557,
+      "Archer": 0.6235,
+      "Priest": 0.4972
+    },
+    "balancedPairs": "9/84",
+    "meanAbsDev": 0.1138,
+    "min": 0.0918,
+    "max": 0.6315
+  },
+  "matchsim_random": {
+    "matches": 6000,
+    "classWinShare": {
+      "Barbarian": 0.535,
+      "Warrior": 0.565,
+      "Rogue": 0.48,
+      "Assassin": 0.548,
+      "Mage": 0.432,
+      "Necromancer": 0.458,
+      "Archer": 0.53,
+      "Priest": 0.453
+    },
+    "medianDuration": 52.7
+  }
+}

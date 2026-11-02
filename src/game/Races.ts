@@ -182,6 +182,9 @@ import type { CombatStats } from "./Stats.ts";
 import { DAMAGE_SCALE, HEALTH_SCALE } from "./Stats.ts";
 import { birthsignById } from "./Birthsight.ts";
 
+/** Wave X: attack-interval seconds one agility point buys in statDelta (reflex buys 0.02). */
+export const AGILITY_INTERVAL = 0.006;
+
 /** Additive combat deltas for a race (and optional subspecies), via statDelta. */
 /**
  * Combat deltas from a set of primary-stat modifiers (a race, subrace or birthsign).
@@ -190,7 +193,8 @@ import { birthsignById } from "./Birthsight.ts";
  *   ΔmaxHealth   = (2·ΔVIT + ⌊ΔSTR/2⌋) · HEALTH_SCALE
  *   ΔattackPower = ⌊ΔSTR/2⌋ · DAMAGE_SCALE
  *   Δarmor       = ⌊ΔRES/2⌋
- *   ΔattackInterval = −0.02 · ΔREF  (faster)
+ *   ΔattackInterval = −0.02 · ΔREF − AGILITY_INTERVAL · ΔAGI  (faster; wave X: agility buys a
+ *                     small share of the cadence, reflex stays its driver — Agility.ts)
  * Before this, the HP and damage deltas were unscaled (+2 HP on a 48 750 HP pool),
  * so race and birthsign choices changed nothing but crit.
  */
@@ -203,7 +207,7 @@ export function statDelta(b: Partial<Record<StatName, number>>): Partial<CombatS
     maxHealth: (v * 2 + Math.floor(s / 2)) * HEALTH_SCALE,
     attackPower: Math.floor(s / 2) * DAMAGE_SCALE,
     armor: Math.floor(rn / 2),
-    attackInterval: -rf * 0.02,
+    attackInterval: -rf * 0.02 - ag * AGILITY_INTERVAL,
   };
 }
 

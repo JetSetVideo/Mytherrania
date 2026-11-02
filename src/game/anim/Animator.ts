@@ -16,6 +16,7 @@
 //   8. Root      gait-owned legs: IK ride height; skill/KO/air-owned legs: lowest sole on the floor.
 //   9. Guard     lift the root if any heel / ball / toe tip of the final pose is below the ground.
 
+import { TOE_OUT_RAD, toeOutYaw } from "./FootTurnout.ts";
 import { clamp, damp, lerp, smoothstep, wrapAngle } from "../../core/MathCore.ts";
 import { type FourPhaseProfile, fourPhasePeakRate, styledTrackOffset, trackOffset } from "../AnimationCurve.ts";
 import type { SkillAnimation } from "../Skills.ts";
@@ -320,6 +321,11 @@ export interface AnimatorOutput {
   hipRoll: Float64Array;
   /** Ankle counter-roll per leg, rad: rotation.z of the ankle pivot (Euler "XYZ"), keeps the sole level. */
   ankleRoll: Float64Array;
+  /**
+   * Wave X: each foot's turn-out [L, R], rad (+ = toes outward, FootTurnout.ts). Constant (the
+   * planted-foot rule: a yaw that changed under a planted foot would slide its ball).
+   */
+  toeOut: Float64Array;
   footPlant: { left: boolean; right: boolean };
   /** Ball of each foot ["L", "R"], world. */
   feet: [FootOut, FootOut];
@@ -474,7 +480,7 @@ export class Animator {
     this.output = {
       angles: Float64Array.from(limits.rest),
       rootOffsetY: 0, rootRoll: 0, rootOffsetLateral: 0,
-      hipRoll: new Float64Array(2), ankleRoll: new Float64Array(2),
+      hipRoll: new Float64Array(2), ankleRoll: new Float64Array(2), toeOut: Float64Array.of(TOE_OUT_RAD, TOE_OUT_RAD),
       footPlant: { left: true, right: true },
       feet: [{ x: 0, y: 0, z: 0, planted: true }, { x: 0, y: 0, z: 0, planted: true }],
       pelvisDrop: 0, phase: 0, yawOffset: 0, breath: 0, idleSway: 0,
@@ -876,7 +882,7 @@ export class Animator {
   #lowestSole(angles: Float64Array, hipRoll: Float64Array, ankleRoll: Float64Array): number {
     let lo = Infinity;
     for (let i = 0; i < 2; i++) {
-      legFK3(this.geometry, angles, i as Side, hipRoll[i], ankleRoll[i], FK3);
+      legFK3(this.geometry, angles, i as Side, hipRoll[i], ankleRoll[i], FK3, this.output.toeOut[i]);
       lo = Math.min(lo, FK3.ball[1], FK3.heel[1], FK3.toe[1]);
     }
     return lo;
@@ -891,7 +897,7 @@ export class Animator {
     let worst = Infinity;
     const ox = inp.x + this.#lateral * Math.cos(yaw), oz = inp.z - this.#lateral * Math.sin(yaw);
     for (let i = 0; i < 2; i++) {
-      legFK3(this.geometry, angles, i as Side, hipRoll[i], ankleRoll[i], FK3);
+      legFK3(this.geometry, angles, i as Side, hipRoll[i], ankleRoll[i], FK3, this.output.toeOut[i]);
       for (let k = 0; k < 3; k++) {
         const pt = k === 0 ? FK3.ball : k === 1 ? FK3.heel : FK3.toe;
         const y = rootWorldY + pt[0] * this.#sinR + pt[1] * this.#cosR;
@@ -918,8 +924,14 @@ export class Animator {
    */
   #ankleTarget(i: number, cX: number, cY: number, cZ: number, pitch: number, forward: number, rootY: number): void {
     const g = this.geometry;
+    // Wave X: the foot is turned out by `yaw` about the vertical through the ankle (Rig.legFK3), so
+    // the ankle sits `back`·(sin yaw, cos yaw) behind the contact point, not straight behind it —
+    // targeting the straight-behind ankle slid a planted ball ~6 mm whenever the body turned over it.
+    const yaw = toeOutYaw(g.hipLateral[i], this.output.toeOut[i]);
     ankleFromBall(cY, cZ, pitch, g.soleOffset, forward, ANK);
-    const X = cX - this.#lateral, Y = ANK[0] - rootY;
+    const back = cZ - ANK[1];
+    ANK[1] = cZ - back * Math.cos(yaw);
+    const X = cX - back * Math.sin(yaw) - this.#lateral, Y = ANK[0] - rootY;
     const xl = X * this.#cosR + Y * this.#sinR, yl = -X * this.#sinR + Y * this.#cosR;
     D3[0] = xl - g.hipLateral[i];
     D3[1] = yl - HIP2[0];

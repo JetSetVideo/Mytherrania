@@ -54,9 +54,10 @@ const W = new Float64Array(3);
  * the rig renders (Rig.legFK3).
  */
 export function footWorld(
-  g: LegGeometry, angles: Float64Array, side: Side, r: RigPlacement, out: FootWorld, hipRoll = 0, ankleRoll = 0,
+  g: LegGeometry, angles: Float64Array, side: Side, r: RigPlacement, out: FootWorld, hipRoll = 0, ankleRoll = 0, toeOut = 0,
 ): FootWorld {
-  legFK3(g, angles, side, hipRoll, ankleRoll, FK);
+  // Wave X: `toeOut` = the foot's turn-out (AnimatorOutput.toeOut, FootTurnout.ts); 0 = pre-wave-X.
+  legFK3(g, angles, side, hipRoll, ankleRoll, FK, toeOut);
   toWorld(r, FK.ball[0], FK.ball[1], FK.ball[2], W);
   out.ballX = W[0]; out.ballY = W[1]; out.ballZ = W[2];
   toWorld(r, FK.heel[0], FK.heel[1], FK.heel[2], W);

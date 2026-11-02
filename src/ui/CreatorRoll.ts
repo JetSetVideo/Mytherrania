@@ -21,8 +21,8 @@
 
 import type { Appearance, CharacterProfile } from "../game/Characters.ts";
 import { PALETTES } from "../game/Characters.ts";
-import { applyLevel, attackDamage, CLASSES, createStats } from "../game/Stats.ts";
-import { applyRaceBonus, raceById, RACES } from "../game/Races.ts";
+import { applyLevel, attackDamage, CLASSES, type CombatStats, createStats } from "../game/Stats.ts";
+import { applyRaceBonus, raceById, RACES, statDelta, type StatName } from "../game/Races.ts";
 import { applySecondary, secondaryPreview } from "../game/SecondaryStats.ts";
 import { birthsignById, BIRTHSIGNS } from "../game/Birthsight.ts";
 import { weaponForClass } from "../game/Weapon.ts";
@@ -30,6 +30,12 @@ import { ancestryOf } from "../game/Ancestry.ts";
 import { raceBuild } from "../game/RaceAppearance.ts";
 import { randomSilhouette } from "../game/BodyProfile.ts";
 import { startingStats } from "../game/Leveling.ts";
+import { generateName } from "../game/NameGen.ts";
+import { lifeFraction, lifespanOf, rollAge } from "../game/Age.ts";
+import { rng32 } from "../core/MathCore.ts";
+import { ATTRS, attrBase, attrValue, pointBudget, rebaseAttrs } from "./CreatorTweak.ts";
+import { heightBand, weightBand } from "./CreatorSync.ts";
+import { spendBudget } from "../game/SpectateGen.ts";
 
 export interface RolledProfile {
   profile: CharacterProfile;
@@ -76,8 +82,15 @@ export function rollProfile(rng: () => number): RolledProfile {
     silhouette: randomSilhouette(rng, race.id, subrace.id),
   };
 
+  // Wave X: the legacy name draw is consumed and DISCARDED (pitfall 11: every later per-seed value
+  // survives), and the name / sex / age come from a CHILD stream seeded once from the roll's seed, so
+  // a seeded roll stays a seeded roll. The name speaks the rolled race + sub-race's phonology.
+  rng();
+  const child = rng32(seed ^ 0x6e616d65);
+  appearance.sex = child() < 0.5 ? "male" : "female";
+  appearance.age = rollAge(child, race.id);
   const profile: CharacterProfile = {
-    name: pick(rng, NAMES),
+    name: generateName(child, race.id, subrace.id, appearance.sex),
     race: race.id,
     subrace: subrace.id,
     className,
@@ -95,6 +108,14 @@ export interface SheetRow {
   label: string;
   value: string;
   hint?: string;
+  /**
+   * Wave X (C-TONE): the number this row is coloured by, and its neutral/span. Absolute stats are
+   * coloured by their DEVIATION from the all-class x all-race average (`SHEET_NEUTRAL`); a signed
+   * modifier by its own sign. `invert` = lower is better (the attack interval).
+   */
+  tone?: { value: number; neutral: number; span: number; invert?: boolean };
+  /** Wave X: the change against the ROLLED base (the hand-tweak), signed text + its value. */
+  delta?: { text: string; value: number; invert?: boolean };
 }
 
 export interface CreatorSheet {
@@ -104,7 +125,7 @@ export interface CreatorSheet {
   className: string;
   weaponLabel: string;
   signLabel: string;
-  primary: SheetRow[]; // the six attributes
+  primary: SheetRow[]; // the seven attributes (Agility is the seventh, Wave X)
   derived: SheetRow[]; // max health, attack power, attack interval, armour
   secondary: SheetRow[]; // the birthsign/sub-species deltas
 }
@@ -115,22 +136,16 @@ export function creatorSheet(profile: CharacterProfile): CreatorSheet {
   // deltas -> secondary-stat bridge -> level. Every displayed number is read off this result, so the
   // sheet can never drift from the fight. Its pool size comes from createStats/applyRaceBonus and is
   // NOT hard-coded (the health pool is HEALTH_SCALE-scaled and the race constitution rescales it).
-  const raced = applyRaceBonus(createStats(profile.className), profile.race, profile.subrace, profile.birthsign);
-  const stats = applyLevel(applySecondary(raced, profile.subrace, profile.birthsign), profile.level ?? 1);
+  const rolled = rolledStats(profile);
+  const stats = tweakedStats(profile, rolled);
 
   const race = raceById(profile.race);
   const sub = profile.subrace ? race?.subspecies.find((s) => s.id === profile.subrace) ?? null : null;
   const sign = profile.birthsign ? birthsignById(profile.birthsign) : undefined;
   const weapon = weaponForClass(profile.className);
 
-  const primary: SheetRow[] = [
-    { label: "Vitality", value: group(stats.vitality) },
-    { label: "Resilience", value: group(stats.resilience) },
-    { label: "Focus", value: group(stats.focus) },
-    { label: "Reflex", value: group(stats.reflex) },
-    { label: "Strength", value: group(stats.strength) },
-    { label: "Intelligence", value: group(stats.intelligence) },
-  ];
+  const neutral = sheetNeutral();
+  const primary: SheetRow[] = ATTRS.map((s) => row(ATTR_LABEL[s], group(stats[s]), stats[s], rolled[s], neutral[s], ATTR_SPAN));
 
   // A representative blow against an even foe (the class baseline, no ancestry): the mid-roll,
   // non-crit hit — attackDamage with damageRoll 0.5 (variance 1) and a critRoll of 0.5, which is
@@ -139,15 +154,15 @@ export function creatorSheet(profile: CharacterProfile): CreatorSheet {
   const hit = attackDamage(stats, evenFoe, 0.5, 0.5);
 
   const derived: SheetRow[] = [
-    { label: "Max Health", value: group(stats.maxHealth) },
-    { label: "Attack Power", value: group(stats.attackPower), hint: `≈ ${group(hit)} a blow vs. an even foe` },
-    { label: "Attack Interval", value: `${stats.attackInterval.toFixed(2)} s` },
-    { label: "Armour", value: stats.armor.toFixed(1) },
+    row("Max Health", group(stats.maxHealth), stats.maxHealth, rolled.maxHealth, neutral.maxHealth, neutral.maxHealth * 0.25),
+    { ...row("Attack Power", group(stats.attackPower), stats.attackPower, rolled.attackPower, neutral.attackPower, neutral.attackPower * 0.25), hint: `≈ ${group(hit)} a blow vs. an even foe` },
+    row("Attack Interval", `${stats.attackInterval.toFixed(2)} s`, stats.attackInterval, rolled.attackInterval, neutral.attackInterval, 0.2, true, 2),
+    row("Armour", stats.armor.toFixed(1), stats.armor, rolled.armor, neutral.armor, 2, false, 1),
   ];
 
   // The sub-species + birthsign deltas, via the same formatter the creator's preview uses.
   const secondary: SheetRow[] = secondaryPreview(profile.subrace, profile.birthsign)
-    .map((r) => ({ label: r.label, value: r.text }));
+    .map((r) => ({ label: r.label, value: r.text, tone: { value: r.delta, neutral: 0, span: SECONDARY_SPAN } }));
 
   return {
     name: profile.name,
@@ -164,8 +179,170 @@ export function creatorSheet(profile: CharacterProfile): CreatorSheet {
 
 // ─── helpers ─────────────────────────────────────────────
 
-/** Names a rolled fighter may draw; short, neutral, and readable in a chip. */
-const NAMES = ["Ash", "Bramble", "Cinder", "Dusk", "Ember", "Fenn", "Gale", "Hollow", "Iris", "Juniper", "Kestrel", "Lumen"];
+const ATTR_LABEL: Record<StatName, string> = {
+  vitality: "Vitality", resilience: "Resilience", focus: "Focus", reflex: "Reflex",
+  strength: "Strength", intelligence: "Intelligence", agility: "Agility",
+};
+/** Attribute points at which a deviation from the average reads fully green/red. */
+export const ATTR_SPAN = 4;
+/** A secondary modifier (a fraction: 0.05 = +5 %) reads fully green/red at ±5 %. */
+export const SECONDARY_SPAN = 0.05;
+
+/** A sheet row with its tone (deviation from `neutral`) and its signed change vs the rolled base. */
+function row(label: string, value: string, now: number, base: number, neutral: number, span: number, invert = false, digits = 0): SheetRow {
+  const d = now - base;
+  const r: SheetRow = { label, value, tone: { value: now, neutral, span, ...(invert ? { invert } : {}) } };
+  if (Math.abs(d) >= 0.5 * 10 ** -digits) r.delta = { text: signedText(d, digits), value: d, ...(invert ? { invert } : {}) };
+  return r;
+}
+
+function signedText(n: number, digits: number): string {
+  const v = digits ? n.toFixed(digits) : group(n);
+  return n > 0 ? `+${v}` : v.replace("-", "\u2212");
+}
+
+/** The class x race x sub-race x sign pipeline the fight runs (the ROLLED numbers, before any hand-tweak). */
+export function rolledStats(profile: CharacterProfile): CombatStats {
+  const raced = applyRaceBonus(createStats(profile.className), profile.race, profile.subrace, profile.birthsign);
+  return applyLevel(applySecondary(raced, profile.subrace, profile.birthsign), profile.level ?? 1);
+}
+
+/**
+ * The rolled numbers plus the hand-tweak: each attribute's change against its rolled base
+ * (CreatorTweak) goes through `Races.statDelta`, the same attribute -> derived law the spend path
+ * (Engine.#applySpend, FighterBuild.fighterStats) adds. A fresh roll has no change: identity.
+ */
+export function tweakedStats(profile: CharacterProfile, rolled = rolledStats(profile)): CombatStats {
+  const base = attrBase(profile);
+  const cur: Partial<Record<StatName, number>> = {};
+  let any = false;
+  for (const s of ATTRS) {
+    cur[s] = attrValue(profile, s);
+    if (cur[s] !== base[s]) any = true;
+  }
+  if (!any) return rolled;
+  // statDelta floors (strength / 2, resilience / 2), so the change is statDelta(now) - statDelta(base),
+  // never statDelta(now - base): one point of strength from 6 to 7 crosses a floor and must show.
+  const now = statDelta(cur), was = statDelta(base);
+  const out: CombatStats = { ...rolled };
+  for (const k of Object.keys(now) as (keyof CombatStats)[]) {
+    const a = now[k], b = was[k];
+    if (typeof a !== "number" || typeof b !== "number") continue;
+    out[k] = (out[k] ?? 0) + (a - b);
+  }
+  out.attackInterval = Math.max(0.3, out.attackInterval);
+  out.armor = Math.max(0, out.armor);
+  return out;
+}
+
+let NEUTRAL: CombatStats | null = null;
+/** The neutral reference of every sheet number: its mean over every class x race (no sub-race, no sign). */
+export function sheetNeutral(): CombatStats {
+  if (NEUTRAL) return NEUTRAL;
+  const acc: Record<string, number> = {};
+  let n = 0;
+  for (const c of CLASSES) for (const r of RACES) {
+    const s = applyLevel(applySecondary(applyRaceBonus(createStats(c), r.id, null, null), null, null), 1);
+    for (const [k, v] of Object.entries(s)) acc[k] = (acc[k] ?? 0) + (v as number);
+    n++;
+  }
+  for (const k of Object.keys(acc)) acc[k] /= n;
+  NEUTRAL = acc as unknown as CombatStats;
+  return NEUTRAL;
+}
+
+// ─── Wave X: reroll ONE part ─────────────────────────────────────────────
+
+/** The parts the Creator's small dice reroll on their own. */
+export type RerollPart = "name" | "ancestry" | "class" | "body" | "face" | "age" | "stats" | "sign";
+export const REROLL_PARTS: readonly RerollPart[] = ["name", "ancestry", "class", "body", "face", "age", "stats", "sign"];
+
+/**
+ * Reroll ONE part of a profile and keep the rest. `nameLocked` = the user typed the name: an
+ * ancestry/sex reroll then keeps it; otherwise the name is regenerated in the NEW phonology.
+ * The rng is the only randomness; the result is legal by construction (bands from the race).
+ */
+export function rerollPart(p: CharacterProfile, part: RerollPart, rng: () => number, opts: { nameLocked?: boolean } = {}): CharacterProfile {
+  const next: CharacterProfile = { ...p, appearance: { ...p.appearance }, allocated: { ...p.allocated } };
+  const sex = p.appearance.sex ?? "male";
+  switch (part) {
+    case "name":
+      next.name = generateName(rng, p.race, p.subrace, sex);
+      break;
+    case "ancestry": {
+      const race = pick(rng, RACES);
+      const sub = pick(rng, race.subspecies);
+      return withAncestry(p, race.id, sub.id, rng, opts);
+    }
+    case "class": {
+      const others = CLASSES.filter((c) => c !== p.className);
+      next.className = pick(rng, others.length ? others : CLASSES);
+      next.weaponType = weaponForClass(next.className).type;
+      next.allocated = rebaseAttrs(p, next);
+      break;
+    }
+    case "body": {
+      const [h0, h1] = heightBand(p.race, p.subrace), [w0, w1] = weightBand(p.race, p.subrace);
+      // The same distribution the full roll draws (base frame x race build).
+      const build = raceBuild(p.race, p.subrace);
+      next.appearance.height = Math.max(h0, Math.min(h1, (1.5 + rng() * 0.6) * build.heightMul));
+      next.appearance.weight = Math.max(w0, Math.min(w1, (50 + rng() * 90) * build.weightMul));
+      next.appearance.silhouette = randomSilhouette(rng, p.race, p.subrace);
+      break;
+    }
+    case "face": {
+      const node = ancestryOf(p.race, p.subrace);
+      const build = raceBuild(p.race, p.subrace);
+      next.appearance.hair = pick(rng, node.hair.colors);
+      next.appearance.eyes = pick(rng, EYES);
+      next.appearance.beard = build.beard && rng() < 0.3;
+      next.appearance.moustache = build.moustache && rng() < 0.25;
+      break;
+    }
+    case "age":
+      next.appearance.age = rollAge(rng, p.race);
+      break;
+    case "stats": {
+      // Spend the level's whole budget along the class's lean (SpectateGen.spendBudget, the
+      // spectator generator's own allocator) on top of the rolled base.
+      const spent = spendBudget(pointBudget(p), p.className, rng) as Partial<Record<StatName, number>>;
+      const base = attrBase(p);
+      next.allocated = Object.fromEntries(ATTRS.map((s) => [s, base[s] + (spent[s] ?? 0)]));
+      break;
+    }
+    case "sign":
+      next.birthsign = pick(rng, BIRTHSIGNS).id;
+      break;
+  }
+  return next;
+}
+
+/**
+ * Move a profile to another race / sub-race, carrying what can be carried: the body keeps its
+ * POSITION inside the band (a tall human becomes a tall dwarf), the age keeps its life fraction,
+ * the face is redrawn from the new ancestry's palette, the attribute CHANGES carry over, and an
+ * untyped name is regenerated in the new phonology.
+ */
+export function withAncestry(p: CharacterProfile, raceId: string, subraceId: string | null, rng: () => number, opts: { nameLocked?: boolean } = {}): CharacterProfile {
+  const next: CharacterProfile = { ...p, race: raceId, subrace: subraceId, appearance: { ...p.appearance, race: raceId, subrace: subraceId }, allocated: { ...p.allocated } };
+  const rel = (v: number, [a, b]: [number, number]) => (b > a ? Math.max(0, Math.min(1, (v - a) / (b - a))) : 0.5);
+  const hb = heightBand(p.race, p.subrace), wb = weightBand(p.race, p.subrace);
+  const nh = heightBand(raceId, subraceId), nw = weightBand(raceId, subraceId);
+  next.appearance.height = nh[0] + rel(p.appearance.height, hb) * (nh[1] - nh[0]);
+  next.appearance.weight = nw[0] + rel(p.appearance.weight, wb) * (nw[1] - nw[0]);
+  if (typeof p.appearance.age === "number") {
+    next.appearance.age = Math.round(lifeFraction(p.race, p.appearance.age) * lifespanOf(raceId));
+  }
+  const node = ancestryOf(raceId, subraceId);
+  const build = raceBuild(raceId, subraceId);
+  if (!node.hair.colors.includes(p.appearance.hair ?? "")) next.appearance.hair = pick(rng, node.hair.colors);
+  if (!build.beard) next.appearance.beard = false;
+  if (!build.moustache) next.appearance.moustache = false;
+  next.appearance.silhouette = randomSilhouette(rng, raceId, subraceId);
+  next.allocated = rebaseAttrs(p, next);
+  if (!opts.nameLocked) next.name = generateName(rng, raceId, subraceId, p.appearance.sex ?? "male");
+  return next;
+}
 /** Eye colours, drawn from the repo palette (DESIGN.md) so a rolled eye reads as one of the inks/sands. */
 const EYES = ["#dfaa55", "#4f8490", "#ef7455", "#172128"];
 

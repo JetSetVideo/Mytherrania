@@ -192,7 +192,15 @@ export function sexOf(spec: BodySpec): Sex {
 /** Derive every proportion of a body from its spec (see the module comment for the chain). */
 export function proportionsFor(spec: BodySpec, buildOverride?: BuildType): BodyProportions {
   const race = spec.race in RACE_SILHOUETTE ? spec.race : "human";
-  const sil = raceSilhouette(race, spec.subrace);
+  const raceSil = raceSilhouette(race, spec.subrace);
+  const sil = spec.silhouette ?? raceSil;
+  // Wave X (parent): an explicit (rolled/tweaked) silhouette acts RELATIVE to the race's own, so a
+  // Creator stepper widens/deepens this body while the race's genes keep the race's identity. The
+  // joints that plant the feet (hipJoint) and swing the arm (shoulderJoint) are NOT moved by it:
+  // the shoulder knob scales the deltoid mass instead (a moved joint breaks the slide bands).
+  const rel = (k: "width" | "depth" | "hip" | "head" | "shoulder") =>
+    spec.silhouette ? clamp(sil[k] / raceSil[k], 0.75, 1.3) : 1;
+  const waistPinch = spec.silhouette ? clamp(1 - 0.6 * (sil.waist - raceSil.waist), 0.8, 1.2) : 1;
   const buildType = buildOverride ?? buildFor(race, spec.subrace);
   const B = BUILDS[buildType];
   const build = raceBuild(race, spec.subrace);
@@ -253,29 +261,29 @@ export function proportionsFor(spec: BodySpec, buildOverride?: BuildType): BodyP
   //    fit body at shoulder/chest/waist and broadens a heavy one (the fat gathers at the waist).
   const g = (e: number) => Math.pow(G, e);
   const halfWidth = {
-    shoulderJoint: CANON_HALF_WIDTH.shoulderJoint * h * (sil.shoulder / RACE_SILHOUETTE.human.shoulder) * g(GIRTH_EXPONENT.neck) * B.shoulder,
-    chest: CANON_HALF_WIDTH.chest * h * geneRel("chest", "x", race) * g(GIRTH_EXPONENT.torso) * B.chest,
-    waist: CANON_HALF_WIDTH.waist * h * geneRel("abdomen", "x", race) * g(GIRTH_EXPONENT.waist) * B.waist * C.waist,
-    hip: CANON_HALF_WIDTH.hip * h * geneRel("pelvis", "x", race) * g(GIRTH_EXPONENT.torso) * B.hip * C.hip * hipSex,
+    shoulderJoint: CANON_HALF_WIDTH.shoulderJoint * h * (raceSil.shoulder / RACE_SILHOUETTE.human.shoulder) * g(GIRTH_EXPONENT.neck) * B.shoulder,
+    chest: CANON_HALF_WIDTH.chest * h * geneRel("chest", "x", race) * g(GIRTH_EXPONENT.torso) * B.chest * rel("width"),
+    waist: CANON_HALF_WIDTH.waist * h * geneRel("abdomen", "x", race) * g(GIRTH_EXPONENT.waist) * B.waist * C.waist * rel("width") * waistPinch,
+    hip: CANON_HALF_WIDTH.hip * h * geneRel("pelvis", "x", race) * g(GIRTH_EXPONENT.torso) * B.hip * C.hip * hipSex * rel("width") * rel("hip"),
     // The hip JOINT takes NO sex curve: a female's leg roots stay where the male's are, so her feet
     // plant exactly as his do (a moved hip joint would move the whole ground-contact layout). Lane S-B
     // applies the (dropped) STANCE here too — HIP_JOINT_STANCE is 1.0, a no-op, see its note above.
     hipJoint: CANON_HALF_WIDTH.hipJoint * h * geneRel("pelvis", "x", race) * g(GIRTH_EXPONENT.neck) * B.hip * HIP_JOINT_STANCE,
     neck: CANON_HALF_WIDTH.neck * h * geneRel("neck", "x", race) * g(GIRTH_EXPONENT.neck) * NECK_SLIM,
     // The skull's proportions relative to its own height (head.x / head.y, race over human).
-    skull: CANON_HALF_WIDTH.skull * h * geneRel("head", "x", race) / geneRel("head", "y", race),
+    skull: CANON_HALF_WIDTH.skull * h * geneRel("head", "x", race) / geneRel("head", "y", race) * rel("head"),
   };
   const halfDepth = {
-    chest: CANON_HALF_DEPTH.chest * h * geneRel("chest", "z", race) * g(GIRTH_EXPONENT.torso) * B.chest * C.chestDepth,
-    belly: CANON_HALF_DEPTH.belly * h * geneRel("abdomen", "z", race) * g(GIRTH_EXPONENT.belly) * B.fat,
-    pelvis: CANON_HALF_DEPTH.pelvis * h * geneRel("pelvis", "z", race) * g(GIRTH_EXPONENT.torso) * B.hip * C.hip * hipSex,
-    skull: CANON_HALF_DEPTH.skull * h * geneRel("head", "z", race) / geneRel("head", "y", race),
+    chest: CANON_HALF_DEPTH.chest * h * geneRel("chest", "z", race) * g(GIRTH_EXPONENT.torso) * B.chest * C.chestDepth * rel("depth"),
+    belly: CANON_HALF_DEPTH.belly * h * geneRel("abdomen", "z", race) * g(GIRTH_EXPONENT.belly) * B.fat * rel("depth"),
+    pelvis: CANON_HALF_DEPTH.pelvis * h * geneRel("pelvis", "z", race) * g(GIRTH_EXPONENT.torso) * B.hip * C.hip * hipSex * rel("depth") * rel("hip"),
+    skull: CANON_HALF_DEPTH.skull * h * geneRel("head", "z", race) / geneRel("head", "y", race) * rel("head"),
   };
   // 7. Limb radii: canon x race gene ratio x girth^exponent x the build's limb term x a local
   //    muscle term (pecs/biceps/quads read bigger on a heavier body, not just wider).
   const limb = (k: keyof typeof CANON_RADIUS, part: string, e: number, m = 1) => CANON_RADIUS[k] * h * geneRel(part, "x", race) * g(e) * m * B.limb;
   const radius = {
-    deltoid: limb("deltoid", "upperArm", GIRTH_EXPONENT.limb, muscle),
+    deltoid: limb("deltoid", "upperArm", GIRTH_EXPONENT.limb, muscle * rel("shoulder")),
     upperArm: limb("upperArm", "upperArm", GIRTH_EXPONENT.limb),
     upperArmDistal: limb("upperArmDistal", "upperArm", GIRTH_EXPONENT.limb),
     foreArm: limb("foreArm", "foreArm", GIRTH_EXPONENT.limb, muscle),

@@ -135,6 +135,10 @@ Deno.test("skinned humanoid follows Humanoid's joint convention and keeps the le
   const rig = buildSkinnedHumanoid(generateClassWeapon("Warrior"), APPEARANCE, "fire", SPEC);
   const sk = defaultHumanoid();
   const bind = rig.skin.geometry.getAttribute("position").array as Float32Array;
+  // Wave X: the default stance turns each foot OUT (FootTurnout, 9°). The joint-convention check
+  // is about the hinge angles, so it runs with the turn-out off; the turn-out itself is checked below.
+  const toeOut = Float64Array.from(sk.legRoll.toeOut);
+  sk.legRoll.toeOut.fill(0);
   pose(rig, sk, {});
   const rest = skinned(rig);
   // All angles 0: legs stay exactly in the bind pose (no display roll on the legs).
@@ -144,6 +148,19 @@ Deno.test("skinned humanoid follows Humanoid's joint convention and keeps the le
     legMax = Math.max(legMax, Math.hypot(rest[i * 3] - bind[i * 3], rest[i * 3 + 1] - bind[i * 3 + 1], rest[i * 3 + 2] - bind[i * 3 + 2]));
   }
   assert(legMax < 1e-4, `legs moved ${legMax} m at zero angles`);
+  // With the default turn-out the feet DO move (and only below the ankle-ish region: the knees stay).
+  sk.legRoll.toeOut.set(toeOut);
+  pose(rig, sk, {});
+  const turned = skinned(rig);
+  let footMax = 0, kneeMax = 0;
+  for (let i = 0; i < turned.length / 3; i++) {
+    const d = Math.hypot(turned[i * 3] - bind[i * 3], turned[i * 3 + 1] - bind[i * 3 + 1], turned[i * 3 + 2] - bind[i * 3 + 2]);
+    if (bind[i * 3 + 1] < rig.plan.proportions.y.knee * 0.25) footMax = Math.max(footMax, d);
+    else if (bind[i * 3 + 1] < rig.plan.proportions.y.knee && bind[i * 3 + 1] > rig.plan.proportions.y.knee * 0.8) kneeMax = Math.max(kneeMax, d);
+  }
+  assert(footMax > 0.01, `the default turn-out moves the toes (${footMax} m)`);
+  assert(kneeMax < 1e-4, `the turn-out leaves the knees bound (${kneeMax} m)`);
+  sk.legRoll.toeOut.fill(0);
   // Shoulder flexion −1.7 rad (the attack pose) swings the right hand FORWARD (+z), as in Humanoid.
   const handR = rig.plan.arms[1].palm;
   pose(rig, sk, { shoulderR: -1.7 });

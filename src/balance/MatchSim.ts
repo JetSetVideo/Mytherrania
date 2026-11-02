@@ -9,7 +9,8 @@
 //              (RingOut.checkRingOut's sumo rule); solid props are circles bodies are pushed out of.
 //   ground     zoned stone / wood / sand / ice by radius (Terrain.materialAt), slide decay
 //              exp(−(1.2 + 1/stop)·dt) (ArenaPhysics damping + the engine's surface stop).
-//   movement   AI_MOVE_SPEED 4.2 m/s × stance speed; bodies kept BODY_SPACING 0.9 m apart.
+//   movement   AI_MOVE_SPEED 4.2 m/s × stance speed × Agility.moveSpeedMul (wave X); bodies kept
+//              BODY_SPACING 0.9 m apart; skill lunges × Agility.dashMul; wind-up ÷ Agility.animSpeed.
 //   swings     Engine.#swingCooldown (attackInterval · profile.cooldown · stance) and the engage
 //              distance profile.reach + body radius (ranged capped at the legacy 2.8 m); a swing
 //              lands after a wind-up if the target is still in reach (else it whiffs).
@@ -50,6 +51,7 @@ import { edgePlayTarget, sensibleSkill, strafeToward } from "../game/AiBrain.ts"
 import { beginSkill, chooseAiSkill, createRuntime, effectiveStats, endSkill, movementMul, tickRuntime, type SkillRuntime } from "../game/SkillRuntime.ts";
 import type { Skill } from "../game/Skills.ts";
 import { stunDuration } from "../physics/SmashPhysics.ts";
+import { agilityOf, dashMul, moveSpeedMul } from "../game/Agility.ts";
 import { judgeTimeLimit, resolveTimeLimit } from "../game/MatchControl.ts";
 import { materialAt, surfaceFor } from "../game/Terrain.ts";
 import { truceSeconds } from "../game/Disposition.ts";
@@ -252,13 +254,15 @@ function run(cond: MatchConditions, opts: SimOptions): MatchOutcome {
       f.skillPick = -1;
       if (useSkill(f, pick)) return;
     }
-    const speed = AI_MOVE_SPEED * movementMul(f.rt) * surfaceFor(materialAt(f.x, f.z, half)).speed;
+    // Wave X: agility's top speed (Agility.moveSpeedMul) — the engine's #speedMul reads the same.
+    const speed = AI_MOVE_SPEED * movementMul(f.rt) * moveSpeedMul(f.b.stats) * surfaceFor(materialAt(f.x, f.z, half)).speed;
     const step = speed * dt;
     switch (f.action) {
       case "attack":
         if (ready && dist <= f.b.reach) {
           f.cooldown = effectiveStats(f.b.stats, f.rt).attackInterval * (f.b.swingCooldown / f.b.stats.attackInterval);
-          f.windup = Math.max(0.15, Math.min(0.5, WINDUP_SHARE * f.cooldown));
+          // Wave X: an agile body winds up faster (MotionStyle divides windupTime by animSpeed).
+          f.windup = Math.max(0.15, Math.min(0.5, WINDUP_SHARE * f.cooldown / agilityOf(f.b.stats).animSpeed));
           f.pendingSkill = null;
           f.swings++;
           trace?.({ t, kind: "swing", seat: f.seat, x: f.x, z: f.z });
@@ -396,7 +400,8 @@ function run(cond: MatchConditions, opts: SimOptions): MatchOutcome {
     f.skillClock += dt;
     // Lunge along the facing (negative = backward, e.g. Rolling Shot), spread over the animation,
     // never through the other body.
-    const lunge = (skill.animation.lunge / f.skillDur) * dt;
+    // Wave X: agility lengthens the lunge / dash / roll (Agility.dashMul, as the engine's #advanceSkill).
+    const lunge = (skill.animation.lunge * dashMul(f.b.stats) / f.skillDur) * dt;
     if (lunge > 0 && dist > BODY_SPACING + 0.05) walk(f, ux * Math.min(lunge, dist - BODY_SPACING), uz * Math.min(lunge, dist - BODY_SPACING), true);
     else if (lunge < 0) walk(f, ux * lunge, uz * lunge, true);
     if (!f.skillStruck && f.skillClock >= skill.animation.hitAt * f.skillDur) {

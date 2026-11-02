@@ -1,0 +1,748 @@
+{
+  "tag": "after",
+  "dist": "dist-body",
+  "canvasVisible": true,
+  "hook": true,
+  "shots": 24,
+  "pedestalRadii": [
+    0.6
+  ],
+  "cameraDistances": [
+    3.964
+  ],
+  "pedestalEqual": true,
+  "cameraEqual": true,
+  "shadowUnderFeet": "24/24 views darker beside the feet than at the rim (ratio < 0.8)",
+  "timing": {
+    "detailOffMs": 1.238,
+    "detailOnMs": 1.472,
+    "canvas": [
+      636,
+      778
+    ]
+  },
+  "pageErrors": 0,
+  "errors": [],
+  "rows": [
+    {
+      "race": "human",
+      "sex": "male",
+      "view": "front",
+      "framing": {
+        "heightM": 2.254,
+        "distanceM": 3.964,
+        "yaw": 0,
+        "pitch": 0.12,
+        "targetY": 1.155,
+        "pedestalRadiusM": 0.6,
+        "clipped": false
+      },
+      "pedestal": {
+        "radiusM": 0.6,
+        "heightM": 0.12,
+        "topY": 0
+      },
+      "shadow": {
+        "coverage": 0.0319,
+        "nearLum": 72,
+        "rimLum": 103.2,
+        "ratio": 0.697,
+        "nNear": 135,
+        "nRim": 30,
+        "castOnlyRatio": 0.847,
+        "noShadowRatio": 0.948
+      },
+      "shot": "artifacts/qa-wave-x/body/after-human-male-front.png"
+    },
+    {
+      "race": "human",
+      "sex": "male",
+      "view": "three-quarter",
+      "framing": {
+        "heightM": 2.254,
+        "distanceM": 3.964,
+        "yaw": 0.7,
+        "pitch": 0.12,
+        "targetY": 1.155,
+        "pedestalRadiusM": 0.6,
+        "clipped": false
+      },
+      "pedestal": {
+        "radiusM": 0.6,
+        "heightM": 0.12,
+        "topY": 0
+      },
+      "shadow": {
+        "coverage": 0.0319,
+        "nearLum": 74,
+        "rimLum": 102.3,
+        "ratio": 0.723,
+        "nNear": 125,
+        "nRim": 30,
+        "castOnlyRatio": 0.874,
+        "noShadowRatio": 0.982
+      },
+      "shot": "artifacts/qa-wave-x/body/after-human-male-three-quarter.png"
+    },
+    {
+      "race": "human",
+      "sex": "male",
+      "view": "side",
+      "framing": {
+        "heightM": 2.254,
+        "distanceM": 3.964,
+        "yaw": 1.571,
+        "pitch": 0.12,
+        "targetY": 1.155,
+        "pedestalRadiusM": 0.6,
+        "clipped": false
+      },
+      "pedestal": {
+        "radiusM": 0.6,
+        "heightM": 0.12,
+        "topY": 0
+      },
+      "shadow": {
+        "coverage": 0.0319,
+        "nearLum": 77.2,
+        "rimLum": 100.8,
+        "ratio": 0.765,
+        "nNear": 128,
+        "nRim": 31,
+        "castOnlyRatio": 0.902,
+        "noShadowRatio": 1.014
+      },
+      "shot": "artifacts/qa-wave-x/body/after-human-male-side.png"
+    },
+    {
+      "race": "human",
+      "sex": "female",
+      "view": "front",
+      "framing": {
+        "heightM": 2.253,
+        "distanceM": 3.964,
+        "yaw": 0,
+        "pitch": 0.12,
+        "targetY": 1.155,
+        "pedestalRadiusM": 0.6,
+        "clipped": false
+      },
+      "pedestal": {
+        "radiusM": 0.6,
+        "heightM": 0.12,
+        "topY": 0
+      },
+      "shadow": {
+        "coverage": 0.0329,
+        "nearLum": 71.7,
+        "rimLum": 103.3,
+        "ratio": 0.694,
+        "nNear": 136,
+        "nRim": 30,
+        "castOnlyRatio": 0.848,
+        "noShadowRatio": 0.968
+      },
+      "shot": "artifacts/qa-wave-x/body/after-human-female-front.png"
+    },
+    {
+      "race": "human",
+      "sex": "female",
+      "view": "three-quarter",
+      "framing": {
+        "heightM": 2.253,
+        "distanceM": 3.964,
+        "yaw": 0.7,
+        "pitch": 0.12,
+        "targetY": 1.155,
+        "pedestalRadiusM": 0.6,
+        "clipped": false
+      },
+      "pedestal": {
+        "radiusM": 0.6,
+        "heightM": 0.12,
+        "topY": 0
+      },
+      "shadow": {
+        "coverage": 0.0329,
+        "nearLum": 73.3,
+        "rimLum": 102.4,
+        "ratio": 0.716,
+        "nNear": 124,
+        "nRim": 30,
+        "castOnlyRatio": 0.869,
+        "noShadowRatio": 0.983
+      },
+      "shot": "artifacts/qa-wave-x/body/after-human-female-three-quarter.png"
+    },
+    {
+      "race": "human",
+      "sex": "female",
+      "view": "side",
+      "framing": {
+        "heightM": 2.253,
+        "distanceM": 3.964,
+        "yaw": 1.571,
+        "pitch": 0.12,
+        "targetY": 1.155,
+        "pedestalRadiusM": 0.6,
+        "clipped": false
+      },
+      "pedestal": {
+        "radiusM": 0.6,
+        "heightM": 0.12,
+        "topY": 0
+      },
+      "shadow": {
+        "coverage": 0.0329,
+        "nearLum": 74.9,
+        "rimLum": 100.9,
+        "ratio": 0.742,
+        "nNear": 121,
+        "nRim": 30,
+        "castOnlyRatio": 0.885,
+        "noShadowRatio": 0.995
+      },
+      "shot": "artifacts/qa-wave-x/body/after-human-female-side.png"
+    },
+    {
+      "race": "elf",
+      "sex": "male",
+      "view": "front",
+      "framing": {
+        "heightM": 2.239,
+        "distanceM": 3.964,
+        "yaw": 0,
+        "pitch": 0.12,
+        "targetY": 1.155,
+        "pedestalRadiusM": 0.6,
+        "clipped": false
+      },
+      "pedestal": {
+        "radiusM": 0.6,
+        "heightM": 0.12,
+        "topY": 0
+      },
+      "shadow": {
+        "coverage": 0.0285,
+        "nearLum": 74,
+        "rimLum": 102.7,
+        "ratio": 0.72,
+        "nNear": 132,
+        "nRim": 32,
+        "castOnlyRatio": 0.878,
+        "noShadowRatio": 0.966
+      },
+      "shot": "artifacts/qa-wave-x/body/after-elf-male-front.png"
+    },
+    {
+      "race": "elf",
+      "sex": "male",
+      "view": "three-quarter",
+      "framing": {
+        "heightM": 2.239,
+        "distanceM": 3.964,
+        "yaw": 0.7,
+        "pitch": 0.12,
+        "targetY": 1.155,
+        "pedestalRadiusM": 0.6,
+        "clipped": false
+      },
+      "pedestal": {
+        "radiusM": 0.6,
+        "heightM": 0.12,
+        "topY": 0
+      },
+      "shadow": {
+        "coverage": 0.0285,
+        "nearLum": 75.1,
+        "rimLum": 99.7,
+        "ratio": 0.753,
+        "nNear": 124,
+        "nRim": 29,
+        "castOnlyRatio": 0.914,
+        "noShadowRatio": 1.005
+      },
+      "shot": "artifacts/qa-wave-x/body/after-elf-male-three-quarter.png"
+    },
+    {
+      "race": "elf",
+      "sex": "male",
+      "view": "side",
+      "framing": {
+        "heightM": 2.239,
+        "distanceM": 3.964,
+        "yaw": 1.57,
+        "pitch": 0.12,
+        "targetY": 1.155,
+        "pedestalRadiusM": 0.6,
+        "clipped": false
+      },
+      "pedestal": {
+        "radiusM": 0.6,
+        "heightM": 0.12,
+        "topY": 0
+      },
+      "shadow": {
+        "coverage": 0.0285,
+        "nearLum": 81.1,
+        "rimLum": 102.6,
+        "ratio": 0.79,
+        "nNear": 135,
+        "nRim": 29,
+        "castOnlyRatio": 0.923,
+        "noShadowRatio": 1.03
+      },
+      "shot": "artifacts/qa-wave-x/body/after-elf-male-side.png"
+    },
+    {
+      "race": "elf",
+      "sex": "female",
+      "view": "front",
+      "framing": {
+        "heightM": 2.233,
+        "distanceM": 3.964,
+        "yaw": 0,
+        "pitch": 0.12,
+        "targetY": 1.155,
+        "pedestalRadiusM": 0.6,
+        "clipped": false
+      },
+      "pedestal": {
+        "radiusM": 0.6,
+        "heightM": 0.12,
+        "topY": 0
+      },
+      "shadow": {
+        "coverage": 0.0279,
+        "nearLum": 75,
+        "rimLum": 103.3,
+        "ratio": 0.726,
+        "nNear": 140,
+        "nRim": 30,
+        "castOnlyRatio": 0.871,
+        "noShadowRatio": 0.963
+      },
+      "shot": "artifacts/qa-wave-x/body/after-elf-female-front.png"
+    },
+    {
+      "race": "elf",
+      "sex": "female",
+      "view": "three-quarter",
+      "framing": {
+        "heightM": 2.233,
+        "distanceM": 3.964,
+        "yaw": 0.7,
+        "pitch": 0.12,
+        "targetY": 1.155,
+        "pedestalRadiusM": 0.6,
+        "clipped": false
+      },
+      "pedestal": {
+        "radiusM": 0.6,
+        "heightM": 0.12,
+        "topY": 0
+      },
+      "shadow": {
+        "coverage": 0.0279,
+        "nearLum": 77.1,
+        "rimLum": 98.7,
+        "ratio": 0.781,
+        "nNear": 122,
+        "nRim": 29,
+        "castOnlyRatio": 0.943,
+        "noShadowRatio": 1.03
+      },
+      "shot": "artifacts/qa-wave-x/body/after-elf-female-three-quarter.png"
+    },
+    {
+      "race": "elf",
+      "sex": "female",
+      "view": "side",
+      "framing": {
+        "heightM": 2.233,
+        "distanceM": 3.964,
+        "yaw": 1.571,
+        "pitch": 0.12,
+        "targetY": 1.155,
+        "pedestalRadiusM": 0.6,
+        "clipped": false
+      },
+      "pedestal": {
+        "radiusM": 0.6,
+        "heightM": 0.12,
+        "topY": 0
+      },
+      "shadow": {
+        "coverage": 0.0279,
+        "nearLum": 78.7,
+        "rimLum": 102.7,
+        "ratio": 0.767,
+        "nNear": 134,
+        "nRim": 30,
+        "castOnlyRatio": 0.904,
+        "noShadowRatio": 0.993
+      },
+      "shot": "artifacts/qa-wave-x/body/after-elf-female-side.png"
+    },
+    {
+      "race": "dwarf",
+      "sex": "male",
+      "view": "front",
+      "framing": {
+        "heightM": 2.34,
+        "distanceM": 3.964,
+        "yaw": 0,
+        "pitch": 0.12,
+        "targetY": 1.155,
+        "pedestalRadiusM": 0.6,
+        "clipped": false
+      },
+      "pedestal": {
+        "radiusM": 0.6,
+        "heightM": 0.12,
+        "topY": 0
+      },
+      "shadow": {
+        "coverage": 0.0478,
+        "nearLum": 68.9,
+        "rimLum": 100.5,
+        "ratio": 0.685,
+        "nNear": 125,
+        "nRim": 28,
+        "castOnlyRatio": 0.849,
+        "noShadowRatio": 0.967
+      },
+      "shot": "artifacts/qa-wave-x/body/after-dwarf-male-front.png"
+    },
+    {
+      "race": "dwarf",
+      "sex": "male",
+      "view": "three-quarter",
+      "framing": {
+        "heightM": 2.34,
+        "distanceM": 3.964,
+        "yaw": 0.7,
+        "pitch": 0.12,
+        "targetY": 1.155,
+        "pedestalRadiusM": 0.6,
+        "clipped": false
+      },
+      "pedestal": {
+        "radiusM": 0.6,
+        "heightM": 0.12,
+        "topY": 0
+      },
+      "shadow": {
+        "coverage": 0.0478,
+        "nearLum": 68.8,
+        "rimLum": 96.3,
+        "ratio": 0.714,
+        "nNear": 120,
+        "nRim": 29,
+        "castOnlyRatio": 0.876,
+        "noShadowRatio": 1.001
+      },
+      "shot": "artifacts/qa-wave-x/body/after-dwarf-male-three-quarter.png"
+    },
+    {
+      "race": "dwarf",
+      "sex": "male",
+      "view": "side",
+      "framing": {
+        "heightM": 2.34,
+        "distanceM": 3.964,
+        "yaw": 1.571,
+        "pitch": 0.12,
+        "targetY": 1.155,
+        "pedestalRadiusM": 0.6,
+        "clipped": false
+      },
+      "pedestal": {
+        "radiusM": 0.6,
+        "heightM": 0.12,
+        "topY": 0
+      },
+      "shadow": {
+        "coverage": 0.0478,
+        "nearLum": 72.1,
+        "rimLum": 100.4,
+        "ratio": 0.718,
+        "nNear": 112,
+        "nRim": 30,
+        "castOnlyRatio": 0.862,
+        "noShadowRatio": 0.98
+      },
+      "shot": "artifacts/qa-wave-x/body/after-dwarf-male-side.png"
+    },
+    {
+      "race": "dwarf",
+      "sex": "female",
+      "view": "front",
+      "framing": {
+        "heightM": 2.324,
+        "distanceM": 3.964,
+        "yaw": 0,
+        "pitch": 0.12,
+        "targetY": 1.155,
+        "pedestalRadiusM": 0.6,
+        "clipped": false
+      },
+      "pedestal": {
+        "radiusM": 0.6,
+        "heightM": 0.12,
+        "topY": 0
+      },
+      "shadow": {
+        "coverage": 0.0472,
+        "nearLum": 67.2,
+        "rimLum": 95.9,
+        "ratio": 0.701,
+        "nNear": 129,
+        "nRim": 30,
+        "castOnlyRatio": 0.871,
+        "noShadowRatio": 1.01
+      },
+      "shot": "artifacts/qa-wave-x/body/after-dwarf-female-front.png"
+    },
+    {
+      "race": "dwarf",
+      "sex": "female",
+      "view": "three-quarter",
+      "framing": {
+        "heightM": 2.324,
+        "distanceM": 3.964,
+        "yaw": 0.7,
+        "pitch": 0.12,
+        "targetY": 1.155,
+        "pedestalRadiusM": 0.6,
+        "clipped": false
+      },
+      "pedestal": {
+        "radiusM": 0.6,
+        "heightM": 0.12,
+        "topY": 0
+      },
+      "shadow": {
+        "coverage": 0.0472,
+        "nearLum": 67.9,
+        "rimLum": 97.8,
+        "ratio": 0.694,
+        "nNear": 119,
+        "nRim": 30,
+        "castOnlyRatio": 0.858,
+        "noShadowRatio": 1
+      },
+      "shot": "artifacts/qa-wave-x/body/after-dwarf-female-three-quarter.png"
+    },
+    {
+      "race": "dwarf",
+      "sex": "female",
+      "view": "side",
+      "framing": {
+        "heightM": 2.324,
+        "distanceM": 3.964,
+        "yaw": 1.571,
+        "pitch": 0.12,
+        "targetY": 1.155,
+        "pedestalRadiusM": 0.6,
+        "clipped": false
+      },
+      "pedestal": {
+        "radiusM": 0.6,
+        "heightM": 0.12,
+        "topY": 0
+      },
+      "shadow": {
+        "coverage": 0.0472,
+        "nearLum": 71.1,
+        "rimLum": 100.3,
+        "ratio": 0.708,
+        "nNear": 112,
+        "nRim": 30,
+        "castOnlyRatio": 0.852,
+        "noShadowRatio": 0.964
+      },
+      "shot": "artifacts/qa-wave-x/body/after-dwarf-female-side.png"
+    },
+    {
+      "race": "ork",
+      "sex": "male",
+      "view": "front",
+      "framing": {
+        "heightM": 2.361,
+        "distanceM": 3.964,
+        "yaw": 0,
+        "pitch": 0.12,
+        "targetY": 1.155,
+        "pedestalRadiusM": 0.6,
+        "clipped": false
+      },
+      "pedestal": {
+        "radiusM": 0.6,
+        "heightM": 0.12,
+        "topY": 0
+      },
+      "shadow": {
+        "coverage": 0.0557,
+        "nearLum": 67.1,
+        "rimLum": 97,
+        "ratio": 0.692,
+        "nNear": 143,
+        "nRim": 28,
+        "castOnlyRatio": 0.859,
+        "noShadowRatio": 0.985
+      },
+      "shot": "artifacts/qa-wave-x/body/after-ork-male-front.png"
+    },
+    {
+      "race": "ork",
+      "sex": "male",
+      "view": "three-quarter",
+      "framing": {
+        "heightM": 2.361,
+        "distanceM": 3.964,
+        "yaw": 0.7,
+        "pitch": 0.12,
+        "targetY": 1.155,
+        "pedestalRadiusM": 0.6,
+        "clipped": false
+      },
+      "pedestal": {
+        "radiusM": 0.6,
+        "heightM": 0.12,
+        "topY": 0
+      },
+      "shadow": {
+        "coverage": 0.0557,
+        "nearLum": 67.6,
+        "rimLum": 92.4,
+        "ratio": 0.732,
+        "nNear": 134,
+        "nRim": 28,
+        "castOnlyRatio": 0.91,
+        "noShadowRatio": 1.009
+      },
+      "shot": "artifacts/qa-wave-x/body/after-ork-male-three-quarter.png"
+    },
+    {
+      "race": "ork",
+      "sex": "male",
+      "view": "side",
+      "framing": {
+        "heightM": 2.361,
+        "distanceM": 3.964,
+        "yaw": 1.571,
+        "pitch": 0.12,
+        "targetY": 1.155,
+        "pedestalRadiusM": 0.6,
+        "clipped": false
+      },
+      "pedestal": {
+        "radiusM": 0.6,
+        "heightM": 0.12,
+        "topY": 0
+      },
+      "shadow": {
+        "coverage": 0.0557,
+        "nearLum": 73.1,
+        "rimLum": 94.5,
+        "ratio": 0.773,
+        "nNear": 103,
+        "nRim": 29,
+        "castOnlyRatio": 0.934,
+        "noShadowRatio": 0.939
+      },
+      "shot": "artifacts/qa-wave-x/body/after-ork-male-side.png"
+    },
+    {
+      "race": "ork",
+      "sex": "female",
+      "view": "front",
+      "framing": {
+        "heightM": 2.362,
+        "distanceM": 3.964,
+        "yaw": 0,
+        "pitch": 0.12,
+        "targetY": 1.155,
+        "pedestalRadiusM": 0.6,
+        "clipped": false
+      },
+      "pedestal": {
+        "radiusM": 0.6,
+        "heightM": 0.12,
+        "topY": 0
+      },
+      "shadow": {
+        "coverage": 0.0565,
+        "nearLum": 66.6,
+        "rimLum": 95.9,
+        "ratio": 0.694,
+        "nNear": 149,
+        "nRim": 28,
+        "castOnlyRatio": 0.863,
+        "noShadowRatio": 1.022
+      },
+      "shot": "artifacts/qa-wave-x/body/after-ork-female-front.png"
+    },
+    {
+      "race": "ork",
+      "sex": "female",
+      "view": "three-quarter",
+      "framing": {
+        "heightM": 2.362,
+        "distanceM": 3.964,
+        "yaw": 0.7,
+        "pitch": 0.12,
+        "targetY": 1.155,
+        "pedestalRadiusM": 0.6,
+        "clipped": false
+      },
+      "pedestal": {
+        "radiusM": 0.6,
+        "heightM": 0.12,
+        "topY": 0
+      },
+      "shadow": {
+        "coverage": 0.0565,
+        "nearLum": 67.1,
+        "rimLum": 93.5,
+        "ratio": 0.718,
+        "nNear": 136,
+        "nRim": 27,
+        "castOnlyRatio": 0.894,
+        "noShadowRatio": 0.999
+      },
+      "shot": "artifacts/qa-wave-x/body/after-ork-female-three-quarter.png"
+    },
+    {
+      "race": "ork",
+      "sex": "female",
+      "view": "side",
+      "framing": {
+        "heightM": 2.362,
+        "distanceM": 3.964,
+        "yaw": 1.57,
+        "pitch": 0.12,
+        "targetY": 1.155,
+        "pedestalRadiusM": 0.6,
+        "clipped": false
+      },
+      "pedestal": {
+        "radiusM": 0.6,
+        "heightM": 0.12,
+        "topY": 0
+      },
+      "shadow": {
+        "coverage": 0.0565,
+        "nearLum": 72.2,
+        "rimLum": 95.9,
+        "ratio": 0.753,
+        "nNear": 106,
+        "nRim": 28,
+        "castOnlyRatio": 0.906,
+        "noShadowRatio": 0.925
+      },
+      "shot": "artifacts/qa-wave-x/body/after-ork-female-side.png"
+    }
+  ]
+}

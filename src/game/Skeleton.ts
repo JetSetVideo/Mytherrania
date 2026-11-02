@@ -1,5 +1,6 @@
 export type PoseName = "idle" | "walk" | "attack" | "hit" | "ko" | "skill";
 
+import { TOE_OUT_RAD } from "./anim/FootTurnout.ts";
 import { poseAt } from "./AnimationCurve.ts";
 import type { SkillAnimation } from "./Skills.ts";
 import { BalancePlate } from "./Balance.ts";
@@ -58,8 +59,13 @@ export class Skeleton {
   pose: PoseName = "idle";
   /** Animator output (JOINT_ORDER) taken as-is each update; null = classic pose easing. */
   #driven: Float64Array | null = null;
-  /** Hip abduction / ankle counter-roll per leg [L, R], rad — written by drive(), read by the rig. */
-  readonly legRoll = { hip: new Float64Array(2), ankle: new Float64Array(2) };
+  /**
+   * Hip abduction / ankle counter-roll per leg [L, R], rad — written by drive(), read by the rig.
+   * Wave X: `toeOut` = each foot's turn-out magnitude (rad, + = toes outward, applied about the
+   * vertical through the ankle, toward the foot's own side: FootTurnout.ts). It rests at TOE_OUT_RAD, so an undriven
+   * skeleton (a preview, a pinned pose) stands with the feet turned out too.
+   */
+  readonly legRoll = { hip: new Float64Array(2), ankle: new Float64Array(2), toeOut: Float64Array.of(TOE_OUT_RAD, TOE_OUT_RAD) };
   /**
    * Drive the joints from the procedural Animator (src/game/anim). The Animator already
    * smoothed and clamped everything, so the Skeleton's own 14/s easing must not run on
@@ -67,10 +73,11 @@ export class Skeleton {
    * clock (hit timing), kick spring, balance, grip, face and stance transitions keep
    * working. Pass null to return to pose easing.
    */
-  drive(angles: Float64Array | null, hipRoll?: ArrayLike<number>, ankleRoll?: ArrayLike<number>): void {
+  drive(angles: Float64Array | null, hipRoll?: ArrayLike<number>, ankleRoll?: ArrayLike<number>, toeOut?: ArrayLike<number>): void {
     this.#driven = angles;
     if (hipRoll) { this.legRoll.hip[0] = hipRoll[0]; this.legRoll.hip[1] = hipRoll[1]; }
     if (ankleRoll) { this.legRoll.ankle[0] = ankleRoll[0]; this.legRoll.ankle[1] = ankleRoll[1]; }
+    if (toeOut) { this.legRoll.toeOut[0] = toeOut[0]; this.legRoll.toeOut[1] = toeOut[1]; }
   }
   /** True while the Animator owns the joints. */
   isDriven(): boolean { return this.#driven !== null; }

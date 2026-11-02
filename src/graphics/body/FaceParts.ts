@@ -15,12 +15,16 @@
 // @deno-types="@types/three"
 import * as THREE from "three";
 import { createCelSurface } from "../shaders/CelShader.ts";
-import { raceBuild, seededPick } from "../../game/RaceAppearance.ts";
+import { raceBuild } from "../../game/RaceAppearance.ts";
+import { greyFraction, lifeFraction } from "../../game/Age.ts";
 import { ancestryOf } from "../../game/Ancestry.ts";
-import { beardModeFor, hairColourFor, hairFall, hairLengthM, isBald, lookSeed, tuskDims } from "./Proportions.ts";
+import { beardModeFor, hairColourFor, hairLengthM, isBald, lookSeed, tuskDims } from "./Proportions.ts";
 import type { Appearance } from "../../game/Characters.ts";
 import type { Vec3 } from "./contracts.ts";
-import { browWedge, type FaceAnchors, HAIR_CAP_POLAR, HAIR_CAP_SCALE, HAIR_CAP_TILT, lidBands } from "./AnatomyParts.ts";
+import { browWedge, type FaceAnchors, lidBands } from "./AnatomyParts.ts";
+import { headFrameOf } from "./HairFollicles.ts";
+import { buildHairMeshes } from "./HairMesh.ts";
+import { greyRgb } from "./HairShade.ts";
 import { shadeHex, tintHex } from "../paint/Blend.ts";
 
 /** The parts the face morph drives each frame (brow, eyelid, mouth), like Humanoid's refs. */
@@ -37,7 +41,8 @@ export interface FaceRig {
   unit: number;
   triangleCount: number;
   /**
-   * The lignes that MOVE: the hair fall, its lobes, the crest and the beard mass. Wave H's
+   * The lignes that MOVE: the hanging hair locks (one per root sector), the ponytail, the braids
+   * (wave X lane H; formerly the fall tubes, lobes and crest) and the beard mass. Wave H's
    * SecondaryMotion drives these (wind + the head's own velocity, damped spring), so they are
    * returned separately from the rigid face parts. The brows are NOT here on purpose: the facial
    * morph owns their transform every frame (DESIGN.md item 12), and two writers on one node is
@@ -45,11 +50,28 @@ export interface FaceRig {
    */
   secondary: THREE.Object3D[];
   /**
-   * The hair's SKULL-HUGGING parts only (lane R-B): the cap shell and the fall tubes that ride
-   * the cranium. Exposed so a test can measure their clearance to the head's own surface; the
-   * hanging lobes/crest/beard are NOT here (they sit below the skull and float free by design).
+   * The hair's SKULL-HUGGING parts only: since wave X (lane H) the underlayer, the scalp parts
+   * of the grown strand cards, the bun and the root ties. Exposed so a test can measure their
+   * clearance to the head's own surface; the hanging locks / tail / braids are in `secondary`.
    */
   hairParts: THREE.Object3D[];
+  /** Wave X lane H: what the grown hair is (QA evidence; absent when bald). */
+  hairStats?: {
+    style: string; tier: string; follicles: number; clumps: number; triangles: number;
+    minClearance: number; grey: number; recession: number; braids: number;
+  };
+}
+
+/**
+ * A hair colour greyed by grey fraction g (Age.greyFraction): the brows and the beard grey with
+ * the scalp hair (the scalp itself greys per strand in HairMesh). sRGB hex in, sRGB hex out.
+ */
+export function greyedHex(hex: string, race: string, g: number): string {
+  if (g <= 0) return hex;
+  const gr = greyRgb(race, g);
+  const c = new THREE.Color(hex);
+  c.lerp(new THREE.Color(gr[0], gr[1], gr[2]), Math.min(1, g * 0.9));
+  return `#${c.getHexString()}`;
 }
 
 /** Hex colour scaled by k (k < 1 darkens). */
@@ -283,7 +305,7 @@ export function buildFaceParts(head: THREE.Object3D, face: FaceAnchors, origin: 
     // stated in head heights. A 6-sided cone flattened along the face depth reads as a ridge that
     // runs to a point at its outer end. The mesh stays in refs.brow, so the morph keeps driving it.
     const w = browWedge(node, h, face.eye[i][1]);
-    const browColour = hairColourFor(node, seed);
+    const browColour = greyedHex(hairColourFor(node, seed), a.race ?? "human", greyFraction(a.race ?? "human", a.age));
     const sgn = b[0] < 0 ? -1 : 1;
     const len = w.tipX - w.innerX;
     const brow = add(new THREE.ConeGeometry(w.rootR, len, 6), flat(browColour),
@@ -309,69 +331,38 @@ export function buildFaceParts(head: THREE.Object3D, face: FaceAnchors, origin: 
       tusk.rotation.x = -0.35 - node.tusk.protrusion * 0.3; // tips up and out, sized by protrusion
     }
   }
-  // Hair: colours/curl/density/length from the ancestry. A bald draw is deterministic from the
-  // character seed, and a baldChance of 0 (the elf) is NEVER bald. The cap sits over the skull
-  // ellipsoid; the fall is FITTED to the skull's back surface (lane R-B) and hangs below it, with
-  // lobes when it coils.
+  // Hair (wave X lane H): GROWN, not a cap shell. Follicles are placed on the skull ellipsoid
+  // inside the hairline (HairFollicles), clumped into guide strands that hug the skull, fall under
+  // gravity, curl, and are cut / gathered / braided by the style (HairGrowth); the strands become
+  // cel-shaded cards with root->tip shade, per-clump tone and grey for elders (HairMesh +
+  // HairShade). The bald draw is unchanged: deterministic from the seed, never for baldChance 0.
   const bald = isBald(node, seed);
-  const hairColor = hairColourFor(node, seed);
-  const style = seededPick(node.hair.styles, (a.race ?? "human").length * 31 + (a.subrace ?? "").length);
-  const sc = at(face.skullCentre), sr = face.skullRadii;
+  const hairBase = hairColourFor(node, seed);
+  const race = a.race ?? "human";
+  const grey = greyFraction(race, a.age);
+  const hairColor = greyedHex(hairBase, race, grey);
   const hairLen = hairLengthM(node, h);
   if (!bald && node.hair.length !== "bald") {
-    // The shell's size, extent and tilt are shared with AnatomyParts so pointed ears clear it.
-    const capGeo = new THREE.SphereGeometry(1, 24, 12, 0, Math.PI * 2, 0, HAIR_CAP_POLAR);
-    const cap = createCelSurface(capGeo, hairColor);
-    cap.scale.set(sr[0] * HAIR_CAP_SCALE, sr[1] * HAIR_CAP_SCALE, sr[2] * HAIR_CAP_SCALE);
-    cap.position.set(...sc);
-    cap.rotation.x = HAIR_CAP_TILT;
-    head.add(cap);
-    refs.hairParts.push(cap);
-    triangleCount += tris(capGeo);
-  }
-  if (!bald && hairLen > 0.02) {
-    const fall = hairFall(node.hair.curl, node.hair.density, hairLen, h);
-    // The fall radii are CLAMPED: hairFall's own radii reach ~0.75 h (a mass that would engulf the
-    // head). A hair mass a fraction of the head's width sits behind the skull and reads as hair.
-    const topR = Math.min(fall.topRadius, HAIR_FIT.fallRadiusTopPerHead * h);
-    const botR = Math.min(fall.botRadius, HAIR_FIT.fallRadiusBotPerHead * h);
-    const segs = hairSegments(h, sc, sr, topR, botR, fall.drop);
-    for (const s of segs) {
-      const segGeo = new THREE.CylinderGeometry(s.r, s.r, Math.max(1e-4, s.y0 - s.y1), HAIR_FIT.fallRadialSegments);
-      const seg = createCelSurface(segGeo, hairColor);
-      // Vertical tube: its axis at x = 0, the segment's mid-height, and the fitted z.
-      seg.position.set(0, (s.y0 + s.y1) / 2, s.z);
-      head.add(seg);
-      refs.hairParts.push(seg);
-      refs.secondary.push(seg);
-      triangleCount += tris(segGeo);
-    }
-    // Lobes: a coiled fall reads as a lumpier mass, a straight one stays a smooth tube. Placed at
-    // the fall's tip (below the skull), so they are a hanging decoration, not a skull-hugging part.
-    const tip = segs[segs.length - 1];
-    const tipY = tip.y1, tipZ = tip.z;
-    for (let i = 0; i < Math.min(fall.lobes, 4); i++) {
-      const a2 = (i / fall.lobes) * Math.PI * 2;
-      const lobeGeo = new THREE.SphereGeometry(fall.botRadius * 0.5, 8, 6);
-      const lobe = createCelSurface(lobeGeo, hairColor);
-      lobe.position.set(Math.cos(a2) * botR * 0.55, tipY + botR * 0.3, tipZ + Math.sin(a2) * botR * 0.55);
-      head.add(lobe);
-      refs.secondary.push(lobe);
-      triangleCount += tris(lobeGeo);
-    }
-    if (style === "mohawk") {
-      const crestGeo = new THREE.BoxGeometry(0.1 * h, 0.25 * h, sr[2] * 2);
-      const crest = createCelSurface(crestGeo, hairColor);
-      crest.position.set(0, sc[1] + sr[1] * 0.95, sc[2]);
-      head.add(crest);
-      refs.secondary.push(crest);
-      triangleCount += tris(crestGeo);
-    }
+    const frame = headFrameOf(face, origin, h, node.ears.lengthMul);
+    const hair = buildHairMeshes(head, {
+      frame, spec: node.hair, lengthM: hairLen, seed, race, ancestryIds: [race, a.subrace ?? ""], sex: a.sex,
+      lifeFraction: lifeFraction(race, a.age), grey, baseHex: hairBase, skinHex: node.skin.base,
+    });
+    refs.hairParts.push(...hair.statics);
+    refs.secondary.push(...hair.hanging);
+    triangleCount += hair.triangles;
+    const st = hair.data.stats;
+    refs.hairStats = {
+      style: hair.data.plan.style, tier: hair.data.plan.tier, follicles: st.follicles, clumps: st.clumps, triangles: st.triangles,
+      minClearance: st.minClearance, grey: st.grey, recession: st.recession, braids: hair.data.growth.braids.length,
+    };
   }
   // Beard from the ancestry: mode none|chin|moustache-thin|moustache|full, gated by required/
   // allowed. A "full" mass hangs from the chin into the neck gap but the TOP stays below the
   // mouth line, so a coverage < 1 always shows as the mouth still readable.
-  const mode = beardModeFor(node, a.beard ?? build.beard);
+  // Wave X lane H: a woman's default is beardless (the race build's flag is the men's default);
+  // an explicit a.beard or an ancestry that REQUIRES one (dwarves) still grows it.
+  const mode = beardModeFor(node, a.beard ?? (a.sex === "female" ? false : build.beard));
   const beardColour = hairColor;
   const c = at(face.chin);
   if (mode === "moustache-thin" || mode === "moustache" || mode === "full") {

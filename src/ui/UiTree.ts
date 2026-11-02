@@ -238,7 +238,7 @@ export const UI_TREE: UiScreen[] = [
         hint: "Primary and derived combat stats.",
         colour: "sand",
         groups: [
-          { id: "primary", label: "Primary", hint: "The six attributes.", controls: [c("sheet-primary", "Primary", "Vitality, resilience, focus, reflex, strength, intelligence.", "always", "both", 2)] },
+          { id: "primary", label: "Primary", hint: "The seven attributes.", controls: [c("sheet-primary", "Primary", "Vitality, resilience, focus, reflex, strength, intelligence, agility.", "always", "both", 2)] },
           { id: "derived", label: "Derived", hint: "Health, power, interval, armour.", controls: [c("sheet-derived", "Derived", "Read-only: computed from the primaries.", "always", "both", 2)] },
         ],
       },

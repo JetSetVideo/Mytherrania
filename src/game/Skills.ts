@@ -9,6 +9,7 @@
 // and cooldown are DERIVED from the caster's own statistics and the weapon through the single law
 // in PowerCost.ts. A power carries no hard-coded amplitude: the test recomputes every number.
 
+import { agilityOf } from "./Agility.ts";
 import { CLASSES, createStats, type ClassName, type CombatStats } from "./Stats.ts";
 import { weaponForClass, type Weapon } from "./Weapon.ts";
 import type { JointName } from "./Skeleton.ts";
@@ -501,13 +502,13 @@ const POWER_SPECS: PowerSpec[] = [
     blurb: "Digs in: armour up, but every swing and every step is slower.", extra: { armorMul: 1.5, speedMul: 0.75, attackIntervalMul: 1.2 } },
   { id: "warrior-battle-standard", className: "Warrior", shape: "aura", element: "holy", name: "Battle Standard", scale: { attribute: "resilience", weapon: "reach" },
     blurb: "Plants the banner; the ground around it hardens the line.", extra: { armorMul: 1.6, speedMul: 0.9 } },
-  { id: "warrior-whirlwind", className: "Warrior", shape: "cone", element: "wind", name: "Whirlwind", scale: { attribute: "reflex", weapon: "balance" },
+  { id: "warrior-whirlwind", className: "Warrior", shape: "cone", element: "wind", name: "Whirlwind", scale: { attribute: "agility", weapon: "balance" },
     blurb: "Spins the blade through the whole arc, catching everyone around him." },
 
   // --------------------------------------------------------------------------- Rogue (no aura)
   { id: "rogue-backstab", className: "Rogue", shape: "instant", element: "poison", name: "Backstab", scale: { attribute: "reflex", weapon: "sharpness" },
     blurb: "A dagger driven between the ribs from behind the guard." },
-  { id: "rogue-sprint", className: "Rogue", shape: "self-buff", element: "wind", name: "Sprint", scale: { attribute: "reflex", weapon: "weight" },
+  { id: "rogue-sprint", className: "Rogue", shape: "self-buff", element: "wind", name: "Sprint", scale: { attribute: "agility", weapon: "weight" },
     blurb: "A burst of footspeed to cross the ring before the enemy turns.", extra: { speedMul: 1.6, attackIntervalMul: 0.9 } },
   { id: "rogue-throw-knife", className: "Rogue", shape: "projectile", element: "poison", name: "Throw Knife", scale: { attribute: "reflex", weapon: "balance" },
     blurb: "A balanced blade flicked across the gap to open the fight at range." },
@@ -517,15 +518,15 @@ const POWER_SPECS: PowerSpec[] = [
     blurb: "Sprays a fan of blades across everything in front of him." },
 
   // ------------------------------------------------------------------------ Assassin (no aura)
-  { id: "assassin-vanish", className: "Assassin", shape: "self-buff", element: "shadow", name: "Vanish", scale: { attribute: "reflex", weapon: "weight" },
+  { id: "assassin-vanish", className: "Assassin", shape: "self-buff", element: "shadow", name: "Vanish", scale: { attribute: "agility", weapon: "weight" },
     blurb: "Wraps in shadow and slips out of sight — the concealment is the engine's own.", extra: { armorMul: 1.3, speedMul: 1.1 } },
-  { id: "assassin-sprint", className: "Assassin", shape: "self-buff", element: "wind", name: "Shadow Sprint", scale: { attribute: "reflex", weapon: "weight" },
+  { id: "assassin-sprint", className: "Assassin", shape: "self-buff", element: "wind", name: "Shadow Sprint", scale: { attribute: "agility", weapon: "weight" },
     blurb: "A silent run along the dark: a longer stride and quicker hands.", extra: { speedMul: 1.7, attackIntervalMul: 0.85 } },
   { id: "assassin-mark-and-execute", className: "Assassin", shape: "instant", element: "shadow", name: "Mark and Execute", scale: { attribute: "strength", weapon: "sharpness" },
     blurb: "A committed thrust into the marked throat; the kill feeds him.", extra: { lifesteal: 0.15 } },
   { id: "assassin-shadow-bolt", className: "Assassin", shape: "projectile", element: "shadow", name: "Shadow Bolt", scale: { attribute: "intelligence", weapon: "balance" },
     blurb: "A dart of pure shadow cast across the ring." },
-  { id: "assassin-killing-spree", className: "Assassin", shape: "cone", element: "fury", name: "Killing Spree", scale: { attribute: "reflex", weapon: "reach" },
+  { id: "assassin-killing-spree", className: "Assassin", shape: "cone", element: "fury", name: "Killing Spree", scale: { attribute: "agility", weapon: "reach" },
     blurb: "A blur of blades that cuts through a wedge of the front line." },
 
   // ---------------------------------------------------------------------------- Mage (no instant)
@@ -577,13 +578,30 @@ const POWER_SPECS: PowerSpec[] = [
     blurb: "Hallows the ground; the holy fire sears whoever stands in it.", extra: { armorMul: 1.4 } },
 ];
 
+/** Release-and-return tail of a power's animation at neutral agility, s. */
+export const POWER_TAIL_S = 0.3;
+
+/** A power's release-and-return tail for a caster, s: POWER_TAIL_S / Agility recovery. */
+export function powerTailSeconds(stats: CombatStats): number {
+  return POWER_TAIL_S / agilityOf(stats).recovery;
+}
+
+/**
+ * Wave X: the mobility / evasion powers scale on AGILITY (body speed), not reflex (reaction):
+ * Whirlwind, Sprint, Vanish, Shadow Sprint, Killing Spree. Their class's agility equals the reflex
+ * they used to read (Warrior 4/4, Rogue 8/8, Assassin 9/9), so class balance is untouched; a race or
+ * a spend that moves agility and reflex apart now moves these powers with agility.
+ */
+export const AGILITY_POWERS: readonly string[] = ["warrior-whirlwind", "rogue-sprint", "assassin-vanish", "assassin-sprint", "assassin-killing-spree"];
+
 /** Build a power: every number derived from the class's stats and weapon, the animation from shape. */
 function buildPower(s: PowerSpec): Power {
   const { stats, weapon } = loadoutFor(s.className);
   const d = derivePower({ shape: s.shape, element: s.element, scale: s.scale, stats, weapon });
-  // The wind-up IS the channel: the animation runs the cast time plus a fixed release-and-return
-  // tail (0.3 s), so the strike lands at castSeconds / duration — always inside (0, 1).
-  const duration = d.castSeconds + 0.3;
+  // The wind-up IS the channel: the animation runs the cast time plus a release-and-return tail
+  // (POWER_TAIL_S, wave X: divided by the caster's Agility recovery — a nimble body is back in
+  // guard sooner), so the strike lands at castSeconds / duration — always inside (0, 1).
+  const duration = d.castSeconds + powerTailSeconds(stats);
   const hitAt = d.castSeconds / duration;
   const payload: SkillPayload = {
     damageMul: d.amplitude,

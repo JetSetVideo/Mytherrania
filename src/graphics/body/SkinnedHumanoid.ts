@@ -18,7 +18,7 @@ import type { Skeleton as GameSkeleton, JointName } from "../../game/Skeleton.ts
 import type { GeneratedWeapon } from "../../game/WeaponGen.ts";
 import type { Element } from "../../game/Skills.ts";
 import type { Appearance } from "../../game/Characters.ts";
-import type { BodySpec, BoneId, MeshData, MeshStats, SkinData, Vec3 } from "./contracts.ts";
+import { type BodySpec, type BoneId, type MeshData, type MeshStats, REGIONS, type SkinData, type Vec3 } from "./contracts.ts";
 import { generateBody, type BodyMesh, type BodyTiming } from "./BodyMesh.ts";
 import { computeSkinWeights, MAX_INFLUENCES, shoulderBands } from "./SkinWeights.ts";
 import { boneBindRoll, boneDisplayRoll, type DetailedAnatomy } from "./Anatomy.ts";
@@ -33,6 +33,7 @@ import { buildWeaponModel } from "../weapons/WeaponModel.ts";
 import { attachHands, type HandRigApi } from "./HandRig.ts";
 import { createJointHelpers, creaseBands, creaseWeights, type JointHelper, syncJointHelpers } from "./JointHelpers.ts";
 import { gripModeRotation, preferredGrip } from "../../game/weapons/Generate.ts";
+import { toeOutYaw } from "../../game/anim/FootTurnout.ts";
 
 /** What the skinned rig adds to HumanoidRig. */
 export interface SkinnedExtras {
@@ -198,7 +199,19 @@ export function buildSkinnedHumanoid(
     : null;
   if (paint) geometry.setAttribute("color", new THREE.Float32BufferAttribute(paint, 3));
   geometry.computeBoundingSphere();
-  const cel = createCelSkinnedMesh(geometry, skeleton, appearance.body, { vertexColors: !!paint });
+  // Wave X lane B: the sub-grid surface detail (CelSkinned BODY_DETAIL_GLSL): per vertex, garment vs skin
+  // and the trunk (where the abs may show); the abs band comes from the physique sculpt's record.
+  const garmentOn = !!paint && !!(options.garment ?? appearance.body);
+  const surf = new Float32Array((mesh.positions.length / 3) * 2);
+  for (let v = 0; v < mesh.region.length; v++) {
+    const r = REGIONS[mesh.region[v]];
+    surf[v * 2] = garmentOn && (GARMENT_REGIONS as readonly string[]).includes(r) ? 1 : 0;
+    surf[v * 2 + 1] = r === "torso" || r === "pelvis" ? 1 : 0;
+  }
+  geometry.setAttribute("aSurface", new THREE.Float32BufferAttribute(surf, 2));
+  const cel = createCelSkinnedMesh(geometry, skeleton, appearance.body, { vertexColors: !!paint, detail: true });
+  const abs = plan.physique?.abs;
+  if (abs) (cel.surface.material as THREE.ShaderMaterial).uniforms.uAbs.value.set(abs.yTop, abs.yBottom, abs.halfWidth, abs.frontZ);
   group.add(cel.group);
   let triangleCount = mesh.indices.length / 3;
 
@@ -292,6 +305,10 @@ export function buildSkinnedHumanoid(
     return -minY;
   };
   let soleOffset = measureSoles();
+  const toeBones = ([[0, "ankleL", "hipL"], [1, "ankleR", "hipR"]] as const).map(([side, a, h]) => ({
+    side, bone: bones.get(a)!, lateral: bones.get(h)!.position.x,
+  }));
+  const qToeG = new THREE.Quaternion(), qToeP = new THREE.Quaternion(), qToeY = new THREE.Quaternion();
 
   return {
     group,
@@ -345,6 +362,20 @@ export function buildSkinnedHumanoid(
         } else {
           jb.bone.quaternion.multiply(qJoint);
         }
+      }
+      // Wave X: each foot turns OUT about the rig's vertical through its ankle (lane L's
+      // FootTurnout; the game-side IK already plants the turned ball). local' = P⁻¹·Ry·P·local with
+      // P the knee's rotation in RIG space, so the yaw is about the rig's up axis, not the shin.
+      for (const t of toeBones) {
+        const yaw = toeOutYaw(t.lateral, sk.legRoll.toeOut?.[t.side] ?? 0);
+        if (yaw === 0) continue;
+        t.bone.parent!.updateWorldMatrix(true, false);
+        group.getWorldQuaternion(qToeG).invert();
+        t.bone.parent!.getWorldQuaternion(qToeP);
+        qToeG.multiply(qToeP); // P (rig space)
+        qToeY.setFromAxisAngle(Y_AXIS, yaw);
+        qToeP.copy(qToeG).invert().multiply(qToeY).multiply(qToeG);
+        t.bone.quaternion.premultiply(qToeP);
       }
       applyFaceMorph(face, sk.face.face());
       soleOffset = measureSoles();

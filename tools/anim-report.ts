@@ -328,7 +328,7 @@ export function measureIdle(body: Body, live: string, mode: "guard-still" | "gua
     onFrame: (t, out, pl) => {
       if (t < 1) return;
       for (let i = 0 as 0 | 1; i < 2; i = (i + 1) as 0 | 1) {
-        footWorld(body.geom, out.angles, i, pl, fw, out.hipRoll[i], out.ankleRoll[i]);
+        footWorld(body.geom, out.angles, i, pl, fw, out.hipRoll[i], out.ankleRoll[i], out.toeOut[i]);
         const hh = Math.abs(fw.heelY), bb = Math.abs(fw.ballY), pd = fw.pitch * DEG;
         heelMax = Math.max(heelMax, hh); ballMax = Math.max(ballMax, bb); pitchMax = Math.max(pitchMax, Math.abs(pd));
         pitchSum += pd; heelSum += hh; n++;

@@ -27,6 +27,7 @@ import { BONE_IDS, compileSdf, nodeBounds, type BodyField } from "./Sdf.ts";
 import { applyFieldBrushes, brushReach } from "./Brushes.ts";
 import { CELL_MAX, CELL_MIN, proportionsFor, TRIANGLE_TARGET, type BodyProportions } from "./Proportions.ts";
 import { countSignChanges } from "./Polygonize.ts";
+import { type PhysiqueOptions, type PhysiqueRecord, sculptSkin } from "./Physique.ts";
 import {
   armNode, referenceForms, type ArmAnchors, blendWidth, type FaceAnchors, headNode, legNode, type LegAnchors, neckNode, op, prim, torsoNode,
 } from "./AnatomyParts.ts";
@@ -76,6 +77,13 @@ export interface DetailedAnatomy extends AnatomyPlan {
    * asymmetry is a LOOK, never a physical property. Equal to `root` when the asymmetry is off.
    */
   skinRoot: SdfNode;
+  /**
+   * Wave X lane B: the rendered skin's physique sculpt (Physique.ts) — deltoid caps, abs, slimming,
+   * the rare fat belly, the male bulge. null when the sculpt was off (QA / the reference forms).
+   */
+  physique: PhysiqueRecord | null;
+  /** Wave X lane B: the rendered skin's polygonising box (= bounds, grown by whole cells where the sculpt stands proud). */
+  skinBounds: Bounds;
 }
 
 /** What the final symmetry step found and did. */
@@ -99,6 +107,11 @@ export interface AnatomyOptions {
   asymmetry?: boolean;
   /** Run the final symmetry step at all (default true; false = the raw tree, for measurement). */
   symmetryPass?: boolean;
+  /**
+   * Wave X lane B: sculpt the RENDERED skin (Physique.sculptSkin; default true). false = the pre-wave
+   * skin (before/after measurement); an object turns single parts off or forces the fat belly.
+   */
+  physique?: boolean | PhysiqueOptions;
 }
 
 const SIDES: [1, -1] = [1, -1];
@@ -214,21 +227,22 @@ export function anatomyFor(spec: BodySpec, opts: AnatomyOptions = {}): DetailedA
   const P = proportionsFor(spec);
   const asym = opts.asymmetry === false ? null : bilateralAsymmetry(spec.seed);
   const pass = opts.symmetryPass !== false;
-  const first = buildPlan(P, spec.seed, asym, pass);
+  const phys = opts.physique === false ? null : opts.physique === true || opts.physique === undefined ? {} : opts.physique;
+  const first = buildPlan(P, spec.seed, asym, pass, phys);
   // Refine the cell from the measured sign-change count at COARSE_FACTOR × the first estimate.
   const coarse = COARSE_FACTOR * P.cell;
   // Wave V lane B: count on the REFERENCE (pre-wave) forms so surface detail never moves the cell
   // (and with it every cell-scaled gap, the solved abductions and the grid phase of the pins).
-  const ref = referenceForms(() => buildPlan(P, spec.seed, asym, pass));
+  const ref = referenceForms(() => buildPlan(P, spec.seed, asym, pass, null));
   const edges = countSignChanges(applyFieldBrushes(compileSdf(ref.root), ref.strokes), ref.bounds, coarse);
   const cell = Math.min(CELL_MAX, Math.max(CELL_MIN, coarse * Math.sqrt(2 * edges / TRIANGLE_TARGET)));
   if (Math.abs(cell - P.cell) <= CELL_TOLERANCE * P.cell) return first;
   // Every cell-dependent size (gaps, minimum feature thickness, bounds) is rebuilt.
-  return buildPlan({ ...P, cell }, spec.seed, asym, pass);
+  return buildPlan({ ...P, cell }, spec.seed, asym, pass, phys);
 }
 
 /** Assemble the plan for fixed proportions (the cell is part of the proportions). */
-function buildPlan(P: BodyProportions, seed: number, asym: BilateralAsymmetry | null, pass = true): DetailedAnatomy {
+function buildPlan(P: BodyProportions, seed: number, asym: BilateralAsymmetry | null, pass = true, phys: PhysiqueOptions | null = {}): DetailedAnatomy {
   const h = P.head, c = P.cell, R = P.radius;
   const jitter = seedJitter(seed);
 
@@ -258,12 +272,15 @@ function buildPlan(P: BodyProportions, seed: number, asym: BilateralAsymmetry | 
     : { node: rawBody, mirrored: rawBody, record: { pairs: 0, mirrorDeviationBefore: Number.NaN, asymmetry: null, scaled: 0 } };
   const body = sym.mirrored;
 
+  // Wave X lane B: the physique sculpt rewrites ONLY the rendered skin (Physique.ts has the why).
+  const sculpt = phys ? sculptSkin(sym.node, P, bones, phys) : null;
   // The ground: the half-space y ≥ 0 as a box whose bottom face is the plane y = 0.
   const raw = nodeBounds(body);
   const span = Math.max(raw.max[0] - raw.min[0], raw.max[2] - raw.min[2], P.y.crown) + 1;
   const ground = prim("groundHalfSpace", "roundBox", "root", "sole", [0, span, 0], { size: [span, span, span], r: 0.001 });
   const root: SdfNode = op("intersect", 0, body, ground);
-  const skinRoot: SdfNode = sym.node === sym.mirrored ? root : op("intersect", 0, sym.node, ground);
+  const skinRoot: SdfNode = sculpt ? op("intersect", 0, sculpt.node, ground)
+    : sym.node === sym.mirrored ? root : op("intersect", 0, sym.node, ground);
 
   const strokes = strokesFor(P, torso, head.face, arms.map((a) => a.anchors), legs.map((l) => l.anchors));
   const pad = BOUNDS_PAD_CELLS * c + brushReach(strokes);
@@ -275,11 +292,27 @@ function buildPlan(P: BodyProportions, seed: number, asym: BilateralAsymmetry | 
     min: [-(halfCells + 0.5) * c, -(BOUNDS_PAD_CELLS + 0.5) * c, raw.min[2] - pad],
     max: [(halfCells + 0.5) * c - 1e-9, Math.min(raw.max[1], P.y.crown + h) + pad, raw.max[2] + pad],
   };
+  // Wave X lane B: the sculpted skin may stand proud of the physics body (a fat belly, the bulge, a
+  // deltoid cap). The SKIN's polygonising box grows by WHOLE cells where it must (the grid phase and
+  // the physics' own box — Hitboxes voxelises plan.bounds — stay exactly as before).
+  const skinBounds: Bounds = { min: [...bounds.min], max: [...bounds.max] };
+  if (sculpt) {
+    const sb = nodeBounds(sculpt.node);
+    for (let k = 0; k < 3; k++) {
+      const lo = sb.min[k] - BOUNDS_PAD_CELLS * c, hi = sb.max[k] + BOUNDS_PAD_CELLS * c;
+      if (k !== 1 && lo < skinBounds.min[k]) skinBounds.min[k] -= Math.ceil((skinBounds.min[k] - lo) / c) * c;
+      if (hi > skinBounds.max[k]) skinBounds.max[k] += Math.ceil((hi - skinBounds.max[k]) / c) * c;
+    }
+    // x stays mirror-symmetric about 0 (an odd cell count): take the wider side for both.
+    const hx = Math.max(-skinBounds.min[0], skinBounds.max[0] + 1e-9);
+    skinBounds.min[0] = -hx; skinBounds.max[0] = hx - 1e-9;
+  }
+
   return {
     root, strokes, bones, bounds, cell: c,
     proportions: P, armAbduction, legAbduction, armDisplayAbduction, face: head.face,
     arms: [arms[0].anchors, arms[1].anchors], legs: [legs[0].anchors, legs[1].anchors],
-    symmetry: sym.record, skinRoot,
+    symmetry: sym.record, skinRoot, physique: sculpt?.record ?? null, skinBounds,
   };
 }
 

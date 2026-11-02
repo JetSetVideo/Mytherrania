@@ -25,11 +25,13 @@ import { CLASSES, createStats, type ClassName, type CombatStats } from "../src/g
 import { weaponForClass, type Weapon } from "../src/game/Weapon.ts";
 import {
   ATTRIBUTES,
+  castFocus,
   castSecondsOf,
   cooldownSecondsOf,
   derivePower,
   durationSecondsOf,
   manaCostOf,
+  manaIntelligence,
   POWER_SHAPES,
   powerOf,
   SKILL_RESOURCE_COST,
@@ -87,8 +89,8 @@ Deno.test("every power's numbers are DERIVED from the caster's statistics and th
     // Each field equals the matching granular law, and the composed derivePower.
     assert(near(p.amplitude, powerOf({ shape: p.shape, element: p.element, attributeValue: stats[p.scale.attribute], weapon: p.scale.weapon, weaponValue: weapon[p.scale.weapon] })),
       `${p.id}: amplitude is not powerOf(...)`);
-    assert(near(p.castSeconds, castSecondsOf({ shape: p.shape, element: p.element, focus: stats.focus, hastePct: 0 })), `${p.id}: cast not castSecondsOf(...)`);
-    assert(p.manaCost === manaCostOf({ shape: p.shape, element: p.element, intelligence: stats.intelligence }), `${p.id}: mana not manaCostOf(...)`);
+    assert(near(p.castSeconds, castSecondsOf({ shape: p.shape, element: p.element, focus: castFocus(stats), hastePct: 0 })), `${p.id}: cast not castSecondsOf(...)`);
+    assert(p.manaCost === manaCostOf({ shape: p.shape, element: p.element, intelligence: manaIntelligence(stats) }), `${p.id}: mana not manaCostOf(...)`);
     assert(near(p.cooldownSeconds, cooldownSecondsOf({ shape: p.shape, reflex: stats.reflex })), `${p.id}: cooldown not cooldownSecondsOf(...)`);
     assert(near(p.durationSeconds, durationSecondsOf({ shape: p.shape, focus: stats.focus })), `${p.id}: duration not durationSecondsOf(...)`);
     assert(derivationMatches(p, stats, weapon), `${p.id}: does not match derivePower`);

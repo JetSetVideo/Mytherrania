@@ -16,7 +16,9 @@ const VIEWPORTS: [string, number, number][] = (Deno.env.get("UI_VPS") ?? "small,
   laptop: ["laptop", 1280, 800], desktop: ["desktop", 1920, 1080], wide: ["wide", 2560, 1440],
 } as Record<string, [string, number, number]>)[n]).filter(Boolean);
 const ONLY = (Deno.env.get("UI_SCREENS") ?? "").split(",").filter(Boolean);
-const server = Deno.serve({ hostname: "127.0.0.1", port: 0, onListen() {} }, (r) => serveAsset(r));
+// Wave X: UI_DIST serves a lane's own build (BUILD_OUT=dist-ui) so parallel probes never share dist/.
+const DIST = Deno.env.get("UI_DIST") ?? "dist";
+const server = Deno.serve({ hostname: "127.0.0.1", port: 0, onListen() {} }, (r) => serveAsset(r, DIST));
 const PORT = (server.addr as Deno.NetAddr).port;
 const browser = await chromium.launch({
   executablePath: "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",

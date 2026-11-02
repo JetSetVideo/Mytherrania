@@ -1,0 +1,386 @@
+[
+  {
+    "race": "human",
+    "sex": "male",
+    "cellMm": 24.7,
+    "headMm": 226.7,
+    "waistBeforeMm": 895.4,
+    "waistAfterMm": 782.8,
+    "waistChangePct": -12.6,
+    "shoulderBeforeMm": 571,
+    "shoulderAfterMm": 571,
+    "shoulderToWaistBefore": 0.638,
+    "shoulderToWaistAfter": 0.729,
+    "deltoidApexOverClavicleBeforeMm": -6,
+    "deltoidApexOverClavicleAfterMm": 16,
+    "valleyDepthBeforeMm": 4,
+    "valleyDepthAfterMm": 26,
+    "meshApexOverClavicleAfterMm": 22.4,
+    "profileAfter": {
+      "clavicle": [
+        102.8,
+        1434
+      ],
+      "valley": [
+        150.8,
+        1408
+      ],
+      "apex": [
+        194.8,
+        1450
+      ]
+    },
+    "lineaDepthBeforeMm": -0.8,
+    "lineaDepthAfterMm": 0.7,
+    "crotchVsBellyBeforeMm": -22,
+    "crotchVsBellyAfterMm": 16,
+    "crotchVsThighBeforeMm": -11,
+    "crotchVsThighAfterMm": 26.2,
+    "bulgeAddedMm": 35.1,
+    "bellyFrontBeforeMm": 111.1,
+    "bellyFrontAfterMm": 96.8,
+    "bellyFrontFatMm": 164.1,
+    "belly": 0,
+    "componentsAfter": 1,
+    "boundaryAfter": 0,
+    "trianglesAfter": 8356,
+    "componentsFat": 1,
+    "boundaryFat": 0
+  },
+  {
+    "race": "human",
+    "sex": "female",
+    "cellMm": 24.7,
+    "headMm": 226.7,
+    "waistBeforeMm": 822.9,
+    "waistAfterMm": 730.8,
+    "waistChangePct": -11.2,
+    "shoulderBeforeMm": 569.4,
+    "shoulderAfterMm": 569.4,
+    "shoulderToWaistBefore": 0.692,
+    "shoulderToWaistAfter": 0.779,
+    "deltoidApexOverClavicleBeforeMm": -4,
+    "deltoidApexOverClavicleAfterMm": 16,
+    "valleyDepthBeforeMm": 4,
+    "valleyDepthAfterMm": 26,
+    "meshApexOverClavicleAfterMm": 23,
+    "profileAfter": {
+      "clavicle": [
+        102.8,
+        1434
+      ],
+      "valley": [
+        150.8,
+        1408
+      ],
+      "apex": [
+        194.8,
+        1450
+      ]
+    },
+    "lineaDepthBeforeMm": -1.6,
+    "lineaDepthAfterMm": 0,
+    "crotchVsBellyBeforeMm": -23.1,
+    "crotchVsBellyAfterMm": -20.9,
+    "crotchVsThighBeforeMm": -3.6,
+    "crotchVsThighAfterMm": -3.6,
+    "bulgeAddedMm": null,
+    "bellyFrontBeforeMm": 109.5,
+    "bellyFrontAfterMm": 102.7,
+    "bellyFrontFatMm": 165,
+    "belly": 0,
+    "componentsAfter": 1,
+    "boundaryAfter": 0,
+    "trianglesAfter": 8440,
+    "componentsFat": 1,
+    "boundaryFat": 0
+  },
+  {
+    "race": "elf",
+    "sex": "male",
+    "cellMm": 22,
+    "headMm": 231.3,
+    "waistBeforeMm": 714.9,
+    "waistAfterMm": 624.7,
+    "waistChangePct": -12.6,
+    "shoulderBeforeMm": 480.5,
+    "shoulderAfterMm": 480.5,
+    "shoulderToWaistBefore": 0.672,
+    "shoulderToWaistAfter": 0.769,
+    "deltoidApexOverClavicleBeforeMm": -8,
+    "deltoidApexOverClavicleAfterMm": 16,
+    "valleyDepthBeforeMm": 0,
+    "valleyDepthAfterMm": 30,
+    "meshApexOverClavicleAfterMm": 22.7,
+    "profileAfter": {
+      "clavicle": [
+        85.5,
+        1495.9
+      ],
+      "valley": [
+        117.5,
+        1465.9
+      ],
+      "apex": [
+        157.5,
+        1511.9
+      ]
+    },
+    "lineaDepthBeforeMm": 0,
+    "lineaDepthAfterMm": 4.7,
+    "crotchVsBellyBeforeMm": -12.6,
+    "crotchVsBellyAfterMm": 19.5,
+    "crotchVsThighBeforeMm": 0.8,
+    "crotchVsThighAfterMm": 30.1,
+    "bulgeAddedMm": 34.7,
+    "bellyFrontBeforeMm": 87.2,
+    "bellyFrontAfterMm": 82.5,
+    "bellyFrontFatMm": 150.9,
+    "belly": 0,
+    "componentsAfter": 1,
+    "boundaryAfter": 0,
+    "trianglesAfter": 8868,
+    "componentsFat": 1,
+    "boundaryFat": 0
+  },
+  {
+    "race": "elf",
+    "sex": "female",
+    "cellMm": 22.1,
+    "headMm": 231.3,
+    "waistBeforeMm": 650,
+    "waistAfterMm": 579.1,
+    "waistChangePct": -10.9,
+    "shoulderBeforeMm": 482.7,
+    "shoulderAfterMm": 482.7,
+    "shoulderToWaistBefore": 0.743,
+    "shoulderToWaistAfter": 0.834,
+    "deltoidApexOverClavicleBeforeMm": -8,
+    "deltoidApexOverClavicleAfterMm": 16,
+    "valleyDepthBeforeMm": 0,
+    "valleyDepthAfterMm": 30,
+    "meshApexOverClavicleAfterMm": 23.1,
+    "profileAfter": {
+      "clavicle": [
+        85.5,
+        1495.9
+      ],
+      "valley": [
+        117.5,
+        1465.9
+      ],
+      "apex": [
+        157.5,
+        1511.9
+      ]
+    },
+    "lineaDepthBeforeMm": 0.1,
+    "lineaDepthAfterMm": 4.9,
+    "crotchVsBellyBeforeMm": -14.5,
+    "crotchVsBellyAfterMm": -15.2,
+    "crotchVsThighBeforeMm": 5.8,
+    "crotchVsThighAfterMm": 5.6,
+    "bulgeAddedMm": null,
+    "bellyFrontBeforeMm": 92.9,
+    "bellyFrontAfterMm": 83.8,
+    "bellyFrontFatMm": 155.1,
+    "belly": 0,
+    "componentsAfter": 1,
+    "boundaryAfter": 0,
+    "trianglesAfter": 8924,
+    "componentsFat": 1,
+    "boundaryFat": 0
+  },
+  {
+    "race": "dwarf",
+    "sex": "male",
+    "cellMm": 27.3,
+    "headMm": 207.6,
+    "waistBeforeMm": 1430.7,
+    "waistAfterMm": 1235.3,
+    "waistChangePct": -13.7,
+    "shoulderBeforeMm": 869.7,
+    "shoulderAfterMm": 869.7,
+    "shoulderToWaistBefore": 0.608,
+    "shoulderToWaistAfter": 0.704,
+    "deltoidApexOverClavicleBeforeMm": 4,
+    "deltoidApexOverClavicleAfterMm": 12,
+    "valleyDepthBeforeMm": 0,
+    "valleyDepthAfterMm": 12,
+    "meshApexOverClavicleAfterMm": 15.7,
+    "profileAfter": {
+      "clavicle": [
+        196.6,
+        1171.2
+      ],
+      "valley": [
+        224.6,
+        1159.2
+      ],
+      "apex": [
+        260.6,
+        1183.2
+      ]
+    },
+    "lineaDepthBeforeMm": 0.1,
+    "lineaDepthAfterMm": 0.8,
+    "crotchVsBellyBeforeMm": -27.4,
+    "crotchVsBellyAfterMm": 5.6,
+    "crotchVsThighBeforeMm": -8.2,
+    "crotchVsThighAfterMm": 15.6,
+    "bulgeAddedMm": 32.2,
+    "bellyFrontBeforeMm": 178.9,
+    "bellyFrontAfterMm": 141.1,
+    "bellyFrontFatMm": 204,
+    "belly": 0,
+    "componentsAfter": 1,
+    "boundaryAfter": 0,
+    "trianglesAfter": 8608,
+    "componentsFat": 1,
+    "boundaryFat": 0
+  },
+  {
+    "race": "dwarf",
+    "sex": "female",
+    "cellMm": 27.4,
+    "headMm": 207.6,
+    "waistBeforeMm": 1330.8,
+    "waistAfterMm": 1170.5,
+    "waistChangePct": -12,
+    "shoulderBeforeMm": 846.5,
+    "shoulderAfterMm": 846.3,
+    "shoulderToWaistBefore": 0.636,
+    "shoulderToWaistAfter": 0.723,
+    "deltoidApexOverClavicleBeforeMm": 4,
+    "deltoidApexOverClavicleAfterMm": 12,
+    "valleyDepthBeforeMm": 0,
+    "valleyDepthAfterMm": 12,
+    "meshApexOverClavicleAfterMm": 14.5,
+    "profileAfter": {
+      "clavicle": [
+        200.6,
+        1171.2
+      ],
+      "valley": [
+        224.6,
+        1159.2
+      ],
+      "apex": [
+        260.6,
+        1183.2
+      ]
+    },
+    "lineaDepthBeforeMm": -0.2,
+    "lineaDepthAfterMm": -0.7,
+    "crotchVsBellyBeforeMm": -33,
+    "crotchVsBellyAfterMm": -28.6,
+    "crotchVsThighBeforeMm": -14.5,
+    "crotchVsThighAfterMm": -9.1,
+    "bulgeAddedMm": null,
+    "bellyFrontBeforeMm": 177.8,
+    "bellyFrontAfterMm": 150.3,
+    "bellyFrontFatMm": 215.5,
+    "belly": 0,
+    "componentsAfter": 1,
+    "boundaryAfter": 0,
+    "trianglesAfter": 8660,
+    "componentsFat": 1,
+    "boundaryFat": 0
+  },
+  {
+    "race": "ork",
+    "sex": "male",
+    "cellMm": 35,
+    "headMm": 280.8,
+    "waistBeforeMm": 1830,
+    "waistAfterMm": 1603.8,
+    "waistChangePct": -12.4,
+    "shoulderBeforeMm": 1192.8,
+    "shoulderAfterMm": 1192.8,
+    "shoulderToWaistBefore": 0.652,
+    "shoulderToWaistAfter": 0.744,
+    "deltoidApexOverClavicleBeforeMm": 6,
+    "deltoidApexOverClavicleAfterMm": 16,
+    "valleyDepthBeforeMm": 0,
+    "valleyDepthAfterMm": 18,
+    "meshApexOverClavicleAfterMm": 19.8,
+    "profileAfter": {
+      "clavicle": [
+        265.1,
+        1650.5
+      ],
+      "valley": [
+        297.1,
+        1632.5
+      ],
+      "apex": [
+        349.1,
+        1666.5
+      ]
+    },
+    "lineaDepthBeforeMm": -1.4,
+    "lineaDepthAfterMm": -1.3,
+    "crotchVsBellyBeforeMm": -25.1,
+    "crotchVsBellyAfterMm": 12.7,
+    "crotchVsThighBeforeMm": -15.6,
+    "crotchVsThighAfterMm": 16.8,
+    "bulgeAddedMm": 42.4,
+    "bellyFrontBeforeMm": 218.4,
+    "bellyFrontAfterMm": 175.1,
+    "bellyFrontFatMm": 260.7,
+    "belly": 0,
+    "componentsAfter": 1,
+    "boundaryAfter": 0,
+    "trianglesAfter": 9684,
+    "componentsFat": 1,
+    "boundaryFat": 0
+  },
+  {
+    "race": "ork",
+    "sex": "female",
+    "cellMm": 35,
+    "headMm": 280.8,
+    "waistBeforeMm": 1703.5,
+    "waistAfterMm": 1525.9,
+    "waistChangePct": -10.4,
+    "shoulderBeforeMm": 1151.9,
+    "shoulderAfterMm": 1151.7,
+    "shoulderToWaistBefore": 0.676,
+    "shoulderToWaistAfter": 0.755,
+    "deltoidApexOverClavicleBeforeMm": 6,
+    "deltoidApexOverClavicleAfterMm": 18,
+    "valleyDepthBeforeMm": 0,
+    "valleyDepthAfterMm": 16,
+    "meshApexOverClavicleAfterMm": 27.9,
+    "profileAfter": {
+      "clavicle": [
+        261.1,
+        1648.5
+      ],
+      "valley": [
+        297.1,
+        1632.5
+      ],
+      "apex": [
+        365.1,
+        1666.5
+      ]
+    },
+    "lineaDepthBeforeMm": -2.1,
+    "lineaDepthAfterMm": -1.5,
+    "crotchVsBellyBeforeMm": -23.8,
+    "crotchVsBellyAfterMm": -32.5,
+    "crotchVsThighBeforeMm": -6,
+    "crotchVsThighAfterMm": -24.5,
+    "bulgeAddedMm": null,
+    "bellyFrontBeforeMm": 220.8,
+    "bellyFrontAfterMm": 187.4,
+    "bellyFrontFatMm": 275.7,
+    "belly": 0,
+    "componentsAfter": 1,
+    "boundaryAfter": 0,
+    "trianglesAfter": 10016,
+    "componentsFat": 1,
+    "boundaryFat": 0
+  }
+]

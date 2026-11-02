@@ -20,6 +20,7 @@
 //   chain depth  kinetic chain order feet 0 -> pelvis 1 -> chest 2 -> shoulder 3 -> elbow 4 ->
 //                wrist/weapon 5; a joint at depth d LEADS the weapon by (5 - d) · chainLag s
 
+import { agilityOf } from "../Agility.ts";
 import { clamp, rng32, smoothstep } from "../../core/MathCore.ts";
 import type { CombatStats } from "../Stats.ts";
 import type { WeaponSpec } from "../../combat/contracts.ts";
@@ -187,6 +188,13 @@ export const STAT_GAIN = {
   focusJitter: 0.3, focusOvershoot: 0.08,
   /** Intelligence: economical — telegraphs less (smaller skill counter-move). */
   intelligenceAnticipation: 0.1,
+  /**
+   * Wave X — Agility (body speed, NOT reaction): the wind-up is divided by Agility.animSpeed, the
+   * recovery and settle by Agility.recovery, and overshoot shrinks by this share per unit of
+   * (animSpeed − 1) — a nimble body brakes the weapon sooner. Reflex keeps the strike snap and the
+   * chain; agility the tempo of the body around it.
+   */
+  agilityOvershoot: 0.5,
 } as const;
 
 /**
@@ -341,7 +349,7 @@ export interface MotionStyleInput {
   seed: number;
   body?: BodyMotionInput;
   weapon?: WeaponMotion;
-  stats?: Partial<Pick<CombatStats, "vitality" | "resilience" | "focus" | "reflex" | "strength" | "intelligence">>;
+  stats?: Partial<Pick<CombatStats, "vitality" | "resilience" | "focus" | "reflex" | "strength" | "intelligence" | "agility">>;
 }
 
 const statN = (v: number | undefined) => Math.tanh(((Number.isFinite(v) ? v! : STAT_CENTRE) - STAT_CENTRE) / STAT_SPREAD);
@@ -519,6 +527,12 @@ export function motionStyleFor(input: MotionStyleInput): MotionStyle {
   c.crouch -= SG.resilienceCrouch * Re;
   c.sway *= 1 - SG.resilienceSway * Re;
   c.anticipation *= 1 - SG.intelligenceAnticipation * In;
+  // Wave X: agility (Agility.agilityOf: sheet agility minus the body-mass drag).
+  const AG = agilityOf(st);
+  c.windupTime /= AG.animSpeed;
+  c.recoverTime /= AG.recovery;
+  c.settleTime /= AG.recovery;
+  c.overshoot *= 1 - SG.agilityOvershoot * (AG.animSpeed - 1);
   // Body.
   const body = input.body ?? {};
   const L = body.geometry ? legLength(body.geometry) : fin(body.legLength ?? Number.NaN, 0.85);

@@ -1,0 +1,131 @@
+Check tests/wave_x_hair_test.ts
+running 16 tests from ./tests/wave_x_hair_test.ts
+SPEC X70: every follicle sits ON the skull ellipsoid (radial error < 1 mm), every ancestry ...
+------- output -------
+follicles per ancestry (seed 17, young):
+  human/-          density=0.60 follicles= 576/576 area=548.2cm² spacing=6.8mm maxRadialErr=0.000nm
+  human/imperial   density=0.60 follicles= 576/576 area=548.2cm² spacing=6.8mm maxRadialErr=0.000nm
+  human/nomad      density=0.55 follicles= 528/528 area=548.2cm² spacing=7.1mm maxRadialErr=0.000nm
+  human/islander   density=0.65 follicles= 624/624 area=548.2cm² spacing=6.6mm maxRadialErr=0.000nm
+  elf/-            density=0.50 follicles= 317/317 area=347.8cm² spacing=7.3mm maxRadialErr=0.000nm
+  elf/high         density=0.50 follicles= 317/317 area=347.8cm² spacing=7.3mm maxRadialErr=0.000nm
+  elf/wood         density=0.55 follicles= 349/349 area=347.8cm² spacing=7.0mm maxRadialErr=0.000nm
+  elf/dark         density=0.50 follicles= 325/325 area=356.2cm² spacing=7.3mm maxRadialErr=0.000nm
+  dwarf/-          density=0.85 follicles= 919/919 area=774.0cm² spacing=6.4mm maxRadialErr=0.000nm
+  dwarf/mountain   density=0.85 follicles= 919/919 area=774.0cm² spacing=6.4mm maxRadialErr=0.000nm
+  dwarf/forge      density=0.85 follicles= 919/919 area=774.0cm² spacing=6.4mm maxRadialErr=0.000nm
+  dwarf/deep       density=0.80 follicles= 865/865 area=774.0cm² spacing=6.6mm maxRadialErr=0.000nm
+  ork/-            density=0.50 follicles= 559/559 area=744.1cm² spacing=8.1mm maxRadialErr=0.000nm
+  ork/greenhide    density=0.50 follicles= 559/559 area=744.1cm² spacing=8.1mm maxRadialErr=0.000nm
+  ork/ironhide     density=0.55 follicles= 615/615 area=744.1cm² spacing=7.7mm maxRadialErr=0.000nm
+  ork/bloodfang    density=0.45 follicles= 503/503 area=744.1cm² spacing=8.5mm maxRadialErr=0.000nm
+----- output end -----
+SPEC X70: every follicle sits ON the skull ellipsoid (radial error < 1 mm), every ancestry ... ok (10s)
+SPEC X71: no follicle on the face or in an ear zone; the forehead line stays above the brow ... ok (625ms)
+SPEC X72: the follicle count scales with the ancestry's hair density (and with the region's area) ...
+------- output -------
+human follicles at density 0.3/0.6/0.9: 288 / 576 / 864
+----- output end -----
+SPEC X72: the follicle count scales with the ancestry's hair density (and with the region's area) ... ok (49ms)
+SPEC X73: follicles and growth are deterministic per seed, and differ across seeds ... ok (165ms)
+SPEC X74: male elders recede (temples first, then the crown), women and elves never ...
+------- output -------
+hair region area: young 548.2 cm² -> male elder (recession 0.68) 499.9 cm²
+----- output end -----
+SPEC X74: male elders recede (temples first, then the crown), women and elves never ... ok (1ms)
+SPEC X75: clearance >= 0 everywhere — every strand point and every drawn vertex is outside the cranium ...
+------- output -------
+clearance: min over 178332 strand points 0.889 mm, over 73602 drawn vertices 0.222 mm (16 ancestries x 4 seeds)
+----- output end -----
+SPEC X75: clearance >= 0 everywhere — every strand point and every drawn vertex is outside the cranium ... ok (1s)
+SPEC X76: free strands are CUT to the style length (within one growth step) ...
+------- output -------
+strands stopped early by a guard (ear zone / face plane): 46 of 3580
+cut-length error by style/tier (head heights):
+  crop/short         strands=457 worst=0.0000h
+  flowing/long       strands=150 worst=0.0000h
+  wild/shoulder      strands=129 worst=0.0000h
+  bob/shoulder       strands=8 worst=0.0000h
+  wild/long          strands=31 worst=0.0000h
+  wild/short         strands=283 worst=0.0000h
+  mohawk/short       strands=489 worst=0.0000h
+----- output end -----
+SPEC X76: free strands are CUT to the style length (within one growth step) ... ok (2ms)
+SPEC X77: braids are true 3-strand interleaves — each bundle crosses the centre line, 120° apart, ending in a tie ...
+------- output -------
+braids checked: 35
+----- output end -----
+SPEC X77: braids are true 3-strand interleaves — each bundle crosses the centre line, 120° apart, ending in a tie ... ok (5ms)
+SPEC X78: the fringe never comes below the brow line and no hair sits on the face or in an ear zone ...
+------- output -------
+fringe strands: 742; lowest fringe point 0.030 h above the brow (line at +0.03 h)
+----- output end -----
+SPEC X78: the fringe never comes below the brow line and no hair sits on the face or in an ear zone ... ok (22ms)
+SPEC X79: ponytails and topknots gather their strands at a tie point ... ok (220ms)
+SPEC X80: the hair stays inside its triangle budget on every ancestry (the whole rig is pinned < 12 000) ...
+------- output -------
+hair per ancestry (seeds 3,11,29,101; budget 1100):
+  human/-          follicles=576,576,576,576 clumps=72,68,72,61 tris=1092,1080,1092,1100 styles=topknot/shoulder crop/short bob/shoulder
+  human/imperial   follicles=576,576,576,576 clumps=72,81,70,71 tris=1092,1096,1070,1100 styles=topknot/shoulder crop/short bob/shoulder
+  human/nomad      follicles=528,528,528,528 clumps=72,35,50,50 tris=1092,1088,1054,1054 styles=topknot/long flowing/long+1br bob/shoulder
+  human/islander   follicles=624,624,624,624 clumps=37,62,55,55 tris=1074,1098,1050,1038 styles=wild/shoulder crop/short bob/shoulder
+  elf/-            follicles=317,317,317,317 clumps=70,38,40,62 tris=1091,1079,1089,1099 styles=bob/shoulder flowing/long braided/long+3br braided/long+2br
+  elf/high         follicles=317,317,317,317 clumps=61,38,40,38 tris=1093,1079,1089,1087 styles=braided/long+2br flowing/long braided/long+3br
+  elf/wood         follicles=349,349,349,349 clumps=40,62,67,68 tris=1079,1097,1093,1091 styles=wild/long braided/long+2br bob/shoulder
+  elf/dark         follicles=325,325,325,325 clumps=69,38,40,61 tris=1077,1095,1083,1095 styles=bob/shoulder flowing/long braided/long+3br braided/long+2br
+  dwarf/-          follicles=919,919,919,919 clumps=66,76,52,68 tris=1090,1084,1094,1096 styles=wild/short crop/short braided/shoulder+3br braided/shoulder+2br
+  dwarf/mountain   follicles=919,919,919,919 clumps=76,68,79,68 tris=1090,1090,1100,1094 styles=crop/short braided/shoulder+2br
+  dwarf/forge      follicles=919,919,919,919 clumps=60,71,43,71 tris=1096,1096,1056,1098 styles=wild/short crop/short wild/shoulder+1br
+  dwarf/deep       follicles=865,865,865,865 clumps=75,69,49,69 tris=1096,1092,1066,1100 styles=wild/short braided/shoulder+2br wild/shoulder+1br
+  ork/-            follicles=559,559,559,559 clumps=46,73,0,0 tris=1086,1094,214,214 styles=wild/short mohawk/short shaved/buzz
+  ork/greenhide    follicles=559,559,559,559 clumps=49,75,39,74 tris=1098,1100,1074,1092 styles=wild/short mohawk/short wild/shoulder+1br
+  ork/ironhide     follicles=615,615,615,615 clumps=72,0,72,0 tris=1094,214,1096,214 styles=mohawk/short shaved/buzz
+  ork/bloodfang    follicles=503,503,503,503 clumps=45,61,37,62 tris=1088,1092,1090,1094 styles=wild/short mohawk/short wild/shoulder+1br
+----- output end -----
+SPEC X80: the hair stays inside its triangle budget on every ancestry (the whole rig is pinned < 12 000) ... ok (546µs)
+SPEC X81: grey — greyFraction(race, age) of the hair turns grey; elders grey, elves silver and less ...
+------- output -------
+greyFraction examples (years = share of grey strands):
+  human  24y=0.00  48y=0.17  64y=0.64  80y=0.92
+  elf    210y=0.00  420y=0.00  560y=0.16  700y=0.60
+  dwarf  90y=0.00  180y=0.17  240y=0.64  300y=0.92
+  ork    17y=0.00  33y=0.17  44y=0.64  55y=0.92
+human seed 11: mean vertex luminance young(25y) 0.009 -> elder(80y) 0.413; grey clumps 0 -> 42/68
+----- output end -----
+SPEC X81: grey — greyFraction(race, age) of the hair turns grey; elders grey, elves silver and less ... ok (45ms)
+SPEC X82: shading — root darker than tip, shades of the base colour per clump ...
+------- output -------
+rootTip: root x0.58 -> tip x1.12; clump tone range 0.82..1.16
+----- output end -----
+SPEC X82: shading — root darker than tip, shades of the base colour per clump ... ok (21ms)
+SPEC X83: FaceParts wiring — grown hair in hairParts + secondary, bald stays bald, every ancestry builds ...
+------- output -------
+FaceParts with grown hair:
+  human/-          bob/shoulder hairTris=1084 faceTris=2172 secondary=6
+  human/imperial   topknot/shoulder hairTris=1092 faceTris=2180 secondary=1
+  human/nomad      ponytail/long hairTris=1090 faceTris=2178 secondary=2
+  human/islander   crop/short hairTris=1094 faceTris=2182 secondary=6
+  elf/-            bob/shoulder hairTris=1091 faceTris=2127 secondary=5
+  elf/high         braided/long hairTris=1079 faceTris=2115 secondary=2
+  elf/wood         bob/shoulder hairTris=1061 faceTris=2097 secondary=5
+  elf/dark         braided/long hairTris=1073 faceTris=2109 secondary=2
+  dwarf/-          braided/shoulder hairTris=1096 faceTris=2184 secondary=4
+  dwarf/mountain   braided/shoulder hairTris=1086 faceTris=2174 secondary=3
+  dwarf/forge      crop/short hairTris=1096 faceTris=2184 secondary=6
+  dwarf/deep       wild/shoulder hairTris=1086 faceTris=2174 secondary=7
+  ork/-            mohawk/short hairTris=1096 faceTris=2156 secondary=5
+  ork/greenhide    wild/short hairTris=1072 faceTris=2132 secondary=5
+  ork/ironhide     mohawk/short hairTris=1098 faceTris=2158 secondary=5
+  ork/bloodfang    wild/short hairTris=1054 faceTris=2114 secondary=5
+----- output end -----
+SPEC X83: FaceParts wiring — grown hair in hairParts + secondary, bald stays bald, every ancestry builds ... ok (4s)
+SPEC X84: style plans — fringe-cut styles exist, braiding ancestries braid, tiers follow the ancestry length ... ok (3ms)
+SPEC X85: no stray spikes — at head level the hair stands off the skull by a stated band per style ...
+------- output -------
+largest stand-off at head level by style (h): topknot=0.150 crop=0.076 bob=0.103 flowing=0.106 wild=0.132 braided=0.102 mohawk=0.438 shaved=0.006
+----- output end -----
+SPEC X85: no stray spikes — at head level the hair stands off the skull by a stated band per style ... ok (6ms)
+
+ok | 16 passed | 0 failed (18s)
+
+exit=0

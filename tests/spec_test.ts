@@ -793,7 +793,7 @@ Deno.test("SPEC LL3: the dice rolls a legal fighter and the sheet shows the game
     assert(CLASSES.includes(p.className), `the rolled class exists (${p.className})`);
     assert(p.subrace === null || p.subrace !== "", "a roll may leave the sub-species open for the player");
     const sheet = creatorSheet(p);
-    assert(sheet.primary.length === 6 && sheet.derived.length >= 4, "the sheet carries the primaries and the derived numbers");
+    assert(sheet.primary.length === 7 && sheet.derived.length >= 4, "the sheet carries the primaries and the derived numbers");
     const row = sheet.derived.find((r) => r.label === "Max Health");
     assert(row !== undefined, "the sheet shows the health pool");
     const live = applySecondary(applyRaceBonus(createStats(p.className), p.race, p.subrace, p.birthsign), p.subrace, p.birthsign).maxHealth;

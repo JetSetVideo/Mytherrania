@@ -1,0 +1,1159 @@
+{
+ "dist": "dist-ui",
+ "mode": "full",
+ "viewports": {
+  "390": {
+   "heroCard": {
+    "sign": true,
+    "signAbovePortrait": true,
+    "text": "Human"
+   },
+   "centring": {
+    "sub-race chips": {
+     "n": 12,
+     "maxDx": 0,
+     "maxDy": 0,
+     "worst": ""
+    },
+    "sign chips": {
+     "n": 6,
+     "maxDx": 0,
+     "maxDy": 0,
+     "worst": ""
+    },
+    "hero tabs": {
+     "n": 2,
+     "maxDx": 0,
+     "maxDy": 1.2,
+     "worst": ""
+    },
+    "palette chips": {
+     "n": 0,
+     "maxDx": 0,
+     "maxDy": 0,
+     "worst": ""
+    },
+    "preset buttons": {
+     "n": 3,
+     "maxDx": 0,
+     "maxDy": 0,
+     "worst": "\"Vex\" dx -0.0 dy 0.0"
+    },
+    "reroll dice": {
+     "n": 10,
+     "maxDx": 0,
+     "maxDy": 0,
+     "worst": ""
+    },
+    "dice": {
+     "n": 2,
+     "maxDx": 0,
+     "maxDy": 0,
+     "worst": ""
+    },
+    "profile chips": {
+     "n": 0,
+     "maxDx": 0,
+     "maxDy": 0,
+     "worst": ""
+    },
+    "steel sign": {
+     "n": 1,
+     "maxDx": 0,
+     "maxDy": 0.1,
+     "worst": ""
+    },
+    "stepper value": {
+     "n": 24,
+     "maxDx": 0,
+     "maxDy": 1,
+     "worst": "\"Male\" dx -0.0 dy -1.0"
+    },
+    "title mode buttons": {
+     "n": 0,
+     "maxDx": 0,
+     "maxDy": 0,
+     "worst": ""
+    },
+    "skill chips": {
+     "n": 3,
+     "maxDx": 131.6,
+     "maxDy": 0,
+     "worst": "\"Dashfire\" dx -131.6 dy 0.0"
+    },
+    "race tiles (banner|text|chevron)": {
+     "n": 4,
+     "maxDx": 1,
+     "maxDy": 0,
+     "worst": "\"Human · ImperialAdapta\" dx 1.0 dy 0.0"
+    },
+    "class tiles (table rows)": {
+     "n": 8,
+     "maxDx": 0,
+     "maxDy": 0,
+     "worst": ""
+    },
+    "stat tiles (sheet columns)": {
+     "n": 3,
+     "maxDx": 4,
+     "maxDy": 1,
+     "worst": "\"AttributesVitality7Res\" dx -4.0 dy -1.0"
+    }
+   },
+   "tones": {
+    "toned": 49,
+    "pos": 26,
+    "neg": 5,
+    "neutral": 18,
+    "parchment": 7,
+    "unpainted": 0
+   },
+   "tonesAfterTweak": {
+    "toned": 52,
+    "pos": 29,
+    "neg": 7,
+    "neutral": 16,
+    "parchment": 7,
+    "unpainted": 0
+   },
+   "contrast": {
+    "sampled": 48,
+    "min": 5.88,
+    "median": 9.58,
+    "atLeast45": 48,
+    "atLeast3": 48,
+    "parchmentSampled": 7,
+    "parchmentMin": 5.88,
+    "worst": [
+     {
+      "kind": "stepper-text",
+      "text": "13",
+      "colour": "rgb(84, 79, 69)",
+      "back": "rgb(234, 218, 178)",
+      "ratio": 5.88,
+      "surface": "parchment"
+     },
+     {
+      "kind": "stepper-text",
+      "text": "15",
+      "colour": "rgb(84, 79, 69)",
+      "back": "rgb(234, 218, 178)",
+      "ratio": 5.88,
+      "surface": "parchment"
+     },
+     {
+      "kind": "stepper-text",
+      "text": "10",
+      "colour": "rgb(84, 79, 69)",
+      "back": "rgb(234, 218, 178)",
+      "ratio": 5.88,
+      "surface": "parchment"
+     }
+    ]
+   },
+   "sign": {
+    "present": true,
+    "above": true,
+    "topGapPx": 11,
+    "firstChild": true,
+    "widthPx": 318,
+    "rivets": 4
+   },
+   "attributes": {
+    "sheetAgility": true,
+    "sheetFocus": true,
+    "sheetPrimaries": [
+     "Vitality",
+     "Resilience",
+     "Focus",
+     "Reflex",
+     "Strength",
+     "Intelligence",
+     "Agility"
+    ],
+    "raceDetailAgility": true,
+    "raceDetailFocus": true,
+    "agilityStepperVisible": true,
+    "focusStepperVisible": true,
+    "willpower": false
+   },
+   "reroll": {
+    "nameBefore": "Sir Aldric",
+    "nameAfter": "Marius Antinus",
+    "nameChanged": true,
+    "raceKeptOnNameReroll": true,
+    "ancestry": [
+     {
+      "race": "elf",
+      "sub": "wood",
+      "name": "Syleranyr Mosswhisper",
+      "ok": true
+     },
+     {
+      "race": "ork",
+      "sub": "bloodfang",
+      "name": "Rasuzhak",
+      "ok": true
+     },
+     {
+      "race": "dwarf",
+      "sub": "mountain",
+      "name": "Glain Granitebrow",
+      "ok": true
+     },
+     {
+      "race": "elf",
+      "sub": "dark",
+      "name": "Vëlvezaeryn of House Zhaun'Vyrr",
+      "ok": true
+     }
+    ],
+    "phonologyFollows": true,
+    "ageBand": {
+     "ui": [
+      140,
+      770
+     ],
+     "ageBounds": [
+      140,
+      770
+     ]
+    },
+    "ageBandMatches": true
+   },
+   "tweak": {
+    "strength": [
+     "6",
+     "8"
+    ],
+    "maxHealth": [
+     "22 646",
+     "23 146"
+    ],
+    "attackPower": [
+     "318",
+     "368"
+    ],
+    "pointsLeft": [
+     "12",
+     "10"
+    ],
+    "sheetMoved": true,
+    "derivedMoved": true,
+    "poolShrank": true,
+    "previewRefreshes": [
+     6,
+     8
+    ]
+   },
+   "previewLatency": {
+    "pointerToRebuildMs": [
+     734.1,
+     706.6,
+     60.1,
+     58.4,
+     57.2
+    ],
+    "median": 60.1,
+    "max": 734.1,
+    "menuMeasuredMs": [
+     730,
+     702.1,
+     56.5,
+     54.9,
+     53.8
+    ]
+   },
+   "modelChangesOn": {
+    "height": true,
+    "weight": true,
+    "sex": true,
+    "age (+3 y)": false,
+    "silhouette width": true,
+    "strength": false
+   },
+   "waitMs": 13.9,
+   "age": {
+    "value": 251,
+    "band": [
+     140,
+     770
+    ],
+    "inside": true
+   },
+   "silhouetteSteppers": 7,
+   "fullRoll": {
+    "nameChanged": true,
+    "builds": [
+     23,
+     25
+    ]
+   }
+  },
+  "820": {
+   "heroCard": {
+    "sign": true,
+    "signAbovePortrait": true,
+    "text": "Human"
+   },
+   "centring": {
+    "sub-race chips": {
+     "n": 12,
+     "maxDx": 0,
+     "maxDy": 0,
+     "worst": ""
+    },
+    "sign chips": {
+     "n": 6,
+     "maxDx": 0,
+     "maxDy": 0,
+     "worst": ""
+    },
+    "hero tabs": {
+     "n": 2,
+     "maxDx": 0,
+     "maxDy": 1.2,
+     "worst": ""
+    },
+    "palette chips": {
+     "n": 0,
+     "maxDx": 0,
+     "maxDy": 0,
+     "worst": ""
+    },
+    "preset buttons": {
+     "n": 3,
+     "maxDx": 0,
+     "maxDy": 0,
+     "worst": "\"Sir Aldric\" dx -0.0 dy 0.0"
+    },
+    "reroll dice": {
+     "n": 10,
+     "maxDx": 0,
+     "maxDy": 0,
+     "worst": ""
+    },
+    "dice": {
+     "n": 2,
+     "maxDx": 0,
+     "maxDy": 0,
+     "worst": ""
+    },
+    "profile chips": {
+     "n": 0,
+     "maxDx": 0,
+     "maxDy": 0,
+     "worst": ""
+    },
+    "steel sign": {
+     "n": 1,
+     "maxDx": 0,
+     "maxDy": 0.1,
+     "worst": ""
+    },
+    "stepper value": {
+     "n": 24,
+     "maxDx": 0,
+     "maxDy": 1,
+     "worst": "\"Male\" dx -0.0 dy -1.0"
+    },
+    "title mode buttons": {
+     "n": 0,
+     "maxDx": 0,
+     "maxDy": 0,
+     "worst": ""
+    },
+    "skill chips": {
+     "n": 3,
+     "maxDx": 0,
+     "maxDy": 0,
+     "worst": ""
+    },
+    "race tiles (banner|text|chevron)": {
+     "n": 4,
+     "maxDx": 1,
+     "maxDy": 0,
+     "worst": "\"Human · ImperialAdapta\" dx 1.0 dy 0.0"
+    },
+    "class tiles (table rows)": {
+     "n": 8,
+     "maxDx": 0,
+     "maxDy": 0,
+     "worst": ""
+    },
+    "stat tiles (sheet columns)": {
+     "n": 3,
+     "maxDx": 4,
+     "maxDy": 25,
+     "worst": "\"AttributesVitality7Res\" dx -4.0 dy -1.0"
+    }
+   },
+   "tones": {
+    "toned": 49,
+    "pos": 26,
+    "neg": 5,
+    "neutral": 18,
+    "parchment": 7,
+    "unpainted": 0
+   },
+   "tonesAfterTweak": {
+    "toned": 52,
+    "pos": 29,
+    "neg": 7,
+    "neutral": 16,
+    "parchment": 7,
+    "unpainted": 0
+   },
+   "contrast": {
+    "sampled": 48,
+    "min": 5.68,
+    "median": 9.35,
+    "atLeast45": 48,
+    "atLeast3": 48,
+    "parchmentSampled": 7,
+    "parchmentMin": 5.88,
+    "worst": [
+     {
+      "kind": "sheet-row-value",
+      "text": "381",
+      "colour": "rgb(234, 115, 104)",
+      "back": "rgb(38, 28, 20)",
+      "ratio": 5.68,
+      "surface": "dark"
+     },
+     {
+      "kind": "stepper-text",
+      "text": "13",
+      "colour": "rgb(84, 79, 69)",
+      "back": "rgb(234, 218, 178)",
+      "ratio": 5.88,
+      "surface": "parchment"
+     },
+     {
+      "kind": "stepper-text",
+      "text": "15",
+      "colour": "rgb(84, 79, 69)",
+      "back": "rgb(234, 218, 178)",
+      "ratio": 5.88,
+      "surface": "parchment"
+     }
+    ]
+   },
+   "sign": {
+    "present": true,
+    "above": true,
+    "topGapPx": 11,
+    "firstChild": true,
+    "widthPx": 278,
+    "rivets": 4
+   },
+   "attributes": {
+    "sheetAgility": true,
+    "sheetFocus": true,
+    "sheetPrimaries": [
+     "Vitality",
+     "Resilience",
+     "Focus",
+     "Reflex",
+     "Strength",
+     "Intelligence",
+     "Agility"
+    ],
+    "raceDetailAgility": true,
+    "raceDetailFocus": true,
+    "agilityStepperVisible": true,
+    "focusStepperVisible": true,
+    "willpower": false
+   },
+   "reroll": {
+    "nameBefore": "Sir Aldric",
+    "nameAfter": "Marius Antinus",
+    "nameChanged": true,
+    "raceKeptOnNameReroll": true,
+    "ancestry": [
+     {
+      "race": "elf",
+      "sub": "wood",
+      "name": "Syleranyr Mosswhisper",
+      "ok": true
+     },
+     {
+      "race": "ork",
+      "sub": "bloodfang",
+      "name": "Rasuzhak",
+      "ok": true
+     },
+     {
+      "race": "dwarf",
+      "sub": "mountain",
+      "name": "Glain Granitebrow",
+      "ok": true
+     },
+     {
+      "race": "elf",
+      "sub": "dark",
+      "name": "Vëlvezaeryn of House Zhaun'Vyrr",
+      "ok": true
+     }
+    ],
+    "phonologyFollows": true,
+    "ageBand": {
+     "ui": [
+      140,
+      770
+     ],
+     "ageBounds": [
+      140,
+      770
+     ]
+    },
+    "ageBandMatches": true
+   },
+   "tweak": {
+    "strength": [
+     "6",
+     "8"
+    ],
+    "maxHealth": [
+     "22 646",
+     "23 146"
+    ],
+    "attackPower": [
+     "318",
+     "368"
+    ],
+    "pointsLeft": [
+     "12",
+     "10"
+    ],
+    "sheetMoved": true,
+    "derivedMoved": true,
+    "poolShrank": true,
+    "previewRefreshes": [
+     6,
+     8
+    ]
+   },
+   "previewLatency": {
+    "pointerToRebuildMs": [
+     743.7,
+     700.6,
+     56.6,
+     58.2,
+     56.9
+    ],
+    "median": 58.2,
+    "max": 743.7,
+    "menuMeasuredMs": [
+     739.6,
+     696.9,
+     53.1,
+     54.4,
+     53.5
+    ]
+   },
+   "modelChangesOn": {
+    "height": true,
+    "weight": true,
+    "sex": true,
+    "age (+3 y)": false,
+    "silhouette width": true,
+    "strength": false
+   },
+   "waitMs": 14.7,
+   "age": {
+    "value": 251,
+    "band": [
+     140,
+     770
+    ],
+    "inside": true
+   },
+   "silhouetteSteppers": 7,
+   "fullRoll": {
+    "nameChanged": true,
+    "builds": [
+     23,
+     25
+    ]
+   }
+  },
+  "1280": {
+   "heroCard": {
+    "sign": true,
+    "signAbovePortrait": true,
+    "text": "Human"
+   },
+   "centring": {
+    "sub-race chips": {
+     "n": 12,
+     "maxDx": 0,
+     "maxDy": 0,
+     "worst": ""
+    },
+    "sign chips": {
+     "n": 6,
+     "maxDx": 0,
+     "maxDy": 0,
+     "worst": ""
+    },
+    "hero tabs": {
+     "n": 2,
+     "maxDx": 0,
+     "maxDy": 1.2,
+     "worst": ""
+    },
+    "palette chips": {
+     "n": 0,
+     "maxDx": 0,
+     "maxDy": 0,
+     "worst": ""
+    },
+    "preset buttons": {
+     "n": 3,
+     "maxDx": 0,
+     "maxDy": 0,
+     "worst": "\"Merideth\" dx -0.0 dy 0.0"
+    },
+    "reroll dice": {
+     "n": 10,
+     "maxDx": 0,
+     "maxDy": 0,
+     "worst": "\"Name\" dx 0.0 dy 0.0"
+    },
+    "dice": {
+     "n": 2,
+     "maxDx": 0,
+     "maxDy": 0,
+     "worst": ""
+    },
+    "profile chips": {
+     "n": 0,
+     "maxDx": 0,
+     "maxDy": 0,
+     "worst": ""
+    },
+    "steel sign": {
+     "n": 1,
+     "maxDx": 0,
+     "maxDy": 0.1,
+     "worst": "\"HumanImperial\" dx -0.0 dy -0.1"
+    },
+    "stepper value": {
+     "n": 24,
+     "maxDx": 0,
+     "maxDy": 1,
+     "worst": "\"Male\" dx -0.0 dy -1.0"
+    },
+    "title mode buttons": {
+     "n": 0,
+     "maxDx": 0,
+     "maxDy": 0,
+     "worst": ""
+    },
+    "skill chips": {
+     "n": 3,
+     "maxDx": 0,
+     "maxDy": 0,
+     "worst": ""
+    },
+    "race tiles (banner|text|chevron)": {
+     "n": 4,
+     "maxDx": 1,
+     "maxDy": 0,
+     "worst": "\"Human · ImperialAdapta\" dx 1.0 dy 0.0"
+    },
+    "class tiles (table rows)": {
+     "n": 8,
+     "maxDx": 0,
+     "maxDy": 0,
+     "worst": ""
+    },
+    "stat tiles (sheet columns)": {
+     "n": 3,
+     "maxDx": 4,
+     "maxDy": 25,
+     "worst": "\"AttributesVitality7Res\" dx -4.0 dy -1.0"
+    }
+   },
+   "tones": {
+    "toned": 49,
+    "pos": 26,
+    "neg": 5,
+    "neutral": 18,
+    "parchment": 7,
+    "unpainted": 0
+   },
+   "tonesAfterTweak": {
+    "toned": 52,
+    "pos": 29,
+    "neg": 7,
+    "neutral": 16,
+    "parchment": 7,
+    "unpainted": 0
+   },
+   "contrast": {
+    "sampled": 48,
+    "min": 5.68,
+    "median": 9.35,
+    "atLeast45": 48,
+    "atLeast3": 48,
+    "parchmentSampled": 7,
+    "parchmentMin": 5.88,
+    "worst": [
+     {
+      "kind": "sheet-row-value",
+      "text": "381",
+      "colour": "rgb(234, 115, 104)",
+      "back": "rgb(38, 28, 19)",
+      "ratio": 5.68,
+      "surface": "dark"
+     },
+     {
+      "kind": "stepper-text",
+      "text": "13",
+      "colour": "rgb(84, 79, 69)",
+      "back": "rgb(234, 218, 178)",
+      "ratio": 5.88,
+      "surface": "parchment"
+     },
+     {
+      "kind": "stepper-text",
+      "text": "15",
+      "colour": "rgb(84, 79, 69)",
+      "back": "rgb(234, 218, 178)",
+      "ratio": 5.88,
+      "surface": "parchment"
+     }
+    ]
+   },
+   "sign": {
+    "present": true,
+    "above": true,
+    "topGapPx": 11,
+    "firstChild": true,
+    "widthPx": 318,
+    "rivets": 4
+   },
+   "attributes": {
+    "sheetAgility": true,
+    "sheetFocus": true,
+    "sheetPrimaries": [
+     "Vitality",
+     "Resilience",
+     "Focus",
+     "Reflex",
+     "Strength",
+     "Intelligence",
+     "Agility"
+    ],
+    "raceDetailAgility": true,
+    "raceDetailFocus": true,
+    "agilityStepperVisible": true,
+    "focusStepperVisible": true,
+    "willpower": false
+   },
+   "reroll": {
+    "nameBefore": "Sir Aldric",
+    "nameAfter": "Marius Antinus",
+    "nameChanged": true,
+    "raceKeptOnNameReroll": true,
+    "ancestry": [
+     {
+      "race": "elf",
+      "sub": "wood",
+      "name": "Syleranyr Mosswhisper",
+      "ok": true
+     },
+     {
+      "race": "ork",
+      "sub": "bloodfang",
+      "name": "Rasuzhak",
+      "ok": true
+     },
+     {
+      "race": "dwarf",
+      "sub": "mountain",
+      "name": "Glain Granitebrow",
+      "ok": true
+     },
+     {
+      "race": "elf",
+      "sub": "dark",
+      "name": "Vëlvezaeryn of House Zhaun'Vyrr",
+      "ok": true
+     }
+    ],
+    "phonologyFollows": true,
+    "ageBand": {
+     "ui": [
+      140,
+      770
+     ],
+     "ageBounds": [
+      140,
+      770
+     ]
+    },
+    "ageBandMatches": true
+   },
+   "tweak": {
+    "strength": [
+     "6",
+     "8"
+    ],
+    "maxHealth": [
+     "22 646",
+     "23 146"
+    ],
+    "attackPower": [
+     "318",
+     "368"
+    ],
+    "pointsLeft": [
+     "12",
+     "10"
+    ],
+    "sheetMoved": true,
+    "derivedMoved": true,
+    "poolShrank": true,
+    "previewRefreshes": [
+     6,
+     8
+    ]
+   },
+   "previewLatency": {
+    "pointerToRebuildMs": [
+     723.7,
+     698.9,
+     54.2,
+     51.1,
+     53.2
+    ],
+    "median": 54.2,
+    "max": 723.7,
+    "menuMeasuredMs": [
+     722.2,
+     697.9,
+     53,
+     50.1,
+     52.4
+    ]
+   },
+   "modelChangesOn": {
+    "height": true,
+    "weight": true,
+    "sex": true,
+    "age (+3 y)": false,
+    "silhouette width": true,
+    "strength": false
+   },
+   "waitMs": 13.1,
+   "age": {
+    "value": 251,
+    "band": [
+     140,
+     770
+    ],
+    "inside": true
+   },
+   "silhouetteSteppers": 7,
+   "fullRoll": {
+    "nameChanged": true,
+    "builds": [
+     23,
+     25
+    ]
+   }
+  },
+  "1920": {
+   "heroCard": {
+    "sign": true,
+    "signAbovePortrait": true,
+    "text": "Human"
+   },
+   "centring": {
+    "sub-race chips": {
+     "n": 12,
+     "maxDx": 0,
+     "maxDy": 0,
+     "worst": ""
+    },
+    "sign chips": {
+     "n": 6,
+     "maxDx": 0,
+     "maxDy": 0,
+     "worst": ""
+    },
+    "hero tabs": {
+     "n": 2,
+     "maxDx": 0,
+     "maxDy": 1.4,
+     "worst": ""
+    },
+    "palette chips": {
+     "n": 0,
+     "maxDx": 0,
+     "maxDy": 0,
+     "worst": ""
+    },
+    "preset buttons": {
+     "n": 3,
+     "maxDx": 0,
+     "maxDy": 0,
+     "worst": "\"Merideth\" dx -0.0 dy 0.0"
+    },
+    "reroll dice": {
+     "n": 10,
+     "maxDx": 0,
+     "maxDy": 0,
+     "worst": ""
+    },
+    "dice": {
+     "n": 2,
+     "maxDx": 0,
+     "maxDy": 0,
+     "worst": ""
+    },
+    "profile chips": {
+     "n": 0,
+     "maxDx": 0,
+     "maxDy": 0,
+     "worst": ""
+    },
+    "steel sign": {
+     "n": 1,
+     "maxDx": 0,
+     "maxDy": 0.4,
+     "worst": ""
+    },
+    "stepper value": {
+     "n": 24,
+     "maxDx": 0,
+     "maxDy": 0.5,
+     "worst": "\"28\" dx -0.0 dy -0.5"
+    },
+    "title mode buttons": {
+     "n": 0,
+     "maxDx": 0,
+     "maxDy": 0,
+     "worst": ""
+    },
+    "skill chips": {
+     "n": 3,
+     "maxDx": 0,
+     "maxDy": 0,
+     "worst": ""
+    },
+    "race tiles (banner|text|chevron)": {
+     "n": 4,
+     "maxDx": 1,
+     "maxDy": 0,
+     "worst": "\"Human · ImperialAdapta\" dx 1.0 dy 0.0"
+    },
+    "class tiles (table rows)": {
+     "n": 8,
+     "maxDx": 0,
+     "maxDy": 0,
+     "worst": ""
+    },
+    "stat tiles (sheet columns)": {
+     "n": 3,
+     "maxDx": 4,
+     "maxDy": 30,
+     "worst": "\"AttributesVitality7Res\" dx -4.0 dy -1.0"
+    }
+   },
+   "tones": {
+    "toned": 49,
+    "pos": 26,
+    "neg": 5,
+    "neutral": 18,
+    "parchment": 7,
+    "unpainted": 0
+   },
+   "tonesAfterTweak": {
+    "toned": 52,
+    "pos": 29,
+    "neg": 7,
+    "neutral": 16,
+    "parchment": 7,
+    "unpainted": 0
+   },
+   "contrast": {
+    "sampled": 48,
+    "min": 5.68,
+    "median": 9.35,
+    "atLeast45": 48,
+    "atLeast3": 48,
+    "parchmentSampled": 7,
+    "parchmentMin": 5.88,
+    "worst": [
+     {
+      "kind": "sheet-row-value",
+      "text": "381",
+      "colour": "rgb(234, 115, 104)",
+      "back": "rgb(38, 28, 20)",
+      "ratio": 5.68,
+      "surface": "dark"
+     },
+     {
+      "kind": "stepper-text",
+      "text": "13",
+      "colour": "rgb(84, 79, 69)",
+      "back": "rgb(234, 218, 178)",
+      "ratio": 5.88,
+      "surface": "parchment"
+     },
+     {
+      "kind": "stepper-text",
+      "text": "15",
+      "colour": "rgb(84, 79, 69)",
+      "back": "rgb(234, 218, 178)",
+      "ratio": 5.88,
+      "surface": "parchment"
+     }
+    ]
+   },
+   "sign": {
+    "present": true,
+    "above": true,
+    "topGapPx": 11,
+    "firstChild": true,
+    "widthPx": 378,
+    "rivets": 4
+   },
+   "attributes": {
+    "sheetAgility": true,
+    "sheetFocus": true,
+    "sheetPrimaries": [
+     "Vitality",
+     "Resilience",
+     "Focus",
+     "Reflex",
+     "Strength",
+     "Intelligence",
+     "Agility"
+    ],
+    "raceDetailAgility": true,
+    "raceDetailFocus": true,
+    "agilityStepperVisible": true,
+    "focusStepperVisible": true,
+    "willpower": false
+   },
+   "reroll": {
+    "nameBefore": "Sir Aldric",
+    "nameAfter": "Marius Antinus",
+    "nameChanged": true,
+    "raceKeptOnNameReroll": true,
+    "ancestry": [
+     {
+      "race": "elf",
+      "sub": "wood",
+      "name": "Syleranyr Mosswhisper",
+      "ok": true
+     },
+     {
+      "race": "ork",
+      "sub": "bloodfang",
+      "name": "Rasuzhak",
+      "ok": true
+     },
+     {
+      "race": "dwarf",
+      "sub": "mountain",
+      "name": "Glain Granitebrow",
+      "ok": true
+     },
+     {
+      "race": "elf",
+      "sub": "dark",
+      "name": "Vëlvezaeryn of House Zhaun'Vyrr",
+      "ok": true
+     }
+    ],
+    "phonologyFollows": true,
+    "ageBand": {
+     "ui": [
+      140,
+      770
+     ],
+     "ageBounds": [
+      140,
+      770
+     ]
+    },
+    "ageBandMatches": true
+   },
+   "tweak": {
+    "strength": [
+     "6",
+     "8"
+    ],
+    "maxHealth": [
+     "22 646",
+     "23 146"
+    ],
+    "attackPower": [
+     "318",
+     "368"
+    ],
+    "pointsLeft": [
+     "12",
+     "10"
+    ],
+    "sheetMoved": true,
+    "derivedMoved": true,
+    "poolShrank": true,
+    "previewRefreshes": [
+     6,
+     8
+    ]
+   },
+   "previewLatency": {
+    "pointerToRebuildMs": [
+     741.1,
+     704.2,
+     53,
+     53.8,
+     56.2
+    ],
+    "median": 56.2,
+    "max": 741.1,
+    "menuMeasuredMs": [
+     739.7,
+     703.2,
+     52,
+     52.8,
+     55.4
+    ]
+   },
+   "modelChangesOn": {
+    "height": true,
+    "weight": true,
+    "sex": true,
+    "age (+3 y)": false,
+    "silhouette width": true,
+    "strength": false
+   },
+   "waitMs": 13.2,
+   "age": {
+    "value": 251,
+    "band": [
+     140,
+     770
+    ],
+    "inside": true
+   },
+   "silhouetteSteppers": 7,
+   "fullRoll": {
+    "nameChanged": true,
+    "builds": [
+     23,
+     25
+    ]
+   }
+  }
+ },
+ "errors": []
+}

@@ -12,6 +12,7 @@
 // interrupt is a verdict on a cast.
 
 import { clamp, clamp01 } from "../core/MathCore.ts";
+import { AGILITY_NEUTRAL, agilityFactors } from "./Agility.ts";
 
 /** Shortest and longest a power may take to cast, s. Anything the inputs produce is clamped in. */
 export const CAST_MIN_S = 0.35, CAST_MAX_S = 3.2;
@@ -177,13 +178,16 @@ export const PUSH_HEAVY_MUL = 1.4;
  * `stamina` is the STRIKER's pool — a fresh striker lands a harder shove. All inputs are clamped,
  * so no shape of nonsense produces a negative or unbounded delay.
  */
-export function pushbackSeconds(o: { damageFracOfMax: number; angleDeg: number; stamina: number; heavy: boolean }): number {
+export function pushbackSeconds(o: { damageFracOfMax: number; angleDeg: number; stamina: number; heavy: boolean; agility?: number }): number {
   const dmg = clamp01(Number.isFinite(o.damageFracOfMax) ? o.damageFracOfMax : 0);
   const ang = clamp(Number.isFinite(o.angleDeg) ? o.angleDeg : 0, 0, 180);
   const angleWeight = PUSH_ANGLE_MIN + (PUSH_ANGLE_MAX - PUSH_ANGLE_MIN) * (ang / 180);
   const stamWeight = PUSH_STAM_MIN + (PUSH_STAM_MAX - PUSH_STAM_MIN) * clamp01(nonNeg(o.stamina) / PUSH_STAM_FULL);
   const heavyWeight = o.heavy ? PUSH_HEAVY_MUL : 1;
-  return clamp(PUSH_BASE_S * dmg * angleWeight * stamWeight * heavyWeight, 0, PUSH_MAX_S);
+  // Wave X: the CASTER's effective sheet agility (Agility.effectiveAgility; absent = neutral 10):
+  // a nimble body recovers its footing sooner, so the delay is divided by Agility recovery.
+  const recovery = agilityFactors(o.agility ?? AGILITY_NEUTRAL).recovery;
+  return clamp(PUSH_BASE_S * dmg * angleWeight * stamWeight * heavyWeight / recovery, 0, PUSH_MAX_S);
 }
 
 /** Add `addS` seconds of pushback to a cast (pure). Bounded by PUSH_CAP_S in total; a non-finite
@@ -196,7 +200,7 @@ export function addPushback(s: CastState, addS: number): CastState {
 }
 
 /** The whole answer to a landed hit: compute the pushback and apply it to the cast (pure). */
-export function pushbackHit(s: CastState, o: { damageFracOfMax: number; angleDeg: number; stamina: number; heavy: boolean }): CastState {
+export function pushbackHit(s: CastState, o: { damageFracOfMax: number; angleDeg: number; stamina: number; heavy: boolean; agility?: number }): CastState {
   return addPushback(s, pushbackSeconds(o));
 }
 
