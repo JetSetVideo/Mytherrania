@@ -1,0 +1,16 @@
+320 (theme 38534 ms, viewer 16694 ms)
+320: 39 pass / 0 fail / 0 n/a
+390 (theme 39700 ms, viewer 16904 ms)
+390: 39 pass / 0 fail / 0 n/a
+820 (theme 45732 ms, viewer 16984 ms)
+820: 37 pass / 0 fail / 2 n/a
+1280 (theme 46278 ms, viewer 15824 ms)
+1280: 37 pass / 0 fail / 0 n/a
+1920 (theme 53055 ms, viewer 15870 ms)
+1920: 37 pass / 0 fail / 0 n/a
+844x390 (theme 40583 ms, viewer 16782 ms)
+844x390: 36 pass / 3 fail / 0 n/a
+  FAIL [V] every gizmo end is on top (elementFromPoint, viewer scrolled to centre): 5/6 covered by div.screen-nav (nav y 23,71)
+  FAIL [V] gizmo axis colours on pixels: X red, Y yellow, Z green: X red h18, Y yellow h49, Z other h77
+  FAIL [V] clicking each axis end snaps onto that axis: +x:0.514 -x:-0.514 +y:1 -y:-0.179 +z:0.839 -z:-0.839
+{"T":{"pass":90,"fail":0,"na":0},"V":{"pass":135,"fail":3,"na":2},"pageErrors":0}

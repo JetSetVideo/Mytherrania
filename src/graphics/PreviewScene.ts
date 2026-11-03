@@ -22,6 +22,8 @@ import { tPoseBones, tPoseDisks } from "../game/anim/SkeletonDisks.ts";
 import { profileBodyStats } from "../game/Characters.ts";
 import { DEFAULT_GEN_STAGE, GEN_STAGES_EVENT, type GenStageId, type GenStagesDetail, isGenStage } from "../ui/GenStages.ts";
 import { parseWhatIf } from "../ui/StatView.ts";
+import { type AxisId, clampState, cameraPosition, orbit as orbitView, pinchFactor, reset as resetView, snapTo, type Vec3, viewDirection, type ViewLimits, type ViewState, wheelFactor, zoomAt } from "./ViewerControls.ts";
+import { AxisGizmo } from "./AxisGizmo.ts";
 
 /**
  * PreviewScene — the live 3D portrait the Character Creator shows (wave L).
@@ -76,6 +78,25 @@ const CAM_YAW = 0.55;
 /** Pitch clamp, radians: never below the horizon floor, never straight down. */
 const CAM_PITCH_MIN = -0.45;
 const CAM_PITCH_MAX = 1.15;
+/** The home pitch (wave P). */
+const CAM_PITCH_HOME = 0.18;
+/** Wave THEME (V): the camera never goes below this height while orbiting/zooming (was a hard floor in #placeCamera). */
+const CAM_FLOOR_Y = 0.25;
+/** Wave THEME (V): zoom band — the closest stand-off (m; a face fills the frame) and the farthest (× the home distance). */
+export const VIEW_DIST_MIN = 0.6;
+export const VIEW_DIST_MAX_PER_HOME = 1.6;
+/** Wave THEME (V): the look-at target stays over the plinth: |x|,|z| <= this × PEDESTAL_RADIUS, 0 <= y <= frame top. */
+export const VIEW_TARGET_SPAN_PER_RADIUS = 1.5;
+/**
+ * Wave THEME (V): a wheel gesture keeps the role it started with for this long after its last event (ms): a page
+ * scroll that slides the model under a still cursor keeps scrolling, a zoom that moves the silhouette off the cursor
+ * keeps zooming. A fresh gesture (a quiet gap longer than this) is classified again from the hover raycast.
+ */
+export const WHEEL_LATCH_MS = 250;
+/** The hover raycast (grab cursor) runs at most this often, ms: a skinned-body raycast costs ~6 ms (measured). */
+export const HOVER_PICK_MS = 50;
+/** QA counters of the viewer's input (debugView().stats). */
+export interface ViewerStats { drags: number; wheelZooms: number; wheelPassed: number; pinchSteps: number; resets: number; snaps: number; lastPickMs: number; maxPickMs: number }
 
 /**
  * The viewer's framing for a model of measured height `modelTopM` on a canvas of `aspect` (w/h). Pure.
@@ -802,12 +823,30 @@ export class PreviewScene {
   #rig: (HumanoidRig & SkinnedExtras) | null = null;
   #fighter = createFighter("Warrior", "Preview", 0, 0, 0.5, "human", null);
   #profile: CharacterProfile | null = null;
-  /** Manual orbit (wave P): the user turns the figure; it never rotates by itself. */
-  #yaw = CAM_YAW;
-  #pitch = 0.18;
-  /** The framing distance and look-at height (wave X: from PEDESTAL_RADIUS, see previewFraming). */
-  #distance = previewFraming(0).distance;
-  #targetY = previewFraming(0).targetY;
+  /**
+   * Manual orbit (wave P): the user turns the figure; it never rotates by itself. Wave THEME (V): the whole camera
+   * is one `ViewState` (yaw, pitch, distance, target) driven by the pure ViewerControls math; `#home` is the framing
+   * law's view (wave X: distance and look-at height from PEDESTAL_RADIUS, see previewFraming) that a double-click
+   * returns to. `#userMoved` = the user zoomed/snapped since the last reset (a rebuild then keeps their view).
+   */
+  #home: ViewState = { yaw: CAM_YAW, pitch: CAM_PITCH_HOME, distance: previewFraming(0).distance, target: [0, previewFraming(0).targetY, 0] };
+  #view: ViewState = { yaw: CAM_YAW, pitch: CAM_PITCH_HOME, distance: previewFraming(0).distance, target: [0, previewFraming(0).targetY, 0] };
+  #userMoved = false;
+  /** Wave THEME (V): input wiring (removed on dispose), active pointers, drag/pinch state, hover and wheel latch. */
+  #input = new AbortController();
+  #pointers = new Map<number, { x: number; y: number }>();
+  #dragging = false;
+  #pinchSpread = 0;
+  /** Pinch zoom accumulated since the last frame: one touch move fires one pointermove PER finger, and zooming at the
+   * half-updated midpoint drifted the pinch point 3.4 px (measured), so the factor is applied once per frame. */
+  #pinchPending = 1;
+  #hover: { x: number; y: number; pending: boolean; over: boolean } = { x: 0, y: 0, pending: false, over: false };
+  #wheelLatch: { role: "zoom" | "page"; until: number } = { role: "page", until: 0 };
+  #raycaster = new THREE.Raycaster();
+  #hoverAt = 0;
+  #gizmo: AxisGizmo | null = null;
+  /** QA: interaction counters (drags, wheel zooms, wheel pass-throughs, pinches, resets, snaps) and the last raycast cost. */
+  #stats: ViewerStats = { drags: 0, wheelZooms: 0, wheelPassed: 0, pinchSteps: 0, resets: 0, snaps: 0, lastPickMs: 0, maxPickMs: 0 };
   #clipped = false;
   /** Wave Z: the bottom share of the canvas a DOM overlay covers (see #measureFootReserve). */
   #footReserve = 0;
@@ -854,6 +893,7 @@ export class PreviewScene {
     this.#scene.add(this.#stageRoot);
     this.#camera = new THREE.PerspectiveCamera(CAM_FOV, 1, 0.1, 20);
     this.#placeCamera();
+    this.#wireInput();
     this.resize();
     // QA hook (not game behaviour): tools/probe-wave-x-body.ts drives the live preview through it.
     (globalThis as unknown as { __MYTHERRANIA_PREVIEW__?: PreviewScene }).__MYTHERRANIA_PREVIEW__ = this;
@@ -861,10 +901,32 @@ export class PreviewScene {
 
   /** Place the camera from the CURRENT yaw/pitch/distance (called on a rebuild and on every drag). */
   #placeCamera(): void {
-    const horiz = Math.cos(this.#pitch) * this.#distance;
-    const y = this.#targetY + Math.sin(this.#pitch) * this.#distance;
-    this.#camera.position.set(Math.sin(this.#yaw) * horiz, Math.max(0.25, y), Math.cos(this.#yaw) * horiz);
-    this.#camera.lookAt(0, this.#targetY, 0);
+    const p = cameraPosition(this.#view), t = this.#view.target;
+    this.#camera.position.set(p[0], p[1], p[2]);
+    this.#camera.up.set(0, 1, 0);
+    this.#camera.lookAt(t[0], t[1], t[2]);
+    this.#camera.updateMatrixWorld(true);
+  }
+
+  /** Wave THEME (V): the clamps for the current home (frame) and aspect. */
+  #limits(): ViewLimits {
+    const span = VIEW_TARGET_SPAN_PER_RADIUS * PEDESTAL_RADIUS;
+    const top = Math.max(PEDESTAL_FRAME_PER_RADIUS * PEDESTAL_RADIUS, this.#heightM + 0.2);
+    return {
+      pitchMin: CAM_PITCH_MIN, pitchMax: CAM_PITCH_MAX,
+      distMin: VIEW_DIST_MIN, distMax: Math.max(VIEW_DIST_MIN * 2, this.#home.distance * VIEW_DIST_MAX_PER_HOME),
+      floorY: CAM_FLOOR_Y,
+      targetMin: [-span, 0, -span], targetMax: [span, top, span],
+      fovDeg: CAM_FOV, aspect: this.#camera.aspect,
+    };
+  }
+
+  /** Apply a new view (already clamped by the caller's math), place the camera, draw. */
+  #setView(v: ViewState, moved: boolean): void {
+    this.#view = v;
+    if (moved) this.#userMoved = true;
+    this.#placeCamera();
+    this.#render(0);
   }
 
   /**
@@ -873,11 +935,147 @@ export class PreviewScene {
    */
   orbit(dx: number, dy: number): void {
     if (this.#disposed) return;
-    const k = 0.6; // radians per 100 px
-    this.#yaw += (dx / 100) * k;
-    this.#pitch = Math.max(CAM_PITCH_MIN, Math.min(CAM_PITCH_MAX, this.#pitch - (dy / 100) * k));
+    // 0.6 rad per 100 px (ViewerControls.ORBIT_RAD_PER_100PX); pitch clamped, soft after a ±Y snap.
+    this.#setView(orbitView(this.#view, dx, dy, this.#limits()), false);
+  }
+
+  /** Wave THEME (V): zoom by `factor` (< 1 closer) about client point (x, y): the model point under it stays put. */
+  zoomAtClient(factor: number, clientX: number, clientY: number, hit?: Vec3 | null): void {
+    if (this.#disposed) return;
+    const [nx, ny] = this.#ndc(clientX, clientY);
+    const h = hit === undefined ? this.#pick(clientX, clientY) : hit;
+    this.#setView(zoomAt(this.#view, factor, nx, ny, this.#limits(), h), true);
+  }
+
+  /** Wave THEME (V): look along an axis (the gizmo's click). */
+  snapView(axis: AxisId): void {
+    if (this.#disposed) return;
+    this.#stats.snaps++;
+    this.#setView(snapTo(this.#view, axis), true);
+  }
+
+  /** Wave THEME (V): back to the framing law's home view (double-click). */
+  resetView(): void {
+    if (this.#disposed) return;
+    this.#stats.resets++;
+    this.#userMoved = false;
+    this.#setView(resetView(this.#home), false);
+  }
+
+  /** Client px -> NDC of the viewer canvas. */
+  #ndc(clientX: number, clientY: number): [number, number] {
+    const r = this.#canvas.getBoundingClientRect();
+    return [((clientX - r.left) / Math.max(1, r.width)) * 2 - 1, -(((clientY - r.top) / Math.max(1, r.height)) * 2 - 1)];
+  }
+
+  /**
+   * Wave THEME (V): the model point under a client point — a raycast against the SHOWN body (the rig, or the stage
+   * view when a generator stage is shown), visible meshes only. null = the cursor is not over the model.
+   */
+  #pick(clientX: number, clientY: number): Vec3 | null {
+    const root = this.#stageRoot.visible ? this.#stageRoot : this.#rig?.group.visible ? this.#rig.group : null;
+    if (!root) return null;
+    const t0 = performance.now();
+    const [nx, ny] = this.#ndc(clientX, clientY);
+    if (Math.abs(nx) > 1 || Math.abs(ny) > 1) return null;
     this.#placeCamera();
-    this.#render(0);
+    root.updateMatrixWorld(true);
+    this.#raycaster.setFromCamera(new THREE.Vector2(nx, ny), this.#camera);
+    this.#raycaster.params.Line = { threshold: 0.004 };
+    this.#raycaster.params.Points = { threshold: 0.004 };
+    // Cheap pretest: a ray that misses the body's (padded) box cannot hit it — off-model hovers cost ~0 ms.
+    const box = new THREE.Box3().setFromObject(root).expandByScalar(0.05);
+    if (!this.#raycaster.ray.intersectsBox(box)) { this.#stats.lastPickMs = performance.now() - t0; return null; }
+    const shown = (o: THREE.Object3D | null): boolean => { for (let x = o; x; x = x.parent) { if (!x.visible) return false; if (x === root) return true; } return true; };
+    const hit = this.#raycaster.intersectObject(root, true).find((h) => (h.object as THREE.Mesh).isMesh && shown(h.object));
+    const ms = performance.now() - t0;
+    this.#stats.lastPickMs = ms; this.#stats.maxPickMs = Math.max(this.#stats.maxPickMs, ms);
+    return hit ? [hit.point.x, hit.point.y, hit.point.z] : null;
+  }
+
+  #setCursor(): void {
+    const c = this.#canvas;
+    const state = this.#dragging || this.#pointers.size > 1 ? "grabbing" : this.#hover.over ? "grab" : "";
+    if (c.dataset.viewerCursor === state) return;
+    c.dataset.viewerCursor = state;
+    c.classList.toggle("viewer-grab", state === "grab");
+    c.classList.toggle("viewer-grabbing", state === "grabbing");
+    c.style.cursor = state || "default";
+  }
+
+  /**
+   * Wave THEME (V): pointer (mouse, Mac trackpad click-drag, pen, touch), wheel (mouse wheel, trackpad two-finger
+   * scroll, trackpad pinch = ctrl+wheel) and double-click. Registered BEFORE the engine's wave-P drag listeners on the
+   * same canvas (the engine constructs us first), and a viewer pointerdown stops immediate propagation, so the
+   * engine's own drag never starts and a drag turns the figure exactly once.
+   */
+  #wireInput(): void {
+    const c = this.#canvas as HTMLCanvasElement & { addEventListener?: HTMLCanvasElement["addEventListener"] };
+    if (typeof c.addEventListener !== "function" || typeof document === "undefined") return; // Deno tests: no DOM
+    const sig = this.#input.signal;
+    c.style.touchAction = "none";
+    c.addEventListener("pointerdown", (e) => {
+      if (e.pointerType === "mouse" && e.button !== 0) return;
+      e.stopImmediatePropagation();
+      if (e.pointerType === "mouse") e.preventDefault(); // no text selection while dragging
+      this.#pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+      try { c.setPointerCapture(e.pointerId); } catch { /* a synthetic pointer may not be capturable */ }
+      if (this.#pointers.size === 1) { this.#dragging = true; this.#stats.drags++; }
+      else if (this.#pointers.size === 2) { this.#dragging = false; this.#pinchSpread = this.#spread(); }
+      this.#setCursor();
+    }, { signal: sig });
+    c.addEventListener("pointermove", (e) => {
+      const p = this.#pointers.get(e.pointerId);
+      if (!p) {
+        if (e.pointerType !== "touch") { this.#hover.x = e.clientX; this.#hover.y = e.clientY; this.#hover.pending = true; }
+        return;
+      }
+      e.stopImmediatePropagation();
+      const dx = e.clientX - p.x, dy = e.clientY - p.y;
+      p.x = e.clientX; p.y = e.clientY;
+      if (this.#pointers.size === 1 && this.#dragging) this.orbit(dx, dy);
+      else if (this.#pointers.size === 2) {
+        const spread = this.#spread(), f = pinchFactor(this.#pinchSpread, spread);
+        this.#pinchSpread = spread;
+        if (f !== 1) { this.#stats.pinchSteps++; this.#pinchPending *= f; }
+      }
+    }, { signal: sig });
+    const up = (e: PointerEvent) => {
+      if (!this.#pointers.delete(e.pointerId)) return;
+      try { c.releasePointerCapture(e.pointerId); } catch { /* already released */ }
+      if (this.#pointers.size === 1) { this.#dragging = true; this.#pinchSpread = 0; } // pinch -> drag: deltas from the remaining finger's last point
+      if (this.#pointers.size === 0) this.#dragging = false;
+      this.#hover.x = e.clientX; this.#hover.y = e.clientY; this.#hover.pending = e.pointerType !== "touch";
+      if (e.pointerType === "touch") this.#hover.over = false;
+      this.#setCursor();
+    };
+    c.addEventListener("pointerup", up, { signal: sig });
+    c.addEventListener("pointercancel", up, { signal: sig });
+    c.addEventListener("pointerleave", () => { if (this.#pointers.size === 0) { this.#hover.over = false; this.#hover.pending = false; this.#setCursor(); } }, { signal: sig });
+    // Non-passive: preventDefault only when the wheel zooms the model; otherwise the page scrolls as usual.
+    c.addEventListener("wheel", (e) => {
+      const now = e.timeStamp || performance.now();
+      let role: "zoom" | "page";
+      let hit: Vec3 | null | undefined;
+      if (now < this.#wheelLatch.until && !e.ctrlKey) role = this.#wheelLatch.role;
+      else {
+        hit = this.#pick(e.clientX, e.clientY);
+        role = hit ? "zoom" : "page";
+        this.#hover.over = hit !== null; this.#setCursor();
+      }
+      this.#wheelLatch = { role, until: now + WHEEL_LATCH_MS };
+      if (role === "page") { this.#stats.wheelPassed++; return; }
+      e.preventDefault();
+      this.#stats.wheelZooms++;
+      this.zoomAtClient(wheelFactor(e.deltaY, e.deltaMode, e.ctrlKey), e.clientX, e.clientY, hit); // one raycast per event
+    }, { signal: sig, passive: false });
+    c.addEventListener("dblclick", (e) => { e.preventDefault(); this.resetView(); }, { signal: sig });
+    this.#gizmo = new AxisGizmo(this.#canvas, (axis) => this.snapView(axis));
+  }
+
+  #spread(): number {
+    const m = [...this.#pointers.values()];
+    return m.length < 2 ? 0 : Math.hypot(m[0].x - m[1].x, m[0].y - m[1].y);
   }
 
   /** Wave X: frame by the PEDESTAL (previewFraming); the model's height only matters if it would clip. */
@@ -887,9 +1085,12 @@ export class PreviewScene {
       this.#heightM = Math.max(0.5, box.max.y - Math.min(0, box.min.y));
     }
     const f = previewFraming(this.#rig ? this.#heightM : 0, this.#camera.aspect, CAM_FOV, PEDESTAL_RADIUS, this.#footReserve);
-    this.#distance = f.distance;
-    this.#targetY = f.targetY;
+    this.#home = { yaw: CAM_YAW, pitch: CAM_PITCH_HOME, distance: f.distance, target: [0, f.targetY, 0] };
     this.#clipped = f.clipped;
+    // Wave THEME (V): an untouched view follows the framing (keeping the user's turn); a zoomed/snapped one is kept, re-clamped.
+    this.#view = this.#userMoved
+      ? clampState(this.#view, { ...this.#limits(), pitchMin: Math.min(CAM_PITCH_MIN, this.#view.pitch), pitchMax: Math.max(CAM_PITCH_MAX, this.#view.pitch), floorY: -Infinity }, this.#home)
+      : { yaw: this.#view.yaw, pitch: this.#view.pitch, distance: f.distance, target: [0, f.targetY, 0] };
     this.#placeCamera();
   }
 
@@ -1103,14 +1304,29 @@ export class PreviewScene {
       this.#fighter.skeleton.update(step * PREVIEW_IDLE_HZ);
       this.#rig.update(this.#fighter.skeleton, step);
     }
+    // Wave THEME (V): the frame's pinch, at the fingers' midpoint once both have moved.
+    if (this.#pinchPending !== 1) {
+      const f = this.#pinchPending, m = [...this.#pointers.values()];
+      this.#pinchPending = 1;
+      if (m.length >= 2) this.zoomAtClient(f, (m[0].x + m[1].x) / 2, (m[0].y + m[1].y) / 2);
+    }
+    // Wave THEME (V): one hover raycast per frame at most (pointermove only records the point).
+    const now = performance.now();
+    if (this.#hover.pending && this.#pointers.size === 0 && now - this.#hoverAt >= HOVER_PICK_MS) {
+      this.#hover.pending = false;
+      this.#hoverAt = now;
+      this.#hover.over = this.#pick(this.#hover.x, this.#hover.y) !== null;
+      this.#setCursor();
+    }
     // Wave X: the preview's own lighting in the SHARED cel uniforms, for this draw only (wave Z: PreviewStage).
     this.#stage.draw(this.#renderer, this.#scene, this.#camera);
+    this.#gizmo?.update(this.#canvas, this.#view, this.#renderer.getPixelRatio());
   }
 
   /** Wave P/X evidence: the framing the camera chose (distance from the pedestal radius; `clipped` = the height rule fired). */
   framing(): { heightM: number; distanceM: number; yaw: number; pitch: number; targetY: number; pedestalRadiusM: number; clipped: boolean; footReserve: number } {
     const r = (v: number) => Math.round(v * 1000) / 1000;
-    return { heightM: r(this.#heightM), distanceM: r(this.#distance), yaw: r(this.#yaw), pitch: r(this.#pitch), targetY: r(this.#targetY), pedestalRadiusM: PEDESTAL_RADIUS, clipped: this.#clipped, footReserve: this.#footReserve };
+    return { heightM: r(this.#heightM), distanceM: r(this.#view.distance), yaw: r(this.#view.yaw), pitch: r(this.#view.pitch), targetY: r(this.#view.target[1]), pedestalRadiusM: PEDESTAL_RADIUS, clipped: this.#clipped, footReserve: this.#footReserve };
   }
 
   /** QA (wave X): the pedestal as built — its measured radius (from the geometry) and height. */
@@ -1189,10 +1405,36 @@ export class PreviewScene {
 
   /** QA (wave X): a close-up for detail shots — distance and look-at height override until the next rebuild. */
   debugCamera(distance: number, targetY: number): void {
-    this.#distance = distance;
-    this.#targetY = targetY;
+    this.#view = { ...this.#view, distance, target: [this.#view.target[0], targetY, this.#view.target[2]] };
     this.#placeCamera();
     this.#render(0);
+  }
+
+  /**
+   * QA (wave THEME, V): the viewer's camera state — yaw/pitch (rad), distance (m), target (m), the unit view
+   * direction, the home view, the limits, the hover/drag state and the interaction counters.
+   */
+  debugView(): { yaw: number; pitch: number; distance: number; target: Vec3; position: Vec3; fov: number; aspect: number; dir: Vec3; home: ViewState; userMoved: boolean; over: boolean; dragging: boolean; pointers: number; cursor: string; limits: ViewLimits; stats: ViewerStats } {
+    const v = this.#view;
+    return { yaw: v.yaw, pitch: v.pitch, distance: v.distance, target: [...v.target] as Vec3, position: cameraPosition(v), fov: CAM_FOV, aspect: this.#camera.aspect, dir: viewDirection(v), home: resetView(this.#home), userMoved: this.#userMoved, over: this.#hover.over, dragging: this.#dragging, pointers: this.#pointers.size, cursor: this.#canvas.dataset.viewerCursor ?? "", limits: this.#limits(), stats: { ...this.#stats } };
+  }
+
+  /** QA (wave THEME, V): the model point under a client point (null = not over the model). */
+  debugPick(clientX: number, clientY: number): Vec3 | null {
+    return this.#pick(clientX, clientY);
+  }
+
+  /** QA (wave THEME, V): a world point's CLIENT px under the current camera (the probe's zoom-to-cursor meter). */
+  debugProject(p: Vec3): [number, number] {
+    this.#placeCamera();
+    const v = new THREE.Vector3(p[0], p[1], p[2]).project(this.#camera);
+    const r = this.#canvas.getBoundingClientRect();
+    return [r.left + (v.x * 0.5 + 0.5) * r.width, r.top + (-v.y * 0.5 + 0.5) * r.height];
+  }
+
+  /** QA (wave THEME, V): the axis gizmo — its client rect and each end's centre (client px), colour and depth. */
+  debugGizmo(): ReturnType<AxisGizmo["debug"]> | null {
+    return this.#gizmo?.debug() ?? null;
   }
 
   /** The profile last shown (QA hook: a probe re-shows it with another race/sex). */
@@ -1213,6 +1455,9 @@ export class PreviewScene {
   dispose(): void {
     if (this.#disposed) return;
     this.#disposed = true;
+    this.#input.abort();
+    this.#gizmo?.dispose();
+    this.#gizmo = null;
     if (this.#stagedTimer !== null) clearTimeout(this.#stagedTimer);
     if (this.#stageView) disposeView(this.#stageView);
     this.#clearRig();

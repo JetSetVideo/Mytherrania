@@ -1,0 +1,1517 @@
+{
+  "tolerancePx": 2,
+  "viewports": {
+    "320": {
+      "touch": true,
+      "modelPoint": {
+        "x": 160,
+        "y": 311,
+        "hit": [
+          0.059,
+          0.911,
+          0.097
+        ]
+      },
+      "offModelPoint": {
+        "x": 160,
+        "y": 192
+      },
+      "wheelZoom": {
+        "ctrl": false,
+        "delta": -120,
+        "steps": 6,
+        "distance0": 5.805,
+        "distance1": 1.971,
+        "maxDriftPx": 0.181,
+        "drift": [
+          0.181,
+          0.181,
+          0.181,
+          0.181,
+          0.181,
+          0.181
+        ],
+        "scroll0": {
+          "win": 0,
+          "box": 109,
+          "boxSel": "DIV.menu-screen.active"
+        },
+        "scroll1": {
+          "win": 0,
+          "box": 109,
+          "boxSel": "DIV.menu-screen.active"
+        },
+        "wheelZooms": 6,
+        "target": [
+          0.04,
+          0.784,
+          0.065
+        ]
+      },
+      "pinchZoom": {
+        "ctrl": true,
+        "delta": -8,
+        "steps": 8,
+        "distance0": 5.805,
+        "distance1": 3.061,
+        "maxDriftPx": 0.076,
+        "drift": [
+          0.076,
+          0.076,
+          0.076,
+          0.076,
+          0.076,
+          0.076,
+          0.076,
+          0.076
+        ],
+        "scroll0": {
+          "win": 0,
+          "box": 109,
+          "boxSel": "DIV.menu-screen.active"
+        },
+        "scroll1": {
+          "win": 0,
+          "box": 109,
+          "boxSel": "DIV.menu-screen.active"
+        },
+        "wheelZooms": 14,
+        "target": [
+          0.028,
+          0.709,
+          0.046
+        ]
+      },
+      "zoomOutClamp": {
+        "distance": 9.288,
+        "max": 9.288
+      },
+      "offCanvasWheel": {
+        "label": "canvas, off the model",
+        "at": [
+          160,
+          192
+        ],
+        "scroll0": {
+          "win": 0,
+          "box": 108,
+          "boxSel": "DIV.menu-screen.active"
+        },
+        "scroll1": {
+          "win": 0,
+          "box": 228,
+          "boxSel": "DIV.menu-screen.active"
+        },
+        "scrolled": true,
+        "distance0": 5.805,
+        "distance1": 5.805
+      },
+      "pageWheel": {
+        "label": "page beside the viewer",
+        "at": [
+          288,
+          231
+        ],
+        "scroll0": {
+          "win": 0,
+          "box": 227,
+          "boxSel": "DIV.menu-screen.active"
+        },
+        "scroll1": {
+          "win": 0,
+          "box": 347,
+          "boxSel": "DIV.menu-screen.active"
+        },
+        "scrolled": true,
+        "distance0": 5.805,
+        "distance1": 5.805
+      },
+      "dblclick": {
+        "before": {
+          "yaw": 1.03,
+          "distance": 4.05
+        },
+        "after": {
+          "yaw": 0.55,
+          "pitch": 0.18,
+          "distance": 5.805,
+          "target": [
+            0,
+            0.521,
+            0
+          ]
+        },
+        "home": true
+      },
+      "touchDrag": {
+        "dx": 100,
+        "dYaw": 0.6,
+        "expected": 0.6,
+        "scroll0": {
+          "win": 0,
+          "box": 242,
+          "boxSel": "DIV.menu-screen.active"
+        },
+        "scroll1": {
+          "win": 0,
+          "box": 242,
+          "boxSel": "DIV.menu-screen.active"
+        }
+      },
+      "touchPinch": {
+        "spread": [
+          40,
+          140
+        ],
+        "distance0": 5.805,
+        "distance1": 1.659,
+        "expectedRatio": 0.286,
+        "ratio": 0.286,
+        "driftPx": 0,
+        "pinchSteps": 20,
+        "scroll0": {
+          "win": 0,
+          "box": 242,
+          "boxSel": "DIV.menu-screen.active"
+        },
+        "scroll1": {
+          "win": 0,
+          "box": 242,
+          "boxSel": "DIV.menu-screen.active"
+        },
+        "yawChange": -0.6
+      },
+      "gizmo": {
+        "rect": {
+          "left": 163,
+          "top": 195.53125,
+          "width": 64,
+          "height": 64,
+          "x": 163,
+          "y": 195.53125,
+          "w": 64,
+          "h": 64
+        },
+        "canvas": {
+          "left": 38,
+          "top": 187.53125,
+          "right": 282,
+          "bottom": 609.40625
+        },
+        "fromRight": 55,
+        "fromTop": 8,
+        "colours": {
+          "-Z": "#3fae4f",
+          "-X": "#e0443a",
+          "-Y": "#e8c62e",
+          "+Y": "#e8c62e",
+          "+X": "#e0443a",
+          "+Z": "#3fae4f"
+        },
+        "overlaps": [],
+        "slotOverlapPx2": 0,
+        "slotGapPx": 6.2,
+        "endsCovered": [],
+        "onTop": true
+      },
+      "snaps": {
+        "+X": {
+          "clicked": [
+            214,
+            230
+          ],
+          "turned": false,
+          "dir": [
+            -1,
+            0,
+            0
+          ],
+          "dot": 1
+        },
+        "-X": {
+          "clicked": [
+            176,
+            225
+          ],
+          "turned": false,
+          "dir": [
+            1,
+            0,
+            0
+          ],
+          "dot": 1
+        },
+        "+Y": {
+          "clicked": [
+            195,
+            206
+          ],
+          "turned": false,
+          "dir": [
+            0,
+            -1,
+            -0.001
+          ],
+          "dot": 1
+        },
+        "-Y": {
+          "clicked": [
+            195,
+            249
+          ],
+          "turned": false,
+          "dir": [
+            0,
+            1,
+            -0.001
+          ],
+          "dot": 1
+        },
+        "+Z": {
+          "clicked": [
+            184,
+            231
+          ],
+          "turned": false,
+          "dir": [
+            0,
+            0,
+            -1
+          ],
+          "dot": 1
+        },
+        "-Z": {
+          "clicked": [
+            206,
+            224
+          ],
+          "turned": false,
+          "dir": [
+            0,
+            0,
+            1
+          ],
+          "dot": 1
+        }
+      },
+      "stickyNav": {
+        "navBottom": 63,
+        "canvasTop": 33,
+        "gizmoTop": 71,
+        "covered": []
+      },
+      "softClampAfterSnap": {
+        "pitch0": 1.57,
+        "pitchAfterDrag10px": 1.51
+      },
+      "pickMs": {
+        "last": 6.3,
+        "max": 8.2
+      }
+    },
+    "390": {
+      "touch": true,
+      "modelPoint": {
+        "x": 195,
+        "y": 442,
+        "hit": [
+          0.057,
+          0.881,
+          0.094
+        ]
+      },
+      "offModelPoint": {
+        "x": 195,
+        "y": 321
+      },
+      "wheelZoom": {
+        "ctrl": false,
+        "delta": -120,
+        "steps": 6,
+        "distance0": 5.911,
+        "distance1": 2.007,
+        "maxDriftPx": 0.183,
+        "drift": [
+          0.183,
+          0.183,
+          0.183,
+          0.183,
+          0.183,
+          0.183
+        ],
+        "scroll0": {
+          "win": 0,
+          "box": 0,
+          "boxSel": "DIV.menu-screen.active"
+        },
+        "scroll1": {
+          "win": 0,
+          "box": 0,
+          "boxSel": "DIV.menu-screen.active"
+        },
+        "wheelZooms": 6,
+        "target": [
+          0.038,
+          0.752,
+          0.062
+        ]
+      },
+      "pinchZoom": {
+        "ctrl": true,
+        "delta": -8,
+        "steps": 8,
+        "distance0": 5.911,
+        "distance1": 3.117,
+        "maxDriftPx": 0.077,
+        "drift": [
+          0.077,
+          0.077,
+          0.077,
+          0.077,
+          0.077,
+          0.077,
+          0.077,
+          0.077
+        ],
+        "scroll0": {
+          "win": 0,
+          "box": 0,
+          "boxSel": "DIV.menu-screen.active"
+        },
+        "scroll1": {
+          "win": 0,
+          "box": 0,
+          "boxSel": "DIV.menu-screen.active"
+        },
+        "wheelZooms": 14,
+        "target": [
+          0.027,
+          0.676,
+          0.044
+        ]
+      },
+      "zoomOutClamp": {
+        "distance": 9.458,
+        "max": 9.458
+      },
+      "offCanvasWheel": {
+        "label": "canvas, off the model",
+        "at": [
+          195,
+          321
+        ],
+        "scroll0": {
+          "win": 0,
+          "box": 0,
+          "boxSel": "DIV.menu-screen.active"
+        },
+        "scroll1": {
+          "win": 0,
+          "box": 120,
+          "boxSel": "DIV.menu-screen.active"
+        },
+        "scrolled": true,
+        "distance0": 5.911,
+        "distance1": 5.911
+      },
+      "pageWheel": {
+        "label": "page beside the viewer",
+        "at": [
+          357,
+          362
+        ],
+        "scroll0": {
+          "win": 0,
+          "box": 119,
+          "boxSel": "DIV.menu-screen.active"
+        },
+        "scroll1": {
+          "win": 0,
+          "box": 239,
+          "boxSel": "DIV.menu-screen.active"
+        },
+        "scrolled": true,
+        "distance0": 5.911,
+        "distance1": 5.911
+      },
+      "dblclick": {
+        "before": {
+          "yaw": 1.03,
+          "distance": 4.124
+        },
+        "after": {
+          "yaw": 0.55,
+          "pitch": 0.18,
+          "distance": 5.911,
+          "target": [
+            0,
+            0.485,
+            0
+          ]
+        },
+        "home": true
+      },
+      "touchDrag": {
+        "dx": 100,
+        "dYaw": 0.6,
+        "expected": 0.6,
+        "scroll0": {
+          "win": 0,
+          "box": 239,
+          "boxSel": "DIV.menu-screen.active"
+        },
+        "scroll1": {
+          "win": 0,
+          "box": 239,
+          "boxSel": "DIV.menu-screen.active"
+        }
+      },
+      "touchPinch": {
+        "spread": [
+          40,
+          140
+        ],
+        "distance0": 5.911,
+        "distance1": 1.689,
+        "expectedRatio": 0.286,
+        "ratio": 0.286,
+        "driftPx": 0,
+        "pinchSteps": 20,
+        "scroll0": {
+          "win": 0,
+          "box": 239,
+          "boxSel": "DIV.menu-screen.active"
+        },
+        "scroll1": {
+          "win": 0,
+          "box": 239,
+          "boxSel": "DIV.menu-screen.active"
+        },
+        "yawChange": -0.6
+      },
+      "gizmo": {
+        "rect": {
+          "left": 231.875,
+          "top": 275.40625,
+          "width": 64,
+          "height": 64,
+          "x": 231.875,
+          "y": 275.40625,
+          "w": 64,
+          "h": 64
+        },
+        "canvas": {
+          "left": 38.875,
+          "top": 267.40625,
+          "right": 351.125,
+          "bottom": 697
+        },
+        "fromRight": 55.25,
+        "fromTop": 8,
+        "colours": {
+          "-Z": "#3fae4f",
+          "-X": "#e0443a",
+          "-Y": "#e8c62e",
+          "+Y": "#e8c62e",
+          "+X": "#e0443a",
+          "+Z": "#3fae4f"
+        },
+        "overlaps": [],
+        "slotOverlapPx2": 0,
+        "slotGapPx": 6.5,
+        "endsCovered": [],
+        "onTop": true
+      },
+      "snaps": {
+        "+X": {
+          "clicked": [
+            283,
+            309
+          ],
+          "turned": false,
+          "dir": [
+            -1,
+            0,
+            0
+          ],
+          "dot": 1
+        },
+        "-X": {
+          "clicked": [
+            245,
+            305
+          ],
+          "turned": false,
+          "dir": [
+            1,
+            0,
+            0
+          ],
+          "dot": 1
+        },
+        "+Y": {
+          "clicked": [
+            264,
+            286
+          ],
+          "turned": false,
+          "dir": [
+            0,
+            -1,
+            -0.001
+          ],
+          "dot": 1
+        },
+        "-Y": {
+          "clicked": [
+            264,
+            329
+          ],
+          "turned": false,
+          "dir": [
+            0,
+            1,
+            -0.001
+          ],
+          "dot": 1
+        },
+        "+Z": {
+          "clicked": [
+            252,
+            311
+          ],
+          "turned": false,
+          "dir": [
+            0,
+            0,
+            -1
+          ],
+          "dot": 1
+        },
+        "-Z": {
+          "clicked": [
+            275,
+            304
+          ],
+          "turned": false,
+          "dir": [
+            0,
+            0,
+            1
+          ],
+          "dot": 1
+        }
+      },
+      "stickyNav": {
+        "navBottom": 64,
+        "canvasTop": 33,
+        "gizmoTop": 71,
+        "covered": []
+      },
+      "softClampAfterSnap": {
+        "pitch0": 1.57,
+        "pitchAfterDrag10px": 1.51
+      },
+      "pickMs": {
+        "last": 6.7,
+        "max": 8.1
+      }
+    },
+    "1280": {
+      "touch": false,
+      "modelPoint": {
+        "x": 279,
+        "y": 437,
+        "hit": [
+          0.063,
+          0.975,
+          0.103
+        ]
+      },
+      "offModelPoint": {
+        "x": 279,
+        "y": 275
+      },
+      "hover": {
+        "off": {
+          "s": "default",
+          "v": ""
+        },
+        "on": {
+          "s": "grab",
+          "v": "grab"
+        }
+      },
+      "drag": {
+        "dx": 120,
+        "dy": 40,
+        "yaw0": 0.55,
+        "yaw1": 1.27,
+        "dYaw": 0.72,
+        "dPitch": -0.24,
+        "expected": {
+          "dYaw": 0.72,
+          "dPitch": -0.24
+        },
+        "cursorWhileDragging": "grabbing",
+        "drags": 1
+      },
+      "pitchClampLow": -0.063,
+      "wheelZoom": {
+        "ctrl": false,
+        "delta": -120,
+        "steps": 6,
+        "distance0": 5.578,
+        "distance1": 1.894,
+        "maxDriftPx": 0.08,
+        "drift": [
+          0.08,
+          0.08,
+          0.08,
+          0.08,
+          0.08,
+          0.08
+        ],
+        "scroll0": {
+          "win": 0,
+          "box": 127,
+          "boxSel": "DIV.menu-screen.active"
+        },
+        "scroll1": {
+          "win": 0,
+          "box": 127,
+          "boxSel": "DIV.menu-screen.active"
+        },
+        "wheelZooms": 6,
+        "target": [
+          0.041,
+          0.849,
+          0.069
+        ]
+      },
+      "pinchZoom": {
+        "ctrl": true,
+        "delta": -8,
+        "steps": 8,
+        "distance0": 5.578,
+        "distance1": 2.941,
+        "maxDriftPx": 0.034,
+        "drift": [
+          0.034,
+          0.034,
+          0.034,
+          0.034,
+          0.034,
+          0.034,
+          0.034,
+          0.034
+        ],
+        "scroll0": {
+          "win": 0,
+          "box": 127,
+          "boxSel": "DIV.menu-screen.active"
+        },
+        "scroll1": {
+          "win": 0,
+          "box": 127,
+          "boxSel": "DIV.menu-screen.active"
+        },
+        "wheelZooms": 14,
+        "target": [
+          0.03,
+          0.778,
+          0.049
+        ]
+      },
+      "zoomOutClamp": {
+        "distance": 8.925,
+        "max": 8.925
+      },
+      "offCanvasWheel": {
+        "label": "canvas, off the model",
+        "at": [
+          279,
+          275
+        ],
+        "scroll0": {
+          "win": 0,
+          "box": 126,
+          "boxSel": "DIV.menu-screen.active"
+        },
+        "scroll1": {
+          "win": 0,
+          "box": 246,
+          "boxSel": "DIV.menu-screen.active"
+        },
+        "scrolled": true,
+        "distance0": 5.578,
+        "distance1": 5.578
+      },
+      "pageWheel": {
+        "label": "page beside the viewer",
+        "at": [
+          502,
+          373
+        ],
+        "scroll0": {
+          "win": 0,
+          "box": 245,
+          "boxSel": "DIV.menu-screen.active"
+        },
+        "scroll1": {
+          "win": 0,
+          "box": 365,
+          "boxSel": "DIV.menu-screen.active"
+        },
+        "scrolled": true,
+        "distance0": 5.578,
+        "distance1": 5.578
+      },
+      "dblclick": {
+        "before": {
+          "yaw": 1.03,
+          "distance": 3.892
+        },
+        "after": {
+          "yaw": 0.55,
+          "pitch": 0.18,
+          "distance": 5.578,
+          "target": [
+            0,
+            0.599,
+            0
+          ]
+        },
+        "home": true
+      },
+      "gizmo": {
+        "rect": {
+          "left": 401.15625,
+          "top": 295.296875,
+          "width": 87,
+          "height": 87,
+          "x": 401.15625,
+          "y": 295.296875,
+          "w": 87,
+          "h": 87
+        },
+        "canvas": {
+          "left": 62.15625,
+          "top": 287.296875,
+          "right": 496.15625,
+          "bottom": 865.953125
+        },
+        "fromRight": 8,
+        "fromTop": 8,
+        "colours": {
+          "-Z": "#3fae4f",
+          "-X": "#e0443a",
+          "-Y": "#e8c62e",
+          "+Y": "#e8c62e",
+          "+X": "#e0443a",
+          "+Z": "#3fae4f"
+        },
+        "overlaps": [],
+        "slotOverlapPx2": 0,
+        "slotGapPx": 28.6,
+        "endsCovered": [],
+        "onTop": true
+      },
+      "snaps": {
+        "+X": {
+          "clicked": [
+            472,
+            342
+          ],
+          "turned": false,
+          "dir": [
+            -1,
+            0,
+            0
+          ],
+          "dot": 1
+        },
+        "-X": {
+          "clicked": [
+            418,
+            336
+          ],
+          "turned": false,
+          "dir": [
+            1,
+            0,
+            0
+          ],
+          "dot": 1
+        },
+        "+Y": {
+          "clicked": [
+            445,
+            308
+          ],
+          "turned": false,
+          "dir": [
+            0,
+            -1,
+            -0.001
+          ],
+          "dot": 1
+        },
+        "-Y": {
+          "clicked": [
+            445,
+            370
+          ],
+          "turned": false,
+          "dir": [
+            0,
+            1,
+            -0.001
+          ],
+          "dot": 1
+        },
+        "+Z": {
+          "clicked": [
+            428,
+            344
+          ],
+          "turned": false,
+          "dir": [
+            0,
+            0,
+            -1
+          ],
+          "dot": 1
+        },
+        "-Z": {
+          "clicked": [
+            461,
+            334
+          ],
+          "turned": false,
+          "dir": [
+            0,
+            0,
+            1
+          ],
+          "dot": 1
+        }
+      },
+      "stickyNav": {
+        "navBottom": 81,
+        "canvasTop": 51,
+        "gizmoTop": 88,
+        "covered": []
+      },
+      "softClampAfterSnap": {
+        "pitch0": 1.57,
+        "pitchAfterDrag10px": 1.51
+      },
+      "pickMs": {
+        "last": 6.5,
+        "max": 11.2
+      }
+    },
+    "1920": {
+      "touch": false,
+      "modelPoint": {
+        "x": 341,
+        "y": 646,
+        "hit": [
+          0.062,
+          0.954,
+          0.1
+        ]
+      },
+      "offModelPoint": {
+        "x": 341,
+        "y": 454
+      },
+      "hover": {
+        "off": {
+          "s": "default",
+          "v": ""
+        },
+        "on": {
+          "s": "grab",
+          "v": "grab"
+        }
+      },
+      "drag": {
+        "dx": 120,
+        "dy": 40,
+        "yaw0": 0.55,
+        "yaw1": 1.27,
+        "dYaw": 0.72,
+        "dPitch": -0.237,
+        "expected": {
+          "dYaw": 0.72,
+          "dPitch": -0.24
+        },
+        "cursorWhileDragging": "grabbing",
+        "drags": 1
+      },
+      "pitchClampLow": -0.057,
+      "wheelZoom": {
+        "ctrl": false,
+        "delta": -120,
+        "steps": 6,
+        "distance0": 5.654,
+        "distance1": 1.92,
+        "maxDriftPx": 0.067,
+        "drift": [
+          0.067,
+          0.067,
+          0.067,
+          0.067,
+          0.067,
+          0.067
+        ],
+        "scroll0": {
+          "win": 0,
+          "box": 31,
+          "boxSel": "DIV.menu-screen.active"
+        },
+        "scroll1": {
+          "win": 0,
+          "box": 31,
+          "boxSel": "DIV.menu-screen.active"
+        },
+        "wheelZooms": 6,
+        "target": [
+          0.04,
+          0.825,
+          0.067
+        ]
+      },
+      "pinchZoom": {
+        "ctrl": true,
+        "delta": -8,
+        "steps": 8,
+        "distance0": 5.654,
+        "distance1": 2.981,
+        "maxDriftPx": 0.028,
+        "drift": [
+          0.028,
+          0.028,
+          0.028,
+          0.028,
+          0.028,
+          0.028,
+          0.028,
+          0.028
+        ],
+        "scroll0": {
+          "win": 0,
+          "box": 31,
+          "boxSel": "DIV.menu-screen.active"
+        },
+        "scroll1": {
+          "win": 0,
+          "box": 31,
+          "boxSel": "DIV.menu-screen.active"
+        },
+        "wheelZooms": 14,
+        "target": [
+          0.029,
+          0.754,
+          0.048
+        ]
+      },
+      "zoomOutClamp": {
+        "distance": 9.046,
+        "max": 9.046
+      },
+      "offCanvasWheel": {
+        "label": "canvas, off the model",
+        "at": [
+          341,
+          454
+        ],
+        "scroll0": {
+          "win": 0,
+          "box": 30,
+          "boxSel": "DIV.menu-screen.active"
+        },
+        "scroll1": {
+          "win": 0,
+          "box": 150,
+          "boxSel": "DIV.menu-screen.active"
+        },
+        "scrolled": true,
+        "distance0": 5.654,
+        "distance1": 5.654
+      },
+      "pageWheel": {
+        "label": "page beside the viewer",
+        "at": [
+          604,
+          592
+        ],
+        "scroll0": {
+          "win": 0,
+          "box": 149,
+          "boxSel": "DIV.menu-screen.active"
+        },
+        "scroll1": {
+          "win": 0,
+          "box": 269,
+          "boxSel": "DIV.menu-screen.active"
+        },
+        "scrolled": true,
+        "distance0": 5.654,
+        "distance1": 5.654
+      },
+      "dblclick": {
+        "before": {
+          "yaw": 1.03,
+          "distance": 3.944
+        },
+        "after": {
+          "yaw": 0.55,
+          "pitch": 0.18,
+          "distance": 5.654,
+          "target": [
+            0,
+            0.573,
+            0
+          ]
+        },
+        "home": true
+      },
+      "gizmo": {
+        "rect": {
+          "left": 494.21875,
+          "top": 406.84375,
+          "width": 96,
+          "height": 96,
+          "x": 494.21875,
+          "y": 406.84375,
+          "w": 96,
+          "h": 96
+        },
+        "canvas": {
+          "left": 84.21875,
+          "top": 398.84375,
+          "right": 598.21875,
+          "bottom": 1084.171875
+        },
+        "fromRight": 8,
+        "fromTop": 8,
+        "colours": {
+          "-Z": "#3fae4f",
+          "-X": "#e0443a",
+          "-Y": "#e8c62e",
+          "+Y": "#e8c62e",
+          "+X": "#e0443a",
+          "+Z": "#3fae4f"
+        },
+        "overlaps": [],
+        "slotOverlapPx2": 0,
+        "slotGapPx": 49.5,
+        "endsCovered": [],
+        "onTop": true
+      },
+      "snaps": {
+        "+X": {
+          "clicked": [
+            572,
+            458
+          ],
+          "turned": false,
+          "dir": [
+            -1,
+            0,
+            0
+          ],
+          "dot": 1
+        },
+        "-X": {
+          "clicked": [
+            512,
+            452
+          ],
+          "turned": false,
+          "dir": [
+            1,
+            0,
+            0
+          ],
+          "dot": 1
+        },
+        "+Y": {
+          "clicked": [
+            542,
+            420
+          ],
+          "turned": false,
+          "dir": [
+            0,
+            -1,
+            -0.001
+          ],
+          "dot": 1
+        },
+        "-Y": {
+          "clicked": [
+            542,
+            489
+          ],
+          "turned": false,
+          "dir": [
+            0,
+            1,
+            -0.001
+          ],
+          "dot": 1
+        },
+        "+Z": {
+          "clicked": [
+            524,
+            460
+          ],
+          "turned": false,
+          "dir": [
+            0,
+            0,
+            -1
+          ],
+          "dot": 1
+        },
+        "-Z": {
+          "clicked": [
+            560,
+            450
+          ],
+          "turned": false,
+          "dir": [
+            0,
+            0,
+            1
+          ],
+          "dot": 1
+        }
+      },
+      "stickyNav": {
+        "navBottom": 96,
+        "canvasTop": 66,
+        "gizmoTop": 104,
+        "covered": []
+      },
+      "softClampAfterSnap": {
+        "pitch0": 1.57,
+        "pitchAfterDrag10px": 1.51
+      },
+      "pickMs": {
+        "last": 6.6,
+        "max": 14.4
+      }
+    },
+    "844x390": {
+      "touch": true,
+      "modelPoint": {
+        "x": 244,
+        "y": 172,
+        "hit": [
+          0.065,
+          1.002,
+          0.106
+        ]
+      },
+      "offModelPoint": {
+        "x": 244,
+        "y": 62
+      },
+      "wheelZoom": {
+        "ctrl": false,
+        "delta": -120,
+        "steps": 6,
+        "distance0": 5.482,
+        "distance1": 1.862,
+        "maxDriftPx": 0.191,
+        "drift": [
+          0.191,
+          0.191,
+          0.191,
+          0.191,
+          0.191,
+          0.191
+        ],
+        "scroll0": {
+          "win": 0,
+          "box": 274,
+          "boxSel": "DIV.menu-screen.active"
+        },
+        "scroll1": {
+          "win": 0,
+          "box": 274,
+          "boxSel": "DIV.menu-screen.active"
+        },
+        "wheelZooms": 6,
+        "target": [
+          0.042,
+          0.883,
+          0.071
+        ]
+      },
+      "pinchZoom": {
+        "ctrl": true,
+        "delta": -8,
+        "steps": 8,
+        "distance0": 5.482,
+        "distance1": 2.891,
+        "maxDriftPx": 0.081,
+        "drift": [
+          0.081,
+          0.081,
+          0.081,
+          0.081,
+          0.081,
+          0.081,
+          0.081,
+          0.081
+        ],
+        "scroll0": {
+          "win": 0,
+          "box": 274,
+          "boxSel": "DIV.menu-screen.active"
+        },
+        "scroll1": {
+          "win": 0,
+          "box": 274,
+          "boxSel": "DIV.menu-screen.active"
+        },
+        "wheelZooms": 14,
+        "target": [
+          0.03,
+          0.812,
+          0.051
+        ]
+      },
+      "zoomOutClamp": {
+        "distance": 8.772,
+        "max": 8.772
+      },
+      "offCanvasWheel": {
+        "label": "canvas, off the model",
+        "at": [
+          244,
+          62
+        ],
+        "scroll0": {
+          "win": 0,
+          "box": 273,
+          "boxSel": "DIV.menu-screen.active"
+        },
+        "scroll1": {
+          "win": 0,
+          "box": 393,
+          "boxSel": "DIV.menu-screen.active"
+        },
+        "scrolled": true,
+        "distance0": 5.482,
+        "distance1": 5.482
+      },
+      "pageWheel": {
+        "label": "page beside the viewer",
+        "at": [
+          385,
+          89
+        ],
+        "scroll0": {
+          "win": 0,
+          "box": 392,
+          "boxSel": "DIV.menu-screen.active"
+        },
+        "scroll1": {
+          "win": 0,
+          "box": 512,
+          "boxSel": "DIV.menu-screen.active"
+        },
+        "scrolled": true,
+        "distance0": 5.482,
+        "distance1": 5.482
+      },
+      "dblclick": {
+        "before": {
+          "yaw": 1.03,
+          "distance": 3.825
+        },
+        "after": {
+          "yaw": 0.55,
+          "pitch": 0.18,
+          "distance": 5.482,
+          "target": [
+            0,
+            0.632,
+            0
+          ]
+        },
+        "home": true
+      },
+      "touchDrag": {
+        "dx": 100,
+        "dYaw": 0.6,
+        "expected": 0.6,
+        "scroll0": {
+          "win": 0,
+          "box": 301,
+          "boxSel": "DIV.menu-screen.active"
+        },
+        "scroll1": {
+          "win": 0,
+          "box": 301,
+          "boxSel": "DIV.menu-screen.active"
+        }
+      },
+      "touchPinch": {
+        "spread": [
+          40,
+          140
+        ],
+        "distance0": 5.482,
+        "distance1": 1.566,
+        "expectedRatio": 0.286,
+        "ratio": 0.286,
+        "driftPx": 0,
+        "pinchSteps": 20,
+        "scroll0": {
+          "win": 0,
+          "box": 301,
+          "boxSel": "DIV.menu-screen.active"
+        },
+        "scroll1": {
+          "win": 0,
+          "box": 301,
+          "boxSel": "DIV.menu-screen.active"
+        },
+        "yawChange": -0.6
+      },
+      "gizmo": {
+        "rect": {
+          "left": 258.859375,
+          "top": 162.8125,
+          "width": 64,
+          "height": 64,
+          "x": 258.859375,
+          "y": 162.8125,
+          "w": 64,
+          "h": 64
+        },
+        "canvas": {
+          "left": 108.859375,
+          "top": 154.8125,
+          "right": 379.359375,
+          "bottom": 544.109375
+        },
+        "fromRight": 56.5,
+        "fromTop": 8,
+        "colours": {
+          "-Z": "#3fae4f",
+          "-X": "#e0443a",
+          "-Y": "#e8c62e",
+          "+Y": "#e8c62e",
+          "+X": "#e0443a",
+          "+Z": "#3fae4f"
+        },
+        "overlaps": [],
+        "slotOverlapPx2": 0,
+        "slotGapPx": 6.9,
+        "endsCovered": [],
+        "onTop": true
+      },
+      "snaps": {
+        "+X": {
+          "clicked": [
+            310,
+            197
+          ],
+          "turned": false,
+          "dir": [
+            -1,
+            0,
+            0
+          ],
+          "dot": 1
+        },
+        "-X": {
+          "clicked": [
+            272,
+            193
+          ],
+          "turned": false,
+          "dir": [
+            1,
+            0,
+            0
+          ],
+          "dot": 1
+        },
+        "+Y": {
+          "clicked": [
+            291,
+            173
+          ],
+          "turned": false,
+          "dir": [
+            0,
+            -1,
+            -0.001
+          ],
+          "dot": 1
+        },
+        "-Y": {
+          "clicked": [
+            291,
+            216
+          ],
+          "turned": false,
+          "dir": [
+            0,
+            1,
+            -0.001
+          ],
+          "dot": 1
+        },
+        "+Z": {
+          "clicked": [
+            279,
+            198
+          ],
+          "turned": false,
+          "dir": [
+            0,
+            0,
+            -1
+          ],
+          "dot": 1
+        },
+        "-Z": {
+          "clicked": [
+            302,
+            191
+          ],
+          "turned": false,
+          "dir": [
+            0,
+            0,
+            1
+          ],
+          "dot": 1
+        }
+      },
+      "stickyNav": null,
+      "softClampAfterSnap": {
+        "pitch0": 1.57,
+        "pitchAfterDrag10px": 1.51
+      },
+      "pickMs": {
+        "last": 6.2,
+        "max": 8.2
+      }
+    }
+  },
+  "pageErrors": [],
+  "failures": [],
+  "ok": true
+}

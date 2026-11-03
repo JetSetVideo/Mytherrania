@@ -1,0 +1,2008 @@
+{
+ "dist": "dist-theme",
+ "generated": "2026-11-03T15:35:54.962Z",
+ "plaques": [
+  {
+   "race": "human",
+   "subrace": "imperial",
+   "material": "wood",
+   "file": "plaque-human-imperial.png",
+   "tagsFile": "tags-human-imperial.png",
+   "plaque": {
+    "color": "rgb(243, 230, 196)",
+    "bg": "rgb(192, 146, 90)",
+    "layers": 4,
+    "svgTiles": 1,
+    "imgHash": 1901107756,
+    "border": "none rgb(243, 230, 196)",
+    "relation": null
+   },
+   "subraceChip": {
+    "color": "rgb(30, 17, 5)",
+    "bg": "rgb(192, 146, 90)",
+    "layers": 3,
+    "svgTiles": 0,
+    "imgHash": -723488191,
+    "border": "solid rgb(122, 79, 12)",
+    "relation": null
+   },
+   "contrastName": {
+    "ratio": 6.26,
+    "colour": "rgb(30, 17, 5)",
+    "back": "rgb(187, 142, 87)"
+   },
+   "contrastRace": {
+    "ratio": 6.51,
+    "colour": "rgb(30, 17, 5)",
+    "back": "rgb(191, 145, 89)"
+   },
+   "contrastSub": {
+    "ratio": 6.59,
+    "colour": "rgb(30, 17, 5)",
+    "back": "rgb(192, 146, 90)"
+   }
+  },
+  {
+   "race": "human",
+   "subrace": "nomad",
+   "material": "wood",
+   "file": "plaque-human-nomad.png",
+   "tagsFile": "tags-human-nomad.png",
+   "plaque": {
+    "color": "rgb(243, 230, 196)",
+    "bg": "rgb(220, 207, 178)",
+    "layers": 4,
+    "svgTiles": 1,
+    "imgHash": 1950548571,
+    "border": "none rgb(243, 230, 196)",
+    "relation": null
+   },
+   "subraceChip": {
+    "color": "rgb(42, 31, 18)",
+    "bg": "rgb(220, 207, 178)",
+    "layers": 3,
+    "svgTiles": 0,
+    "imgHash": 2005602847,
+    "border": "solid rgb(63, 111, 143)",
+    "relation": null
+   },
+   "contrastName": {
+    "ratio": 9.95,
+    "colour": "rgb(42, 31, 18)",
+    "back": "rgb(216, 202, 173)"
+   },
+   "contrastRace": {
+    "ratio": 10.34,
+    "colour": "rgb(42, 31, 18)",
+    "back": "rgb(219, 206, 177)"
+   },
+   "contrastSub": {
+    "ratio": 10.44,
+    "colour": "rgb(42, 31, 18)",
+    "back": "rgb(220, 207, 178)"
+   }
+  },
+  {
+   "race": "human",
+   "subrace": "islander",
+   "material": "wood",
+   "file": "plaque-human-islander.png",
+   "tagsFile": "tags-human-islander.png",
+   "plaque": {
+    "color": "rgb(243, 230, 196)",
+    "bg": "rgb(178, 193, 182)",
+    "layers": 4,
+    "svgTiles": 1,
+    "imgHash": 1209488704,
+    "border": "none rgb(243, 230, 196)",
+    "relation": null
+   },
+   "subraceChip": {
+    "color": "rgb(16, 36, 31)",
+    "bg": "rgb(178, 193, 182)",
+    "layers": 3,
+    "svgTiles": 0,
+    "imgHash": 201187158,
+    "border": "solid rgb(31, 107, 102)",
+    "relation": null
+   },
+   "contrastName": {
+    "ratio": 8.25,
+    "colour": "rgb(16, 36, 31)",
+    "back": "rgb(172, 189, 178)"
+   },
+   "contrastRace": {
+    "ratio": 8.56,
+    "colour": "rgb(16, 36, 31)",
+    "back": "rgb(177, 192, 181)"
+   },
+   "contrastSub": {
+    "ratio": 8.65,
+    "colour": "rgb(16, 36, 31)",
+    "back": "rgb(178, 193, 182)"
+   }
+  },
+  {
+   "race": "elf",
+   "subrace": "high",
+   "material": "scroll",
+   "file": "plaque-elf-high.png",
+   "tagsFile": "tags-elf-high.png",
+   "plaque": {
+    "color": "rgb(243, 230, 196)",
+    "bg": "rgb(245, 224, 176)",
+    "layers": 7,
+    "svgTiles": 1,
+    "imgHash": -1436219696,
+    "border": "none rgb(243, 230, 196)",
+    "relation": null
+   },
+   "subraceChip": {
+    "color": "rgb(59, 42, 14)",
+    "bg": "rgb(245, 224, 176)",
+    "layers": 3,
+    "svgTiles": 0,
+    "imgHash": 825713666,
+    "border": "solid rgb(168, 122, 24)",
+    "relation": null
+   },
+   "contrastName": {
+    "ratio": 10.61,
+    "colour": "rgb(59, 42, 14)",
+    "back": "rgb(245, 224, 176)"
+   },
+   "contrastRace": {
+    "ratio": 11.85,
+    "colour": "rgb(59, 42, 14)",
+    "back": "rgb(249, 237, 208)"
+   },
+   "contrastSub": {
+    "ratio": 10.8,
+    "colour": "rgb(59, 42, 14)",
+    "back": "rgb(246, 226, 180)"
+   }
+  },
+  {
+   "race": "elf",
+   "subrace": "wood",
+   "material": "scroll",
+   "file": "plaque-elf-wood.png",
+   "tagsFile": "tags-elf-wood.png",
+   "plaque": {
+    "color": "rgb(243, 230, 196)",
+    "bg": "rgb(212, 232, 192)",
+    "layers": 7,
+    "svgTiles": 1,
+    "imgHash": 443697670,
+    "border": "none rgb(243, 230, 196)",
+    "relation": null
+   },
+   "subraceChip": {
+    "color": "rgb(29, 56, 24)",
+    "bg": "rgb(212, 232, 192)",
+    "layers": 3,
+    "svgTiles": 0,
+    "imgHash": 447327384,
+    "border": "solid rgb(63, 122, 42)",
+    "relation": null
+   },
+   "contrastName": {
+    "ratio": 10.39,
+    "colour": "rgb(29, 56, 24)",
+    "back": "rgb(221, 236, 205)"
+   },
+   "contrastRace": {
+    "ratio": 10.98,
+    "colour": "rgb(29, 56, 24)",
+    "back": "rgb(229, 241, 217)"
+   },
+   "contrastSub": {
+    "ratio": 10,
+    "colour": "rgb(29, 56, 24)",
+    "back": "rgb(214, 233, 196)"
+   }
+  },
+  {
+   "race": "elf",
+   "subrace": "dark",
+   "material": "scroll",
+   "file": "plaque-elf-dark.png",
+   "tagsFile": "tags-elf-dark.png",
+   "plaque": {
+    "color": "rgb(243, 230, 196)",
+    "bg": "rgb(224, 212, 234)",
+    "layers": 7,
+    "svgTiles": 1,
+    "imgHash": -1622711160,
+    "border": "none rgb(243, 230, 196)",
+    "relation": null
+   },
+   "subraceChip": {
+    "color": "rgb(44, 23, 61)",
+    "bg": "rgb(224, 212, 234)",
+    "layers": 3,
+    "svgTiles": 0,
+    "imgHash": 1380921406,
+    "border": "solid rgb(107, 58, 145)",
+    "relation": null
+   },
+   "contrastName": {
+    "ratio": 11.39,
+    "colour": "rgb(44, 23, 61)",
+    "back": "rgb(224, 212, 234)"
+   },
+   "contrastRace": {
+    "ratio": 13.07,
+    "colour": "rgb(44, 23, 61)",
+    "back": "rgb(236, 228, 242)"
+   },
+   "contrastSub": {
+    "ratio": 11.6,
+    "colour": "rgb(44, 23, 61)",
+    "back": "rgb(226, 214, 235)"
+   }
+  },
+  {
+   "race": "dwarf",
+   "subrace": "mountain",
+   "material": "stone",
+   "file": "plaque-dwarf-mountain.png",
+   "tagsFile": "tags-dwarf-mountain.png",
+   "plaque": {
+    "color": "rgb(243, 230, 196)",
+    "bg": "rgb(82, 76, 71)",
+    "layers": 6,
+    "svgTiles": 1,
+    "imgHash": -1457416011,
+    "border": "none rgb(243, 230, 196)",
+    "relation": null
+   },
+   "subraceChip": {
+    "color": "rgb(242, 238, 228)",
+    "bg": "rgb(82, 76, 71)",
+    "layers": 3,
+    "svgTiles": 0,
+    "imgHash": -668763372,
+    "border": "solid rgb(156, 122, 85)",
+    "relation": null
+   },
+   "contrastName": {
+    "ratio": 7.76,
+    "colour": "rgb(242, 238, 228)",
+    "back": "rgb(78, 72, 68)"
+   },
+   "contrastRace": {
+    "ratio": 7.77,
+    "colour": "rgb(242, 238, 228)",
+    "back": "rgb(78, 72, 67)"
+   },
+   "contrastSub": {
+    "ratio": 8.02,
+    "colour": "rgb(242, 238, 228)",
+    "back": "rgb(76, 70, 65)"
+   }
+  },
+  {
+   "race": "dwarf",
+   "subrace": "forge",
+   "material": "stone",
+   "file": "plaque-dwarf-forge.png",
+   "tagsFile": "tags-dwarf-forge.png",
+   "plaque": {
+    "color": "rgb(243, 230, 196)",
+    "bg": "rgb(42, 30, 26)",
+    "layers": 6,
+    "svgTiles": 1,
+    "imgHash": 995521308,
+    "border": "none rgb(243, 230, 196)",
+    "relation": null
+   },
+   "subraceChip": {
+    "color": "rgb(255, 232, 204)",
+    "bg": "rgb(42, 30, 26)",
+    "layers": 3,
+    "svgTiles": 0,
+    "imgHash": -100983959,
+    "border": "solid rgb(255, 122, 46)",
+    "relation": null
+   },
+   "contrastName": {
+    "ratio": 13.92,
+    "colour": "rgb(255, 232, 204)",
+    "back": "rgb(40, 28, 24)"
+   },
+   "contrastRace": {
+    "ratio": 13.96,
+    "colour": "rgb(255, 232, 204)",
+    "back": "rgb(39, 28, 24)"
+   },
+   "contrastSub": {
+    "ratio": 14.12,
+    "colour": "rgb(255, 232, 204)",
+    "back": "rgb(38, 27, 23)"
+   }
+  },
+  {
+   "race": "dwarf",
+   "subrace": "deep",
+   "material": "stone",
+   "file": "plaque-dwarf-deep.png",
+   "tagsFile": "tags-dwarf-deep.png",
+   "plaque": {
+    "color": "rgb(243, 230, 196)",
+    "bg": "rgb(38, 58, 85)",
+    "layers": 6,
+    "svgTiles": 1,
+    "imgHash": -276062002,
+    "border": "none rgb(243, 230, 196)",
+    "relation": null
+   },
+   "subraceChip": {
+    "color": "rgb(232, 240, 250)",
+    "bg": "rgb(38, 58, 85)",
+    "layers": 3,
+    "svgTiles": 0,
+    "imgHash": 838929909,
+    "border": "solid rgb(134, 172, 217)",
+    "relation": null
+   },
+   "contrastName": {
+    "ratio": 10.37,
+    "colour": "rgb(232, 240, 250)",
+    "back": "rgb(37, 56, 81)"
+   },
+   "contrastRace": {
+    "ratio": 10.48,
+    "colour": "rgb(232, 240, 250)",
+    "back": "rgb(37, 55, 81)"
+   },
+   "contrastSub": {
+    "ratio": 10.69,
+    "colour": "rgb(232, 240, 250)",
+    "back": "rgb(36, 54, 77)"
+   }
+  },
+  {
+   "race": "ork",
+   "subrace": "greenhide",
+   "material": "clay",
+   "file": "plaque-ork-greenhide.png",
+   "tagsFile": "tags-ork-greenhide.png",
+   "plaque": {
+    "color": "rgb(243, 230, 196)",
+    "bg": "rgb(44, 68, 36)",
+    "layers": 4,
+    "svgTiles": 1,
+    "imgHash": 498196404,
+    "border": "none rgb(243, 230, 196)",
+    "relation": null
+   },
+   "subraceChip": {
+    "color": "rgb(242, 233, 200)",
+    "bg": "rgb(44, 68, 36)",
+    "layers": 3,
+    "svgTiles": 0,
+    "imgHash": 908573483,
+    "border": "solid rgb(159, 208, 106)",
+    "relation": null
+   },
+   "contrastName": {
+    "ratio": 8.55,
+    "colour": "rgb(242, 233, 200)",
+    "back": "rgb(46, 70, 38)"
+   },
+   "contrastRace": {
+    "ratio": 8.45,
+    "colour": "rgb(242, 233, 200)",
+    "back": "rgb(46, 71, 37)"
+   },
+   "contrastSub": {
+    "ratio": 8.81,
+    "colour": "rgb(242, 233, 200)",
+    "back": "rgb(44, 68, 36)"
+   }
+  },
+  {
+   "race": "ork",
+   "subrace": "ironhide",
+   "material": "clay",
+   "file": "plaque-ork-ironhide.png",
+   "tagsFile": "tags-ork-ironhide.png",
+   "plaque": {
+    "color": "rgb(243, 230, 196)",
+    "bg": "rgb(61, 38, 80)",
+    "layers": 4,
+    "svgTiles": 1,
+    "imgHash": -545031012,
+    "border": "none rgb(243, 230, 196)",
+    "relation": null
+   },
+   "subraceChip": {
+    "color": "rgb(244, 232, 246)",
+    "bg": "rgb(61, 38, 80)",
+    "layers": 3,
+    "svgTiles": 0,
+    "imgHash": 1262232786,
+    "border": "solid rgb(208, 122, 62)",
+    "relation": null
+   },
+   "contrastName": {
+    "ratio": 10.83,
+    "colour": "rgb(244, 232, 246)",
+    "back": "rgb(63, 40, 82)"
+   },
+   "contrastRace": {
+    "ratio": 10.81,
+    "colour": "rgb(244, 232, 246)",
+    "back": "rgb(63, 40, 83)"
+   },
+   "contrastSub": {
+    "ratio": 11.13,
+    "colour": "rgb(244, 232, 246)",
+    "back": "rgb(61, 38, 80)"
+   }
+  },
+  {
+   "race": "ork",
+   "subrace": "bloodfang",
+   "material": "clay",
+   "file": "plaque-ork-bloodfang.png",
+   "tagsFile": "tags-ork-bloodfang.png",
+   "plaque": {
+    "color": "rgb(243, 230, 196)",
+    "bg": "rgb(90, 29, 24)",
+    "layers": 4,
+    "svgTiles": 1,
+    "imgHash": -1891226547,
+    "border": "none rgb(243, 230, 196)",
+    "relation": null
+   },
+   "subraceChip": {
+    "color": "rgb(250, 228, 207)",
+    "bg": "rgb(90, 29, 24)",
+    "layers": 3,
+    "svgTiles": 0,
+    "imgHash": 2065403641,
+    "border": "solid rgb(236, 106, 76)",
+    "relation": null
+   },
+   "contrastName": {
+    "ratio": 10.25,
+    "colour": "rgb(250, 228, 207)",
+    "back": "rgb(92, 31, 25)"
+   },
+   "contrastRace": {
+    "ratio": 10.18,
+    "colour": "rgb(250, 228, 207)",
+    "back": "rgb(93, 31, 25)"
+   },
+   "contrastSub": {
+    "ratio": 10.51,
+    "colour": "rgb(250, 228, 207)",
+    "back": "rgb(90, 29, 24)"
+   }
+  }
+ ],
+ "chips": {
+  "class": [
+   {
+    "id": "Barbarian",
+    "file": "chip-class-Barbarian.png",
+    "style": {
+     "color": "rgb(247, 230, 204)",
+     "bg": "rgb(74, 42, 24)",
+     "layers": 2,
+     "svgTiles": 1,
+     "imgHash": -842115234,
+     "border": "double rgb(12, 55, 122)",
+     "relation": "complementary"
+    },
+    "contrast": {
+     "ratio": 10.48,
+     "colour": "rgb(247, 230, 204)",
+     "back": "rgb(74, 42, 24)"
+    }
+   },
+   {
+    "id": "Warrior",
+    "file": "chip-class-Warrior.png",
+    "style": {
+     "color": "rgb(238, 242, 247)",
+     "bg": "rgb(56, 64, 77)",
+     "layers": 4,
+     "svgTiles": 0,
+     "imgHash": 382514822,
+     "border": "solid rgb(122, 79, 12)",
+     "relation": "synchronous"
+    },
+    "contrast": {
+     "ratio": 9.56,
+     "colour": "rgb(238, 242, 247)",
+     "back": "rgb(55, 62, 75)"
+    }
+   },
+   {
+    "id": "Rogue",
+    "file": "chip-class-Rogue.png",
+    "style": {
+     "color": "rgb(241, 228, 200)",
+     "bg": "rgb(51, 39, 26)",
+     "layers": 4,
+     "svgTiles": 0,
+     "imgHash": -415114505,
+     "border": "double rgb(12, 55, 122)",
+     "relation": "complementary"
+    },
+    "contrast": {
+     "ratio": 11.57,
+     "colour": "rgb(241, 228, 200)",
+     "back": "rgb(50, 39, 26)"
+    }
+   },
+   {
+    "id": "Assassin",
+    "file": "chip-class-Assassin.png",
+    "style": {
+     "color": "rgb(236, 230, 242)",
+     "bg": "rgb(31, 28, 36)",
+     "layers": 2,
+     "svgTiles": 1,
+     "imgHash": -1435969894,
+     "border": "double rgb(12, 55, 122)",
+     "relation": "complementary"
+    },
+    "contrast": {
+     "ratio": 13.74,
+     "colour": "rgb(236, 230, 242)",
+     "back": "rgb(31, 28, 36)"
+    }
+   },
+   {
+    "id": "Mage",
+    "file": "chip-class-Mage.png",
+    "style": {
+     "color": "rgb(240, 232, 255)",
+     "bg": "rgb(45, 31, 82)",
+     "layers": 2,
+     "svgTiles": 1,
+     "imgHash": 718975441,
+     "border": "double rgb(12, 55, 122)",
+     "relation": "complementary"
+    },
+    "contrast": {
+     "ratio": 12.4,
+     "colour": "rgb(240, 232, 255)",
+     "back": "rgb(45, 31, 81)"
+    }
+   },
+   {
+    "id": "Necromancer",
+    "file": "chip-class-Necromancer.png",
+    "style": {
+     "color": "rgb(236, 232, 214)",
+     "bg": "rgb(30, 42, 44)",
+     "layers": 2,
+     "svgTiles": 1,
+     "imgHash": -1702674710,
+     "border": "double rgb(12, 55, 122)",
+     "relation": "complementary"
+    },
+    "contrast": {
+     "ratio": 12.16,
+     "colour": "rgb(236, 232, 214)",
+     "back": "rgb(29, 41, 43)"
+    }
+   },
+   {
+    "id": "Archer",
+    "file": "chip-class-Archer.png",
+    "style": {
+     "color": "rgb(238, 246, 224)",
+     "bg": "rgb(34, 56, 31)",
+     "layers": 2,
+     "svgTiles": 1,
+     "imgHash": 25589277,
+     "border": "double rgb(12, 55, 122)",
+     "relation": "complementary"
+    },
+    "contrast": {
+     "ratio": 11.43,
+     "colour": "rgb(238, 246, 224)",
+     "back": "rgb(34, 56, 31)"
+    }
+   },
+   {
+    "id": "Priest",
+    "file": "chip-class-Priest.png",
+    "style": {
+     "color": "rgb(51, 38, 10)",
+     "bg": "rgb(242, 233, 208)",
+     "layers": 4,
+     "svgTiles": 0,
+     "imgHash": 1712644120,
+     "border": "double rgb(12, 55, 122)",
+     "relation": "complementary"
+    },
+    "contrast": {
+     "ratio": 11.73,
+     "colour": "rgb(51, 38, 10)",
+     "back": "rgb(238, 229, 201)"
+    }
+   }
+  ],
+  "sign": [
+   {
+    "id": "serpent",
+    "file": "chip-sign-serpent.png",
+    "style": {
+     "color": "rgb(230, 246, 236)",
+     "bg": "rgb(24, 57, 45)",
+     "layers": 2,
+     "svgTiles": 1,
+     "imgHash": 854998730,
+     "border": "solid rgb(169, 212, 122)",
+     "relation": "synchronous"
+    },
+    "contrast": {
+     "ratio": 11.13,
+     "colour": "rgb(230, 246, 236)",
+     "back": "rgb(25, 58, 46)"
+    },
+    "expected": "synchronous"
+   },
+   {
+    "id": "mountain",
+    "file": "chip-sign-mountain.png",
+    "style": {
+     "color": "rgb(242, 237, 228)",
+     "bg": "rgb(59, 54, 49)",
+     "layers": 2,
+     "svgTiles": 1,
+     "imgHash": 1424994621,
+     "border": "dashed rgb(255, 74, 94)",
+     "relation": "opposite"
+    },
+    "contrast": {
+     "ratio": 10.09,
+     "colour": "rgb(242, 237, 228)",
+     "back": "rgb(60, 55, 50)"
+    },
+    "expected": "opposite"
+   },
+   {
+    "id": "flame",
+    "file": "chip-sign-flame.png",
+    "style": {
+     "color": "rgb(255, 238, 221)",
+     "bg": "rgb(76, 24, 10)",
+     "layers": 2,
+     "svgTiles": 1,
+     "imgHash": -1677745612,
+     "border": "dashed rgb(255, 74, 94)",
+     "relation": "opposite"
+    },
+    "contrast": {
+     "ratio": 12.7,
+     "colour": "rgb(255, 238, 221)",
+     "back": "rgb(77, 25, 10)"
+    },
+    "expected": "opposite"
+   },
+   {
+    "id": "moon",
+    "file": "chip-sign-moon.png",
+    "style": {
+     "color": "rgb(233, 237, 255)",
+     "bg": "rgb(27, 33, 66)",
+     "layers": 2,
+     "svgTiles": 1,
+     "imgHash": 113072385,
+     "border": "dashed rgb(255, 74, 94)",
+     "relation": "opposite"
+    },
+    "contrast": {
+     "ratio": 13.61,
+     "colour": "rgb(233, 237, 255)",
+     "back": "rgb(26, 32, 64)"
+    },
+    "expected": "opposite"
+   },
+   {
+    "id": "storm",
+    "file": "chip-sign-storm.png",
+    "style": {
+     "color": "rgb(242, 245, 255)",
+     "bg": "rgb(37, 43, 61)",
+     "layers": 2,
+     "svgTiles": 1,
+     "imgHash": -1594821090,
+     "border": "double rgb(165, 122, 212)",
+     "relation": "complementary"
+    },
+    "contrast": {
+     "ratio": 13.12,
+     "colour": "rgb(242, 245, 255)",
+     "back": "rgb(36, 42, 59)"
+    },
+    "expected": "complementary"
+   },
+   {
+    "id": "void",
+    "file": "chip-sign-void.png",
+    "style": {
+     "color": "rgb(233, 224, 255)",
+     "bg": "rgb(19, 15, 30)",
+     "layers": 2,
+     "svgTiles": 0,
+     "imgHash": -875972354,
+     "border": "dashed rgb(255, 74, 94)",
+     "relation": "opposite"
+    },
+    "contrast": {
+     "ratio": 14.86,
+     "colour": "rgb(233, 224, 255)",
+     "back": "rgb(19, 15, 30)"
+    },
+    "expected": "opposite"
+   }
+  ],
+  "weapon": [
+   {
+    "id": "dagger",
+    "file": "chip-weapon-dagger.png",
+    "style": {
+     "color": "rgb(238, 243, 248)",
+     "bg": "rgb(43, 49, 56)",
+     "layers": 3,
+     "svgTiles": 1,
+     "imgHash": 184781473,
+     "border": "double rgb(165, 122, 212)",
+     "relation": "complementary"
+    },
+    "socket": {
+     "color": "rgb(243, 230, 196)",
+     "bg": "rgb(43, 49, 56)",
+     "layers": 3,
+     "svgTiles": 1,
+     "imgHash": 184781473,
+     "border": "double rgb(165, 122, 212)",
+     "relation": null
+    },
+    "contrast": {
+     "ratio": 11.79,
+     "colour": "rgb(238, 243, 248)",
+     "back": "rgb(42, 49, 56)"
+    },
+    "expected": "complementary",
+    "rowRelation": "complementary"
+   },
+   {
+    "id": "shortsword",
+    "file": "chip-weapon-shortsword.png",
+    "style": {
+     "color": "rgb(240, 242, 244)",
+     "bg": "rgb(51, 54, 59)",
+     "layers": 3,
+     "svgTiles": 1,
+     "imgHash": 1384507007,
+     "border": "double rgb(165, 122, 212)",
+     "relation": "complementary"
+    },
+    "socket": {
+     "color": "rgb(243, 230, 196)",
+     "bg": "rgb(51, 54, 59)",
+     "layers": 3,
+     "svgTiles": 1,
+     "imgHash": 1384507007,
+     "border": "double rgb(165, 122, 212)",
+     "relation": null
+    },
+    "contrast": {
+     "ratio": 10.94,
+     "colour": "rgb(240, 242, 244)",
+     "back": "rgb(51, 53, 58)"
+    },
+    "expected": "complementary",
+    "rowRelation": "complementary"
+   },
+   {
+    "id": "sabre",
+    "file": "chip-weapon-sabre.png",
+    "style": {
+     "color": "rgb(235, 246, 245)",
+     "bg": "rgb(44, 58, 58)",
+     "layers": 3,
+     "svgTiles": 1,
+     "imgHash": 298305676,
+     "border": "dashed rgb(255, 74, 94)",
+     "relation": "opposite"
+    },
+    "socket": {
+     "color": "rgb(243, 230, 196)",
+     "bg": "rgb(44, 58, 58)",
+     "layers": 3,
+     "svgTiles": 1,
+     "imgHash": 298305676,
+     "border": "dashed rgb(255, 74, 94)",
+     "relation": null
+    },
+    "contrast": {
+     "ratio": 10.89,
+     "colour": "rgb(235, 246, 245)",
+     "back": "rgb(43, 57, 57)"
+    },
+    "expected": "opposite",
+    "rowRelation": "opposite"
+   },
+   {
+    "id": "rapier",
+    "file": "chip-weapon-rapier.png",
+    "style": {
+     "color": "rgb(245, 238, 248)",
+     "bg": "rgb(58, 47, 63)",
+     "layers": 3,
+     "svgTiles": 1,
+     "imgHash": -186678393,
+     "border": "dashed rgb(255, 74, 94)",
+     "relation": "opposite"
+    },
+    "socket": {
+     "color": "rgb(243, 230, 196)",
+     "bg": "rgb(58, 47, 63)",
+     "layers": 3,
+     "svgTiles": 1,
+     "imgHash": -186678393,
+     "border": "dashed rgb(255, 74, 94)",
+     "relation": null
+    },
+    "contrast": {
+     "ratio": 11.3,
+     "colour": "rgb(245, 238, 248)",
+     "back": "rgb(57, 46, 62)"
+    },
+    "expected": "opposite",
+    "rowRelation": "opposite"
+   },
+   {
+    "id": "longsword",
+    "file": "chip-weapon-longsword.png",
+    "style": {
+     "color": "rgb(237, 243, 250)",
+     "bg": "rgb(47, 58, 72)",
+     "layers": 3,
+     "svgTiles": 1,
+     "imgHash": -2138649016,
+     "border": "dashed rgb(255, 74, 94)",
+     "relation": "opposite"
+    },
+    "socket": {
+     "color": "rgb(243, 230, 196)",
+     "bg": "rgb(47, 58, 72)",
+     "layers": 3,
+     "svgTiles": 1,
+     "imgHash": -2138649016,
+     "border": "dashed rgb(255, 74, 94)",
+     "relation": null
+    },
+    "contrast": {
+     "ratio": 10.49,
+     "colour": "rgb(237, 243, 250)",
+     "back": "rgb(46, 57, 71)"
+    },
+    "expected": "opposite",
+    "rowRelation": "opposite"
+   },
+   {
+    "id": "greatsword",
+    "file": "chip-weapon-greatsword.png",
+    "style": {
+     "color": "rgb(241, 241, 246)",
+     "bg": "rgb(58, 58, 68)",
+     "layers": 3,
+     "svgTiles": 1,
+     "imgHash": 1279785982,
+     "border": "dashed rgb(255, 74, 94)",
+     "relation": "opposite"
+    },
+    "socket": {
+     "color": "rgb(243, 230, 196)",
+     "bg": "rgb(58, 58, 68)",
+     "layers": 3,
+     "svgTiles": 1,
+     "imgHash": 1279785982,
+     "border": "dashed rgb(255, 74, 94)",
+     "relation": null
+    },
+    "contrast": {
+     "ratio": 10.29,
+     "colour": "rgb(241, 241, 246)",
+     "back": "rgb(56, 56, 66)"
+    },
+    "expected": "opposite",
+    "rowRelation": "opposite"
+   },
+   {
+    "id": "spear",
+    "file": "chip-weapon-spear.png",
+    "style": {
+     "color": "rgb(246, 238, 220)",
+     "bg": "rgb(58, 49, 34)",
+     "layers": 2,
+     "svgTiles": 0,
+     "imgHash": 2042814995,
+     "border": "double rgb(165, 122, 212)",
+     "relation": "complementary"
+    },
+    "socket": {
+     "color": "rgb(243, 230, 196)",
+     "bg": "rgb(58, 49, 34)",
+     "layers": 2,
+     "svgTiles": 0,
+     "imgHash": 2042814995,
+     "border": "double rgb(165, 122, 212)",
+     "relation": null
+    },
+    "contrast": {
+     "ratio": 11.22,
+     "colour": "rgb(246, 238, 220)",
+     "back": "rgb(57, 48, 34)"
+    },
+    "expected": "complementary",
+    "rowRelation": "complementary"
+   },
+   {
+    "id": "halberd",
+    "file": "chip-weapon-halberd.png",
+    "style": {
+     "color": "rgb(239, 244, 232)",
+     "bg": "rgb(46, 52, 40)",
+     "layers": 2,
+     "svgTiles": 0,
+     "imgHash": 1407454677,
+     "border": "dashed rgb(255, 74, 94)",
+     "relation": "opposite"
+    },
+    "socket": {
+     "color": "rgb(243, 230, 196)",
+     "bg": "rgb(46, 52, 40)",
+     "layers": 2,
+     "svgTiles": 0,
+     "imgHash": 1407454677,
+     "border": "dashed rgb(255, 74, 94)",
+     "relation": null
+    },
+    "contrast": {
+     "ratio": 11.63,
+     "colour": "rgb(239, 244, 232)",
+     "back": "rgb(45, 51, 39)"
+    },
+    "expected": "opposite",
+    "rowRelation": "opposite"
+   },
+   {
+    "id": "scythe",
+    "file": "chip-weapon-scythe.png",
+    "style": {
+     "color": "rgb(232, 240, 238)",
+     "bg": "rgb(31, 42, 44)",
+     "layers": 2,
+     "svgTiles": 0,
+     "imgHash": -756575704,
+     "border": "dashed rgb(255, 74, 94)",
+     "relation": "opposite"
+    },
+    "socket": {
+     "color": "rgb(243, 230, 196)",
+     "bg": "rgb(31, 42, 44)",
+     "layers": 2,
+     "svgTiles": 0,
+     "imgHash": -756575704,
+     "border": "dashed rgb(255, 74, 94)",
+     "relation": null
+    },
+    "contrast": {
+     "ratio": 12.88,
+     "colour": "rgb(232, 240, 238)",
+     "back": "rgb(30, 41, 43)"
+    },
+    "expected": "opposite",
+    "rowRelation": "opposite"
+   },
+   {
+    "id": "staff",
+    "file": "chip-weapon-staff.png",
+    "style": {
+     "color": "rgb(245, 233, 210)",
+     "bg": "rgb(58, 42, 26)",
+     "layers": 3,
+     "svgTiles": 0,
+     "imgHash": 262771712,
+     "border": "dashed rgb(255, 74, 94)",
+     "relation": "opposite"
+    },
+    "socket": {
+     "color": "rgb(243, 230, 196)",
+     "bg": "rgb(58, 42, 26)",
+     "layers": 3,
+     "svgTiles": 0,
+     "imgHash": 262771712,
+     "border": "dashed rgb(255, 74, 94)",
+     "relation": null
+    },
+    "contrast": {
+     "ratio": 11.49,
+     "colour": "rgb(245, 233, 210)",
+     "back": "rgb(57, 42, 26)"
+    },
+    "expected": "opposite",
+    "rowRelation": "opposite"
+   },
+   {
+    "id": "axe",
+    "file": "chip-weapon-axe.png",
+    "style": {
+     "color": "rgb(248, 232, 220)",
+     "bg": "rgb(64, 38, 28)",
+     "layers": 3,
+     "svgTiles": 0,
+     "imgHash": 853977571,
+     "border": "dashed rgb(255, 74, 94)",
+     "relation": "opposite"
+    },
+    "socket": {
+     "color": "rgb(243, 230, 196)",
+     "bg": "rgb(64, 38, 28)",
+     "layers": 3,
+     "svgTiles": 0,
+     "imgHash": 853977571,
+     "border": "dashed rgb(255, 74, 94)",
+     "relation": null
+    },
+    "contrast": {
+     "ratio": 11.78,
+     "colour": "rgb(248, 232, 220)",
+     "back": "rgb(63, 37, 27)"
+    },
+    "expected": "opposite",
+    "rowRelation": "opposite"
+   },
+   {
+    "id": "greataxe",
+    "file": "chip-weapon-greataxe.png",
+    "style": {
+     "color": "rgb(251, 230, 216)",
+     "bg": "rgb(74, 32, 22)",
+     "layers": 3,
+     "svgTiles": 0,
+     "imgHash": -917143465,
+     "border": "dashed rgb(255, 74, 94)",
+     "relation": "opposite"
+    },
+    "socket": {
+     "color": "rgb(243, 230, 196)",
+     "bg": "rgb(74, 32, 22)",
+     "layers": 3,
+     "svgTiles": 0,
+     "imgHash": -917143465,
+     "border": "dashed rgb(255, 74, 94)",
+     "relation": null
+    },
+    "contrast": {
+     "ratio": 11.81,
+     "colour": "rgb(251, 230, 216)",
+     "back": "rgb(71, 31, 21)"
+    },
+    "expected": "opposite",
+    "rowRelation": "opposite"
+   },
+   {
+    "id": "mace",
+    "file": "chip-weapon-mace.png",
+    "style": {
+     "color": "rgb(248, 240, 216)",
+     "bg": "rgb(60, 52, 32)",
+     "layers": 3,
+     "svgTiles": 0,
+     "imgHash": 762597273,
+     "border": "dashed rgb(255, 74, 94)",
+     "relation": "opposite"
+    },
+    "socket": {
+     "color": "rgb(243, 230, 196)",
+     "bg": "rgb(60, 52, 32)",
+     "layers": 3,
+     "svgTiles": 0,
+     "imgHash": 762597273,
+     "border": "dashed rgb(255, 74, 94)",
+     "relation": null
+    },
+    "contrast": {
+     "ratio": 11.14,
+     "colour": "rgb(248, 240, 216)",
+     "back": "rgb(58, 50, 31)"
+    },
+    "expected": "opposite",
+    "rowRelation": "opposite"
+   },
+   {
+    "id": "flail",
+    "file": "chip-weapon-flail.png",
+    "style": {
+     "color": "rgb(242, 240, 234)",
+     "bg": "rgb(47, 45, 42)",
+     "layers": 2,
+     "svgTiles": 1,
+     "imgHash": 1858702422,
+     "border": "dashed rgb(255, 74, 94)",
+     "relation": "opposite"
+    },
+    "socket": {
+     "color": "rgb(243, 230, 196)",
+     "bg": "rgb(47, 45, 42)",
+     "layers": 2,
+     "svgTiles": 1,
+     "imgHash": 1858702422,
+     "border": "dashed rgb(255, 74, 94)",
+     "relation": null
+    },
+    "contrast": {
+     "ratio": 11.71,
+     "colour": "rgb(242, 240, 234)",
+     "back": "rgb(49, 47, 44)"
+    },
+    "expected": "opposite",
+    "rowRelation": "opposite"
+   },
+   {
+    "id": "warhammer",
+    "file": "chip-weapon-warhammer.png",
+    "style": {
+     "color": "rgb(244, 238, 238)",
+     "bg": "rgb(56, 50, 50)",
+     "layers": 3,
+     "svgTiles": 0,
+     "imgHash": 1460640422,
+     "border": "dashed rgb(255, 74, 94)",
+     "relation": "opposite"
+    },
+    "socket": {
+     "color": "rgb(243, 230, 196)",
+     "bg": "rgb(56, 50, 50)",
+     "layers": 3,
+     "svgTiles": 0,
+     "imgHash": 1460640422,
+     "border": "dashed rgb(255, 74, 94)",
+     "relation": null
+    },
+    "contrast": {
+     "ratio": 11.29,
+     "colour": "rgb(244, 238, 238)",
+     "back": "rgb(54, 48, 48)"
+    },
+    "expected": "opposite",
+    "rowRelation": "opposite"
+   },
+   {
+    "id": "maul",
+    "file": "chip-weapon-maul.png",
+    "style": {
+     "color": "rgb(246, 235, 228)",
+     "bg": "rgb(58, 44, 38)",
+     "layers": 3,
+     "svgTiles": 0,
+     "imgHash": 1017655523,
+     "border": "dashed rgb(255, 74, 94)",
+     "relation": "opposite"
+    },
+    "socket": {
+     "color": "rgb(243, 230, 196)",
+     "bg": "rgb(58, 44, 38)",
+     "layers": 3,
+     "svgTiles": 0,
+     "imgHash": 1017655523,
+     "border": "dashed rgb(255, 74, 94)",
+     "relation": null
+    },
+    "contrast": {
+     "ratio": 11.74,
+     "colour": "rgb(246, 235, 228)",
+     "back": "rgb(56, 42, 37)"
+    },
+    "expected": "opposite",
+    "rowRelation": "opposite"
+   },
+   {
+    "id": "bow",
+    "file": "chip-weapon-bow.png",
+    "style": {
+     "color": "rgb(239, 246, 226)",
+     "bg": "rgb(42, 58, 30)",
+     "layers": 2,
+     "svgTiles": 1,
+     "imgHash": 594063784,
+     "border": "solid rgb(169, 212, 122)",
+     "relation": "synchronous"
+    },
+    "socket": {
+     "color": "rgb(243, 230, 196)",
+     "bg": "rgb(42, 58, 30)",
+     "layers": 2,
+     "svgTiles": 1,
+     "imgHash": 594063784,
+     "border": "solid rgb(169, 212, 122)",
+     "relation": null
+    },
+    "contrast": {
+     "ratio": 11.17,
+     "colour": "rgb(239, 246, 226)",
+     "back": "rgb(41, 57, 29)"
+    },
+    "expected": "synchronous",
+    "rowRelation": "synchronous"
+   }
+  ]
+ },
+ "pairs": [
+  {
+   "race": "elf",
+   "sub": "wood",
+   "cls": "Archer",
+   "weapon": "bow",
+   "sign": "serpent",
+   "file": "pair-elf-Archer-bow-serpent.png",
+   "seen": {
+    "class": {
+     "rel": "complementary",
+     "border": "double",
+     "ring": "rgb(101, 42, 122)",
+     "pip": "linear-gradient(90deg, rgb(63, 122, 42) 50%, rgb(101, 42, 12",
+     "pipTransform": "none",
+     "title": "Archer with Elf: works well (complementary accent)"
+    },
+    "sign": {
+     "rel": "synchronous",
+     "border": "solid",
+     "ring": "rgb(169, 212, 122)",
+     "pip": "rgb(169, 212, 122)",
+     "pipTransform": "none",
+     "title": "The Serpent with Archer: typical pair (shared accent)"
+    },
+    "weapon": {
+     "rel": "synchronous",
+     "border": "solid",
+     "ring": "rgb(169, 212, 122)",
+     "pip": "rgb(169, 212, 122)",
+     "pipTransform": "none",
+     "title": "Bow with Archer: typical pair (shared accent)"
+    }
+   },
+   "socketBorder": "solid rgb(169, 212, 122)",
+   "expected": {
+    "class": "complementary",
+    "sign": "synchronous",
+    "weapon": "synchronous"
+   }
+  },
+  {
+   "race": "elf",
+   "sub": "wood",
+   "cls": "Archer",
+   "weapon": "dagger",
+   "sign": "storm",
+   "file": "pair-elf-Archer-dagger-storm.png",
+   "seen": {
+    "class": {
+     "rel": "complementary",
+     "border": "double",
+     "ring": "rgb(101, 42, 122)",
+     "pip": "linear-gradient(90deg, rgb(63, 122, 42) 50%, rgb(101, 42, 12",
+     "pipTransform": "none",
+     "title": "Archer with Elf: works well (complementary accent)"
+    },
+    "sign": {
+     "rel": "complementary",
+     "border": "double",
+     "ring": "rgb(165, 122, 212)",
+     "pip": "linear-gradient(90deg, rgb(169, 212, 122) 50%, rgb(165, 122,",
+     "pipTransform": "none",
+     "title": "The Storm with Archer: works well (complementary accent)"
+    },
+    "weapon": {
+     "rel": "complementary",
+     "border": "double",
+     "ring": "rgb(165, 122, 212)",
+     "pip": "linear-gradient(90deg, rgb(169, 212, 122) 50%, rgb(165, 122,",
+     "pipTransform": "none",
+     "title": "Dagger with Archer: works well (complementary accent)"
+    }
+   },
+   "socketBorder": "double rgb(165, 122, 212)",
+   "expected": {
+    "class": "complementary",
+    "sign": "complementary",
+    "weapon": "complementary"
+   }
+  },
+  {
+   "race": "elf",
+   "sub": "wood",
+   "cls": "Archer",
+   "weapon": "maul",
+   "sign": "flame",
+   "file": "pair-elf-Archer-maul-flame.png",
+   "seen": {
+    "class": {
+     "rel": "complementary",
+     "border": "double",
+     "ring": "rgb(101, 42, 122)",
+     "pip": "linear-gradient(90deg, rgb(63, 122, 42) 50%, rgb(101, 42, 12",
+     "pipTransform": "none",
+     "title": "Archer with Elf: works well (complementary accent)"
+    },
+    "sign": {
+     "rel": "opposite",
+     "border": "dashed",
+     "ring": "rgb(255, 74, 94)",
+     "pip": "rgb(255, 74, 94)",
+     "pipTransform": "matrix(0.608112, 0.608112, -0.608112, 0.608112, 0, 0)",
+     "title": "The Flame with Archer: atypical (contrasting accent)"
+    },
+    "weapon": {
+     "rel": "opposite",
+     "border": "dashed",
+     "ring": "rgb(255, 74, 94)",
+     "pip": "rgb(255, 74, 94)",
+     "pipTransform": "matrix(0.608112, 0.608112, -0.608112, 0.608112, 0, 0)",
+     "title": "Maul with Archer: atypical (contrasting accent)"
+    }
+   },
+   "socketBorder": "dashed rgb(255, 74, 94)",
+   "expected": {
+    "class": "complementary",
+    "sign": "opposite",
+    "weapon": "opposite"
+   }
+  },
+  {
+   "race": "ork",
+   "sub": "bloodfang",
+   "cls": "Barbarian",
+   "weapon": "greataxe",
+   "sign": "flame",
+   "file": "pair-ork-Barbarian-greataxe-flame.png",
+   "seen": {
+    "class": {
+     "rel": "synchronous",
+     "border": "solid",
+     "ring": "rgb(236, 106, 76)",
+     "pip": "rgb(236, 106, 76)",
+     "pipTransform": "none",
+     "title": "Barbarian with Ork: typical pair (shared accent)"
+    },
+    "sign": {
+     "rel": "synchronous",
+     "border": "solid",
+     "ring": "rgb(224, 112, 58)",
+     "pip": "rgb(224, 112, 58)",
+     "pipTransform": "none",
+     "title": "The Flame with Barbarian: typical pair (shared accent)"
+    },
+    "weapon": {
+     "rel": "synchronous",
+     "border": "solid",
+     "ring": "rgb(224, 112, 58)",
+     "pip": "rgb(224, 112, 58)",
+     "pipTransform": "none",
+     "title": "Greataxe with Barbarian: typical pair (shared accent)"
+    }
+   },
+   "socketBorder": "solid rgb(224, 112, 58)",
+   "expected": {
+    "class": "synchronous",
+    "sign": "synchronous",
+    "weapon": "synchronous"
+   }
+  },
+  {
+   "race": "ork",
+   "sub": "ironhide",
+   "cls": "Mage",
+   "weapon": "maul",
+   "sign": "mountain",
+   "file": "pair-ork-Mage-maul-mountain.png",
+   "seen": {
+    "class": {
+     "rel": "opposite",
+     "border": "dashed",
+     "ring": "rgb(255, 74, 94)",
+     "pip": "rgb(255, 74, 94)",
+     "pipTransform": "matrix(0.608112, 0.608112, -0.608112, 0.608112, 0, 0)",
+     "title": "Mage with Ork: atypical (contrasting accent)"
+    },
+    "sign": {
+     "rel": "opposite",
+     "border": "dashed",
+     "ring": "rgb(255, 74, 94)",
+     "pip": "rgb(255, 74, 94)",
+     "pipTransform": "matrix(0.608112, 0.608112, -0.608112, 0.608112, 0, 0)",
+     "title": "The Mountain with Mage: atypical (contrasting accent)"
+    },
+    "weapon": {
+     "rel": "opposite",
+     "border": "dashed",
+     "ring": "rgb(255, 74, 94)",
+     "pip": "rgb(255, 74, 94)",
+     "pipTransform": "matrix(0.608112, 0.608112, -0.608112, 0.608112, 0, 0)",
+     "title": "Maul with Mage: atypical (contrasting accent)"
+    }
+   },
+   "socketBorder": "dashed rgb(255, 74, 94)",
+   "expected": {
+    "class": "opposite",
+    "sign": "opposite",
+    "weapon": "opposite"
+   }
+  },
+  {
+   "race": "dwarf",
+   "sub": "forge",
+   "cls": "Warrior",
+   "weapon": "longsword",
+   "sign": "mountain",
+   "file": "pair-dwarf-Warrior-longsword-mountain.png",
+   "seen": {
+    "class": {
+     "rel": "synchronous",
+     "border": "solid",
+     "ring": "rgb(255, 122, 46)",
+     "pip": "rgb(255, 122, 46)",
+     "pipTransform": "none",
+     "title": "Warrior with Dwarf: typical pair (shared accent)"
+    },
+    "sign": {
+     "rel": "synchronous",
+     "border": "solid",
+     "ring": "rgb(212, 172, 82)",
+     "pip": "rgb(212, 172, 82)",
+     "pipTransform": "none",
+     "title": "The Mountain with Warrior: typical pair (shared accent)"
+    },
+    "weapon": {
+     "rel": "synchronous",
+     "border": "solid",
+     "ring": "rgb(212, 172, 82)",
+     "pip": "rgb(212, 172, 82)",
+     "pipTransform": "none",
+     "title": "Longsword with Warrior: typical pair (shared accent)"
+    }
+   },
+   "socketBorder": "solid rgb(212, 172, 82)",
+   "expected": {
+    "class": "synchronous",
+    "sign": "synchronous",
+    "weapon": "synchronous"
+   }
+  },
+  {
+   "race": "dwarf",
+   "sub": "deep",
+   "cls": "Priest",
+   "weapon": "warhammer",
+   "sign": "moon",
+   "file": "pair-dwarf-Priest-warhammer-moon.png",
+   "seen": {
+    "class": {
+     "rel": "opposite",
+     "border": "dashed",
+     "ring": "rgb(255, 74, 94)",
+     "pip": "rgb(255, 74, 94)",
+     "pipTransform": "matrix(0.608112, 0.608112, -0.608112, 0.608112, 0, 0)",
+     "title": "Priest with Dwarf: atypical (contrasting accent)"
+    },
+    "sign": {
+     "rel": "complementary",
+     "border": "double",
+     "ring": "rgb(18, 60, 166)",
+     "pip": "linear-gradient(90deg, rgb(166, 124, 18) 50%, rgb(18, 60, 16",
+     "pipTransform": "none",
+     "title": "The Moon with Priest: works well (complementary accent)"
+    },
+    "weapon": {
+     "rel": "complementary",
+     "border": "double",
+     "ring": "rgb(18, 60, 166)",
+     "pip": "linear-gradient(90deg, rgb(166, 124, 18) 50%, rgb(18, 60, 16",
+     "pipTransform": "none",
+     "title": "War hammer with Priest: works well (complementary accent)"
+    }
+   },
+   "socketBorder": "double rgb(18, 60, 166)",
+   "expected": {
+    "class": "opposite",
+    "sign": "complementary",
+    "weapon": "complementary"
+   }
+  },
+  {
+   "race": "human",
+   "sub": "nomad",
+   "cls": "Necromancer",
+   "weapon": "bow",
+   "sign": "flame",
+   "file": "pair-human-Necromancer-bow-flame.png",
+   "seen": {
+    "class": {
+     "rel": "complementary",
+     "border": "double",
+     "ring": "rgb(143, 95, 63)",
+     "pip": "linear-gradient(90deg, rgb(63, 111, 143) 50%, rgb(143, 95, 6",
+     "pipTransform": "none",
+     "title": "Necromancer with Human: works well (complementary accent)"
+    },
+    "sign": {
+     "rel": "opposite",
+     "border": "dashed",
+     "ring": "rgb(255, 74, 94)",
+     "pip": "rgb(255, 74, 94)",
+     "pipTransform": "matrix(0.608112, 0.608112, -0.608112, 0.608112, 0, 0)",
+     "title": "The Flame with Necromancer: atypical (contrasting accent)"
+    },
+    "weapon": {
+     "rel": "opposite",
+     "border": "dashed",
+     "ring": "rgb(255, 74, 94)",
+     "pip": "rgb(255, 74, 94)",
+     "pipTransform": "matrix(0.608112, 0.608112, -0.608112, 0.608112, 0, 0)",
+     "title": "Bow with Necromancer: atypical (contrasting accent)"
+    }
+   },
+   "socketBorder": "dashed rgb(255, 74, 94)",
+   "expected": {
+    "class": "complementary",
+    "sign": "opposite",
+    "weapon": "opposite"
+   }
+  }
+ ],
+ "heroes": [
+  {
+   "race": "ork",
+   "sub": "ironhide",
+   "file": "hero-ork-ironhide.png",
+   "material": "clay",
+   "contrastName": {
+    "ratio": 10.81,
+    "colour": "rgb(244, 232, 246)",
+    "back": "rgb(63, 40, 83)"
+   },
+   "tabs": [
+    "clay",
+    "wood"
+   ]
+  },
+  {
+   "race": "elf",
+   "sub": "high",
+   "file": "hero-elf-high.png",
+   "material": "scroll",
+   "contrastName": {
+    "ratio": 10.61,
+    "colour": "rgb(59, 42, 14)",
+    "back": "rgb(245, 224, 176)"
+   },
+   "tabs": [
+    "scroll",
+    "clay",
+    "wood"
+   ]
+  },
+  {
+   "race": "human",
+   "sub": "islander",
+   "file": "hero-human-islander.png",
+   "material": "wood",
+   "contrastName": {
+    "ratio": 8.27,
+    "colour": "rgb(16, 36, 31)",
+    "back": "rgb(173, 189, 178)"
+   },
+   "tabs": [
+    "wood",
+    "scroll",
+    "clay",
+    "wood"
+   ]
+  },
+  {
+   "race": "dwarf",
+   "sub": "mountain",
+   "file": "hero-dwarf-mountain.png",
+   "material": "stone",
+   "contrastName": {
+    "ratio": 7.68,
+    "colour": "rgb(242, 238, 228)",
+    "back": "rgb(78, 73, 68)"
+   },
+   "tabs": [
+    "stone",
+    "wood",
+    "scroll",
+    "clay",
+    "wood"
+   ]
+  }
+ ],
+ "layout": {
+  "320": {
+   "newAudit": {
+    "overflow": 0,
+    "clipped": 0,
+    "tiny": 0,
+    "samples": []
+   },
+   "newPlate": {
+    "outside": [],
+    "rollsInside": true,
+    "badge": true,
+    "badgeNameOverlap": 0,
+    "material": "scroll",
+    "plaqueCentred": true
+   },
+   "heroAudit": {
+    "overflow": 0,
+    "clipped": 0,
+    "tiny": 0,
+    "samples": []
+   },
+   "heroPlate": {
+    "outside": [],
+    "rollsInside": true,
+    "badge": true,
+    "badgeNameOverlap": 0,
+    "material": null,
+    "plaqueCentred": true
+   },
+   "roll": {
+    "label": "Roll",
+    "h": 44
+   },
+   "heroContrast": {
+    "name": {
+     "ratio": 11.99,
+     "colour": "rgb(44, 23, 61)",
+     "back": "rgb(227, 219, 231)"
+    },
+    "tag": {
+     "ratio": 12.16,
+     "colour": "rgb(236, 232, 214)",
+     "back": "rgb(29, 41, 43)"
+    }
+   }
+  },
+  "390": {
+   "newAudit": {
+    "overflow": 0,
+    "clipped": 0,
+    "tiny": 0,
+    "samples": []
+   },
+   "newPlate": {
+    "outside": [],
+    "rollsInside": true,
+    "badge": true,
+    "badgeNameOverlap": 0,
+    "material": "scroll",
+    "plaqueCentred": true
+   },
+   "heroAudit": {
+    "overflow": 0,
+    "clipped": 0,
+    "tiny": 0,
+    "samples": []
+   },
+   "heroPlate": {
+    "outside": [],
+    "rollsInside": true,
+    "badge": true,
+    "badgeNameOverlap": 0,
+    "material": null,
+    "plaqueCentred": true
+   },
+   "roll": {
+    "label": "Roll",
+    "h": 44
+   },
+   "heroContrast": {
+    "name": {
+     "ratio": 11.52,
+     "colour": "rgb(44, 23, 61)",
+     "back": "rgb(224, 214, 231)"
+    },
+    "tag": {
+     "ratio": 12,
+     "colour": "rgb(236, 232, 214)",
+     "back": "rgb(30, 42, 44)"
+    }
+   }
+  },
+  "820": {
+   "newAudit": {
+    "overflow": 0,
+    "clipped": 0,
+    "tiny": 0,
+    "samples": []
+   },
+   "newPlate": {
+    "outside": [],
+    "rollsInside": true,
+    "badge": true,
+    "badgeNameOverlap": 0,
+    "material": "scroll",
+    "plaqueCentred": true
+   },
+   "heroAudit": {
+    "overflow": 0,
+    "clipped": 0,
+    "tiny": 0,
+    "samples": []
+   },
+   "heroPlate": {
+    "outside": [],
+    "rollsInside": true,
+    "badge": true,
+    "badgeNameOverlap": 0,
+    "material": null,
+    "plaqueCentred": true
+   },
+   "roll": {
+    "label": "Roll",
+    "h": 44
+   },
+   "heroContrast": {
+    "name": {
+     "ratio": 12.01,
+     "colour": "rgb(44, 23, 61)",
+     "back": "rgb(229, 218, 237)"
+    },
+    "tag": {
+     "ratio": 12.16,
+     "colour": "rgb(236, 232, 214)",
+     "back": "rgb(29, 41, 43)"
+    }
+   }
+  },
+  "1280": {
+   "newAudit": {
+    "overflow": 0,
+    "clipped": 0,
+    "tiny": 0,
+    "samples": []
+   },
+   "newPlate": {
+    "outside": [],
+    "rollsInside": true,
+    "badge": true,
+    "badgeNameOverlap": 0,
+    "material": "scroll",
+    "plaqueCentred": true
+   },
+   "heroAudit": {
+    "overflow": 0,
+    "clipped": 0,
+    "tiny": 0,
+    "samples": []
+   },
+   "heroPlate": {
+    "outside": [],
+    "rollsInside": true,
+    "badge": true,
+    "badgeNameOverlap": 0,
+    "material": null,
+    "plaqueCentred": true
+   },
+   "roll": {
+    "label": "Roll",
+    "h": 44
+   },
+   "heroContrast": {
+    "name": {
+     "ratio": 11.39,
+     "colour": "rgb(44, 23, 61)",
+     "back": "rgb(224, 212, 234)"
+    },
+    "tag": {
+     "ratio": 12.16,
+     "colour": "rgb(236, 232, 214)",
+     "back": "rgb(29, 41, 43)"
+    }
+   }
+  },
+  "1920": {
+   "newAudit": {
+    "overflow": 0,
+    "clipped": 0,
+    "tiny": 0,
+    "samples": []
+   },
+   "newPlate": {
+    "outside": [],
+    "rollsInside": true,
+    "badge": true,
+    "badgeNameOverlap": 0,
+    "material": "scroll",
+    "plaqueCentred": true
+   },
+   "heroAudit": {
+    "overflow": 0,
+    "clipped": 0,
+    "tiny": 0,
+    "samples": []
+   },
+   "heroPlate": {
+    "outside": [],
+    "rollsInside": true,
+    "badge": true,
+    "badgeNameOverlap": 0,
+    "material": null,
+    "plaqueCentred": true
+   },
+   "roll": {
+    "label": "Roll",
+    "h": 44
+   },
+   "heroContrast": {
+    "name": {
+     "ratio": 11.6,
+     "colour": "rgb(44, 23, 61)",
+     "back": "rgb(226, 214, 235)"
+    },
+    "tag": {
+     "ratio": 12,
+     "colour": "rgb(236, 232, 214)",
+     "back": "rgb(30, 42, 44)"
+    }
+   }
+  },
+  "2560": {
+   "newAudit": {
+    "overflow": 0,
+    "clipped": 0,
+    "tiny": 0,
+    "samples": []
+   },
+   "newPlate": {
+    "outside": [],
+    "rollsInside": true,
+    "badge": true,
+    "badgeNameOverlap": 0,
+    "material": "scroll",
+    "plaqueCentred": true
+   },
+   "heroAudit": {
+    "overflow": 0,
+    "clipped": 0,
+    "tiny": 0,
+    "samples": []
+   },
+   "heroPlate": {
+    "outside": [],
+    "rollsInside": true,
+    "badge": true,
+    "badgeNameOverlap": 0,
+    "material": null,
+    "plaqueCentred": true
+   },
+   "roll": {
+    "label": "Roll",
+    "h": 44
+   },
+   "heroContrast": {
+    "name": {
+     "ratio": 11.6,
+     "colour": "rgb(44, 23, 61)",
+     "back": "rgb(226, 214, 235)"
+    },
+    "tag": {
+     "ratio": 12.14,
+     "colour": "rgb(236, 232, 214)",
+     "back": "rgb(30, 41, 43)"
+    }
+   }
+  },
+  "844x390": {
+   "newAudit": {
+    "overflow": 0,
+    "clipped": 0,
+    "tiny": 0,
+    "samples": []
+   },
+   "newPlate": {
+    "outside": [],
+    "rollsInside": true,
+    "badge": true,
+    "badgeNameOverlap": 0,
+    "material": "scroll",
+    "plaqueCentred": true
+   },
+   "heroAudit": {
+    "overflow": 0,
+    "clipped": 0,
+    "tiny": 0,
+    "samples": []
+   },
+   "heroPlate": {
+    "outside": [],
+    "rollsInside": true,
+    "badge": true,
+    "badgeNameOverlap": 0,
+    "material": null,
+    "plaqueCentred": true
+   },
+   "roll": {
+    "label": "Roll",
+    "h": 44
+   },
+   "heroContrast": {
+    "name": {
+     "ratio": 11.97,
+     "colour": "rgb(44, 23, 61)",
+     "back": "rgb(228, 218, 235)"
+    },
+    "tag": {
+     "ratio": 12,
+     "colour": "rgb(236, 232, 214)",
+     "back": "rgb(30, 42, 44)"
+    }
+   }
+  }
+ },
+ "summary": {
+  "plaques": 12,
+  "materials": {
+   "human": "wood",
+   "elf": "scroll",
+   "dwarf": "stone",
+   "ork": "clay"
+  },
+  "plaqueStylesDistinct": 12,
+  "subraceChipBgDistinct": 12,
+  "classChipsDistinct": 8,
+  "signChipsDistinct": 6,
+  "weaponChipsDistinct": 17,
+  "weaponRelationsMatch": "17/17",
+  "signRelationsMatch": "6/6",
+  "pairsMatch": "8/8",
+  "archerBow": {
+   "rel": "synchronous",
+   "border": "solid",
+   "ring": "rgb(169, 212, 122)",
+   "pip": "rgb(169, 212, 122)",
+   "pipTransform": "none",
+   "title": "Bow with Archer: typical pair (shared accent)"
+  },
+  "contrastMin": {
+   "plaqueName": 6.26,
+   "chips": 6.51,
+   "heroName": 7.68
+  },
+  "heroes": [
+   "ork:clay",
+   "elf:scroll",
+   "human:wood",
+   "dwarf:stone"
+  ],
+  "layout": {
+   "320": "new 0/0/0 inside:true · hero 0/0/0 inside:true badge:true overlap:0 centred:true roll:Roll/44 · contrast name 11.99 tag 12.16",
+   "390": "new 0/0/0 inside:true · hero 0/0/0 inside:true badge:true overlap:0 centred:true roll:Roll/44 · contrast name 11.52 tag 12",
+   "820": "new 0/0/0 inside:true · hero 0/0/0 inside:true badge:true overlap:0 centred:true roll:Roll/44 · contrast name 12.01 tag 12.16",
+   "1280": "new 0/0/0 inside:true · hero 0/0/0 inside:true badge:true overlap:0 centred:true roll:Roll/44 · contrast name 11.39 tag 12.16",
+   "1920": "new 0/0/0 inside:true · hero 0/0/0 inside:true badge:true overlap:0 centred:true roll:Roll/44 · contrast name 11.6 tag 12",
+   "2560": "new 0/0/0 inside:true · hero 0/0/0 inside:true badge:true overlap:0 centred:true roll:Roll/44 · contrast name 11.6 tag 12.14",
+   "844x390": "new 0/0/0 inside:true · hero 0/0/0 inside:true badge:true overlap:0 centred:true roll:Roll/44 · contrast name 11.97 tag 12"
+  },
+  "cspViolations": 0,
+  "pageErrors": 0
+ },
+ "csp": [],
+ "errors": []
+}

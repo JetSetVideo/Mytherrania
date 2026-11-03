@@ -1,0 +1,699 @@
+{
+  "tag": "dry-live",
+  "dist": "dist-qtheme",
+  "tree": "/Users/macmax/Desktop/Mytherrania",
+  "generated": "2026-11-03T15:21:36.260Z",
+  "themeModule": true,
+  "expectDistinct": {
+    "class": 8,
+    "sign": 6,
+    "weapon": 17
+  },
+  "oppositePair": [
+    "Archer",
+    "sabre"
+  ],
+  "relationModel": {
+    "archerBow": "synchronous",
+    "opposite": "opposite"
+  },
+  "viewports": {
+    "1280": {
+      "touch": false,
+      "themeMs": 0,
+      "viewerSteps": {
+        "cursor": 737,
+        "drags": 1117,
+        "wheels": 3577,
+        "wheelOff": 725,
+        "touch": 0,
+        "reset": 1273,
+        "gizmo": 441
+      },
+      "view0": {
+        "hasDebugView": true,
+        "yaw": 0.55,
+        "pitch": 0.18,
+        "distance": 5.57796180865693,
+        "target": [
+          0,
+          0.5993537234042552,
+          0
+        ],
+        "position": [
+          2.8684252121625753,
+          1.5979738465936442,
+          4.678520342012695
+        ],
+        "fov": 38,
+        "heightM": 1.802,
+        "canvas": {
+          "x": 62.15625,
+          "y": 110.296875,
+          "w": 434,
+          "h": 578.65625
+        }
+      },
+      "cursor": {
+        "on": {
+          "el": "canvas.preview-canvas.viewer-grab",
+          "cursor": "grab"
+        },
+        "off": "default",
+        "chest": [
+          279.2,
+          321.6
+        ],
+        "offPoint": [
+          127.25625,
+          399.625
+        ]
+      },
+      "drag": {
+        "dyaw": 0.72,
+        "dpitch": 0
+      },
+      "pitchLimit": 1.15,
+      "wheel": {
+        "distance": [
+          5.578,
+          3.892
+        ],
+        "scrollBefore": 219,
+        "scrollAfter": 219,
+        "fixedPoint": {
+          "offsetPx": 2.8,
+          "scale": 1.412,
+          "err": 3.78,
+          "errAtCursor": 5.25,
+          "errCentreHyp": 47.95,
+          "errNoZoom": 47.65
+        },
+        "projDriftPx": 0.3,
+        "projPoint": "debugPick hit",
+        "qCameraVsDebugProjectPx": 0,
+        "raw1": {
+          "yaw": 0.55,
+          "pitch": 0.18,
+          "distance": 3.8916119016282904,
+          "target": [
+            0.03295873351769939,
+            0.8442674246176306,
+            0.021405443298467684
+          ],
+          "position": [
+            2.0341910971488026,
+            1.540981043305004,
+            3.2854983269624682
+          ],
+          "fov": 38,
+          "aspect": 0.7495682210708118,
+          "dir": [
+            -0.51424253348433,
+            -0.17902957342582418,
+            -0.8387508739754523
+          ]
+        }
+      },
+      "ctrl+wheel (pinch)": {
+        "distance": [
+          5.578,
+          3.719
+        ],
+        "scrollBefore": 219,
+        "scrollAfter": 219,
+        "fixedPoint": {
+          "offsetPx": 1.4,
+          "scale": 1.475,
+          "err": 4.19,
+          "errAtCursor": 5.86,
+          "errCentreHyp": 45.54,
+          "errNoZoom": 49.9
+        },
+        "projDriftPx": 0.3,
+        "projPoint": "debugPick hit",
+        "qCameraVsDebugProjectPx": 0,
+        "raw1": {
+          "yaw": 0.55,
+          "pitch": 0.18,
+          "distance": 3.7186412057712865,
+          "target": [
+            0.036339345718857,
+            0.8693884823217435,
+            0.023601022286571904
+          ],
+          "position": [
+            1.9486228204939071,
+            1.5351352311146695,
+            3.1426145836283683
+          ],
+          "fov": 38,
+          "aspect": 0.7495682210708118,
+          "dir": [
+            -0.51424253348433,
+            -0.17902957342582418,
+            -0.8387508739754523
+          ]
+        }
+      },
+      "wheelOff": {
+        "scroll": [
+          219,
+          379
+        ],
+        "room": 1722,
+        "distance": [
+          5.578,
+          5.578
+        ]
+      },
+      "reset": {
+        "moved": [
+          1.09,
+          0.324,
+          4.132
+        ],
+        "back": [
+          0.55,
+          0.18,
+          5.578
+        ],
+        "initial": [
+          0.55,
+          0.18,
+          5.578
+        ]
+      },
+      "gizmo": {
+        "debug": {
+          "rect": {
+            "left": 401.15625,
+            "top": 118.296875,
+            "width": 87,
+            "height": 87,
+            "x": 401.15625,
+            "y": 118.296875,
+            "w": 87,
+            "h": 87
+          },
+          "ends": [
+            {
+              "id": "-Z",
+              "x": 59.962034275171106,
+              "y": 38.693009437647504,
+              "r": 7.3950000000000005,
+              "depth": -0.8387508739754523,
+              "colour": "#3fae4f",
+              "positive": false,
+              "clientX": 461.1182842751711,
+              "clientY": 156.9898844376475
+            },
+            {
+              "id": "-X",
+              "x": 16.649740177735872,
+              "y": 40.55280902599482,
+              "r": 7.3950000000000005,
+              "depth": -0.51424253348433,
+              "colour": "#e0443a",
+              "positive": false,
+              "clientX": 417.80599017773585,
+              "clientY": 158.8496840259948
+            },
+            {
+              "id": "-Y",
+              "x": 43.5,
+              "y": 74.48615710436188,
+              "r": 7.3950000000000005,
+              "depth": -0.17902957342582418,
+              "colour": "#e8c62e",
+              "positive": false,
+              "clientX": 444.65625,
+              "clientY": 192.7830321043619
+            },
+            {
+              "id": "+Y",
+              "x": 43.5,
+              "y": 12.51384289563812,
+              "r": 10.005,
+              "depth": 0.17902957342582418,
+              "colour": "#e8c62e",
+              "positive": true,
+              "clientX": 444.65625,
+              "clientY": 130.8107178956381
+            },
+            {
+              "id": "+X",
+              "x": 70.35025982226412,
+              "y": 46.44719097400518,
+              "r": 10.005,
+              "depth": 0.51424253348433,
+              "colour": "#e0443a",
+              "positive": true,
+              "clientX": 471.5065098222641,
+              "clientY": 164.7440659740052
+            },
+            {
+              "id": "+Z",
+              "x": 27.03796572482889,
+              "y": 48.306990562352496,
+              "r": 10.005,
+              "depth": 0.8387508739754523,
+              "colour": "#3fae4f",
+              "positive": true,
+              "clientX": 428.1942157248289,
+              "clientY": 166.6038655623525
+            }
+          ],
+          "endsById": {
+            "-Z": {
+              "x": 461.1182842751711,
+              "y": 156.9898844376475,
+              "colour": "#3fae4f",
+              "depth": -0.8387508739754523
+            },
+            "-X": {
+              "x": 417.80599017773585,
+              "y": 158.8496840259948,
+              "colour": "#e0443a",
+              "depth": -0.51424253348433
+            },
+            "-Y": {
+              "x": 444.65625,
+              "y": 192.7830321043619,
+              "colour": "#e8c62e",
+              "depth": -0.17902957342582418
+            },
+            "+Y": {
+              "x": 444.65625,
+              "y": 130.8107178956381,
+              "colour": "#e8c62e",
+              "depth": 0.17902957342582418
+            },
+            "+X": {
+              "x": 471.5065098222641,
+              "y": 164.7440659740052,
+              "colour": "#e0443a",
+              "depth": 0.51424253348433
+            },
+            "+Z": {
+              "x": 428.1942157248289,
+              "y": 166.6038655623525,
+              "colour": "#3fae4f",
+              "depth": 0.8387508739754523
+            }
+          },
+          "labels": {
+            "+X": "X",
+            "+Y": "Y",
+            "+Z": "Z",
+            "-X": "−X (on hover)",
+            "-Y": "−Y (on hover)",
+            "-Z": "−Z (on hover)"
+          },
+          "hot": null,
+          "className": "viewer-gizmo"
+        },
+        "dom": {
+          "cls": "viewer-gizmo",
+          "tag": "CANVAS",
+          "rect": {
+            "x": 401.15625,
+            "y": 118.296875,
+            "w": 87,
+            "h": 87
+          },
+          "text": ""
+        },
+        "rect": {
+          "x": 401.15625,
+          "y": 118.296875,
+          "w": 87,
+          "h": 87
+        },
+        "centreFrac": [
+          0.88,
+          0.09
+        ],
+        "overlap": {
+          "area": 0,
+          "hit": []
+        },
+        "colours": {
+          "-z": {
+            "hue": 4,
+            "sat": 0.74,
+            "name": "red",
+            "rgb": [
+              224,
+              68,
+              58
+            ]
+          },
+          "-x": {
+            "hue": 4,
+            "sat": 0.74,
+            "name": "red",
+            "rgb": [
+              224,
+              68,
+              58
+            ]
+          },
+          "-y": {
+            "hue": 49,
+            "sat": 0.8,
+            "name": "yellow",
+            "rgb": [
+              232,
+              198,
+              46
+            ]
+          },
+          "+y": {
+            "hue": 49,
+            "sat": 0.8,
+            "name": "yellow",
+            "rgb": [
+              232,
+              198,
+              46
+            ]
+          },
+          "+x": {
+            "hue": 4,
+            "sat": 0.74,
+            "name": "red",
+            "rgb": [
+              224,
+              68,
+              58
+            ]
+          },
+          "+z": {
+            "hue": 129,
+            "sat": 0.64,
+            "name": "green",
+            "rgb": [
+              63,
+              174,
+              79
+            ]
+          }
+        },
+        "hueBins": {
+          "red": 374,
+          "yellow": 427,
+          "green": 320,
+          "blue": 0,
+          "other": 2
+        },
+        "snaps": [
+          {
+            "key": "+x",
+            "at": [
+              471.5,
+              164.7
+            ],
+            "dir": [
+              1,
+              0,
+              0
+            ],
+            "dotSigned": 1,
+            "yaw": 1.571,
+            "pitch": 0
+          },
+          {
+            "key": "-x",
+            "at": [
+              417.8,
+              158.8
+            ],
+            "dir": [
+              -1,
+              0,
+              0
+            ],
+            "dotSigned": 1,
+            "yaw": -1.571,
+            "pitch": 0
+          },
+          {
+            "key": "+y",
+            "at": [
+              444.7,
+              130.8
+            ],
+            "dir": [
+              0,
+              1,
+              0.001
+            ],
+            "dotSigned": 1,
+            "yaw": 0,
+            "pitch": 1.57
+          },
+          {
+            "key": "-y",
+            "at": [
+              444.7,
+              192.8
+            ],
+            "dir": [
+              0,
+              -1,
+              0.001
+            ],
+            "dotSigned": 1,
+            "yaw": 0,
+            "pitch": -1.57
+          },
+          {
+            "key": "+z",
+            "at": [
+              428.2,
+              166.6
+            ],
+            "dir": [
+              0,
+              0,
+              1
+            ],
+            "dotSigned": 1,
+            "yaw": 0,
+            "pitch": 0
+          },
+          {
+            "key": "-z",
+            "at": [
+              461.1,
+              157
+            ],
+            "dir": [
+              0,
+              0,
+              -1
+            ],
+            "dotSigned": 1,
+            "yaw": 3.142,
+            "pitch": 0
+          }
+        ]
+      },
+      "viewerMs": 15376,
+      "pageErrors": []
+    }
+  },
+  "checks": [
+    {
+      "lane": "V",
+      "vp": "1280",
+      "id": "debugView() exposed",
+      "pass": true,
+      "value": "yaw,pitch,distance,target,position,fov,aspect,dir,home,userMoved,over,dragging,pointers,cursor,limits,stats",
+      "need": "present"
+    },
+    {
+      "lane": "V",
+      "vp": "1280",
+      "id": "cursor over the model = grab",
+      "pass": true,
+      "value": "grab on canvas.preview-canvas.viewer-grab (off-model: default)",
+      "need": "grab"
+    },
+    {
+      "lane": "V",
+      "vp": "1280",
+      "id": "mouse drag 120 px changes yaw",
+      "pass": true,
+      "value": "dyaw 0.72 rad",
+      "need": "> 0.1"
+    },
+    {
+      "lane": "V",
+      "vp": "1280",
+      "id": "pitch limited on a 720 px vertical drag",
+      "pass": true,
+      "value": "pitch 1.15 rad",
+      "need": "|pitch| < 1.45"
+    },
+    {
+      "lane": "V",
+      "vp": "1280",
+      "id": "wheel over model zooms in",
+      "pass": true,
+      "value": "distance 5.578 -> 3.892",
+      "need": "falls"
+    },
+    {
+      "lane": "V",
+      "vp": "1280",
+      "id": "wheel keeps the point under the cursor (pixel fixed-point)",
+      "pass": true,
+      "value": "offset 2.8 px, err 5.25 at cursor vs 47.95 centre-zoom (scale 1.412)",
+      "need": "<= 14 px and beats centre"
+    },
+    {
+      "lane": "V",
+      "vp": "1280",
+      "id": "wheel keeps the point under the cursor (projection with Q's camera)",
+      "pass": true,
+      "value": "0.3 px",
+      "need": "<= 14"
+    },
+    {
+      "lane": "V",
+      "vp": "1280",
+      "id": "Q's camera (from debugView position/target/fov) agrees with debugProject",
+      "pass": true,
+      "value": "0 px",
+      "need": "<= 2"
+    },
+    {
+      "lane": "V",
+      "vp": "1280",
+      "id": "wheel over model does not scroll the page",
+      "pass": true,
+      "value": "scroll 219 -> 219",
+      "need": "unchanged"
+    },
+    {
+      "lane": "V",
+      "vp": "1280",
+      "id": "ctrl+wheel (pinch) over model zooms in",
+      "pass": true,
+      "value": "distance 5.578 -> 3.719",
+      "need": "falls"
+    },
+    {
+      "lane": "V",
+      "vp": "1280",
+      "id": "ctrl+wheel (pinch) keeps the point under the cursor (pixel fixed-point)",
+      "pass": true,
+      "value": "offset 1.4 px, err 5.86 at cursor vs 45.54 centre-zoom (scale 1.475)",
+      "need": "<= 14 px and beats centre"
+    },
+    {
+      "lane": "V",
+      "vp": "1280",
+      "id": "ctrl+wheel (pinch) keeps the point under the cursor (projection with Q's camera)",
+      "pass": true,
+      "value": "0.3 px",
+      "need": "<= 14"
+    },
+    {
+      "lane": "V",
+      "vp": "1280",
+      "id": "ctrl+wheel (pinch) over model does not scroll the page",
+      "pass": true,
+      "value": "scroll 219 -> 219",
+      "need": "unchanged"
+    },
+    {
+      "lane": "V",
+      "vp": "1280",
+      "id": "wheel off the model scrolls the page",
+      "pass": true,
+      "value": "scroll 219 -> 379, distance 5.578 -> 5.578",
+      "need": "changes"
+    },
+    {
+      "lane": "V",
+      "vp": "1280",
+      "id": "dblclick resets the view",
+      "pass": true,
+      "value": "moved 1.09,0.324,4.132 -> 0.55,0.18,5.578 (initial 0.55,0.18,5.578)",
+      "need": "back within 0.02"
+    },
+    {
+      "lane": "V",
+      "vp": "1280",
+      "id": "debugGizmo() exposed",
+      "pass": true,
+      "value": "rect,ends,endsById,labels,hot,className",
+      "need": "present"
+    },
+    {
+      "lane": "V",
+      "vp": "1280",
+      "id": "gizmo overlaps no socket / LV badge / plaque / chip",
+      "pass": true,
+      "value": "0 px2 ",
+      "need": "0 px2"
+    },
+    {
+      "lane": "V",
+      "vp": "1280",
+      "id": "gizmo in the viewer's top-right quadrant",
+      "pass": true,
+      "value": "centre at 0.88,0.09 of the canvas, 87x87 px",
+      "need": "x > 0.5, y < 0.5"
+    },
+    {
+      "lane": "V",
+      "vp": "1280",
+      "id": "gizmo axis colours on pixels: X red, Y yellow, Z green",
+      "pass": true,
+      "value": "X red h4, Y yellow h49, Z green h129",
+      "need": "red/yellow/green"
+    },
+    {
+      "lane": "V",
+      "vp": "1280",
+      "id": "gizmo labels X, Y, Z (declared by debugGizmo / DOM; pixels: see vision)",
+      "pass": true,
+      "value": "X Y Z",
+      "need": "X Y Z"
+    },
+    {
+      "lane": "V",
+      "vp": "1280",
+      "id": "clicking each axis end snaps onto that axis",
+      "pass": true,
+      "value": "+x:1 -x:1 +y:1 -y:1 +z:1 -z:1",
+      "need": "|dot| > 0.95, one convention"
+    },
+    {
+      "lane": "V",
+      "vp": "1280",
+      "id": "0 page/console errors",
+      "pass": true,
+      "value": "0 ",
+      "need": "0"
+    }
+  ],
+  "errors": [],
+  "summary": {
+    "T": {
+      "pass": 0,
+      "fail": 0,
+      "na": 0
+    },
+    "V": {
+      "pass": 22,
+      "fail": 0,
+      "na": 0
+    },
+    "pageErrors": 0
+  }
+}

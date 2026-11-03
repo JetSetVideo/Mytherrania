@@ -1,0 +1,58 @@
+[
+ {
+  "run": "V-r1/T-r1 build",
+  "sheet": "V-r1/sheet-races-unlabelled.png (tiles 1-4 = human/imperial, elf/high, dwarf/mountain, ork/greenhide)",
+  "question": "For each tile, which ONE material: fired clay, white parchment scroll, grained wood, stone/slate",
+  "answer": "1: grained wood - visible grain; 2: white parchment scroll - pale smooth; 3: stone/slate - grey speckled; 4: fired clay/earthenware - green crackle glaze.",
+  "verdict": "PASS 4/4 (wood, scroll, stone, clay in race order)"
+ },
+ {
+  "run": "V-r1/T-r1 build",
+  "sheet": "V-r1/sheet-races-swapped.png (same tiles, captions rotated: Elf, Dwarf, Orc, Human)",
+  "question": "Same question, captions to be ignored",
+  "answer": "TL: grained wood, TR: white parchment scroll, BL: stone/slate, BR: fired clay/earthenware.",
+  "verdict": "PASS: answers follow the pixels, not the swapped captions"
+ },
+ {
+  "run": "baseline-head (control)",
+  "sheet": "baseline-head/sheet-races-unlabelled.png (HEAD: one plaque look for every race)",
+  "question": "Same question",
+  "answer": "Backgrounds share dark, cracked, slate-like texture. 1-4: stone/slate.",
+  "verdict": "CONTROL OK: the model does not invent four materials for four identical plaques"
+ },
+ {
+  "run": "V-r1/T-r1 build",
+  "sheet": "V-r1/sheet-subraces.png",
+  "question": "Within each race row, clearly different palettes? Which plaque is purple?",
+  "answer": "Human: brown, tan, pale blue - yes. Elf: cream, green, lavender - yes. Dwarf: gray, dark brown, dark blue - yes. Orc: green, purple, dark red - yes. Purple: Elf/dark (light purple); Orc/ironhide is also purple.",
+  "verdict": "PASS, paired with pixel min dE76 per race (report subracePalette) and ork hue check"
+ },
+ {
+  "run": "V-r1",
+  "sheet": "V-r1/gizmo-1280.png",
+  "question": "List each letter and the colour it sits on",
+  "answer": "Y on yellow disc/line, Z on green disc/line, X on red disc/line.",
+  "verdict": "PASS labels X/Y/Z drawn (canvas text, invisible to DOM), paired with pixel hues X h4 red, Y h49 yellow, Z h129 green"
+ },
+ {
+  "run": "V-r1",
+  "sheet": "V-r1/gizmo-844x390.png",
+  "question": "Is there an axis gizmo with coloured lines and letters? Anything covering it?",
+  "answer": "A bright yellow circular button displays a black Y. Below it, faint dark circular buttons with X and Z ... The lower portion is heavily darkened, obscuring the X and Z buttons.",
+  "verdict": "FAIL corroborates elementFromPoint: sticky .screen-nav over 5/6 ends at 844x390"
+ },
+ {
+  "run": "r2",
+  "sheet": "r2/sheet-races-unlabelled.png",
+  "question": "For each tile, which ONE material: fired clay, white parchment scroll, grained wood, stone/slate",
+  "answer": "1: grained wood, 2: white parchment scroll, 3: stone/slate, 4: fired clay/earthenware.",
+  "verdict": "PASS 4/4 on the final build (human/elf/dwarf/ork order)"
+ },
+ {
+  "run": "r2",
+  "sheet": "r2/gizmo-844x390.png",
+  "question": "Letters + colours; anything covering it?",
+  "answer": "Y: yellow disc/line; Z: green disc; X: red disc. Yes, the top of Y is covered/darkened by a white bar.",
+  "verdict": "Labels PASS; NOTE Z-21: top ~5 px clipped by the scroll box at 844x390 (elementsFromPoint + pixel band rgb(230,234,238) confirm); ends unaffected"
+ }
+]

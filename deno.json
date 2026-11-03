@@ -18,7 +18,9 @@
   },
   "lint": {
     "exclude": [
-      "dist/"
+      "dist/",
+      "dist-*/",
+      "artifacts/"
     ]
   },
   "tasks": {

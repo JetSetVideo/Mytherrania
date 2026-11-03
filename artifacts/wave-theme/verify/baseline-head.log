@@ -1,0 +1,135 @@
+320 (theme 42438 ms, viewer 8592 ms)
+320: 13 pass / 21 fail / 0 n/a
+  FAIL [T] race plaque background stacks differ (4 races): 1/4 distinct structures
+  FAIL [T] sub-race plaque palettes distinct (min dE76 on pixels within a race): min 0 (human 0 imperial/nomad; elf 0 high/dark; dwarf 0.9 mountain/deep; ork 0.6 ironhide/bloodfang)
+  FAIL [T] an ork palette is purple (median hue 255-330, sat >= 0.15): [{"s":"greenhide","h":32,"sat":0.45},{"s":"ironhide","h":34,"sat":0.42},{"s":"bloodfang","h":32,"sat":0.39}]
+  FAIL [T] class chip computed style distinct per theme id: 1 distinct / 8 themes (8 ids)
+  FAIL [T] sign chip computed style distinct per theme id: 1 distinct / 6 themes (6 ids)
+  FAIL [T] weapon chip computed style distinct per theme id: 1 distinct / 17 themes (17 ids)
+  FAIL [T] relation Archer+bow shown synchronous (= Theme.relation): shown [], model null
+  FAIL [T] relation Mage+greataxe shown opposite: shown [], model null
+  FAIL [V] debugView() exposed: missing
+  FAIL [V] cursor over the model = grab: auto on canvas.preview-canvas (off-model: auto)
+  FAIL [V] wheel over model zooms in: distance 5.674 -> 5.674
+  FAIL [V] wheel keeps the point under the cursor (pixel fixed-point): no zoom
+  FAIL [V] wheel over model does not scroll the page: scroll 171 -> 0
+  FAIL [V] ctrl+wheel (pinch) over model zooms in: distance 5.674 -> 5.674
+  FAIL [V] ctrl+wheel (pinch) keeps the point under the cursor (pixel fixed-point): no zoom
+  FAIL [V] ctrl+wheel (pinch) over model does not scroll the page: scroll 171 -> 111
+  FAIL [V] touch two-finger pinch zooms: distance 5.674 -> 5.674
+  FAIL [V] dblclick resets the view: moved 1.492,1.15,5.674 -> 1.492,1.15,5.674 (initial 0.55,0.18,5.674)
+  FAIL [V] debugGizmo() exposed: missing
+  FAIL [V] gizmo in the viewer's top-right quadrant: no gizmo element / rect
+  FAIL [V] clicking each axis end snaps onto that axis: no clickable ends
+390 (theme 44655 ms, viewer 8603 ms)
+390: 13 pass / 21 fail / 0 n/a
+  FAIL [T] race plaque background stacks differ (4 races): 1/4 distinct structures
+  FAIL [T] sub-race plaque palettes distinct (min dE76 on pixels within a race): min 0 (human 0 imperial/nomad; elf 0.6 wood/dark; dwarf 0 forge/deep; ork 0 greenhide/ironhide)
+  FAIL [T] an ork palette is purple (median hue 255-330, sat >= 0.15): [{"s":"greenhide","h":26,"sat":0.5},{"s":"ironhide","h":26,"sat":0.5},{"s":"bloodfang","h":26,"sat":0.5}]
+  FAIL [T] class chip computed style distinct per theme id: 1 distinct / 8 themes (8 ids)
+  FAIL [T] sign chip computed style distinct per theme id: 1 distinct / 6 themes (6 ids)
+  FAIL [T] weapon chip computed style distinct per theme id: 1 distinct / 17 themes (17 ids)
+  FAIL [T] relation Archer+bow shown synchronous (= Theme.relation): shown [], model null
+  FAIL [T] relation Mage+greataxe shown opposite: shown [], model null
+  FAIL [V] debugView() exposed: missing
+  FAIL [V] cursor over the model = grab: auto on canvas.preview-canvas (off-model: auto)
+  FAIL [V] wheel over model zooms in: distance 5.78 -> 5.78
+  FAIL [V] wheel keeps the point under the cursor (pixel fixed-point): no zoom
+  FAIL [V] wheel over model does not scroll the page: scroll 55 -> 0
+  FAIL [V] ctrl+wheel (pinch) over model zooms in: distance 5.78 -> 5.78
+  FAIL [V] ctrl+wheel (pinch) keeps the point under the cursor (pixel fixed-point): no zoom
+  FAIL [V] ctrl+wheel (pinch) over model does not scroll the page: scroll 55 -> 0
+  FAIL [V] touch two-finger pinch zooms: distance 5.78 -> 5.78
+  FAIL [V] dblclick resets the view: moved 1.522,1.15,5.78 -> 1.522,1.15,5.78 (initial 0.55,0.18,5.78)
+  FAIL [V] debugGizmo() exposed: missing
+  FAIL [V] gizmo in the viewer's top-right quadrant: no gizmo element / rect
+  FAIL [V] clicking each axis end snaps onto that axis: no clickable ends
+820 (theme 47252 ms, viewer 8965 ms)
+820: 15 pass / 19 fail / 0 n/a
+  FAIL [T] race plaque background stacks differ (4 races): 1/4 distinct structures
+  FAIL [T] sub-race plaque palettes distinct (min dE76 on pixels within a race): min 0 (human 0 imperial/nomad; elf 0.3 wood/dark; dwarf 0.3 mountain/deep; ork 0 ironhide/bloodfang)
+  FAIL [T] an ork palette is purple (median hue 255-330, sat >= 0.15): [{"s":"greenhide","h":38,"sat":0.5},{"s":"ironhide","h":34,"sat":0.5},{"s":"bloodfang","h":34,"sat":0.5}]
+  FAIL [T] class chip computed style distinct per theme id: 1 distinct / 8 themes (8 ids)
+  FAIL [T] sign chip computed style distinct per theme id: 1 distinct / 6 themes (6 ids)
+  FAIL [T] weapon chip computed style distinct per theme id: 1 distinct / 17 themes (17 ids)
+  FAIL [T] relation Archer+bow shown synchronous (= Theme.relation): shown [], model null
+  FAIL [T] relation Mage+greataxe shown opposite: shown [], model null
+  FAIL [V] debugView() exposed: missing
+  FAIL [V] cursor over the model = grab: auto on canvas.preview-canvas (off-model: auto)
+  FAIL [V] wheel over model zooms in: distance 5.096 -> 5.096
+  FAIL [V] wheel keeps the point under the cursor (pixel fixed-point): no zoom
+  FAIL [V] ctrl+wheel (pinch) over model zooms in: distance 5.096 -> 5.096
+  FAIL [V] ctrl+wheel (pinch) keeps the point under the cursor (pixel fixed-point): no zoom
+  FAIL [V] touch two-finger pinch zooms: distance 5.096 -> 5.096
+  FAIL [V] dblclick resets the view: moved 1.522,1.15,5.096 -> 1.522,1.15,5.096 (initial 0.55,0.18,5.096)
+  FAIL [V] debugGizmo() exposed: missing
+  FAIL [V] gizmo in the viewer's top-right quadrant: no gizmo element / rect
+  FAIL [V] clicking each axis end snaps onto that axis: no clickable ends
+1280 (theme 51241 ms, viewer 7601 ms)
+1280: 12 pass / 20 fail / 0 n/a
+  FAIL [T] race plaque background stacks differ (4 races): 1/4 distinct structures
+  FAIL [T] sub-race plaque palettes distinct (min dE76 on pixels within a race): min 0 (human 0 imperial/nomad; elf 0.4 high/dark; dwarf 0 mountain/forge; ork 0 ironhide/bloodfang)
+  FAIL [T] an ork palette is purple (median hue 255-330, sat >= 0.15): [{"s":"greenhide","h":38,"sat":0.5},{"s":"ironhide","h":33,"sat":0.56},{"s":"bloodfang","h":33,"sat":0.56}]
+  FAIL [T] class chip computed style distinct per theme id: 1 distinct / 8 themes (8 ids)
+  FAIL [T] sign chip computed style distinct per theme id: 1 distinct / 6 themes (6 ids)
+  FAIL [T] weapon chip computed style distinct per theme id: 1 distinct / 17 themes (17 ids)
+  FAIL [T] relation Archer+bow shown synchronous (= Theme.relation): shown [], model null
+  FAIL [T] relation Mage+greataxe shown opposite: shown [], model null
+  FAIL [V] debugView() exposed: missing
+  FAIL [V] cursor over the model = grab: auto on canvas.preview-canvas (off-model: auto)
+  FAIL [V] wheel over model zooms in: distance 5.134 -> 5.134
+  FAIL [V] wheel keeps the point under the cursor (pixel fixed-point): no zoom
+  FAIL [V] wheel over model does not scroll the page: scroll 219 -> 0
+  FAIL [V] ctrl+wheel (pinch) over model zooms in: distance 5.134 -> 5.134
+  FAIL [V] ctrl+wheel (pinch) keeps the point under the cursor (pixel fixed-point): no zoom
+  FAIL [V] ctrl+wheel (pinch) over model does not scroll the page: scroll 219 -> 159
+  FAIL [V] dblclick resets the view: moved 1.81,1.15,5.134 -> 1.81,1.15,5.134 (initial 0.55,0.18,5.134)
+  FAIL [V] debugGizmo() exposed: missing
+  FAIL [V] gizmo in the viewer's top-right quadrant: no gizmo element / rect
+  FAIL [V] clicking each axis end snaps onto that axis: no clickable ends
+1920 (theme 56541 ms, viewer 8186 ms)
+1920: 12 pass / 20 fail / 0 n/a
+  FAIL [T] race plaque background stacks differ (4 races): 1/4 distinct structures
+  FAIL [T] sub-race plaque palettes distinct (min dE76 on pixels within a race): min 0 (human 0 imperial/nomad; elf 0.3 high/dark; dwarf 0 mountain/forge; ork 0 ironhide/bloodfang)
+  FAIL [T] an ork palette is purple (median hue 255-330, sat >= 0.15): [{"s":"greenhide","h":38,"sat":0.5},{"s":"ironhide","h":38,"sat":0.53},{"s":"bloodfang","h":38,"sat":0.53}]
+  FAIL [T] class chip computed style distinct per theme id: 1 distinct / 8 themes (8 ids)
+  FAIL [T] sign chip computed style distinct per theme id: 1 distinct / 6 themes (6 ids)
+  FAIL [T] weapon chip computed style distinct per theme id: 1 distinct / 17 themes (17 ids)
+  FAIL [T] relation Archer+bow shown synchronous (= Theme.relation): shown [], model null
+  FAIL [T] relation Mage+greataxe shown opposite: shown [], model null
+  FAIL [V] debugView() exposed: missing
+  FAIL [V] cursor over the model = grab: auto on canvas.preview-canvas (off-model: auto)
+  FAIL [V] wheel over model zooms in: distance 5.222 -> 5.222
+  FAIL [V] wheel keeps the point under the cursor (pixel fixed-point): no zoom
+  FAIL [V] wheel over model does not scroll the page: scroll 202 -> 0
+  FAIL [V] ctrl+wheel (pinch) over model zooms in: distance 5.222 -> 5.222
+  FAIL [V] ctrl+wheel (pinch) keeps the point under the cursor (pixel fixed-point): no zoom
+  FAIL [V] ctrl+wheel (pinch) over model does not scroll the page: scroll 202 -> 142
+  FAIL [V] dblclick resets the view: moved 1.81,1.15,5.222 -> 1.81,1.15,5.222 (initial 0.55,0.18,5.222)
+  FAIL [V] debugGizmo() exposed: missing
+  FAIL [V] gizmo in the viewer's top-right quadrant: no gizmo element / rect
+  FAIL [V] clicking each axis end snaps onto that axis: no clickable ends
+844x390 (theme 42829 ms, viewer 8535 ms)
+844x390: 13 pass / 21 fail / 0 n/a
+  FAIL [T] race plaque background stacks differ (4 races): 1/4 distinct structures
+  FAIL [T] sub-race plaque palettes distinct (min dE76 on pixels within a race): min 0 (human 0 imperial/nomad; elf 0 high/dark; dwarf 0 forge/deep; ork 0 greenhide/ironhide)
+  FAIL [T] an ork palette is purple (median hue 255-330, sat >= 0.15): [{"s":"greenhide","h":27,"sat":0.53},{"s":"ironhide","h":27,"sat":0.53},{"s":"bloodfang","h":27,"sat":0.53}]
+  FAIL [T] class chip computed style distinct per theme id: 1 distinct / 8 themes (8 ids)
+  FAIL [T] sign chip computed style distinct per theme id: 1 distinct / 6 themes (6 ids)
+  FAIL [T] weapon chip computed style distinct per theme id: 1 distinct / 17 themes (17 ids)
+  FAIL [T] relation Archer+bow shown synchronous (= Theme.relation): shown [], model null
+  FAIL [T] relation Mage+greataxe shown opposite: shown [], model null
+  FAIL [V] debugView() exposed: missing
+  FAIL [V] cursor over the model = grab: auto on canvas.preview-canvas (off-model: auto)
+  FAIL [V] wheel over model zooms in: distance 5.34 -> 5.34
+  FAIL [V] wheel keeps the point under the cursor (pixel fixed-point): no zoom
+  FAIL [V] wheel over model does not scroll the page: scroll 282 -> 42
+  FAIL [V] ctrl+wheel (pinch) over model zooms in: distance 5.34 -> 5.34
+  FAIL [V] ctrl+wheel (pinch) keeps the point under the cursor (pixel fixed-point): no zoom
+  FAIL [V] ctrl+wheel (pinch) over model does not scroll the page: scroll 282 -> 222
+  FAIL [V] touch two-finger pinch zooms: distance 5.34 -> 5.34
+  FAIL [V] dblclick resets the view: moved 1.456,1.15,5.34 -> 1.456,1.15,5.34 (initial 0.55,0.18,5.34)
+  FAIL [V] debugGizmo() exposed: missing
+  FAIL [V] gizmo in the viewer's top-right quadrant: no gizmo element / rect
+  FAIL [V] clicking each axis end snaps onto that axis: no clickable ends
+{"T":{"pass":42,"fail":48,"na":0},"V":{"pass":36,"fail":74,"na":0},"pageErrors":0}
