@@ -1,0 +1,50 @@
+{
+ "label": "anim-try",
+ "at": "2026-11-03T12:54:23.572Z",
+ "rows": [
+  {
+   "body": "human",
+   "clip": "idle",
+   "frames": 90,
+   "floorMm": 0,
+   "slideMm": 0,
+   "popMm": 0,
+   "popBoneRad": 0,
+   "popBone": "hipR",
+   "popAt": 0.717
+  },
+  {
+   "body": "human",
+   "clip": "walk",
+   "frames": 150,
+   "floorMm": -1.6,
+   "slideMm": 9.1,
+   "popMm": 51.2,
+   "popBoneRad": 0.208,
+   "popBone": "kneeL",
+   "popAt": 0.633
+  },
+  {
+   "body": "human",
+   "clip": "strafe",
+   "frames": 120,
+   "floorMm": 0,
+   "slideMm": 8,
+   "popMm": 142.1,
+   "popBoneRad": 0.393,
+   "popBone": "kneeR",
+   "popAt": 0.917
+  },
+  {
+   "body": "human",
+   "clip": "fall:back",
+   "frames": 237,
+   "floorMm": -0.4,
+   "slideMm": 102.9,
+   "popMm": 653.5,
+   "popBoneRad": 0.365,
+   "popBone": "elbowL",
+   "popAt": 2.917
+  }
+ ]
+}

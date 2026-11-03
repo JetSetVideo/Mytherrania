@@ -1,0 +1,182 @@
+{
+ "label": "anim-K-r2",
+ "at": "2026-11-03T14:04:04.601Z",
+ "rows": [
+  {
+   "body": "human",
+   "clip": "idle",
+   "frames": 90,
+   "floorMm": 0,
+   "slideMm": 0,
+   "popMm": 0,
+   "popBoneRad": 0,
+   "popBone": "hipR",
+   "popAt": 0.717
+  },
+  {
+   "body": "human",
+   "clip": "walk",
+   "frames": 150,
+   "floorMm": -1.6,
+   "slideMm": 9.1,
+   "popMm": 51.2,
+   "popBoneRad": 0.208,
+   "popBone": "kneeL",
+   "popAt": 0.633
+  },
+  {
+   "body": "human",
+   "clip": "strafe",
+   "frames": 120,
+   "floorMm": 0,
+   "slideMm": 8,
+   "popMm": 142.1,
+   "popBoneRad": 0.393,
+   "popBone": "kneeR",
+   "popAt": 0.917
+  },
+  {
+   "body": "human",
+   "clip": "fall:back",
+   "frames": 237,
+   "floorMm": -0.4,
+   "slideMm": 53,
+   "popMm": 653.5,
+   "popBoneRad": 0.365,
+   "popBone": "elbowL",
+   "popAt": 2.917
+  },
+  {
+   "body": "elfF",
+   "clip": "idle",
+   "frames": 90,
+   "floorMm": 0,
+   "slideMm": 0,
+   "popMm": 0,
+   "popBoneRad": 0,
+   "popBone": "hipR",
+   "popAt": 0.7
+  },
+  {
+   "body": "elfF",
+   "clip": "walk",
+   "frames": 150,
+   "floorMm": -0.7,
+   "slideMm": 9.1,
+   "popMm": 53.2,
+   "popBoneRad": 0.166,
+   "popBone": "kneeL",
+   "popAt": 0.633
+  },
+  {
+   "body": "elfF",
+   "clip": "strafe",
+   "frames": 120,
+   "floorMm": 0,
+   "slideMm": 3.7,
+   "popMm": 128.1,
+   "popBoneRad": 0.393,
+   "popBone": "kneeR",
+   "popAt": 1.233
+  },
+  {
+   "body": "elfF",
+   "clip": "fall:back",
+   "frames": 237,
+   "floorMm": 0,
+   "slideMm": 53.9,
+   "popMm": 666.1,
+   "popBoneRad": 0.365,
+   "popBone": "elbowL",
+   "popAt": 2.917
+  },
+  {
+   "body": "dwarf",
+   "clip": "idle",
+   "frames": 90,
+   "floorMm": 0,
+   "slideMm": 0,
+   "popMm": 0,
+   "popBoneRad": 0,
+   "popBone": "hipR",
+   "popAt": 0.733
+  },
+  {
+   "body": "dwarf",
+   "clip": "walk",
+   "frames": 150,
+   "floorMm": -1.2,
+   "slideMm": 11.3,
+   "popMm": 45.1,
+   "popBoneRad": 0.23,
+   "popBone": "kneeR",
+   "popAt": 0.65
+  },
+  {
+   "body": "dwarf",
+   "clip": "strafe",
+   "frames": 120,
+   "floorMm": -0.7,
+   "slideMm": 8.4,
+   "popMm": 132,
+   "popBoneRad": 0.393,
+   "popBone": "kneeR",
+   "popAt": 1.433
+  },
+  {
+   "body": "dwarf",
+   "clip": "fall:back",
+   "frames": 237,
+   "floorMm": -0.9,
+   "slideMm": 46.9,
+   "popMm": 549.1,
+   "popBoneRad": 0.365,
+   "popBone": "elbowL",
+   "popAt": 2.917
+  },
+  {
+   "body": "ork",
+   "clip": "idle",
+   "frames": 90,
+   "floorMm": 0,
+   "slideMm": 0,
+   "popMm": 0,
+   "popBoneRad": 0,
+   "popBone": "hipR",
+   "popAt": 0.683
+  },
+  {
+   "body": "ork",
+   "clip": "walk",
+   "frames": 150,
+   "floorMm": -2.9,
+   "slideMm": 11.4,
+   "popMm": 47.7,
+   "popBoneRad": 0.14,
+   "popBone": "ankleL",
+   "popAt": 0.633
+  },
+  {
+   "body": "ork",
+   "clip": "strafe",
+   "frames": 120,
+   "floorMm": -1.6,
+   "slideMm": 4.5,
+   "popMm": 158,
+   "popBoneRad": 0.393,
+   "popBone": "kneeR",
+   "popAt": 0.65
+  },
+  {
+   "body": "ork",
+   "clip": "fall:back",
+   "frames": 237,
+   "floorMm": -1.7,
+   "slideMm": 54.3,
+   "popMm": 755.8,
+   "popBoneRad": 0.365,
+   "popBone": "elbowL",
+   "popAt": 2.917
+  }
+ ]
+}

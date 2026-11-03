@@ -421,7 +421,10 @@ export function cloneHitboxSet(set: HitboxSet, mass?: number): HitboxSet {
   };
 }
 
-function fitPlan(plan: AnatomyPlan, opts: HitboxFitOptions): HitboxSet {
+function fitPlan(source: AnatomyPlan, opts: HitboxFitOptions): HitboxSet {
+  // Wave GEN (P): the capsules follow the STAT body — lane B's optional hit tree (physics tree + stat
+  // morph) inside its box; absent (no stats / reference) = the physics tree, exactly as before.
+  const plan: AnatomyPlan = source.hitRoot ? { ...source, root: source.hitRoot, bounds: source.hitBounds ?? source.bounds } : source;
   const h = opts.step ?? Math.min(VOXEL_MAX, Math.max(VOXEL_MIN, VOXEL_PER_CELL * plan.cell));
   const prims = positivePrimitives(plan.root).filter((p) => zoneOf(p.bone, p.region) !== null);
   // Groups: one per (zone, side, bone).
@@ -575,4 +578,74 @@ export function hitboxDistance(box: Hitbox, x: number, y: number, z: number): nu
   let t = L2 > 1e-12 ? ((x - ax) * dx + (y - ay) * dy + (z - az) * dz) / L2 : 0;
   t = t < 0 ? 0 : t > 1 ? 1 : t;
   return Math.hypot(x - ax - dx * t, y - ay - dy * t, z - az - dz * t) - box.radius;
+}
+
+/** Wave GEN (P): how well a fitted set wraps a skin (bind pose; `wa`/`wb` at the origin group). */
+export interface HitboxCoverage {
+  /** Share (%) of skin vertices within a capsule's radius + CONTACT_SLACK. */
+  coveragePct: number;
+  /** Share (%) of skin vertices strictly inside a capsule (radius, no slack). */
+  coverageStrictPct: number;
+  /** Worst skin vertex outside every capsule (mm beyond the radius). */
+  uncoveredMaxMm: number;
+  /** Capsule surface standing outside the skin: 95th percentile and max of the skin distance (mm, 0 inside). */
+  overshootP95Mm: number;
+  overshootMaxMm: number;
+  /** Capsule-surface sample points measured. */
+  samples: number;
+}
+
+/** Points per capsule-surface ring and rings per capsule for the overshoot meter. */
+export const OVERSHOOT_RING = 12, OVERSHOOT_RINGS = 7;
+
+/**
+ * Coverage of skin vertices by the capsules and capsule overshoot over the skin field (bind pose).
+ * Every `stride`-th vertex is tested (1 = all). `field` = the skin's SDF (BodyMesh.skinField): each
+ * capsule's surface is sampled on OVERSHOOT_RINGS rings x OVERSHOOT_RING points and the positive
+ * distances to the skin are the overshoot (air a blow would hit).
+ */
+export function hitboxCoverage(set: HitboxSet, positions: Float32Array, field?: { sample(x: number, y: number, z: number, out: SdfSample): SdfSample }, stride = 1): HitboxCoverage {
+  let n = 0, inSlack = 0, inStrict = 0, worst = 0;
+  for (let v = 0; v < positions.length / 3; v += stride) {
+    const x = positions[3 * v], y = positions[3 * v + 1], z = positions[3 * v + 2];
+    let d = Infinity;
+    for (const b of set.boxes) { const q = hitboxDistance(b, x, y, z); if (q < d) d = q; }
+    n++;
+    if (d <= CONTACT_SLACK) inSlack++;
+    if (d <= 0) inStrict++;
+    if (d > worst) worst = d;
+  }
+  const over: number[] = [];
+  if (field) {
+    const s: SdfSample = { d: 0, region: 0, bone: 0 };
+    for (const b of set.boxes) {
+      const a = b.wa, c = b.wb;
+      const ax: V3 = [c[0] - a[0], c[1] - a[1], c[2] - a[2]];
+      const L = Math.hypot(ax[0], ax[1], ax[2]);
+      const d: V3 = L > 1e-9 ? [ax[0] / L, ax[1] / L, ax[2] / L] : [0, 1, 0];
+      // Two unit vectors perpendicular to d.
+      const t: V3 = Math.abs(d[1]) < 0.9 ? [0, 1, 0] : [1, 0, 0];
+      const u: V3 = [d[1] * t[2] - d[2] * t[1], d[2] * t[0] - d[0] * t[2], d[0] * t[1] - d[1] * t[0]];
+      const ul = Math.hypot(u[0], u[1], u[2]); u[0] /= ul; u[1] /= ul; u[2] /= ul;
+      const w: V3 = [d[1] * u[2] - d[2] * u[1], d[2] * u[0] - d[0] * u[2], d[0] * u[1] - d[1] * u[0]];
+      for (let i = 0; i < OVERSHOOT_RINGS; i++) {
+        const f = i / (OVERSHOOT_RINGS - 1);
+        const p: V3 = [a[0] + ax[0] * f, a[1] + ax[1] * f, a[2] + ax[2] * f];
+        for (let j = 0; j < OVERSHOOT_RING; j++) {
+          const th = (2 * Math.PI * j) / OVERSHOOT_RING, cu = Math.cos(th) * b.radius, sw = Math.sin(th) * b.radius;
+          const q = field.sample(p[0] + u[0] * cu + w[0] * sw, p[1] + u[1] * cu + w[1] * sw, p[2] + u[2] * cu + w[2] * sw, s).d;
+          over.push(Math.max(0, q));
+        }
+      }
+    }
+    over.sort((x, y) => x - y);
+  }
+  return {
+    coveragePct: n ? (100 * inSlack) / n : 0,
+    coverageStrictPct: n ? (100 * inStrict) / n : 0,
+    uncoveredMaxMm: worst * 1000,
+    overshootP95Mm: over.length ? over[Math.min(over.length - 1, Math.floor(0.95 * over.length))] * 1000 : 0,
+    overshootMaxMm: over.length ? over[over.length - 1] * 1000 : 0,
+    samples: over.length,
+  };
 }

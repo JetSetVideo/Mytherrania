@@ -1,0 +1,218 @@
+[
+ {
+  "lane": "HEAD",
+  "claim": "baseline-topology",
+  "method": "own edge maps, 8 bodies",
+  "verdict": "INFO",
+  "board": "Z-12",
+  "result": "bnd/nm/wind/degen 0 all; components 1 except elf/male 3 (two 8-vertex islands at +-0.078,1.751,0.082)",
+  "at": "2026-11-03T12:46:53.133Z"
+ },
+ {
+  "lane": "HEAD",
+  "claim": "baseline-hitbox",
+  "method": "bind coverage of rendered skin + 1.5 cm air grid",
+  "verdict": "INFO",
+  "board": "Z-12",
+  "result": "coverage 97.15-99.96 %, overshoot 21.5-35.2 %",
+  "at": "2026-11-03T12:46:53.164Z"
+ },
+ {
+  "lane": "K",
+  "claim": "anim-baseline",
+  "method": "own anim meter on HEAD, 4 bodies x idle/walk/strafe/fall:back",
+  "verdict": "INFO",
+  "board": "Z-19",
+  "result": "walk slide 9.1-11.4 mm, fall:back slide 96.9-104.3 mm, floor min -2.9 mm (ork walk), strafe kneeR pop 0.393 rad",
+  "at": "2026-11-03T12:56:12.382Z"
+ },
+ {
+  "lane": "S",
+  "claim": "paint stage + hair intelligence r1",
+  "method": "paintStage x8 bodies, buildHairData x18 at I 0/500/1000, own counts/hashes; check+lint+72 tests",
+  "verdict": "PASS",
+  "board": "Z-24",
+  "result": "paint len ok 8/8, range 0.025..0.895, det 8/8, mesh untouched; hair identity 18/18, max tris 1100<=1100; tests 72/0",
+  "at": "2026-11-03T13:08:45.538Z"
+ },
+ {
+  "lane": "P",
+  "claim": "pipeline+cage+statscale r1",
+  "method": "verify run P-r1 32 bodies; check/lint/19+157 tests",
+  "verdict": "PASS",
+  "board": "Z-37",
+  "result": "stages 7 in order 32/32; cageViolation 0 + my vertex-in-cage 0 % 32/32; identity@ref 8/8; human/elf == HEAD 4/4; det 32/32; topology clean; tris<=10508",
+  "at": "2026-11-03T13:25:31.485Z"
+ },
+ {
+  "lane": "B",
+  "claim": "ork hitbox coverage (posture not in hitRoot)",
+  "method": "bind capsule coverage of rendered skin vs HEAD",
+  "verdict": "FAIL",
+  "board": "Z-38",
+  "result": "ork m 99.34->97.50 %, f 99.86->98.28 %; uncovered face 52/head 26 (m)",
+  "at": "2026-11-03T13:25:31.534Z"
+ },
+ {
+  "lane": "K",
+  "claim": "C-AGI r1 + audit fixes",
+  "method": "K test set 223 files-run; audit re-run; own anim meter; HEAD+K-only overlay bisect",
+  "verdict": "FAIL",
+  "board": "Z-41",
+  "result": "anim_measure_test fails: human thrust exhausted hand -29.3 mm in torso (OffHand rate limits + rig clock); audit reproduces exactly (pops>0.4 331->39, weapon 90->16, fall slide 114->64); own meter fall slide ~103->~53 mm",
+  "at": "2026-11-03T13:32:53.152Z"
+ },
+ {
+  "lane": "S",
+  "claim": "paint/hair r2 geometry",
+  "method": "verify paint paint-S-r2",
+  "verdict": "INFO",
+  "board": "Z-42",
+  "result": "geometry PASS; G68 failing in tree (in-flight r3) -> held",
+  "at": "2026-11-03T13:32:53.198Z"
+ },
+ {
+  "lane": "U",
+  "claim": "constraints + stage UI r1",
+  "method": "check/lint/480 tests; applyEdit fuzz 1600 edits + extreme builds",
+  "verdict": "PASS",
+  "board": "Z-50",
+  "result": "0 broken rules/1600, 0 outside static, idempotent 1600/1600; extreme builds 31/32 clean",
+  "at": "2026-11-03T13:38:41.754Z"
+ },
+ {
+  "lane": "P",
+  "claim": "whole-rig triangle budget at in-band extremes (pre-existing)",
+  "method": "buildSkinnedHumanoid triangleCount on fuzz extremes + HEAD",
+  "verdict": "FAIL",
+  "board": "Z-50",
+  "result": "ork rig 13092/13864 > 12000; ork 2.1m/150kg 12736 tree, 12716 HEAD",
+  "at": "2026-11-03T13:38:41.810Z"
+ },
+ {
+  "lane": "P",
+  "claim": "degenerate triangles at UI extreme",
+  "method": "own topology on generateBody(extreme state)",
+  "verdict": "FAIL",
+  "board": "Z-50",
+  "result": "human/female shoulder-min state: 2 degenerate tris",
+  "at": "2026-11-03T13:38:41.858Z"
+ },
+ {
+  "lane": "S",
+  "claim": "paint/hair r3",
+  "method": "check/lint/44 tests; verify paint paint-S-r3",
+  "verdict": "PASS",
+  "board": "Z-53",
+  "result": "paint 8/8 det/in-range/untouched; hair identity 18/18, max 1100/1100; G68 green",
+  "at": "2026-11-03T13:40:29.986Z"
+ },
+ {
+  "lane": "B",
+  "claim": "C-MORPH r2 (X55 regression)",
+  "method": "in-tree suites 138 + HEAD+B overlay bisect",
+  "verdict": "FAIL",
+  "board": "Z-63",
+  "result": "wave_x_body X55: elf/female shoulder 482.7->478.9 mm (tol 2 mm); HEAD passes, HEAD+B fails",
+  "at": "2026-11-03T13:56:58.212Z"
+ },
+ {
+  "lane": "B",
+  "claim": "ork hitbox coverage (posture in hitRoot) r2",
+  "method": "verify run B-r2 32 bodies",
+  "verdict": "PASS",
+  "board": "Z-63",
+  "result": "ork m 99.69 (HEAD 99.34), f 99.64 (HEAD 99.86); all rows 96.57-99.98, no regressions",
+  "at": "2026-11-03T13:56:58.264Z"
+ },
+ {
+  "lane": "B",
+  "claim": "stat morph monotone/bounded/identity r2",
+  "method": "verify morph morph-B-r2",
+  "verdict": "PASS",
+  "board": "Z-63",
+  "result": "identity 8/8, monotone 8/8, 0 non-finite at extreme inputs",
+  "at": "2026-11-03T13:56:58.323Z"
+ },
+ {
+  "lane": "P",
+  "claim": "pipeline+cage+statscale r2",
+  "method": "check/lint/61 tests; verify run B-r2 + elfcheck",
+  "verdict": "PASS",
+  "board": "Z-64",
+  "result": "stages/cage/det/topology ok; ork cov 99.69/99.64; human+elf == HEAD",
+  "at": "2026-11-03T13:59:33.054Z"
+ },
+ {
+  "lane": "K",
+  "claim": "C-AGI r2 (anim_measure fix)",
+  "method": "223 tests in tree + HEAD+K overlay 7/0; audit re-run; own anim meter",
+  "verdict": "PASS",
+  "board": "Z-72",
+  "result": "pops>0.4 331->78, weapon 90->16, fall slide 114->64 (own meter ~103->~53 mm); floor<-10 15->16 (B posture)",
+  "at": "2026-11-03T14:06:49.381Z"
+ },
+ {
+  "lane": "P",
+  "claim": "pipeline r3 (test-only)",
+  "method": "wave_gen_pipeline_test",
+  "verdict": "PASS",
+  "board": "Z-73",
+  "result": "19/0",
+  "at": "2026-11-03T14:07:38.996Z"
+ },
+ {
+  "lane": "B",
+  "claim": "C-MORPH r3 (skinCell, X55)",
+  "method": "check/lint/44 tests; verify run B-r3 32 bodies; verify morph morph-B-r3",
+  "verdict": "PASS",
+  "board": "Z-81",
+  "result": "0 failing rows; tris 8528-9968; ork cov 99.77; X55 green; morph monotone/identity 8/8",
+  "at": "2026-11-03T14:25:13.104Z"
+ },
+ {
+  "lane": "B",
+  "claim": "ork hitbox coverage (posture not in hitRoot)",
+  "method": "closed by B r2/r3 hitRoot posture",
+  "verdict": "PASS",
+  "board": "Z-81",
+  "result": "ork no-stats coverage 99.77 % (HEAD 99.34)",
+  "at": "2026-11-03T14:25:30.569Z"
+ },
+ {
+  "lane": "K",
+  "claim": "C-AGI r1 + audit fixes",
+  "method": "closed by K r2",
+  "verdict": "PASS",
+  "board": "Z-72",
+  "result": "anim_measure green; 223/0",
+  "at": "2026-11-03T14:25:30.610Z"
+ },
+ {
+  "lane": "B",
+  "claim": "C-MORPH r2 (X55 regression)",
+  "method": "closed by B r3",
+  "verdict": "PASS",
+  "board": "Z-81",
+  "result": "X55 green in tree",
+  "at": "2026-11-03T14:25:30.649Z"
+ },
+ {
+  "lane": "P",
+  "claim": "degenerate triangles at UI extreme",
+  "method": "same spec on git archive HEAD",
+  "verdict": "FAIL",
+  "board": "Z-50",
+  "result": "pre-existing: HEAD gives the same 2 degenerate tris (min quality 0, min area 2.76e-4 mm2) for the human/female extreme spec in ui-final.json",
+  "at": "2026-11-03T14:28:10.826Z"
+ },
+ {
+  "lane": "ALL",
+  "claim": "final full suite + final geometry",
+  "method": "NO_COLOR=1 deno task test; verify run final; anim-final",
+  "verdict": "PASS",
+  "board": "Z-83",
+  "result": "1977 passed 0 failed; 32 bodies 0 failing rows",
+  "at": "2026-11-03T14:34:13.187Z"
+ }
+]

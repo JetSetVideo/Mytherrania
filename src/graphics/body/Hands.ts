@@ -107,6 +107,11 @@ export interface HandInput {
   thumb: 1 | -1;
   /** The rendered body's wrist rim (hand-local): where the cut skin ends. Optional (defaults to a round wrist). */
   rim?: WristRim;
+  /**
+   * Wave GEN lane B: the race's digit distribution (StatMorph.RACE_DIGITS: length, radius, knuckle,
+   * palm multipliers). Optional: absent = the neutral (human) hand, exactly as before.
+   */
+  digits?: { length: number; radius: number; knuckle: number; palm: number };
 }
 /** The cut body skin's opening at the wrist, in hand-local coordinates. */
 export interface WristRim { xMin: number; xMax: number; cy: number; cz: number; ay: [number, number]; az: number }
@@ -126,21 +131,25 @@ export interface HandSize {
   /** The thumb's root (CMC) in the palm frame. */
   thumbRoot: Vec3;
   rim: WristRim;
+  /** Wave GEN lane B: knuckle (MCP/PIP ring) thickness over the finger radius (absent = 1, the neutral taper). */
+  knuckleK?: number;
 }
 
 export function handSize(inp: HandInput): HandSize {
+  const D = inp.digits ?? { length: 1, radius: 1, knuckle: 1, palm: 1 };
   const H = inp.hand;
   // The weapons' grips are built for a HAND_HALF_WIDTH-wide hand: a wider rendered fist would run its
   // index finger into the guard (the wave-V ork mitten clipped the longsword's cross-guard). The
   // rendered palm is the anatomy's, capped at max(1.2 wrist, GRIP_FIT_WIDTH).
-  const halfW = Math.max(1.2 * inp.wrist, Math.min(inp.palmHalfWidth, Math.max(1.2 * inp.wrist, GRIP_FIT_WIDTH)));
+  // Wave GEN lane B: the race's palm multiplier scales the capped width (ork broadest, elf narrowest).
+  const halfW = D.palm * Math.max(1.2 * inp.wrist, Math.min(inp.palmHalfWidth, Math.max(1.2 * inp.wrist, GRIP_FIT_WIDTH)));
   // The anatomy's palm thickness was floored to grid cells for the mitten; the rendered palm is slimmer.
   const halfT = Math.max(Math.min(PALM_THICKNESS_SHARE * inp.palmHalfThickness, PALM_ASPECT * halfW), 0.42 * inp.wrist);
   const palmLen = 0.5 * H;
   const spacing = (2 * 0.92 * halfW) / 4;
   const base = 0.5 * spacing;
-  const fingerR = [1.0, 1.02, 0.97, 0.86].map((k) => k * base);
-  const phalanx = FINGER_LENGTH.map((k) => PHALANX_SPLIT.map((s) => s * k * 0.5 * H) as [number, number, number]);
+  const fingerR = [1.0, 1.02, 0.97, 0.86].map((k) => k * base * D.radius);
+  const phalanx = FINGER_LENGTH.map((k) => PHALANX_SPLIT.map((s) => s * k * 0.5 * H * D.length) as [number, number, number]);
   const t = inp.thumb;
   const knuckle: Vec3[] = [0, 1, 2, 3].map((i) => {
     const z = t * 0.9 * halfW * (0.75 - 0.5 * i);
@@ -148,10 +157,10 @@ export function handSize(inp: HandInput): HandSize {
     return [x, 0.18 * halfT, z];
   });
   const thumbR = 1.12 * fingerR[0];
-  const thumbLen = THUMB_SPLIT.map((s) => s * H) as [number, number, number];
+  const thumbLen = THUMB_SPLIT.map((s) => s * H * D.length) as [number, number, number];
   const thumbRoot: Vec3 = [0.12 * H, -0.3 * halfT, t * 0.45 * halfW];
   const rim = inp.rim ?? { xMin: -0.02 * H, xMax: 0, cy: 0, cz: 0, ay: [inp.wrist, inp.wrist], az: inp.wrist };
-  return { H, halfW, halfT, wristR: inp.wrist, thumb: t, palmLen, fingerR, phalanx, knuckle, thumbR, thumbLen, thumbRoot, rim };
+  return { H, halfW, halfT, wristR: inp.wrist, thumb: t, palmLen, fingerR, phalanx, knuckle, thumbR, thumbLen, thumbRoot, rim, ...(D.knuckle !== 1 ? { knuckleK: D.knuckle } : {}) };
 }
 
 // ---------------------------------------------------------------------------------------------
@@ -181,7 +190,7 @@ function palmFrame(tilt: number, dev: number): { X: Vec3; Y: Vec3; Z: Vec3 } {
 const inPalm = (F: { X: Vec3; Y: Vec3; Z: Vec3 }, p: Vec3): Vec3 => add(add(mul(F.X, p[0]), mul(F.Y, p[1])), mul(F.Z, p[2]));
 
 /** Tapering radii of a digit along its joints (root, j1, j2, tip). */
-function fingerRadii(r: number): number[] { return [r, 0.93 * r, 0.86 * r, 0.8 * r]; }
+function fingerRadii(r: number, k = 1): number[] { return [r * k, 0.93 * r * (1 + 0.7 * (k - 1)), 0.86 * r, 0.8 * r]; }
 function thumbRadii(r: number): number[] { return [1.45 * r, 1.08 * r, 0.98 * r, 0.86 * r]; }
 
 /** A chain posed by planar flexion angles about one axis (each angle relative to the previous segment). */
@@ -254,7 +263,7 @@ export function relaxedPose(S: HandSize): HandPose {
   for (let i = 0; i < 4; i++) {
     const root = inPalm(F, knuckleAt(S, i, S.palmLen));
     const c = chainFrom(root, F.X, axis, S.phalanx[i], curl[i]);
-    digits.push({ name: FINGERS[i], ...c, radii: fingerRadii(S.fingerR[i]), angles: curl[i], side: F.Z });
+    digits.push({ name: FINGERS[i], ...c, radii: fingerRadii(S.fingerR[i], S.knuckleK ?? 1), angles: curl[i], side: F.Z });
   }
   const t = S.thumb;
   const tb = unit(add(add(mul(F.X, 0.62), mul(F.Z, t * 0.62)), mul(F.Y, -0.45)));
@@ -337,7 +346,7 @@ export function gripPose(S: HandSize, h0: HandleLine): HandPose {
   const fist = [1.5, 1.6, 0.9];
   for (let i = 0; i < 4; i++) {
     const root = inPalm(F, knuckleAt(S, i, Lp));
-    const radii = fingerRadii(S.fingerR[i]);
+    const radii = fingerRadii(S.fingerR[i], S.knuckleK ?? 1);
     const angles = wrapChain(root, F.X, axis, S.phalanx[i], radii, FINGER_RANGE, [handle], fist);
     const c = chainFrom(root, F.X, axis, S.phalanx[i], angles);
     digits.push({ name: FINGERS[i], ...c, radii, angles, side: F.Z });

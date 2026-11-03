@@ -4,9 +4,9 @@
 import type { AnatomyPlan, BodySpec, MeshData, MeshStats } from "./contracts.ts";
 import { compileSdf, type BodyField } from "./Sdf.ts";
 import { applyFieldBrushes, applyMeshBrushes } from "./Brushes.ts";
-import { lastPolygonizeTiming, polygonizeField } from "./Polygonize.ts";
-import { meshStats } from "./MeshStats.ts";
-import { anatomyFor, type DetailedAnatomy } from "./Anatomy.ts";
+import { polygonizeField } from "./Polygonize.ts";
+import type { DetailedAnatomy } from "./Anatomy.ts";
+import { runPipeline, type StageRecord } from "./Pipeline.ts";
 
 /** Milliseconds per stage of one body build (wall clock, performance.now()). */
 export interface BodyTiming { anatomyMs: number; polygonizeMs: number; sampleMs: number; meshBrushMs: number; statsMs: number; totalMs: number; corners: number }
@@ -18,6 +18,8 @@ export interface BodyMesh {
   mesh: MeshData;
   stats: MeshStats;
   timing: BodyTiming;
+  /** Wave GEN: the pipeline's stage records (Pipeline.ts; weights/hitboxes/paint skipped here). */
+  stages?: StageRecord[];
 }
 
 /** The plan's final field: the compiled volumes wrapped by every field-domain stroke. */
@@ -39,34 +41,25 @@ export function skinField(plan: AnatomyPlan): BodyField {
  * the physique sculpt stands proud of the physics body — only while the skin IS the sculpted tree (a
  * caller that swaps `skinRoot` for the physics `root` gets the physics box back).
  */
-function skinBoundsOf(plan: AnatomyPlan): AnatomyPlan["bounds"] {
+export function skinBoundsOf(plan: AnatomyPlan): AnatomyPlan["bounds"] {
   const d = plan as Partial<DetailedAnatomy>;
   return d.skinBounds && d.skinRoot && d.skinRoot !== d.root && d.physique ? d.skinBounds : plan.bounds;
 }
 
 /** Polygonise a plan at `cell` (default: the plan's own) and apply its mesh brushes. */
-export function meshPlan(plan: AnatomyPlan, cell = plan.cell): { mesh: MeshData; field: BodyField } {
+export function meshPlan(plan: AnatomyPlan, cell = (plan as { skinCell?: number }).skinCell ?? plan.cell): { mesh: MeshData; field: BodyField } {
   const field = skinField(plan);
   const mesh = polygonizeField(field, skinBoundsOf(plan), cell);
   applyMeshBrushes(mesh, plan.strokes);
   return { mesh, field };
 }
 
-/** Build the whole body for a spec: anatomy, field, mesh, brushes, stats, with timings. */
+/**
+ * Build the whole body for a spec: anatomy, field, mesh, brushes, stats, with timings. Wave GEN: this is
+ * the staged pipeline (Pipeline.ts) run without skin weights, hitboxes and paint; `stages` holds its
+ * records. With no `spec.stats` the plan and mesh are byte-identical to the pre-wave build (G3).
+ */
 export function generateBody(spec: BodySpec, cell?: number): BodyMesh {
-  const t0 = performance.now();
-  const plan = anatomyFor(spec);
-  const t1 = performance.now();
-  const field = skinField(plan); // wave V lane P: the rendered skin (natural asymmetry)
-  const mesh = polygonizeField(field, skinBoundsOf(plan), cell ?? plan.cell);
-  const t2 = performance.now();
-  const sampleMs = lastPolygonizeTiming.sampleMs, corners = lastPolygonizeTiming.corners;
-  applyMeshBrushes(mesh, plan.strokes);
-  const t3 = performance.now();
-  const stats = meshStats(mesh);
-  const t4 = performance.now();
-  return {
-    plan, field, mesh, stats,
-    timing: { anatomyMs: t1 - t0, polygonizeMs: t2 - t1, sampleMs, meshBrushMs: t3 - t2, statsMs: t4 - t3, totalMs: t4 - t0, corners },
-  };
+  const { staged, timing } = runPipeline(spec, { cell, weights: false, hitboxes: false, paint: false });
+  return { plan: staged.carved, field: staged.field, mesh: staged.mesh, stats: staged.meshStats, timing, stages: staged.stages };
 }

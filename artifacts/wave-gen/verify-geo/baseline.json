@@ -1,0 +1,446 @@
+{
+ "label": "baseline",
+ "at": "2026-11-03T12:46:44.221Z",
+ "pipeline": false,
+ "statScale": false,
+ "rows": [
+  {
+   "race": "human",
+   "sex": "male",
+   "profile": "none",
+   "buildMs": 1066,
+   "cellMm": 23.51,
+   "topology": {
+    "vertices": 4554,
+    "triangles": 9104,
+    "boundaryEdges": 0,
+    "nonManifoldEdges": 0,
+    "windingConflicts": 0,
+    "components": 1,
+    "euler": 2,
+    "degenerate": 0,
+    "minTriQuality": 0.0035,
+    "minAreaMm2": 0.214335,
+    "nanPositions": 0
+   },
+   "symmetrySkin": {
+    "meanMm": 1.02,
+    "p95Mm": 4.37,
+    "maxMm": 18.46,
+    "cellMm": 23.51
+   },
+   "symmetryPhysics": {
+    "meanMm": 0.02,
+    "p95Mm": 0.03,
+    "maxMm": 3.25,
+    "cellMm": 23.51
+   },
+   "skin": {
+    "influencesSlot": 4,
+    "maxSumDeviation": 3.73e-8,
+    "negative": 0,
+    "nan": 0,
+    "badBoneIndex": 0,
+    "maxInfluences": 3
+   },
+   "hitboxes": {
+    "capsules": 48,
+    "coveragePct": 97.19,
+    "worstMissMm": 46,
+    "p95MissMm": 28.1,
+    "overshootPct": 25.39,
+    "mass": 75,
+    "nonFinite": 0
+   },
+   "hash": "4436623c6209a273a6e0d87b",
+   "deterministic": true,
+   "fails": [],
+   "known": [],
+   "regressions": []
+  },
+  {
+   "race": "human",
+   "sex": "female",
+   "profile": "none",
+   "buildMs": 974,
+   "cellMm": 23.75,
+   "topology": {
+    "vertices": 4546,
+    "triangles": 9088,
+    "boundaryEdges": 0,
+    "nonManifoldEdges": 0,
+    "windingConflicts": 0,
+    "components": 1,
+    "euler": 2,
+    "degenerate": 0,
+    "minTriQuality": 0.01096,
+    "minAreaMm2": 0.635553,
+    "nanPositions": 0
+   },
+   "symmetrySkin": {
+    "meanMm": 0.97,
+    "p95Mm": 4.3,
+    "maxMm": 16.7,
+    "cellMm": 23.75
+   },
+   "symmetryPhysics": {
+    "meanMm": 0.02,
+    "p95Mm": 0.02,
+    "maxMm": 2.58,
+    "cellMm": 23.75
+   },
+   "skin": {
+    "influencesSlot": 4,
+    "maxSumDeviation": 4.47e-8,
+    "negative": 0,
+    "nan": 0,
+    "badBoneIndex": 0,
+    "maxInfluences": 3
+   },
+   "hitboxes": {
+    "capsules": 53,
+    "coveragePct": 98.7,
+    "worstMissMm": 21.8,
+    "p95MissMm": 19.3,
+    "overshootPct": 26.83,
+    "mass": 75,
+    "nonFinite": 0
+   },
+   "hash": "2fb020b35624cc9ba838b19e",
+   "deterministic": true,
+   "fails": [],
+   "known": [],
+   "regressions": []
+  },
+  {
+   "race": "elf",
+   "sex": "male",
+   "profile": "none",
+   "buildMs": 1003,
+   "cellMm": 22.3,
+   "topology": {
+    "vertices": 4574,
+    "triangles": 9136,
+    "boundaryEdges": 0,
+    "nonManifoldEdges": 0,
+    "windingConflicts": 0,
+    "components": 3,
+    "euler": 6,
+    "degenerate": 0,
+    "minTriQuality": 0.0071,
+    "minAreaMm2": 0.057283,
+    "nanPositions": 0
+   },
+   "symmetrySkin": {
+    "meanMm": 0.78,
+    "p95Mm": 3.56,
+    "maxMm": 15.86,
+    "cellMm": 22.3
+   },
+   "symmetryPhysics": {
+    "meanMm": 0.02,
+    "p95Mm": 0.05,
+    "maxMm": 4.28,
+    "cellMm": 22.3
+   },
+   "skin": {
+    "influencesSlot": 4,
+    "maxSumDeviation": 3.46e-8,
+    "negative": 0,
+    "nan": 0,
+    "badBoneIndex": 0,
+    "maxInfluences": 3
+   },
+   "hitboxes": {
+    "capsules": 52,
+    "coveragePct": 98.4,
+    "worstMissMm": 27,
+    "p95MissMm": 24.6,
+    "overshootPct": 33.42,
+    "mass": 66,
+    "nonFinite": 0
+   },
+   "hash": "0ba30a1a6340391d5745f817",
+   "deterministic": true,
+   "fails": [
+    "components=3"
+   ],
+   "known": [],
+   "regressions": []
+  },
+  {
+   "race": "elf",
+   "sex": "female",
+   "profile": "none",
+   "buildMs": 954,
+   "cellMm": 22.44,
+   "topology": {
+    "vertices": 4555,
+    "triangles": 9108,
+    "boundaryEdges": 0,
+    "nonManifoldEdges": 0,
+    "windingConflicts": 0,
+    "components": 1,
+    "euler": 1,
+    "degenerate": 0,
+    "minTriQuality": 0.0023,
+    "minAreaMm2": 0.11722,
+    "nanPositions": 0
+   },
+   "symmetrySkin": {
+    "meanMm": 0.75,
+    "p95Mm": 3.31,
+    "maxMm": 20.34,
+    "cellMm": 22.44
+   },
+   "symmetryPhysics": {
+    "meanMm": 0.02,
+    "p95Mm": 0.04,
+    "maxMm": 4.02,
+    "cellMm": 22.44
+   },
+   "skin": {
+    "influencesSlot": 4,
+    "maxSumDeviation": 3.55e-8,
+    "negative": 0,
+    "nan": 0,
+    "badBoneIndex": 0,
+    "maxInfluences": 3
+   },
+   "hitboxes": {
+    "capsules": 49,
+    "coveragePct": 97.15,
+    "worstMissMm": 36.2,
+    "p95MissMm": 28.8,
+    "overshootPct": 35.22,
+    "mass": 66,
+    "nonFinite": 0
+   },
+   "hash": "5440fa403e6f2a4b42983b18",
+   "deterministic": true,
+   "fails": [],
+   "known": [],
+   "regressions": []
+  },
+  {
+   "race": "dwarf",
+   "sex": "male",
+   "profile": "none",
+   "buildMs": 834,
+   "cellMm": 27.69,
+   "topology": {
+    "vertices": 4402,
+    "triangles": 8800,
+    "boundaryEdges": 0,
+    "nonManifoldEdges": 0,
+    "windingConflicts": 0,
+    "components": 1,
+    "euler": 2,
+    "degenerate": 0,
+    "minTriQuality": 0.00057,
+    "minAreaMm2": 0.03215,
+    "nanPositions": 0
+   },
+   "symmetrySkin": {
+    "meanMm": 1.69,
+    "p95Mm": 5.93,
+    "maxMm": 19.44,
+    "cellMm": 27.69
+   },
+   "symmetryPhysics": {
+    "meanMm": 0.07,
+    "p95Mm": 0.02,
+    "maxMm": 14.25,
+    "cellMm": 27.69
+   },
+   "skin": {
+    "influencesSlot": 4,
+    "maxSumDeviation": 4.17e-8,
+    "negative": 0,
+    "nan": 0,
+    "badBoneIndex": 0,
+    "maxInfluences": 4
+   },
+   "hitboxes": {
+    "capsules": 38,
+    "coveragePct": 99.55,
+    "worstMissMm": 30.9,
+    "p95MissMm": 27.1,
+    "overshootPct": 21.96,
+    "mass": 82,
+    "nonFinite": 0
+   },
+   "hash": "5369705e114918c6698fa469",
+   "deterministic": true,
+   "fails": [],
+   "known": [],
+   "regressions": []
+  },
+  {
+   "race": "dwarf",
+   "sex": "female",
+   "profile": "none",
+   "buildMs": 873,
+   "cellMm": 27.74,
+   "topology": {
+    "vertices": 4590,
+    "triangles": 9176,
+    "boundaryEdges": 0,
+    "nonManifoldEdges": 0,
+    "windingConflicts": 0,
+    "components": 1,
+    "euler": 2,
+    "degenerate": 0,
+    "minTriQuality": 0.03345,
+    "minAreaMm2": 1.351695,
+    "nanPositions": 0
+   },
+   "symmetrySkin": {
+    "meanMm": 1.67,
+    "p95Mm": 5.85,
+    "maxMm": 20.12,
+    "cellMm": 27.74
+   },
+   "symmetryPhysics": {
+    "meanMm": 0.12,
+    "p95Mm": 0.02,
+    "maxMm": 17.43,
+    "cellMm": 27.74
+   },
+   "skin": {
+    "influencesSlot": 4,
+    "maxSumDeviation": 4.1e-8,
+    "negative": 0,
+    "nan": 0,
+    "badBoneIndex": 0,
+    "maxInfluences": 4
+   },
+   "hitboxes": {
+    "capsules": 46,
+    "coveragePct": 99.96,
+    "worstMissMm": 15.6,
+    "p95MissMm": 15.6,
+    "overshootPct": 22.31,
+    "mass": 82,
+    "nonFinite": 0
+   },
+   "hash": "58c4c4a69dd99f81ced24f61",
+   "deterministic": true,
+   "fails": [],
+   "known": [],
+   "regressions": []
+  },
+  {
+   "race": "ork",
+   "sex": "male",
+   "profile": "none",
+   "buildMs": 1150,
+   "cellMm": 35,
+   "topology": {
+    "vertices": 4842,
+    "triangles": 9680,
+    "boundaryEdges": 0,
+    "nonManifoldEdges": 0,
+    "windingConflicts": 0,
+    "components": 1,
+    "euler": 2,
+    "degenerate": 0,
+    "minTriQuality": 0.0394,
+    "minAreaMm2": 5.050205,
+    "nanPositions": 0
+   },
+   "symmetrySkin": {
+    "meanMm": 2.11,
+    "p95Mm": 7.85,
+    "maxMm": 25.05,
+    "cellMm": 35
+   },
+   "symmetryPhysics": {
+    "meanMm": 0.07,
+    "p95Mm": 0.02,
+    "maxMm": 9.59,
+    "cellMm": 35
+   },
+   "skin": {
+    "influencesSlot": 4,
+    "maxSumDeviation": 4.1e-8,
+    "negative": 0,
+    "nan": 0,
+    "badBoneIndex": 0,
+    "maxInfluences": 4
+   },
+   "hitboxes": {
+    "capsules": 54,
+    "coveragePct": 99.34,
+    "worstMissMm": 27.4,
+    "p95MissMm": 27.4,
+    "overshootPct": 22.82,
+    "mass": 118,
+    "nonFinite": 0
+   },
+   "hash": "e6d4b122ac316337d8d8dd6a",
+   "deterministic": true,
+   "fails": [],
+   "known": [],
+   "regressions": []
+  },
+  {
+   "race": "ork",
+   "sex": "female",
+   "profile": "none",
+   "buildMs": 1274,
+   "cellMm": 35,
+   "topology": {
+    "vertices": 4994,
+    "triangles": 9984,
+    "boundaryEdges": 0,
+    "nonManifoldEdges": 0,
+    "windingConflicts": 0,
+    "components": 1,
+    "euler": 2,
+    "degenerate": 0,
+    "minTriQuality": 0.02534,
+    "minAreaMm2": 0.617013,
+    "nanPositions": 0
+   },
+   "symmetrySkin": {
+    "meanMm": 2.05,
+    "p95Mm": 7.25,
+    "maxMm": 24.18,
+    "cellMm": 35
+   },
+   "symmetryPhysics": {
+    "meanMm": 0.07,
+    "p95Mm": 0.03,
+    "maxMm": 11.2,
+    "cellMm": 35
+   },
+   "skin": {
+    "influencesSlot": 4,
+    "maxSumDeviation": 4.28e-8,
+    "negative": 0,
+    "nan": 0,
+    "badBoneIndex": 0,
+    "maxInfluences": 4
+   },
+   "hitboxes": {
+    "capsules": 60,
+    "coveragePct": 99.86,
+    "worstMissMm": 20,
+    "p95MissMm": 20,
+    "overshootPct": 21.52,
+    "mass": 118,
+    "nonFinite": 0
+   },
+   "hash": "dc36bb06499c6971628cd8ab",
+   "deterministic": true,
+   "fails": [],
+   "known": [],
+   "regressions": []
+  }
+ ],
+ "morph": [],
+ "fails": [
+  "elf/male/none: components=3"
+ ]
+}

@@ -17,6 +17,7 @@ import { boundsFor, raceScaled } from "./AxisEnvelope.ts";
 import { RACE_SILHOUETTE } from "./BodyProfile.ts";
 import { JOINT_ORDER } from "./anim/Rig.ts"; // Rig imports only TYPES from here: no runtime cycle
 import { WIDE_JOINT_LIMITS } from "./anim/FallMotion.ts"; // pure; imports Rig + MathCore only
+import { AGILITY_REFERENCE, agilityLimits } from "./anim/AgilityLimits.ts"; // pure; type-only import back
 
 /**
  * Which side-independent constraint joint each bone answers to. Left and right share one
@@ -124,8 +125,31 @@ export class Skeleton {
   constructor(joints: Joint[], poses: Record<PoseName, Pose>) {
     this.#joints = new Map(joints.map((j) => [j.name, j]));
     this.#base = new Map(joints.map((j) => [j.name, { min: j.min, max: j.max, rest: j.rest }]));
+    this.#canon = new Map([...this.#base].map(([n, l]) => [n, { ...l }]));
     this.#poses = poses;
     this.setPose("idle");
+  }
+
+  /** The reference (agility 500) limit table; #base is it scaled by the body's agility. */
+  readonly #canon: Map<JointName, { min: number; max: number; rest: number }>;
+  #agility = AGILITY_REFERENCE;
+  /** Wave GEN (C-AGI): the body's agility on the generator's 0..1000 scale (500 = reference). */
+  get agility(): number { return this.#agility; }
+  /**
+   * Wave GEN (C-AGI): widen (agile) or narrow (stiff) every joint's window (AgilityLimits.agilityLimits,
+   * identity at 500). Call BEFORE the Animator / SwingDriver are built from limits(): they copy the table.
+   * The current pose's windows and angles are re-clamped to the new table.
+   */
+  setAgility(agility: number | null | undefined): void {
+    this.#agility = agility === null || agility === undefined || !Number.isFinite(agility) ? AGILITY_REFERENCE : Math.max(0, Math.min(1000, agility));
+    const next = agilityLimits(this.#canon, this.#agility);
+    for (const [name, l] of next) {
+      const b = this.#base.get(name)!;
+      b.min = l.min; b.max = l.max; b.rest = l.rest;
+    }
+    if (this.#skill) return; // the skill owns the joints; setPose would only relabel
+    this.setPose(this.pose);
+    for (const j of this.#joints.values()) j.angle = clamp(j.angle, j.min, j.max);
   }
 
   joint(name: JointName): Joint {
@@ -420,7 +444,7 @@ function j(name: JointName, axis: "x" | "y" | "z", min: number, max: number, res
   return { name, axis, min, max, rest, angle: rest, target: rest };
 }
 
-export function defaultHumanoid(): Skeleton {
+export function defaultHumanoid(agility?: number | null): Skeleton {
   const joints: Joint[] = [
     j("spine", "x", -0.6, 0.6, 0),
     j("abdomen", "x", -0.5, 0.5, 0),
@@ -462,5 +486,8 @@ export function defaultHumanoid(): Skeleton {
       limits: { spine: { min: -1.5, max: 0.8 }, abdomen: { min: -1.3, max: 0.6 }, neck: { min: -1.2, max: 0.5 }, kneeL: { min: -2.6, max: 0.0 }, kneeR: { min: -2.6, max: 0.0 } },
     },
   };
-  return new Skeleton(joints, poses);
+  const sk = new Skeleton(joints, poses);
+  // Wave GEN (C-AGI): an absent agility (or the reference 500) leaves every limit exactly as above.
+  if (agility !== undefined && agility !== null && agility !== AGILITY_REFERENCE) sk.setAgility(agility);
+  return sk;
 }

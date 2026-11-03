@@ -14,6 +14,14 @@ import type { HumanoidRig } from "./Humanoid.ts";
 import type { Fighter } from "../game/Fighter.ts";
 import { CEL_BAND_EDGES, CEL_BAND_WEIGHTS, CEL_LIGHT_GLSL, celLighting, celUniforms, createCelSurface } from "./shaders/CelShader.ts";
 import { BODY_DETAIL_GAIN } from "./shaders/CelSkinned.ts";
+import { generateStaged, type StagedBody } from "./body/Pipeline.ts";
+import { meshPlan } from "./body/BodyMesh.ts";
+import type { BodySpec, GeneratorStats, MeshData } from "./body/contracts.ts";
+import type { DetailedAnatomy } from "./body/Anatomy.ts";
+import { tPoseBones, tPoseDisks } from "../game/anim/SkeletonDisks.ts";
+import { profileBodyStats } from "../game/Characters.ts";
+import { DEFAULT_GEN_STAGE, GEN_STAGES_EVENT, type GenStageId, type GenStagesDetail, isGenStage } from "../ui/GenStages.ts";
+import { parseWhatIf } from "../ui/StatView.ts";
 
 /**
  * PreviewScene — the live 3D portrait the Character Creator shows (wave L).
@@ -537,21 +545,33 @@ export class PreviewStage {
  * hundredth of a millimetre), the resolution the rig actually renders at.
  */
 export function previewKey(profile: CharacterProfile): string {
+  return previewKeyWith(profile, null);
+}
+
+/** Wave GEN: the build key with the Creator's preview-only what-if stats (null = the profile's own). */
+export function previewKeyWith(profile: CharacterProfile, statsOverride: GeneratorStats | null): string {
   // Wave X lane B: the sex (and the age) change the built body, so they are part of the key — a sex
   // toggle in the Creator now rebuilds the model at once instead of keeping the previous body.
+  // Wave GEN lane U: the generator stats (from class/race/attributes/level, or the Creator's preview-only
+  // what-if) shape the body, so they are part of the key too (an attribute tweak rebuilds the model).
   const a = profile.appearance;
-  return `${profile.name}|${profile.race}|${profile.subrace ?? ""}|${profile.className}|${profile.weaponType ?? ""}|${a.height.toFixed(4)}|${a.weight.toFixed(4)}|${a.hair ?? ""}|${profile.birthsign ?? ""}|${a.sex ?? ""}|${a.age ?? ""}|${a.silhouette ? JSON.stringify(a.silhouette) : ""}|${a.eyes ?? ""}|${a.beard ? 1 : 0}${a.moustache ? 1 : 0}`;
+  const s = statsOverride ?? profileBodyStats(profile);
+  return `${profile.name}|${profile.race}|${profile.subrace ?? ""}|${profile.className}|${profile.weaponType ?? ""}|${a.height.toFixed(4)}|${a.weight.toFixed(4)}|${a.hair ?? ""}|${profile.birthsign ?? ""}|${a.sex ?? ""}|${a.age ?? ""}|${a.silhouette ? JSON.stringify(a.silhouette) : ""}|${a.eyes ?? ""}|${a.beard ? 1 : 0}${a.moustache ? 1 : 0}|${statsKey(s)}`;
+}
+
+/** The stats' part of the key (4 dp: the generator's own resolution is far coarser). */
+function statsKey(s: GeneratorStats): string {
+  return `${s.strength.toFixed(4)},${s.agility.toFixed(4)},${s.intelligence.toFixed(4)},${s.level.toFixed(4)}`;
 }
 
 /**
- * Build the preview rig a profile renders as — ONE place, shared by the live preview and the
- * studio. Runs the SAME path the arena runs (`raceBuild` → seeded hair/skin/silhouette →
- * `buildSkinnedHumanoid` with `{garment, weaponSpec}`), so a thumbnail cannot drift from the
- * figure the match builds. Pure geometry: no GL context, no DOM — the caller gives it a renderer.
+ * Wave GEN: a profile as the preview builds it — `previewStats` is the Creator's preview-only what-if (generator
+ * stats 0..1000); absent = the profile's own (Characters.profileBodyStats, the Engine's call). Never saved: the Menu never writes it.
  */
-export function buildPreviewRig(profile: CharacterProfile): { rig: HumanoidRig & SkinnedExtras; fighter: Fighter } {
-  const fighter = createFighter(profile.className, profile.name, 0, 0, 0.5, profile.race, profile.subrace, profile.weaponType);
-  const skills = skillsForClass(fighter.className);
+export type PreviewProfile = CharacterProfile & { previewStats?: GeneratorStats | null };
+
+/** The appearance and body spec a profile builds (ONE place: the rig and the stage views share it). */
+export function previewBody(profile: PreviewProfile, statsOverride: GeneratorStats | null = null): { app: Appearance; spec: BodySpec; seed: number } {
   const build = raceBuild(profile.race, profile.subrace);
   const seed = nameSeed(profile.name);
   const app: Appearance = {
@@ -563,18 +583,214 @@ export function buildPreviewRig(profile: CharacterProfile): { rig: HumanoidRig &
     // Wave X: a hand-tweaked (or rolled) silhouette wins over the name-seeded one, as in the arena.
     silhouette: profile.appearance.silhouette ?? randomSilhouette(seededRng(seed ^ 0x2545f491), profile.race, profile.subrace),
   };
-  const weaponGen = fighter.weaponSpec ? toGeneratedWeapon(fighter.weaponSpec) : generateClassWeapon(fighter.className);
-  const rig = buildSkinnedHumanoid(weaponGen, app, skills[0].element, {
-    race: profile.race, subrace: profile.subrace, className: fighter.className,
+  const spec: BodySpec = {
+    race: profile.race, subrace: profile.subrace, className: profile.className,
     height: app.height, weight: app.weight, seed, birthsign: profile.birthsign,
     // Wave X lane B: the sex rides onto the body spec (it was dropped here, so the Creator always showed
     // the neutral male body whatever the sex control said).
     sex: app.sex ?? null,
     // Wave X: the Creator's explicit (rolled/tweaked) silhouette shapes the rendered body.
     silhouette: profile.appearance.silhouette ?? null,
-  }, { garment: profile.appearance.body, weaponSpec: fighter.weaponSpec, restPose: true }); // wave Y: carry + knees out on its own
+    // Wave GEN (P's BodySpec.stats): the generator's 0..1000 view of this fighter (StatScale), or the
+    // Creator's preview-only what-if. The reference fighter maps to the identity morph.
+    stats: statsOverride ?? profile.previewStats ?? profileBodyStats(profile),
+  };
+  return { app, spec, seed };
+}
+
+/**
+ * Build the preview rig a profile renders as — ONE place, shared by the live preview and the
+ * studio. Runs the SAME path the arena runs (`raceBuild` → seeded hair/skin/silhouette →
+ * `buildSkinnedHumanoid` with `{garment, weaponSpec}`), so a thumbnail cannot drift from the
+ * figure the match builds. Pure geometry: no GL context, no DOM — the caller gives it a renderer.
+ * `statsOverride` (wave GEN): the Creator's preview-only what-if generator stats.
+ */
+export function buildPreviewRig(profile: PreviewProfile, statsOverride: GeneratorStats | null = null): { rig: HumanoidRig & SkinnedExtras; fighter: Fighter } {
+  const fighter = createFighter(profile.className, profile.name, 0, 0, 0.5, profile.race, profile.subrace, profile.weaponType);
+  const skills = skillsForClass(fighter.className);
+  const { app, spec } = previewBody(profile, statsOverride);
+  const weaponGen = fighter.weaponSpec ? toGeneratedWeapon(fighter.weaponSpec) : generateClassWeapon(fighter.className);
+  const rig = buildSkinnedHumanoid(weaponGen, app, skills[0].element, spec, { garment: profile.appearance.body, weaponSpec: fighter.weaponSpec, restPose: true }); // wave Y: carry + knees out on its own
   return { rig, fighter };
 }
+
+// ─── Wave GEN lane U: the generator's STAGE VIEWS (C-STAGE-UI) ─────────────────────────────────────────────
+//
+// What each stage draws, from P's `generateStaged` output (Pipeline.ts), in MODEL space (soles at y = 0 on the
+// plinth's top, the same space the rig's bind mesh lives in):
+//   skeleton  K's T-pose bones (gold lines, joint beads) + cross-section disks (ellipse rings)   tPoseBones/tPoseDisks
+//   cage      P's six-sided cage per part (cyan wire boxes) over a faint clay body                  staged.cage
+//   inflate   the skin's volumes before carving, polygonised (clay)                                 plan.skinInflated
+//   carve     the carved skin (warm clay) + every sculpt stroke's centre (violet beads)             staged.mesh/strokes
+//   skin      the polygon skin coloured by its dominant bone (one hue per bone)                     staged.skin
+//   hitboxes  the painted bind skin + translucent combat capsules (one hue per zone)                staged.hitboxes
+//   paint     the finished, posed rig (the pre-wave view)
+// Pure geometry (no GL context): a test builds every view in Deno.
+
+/** Colours of the stage views (linear-ish sRGB hex; the viewer's ambient + key light shade the solids). */
+export const STAGE_COLOURS = {
+  bone: 0xf2c14e, joint: 0xffe6a0, disk: 0x7fd6ff, cage: 0x5fe0e8, clay: 0xc9b49a, carveClay: 0xd6a989, stroke: 0xb06cff,
+  ghostOpacity: 0.22, capsuleOpacity: 0.34,
+} as const;
+/** One hue per bone for the skin view (golden-angle hues, bright enough on walnut). */
+export function boneHue(i: number): THREE.Color {
+  return new THREE.Color().setHSL(((i * 137.508) % 360) / 360, 0.62, 0.56);
+}
+/** One hue per hit zone (Hitboxes' HitZone). */
+export const ZONE_HUE: Readonly<Record<string, number>> = {
+  head: 0xff5a5a, neck: 0xff8a5a, chest: 0xffa040, abdomen: 0xffc850, pelvis: 0xe0b040,
+  upperArm: 0x5ab4ff, foreArm: 0x6ac8ff, hand: 0xc88cff, thigh: 0x6ee07a, shin: 0x8ef09a, foot: 0x40e0d0,
+};
+
+function meshGeometry(m: MeshData, colours?: Float32Array): THREE.BufferGeometry {
+  const g = new THREE.BufferGeometry();
+  g.setAttribute("position", new THREE.BufferAttribute(m.positions, 3));
+  g.setAttribute("normal", new THREE.BufferAttribute(m.normals, 3));
+  g.setIndex(new THREE.BufferAttribute(m.indices, 1));
+  if (colours) g.setAttribute("color", new THREE.BufferAttribute(colours, 3));
+  return g;
+}
+
+function solid(m: MeshData, o: { colour?: number; colours?: Float32Array; opacity?: number; name: string }): THREE.Mesh {
+  const mat = new THREE.MeshLambertMaterial({ color: o.colours ? 0xffffff : (o.colour ?? STAGE_COLOURS.clay), vertexColors: !!o.colours });
+  if (o.opacity !== undefined && o.opacity < 1) { mat.transparent = true; mat.opacity = o.opacity; mat.depthWrite = false; }
+  const mesh = new THREE.Mesh(meshGeometry(m, o.colours), mat);
+  mesh.name = o.name;
+  return mesh;
+}
+
+/** An ellipse ring (rx along u, rz along v = n x u) at `at` with normal `n`. */
+function ring(at: readonly number[], n: readonly number[], rx: number, rz: number, seg = 28): THREE.Vector3[] {
+  const N = new THREE.Vector3(n[0], n[1], n[2]).normalize();
+  const ref = Math.abs(N.x) > 0.9 ? new THREE.Vector3(0, 0, 1) : new THREE.Vector3(1, 0, 0);
+  const U = ref.clone().sub(N.clone().multiplyScalar(ref.dot(N))).normalize(), V = new THREE.Vector3().crossVectors(N, U);
+  const pts: THREE.Vector3[] = [];
+  for (let k = 0; k < seg; k++) {
+    const a0 = (k / seg) * Math.PI * 2, a1 = ((k + 1) / seg) * Math.PI * 2;
+    for (const a of [a0, a1]) pts.push(new THREE.Vector3(at[0], at[1], at[2]).addScaledVector(U, rx * Math.cos(a)).addScaledVector(V, rz * Math.sin(a)));
+  }
+  return pts;
+}
+
+/** Extra data a view may need that the pipeline does not carry (the inflate mesh is polygonised on demand). */
+export interface StageViewExtras { inflateMesh?: MeshData }
+
+/** The inflate view's mesh: the skin's volumes BEFORE carving (B's skinInflated), no strokes. ~0.2 s. */
+export function inflateMeshOf(staged: StagedBody): MeshData {
+  const p = staged.plan as DetailedAnatomy & { skinInflated?: DetailedAnatomy["skinRoot"] };
+  return meshPlan({ ...p, skinRoot: p.skinInflated ?? p.skinRoot, strokes: [] } as DetailedAnatomy).mesh;
+}
+
+/** Build one stage's view (a THREE.Group named `stage-<id>`); `paint` returns an empty group (the rig is the view). */
+export function buildStageView(staged: StagedBody, id: GenStageId, extras: StageViewExtras = {}): THREE.Group {
+  const g = new THREE.Group();
+  g.name = `stage-${id}`;
+  const lines = (pts: THREE.Vector3[], colour: number, name: string, opacity = 1) => {
+    const mat = new THREE.LineBasicMaterial({ color: colour, transparent: opacity < 1, opacity, depthTest: true });
+    const l = new THREE.LineSegments(new THREE.BufferGeometry().setFromPoints(pts), mat);
+    l.name = name;
+    g.add(l);
+    return l;
+  };
+  switch (id) {
+    case "skeleton": {
+      const plan = staged.carved;
+      const bones = tPoseBones(plan), disks = tPoseDisks(plan);
+      const segs: THREE.Vector3[] = [];
+      for (const b of bones) segs.push(new THREE.Vector3(...b.head), new THREE.Vector3(...b.tail));
+      lines(segs, STAGE_COLOURS.bone, "skeleton-bones");
+      const bead = new THREE.SphereGeometry(0.014, 10, 8), beadMat = new THREE.MeshBasicMaterial({ color: STAGE_COLOURS.joint });
+      const joints = new THREE.InstancedMesh(bead, beadMat, bones.length);
+      joints.name = "skeleton-joints";
+      const m = new THREE.Matrix4();
+      bones.forEach((b, i) => joints.setMatrixAt(i, m.makeTranslation(b.head[0], b.head[1], b.head[2])));
+      g.add(joints);
+      const rings: THREE.Vector3[] = [];
+      for (const d of disks) rings.push(...ring(d.at, d.normal, d.rx, d.rz));
+      lines(rings, STAGE_COLOURS.disk, "skeleton-disks");
+      break;
+    }
+    case "cage": {
+      g.add(solid(staged.mesh, { colour: STAGE_COLOURS.clay, opacity: STAGE_COLOURS.ghostOpacity, name: "cage-ghost" }));
+      const segs: THREE.Vector3[] = [];
+      for (const p of Object.values(staged.cage.parts)) {
+        const lo = [p.centre[0] - p.neg[0], p.centre[1] - p.neg[1], p.centre[2] - p.neg[2]], hi = [p.centre[0] + p.pos[0], p.centre[1] + p.pos[1], p.centre[2] + p.pos[2]];
+        const c = (i: number) => new THREE.Vector3(i & 1 ? hi[0] : lo[0], i & 2 ? hi[1] : lo[1], i & 4 ? hi[2] : lo[2]);
+        for (const [a, b] of [[0, 1], [2, 3], [4, 5], [6, 7], [0, 2], [1, 3], [4, 6], [5, 7], [0, 4], [1, 5], [2, 6], [3, 7]]) segs.push(c(a), c(b));
+      }
+      lines(segs, STAGE_COLOURS.cage, "cage-boxes");
+      break;
+    }
+    case "inflate":
+      g.add(solid(extras.inflateMesh ?? inflateMeshOf(staged), { colour: STAGE_COLOURS.clay, name: "inflate-volumes" }));
+      break;
+    case "carve": {
+      g.add(solid(staged.mesh, { colour: STAGE_COLOURS.carveClay, name: "carve-skin" }));
+      const strokes = staged.carved.strokes;
+      if (strokes.length) {
+        const bead = new THREE.SphereGeometry(0.009, 8, 6), mat = new THREE.MeshBasicMaterial({ color: STAGE_COLOURS.stroke, depthTest: false, transparent: true, opacity: 0.85 });
+        const inst = new THREE.InstancedMesh(bead, mat, strokes.length);
+        inst.name = "carve-strokes";
+        inst.renderOrder = 2;
+        const m = new THREE.Matrix4();
+        strokes.forEach((s, i) => inst.setMatrixAt(i, m.makeTranslation(s.centre[0], s.centre[1], s.centre[2])));
+        g.add(inst);
+      }
+      break;
+    }
+    case "skin": {
+      const m = staged.mesh, n = m.positions.length / 3, col = new Float32Array(n * 3);
+      const palette = staged.carved.bones.map((_, i) => boneHue(i));
+      for (let v = 0; v < n; v++) {
+        let bi = m.bone?.[v] ?? 0;
+        if (staged.skin) {
+          let w = -1;
+          for (let k = 0; k < 4; k++) { const wk = staged.skin.skinWeight[4 * v + k]; if (wk > w) { w = wk; bi = staged.skin.skinIndex[4 * v + k]; } }
+        }
+        const c = palette[bi] ?? palette[0];
+        col[3 * v] = c.r; col[3 * v + 1] = c.g; col[3 * v + 2] = c.b;
+      }
+      g.add(solid(m, { colours: col, name: "skin-weights" }));
+      const wire = new THREE.LineSegments(new THREE.WireframeGeometry(meshGeometry(m)), new THREE.LineBasicMaterial({ color: 0x1a1410, transparent: true, opacity: 0.18 }));
+      wire.name = "skin-wire";
+      g.add(wire);
+      break;
+    }
+    case "hitboxes": {
+      g.add(solid(staged.mesh, staged.paint ? { colours: staged.paint, name: "hitboxes-skin" } : { colour: STAGE_COLOURS.clay, name: "hitboxes-skin" }));
+      const caps = new THREE.Group();
+      caps.name = "hitboxes-capsules";
+      for (const b of staged.hitboxes?.boxes ?? []) {
+        const A = new THREE.Vector3(...b.wa), B = new THREE.Vector3(...b.wb), len = A.distanceTo(B);
+        const geo = new THREE.CapsuleGeometry(b.radius, len, 4, 12);
+        const mat = new THREE.MeshLambertMaterial({ color: ZONE_HUE[String(b.zone)] ?? 0xffffff, transparent: true, opacity: STAGE_COLOURS.capsuleOpacity, depthWrite: false });
+        const c = new THREE.Mesh(geo, mat);
+        c.position.copy(A).add(B).multiplyScalar(0.5);
+        if (len > 1e-6) c.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), B.clone().sub(A).normalize());
+        c.renderOrder = 3;
+        caps.add(c);
+      }
+      g.add(caps);
+      break;
+    }
+    case "paint":
+      break;
+  }
+  return g;
+}
+
+/** Dispose every geometry/material of a view. */
+function disposeView(o: THREE.Object3D): void {
+  o.traverse((x: THREE.Object3D) => {
+    const m = x as THREE.Mesh;
+    m.geometry?.dispose?.();
+    const mat = m.material as THREE.Material | THREE.Material[] | undefined;
+    if (Array.isArray(mat)) mat.forEach((q) => q.dispose()); else mat?.dispose?.();
+  });
+}
+
+/** Quiet time (ms) after the last rebuild before a stage view recomputes the staged body (~1 s of work). */
+export const STAGED_DEBOUNCE_MS = 220;
 
 export class PreviewScene {
   #canvas: HTMLCanvasElement;
@@ -603,6 +819,24 @@ export class PreviewScene {
   #disposed = false;
   /** The name+race the current rig was built for, so `setProfile` can skip a rebuild. */
   #built = "";
+  // Wave GEN lane U: the generator stage shown (canvas `data-gen-view`), the preview-only what-if stats
+  // (canvas `data-gen-stats`), the staged body behind the views and the views themselves.
+  #genStage: GenStageId = DEFAULT_GEN_STAGE;
+  #genStageAttr = "";
+  #whatIfAttr = "";
+  #whatIf: GeneratorStats | null = null;
+  #staged: StagedBody | null = null;
+  #stagedKey = "";
+  #stagedMs = 0;
+  #inflate: { key: string; mesh: MeshData } | null = null;
+  #stageRoot = new THREE.Group();
+  #stageView: THREE.Group | null = null;
+  #stageViewKey = "";
+  #stageViewMs = 0;
+  #stagedTimer: ReturnType<typeof setTimeout> | null = null;
+  #stageState: "idle" | "pending" | "ready" = "idle";
+  /** QA: rig rebuilds (setProfile with a new key) and their wall time, ms. */
+  #rebuildLog = { rebuilds: 0, lastMs: 0, maxMs: 0 };
   constructor(canvas: HTMLCanvasElement) {
     this.#canvas = canvas;
     this.#renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
@@ -615,6 +849,9 @@ export class PreviewScene {
     this.#scene.add(this.#stage.group);
     this.#root = new THREE.Group();
     this.#scene.add(this.#root);
+    this.#stageRoot.name = "gen-stage-views";
+    this.#stageRoot.visible = false;
+    this.#scene.add(this.#stageRoot);
     this.#camera = new THREE.PerspectiveCamera(CAM_FOV, 1, 0.1, 20);
     this.#placeCamera();
     this.resize();
@@ -697,18 +934,148 @@ export class PreviewScene {
   setProfile(profile: CharacterProfile): void {
     if (this.#disposed) return;
     this.#profile = profile;
-    const key = previewKey(profile);
+    const key = previewKeyWith(profile, this.#whatIf);
     if (key === this.#built) return;
+    const t0 = performance.now();
     this.#built = key;
     this.#clearRig();
+    // Wave GEN: the Creator's what-if stats (preview only) ride on the profile handed to the shared builder.
+    this.#buildRig(this.#whatIf ? { ...profile, previewStats: this.#whatIf } : profile);
+    this.#clock = 0;
+    // Wave X: the camera frames the PEDESTAL, so every race stands at the same framing (see previewFraming).
+    this.#fitCamera();
+    this.#applyStageVisibility();
+    this.#render(0);
+    // Wave GEN: rebuild latency (build + first draw), and a stage view follows the new body after a quiet spell.
+    const ms = performance.now() - t0, log = this.#rebuildLog;
+    log.rebuilds++; log.lastMs = ms; log.maxMs = Math.max(log.maxMs, ms);
+    const ds = (this.#canvas as { dataset?: DOMStringMap }).dataset;
+    if (ds) { ds.previewRebuildMs = ms.toFixed(1); ds.previewRebuilds = String(log.rebuilds); }
+    if (this.#genStage !== "paint") this.#scheduleStaged(STAGED_DEBOUNCE_MS);
+  }
+
+  /** Build and seat the rig for `profile` (the shared builder: the arena's path). */
+  #buildRig(profile: PreviewProfile): void {
     const { rig, fighter } = buildPreviewRig(profile);
     this.#fighter = fighter;
     this.#rig = rig;
     this.#root.add(rig.group);
-    this.#clock = 0;
-    // Wave X: the camera frames the PEDESTAL, so every race stands at the same framing (see previewFraming).
-    this.#fitCamera();
+  }
+
+  // ── Wave GEN lane U: stage views + what-if stats, driven by the canvas's data attributes ─────────────────
+  /** Read `data-gen-view` / `data-gen-stats` (the Menu writes them); cheap string compares per frame. */
+  #syncDataset(): void {
+    const ds = (this.#canvas as { dataset?: DOMStringMap }).dataset;
+    if (!ds) return;
+    const stats = ds.genStats ?? "";
+    if (stats !== this.#whatIfAttr) {
+      this.#whatIfAttr = stats;
+      this.#whatIf = parseWhatIf(stats);
+      if (this.#profile) this.setProfile(this.#profile);
+    }
+    const stage = ds.genView ?? "";
+    if (stage !== this.#genStageAttr) {
+      this.#genStageAttr = stage;
+      this.setGenStage(isGenStage(stage) ? stage : DEFAULT_GEN_STAGE);
+    }
+  }
+
+  /** Show one generator stage (Paint = the finished rig). Non-Paint stages compute the staged body on demand. */
+  setGenStage(id: GenStageId): void {
+    if (this.#disposed) return;
+    this.#genStage = id;
+    this.#applyStageVisibility();
+    if (id === "paint") { this.#stageState = this.#staged && this.#stagedKey === this.#built ? "ready" : "idle"; this.#emitStages(); this.#render(0); return; }
+    this.#scheduleStaged(0);
+  }
+
+  get genStage(): GenStageId { return this.#genStage; }
+
+  #applyStageVisibility(): void {
+    const viewReady = this.#genStage !== "paint" && this.#stageView !== null && this.#stageViewKey.endsWith(`#${this.#genStage}`);
+    this.#stageRoot.visible = viewReady;
+    if (this.#rig) this.#rig.group.visible = !viewReady;
+    const ds = (this.#canvas as { dataset?: DOMStringMap }).dataset;
+    if (ds) ds.genStageShown = viewReady ? this.#genStage : "paint";
+  }
+
+  #scheduleStaged(delay: number): void {
+    if (this.#stagedTimer !== null) clearTimeout(this.#stagedTimer);
+    this.#stageState = "pending";
+    const ds = (this.#canvas as { dataset?: DOMStringMap }).dataset;
+    if (ds) ds.genStageState = "pending";
+    this.#stagedTimer = setTimeout(() => { this.#stagedTimer = null; this.#ensureStageView(); }, delay);
+  }
+
+  /** Compute (or reuse) the staged body of the current key and build the current stage's view. Synchronous. */
+  #ensureStageView(): void {
+    if (this.#disposed || !this.#profile) return;
+    const id = this.#genStage, key = this.#built;
+    const needHit = id === "hitboxes";
+    if (this.#stagedKey !== key || !this.#staged || (needHit && !this.#staged.hitboxes)) {
+      const profile = this.#profile;
+      const { app, spec } = previewBody(profile, this.#whatIf);
+      const t0 = performance.now();
+      this.#staged = generateStaged(spec, {
+        // Paint = P's default: S's paintStage (its record carries the miniature metrics), in the fighter's colours.
+        hitboxes: needHit, coverageStride: 4, look: { hair: app.hair, accent: app.accent, garment: profile.appearance.body },
+      });
+      this.#stagedMs = performance.now() - t0;
+      this.#stagedKey = key;
+    }
+    if (id !== "paint" && this.#stageViewKey !== `${key}#${id}`) {
+      const t1 = performance.now();
+      if (this.#stageView) { this.#stageRoot.remove(this.#stageView); disposeView(this.#stageView); this.#stageView = null; }
+      let extras: StageViewExtras = {};
+      if (id === "inflate") {
+        if (this.#inflate?.key !== key) this.#inflate = { key, mesh: inflateMeshOf(this.#staged!) };
+        extras = { inflateMesh: this.#inflate.mesh };
+      }
+      this.#stageView = buildStageView(this.#staged!, id, extras);
+      this.#stageRoot.add(this.#stageView);
+      this.#stageViewKey = `${key}#${id}`;
+      this.#stageViewMs = performance.now() - t1;
+    }
+    this.#stageState = "ready";
+    const ds = (this.#canvas as { dataset?: DOMStringMap }).dataset;
+    if (ds) ds.genStageState = "ready";
+    this.#applyStageVisibility();
     this.#render(0);
+    this.#emitStages();
+  }
+
+  #emitStages(): void {
+    const c = this.#canvas as HTMLCanvasElement & { dispatchEvent?: (e: Event) => boolean };
+    const fresh = this.#staged && this.#stagedKey === this.#built;
+    const detail: GenStagesDetail = {
+      stage: this.#genStage, stages: fresh ? this.#staged!.stages : [], buildMs: fresh ? this.#stagedMs : 0,
+      viewMs: this.#stageViewMs, state: this.#stageState, rebuildMs: this.#rebuildLog.lastMs,
+    };
+    if (typeof c.dispatchEvent === "function" && typeof CustomEvent === "function") c.dispatchEvent(new CustomEvent(GEN_STAGES_EVENT, { detail, bubbles: true }));
+  }
+
+  /**
+   * QA (wave GEN): the stage view's state — what is shown, whether the staged body is for the current rig,
+   * its compute time, the view's build time, the rig rebuild latency, and the view's object names.
+   */
+  debugGenStage(): { stage: GenStageId; shown: string; state: string; current: boolean; stagedMs: number; viewMs: number; rebuild: { rebuilds: number; lastMs: number; maxMs: number }; objects: string[]; stats: GeneratorStats | null; whatIf: GeneratorStats | null; stages: { id: string; ms: number; metrics: Record<string, number> }[] } {
+    const names: string[] = [];
+    if (this.#stageRoot.visible) this.#stageView?.traverse((o: THREE.Object3D) => { if (o.name && o !== this.#stageView) names.push(o.name); });
+    const spec = this.#profile ? previewBody(this.#profile, this.#whatIf).spec : null;
+    return {
+      stage: this.#genStage, shown: this.#stageRoot.visible ? this.#genStage : "paint", state: this.#stageState,
+      current: this.#stagedKey === this.#built, stagedMs: Math.round(this.#stagedMs * 10) / 10, viewMs: Math.round(this.#stageViewMs * 10) / 10,
+      rebuild: { ...this.#rebuildLog }, objects: names, stats: spec?.stats ?? null, whatIf: this.#whatIf,
+      stages: (this.#staged?.stages ?? []).map((r) => ({ id: r.id, ms: r.ms, metrics: r.metrics })),
+    };
+  }
+
+  /** QA (wave GEN): show a stage NOW (no debounce) — measurement only; the Creator drives it by the canvas attribute. */
+  debugShowGenStage(id: GenStageId): ReturnType<PreviewScene["debugGenStage"]> {
+    this.#genStage = id;
+    if (this.#stagedTimer !== null) { clearTimeout(this.#stagedTimer); this.#stagedTimer = null; }
+    if (id === "paint") this.setGenStage(id); else this.#ensureStageView();
+    return this.debugGenStage();
   }
 
   #clearRig(): void {
@@ -722,6 +1089,7 @@ export class PreviewScene {
 
   /** Advance the turntable and the idle clock, then draw. `dt` is in seconds. */
   render(dt: number): void {
+    this.#syncDataset();
     this.#render(dt);
   }
 
@@ -845,6 +1213,8 @@ export class PreviewScene {
   dispose(): void {
     if (this.#disposed) return;
     this.#disposed = true;
+    if (this.#stagedTimer !== null) clearTimeout(this.#stagedTimer);
+    if (this.#stageView) disposeView(this.#stageView);
     this.#clearRig();
     this.#stage.dispose();
     this.#renderer.dispose();

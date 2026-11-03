@@ -222,6 +222,7 @@ export function applyTwoHandGrip(rig: CombatRig, shoulderAngle: number, plan: Of
   a.parent.updateMatrixWorld(true);
   CONVERGE.set(rig, 0);
   let alpha = 0;
+  let okAt: ((x: number) => boolean) | null = null;
   const kP = convergeAxis(rig, vK);
   if (kP) {
     // In WORLD space: the rotation about the axis through the right shoulder pivot.
@@ -267,12 +268,71 @@ export function applyTwoHandGrip(rig: CombatRig, shoulderAngle: number, plan: Of
       const need = deficit(CONVERGE_MAX) > 0 ? CONVERGE_MAX : CONVERGE_MAX - largest((x) => deficit(CONVERGE_MAX - x) <= 0, CONVERGE_MAX);
       const ax0 = Math.min(CONVERGE_BODY_CLEAR, axisClear(0)), tc0 = Math.min(CONVERGE_TORSO_CLEAR, torsoClear(0));
       alpha = largest((x) => axisClear(x) >= ax0 && torsoClear(x) >= tc0, need);
+      // Continuity may keep a convergence the solve would drop, as long as nothing enters the torso.
+      okAt = (x) => torsoClear(x) >= Math.min(0, tc0);
+    }
+  }
+  // Wave GEN (lane K): the convergence is a bisection with hard constraints, so it jumps between frames
+  // (audit: 0.39 -> 0.65 rad in one frame walking with a longsword); rate-limit it on the rig's clock.
+  if (kP) {
+    const tm = temporalOf(rig);
+    if (tm) {
+      // The body outranks continuity: a lagging (larger) convergence that would put the fist / blade into
+      // the torso drops to the solved one (anim_measure: a thrust's hand 29 mm in the chest otherwise).
+      const lim = limitTo(alpha, tm.state.a0, CONVERGE_RATE * tm.dt);
+      if (lim > alpha && okAt && !okAt(lim)) {
+        const ok = okAt, lo = alpha;
+        alpha = lo + largest((d) => ok(lo + d), lim - lo); // the most continuity the torso allows
+      } else alpha = lim;
+      tm.state.a1 = alpha;
     }
     if (alpha > 0) { convergeWeaponArm(rig, alpha); CONVERGE.set(rig, alpha); }
+    if (tm && alpha > 0) tm.clock.editedR = tm.clock.n; // the drawn weapon shoulder now differs from the Skeleton's
   }
   const res = applyOffHandGrip(rig, plan, choke, rest);
   return res ? { ...res, converge: alpha } : null;
 }
+
+// ─── Temporal limiter (wave GEN, lane K) ───────────────────────────────────────────────────────
+
+/** Fastest the weapon arm's convergence may change, rad/s (0.2 rad per 60 Hz frame; 6 left a thrust's guard jumping, 24 let walk pops through). */
+export const CONVERGE_RATE = 12;
+/** Fastest the off hand's grip weight may change, 1/s (a full release / re-grip takes 1 / HOLD_RATE s). */
+export const HOLD_RATE = 5;
+/** Fastest the drawn off arm (shoulderL, elbowL local rotations) may turn, rad/s (0.33 rad per 60 Hz frame). */
+export const OFF_ARM_RATE = 20;
+interface OffTemporal { frame: number; a0: number; a1: number; h0: number; h1: number }
+/** SkinnedHumanoid.frameClock (structural: combat must not import the graphics rig module). */
+interface ClockLike { n: number; dt: number; armL: readonly [THREE.Quaternion, THREE.Quaternion]; editedL: number; editedR: number }
+const TEMPORAL = new WeakMap<object, OffTemporal>();
+/**
+ * The limiter's state for this frame of the rig's clock (SkinnedHumanoid.frameClock), or null on a rig
+ * without a clock / a zero step (a bare test rig, a QA capture): those keep the exact pre-wave behaviour.
+ * The previous FRAME's last values are the reference (the arm: as DRAWN last frame, frameClock.armL), so
+ * the pose loop's call and the after-guard re-seat in one frame are limited against the same pose. A
+ * skipped frame (the fall owned the body) restarts the scalars from 0 (no convergence, hand released).
+ */
+function temporalOf(rig: object): { state: OffTemporal; dt: number; clock: ClockLike } | null {
+  const c = (rig as { frameClock?: ClockLike }).frameClock;
+  if (!c || !(c.dt > 0) || !c.armL) return null;
+  let s = TEMPORAL.get(rig);
+  if (!s) { s = { frame: c.n, a0: Number.NaN, a1: Number.NaN, h0: Number.NaN, h1: Number.NaN }; TEMPORAL.set(rig, s); }
+  if (s.frame !== c.n) {
+    // A skipped frame means the override was off (a fall owned the body): resume from "no convergence,
+    // released hand" so both ease back in (audit: 0.77 rad shoulderR pop at the get-up's hand-off).
+    const prev = s.frame === c.n - 1;
+    s.a0 = prev ? s.a1 : 0; s.h0 = prev ? s.h1 : 0;
+    s.frame = c.n; s.a1 = Number.NaN; s.h1 = Number.NaN;
+  }
+  return { state: s, dt: c.dt, clock: c };
+}
+const limitTo = (x: number, ref: number, step: number): number => Number.isNaN(ref) ? x : Math.max(ref - step, Math.min(ref + step, x));
+/** Turn q toward itself from `ref` by at most `step` rad (in place). */
+function limitQuat(q: THREE.Quaternion, ref: THREE.Quaternion, step: number): void {
+  const ang = 2 * Math.acos(Math.min(1, Math.abs(q.dot(ref))));
+  if (ang > step) q.copy(qLim.copy(ref).slerp(q, step / ang));
+}
+const qLim = new THREE.Quaternion(), qUS = new THREE.Quaternion(), qUE = new THREE.Quaternion(), qLS = new THREE.Quaternion(), qLE = new THREE.Quaternion();
 
 // ─── The off arm ───────────────────────────────────────────────────────────────────────────────
 
@@ -465,6 +525,37 @@ export function applyOffHandGrip(rig: CombatRig, plan: OffHandPlan, choke = 0, r
     for (let i = 0; i < 8; i++) { const m = 0.5 * (lo + hi); blend(m); if (handClear() >= 0.5 * OFF_TORSO_MARGIN) lo = m; else hi = m; }
     hold = lo;
     blend(hold);
+  }
+  // Wave GEN (lane K): the grip weight comes from reach / torso thresholds and a bisection, so it flipped
+  // between ~0 and 1 from one frame to the next (audit: the off arm jumping between the haft and the
+  // guard, 0.4-1.8 rad per frame). Rate-limit it on the rig's clock (no clock = a bare rig: unchanged).
+  // Then the arm itself: near a singular reach (haft along the forearm, pole along shoulder->fist) the IK's
+  // elbow plane and forearm twist flip in one frame (audit: greataxe windup, twist -0.1 -> 0.84 -> 1.3);
+  // the drawn shoulder/elbow may turn at most OFF_ARM_RATE·dt from last frame's (the fist lags the haft
+  // for those frames instead of the arm snapping).
+  {
+    const tm = temporalOf(rig);
+    if (tm) {
+      const h = limitTo(hold, tm.state.h0, HOLD_RATE * tm.dt);
+      if (h !== hold) { hold = h; blend(hold); }
+      tm.state.h1 = hold;
+      const step = OFF_ARM_RATE * tm.dt;
+      const uS = qUS.copy(a.shoulder.quaternion), uE = qUE.copy(a.elbow.quaternion), clear0 = handClear();
+      limitQuat(a.shoulder.quaternion, tm.clock.armL[0], step);
+      limitQuat(a.elbow.quaternion, tm.clock.armL[1], step);
+      a.shoulder.updateMatrixWorld(true);
+      // The torso outranks continuity: if the lagging arm would put the fist in the body where the solved
+      // arm did not, give back just enough of the lag (bisection toward the solved arm).
+      const need = Math.min(clear0, 0.5 * OFF_TORSO_MARGIN);
+      if (handClear() < need) {
+        const lS = qLS.copy(a.shoulder.quaternion), lE = qLE.copy(a.elbow.quaternion);
+        const at = (w: number) => { a.shoulder.quaternion.slerpQuaternions(lS, uS, w); a.elbow.quaternion.slerpQuaternions(lE, uE, w); a.shoulder.updateMatrixWorld(true); };
+        let lo = 0, hi = 1;
+        for (let i = 0; i < 8; i++) { const m = 0.5 * (lo + hi); at(m); if (handClear() >= need) hi = m; else lo = m; }
+        at(hi);
+      }
+      tm.clock.editedL = tm.clock.n;
+    }
   }
   // The shoulder's quaternion is the bone's FULL local rotation (it replaces the display roll · single-axis
   // pitch the rig wrote), so nothing of the Skeleton's mirrored left-arm angle survives on the drawn arm.

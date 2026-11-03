@@ -2,6 +2,8 @@ import type { ClassName } from "./Stats.ts";
 import { BIRTHSIGNS } from "./Birthsight.ts";
 import { startingStats } from "./Leveling.ts";
 import type { RaceSilhouette, Sex } from "./BodyProfile.ts";
+import type { GeneratorStats } from "../graphics/body/contracts.ts";
+import { generatorStats } from "./StatScale.ts";
 
 export interface Appearance {
   body: string;
@@ -118,4 +120,13 @@ export function randomProfile(rng: () => number): CharacterProfile {
       sex: rng() < 0.5 ? "male" : "female",
     },
   };
+}
+/**
+ * Wave GEN (P): the body generator's 0..1000 stat view of a profile (StatScale.generatorStats: the
+ * sheet's strength / agility / intelligence and the level). This is what rides on BodySpec.stats from
+ * the Creator preview (PreviewScene.buildPreviewRig) and the arena (Engine.#spawnMeshes); a profile at
+ * the reference sheet and level 1 maps to STAT_REFERENCE (the identity morph).
+ */
+export function profileBodyStats(profile: Pick<CharacterProfile, "className" | "race" | "subrace" | "allocated" | "level">): GeneratorStats {
+  return generatorStats(profile);
 }

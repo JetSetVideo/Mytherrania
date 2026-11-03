@@ -174,7 +174,16 @@ export interface BodySpec {
    * the race's own (`raceSilhouette`), so every pre-wave spec builds exactly as before.
    */
   silhouette?: RaceSilhouette | null;
+  /**
+   * Wave GEN (P): the generator's stat view, each 0..1000 (src/game/StatScale.ts maps the game's sheet and
+   * level onto it; STAT_REFERENCE = 500 each = the identity morph). Optional: an absent/null value builds
+   * today's body BYTE-IDENTICALLY (tests/wave_gen_pipeline_test.ts G3). Render-only and bounded.
+   */
+  stats?: GeneratorStats | null;
 }
+
+/** Wave GEN: the generator's 0..1000 stat scale (see src/game/StatScale.ts for the maps from the game). */
+export interface GeneratorStats { strength: number; agility: number; intelligence: number; level: number }
 
 /** The full generated body: volumes, brushes, bones and the box to polygonise. */
 export interface AnatomyPlan {
@@ -184,6 +193,13 @@ export interface AnatomyPlan {
   bounds: Bounds;
   /** Grid cell size in metres the plan was designed for (detail vs triangle budget). */
   cell: number;
+  /**
+   * Wave GEN (optional, lane B): the PHYSICS tree with the stat morph applied (no physique sculpt, no
+   * asymmetry). Hitboxes fit `hitRoot ?? root` inside `hitBounds ?? bounds`, so the combat capsules follow
+   * the stat body while the ragdoll / abduction solves keep reading `root`. Absent = today.
+   */
+  hitRoot?: SdfNode;
+  hitBounds?: Bounds;
 }
 
 /** Paint layer blend modes (Photoshop semantics, per channel, 0..1). */

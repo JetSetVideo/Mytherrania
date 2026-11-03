@@ -1,0 +1,250 @@
+[
+ {
+  "run": "baseline-head",
+  "sheet": "human-male-ref-final",
+  "verdict": "PASS (reference)",
+  "region": "+Z/-Z torso/shoulders",
+  "finding": "vision first read hard black patches at shoulders/crotch/knees under a QA headlight; under the Creator's own PreviewStage light they read as the dark garment + cel shade band (re-asked)",
+  "measure": "outline off vs on with QA light: interior dark share 1.7% -> 10.8% (ink hull is light-dependent) -> final stage now drawn via PreviewStage.draw; comps 1 in 6/6 tiles; sym +Z 0.950"
+ },
+ {
+  "run": "baseline-head",
+  "sheet": "human-female-ref-final",
+  "verdict": "PASS (reference)",
+  "region": "+Z/-Z arms",
+  "finding": "vision: arm/hand pose differs L vs R; top/bottom arms 'inconsistent'",
+  "measure": "rest pose carries the (hidden) weapon in the right hand by design; +Z mid-third L/R imbalance 1.1%; comps 1 x6"
+ },
+ {
+  "run": "baseline-head",
+  "sheet": "elf-male-ref-final",
+  "verdict": "PASS (reference)",
+  "region": "+Z hands",
+  "finding": "vision claimed a detached black piece below a hand + hip gap in \u00b1Y; a zoomed re-ask found no separate piece (closed fist vs open hand)",
+  "measure": "comps 1 in 6/6 tiles (a detached part would be a 2nd component) -> claim refuted by measurement; sym +Z 0.942, +Y 0.891 (lowest of the set: long hair locks)"
+ },
+ {
+  "run": "baseline-head",
+  "sheet": "elf-female-ref-final",
+  "verdict": "PASS (reference)",
+  "region": "head/ears, hands",
+  "finding": "vision: ear 'detached', hand clips hip, hand pose asymmetry",
+  "measure": "comps 1 x6 refutes detachment; clipping not confirmed (front projection overlap is not intersection); sym +Z 0.941"
+ },
+ {
+  "run": "baseline-head",
+  "sheet": "dwarf-male-ref-final",
+  "verdict": "PASS (reference)",
+  "region": "beard/neck, joints",
+  "finding": "vision (short form) listed gaps at shoulders/wrists/knees and beard through chest - generic, contradicted by comps 1 x6",
+  "measure": "comps 1 x6; sym +Z 0.965; widest frame (A-pose span 1.48 m at 1.44 m height)"
+ },
+ {
+  "run": "baseline-head",
+  "sheet": "dwarf-female-ref-final",
+  "verdict": "PASS (reference)",
+  "region": "hands vs thighs",
+  "finding": "vision front/back said hands clip hips; zoomed side tile: hand rests beside/in front of the thigh, not intersecting",
+  "measure": "comps 1 x6; sym +Z 0.963"
+ },
+ {
+  "run": "baseline-head",
+  "sheet": "ork-male-ref-final",
+  "verdict": "PASS (reference)",
+  "region": "head: tusks vs jaw",
+  "finding": "sheet-level vision said tusks clip the jaw; zoomed head crop (full-res, x320-520 y380-600): tusks rise from the lower jaw, no piercing, no hair through face",
+  "measure": "comps 1 x6; sym +Z 0.962; not a FAIL on HEAD (baseline); re-check on stage sheets"
+ },
+ {
+  "run": "baseline-head",
+  "sheet": "ork-female-ref-final",
+  "verdict": "PASS (reference)",
+  "region": "head: tusks vs jaw",
+  "finding": "sheet-level vision said tusks clip the jaw; same claim refuted on the ork male zoom (same tusk generator); not separately zoomed",
+  "measure": "comps 1 x6; sym +Z 0.965"
+ },
+ {
+  "run": "S-r1-lane",
+  "sheet": "<race>-<sex>-ref-final x8 (HEAD + S files only)",
+  "verdict": "PASS",
+  "region": "+Z/\u00b1X bottom third (shins/feet)",
+  "finding": "changes confined to the lower legs (diff picture: patchy red on shins/feet = cel band edges moved by the chiaroscuro darkening); zoomed shins: clean, no blotch/speckle/seam",
+  "measure": "silhouette unchanged: mirror IoU and comps identical to baseline (4 dp) 8/8; changed share 0.002-0.35%, max band +Z:bottom 3.4%; ork/dwarf <=0.04%"
+ },
+ {
+  "run": "S-r1",
+  "sheet": "ork-male-ref-paint",
+  "verdict": "PASS",
+  "region": "whole body",
+  "finding": "reads as a painted miniature: lighter ridges (shoulders/chest), darker cavities (armpits/crotch), darker toward the feet; no speckle/seams/bleeding; L/R paint symmetric",
+  "measure": "paint +Z mirror IoU 0.991 c\u0394 ~5; record ridgeCavityContrast 1.177 (human), bottomRatio 0.911"
+ },
+ {
+  "run": "S-r1",
+  "sheet": "elf-female-ref-final (full tree)",
+  "verdict": "NOTE",
+  "region": "centre front/back torso, knees",
+  "finding": "vision reported 'seams' centre torso + knees; the same question on the baseline sheet looped without an answer, and the lane-only build changes 0.38% of pixels (bottom band) -> treated as pre-existing garment pattern/cel band, not an S regression",
+  "measure": "S-r1-lane elf-female changed share 0.378%, top band +Z:bottom 3.2%"
+ },
+ {
+  "run": "S-r1",
+  "sheet": "<race>-<sex>-intmin/intmax-final",
+  "verdict": "OPEN (not S's FAIL)",
+  "region": "head hair",
+  "finding": "intelligence 0/1000 renders identical to reference in the live rig: FaceParts stats pass is K's one-line (Z-17), so S's hair law is not on screen yet",
+  "measure": "intmin/intmax final mirror IoU + comps identical to ref (all 8)"
+ },
+ {
+  "run": "S-r2",
+  "sheet": "elf-male-intmax-final, elf-female-intmax-final, human-female-intmax-final",
+  "verdict": "FAIL",
+  "region": "head: crown/scalp vs hanging locks (-Z back tile, +Y top tile)",
+  "finding": "at intelligence 1000 the crown turns silver while the hanging locks stay dark: reads as a silver cap/helmet (vision, unprompted x2 on elf-male 'silver metallic helmet/accessory'; prompted on elf-female + human-female: 'reads like a cap'); control elf-female-ref: 'one consistent colour'",
+  "measure": "+Y tile centre crown luma intmin/ref/intmax: elf-male 38.9/37.9/93.2, elf-female 67.8/68.0/97.4, human-female 11.3/8.8/39.9, ork-male 27.5/35.3/59.3; back-of-head (-Z centre, y260) elf-male luma 8 -> 24 only"
+ },
+ {
+  "run": "S-r2",
+  "sheet": "elf-male-intmax-final",
+  "verdict": "NOTE",
+  "region": "-Y bottom tile, hair strand behind the neck",
+  "finding": "vision: a hair strand, attached at the top",
+  "measure": "2nd silhouette component 57 px (3x35 px at 2x) bbox x502-504 y760-794 in the -Y tile: a strand thinner than a pixel somewhere, not a floating mesh (not a FAIL)"
+ },
+ {
+  "run": "S-r2",
+  "sheet": "elf-male-intmin/intmax-final",
+  "verdict": "NOTE",
+  "region": "hair over back",
+  "finding": "'strands pass through shoulders/back' in the back view is reported identically on the HEAD baseline; side view: locks hang free behind the back -> projection overlap, pre-existing",
+  "measure": "-"
+ },
+ {
+  "run": "P-r1",
+  "sheet": "all 216 sheets (8 bodies x ref/strmin/strmax x 9 stages)",
+  "verdict": "PASS",
+  "region": "-",
+  "finding": "every stage renders for every body; skeleton/T-pose read as one tree with grey display links (no clavicle/pelvis bones in the data)",
+  "measure": "comps 1 in 1296/1296 tiles; skeleton L/R joint mirror 0.00 mm bind + T-pose (24/24), T-pose arm slope 0.00 deg L/R; cageViolationMm 0 (before clamp 0) 24/24; skin vs HEAD changed pixels 0 for human x2 + elf-male, <=0.39% elsewhere (B posture/digits)"
+ },
+ {
+  "run": "P-r1",
+  "sheet": "human-male-ref-cage",
+  "verdict": "NO VERDICT",
+  "region": "whole body",
+  "finding": "vision answer looped (no usable output); containment is Q1's measured gate (cageViolationMm 0)",
+  "measure": "cageFill 0.50 ref / 0.39 strmax"
+ },
+ {
+  "run": "P-r1",
+  "sheet": "ork-female-strmax-hitboxes",
+  "verdict": "PASS",
+  "region": "capsules",
+  "finding": "capsules follow head/torso/limbs/hands/feet, none far outside, no obvious L/R mismatch",
+  "measure": "hitbox +Z mirror IoU 0.933 vs skin 0.993; the HEAD baseline hitboxes are equally asymmetric (ork-female-ref 0.947 HEAD vs 0.947 tree, human-male 0.9519 = 0.9519) -> capsule-fit asymmetry pre-existing, not a regression"
+ },
+ {
+  "run": "P-r1",
+  "sheet": "ork-male-strmax-inflate (also carve/skin)",
+  "verdict": "RETRACTED (not confirmed)",
+  "region": "+Z front, armpit / side of ribcage (crop x0-420 y400-900)",
+  "finding": "at strength 1000 a distinct rounded mass sits between arm and torso with a sharp crease, 'a separate bulbous blob stuck onto the ribcage'; control ork-male-ref-inflate: no misplaced lump; RETRACTED: on B-r1 the same leading question on the CONTROL ork-male-ref-inflate gave the same 'blob' answer, and a neutral re-ask rated ref and strmax both 1/5 for the same crop (the crop holds the pre-existing elbow dimple) -> the vision claim does not separate strmax from ref",
+  "measure": "strmax adds 2 primitives (107 vs 105: latissimusL/R), cageViolationBeforeMm 0 -> within the cage, so the cage cannot catch it; comps 1 (it touches the body)"
+ },
+ {
+  "run": "P-r1",
+  "sheet": "ork-male-ref-inflate / baseline-head ork-male-ref-skin",
+  "verdict": "NOTE (pre-existing)",
+  "region": "outer forearm below the elbow",
+  "finding": "a circular depression just below the elbow, identical on the HEAD skin",
+  "measure": "present in baseline-head skin sheet (same question, same answer)"
+ },
+ {
+  "run": "B-r1",
+  "sheet": "all 216 sheets",
+  "verdict": "PASS",
+  "region": "-",
+  "finding": "no detached part anywhere; strmax bodies read as coherent (ork-male-strmax-final 4/5 'heroic bodybuilder, no region wrong'; human-female-strmax 3/5 'readable but blocky', only remark = no neck in the TOP view, which is the projection); dwarf-male-strmin 4/5",
+  "measure": "comps 1 in 1296/1296 tiles; cageViolationBeforeMm 0 for 24/24; live rig tris > 12000: ork-male ref 12342 (HEAD 12318, rig count includes the weapon) and strmax 13326"
+ },
+ {
+  "run": "B-r1",
+  "sheet": "ork-male-ref-final (+X side tile)",
+  "verdict": "PASS (measured)",
+  "region": "head/neck posture",
+  "finding": "vision called the head 'upright' (judgement not supported by the measurement)",
+  "measure": "front-edge silhouette per row (+X tile, 2.68 mm/px): torso front +11 px vs HEAD, head front -2 px -> head ~13 px = ~35 mm further forward relative to the torso (B states +40 mm)"
+ },
+ {
+  "run": "S-r3",
+  "sheet": "human-female/elf-male/elf-female/ork-male-intmax-final",
+  "verdict": "PASS",
+  "region": "head: crown vs locks",
+  "finding": "human-female intmax: back view crown/bun/locks uniformly dark with lighter tips, 'reads as stylized hair' (not a cap); top view 'dark with grey/white streaks radiating from the centre, not a solid light patch'",
+  "measure": "+Y crown luma intmin/ref/intmax: elf-male 38.9/37.9/41.3 (r2 93.2), elf-female 67.8/68.0/81.8 (r2 97.4), ork-male 27.5/35.3/41.7, human-female 11.3/8.8/50.9 (streaks; r2 39.9); comps 1 except the known 57 px elf-male -Y strand gap"
+ },
+ {
+  "run": "U-r1-ui",
+  "sheet": "creator scrubber 390x844 + 1280x900 (creator-<w>-<stage>.png, preview-<w>-<stage>.png)",
+  "verdict": "PASS",
+  "region": "stage scrubber row + readout + preview canvas",
+  "finding": "390 skeleton: stick T-pose with disks on the plinth, scrubber + readout readable, no clipping/overlap; 1280 hitboxes canvas: whole figure head-to-feet, skin + capsules; 390 cage: whole figure, wire boxes per part. (A first 1280 page-level verdict 'preview cropped' was refuted by the canvas rect: fully in the viewport.) Note: the readout total reads 'of 542 ms' for skeleton..skin and 'of 837 ms' from hitboxes on (hitboxes/paint computed lazily) - a reader sees the total change",
+  "measure": "7/7 stages change the preview canvas hash at both widths; aria-checked + canvas data-gen-view follow the click 14/14; min tap size 44 px; doc horizontal overflow 0; button text clipped 0, outside viewport 0; canvas + scrubber 100% visible together (canvas 19-598 px, scrubber top 610 at 1280; 7-427 / 439 at 390); page errors 0"
+ },
+ {
+  "run": "K-r1-lane + B-r1",
+  "sheet": "<race>-<sex>-ref-final (HEAD+K files) and B-r1/*-skeleton{,-tpose}.png",
+  "verdict": "PASS (static scope)",
+  "region": "rest pose; skeleton + disks",
+  "finding": "T-pose display: arms horizontal, legs joined at the pelvis, disks sit on the bones (vision, ork-male-ref-skeleton-tpose); the shoulder 'gap' it saw is the missing clavicle bone in the data, drawn by Q2 as grey display links. Animation clips are NOT covered by static sheets (Q1 + K audit own that)",
+  "measure": "HEAD+K rest-pose finals: 0 changed pixels vs baseline 8/8; skeleton joint mirror 0.00 mm bind + T-pose, T-pose arm slope 0.00 deg, 24 disks, 17 bones, comps 1"
+ },
+ {
+  "run": "B-r2",
+  "sheet": "ork-male-ref-hitboxes (+X tile)",
+  "verdict": "PASS",
+  "region": "head capsule vs forward ork head",
+  "finding": "red head capsule sits around the head (not behind it); nothing uncovered, nothing far outside",
+  "measure": "ork coverage 99.4 % (male ref) / 100 % (female ref), 98.6-100 % at str 0/1000; overshoot p95 24.7-30.4 mm; B-r1 -> B-r2 changes concentrated on hitboxes sheets (max 0.34 % of pixels)"
+ },
+ {
+  "run": "B-r2",
+  "sheet": "ork-male-strmax-skin vs ork-male-ref-skin",
+  "verdict": "PASS (pre-existing note)",
+  "region": "armpits / lats, clay view",
+  "finding": "neutral question: strmax 3/5 'lumpy, armpits deep voids'; CONTROL ref 2/5 'stuck-on blob at the armpit' -> no stat-driven regression; the unshaded clay view exposes a rough ork armpit at reference too",
+  "measure": "comps 1 in 1296/1296 tiles; strmax lats now on the back (B: back +14-20 mm)"
+ },
+ {
+  "run": "P-r2",
+  "sheet": "all 216 sheets; human-male-strmax-cage",
+  "verdict": "PASS",
+  "region": "pelvis front (cage sheet)",
+  "finding": "vision on human-male-strmax-cage named the groin as poking out of the boxes (control ref: 'none, PASS'); refuted by measurement",
+  "measure": "rendered-skin vertices of region pelvis vs the pelvis cage box (scratch q2cage.ts, generateStaged human male seed 12345): front face -62.8 mm ref / -101.7 mm strmax (inside), back -30.8/-66.1, side -20.6/-69.7; cage metrics identical to B-r2 (meanWidth, fill); comps 1 in 1296/1296 tiles; 129/216 sheets pixel-identical to B-r2, max change 2.5 % (strmax cage sheets)"
+ },
+ {
+  "run": "P-r3",
+  "sheet": "144 sheets (ref, strmax); ork-male-strmax-final",
+  "verdict": "PASS",
+  "region": "+Z front pelvis/crotch",
+  "finding": "ork-male-strmax 4/5 'mostly clean heroic silhouette, some lumpy transitions'; it flagged a pale bump at the crotch - the SAME bump is on the HEAD baseline ork-male-ref-final (wave X groin sculpt + light garment highlight) -> pre-existing, not a regression",
+  "measure": "comps 1 in 864/864 tiles; max change vs P-r2 1.5 % (cage sheets), finals <= 0.8 %; skin cell ork 0.035-0.037 m, ork-male strmax rig tris 13326 -> 12258"
+ },
+ {
+  "run": "K-r2-lane",
+  "sheet": "<race>-<sex>-ref-final (HEAD + K r2 files)",
+  "verdict": "PASS (static scope)",
+  "region": "rest pose",
+  "finding": "r2 changes OffHand only (animation); rest pose and skeleton stage unchanged; animation clips not covered by static sheets",
+  "measure": "0 changed pixels vs HEAD baseline 8/8; comps 1; mirror IoU identical to baseline"
+ },
+ {
+  "run": "B-r3",
+  "sheet": "all 216 sheets",
+  "verdict": "PASS (measurement only)",
+  "region": "-",
+  "finding": "no new vision question: changes vs P-r3 are confined to ork/dwarf reference bodies (skinCell back to today's grid without stats) and stay <= 0.17 % on finals",
+  "measure": "comps 1 in 1296/1296 tiles; max change vs P-r3 1.5 % (ork-male-ref-cage), finals <= 0.165 %; live rig tris strmax <= ref for every body (ork-male 12258 <= 12342)"
+ }
+]

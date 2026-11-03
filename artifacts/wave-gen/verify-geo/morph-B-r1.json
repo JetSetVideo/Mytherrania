@@ -1,0 +1,183 @@
+{
+ "label": "morph-B-r1",
+ "at": "2026-11-03T13:40:51.690Z",
+ "rows": [
+  {
+   "race": "human",
+   "sex": "male",
+   "identityAbsentEqRef": true,
+   "nonMonotone": [],
+   "nonFinite": [],
+   "extremeNonFinite": [],
+   "ranges": {
+    "strength:muscle.pectoralis": "0.85..1.3",
+    "strength:muscle.deltoid": "0.86..1.28",
+    "strength:muscle.latissimus": "0.9..1.3",
+    "strength:muscle.trapezius": "0.85..1.3",
+    "strength:muscle.biceps": "0.85..1.32",
+    "strength:muscle.quadriceps": "0.88..1.25",
+    "strength:muscle.calf": "0.88..1.22",
+    "strength:boneDensity": "0.94..1.08",
+    "strength:shoulderBreadth": "0.96..1.06",
+    "intelligence:browRecessMm": "-3.5..3.5",
+    "level:maturity.mass": "0.97..1.04",
+    "level:maturity.liftPerHead": "-0.015..0.025"
+   }
+  },
+  {
+   "race": "human",
+   "sex": "female",
+   "identityAbsentEqRef": true,
+   "nonMonotone": [],
+   "nonFinite": [],
+   "extremeNonFinite": [],
+   "ranges": {
+    "strength:muscle.pectoralis": "0.88..1.24",
+    "strength:muscle.deltoid": "0.888..1.224",
+    "strength:muscle.latissimus": "0.92..1.24",
+    "strength:muscle.trapezius": "0.88..1.24",
+    "strength:muscle.biceps": "0.88..1.256",
+    "strength:muscle.quadriceps": "0.904..1.2",
+    "strength:muscle.calf": "0.904..1.176",
+    "strength:boneDensity": "0.94..1.08",
+    "strength:shoulderBreadth": "0.968..1.048",
+    "intelligence:browRecessMm": "-3.5..3.5",
+    "level:maturity.mass": "0.97..1.04",
+    "level:maturity.liftPerHead": "-0.015..0.025"
+   }
+  },
+  {
+   "race": "elf",
+   "sex": "male",
+   "identityAbsentEqRef": true,
+   "nonMonotone": [],
+   "nonFinite": [],
+   "extremeNonFinite": [],
+   "ranges": {
+    "strength:muscle.pectoralis": "0.85..1.3",
+    "strength:muscle.deltoid": "0.86..1.28",
+    "strength:muscle.latissimus": "0.9..1.3",
+    "strength:muscle.trapezius": "0.85..1.3",
+    "strength:muscle.biceps": "0.85..1.32",
+    "strength:muscle.quadriceps": "0.88..1.25",
+    "strength:muscle.calf": "0.88..1.22",
+    "strength:boneDensity": "0.94..1.08",
+    "strength:shoulderBreadth": "0.96..1.06",
+    "intelligence:browRecessMm": "-3.5..3.5",
+    "level:maturity.mass": "0.97..1.04",
+    "level:maturity.liftPerHead": "-0.015..0.025"
+   }
+  },
+  {
+   "race": "elf",
+   "sex": "female",
+   "identityAbsentEqRef": true,
+   "nonMonotone": [],
+   "nonFinite": [],
+   "extremeNonFinite": [],
+   "ranges": {
+    "strength:muscle.pectoralis": "0.88..1.24",
+    "strength:muscle.deltoid": "0.888..1.224",
+    "strength:muscle.latissimus": "0.92..1.24",
+    "strength:muscle.trapezius": "0.88..1.24",
+    "strength:muscle.biceps": "0.88..1.256",
+    "strength:muscle.quadriceps": "0.904..1.2",
+    "strength:muscle.calf": "0.904..1.176",
+    "strength:boneDensity": "0.94..1.08",
+    "strength:shoulderBreadth": "0.968..1.048",
+    "intelligence:browRecessMm": "-3.5..3.5",
+    "level:maturity.mass": "0.97..1.04",
+    "level:maturity.liftPerHead": "-0.015..0.025"
+   }
+  },
+  {
+   "race": "dwarf",
+   "sex": "male",
+   "identityAbsentEqRef": true,
+   "nonMonotone": [],
+   "nonFinite": [],
+   "extremeNonFinite": [],
+   "ranges": {
+    "strength:muscle.pectoralis": "0.85..1.3",
+    "strength:muscle.deltoid": "0.86..1.28",
+    "strength:muscle.latissimus": "0.9..1.3",
+    "strength:muscle.trapezius": "0.85..1.3",
+    "strength:muscle.biceps": "0.85..1.32",
+    "strength:muscle.quadriceps": "0.88..1.25",
+    "strength:muscle.calf": "0.88..1.22",
+    "strength:boneDensity": "0.94..1.08",
+    "strength:shoulderBreadth": "0.96..1.06",
+    "intelligence:browRecessMm": "-3.5..3.5",
+    "level:maturity.mass": "0.97..1.04",
+    "level:maturity.liftPerHead": "-0.015..0.025"
+   }
+  },
+  {
+   "race": "dwarf",
+   "sex": "female",
+   "identityAbsentEqRef": true,
+   "nonMonotone": [],
+   "nonFinite": [],
+   "extremeNonFinite": [],
+   "ranges": {
+    "strength:muscle.pectoralis": "0.88..1.24",
+    "strength:muscle.deltoid": "0.888..1.224",
+    "strength:muscle.latissimus": "0.92..1.24",
+    "strength:muscle.trapezius": "0.88..1.24",
+    "strength:muscle.biceps": "0.88..1.256",
+    "strength:muscle.quadriceps": "0.904..1.2",
+    "strength:muscle.calf": "0.904..1.176",
+    "strength:boneDensity": "0.94..1.08",
+    "strength:shoulderBreadth": "0.968..1.048",
+    "intelligence:browRecessMm": "-3.5..3.5",
+    "level:maturity.mass": "0.97..1.04",
+    "level:maturity.liftPerHead": "-0.015..0.025"
+   }
+  },
+  {
+   "race": "ork",
+   "sex": "male",
+   "identityAbsentEqRef": true,
+   "nonMonotone": [],
+   "nonFinite": [],
+   "extremeNonFinite": [],
+   "ranges": {
+    "strength:muscle.pectoralis": "0.85..1.3",
+    "strength:muscle.deltoid": "0.86..1.28",
+    "strength:muscle.latissimus": "0.9..1.3",
+    "strength:muscle.trapezius": "0.85..1.3",
+    "strength:muscle.biceps": "0.85..1.32",
+    "strength:muscle.quadriceps": "0.88..1.25",
+    "strength:muscle.calf": "0.88..1.22",
+    "strength:boneDensity": "0.94..1.08",
+    "strength:shoulderBreadth": "0.96..1.06",
+    "intelligence:browRecessMm": "-3.5..3.5",
+    "level:maturity.mass": "0.97..1.04",
+    "level:maturity.liftPerHead": "-0.015..0.025"
+   }
+  },
+  {
+   "race": "ork",
+   "sex": "female",
+   "identityAbsentEqRef": true,
+   "nonMonotone": [],
+   "nonFinite": [],
+   "extremeNonFinite": [],
+   "ranges": {
+    "strength:muscle.pectoralis": "0.88..1.24",
+    "strength:muscle.deltoid": "0.888..1.224",
+    "strength:muscle.latissimus": "0.92..1.24",
+    "strength:muscle.trapezius": "0.88..1.24",
+    "strength:muscle.biceps": "0.88..1.256",
+    "strength:muscle.quadriceps": "0.904..1.2",
+    "strength:muscle.calf": "0.904..1.176",
+    "strength:boneDensity": "0.94..1.08",
+    "strength:shoulderBreadth": "0.968..1.048",
+    "intelligence:browRecessMm": "-3.5..3.5",
+    "level:maturity.mass": "0.97..1.04",
+    "level:maturity.liftPerHead": "-0.015..0.025"
+   }
+  }
+ ],
+ "bad": 0
+}

@@ -1,0 +1,158 @@
+{
+ "label": "ui-final",
+ "at": "2026-11-03T14:28:00.815Z",
+ "rows": [
+  {
+   "race": "human",
+   "sex": "male",
+   "edits": 200,
+   "rigTris": 11348,
+   "broken": 0,
+   "outStatic": 0,
+   "nonIdempotent": 0,
+   "minRuleSlackMm": 25.26,
+   "extremeBuilds": 10,
+   "buildFails": 0,
+   "worstTris": 8984,
+   "meshW": [
+    "waist-min: waist 126.7 hip 161.5 mm tris 8952 bnd 0 nm 0 wind 0 degen 0 comps 1",
+    "waist-max: waist 147.9 hip 178.9 mm tris 8984 bnd 0 nm 0 wind 0 degen 0 comps 1",
+    "hip-min: waist 122 hip 156.9 mm tris 8788 bnd 0 nm 0 wind 0 degen 0 comps 1",
+    "shoulder-min: waist 152.2 hip 191.5 mm tris 8484 bnd 0 nm 0 wind 0 degen 0 comps 1"
+   ]
+  },
+  {
+   "race": "human",
+   "sex": "female",
+   "edits": 200,
+   "rigTris": 11458,
+   "broken": 0,
+   "outStatic": 0,
+   "nonIdempotent": 0,
+   "minRuleSlackMm": 65.62,
+   "extremeBuilds": 10,
+   "buildFails": 1,
+   "worstTris": 9040,
+   "meshW": [
+    "waist-min: waist 89.7 hip 162.6 mm tris 8996 bnd 0 nm 0 wind 0 degen 0 comps 1",
+    "waist-max: waist 88.8 hip 163.1 mm tris 9040 bnd 0 nm 0 wind 0 degen 0 comps 1",
+    "hip-min: waist 88.8 hip 162.6 mm tris 9040 bnd 0 nm 0 wind 0 degen 0 comps 1",
+    "shoulder-min: waist 89.7 hip 162.6 mm tris 8916 bnd 0 nm 0 wind 0 degen 2 comps 1 spec {\"race\":\"human\",\"subrace\":\"imperial\",\"className\":\"Warrior\",\"height\":1.75,\"weight\":75,\"seed\":1,\"sex\":\"female\",\"silhouette\":{\"height\":1,\"width\":0.9842717279742659,\"depth\":0.91,\"limbTaper\":1,\"limbLength\":0.9899982376471163,\"muscle\":1,\"shoulder\":0.4186,\"hip\":0.273,\"waist\":0.09100000000000001,\"head\":1,\"sectionN\":2.2750000000000004,\"sectionNBase\":2.1}}"
+   ]
+  },
+  {
+   "race": "elf",
+   "sex": "male",
+   "edits": 200,
+   "rigTris": 11591,
+   "broken": 0,
+   "outStatic": 0,
+   "nonIdempotent": 0,
+   "minRuleSlackMm": 19.55,
+   "extremeBuilds": 10,
+   "buildFails": 0,
+   "worstTris": 9004,
+   "meshW": [
+    "waist-min: waist 98 hip 138 mm tris 9004 bnd 0 nm 0 wind 0 degen 0 comps 1",
+    "waist-max: waist 112.4 hip 170.1 mm tris 8992 bnd 0 nm 0 wind 0 degen 0 comps 1",
+    "hip-min: waist 96.1 hip 117.8 mm tris 8872 bnd 0 nm 0 wind 0 degen 0 comps 1",
+    "shoulder-min: waist 103.6 hip 139.5 mm tris 8792 bnd 0 nm 0 wind 0 degen 0 comps 1"
+   ]
+  },
+  {
+   "race": "elf",
+   "sex": "female",
+   "edits": 200,
+   "rigTris": 11316,
+   "broken": 0,
+   "outStatic": 0,
+   "nonIdempotent": 0,
+   "minRuleSlackMm": 57.72,
+   "extremeBuilds": 10,
+   "buildFails": 0,
+   "worstTris": 8984,
+   "meshW": [
+    "waist-min: waist 69.6 hip 152.1 mm tris 8928 bnd 0 nm 0 wind 0 degen 0 comps 1",
+    "waist-max: waist 81.5 hip 152.7 mm tris 8864 bnd 0 nm 0 wind 0 degen 0 comps 1",
+    "hip-min: waist 89.6 hip 159.9 mm tris 8864 bnd 0 nm 0 wind 0 degen 0 comps 1",
+    "shoulder-min: waist 75 hip 138.8 mm tris 8984 bnd 0 nm 0 wind 0 degen 0 comps 1"
+   ]
+  },
+  {
+   "race": "dwarf",
+   "sex": "male",
+   "edits": 200,
+   "rigTris": 11760,
+   "broken": 0,
+   "outStatic": 0,
+   "nonIdempotent": 0,
+   "minRuleSlackMm": 0,
+   "extremeBuilds": 10,
+   "buildFails": 0,
+   "worstTris": 8816,
+   "meshW": [
+    "waist-min: waist 244.7 hip 267.1 mm tris 8748 bnd 0 nm 0 wind 0 degen 0 comps 1",
+    "waist-max: waist 243.4 hip 267.1 mm tris 8816 bnd 0 nm 0 wind 0 degen 0 comps 1",
+    "hip-min: waist 287.1 hip 292 mm tris 8808 bnd 0 nm 0 wind 0 degen 0 comps 1",
+    "shoulder-min: waist 240.6 hip 259.4 mm tris 8792 bnd 0 nm 0 wind 0 degen 0 comps 1"
+   ]
+  },
+  {
+   "race": "dwarf",
+   "sex": "female",
+   "edits": 200,
+   "rigTris": 11444,
+   "broken": 0,
+   "outStatic": 0,
+   "nonIdempotent": 0,
+   "minRuleSlackMm": 75.82,
+   "extremeBuilds": 10,
+   "buildFails": 0,
+   "worstTris": 9056,
+   "meshW": [
+    "waist-min: waist 188.6 hip 312.2 mm tris 8812 bnd 0 nm 0 wind 0 degen 0 comps 1",
+    "waist-max: waist 177.2 hip 280.8 mm tris 8844 bnd 0 nm 0 wind 0 degen 0 comps 1",
+    "hip-min: waist 258.4 hip 371.7 mm tris 8848 bnd 0 nm 0 wind 0 degen 0 comps 1",
+    "shoulder-min: waist 212.8 hip 336.4 mm tris 9056 bnd 0 nm 0 wind 0 degen 0 comps 1"
+   ]
+  },
+  {
+   "race": "ork",
+   "sex": "male",
+   "edits": 200,
+   "rigTris": 13092,
+   "broken": 0,
+   "outStatic": 0,
+   "nonIdempotent": 0,
+   "minRuleSlackMm": 3.36,
+   "extremeBuilds": 10,
+   "buildFails": 0,
+   "worstTris": 11176,
+   "meshW": [
+    "waist-min: waist 266.1 hip 282.2 mm tris 8864 bnd 0 nm 0 wind 0 degen 0 comps 1",
+    "waist-max: waist 312.9 hip 386.1 mm tris 10272 bnd 0 nm 0 wind 0 degen 0 comps 1",
+    "hip-min: waist 288.7 hip 302.6 mm tris 9580 bnd 0 nm 0 wind 0 degen 0 comps 1",
+    "shoulder-min: waist 307.4 hip 337.5 mm tris 11176 bnd 0 nm 0 wind 0 degen 0 comps 1"
+   ]
+  },
+  {
+   "race": "ork",
+   "sex": "female",
+   "edits": 200,
+   "rigTris": 13864,
+   "broken": 0,
+   "outStatic": 0,
+   "nonIdempotent": 0,
+   "minRuleSlackMm": 85.47,
+   "extremeBuilds": 10,
+   "buildFails": 0,
+   "worstTris": 8944,
+   "meshW": [
+    "waist-min: waist 197.2 hip 316.3 mm tris 8936 bnd 0 nm 0 wind 0 degen 0 comps 1",
+    "waist-max: waist 220.7 hip 345 mm tris 8788 bnd 0 nm 0 wind 0 degen 0 comps 1",
+    "hip-min: waist 197 hip 287.8 mm tris 8944 bnd 0 nm 0 wind 0 degen 0 comps 1",
+    "shoulder-min: waist 220.7 hip 324.2 mm tris 8940 bnd 0 nm 0 wind 0 degen 0 comps 1"
+   ]
+  }
+ ]
+}

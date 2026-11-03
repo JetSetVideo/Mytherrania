@@ -25,6 +25,7 @@ import { browWedge, type FaceAnchors, lidBands } from "./AnatomyParts.ts";
 import { headFrameOf } from "./HairFollicles.ts";
 import { buildHairMeshes } from "./HairMesh.ts";
 import { greyRgb } from "./HairShade.ts";
+import { intellectGrey } from "./HairIntellect.ts";
 import { shadeHex, tintHex } from "../paint/Blend.ts";
 
 /** The parts the face morph drives each frame (brow, eyelid, mouth), like Humanoid's refs. */
@@ -59,6 +60,8 @@ export interface FaceRig {
   hairStats?: {
     style: string; tier: string; follicles: number; clumps: number; triangles: number;
     minClearance: number; grey: number; recession: number; braids: number;
+    /** Wave GEN lane S: age-only grey, the silver drift, the cut length (m) and follicle density used. */
+    ageGrey?: number; silver?: number; lengthM?: number; density?: number;
   };
 }
 
@@ -72,6 +75,20 @@ export function greyedHex(hex: string, race: string, g: number): string {
   const c = new THREE.Color(hex);
   c.lerp(new THREE.Color(gr[0], gr[1], gr[2]), Math.min(1, g * 0.9));
   return `#${c.getHexString()}`;
+}
+
+/**
+ * Wave GEN lane S: the brow/beard colour with the intelligence silver on top of the age grey — the
+ * per-channel max of the age-only colour and the silvered one, so it is never darker than age alone
+ * (and exactly greyedHex(hex, race, ageGrey) at the reference / when the stat is absent).
+ */
+export function silveredHex(hex: string, race: string, ageGrey: number, intelligence?: number | null): string {
+  const age = greyedHex(hex, race, ageGrey);
+  const g = intellectGrey(ageGrey, intelligence);
+  if (g === Math.max(0, Math.min(1, ageGrey))) return age;
+  const a = new THREE.Color(age), b = new THREE.Color(greyedHex(hex, race, g));
+  a.setRGB(Math.max(a.r, b.r), Math.max(a.g, b.g), Math.max(a.b, b.b));
+  return `#${a.getHexString()}`;
 }
 
 /** Hex colour scaled by k (k < 1 darkens). */
@@ -230,7 +247,12 @@ function tris(g: THREE.BufferGeometry): number {
  * position in model space; anchors are model space, so each part sits at anchor − origin.
  * `unit` is the head height h (m).
  */
-export function buildFaceParts(head: THREE.Object3D, face: FaceAnchors, origin: Vec3, unit: number, a: Appearance): FaceRig {
+export function buildFaceParts(
+  head: THREE.Object3D, face: FaceAnchors, origin: Vec3, unit: number, a: Appearance,
+  /** Wave GEN: BodySpec.stats (0..1000). Intelligence lengthens/thickens/silvers the hair (HairIntellect.ts). */
+  stats?: { intelligence?: number } | null,
+): FaceRig {
+  const intelligence = stats?.intelligence;
   const build = raceBuild(a.race ?? "human", a.subrace ?? null);
   // The ancestry node drives the look (BRIEF 1.1); the seed makes one member of a race differ
   // from the next while staying reproducible.
@@ -305,7 +327,7 @@ export function buildFaceParts(head: THREE.Object3D, face: FaceAnchors, origin: 
     // stated in head heights. A 6-sided cone flattened along the face depth reads as a ridge that
     // runs to a point at its outer end. The mesh stays in refs.brow, so the morph keeps driving it.
     const w = browWedge(node, h, face.eye[i][1]);
-    const browColour = greyedHex(hairColourFor(node, seed), a.race ?? "human", greyFraction(a.race ?? "human", a.age));
+    const browColour = silveredHex(hairColourFor(node, seed), a.race ?? "human", greyFraction(a.race ?? "human", a.age), intelligence);
     const sgn = b[0] < 0 ? -1 : 1;
     const len = w.tipX - w.innerX;
     const brow = add(new THREE.ConeGeometry(w.rootR, len, 6), flat(browColour),
@@ -340,13 +362,14 @@ export function buildFaceParts(head: THREE.Object3D, face: FaceAnchors, origin: 
   const hairBase = hairColourFor(node, seed);
   const race = a.race ?? "human";
   const grey = greyFraction(race, a.age);
-  const hairColor = greyedHex(hairBase, race, grey);
+  // Brows and beard grey with the scalp: the age grey plus the intelligence silver (never darker than age).
+  const hairColor = silveredHex(hairBase, race, grey, intelligence);
   const hairLen = hairLengthM(node, h);
   if (!bald && node.hair.length !== "bald") {
     const frame = headFrameOf(face, origin, h, node.ears.lengthMul);
     const hair = buildHairMeshes(head, {
       frame, spec: node.hair, lengthM: hairLen, seed, race, ancestryIds: [race, a.subrace ?? ""], sex: a.sex,
-      lifeFraction: lifeFraction(race, a.age), grey, baseHex: hairBase, skinHex: node.skin.base,
+      lifeFraction: lifeFraction(race, a.age), grey, baseHex: hairBase, skinHex: node.skin.base, intelligence,
     });
     refs.hairParts.push(...hair.statics);
     refs.secondary.push(...hair.hanging);
@@ -355,6 +378,7 @@ export function buildFaceParts(head: THREE.Object3D, face: FaceAnchors, origin: 
     refs.hairStats = {
       style: hair.data.plan.style, tier: hair.data.plan.tier, follicles: st.follicles, clumps: st.clumps, triangles: st.triangles,
       minClearance: st.minClearance, grey: st.grey, recession: st.recession, braids: hair.data.growth.braids.length,
+      ageGrey: st.ageGrey, silver: st.silver, lengthM: st.lengthM, density: st.density,
     };
   }
   // Beard from the ancestry: mode none|chin|moustache-thin|moustache|full, gated by required/

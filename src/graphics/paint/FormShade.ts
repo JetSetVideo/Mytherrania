@@ -20,6 +20,7 @@
 // paint MODULATES a band and never invents a new contour.
 
 import { REGIONS, type MeshData } from "../body/contracts.ts";
+import { applyMiniatureSrgb, miniatureTerms } from "./Miniature.ts";
 
 export const FORM_RINGS = 2;
 export const CAVITY_ONSET = 0.03;
@@ -36,6 +37,12 @@ export const WEAR_LIGHT = 0.16;
  */
 export const FORM_SKIP: readonly string[] = ["hair", "nail", "sole", "face", "ear"];
 
+/**
+ * QA ONLY (not game behaviour): the miniature gain used when a caller does not pass `miniature`. The wave-GEN
+ * paint probe (tools/probe-wave-gen-paint.ts) flips it to 0 for the "before" shots of the same bundle.
+ */
+export const FORM_SHADE_QA = { miniature: 1 };
+
 export interface FormShadeOptions {
   /** Polygonising cell (m): curvature is read in grid units. */
   cell: number;
@@ -48,6 +55,13 @@ export interface FormShadeOptions {
    * body/Improvise.ts (formGainsFor). A missing region keeps 1.
    */
   regionGain?: Partial<Record<string, { cavity?: number; ridge?: number }>>;
+  /**
+   * Wave GEN lane S: the MINIATURE pass on top (paint/Miniature.ts: edge highlight, cavity wash, top-down
+   * chiaroscuro, garment weathering), as a gain (default 1; 0 = the wave-V form paint exactly).
+   */
+  miniature?: number;
+  /** QA/stage record: filled with the timings (ms) of the curvature + form terms and of the miniature pass. */
+  record?: { formMs?: number; miniatureMs?: number; vertices?: number };
 }
 
 /** Vertex 1-rings of a triangle mesh (deduplicated, unsorted). */
@@ -89,9 +103,9 @@ const toS = (c: number) => (c <= 0.0031308 ? 12.92 * c : 1.055 * Math.pow(c, 1 /
 const toL = (c: number) => (c <= 0.04045 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4));
 
 /** The per-vertex form terms (0..1 each): cavity and ridge, with the curvature. Exposed for tests and the probe. */
-export function formTerms(mesh: MeshData, opts: FormShadeOptions): { cavity: Float32Array; ridge: Float32Array; H: Float64Array } {
+export function formTerms(mesh: MeshData, opts: FormShadeOptions, adj?: Int32Array[]): { cavity: Float32Array; ridge: Float32Array; H: Float64Array } {
   const n = mesh.positions.length / 3;
-  const H = meanCurvature(mesh, FORM_RINGS);
+  const H = meanCurvature(mesh, FORM_RINGS, adj);
   const cavity = new Float32Array(n), ridge = new Float32Array(n);
   for (let i = 0; i < n; i++) {
     const k = H[i] * opts.cell;
@@ -108,7 +122,9 @@ export function formTerms(mesh: MeshData, opts: FormShadeOptions): { cavity: Flo
 export function applyFormShade(mesh: MeshData, rgb: Float32Array, opts: FormShadeOptions): Float32Array {
   const g = opts.strength ?? 1;
   if (g <= 0) return rgb;
-  const { cavity, ridge } = formTerms(mesh, opts);
+  const t0 = performance.now();
+  const adj = vertexRings(mesh);
+  const { cavity, ridge } = formTerms(mesh, opts, adj);
   const skip = new Uint8Array(REGIONS.length), cloth = new Uint8Array(REGIONS.length);
   for (const r of FORM_SKIP) skip[REGIONS.indexOf(r as typeof REGIONS[number])] = 1;
   for (const r of opts.garment ?? []) { const i = REGIONS.indexOf(r as typeof REGIONS[number]); if (i >= 0) cloth[i] = 1; }
@@ -118,16 +134,35 @@ export function applyFormShade(mesh: MeshData, rgb: Float32Array, opts: FormShad
     const i = REGIONS.indexOf(r as typeof REGIONS[number]);
     if (i >= 0 && v) { gc[i] = v.cavity ?? 1; gr[i] = v.ridge ?? 1; }
   }
+  const mini = g * (opts.miniature ?? FORM_SHADE_QA.miniature);
+  // sRGB working copies: s0 the unpainted base (the miniature's darkening clamp), s the painted result.
+  const s0 = mini > 0 ? new Float64Array(n * 3) : null, S = new Float64Array(n * 3);
   for (let i = 0; i < n; i++) {
     const reg = mesh.region[i];
     if (skip[reg]) continue;
     const dark = 1 - g * gc[reg] * CAVITY_DARK * cavity[i];
     const lift = g * gr[reg] * (cloth[reg] ? WEAR_LIGHT : RIDGE_LIGHT) * ridge[i];
     for (let k = 0; k < 3; k++) {
-      let s = toS(rgb[i * 3 + k]) * dark;
+      const b = toS(rgb[i * 3 + k]);
+      if (s0) s0[i * 3 + k] = b;
+      let s = b * dark;
       s += (1 - s) * lift;
-      rgb[i * 3 + k] = toL(Math.max(0, Math.min(1, s)));
+      S[i * 3 + k] = Math.max(0, Math.min(1, s));
     }
+  }
+  const t1 = performance.now();
+  if (s0) {
+    const terms = miniatureTerms(mesh, adj, { cell: opts.cell, garment: opts.garment });
+    applyMiniatureSrgb(mesh, S, s0, terms, { cell: opts.cell, strength: mini, garment: opts.garment, skip: FORM_SKIP });
+  }
+  for (let i = 0; i < n; i++) {
+    if (skip[mesh.region[i]]) continue;
+    for (let k = 0; k < 3; k++) rgb[i * 3 + k] = toL(S[i * 3 + k]);
+  }
+  if (opts.record) {
+    opts.record.formMs = t1 - t0;
+    opts.record.miniatureMs = performance.now() - t1;
+    opts.record.vertices = n;
   }
   return rgb;
 }

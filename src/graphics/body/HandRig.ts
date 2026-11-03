@@ -250,6 +250,8 @@ export function attachHands(inp: HandRigInput): HandRigApi & { mounts: [THREE.Ob
   const sizes = ([0, 1] as const).map((i) => handSize({
     hand: P.hand, palmHalfWidth: P.radius.palmHalfWidth, palmHalfThickness: P.radius.palmHalfThickness,
     wrist: P.radius.wrist, thumb: handBasis(plan, i).thumb, rim: rims[i],
+    // Wave GEN lane B: the race's digit distribution (StatMorph.RACE_DIGITS).
+    ...(plan.morph ? { digits: plan.morph.digits } : {}),
   })) as [HandSize, HandSize];
   const handleRadius = measureHandleRadius(inp.weapon);
   const mounts: THREE.Object3D[] = [];

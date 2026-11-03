@@ -1,0 +1,533 @@
+Check tests/historyui_test.ts
+Check tests/menu_creator_test.ts
+Check tests/menu_entry_test.ts
+Check tests/portraitstudio_test.ts
+Check tests/spec_test.ts
+Check tests/stepper_test.ts
+Check tests/ui_ancestry_test.ts
+Check tests/ui_arena_size_test.ts
+Check tests/ui_icons_test.ts
+Check tests/ui_navstack_test.ts
+Check tests/ui_settings_test.ts
+Check tests/ui_skillbar_test.ts
+Check tests/ui_wave_u_test.ts
+Check tests/ui_wave_w_test.ts
+Check tests/wave_gen_pipeline_test.ts
+Check tests/wave_gen_ui_test.ts
+Check tests/wave_m_wiring_test.ts
+Check tests/wave_x_body_test.ts
+Check tests/wave_x_ui_test.ts
+Check tests/wave_y_pose_test.ts
+Check tests/wave_y_ui_test.ts
+Check tests/wave_z_layout_test.ts
+Check tests/wave_z_viewer_test.ts
+running 8 tests from ./tests/historyui_test.ts
+HistoryView: every sort order, over the six-row fixture ... ok (13ms)
+HistoryView: sorts never mutate the input and are total ... ok (119µs)
+HistoryView: badges for every case, and none for a legacy row ... ok (108µs)
+HistoryView: highlightsOf matches the BRIEF 1.4 semantics ... ok (129µs)
+HistoryView: highlightSummary names the fastest, the gap, ties and timeouts ... ok (152µs)
+HistoryFilter: the new orders honour duration, gap distance and dominance ... ok (190µs)
+HistoryFilter: back-compat — an old query and an old record still filter and summarize ... ok (134µs)
+the menu markup names every new UI key (a silent removal fails here) ... ok (13ms)
+running 10 tests from ./tests/menu_creator_test.ts
+opt-group: closed by default, open only when Disclosure says so ... ok (403µs)
+opt-group: header carries the glyph, label, count, hint and chevron; body holds the controls ... ok (177µs)
+optionCount: singular for one, plural otherwise (never negative-NA) ... ok (27µs)
+dice button: the rocky violet classes, the dice icon and data-action="dice" ... ok (39µs)
+mulberry32: deterministic, in [0,1), and different seeds diverge ... ok (103µs)
+creator sheet: three columns, every row labelled, the hint carries the WHY ... ok (224µs)
+the real pipeline: a seeded roll's sheet is reproduced by creatorSheetHtml ... ok (14ms)
+no inline style, no <script> in any builder output (the page CSP is style-src 'self') ... ok (164µs)
+styles.css declares the new components and survives all four breakpoints ... ok (1ms)
+Menu.ts renders the new keys the UI tree and the design promise (a silent removal fails here) ... ok (884µs)
+running 10 tests from ./tests/menu_entry_test.ts
+the title tree has ONE entry: the modes group carries it, the profiles group holds only the picker ... ok (398µs)
+the two entry groups stay default-open (the merge must not hide a way in) ... ok (83µs)
+Menu.ts renders exactly ONE entry button and NO separate profiles button ... ok (334µs)
+the roster and the generator are ONE screen: no standalone profiles screen, #profiles-body is inside select ... ok (233µs)
+Menu.ts routes overrides through CreatorSync.applyEdit (the single route) ... ok (199µs)
+the override field names are REAL: applyEdit moves the profile for each ... ok (1ms)
+the six attribute controls name the keys a rolled profile's `allocated` carries ... ok (450µs)
+the save/discard decision is explicit: a Save control, a Discard control, and a re-roll ... ok (216µs)
+the new markup is CSP-safe: no inline style attribute, no Math.random ... ok (181µs)
+styles.css declares the merged-entry and override classes and keeps the four breakpoints ... ok (337µs)
+running 6 tests from ./tests/portraitstudio_test.ts
+OA1: buildPreviewRig builds the skinned rig the arena builds, shared with PreviewScene ... ok (1s)
+OA2: previewKey is the build key both the studio and PreviewScene cache on ... ok (229µs)
+OA3: one renderer behind every profile, and a second call is a cache HIT ...
+------- post-test output -------
+stats() after 12 distinct renders: {"renders":12,"cacheHits":0,"cached":12}
+stats() after re-rendering the same 12: {"renders":12,"cacheHits":12,"cached":12}
+----- post-test output end -----
+OA3: one renderer behind every profile, and a second call is a cache HIT ... ok (14s)
+OA4: determinism survives a forget, and clear() re-renders everything ... ok (21s)
+OA5: an unknown race, a hostile size option, a throwing render and a double dispose all survive ... ok (4s)
+OA6: Portrait, PreviewScene and PortraitStudio obey the house rules (text pins) ... ok (4ms)
+running 69 tests from ./tests/spec_test.ts
+SPEC L1: luminosity is monotonic in sun elevation and bounded, for every cloud cover ... ok (638µs)
+SPEC L2: cloud cover dims light by at most 45% ... ok (48µs)
+SPEC S1: night shortens sight and lengthens hearing (the coupling, end to end) ... ok (252µs)
+SPEC P1: strength makes a body DENSER, not only heavier ... ok (60µs)
+SPEC P2: the physics multiplier is bounded and equals 0.935 for equal bodies at rest ... ok (1ms)
+SPEC P3: every class has a distinct body, and the heaviest is the Barbarian ... ok (144µs)
+SPEC P4: closing speed only ever raises the multiplier, saturating at |v| = 2 ... ok (132µs)
+SPEC P5: closing speed is relative — a fleeing defender softens the blow, a slow one does not ... ok (98µs)
+SPEC H1: every class's average hit stuns 0.05-0.25 s (scale-corrected), never seconds ... ok (878µs)
+SPEC H2: every class needs 18-90 average hits to kill every other class (armour, crit, physics) ... ok (455µs)
+SPEC D1: the truce is exactly 6 s (3 friendly + 3 neutral) ... ok (119µs)
+SPEC R1: orks underbite and elves have the longest ears; hair length is monotonic ... ok (280µs)
+SPEC SS1: secondary layers stack additively ... ok (205µs)
+SPEC SP1: the spine is 33 vertebrae and adjacent curves meet at zero offset ... ok (144µs)
+SPEC F1: every face pose is clamped and the neutral pose is inside its limits ... ok (665µs)
+SPEC T1: every class's powers have finite, bounded sin/cos/tan tensors ... ok (10ms)
+SPEC AI3: an upset moves more MMR than an expected win ... ok (141µs)
+SPEC AN1: a stance key hits its start, peak and end angles, and is continuous at the peak ... ok (215µs)
+SPEC SS2: secondary stats feed the combat equations ... ok (108µs)
+SPEC HA1: every ancestry is complete and the four races are strictly ordered on every metric ... ok (289µs)
+SPEC HA2: the ancestry look reads from the silhouette alone (hair, beard, tusks, ears, skull) ... ok (179µs)
+SPEC HA3: hair physics mass follows length and curl, is seed-stable and never NaN ... ok (2ms)
+SPEC HD1: the match time limit is 180 s by default and the bell is a TIE, never a win ... ok (219µs)
+SPEC HD2: the stat gap is a bounded measure, zero for a mirror match, and the generation id is stable ... ok (876µs)
+SPEC HD3: the History page and the record layer agree on which match is the fastest and the widest ... ok (203µs)
+SPEC HE1: a spectator card round-trips level<->budget and its techniques always include the class's three ... ok (537µs)
+SPEC HF1: the corpus standardises NaN-free and its principal components explain exactly the variance ... ok (3ms)
+SPEC HX1: a generated stat budget can never push a fighter outside the balance window ... ok (5ms)
+SPEC IA1: a spectator angle the user sets STAYS set, and every preset is legal ... ok (1ms)
+SPEC IB1: the inspect card anchors on screen, the cursor's blob follows the reticle, and the pick is nearest-wins ... ok (1ms)
+SPEC IC1: a prop cannot float (seated on the footprint's high point) and its apron reaches the terrain ... ok (1ms)
+SPEC ID1: two moving blades within reach clash once, at a bounded strength, and the spark pool never overflows ... ok (19ms)
+SPEC IE1: the effects governor answers sustained load slowly, recovers slower, and never flaps ... ok (2ms)
+SPEC KK1: mana costs are 20% above the balance pass's table, and a dash costs no mana ... ok (652µs)
+SPEC KK2: every stat bar is cut into squares and carries its numbers inside, with no inline style attribute ... ok (1ms)
+SPEC KK3: the card's bars are written through CSSOM, never an inline style attribute ... ok (3ms)
+SPEC LL1: every race and every sub-species flies its own standard, drawn without a style attribute ... ok (593µs)
+SPEC LL2: the options are CLOSED trees on arrival, with the one entry group open ... ok (562µs)
+SPEC LL3: the dice rolls a legal fighter and the sheet shows the game's own numbers ... ok (21ms)
+SPEC LL4: the Creator's dice button, preview canvas and the engine's live model are wired (text pin) ... ok (1ms)
+SPEC FALL-F1: a collision conserves momentum in the effective masses and mirrors equal inputs ... ok (432µs)
+SPEC FALL-F2: more mass / strength / agility / level / armour / weapon -> less recoil and no longer stagger ... ok (275µs)
+SPEC FALL-F3: stagger and balance loss are clamped (STAGGER_MAX, 1) and finite for any input ... ok (190µs)
+SPEC FALL-F4: a charge needs contact and BOTH bodies closing (or one dashing); a walk into a standing body is a lean ... ok (101µs)
+SPEC FALL-F5: armour mass is the armour-rating proxy and weapon mass is the weapon spec's ... ok (681µs)
+SPEC FALL-F6: PUSH_DECAY is the stone floor's slide decay within 15 % (ArenaPhysics 1.2 + 1/stop) ... ok (90µs)
+SPEC FALL-F7: a downed body loses no more balance and is DOWNED_KNOCKBACK × easier to push ... ok (97µs)
+SPEC FALL-F8: hit balance needs a hard blow — the 0 % knockback cap (4 m/s × floor 0.35) never costs balance ... ok (140µs)
+SPEC FALL-F9: a guarding body is braced (GUARD_BRACE > 1): it recoils less than the same body unguarded ... ok (146µs)
+SPEC FALL-F10: the fall machine only takes LEGAL transitions under a random trigger/step fuzz ... ok (2ms)
+SPEC FALL-F11: falling lasts FALL_SECONDS; down + rising = the get-up law's T; rising >= RISE_PHASE_MIN (lane A's foot-slide floor) ... ok (162µs)
+SPEC FALL-F12: get-up time is monotone (armour, mass, wounds, fatigue slower; agility faster) inside [RISE_MIN, RISE_MAX] ... ok (62µs)
+SPEC FALL-F13: thresholds are ordered STAGGER < STUMBLE < FALL <= 1 ... ok (42µs)
+SPEC FALL-F14: the edge rule — ring-out owns a body really outside; a walled rim never teeters ... ok (73µs)
+SPEC FALL-F15: downed penalties — more damage, more crit, longer statuses, more knockback, all bounded ... ok (63µs)
+SPEC FALL-F16: only a standing fighter acts; a rising one may guard; down/rising are downed ... ok (89µs)
+SPEC FALL-F17: MatchSim falls:false carries no force tally (the HEAD rules); falls on carries finite ones ... ok (301ms)
+SPEC FALL-F18: the sim and the engine share the laws (one Collision / Fall implementation, text pin) ... ok (3ms)
+SPEC FALL-F19: the engine gates action on the fall state and fills lane A's fall/shove input (text pin) ... ok (1ms)
+SPEC FALL-F20: the fall-aware brain punishes a downed enemy and wraps trees transparently ... ok (348µs)
+SPEC FALL-F21: the fall-aware no-op control scores exactly 0.5 (both passes identical) ... ok (568ms)
+SPEC FALL-F22: telemetry force log — finite only, capped at FORCE_EVENT_CAP, counted in `dropped` ... ok (509µs)
+SPEC FALL-F23: a report carries at most REPORT_FORCE_EVENTS events and history at most HISTORY_FORCE_EVENTS ... ok (246µs)
+SPEC FALL-F24: the batch summary aggregates falls per match, down time, damage while down and causes ... ok (198ms)
+SPEC FALL-F25: a rising fall-aware seat guards (MatchSim), the DOWN chip covers falling/down/rising ... ok (520µs)
+SPEC FALL-F26: with falls on, the median decisive duel stays in the documented 25–55 s band (re-measured, MECHANICS.md) ... ok (2s)
+SPEC FALL-F27: a fall's stumble decides by agility and fatigue (fallChance monotone) ... ok (189µs)
+SPEC FALL-F28: the collision cooldown and the clash drive are bounded (one exchange per charge) ... ok (72µs)
+SPEC FALL-F29: the get-up law uses the SAME agility factor as the collision law ... ok (163µs)
+running 33 tests from ./tests/stepper_test.ts
+stepIndex: no wrap clamps at both ends ... ok (620µs)
+stepIndex: wrap turns over only from the end being left ... ok (60µs)
+stepIndex: garbage never throws and stays in range ... ok (110µs)
+stepIndex: -1 is 'nothing selected' (a select with selectedIndex -1) ... ok (56µs)
+stepEnabled over an all-enabled list IS stepIndex (every n, index, delta, wrap) ... ok (1ms)
+stepEnabled: skips disabled options like a native select ... ok (83µs)
+stepperModel: label, ends and which arrows act ... ok (233µs)
+stepperModel: garbage resolves to an empty or blank model ... ok (130µs)
+toLabel: the formatter hook accepts strings, numbers, labels; garbage falls back ... ok (133µs)
+stepNumber: no float drift on a decimal grid ... ok (2ms)
+stepNumber: the grid starts at min, max snaps down onto it ... ok (184µs)
+stepNumber: clamps, and wraps only from the end being left ... ok (85µs)
+stepNumber: off-grid values step to the next grid point in the step's direction ... ok (43µs)
+stepNumber: garbage — NaN value, outside range, step 0, min > max, open ends ... ok (250µs)
+numberModel and formatStepNumber ... ok (153µs)
+keyAction: the keyboard map ... ok (84µs)
+stepperView / stepState / stepStateTo: aria values without a DOM ... ok (595µs)
+Stepper: markup, aria, classes and disabled ends ... ok (891µs)
+Stepper: keyboard map, handled keys do not reach the menu, modifiers pass through ... ok (549µs)
+Stepper: wrap keeps both arrows live; wheel is off by default ... ok (177µs)
+Stepper: mouse press-and-hold repeats after 350 ms then every 60 ms; the click is not double-counted ... ok (480µs)
+Stepper: a hold stops at a closed end, on pointerleave, and when the stepper is detached ... ok (239µs)
+Stepper: touch steps on the tap's click, repeats only when held ... ok (285µs)
+Stepper: disabled state, set() and destroy() ... ok (316µs)
+upgradeSelect: the select stays the source of truth, a step fires input+change once ... ok (1ms)
+upgradeSelect: rebuilt options, disabled options and select.disabled follow via the observer ... ok (13ms)
+upgradeSelect: a change listener that re-sets the value wins; destroy restores the select ... ok (489µs)
+upgradeRange: min/max/step, the linked <output> is mirrored and hidden ... ok (5ms)
+upgradeRange: defaults 0..100, step=any, a formatter wins over the output ... ok (332µs)
+upgradeNumber: open ends, decimals, programmatic writes ... ok (537µs)
+upgradeAll: upgrades each element once, honours skip and data-stepper=off ... ok (1ms)
+focus: the hidden native control forwards focus; a re-render hands focus back ... ok (920µs)
+autoUpgrade: every re-render is upgraded after the observer's microtask; stop() ends it ... ok (4ms)
+running 7 tests from ./tests/ui_ancestry_test.ts
+ancestry: the selected race starts expanded with its own sub-species ... ok (383µs)
+ancestry: one box expanded at a time, through any click sequence ... ok (669µs)
+ancestry: expanding another race selects it with its first sub-species ... ok (48µs)
+ancestry: selecting a sub-species selects its race (and only real pairs) ... ok (319µs)
+ancestry: header label merges race and sub-species without repeating the race ... ok (73µs)
+ancestry: arrow keys rove the headers and wrap; other keys are ignored ... ok (114µs)
+ancestry: the game's real races all build a valid accordion ... ok (223µs)
+running 3 tests from ./tests/ui_arena_size_test.ts
+arena minimum: the derivation's terms and result ...
+------- post-test output -------
+LIVE_ARENA_MIN = 34 m (half 16.10 m: spawn 2.5 + dash 3.4 + slide 4.90 + prop 3.80 + 3r 1.5)
+----- post-test output end -----
+arena minimum: the derivation's terms and result ... ok (602µs)
+arena size: the slider's bottom notch and anything below the minimum are random ... ok (143µs)
+arena size: the engine clamp puts every random size inside the live range ... ok (276µs)
+running 5 tests from ./tests/ui_icons_test.ts
+icons: every icon is a well-formed <svg> on the 24-unit grid ... ok (10ms)
+icons: no style attribute and no hard-coded colour anywhere (CSP + white via CSS) ... ok (328µs)
+icons: every coordinate in every path stays inside the 24-unit grid ... ok (259µs)
+icons: every birth sign in the game has an icon, and unknown ids draw nothing ... ok (96µs)
+icons: the three skill kinds and the Back chevron exist; unknown kinds fall back ... ok (65µs)
+running 10 tests from ./tests/ui_navstack_test.ts
+navstack: starts at the root with depth 1 and no way back ... ok (627µs)
+navstack: title -> select -> back returns to title ... ok (56µs)
+navstack: back never pops below the root ... ok (106µs)
+navstack: victory -> sheet -> back returns to victory ... ok (85µs)
+navstack: pushing the current screen is a no-op (one Back click is enough) ... ok (69µs)
+navstack: pushing the root resets the trail ... ok (107µs)
+navstack: replace swaps the top without growing the trail ... ok (59µs)
+navstack: replace keeps the root at the bottom ... ok (94µs)
+navstack: replace onto the entry below collapses the duplicate ... ok (29µs)
+navstack: reset returns the root; trail() is a copy ... ok (114µs)
+running 12 tests from ./tests/ui_settings_test.ts
+settings schema: unknown keys dropped, wrong types and enums -> default ... ok (568µs)
+settings schema: out-of-range numbers clamp and snap; non-finite -> default ... ok (160µs)
+settings storage: version mismatch, broken JSON or nothing -> defaults; round trip ... ok (455µs)
+settings helpers: pixel budget, effect density, FOV, look rates, layout ... ok (141µs)
+panel: gear is icon-only but named; open/close/toggle drive state and callbacks ... ok (1ms)
+panel: give up needs a confirm; Yes forfeits once without resuming ... ok (308µs)
+panel: No and Esc back out one level; Esc on the panel resumes ... ok (292µs)
+panel: the Esc that opened the panel (pointer-lock release) does not close it ... ok (174µs)
+panel: from the menu only settings + Close; spectating has no Give up ... ok (922µs)
+panel: Restart and Main menu close without resuming ... ok (235µs)
+panel: controls validate, save under the versioned key and report onChange ... ok (504µs)
+panel: Tab is trapped inside the dialog (and inside the confirm while it shows) ... ok (289µs)
+running 10 tests from ./tests/ui_skillbar_test.ts
+skillbar: the first update builds one chip per skill with key, name, kind, cooldown ... ok (12ms)
+skillbar: update() with identical data performs ZERO DOM writes ... ok (1ms)
+skillbar: a cooldown change writes only that chip (text + sweep), nothing else ... ok (246µs)
+skillbar: recharging flips the state classes once, then goes quiet ... ok (261µs)
+skillbar: key labels come from the caller (AZERTY A vs QWERTY Q), not hard-coded ... ok (111µs)
+skillbar: art replaces the kind icon, and the chip list grows and shrinks in place ... ok (209µs)
+skillbar: legacy markup in the container is cleared once on first build ... ok (151µs)
+skillbar: cooldown text and sweep helpers ... ok (42µs)
+skillbar: with onActivate, pressing a chip fires its slot index (mouse-only play) ... ok (212µs)
+skillbar: without onActivate the bar is display-only ... ok (114µs)
+running 5 tests from ./tests/ui_wave_u_test.ts
+wave U: an inactive flat screen is hidden (the Creator used to render beside every screen) ... ok (266µs)
+wave U: every menu and the settings dialog upgrade their dropdowns / sliders / numbers to steppers ... ok (387µs)
+wave U: the sex override reads appearance.sex (it read a missing top-level field and reverted every change) ... ok (92µs)
+wave U: the creator's statistics sit beside the model; the look tools sit under it ... ok (79µs)
+wave U: one glyph family — no emoji left on the menu buttons ... ok (98µs)
+running 3 tests from ./tests/ui_wave_w_test.ts
+wave W: the type scale falls with depth at every width (L0 > L1 > L2 > L3 > L4) ... ok (2ms)
+wave W: every screen spans the window minus a gutter; the title, victory and settings keep >= 80 % ... ok (188µs)
+wave W: icons are 1.2 × their label and sit beside it ... ok (52µs)
+running 19 tests from ./tests/wave_gen_pipeline_test.ts
+SPEC G1: generateStaged returns one record per stage, in pipeline order, with timings and metrics ... ok (1s)
+SPEC G2: generateBody keeps its signature and returns the carved stage ... ok (444ms)
+SPEC G3: with no stats generateBody == the pre-wave composition, byte for byte (8 race/sex specs) ... FAILED (3s)
+SPEC G4: with no stats the physics plan of every race and the human/elf meshes equal HEAD 6a5f588 ... FAILED (2ms)
+SPEC G5: stats null and stats at STAT_REFERENCE build the absent-stats body (identity morph) ... ok (4s)
+SPEC G6: the cage has 16 parts with 6 positive extents and contains the reference body (16 ancestries x 2 sexes) ... ok (24s)
+SPEC G7: the cage is identity at the reference and monotone: strength widens X/Z, level grows Y ... ok (314ms)
+SPEC G8: the clamp shrinks girth (never moves a segment), slides only centred volumes, keeps fitting nodes ... ok (164ms)
+SPEC G9: after the inflate clamp cageViolationMm = 0 at min and max stats for every race ... ok (9s)
+SPEC G10: cageFill is a share in (0, 1] and the reference body fills 40-70 % of its cage on average ... ok (1s)
+SPEC G11: StatScale maps the reference fighter to 500, is monotone and clamped; level 1 -> 500, cap -> 1000 ... ok (1ms)
+SPEC G12: every class x ancestry starting sheet maps inside 0..1000 and orders the classes as the sheet does ... ok (593µs)
+SPEC G13: SHEET_TWEAK_SPAN is the creator's tweak window (DerivedSheet.ATTR_DELTA_SPAN) ... ok (42µs)
+SPEC G14: profiles and the engine carry stats into the body spec (and agility into the skeleton) ... ok (2ms)
+SPEC G15: the body cache key includes the stats (different stats = different body, same stats = cache hit) ... ok (1s)
+SPEC G16: the hitboxes stage wraps the skin (coverage >= 95 %, overshoot p95 <= 40 mm) at min / reference / max ... ok (7s)
+SPEC G17: Hitboxes fit hitRoot ?? root — the stat tree moves the capsules, no hit tree = today's fit ... ok (2s)
+SPEC G18: the pipeline is deterministic (same spec = same mesh, cage and metrics) ... ok (3s)
+SPEC G19: the skeleton stage = the bind bones + disks + a T-pose with horizontal arms (bind pose untouched) ... ok (1s)
+running 10 tests from ./tests/wave_gen_ui_test.ts
+SPEC G70: every race x sex reference body breaks no rule, and every number's band holds its current value ...
+------- post-test output -------
+G70: 16 bodies x 10 numbers = 160 bands, 0 violations
+----- post-test output end -----
+SPEC G70: every race x sex reference body breaks no rule, and every number's band holds its current value ... ok (58ms)
+SPEC G71: band edges are exact — the rule that stops a number holds AT the edge and breaks just past it (seeded states) ...
+------- post-test output -------
+G71: 960 band edges checked, 124 set by a neighbour rule (the rest by the static band)
+----- post-test output end -----
+SPEC G71: band edges are exact — the rule that stops a number holds AT the edge and breaks just past it (seeded states) ... ok (168ms)
+SPEC G72: waist <= hips — the hips' lower limit moves with the waist (a neighbour clamp, measured on Proportions) ...
+------- post-test output -------
+G72: mountain dwarf hip floor 0.3114 (static 0.3094), with the waist pinched 0.3106
+----- post-test output end -----
+SPEC G72: waist <= hips — the hips' lower limit moves with the waist (a neighbour clamp, measured on Proportions) ... ok (3ms)
+SPEC G73: weight within the BMI band of the height — the band is BMI_BAND x the race's mid BMI x height^2 ... ok (23ms)
+SPEC G74: a height edit is a DRIVER — the height is kept and the weight / head settle into their new bands ...
+------- post-test output -------
+G74: weight settled in 16, head in 32 of 32 extreme height edits; human head max short 1.090 / tall 0.986
+----- post-test output end -----
+SPEC G74: a height edit is a DRIVER — the height is kept and the weight / head settle into their new bands ... ok (30ms)
+SPEC G75: drag-to-scrub arithmetic — whole steps from the start, clamped, Shift is finer, a short or vertical travel is no drag ... ok (264µs)
+SPEC G76: the stage scrubber — the pipeline's seven stages in order, a radio group, readouts with ms + key metrics, CSP-safe ... ok (861µs)
+SPEC G77: the 0..1000 stat view — clamped integers, the what-if attribute is empty at the fighter's own numbers, CSP-safe ... ok (741µs)
+SPEC G78: every stage view builds from the real pipeline — distinct content, T-pose arms, one capsule per hitbox, finite geometry ...
+------- post-test output -------
+G78: skeleton-bones+skeleton-joints+skeleton-disks:1477 | cage-ghost+cage-boxes:4898 | inflate-volumes:4502 | carve-skin+carve-strokes:4577 | skin-weights+skin-wire:31586 | hitboxes-skin+hitboxes-capsules:11274
+----- post-test output end -----
+SPEC G78: every stage view builds from the real pipeline — distinct content, T-pose arms, one capsule per hitbox, finite geometry ... ok (2s)
+SPEC G79: the preview builds with the generator stats (StatScale), and an attribute or what-if change rebuilds it ... ok (1ms)
+running 4 tests from ./tests/wave_m_wiring_test.ts
+M wiring: the seat projection keeps one seat's numbers and the shared spatial ones ... ok (1ms)
+M wiring: the engine's report is compact, private and drawn from real strategy ids ... ok (1ms)
+M wiring: the reading page's batch plan, progress and summary agree with a real run ... ok (114ms)
+M wiring: the engine feeds the accumulator, the AI view and the batch button (text pin) ... ok (3ms)
+running 10 tests from ./tests/wave_x_body_test.ts
+SPEC X50: a fat belly is RARE, dwarves > orks > humans > elves (2000 seeded rolls per race), elves never ...
+------- post-test output -------
+fat belly frequency over 2000 seeds: dwarf 12.45 %, ork 7.05 %, human 4.30 %, elf 0.00 %
+----- post-test output end -----
+SPEC X50: a fat belly is RARE, dwarves > orks > humans > elves (2000 seeded rolls per race), elves never ... ok (2ms)
+SPEC X51: the belly roll is its own stream — two draws, deterministic, and randomSilhouette is untouched ... ok (327µs)
+SPEC X52: the viewer frames by the PEDESTAL — one radius, one distance for every model under the frame top ...
+------- post-test output -------
+pedestal R 0.6 m, frame top 2.52 m, distance 3.964 m, target y 1.155 m
+----- post-test output end -----
+SPEC X52: the viewer frames by the PEDESTAL — one radius, one distance for every model under the frame top ... ok (476µs)
+SPEC X53: the key light is overhead (slightly front), the contact shadow is a real darkening, the stone is mid-dark ...
+------- post-test output -------
+key elevation 80.8 deg (front component 0.158)
+----- post-test output end -----
+SPEC X53: the key light is overhead (slightly front), the contact shadow is a real darkening, the stone is mid-dark ... ok (8ms)
+SPEC X54: deltoid caps stand ABOVE the clavicle line with a valley between (skin field and built mesh), every race ...
+------- post-test output -------
+human: field apex - clavicle -6.0 -> 16.0 mm, valley 4.0 -> 26.0 mm; mesh apex - clavicle 22.4 mm, mesh valley 5.6 mm
+elf: field apex - clavicle -8.0 -> 16.0 mm, valley 0.0 -> 30.0 mm; mesh apex - clavicle 22.7 mm, mesh valley 12.6 mm
+dwarf: field apex - clavicle 4.0 -> 12.0 mm, valley 0.0 -> 12.0 mm; mesh apex - clavicle 16.1 mm, mesh valley 1.8 mm
+ork: field apex - clavicle 6.0 -> 12.0 mm, valley 0.0 -> 22.0 mm; mesh apex - clavicle 9.8 mm, mesh valley 16.7 mm
+----- post-test output end -----
+SPEC X54: deltoid caps stand ABOVE the clavicle line with a valley between (skin field and built mesh), every race ... ok (6s)
+SPEC X55: slimmer — the waist tape drops >= 8 % on every race and sex, the race order of the waists survives ...
+------- post-test output -------
+human/male: waist 895.4 -> 782.8 mm (-12.6 %), shoulder 571.0 -> 571.0 mm
+human/female: waist 822.9 -> 730.8 mm (-11.2 %), shoulder 569.4 -> 569.4 mm
+elf/male: waist 714.9 -> 624.7 mm (-12.6 %), shoulder 480.5 -> 480.5 mm
+elf/female: waist 650.0 -> 583.5 mm (-10.2 %), shoulder 482.7 -> 475.5 mm
+----- post-test output end -----
+SPEC X55: slimmer — the waist tape drops >= 8 % on every race and sex, the race order of the waists survives ... FAILED (9s)
+SPEC X56: the male crotch bulge stands clearly proud of its neighbours; the female has none ...
+------- post-test output -------
+human: bulge +35.1 mm over the same body without it; 16.0 mm ahead of the lower belly, 26.2 mm ahead of the inner thighs
+elf: bulge +34.7 mm over the same body without it; 19.5 mm ahead of the lower belly, 30.1 mm ahead of the inner thighs
+dwarf: bulge +27.5 mm over the same body without it; 9.2 mm ahead of the lower belly, 17.5 mm ahead of the inner thighs
+ork: bulge +40.1 mm over the same body without it; 13.0 mm ahead of the lower belly, 14.3 mm ahead of the inner thighs
+----- post-test output end -----
+SPEC X56: the male crotch bulge stands clearly proud of its neighbours; the female has none ... ok (13s)
+SPEC X57: the physique is RENDER-ONLY — the physics tree and its box are byte-identical with and without it ... ok (9s)
+SPEC X58: a rolled fat belly stands well in front of the flat belly and keeps the skin one closed piece ...
+------- post-test output -------
+human: belly front 96.8 -> fat 164.1 mm (+67.2); abs band off on the fat belly: true
+elf: belly front 82.5 -> fat 150.9 mm (+68.4); abs band off on the fat belly: true
+dwarf: belly front 140.7 -> fat 204.0 mm (+63.4); abs band off on the fat belly: true
+ork: belly front 175.0 -> fat 260.7 mm (+85.6); abs band off on the fat belly: true
+ork default belly front 218.4 -> 175.0 mm
+----- post-test output end -----
+SPEC X58: a rolled fat belly stands well in front of the flat belly and keeps the skin one closed piece ... ok (8s)
+SPEC X59: the sub-grid surface detail is wired — abs band from the plan, garment/trunk attribute, AA fades ...
+------- post-test output -------
+aSurface: 1928 garment vertices, 1174 trunk vertices of 4180; gains {"abs":0.0075,"skin":0.0005,"cloth":0.00035,"albedo":1.1}
+----- post-test output end -----
+SPEC X59: the sub-grid surface detail is wired — abs band from the plan, garment/trunk attribute, AA fades ... ok (666ms)
+running 17 tests from ./tests/wave_x_ui_test.ts
+SPEC X30: toneFor is green above neutral, red below, grey at it ... ok (519µs)
+SPEC X31: toneFor is smooth and monotone in the value (no jumps, saturates at the span) ... ok (744µs)
+SPEC X32: every tone reaches WCAG 4.5:1 on its surface's reference backgrounds ... ok (1ms)
+signed / toneClass / toneAttrs ... ok (200µs)
+paintTones writes the colour through CSSOM, with the parchment inks inside a stepper ... ok (174µs)
+SPEC X33: the creator sheet carries all SEVEN attributes (Agility, Focus) and tones every number ... ok (23ms)
+SPEC X34: a rolled name speaks its race + sub-race phonology; the roll is seeded and draws an age in ageBounds ... ok (2ms)
+SPEC X35: reroll ONE part changes that part and keeps the rest ... ok (1ms)
+SPEC X36: a new ancestry regenerates an untyped name in the new phonology, keeps a typed one ... ok (333µs)
+SPEC X37: attribute tweaks stay inside the floor, the per-stat cap and the level budget ... ok (607µs)
+SPEC X38: the sheet follows a tweak live — the derived numbers move by the game's own statDelta ... ok (580µs)
+SPEC X39: silhouette tweak bands sit around the race's own value, inside SILHOUETTE_TOP ... ok (143µs)
+SPEC X40: the forged-steel sign and the reroll dice are CSP-safe markup with the race + sub-race ... ok (127µs)
+SPEC X41: History's stat cell names FOC and AGI and tones each gap ... ok (302µs)
+SPEC X42: the inspect card tones the primaries both ways and keeps 'bad' for below-average ... ok (248µs)
+SPEC X43: the UI tree describes seven attributes (Agility) and no Willpower ... ok (2ms)
+SPEC X44: combat text wears the negative tone's hue in styles.css; misses are neutral ... ok (2ms)
+running 8 tests from ./tests/wave_y_pose_test.ts
+SPEC Y20: no weapon but the dagger points its striking end behind the frontal plane — idle, guard, block, walk, preview (human, every archetype) ...
+------- post-test output -------
+dagger     | idle fwd -0.83 elev -33° | guard fwd -0.34 elev -68° | block fwd -0.29 elev -70° | walk fwd -0.29 elev -70° | preview fwd -0.83 elev -34°
+shortsword | idle fwd 0.82 elev 34° | guard fwd 0.34 elev 68° | block fwd 0.29 elev 70° | walk fwd 0.29 elev 70° | preview fwd 0.83 elev 34°
+sabre      | idle fwd 0.82 elev 34° | guard fwd 0.34 elev 68° | block fwd 0.29 elev 70° | walk fwd 0.29 elev 70° | preview fwd 0.83 elev 34°
+rapier     | idle fwd 0.82 elev 34° | guard fwd 0.34 elev 68° | block fwd 0.29 elev 70° | walk fwd 0.29 elev 70° | preview fwd 0.83 elev 34°
+longsword  | idle fwd 0.82 elev 34° | guard fwd 0.34 elev 68° | block fwd 0.29 elev 70° | walk fwd 0.29 elev 70° | preview fwd 0.83 elev 34°
+greatsword | idle fwd 0.82 elev 34° | guard fwd 0.34 elev 68° | block fwd 0.29 elev 70° | walk fwd 0.29 elev 70° | preview fwd 0.83 elev 34°
+spear      | idle fwd 0.82 elev 34° | guard fwd 0.34 elev 68° | block fwd 0.29 elev 70° | walk fwd 0.29 elev 70° | preview fwd 0.83 elev 34°
+halberd    | idle fwd 0.82 elev 34° | guard fwd 0.34 elev 68° | block fwd 0.29 elev 70° | walk fwd 0.29 elev 70° | preview fwd 0.83 elev 34°
+scythe     | idle fwd 0.82 elev 34° | guard fwd 0.34 elev 68° | block fwd 0.29 elev 70° | walk fwd 0.29 elev 70° | preview fwd 0.83 elev 34°
+staff      | idle fwd 0.82 elev 34° | guard fwd 0.34 elev 68° | block fwd 0.29 elev 70° | walk fwd 0.29 elev 70° | preview fwd 0.83 elev 34°
+axe        | idle fwd 0.82 elev 34° | guard fwd 0.34 elev 68° | block fwd 0.29 elev 70° | walk fwd 0.29 elev 70° | preview fwd 0.83 elev 34°
+greataxe   | idle fwd 0.82 elev 34° | guard fwd 0.34 elev 68° | block fwd 0.29 elev 70° | walk fwd 0.29 elev 70° | preview fwd 0.83 elev 34°
+mace       | idle fwd 0.82 elev 34° | guard fwd 0.34 elev 68° | block fwd 0.29 elev 70° | walk fwd 0.29 elev 70° | preview fwd 0.83 elev 34°
+flail      | idle fwd 0.82 elev 34° | guard fwd 0.34 elev 68° | block fwd 0.29 elev 70° | walk fwd 0.29 elev 70° | preview fwd 0.83 elev 34°
+warhammer  | idle fwd 0.82 elev 34° | guard fwd 0.34 elev 68° | block fwd 0.29 elev 70° | walk fwd 0.29 elev 70° | preview fwd 0.83 elev 34°
+maul       | idle fwd 0.82 elev 34° | guard fwd 0.34 elev 68° | block fwd 0.29 elev 70° | walk fwd 0.29 elev 70° | preview fwd 0.83 elev 34°
+bow        | idle fwd 0.82 elev 34° | guard fwd 0.34 elev 68° | block fwd -0.00 elev 80° | walk fwd -0.00 elev 80° | preview fwd 0.83 elev 34°
+----- post-test output end -----
+SPEC Y20: no weapon but the dagger points its striking end behind the frontal plane — idle, guard, block, walk, preview (human, every archetype) ... ok (9s)
+SPEC Y21: the other ancestries hold them the same way (elf, dwarf, ork: sword, axe, mace, spear, staff, scythe, bow, dagger) ... ok (15s)
+SPEC Y22: the Creator preview holds the weapon the way the arena's idle holds it (same carry within 0.03 / 4°) ...
+------- post-test output -------
+human longsword: preview fwd 0.825 elev 34.0° | engine idle fwd 0.825 elev 33.7°
+human axe: preview fwd 0.825 elev 34.0° | engine idle fwd 0.825 elev 33.7°
+human dagger: preview fwd -0.825 elev -34.0° | engine idle fwd -0.827 elev -33.4°
+human spear: preview fwd 0.825 elev 34.0° | engine idle fwd 0.825 elev 33.7°
+ork longsword: preview fwd 0.825 elev 31.2° | engine idle fwd 0.825 elev 34.4°
+ork axe: preview fwd 0.825 elev 31.2° | engine idle fwd 0.825 elev 34.4°
+ork dagger: preview fwd -0.825 elev -31.2° | engine idle fwd -0.827 elev -34.2°
+ork spear: preview fwd 0.825 elev 31.2° | engine idle fwd 0.825 elev 34.4°
+----- post-test output end -----
+SPEC Y22: the Creator preview holds the weapon the way the arena's idle holds it (same carry within 0.03 / 4°) ... ok (1s)
+SPEC Y23: control — the pre-wave-Y build-time grip (rotation.x −0.35, no hand mapping) holds the blade BACKWARD; the measure catches it ...
+------- post-test output -------
+old default grip: fwd -0.563 elev 55.7° tip -480 mm
+----- post-test output end -----
+SPEC Y23: control — the pre-wave-Y build-time grip (rotation.x −0.35, no hand mapping) holds the blade BACKWARD; the measure catches it ... ok (109ms)
+SPEC Y24: knees 15-40 mm outward of the hip-ankle line in idle, guard, block and the preview, mirrored within 1.5 mm — every race ...
+------- post-test output -------
+human idle: knee out L 28.5 mm R 28.5 mm
+human guard: knee out L 29.0 mm R 28.8 mm
+human block: knee out L 29.4 mm R 29.0 mm
+human preview: knee out L 23.7 mm R 23.7 mm
+elf idle: knee out L 30.4 mm R 30.4 mm
+elf guard: knee out L 30.7 mm R 30.8 mm
+elf block: knee out L 30.9 mm R 31.2 mm
+elf preview: knee out L 25.2 mm R 25.2 mm
+dwarf idle: knee out L 21.5 mm R 21.5 mm
+dwarf guard: knee out L 21.7 mm R 21.9 mm
+dwarf block: knee out L 21.9 mm R 22.2 mm
+dwarf preview: knee out L 18.2 mm R 18.2 mm
+ork idle: knee out L 32.0 mm R 32.1 mm
+ork guard: knee out L 32.3 mm R 32.6 mm
+ork block: knee out L 32.6 mm R 33.0 mm
+ork preview: knee out L 27.0 mm R 27.0 mm
+----- post-test output end -----
+SPEC Y24: knees 15-40 mm outward of the hip-ankle line in idle, guard, block and the preview, mirrored within 1.5 mm — every race ... ok (1s)
+SPEC Y25: the knee-out moves no sole — ankle/toe positions and foot rotation identical with and without it (idle, guard, walk) ... ok (748ms)
+SPEC Y26: planted feet still hold — idle/guard slide < 0.5 mm, sole tilt unchanged by the knee-out (< 0.05°) ...
+------- post-test output -------
+human idle: slide 0.008 mm (without knee-out 0.008), sole tilt 2.825° (without 2.825°)
+human guard: slide 0.022 mm (without knee-out 0.022), sole tilt 2.835° (without 2.835°)
+human block: slide 0.028 mm (without knee-out 0.028), sole tilt 2.852° (without 2.852°)
+ork idle: slide 0.006 mm (without knee-out 0.006), sole tilt 3.066° (without 3.066°)
+ork guard: slide 0.017 mm (without knee-out 0.017), sole tilt 3.077° (without 3.077°)
+ork block: slide 0.023 mm (without knee-out 0.023), sole tilt 3.092° (without 3.092°)
+----- post-test output end -----
+SPEC Y26: planted feet still hold — idle/guard slide < 0.5 mm, sole tilt unchanged by the knee-out (< 0.05°) ... ok (1s)
+SPEC Y27: the knee-out law — a few cm on every leg, capped swivel, straight legs untouched, Skeleton rests at it ... ok (301µs)
+running 7 tests from ./tests/wave_y_ui_test.ts
+SPEC Y30: the catalogue has the nine sockets; weapons = every real archetype (available), the rest = future pieces (greyed) ... ok (1ms)
+SPEC Y31: equip() writes weaponType for a weapon, refuses placeholders/unknown ids, and reads legacy types ... ok (340µs)
+SPEC Y32: one line icon per archetype and per socket, inside the 24-unit grid, CSP-safe ... ok (562µs)
+SPEC Y33: Reroll hero is a seeded whole-hero roll that keeps the level and the equipment ... ok (2ms)
+SPEC Y34: heroRecordPatch replaces the hero in place through ProfileRepo.update (id + record kept) ... ok (2ms)
+SPEC Y35: medallion, sockets and picker markup — classes only, the viewer canvas once, 5 | 4 sockets ... ok (773µs)
+SPEC Y36: the metal/stone tokens are named equations of the type scale, and the recipes exist ... ok (1ms)
+running 13 tests from ./tests/wave_z_layout_test.ts
+SPEC Z1: levelTier bands — 1-4 bronze, 5-8 copper, 9-12 silver, 13-16 gold, 17-20 platinum ... ok (451µs)
+SPEC Z2: levelTier is total — out-of-span and non-finite levels clamp into the span ... ok (86µs)
+SPEC Z3: levelBadgeHtml is the C-LV markup — LV then the number, data-tier, no inline style ... ok (191µs)
+SPEC Z4: every tier has its metal in styles.css (rim token + face + ink) ... ok (843µs)
+SPEC Z5: the hero plate — picture first (cover), LV badge in the corner, name + tags float in the foot ... ok (313µs)
+SPEC Z6: the tags are race, sub-race, class, sign, weapon — empty parts left out, sign/weapon with icons ... ok (121µs)
+SPEC Z7: 'Roll' replaces 'Reroll hero' — same hook/action, purple stone, a 1.4x icon, a 44 px target ... ok (389µs)
+SPEC Z8: the 'Chosen hero — Figure, record, statistics.' panel head is gone; the roster keeps its body ... ok (147µs)
+SPEC Z9: C-SHEET is placed in the hero card and the + New column, then toned ... ok (161µs)
+SPEC Z10: the + New viewer wears the same plate — canvas under, LV corner, floating name, sockets kept ... ok (242µs)
+SPEC Z11: the picture fills its plate — 3:4, object-fit cover, focal point on the figure ... ok (837µs)
+SPEC Z12: no text below 11 px in the wave Z rules; the tab badge label is pinned at 11 px ... ok (186µs)
+SPEC Z13: the tab strip wraps (no off-screen tabs), tab names wrap instead of an ellipsis ... ok (352µs)
+running 10 tests from ./tests/wave_z_viewer_test.ts
+SPEC Z40: the key light is from (almost) straight above with a slight FRONT bias ...
+------- post-test output -------
+key 0.03, 1, 0.16 -> elevation 80.8 deg, front 0.158, side 0.030
+----- post-test output end -----
+SPEC Z40: the key light is from (almost) straight above with a slight FRONT bias ... ok (532µs)
+SPEC Z41: the face fill is low, warm, from the viewer's side, and OFF (black) everywhere else ... ok (258µs)
+SPEC Z42: the shadow camera covers the whole pedestal and every framed model, and looks along the key ...
+------- post-test output -------
+shadow frame half 1.5 m, 320 probe points inside, texel 2.9 mm
+----- post-test output end -----
+SPEC Z42: the shadow camera covers the whole pedestal and every framed model, and looks along the key ... ok (1ms)
+SPEC Z43: the constant framing rule still holds (distance from PEDESTAL_RADIUS, not from the model) ... ok (233µs)
+SPEC Z44: portrait composition — frame top at 10 %, soles at 70 %, plinth inside the width (3:4) ...
+------- post-test output -------
+portrait: frame top 10.00 %, 1.8 m head 27.5 %, soles 70.00 %
+----- post-test output end -----
+SPEC Z44: portrait composition — frame top at 10 %, soles at 70 %, plinth inside the width (3:4) ... ok (2ms)
+SPEC Z45: portrait pixel size is 3:4 and DPR-aware; old explicit size options stay square ...
+------- post-test output -------
+DPR 1 560x747, DPR 2 1120x1493, DPR 3 1120x1493
+----- post-test output end -----
+SPEC Z45: portrait pixel size is 3:4 and DPR-aware; old explicit size options stay square ... ok (3s)
+SPEC Z46: the stone — deterministic textures, height in alpha, tileable floor, plinth worn lip at radius R ...
+------- post-test output -------
+floor height alpha 0..228, mean green 0.338
+height steps: x seam 3854 vs inner 3436/2545/3783/2078; y seam 1151 vs inner 3392/2928/4078/3813
+----- post-test output end -----
+SPEC Z46: the stone — deterministic textures, height in alpha, tileable floor, plinth worn lip at radius R ... ok (115ms)
+SPEC Z47: the stage restores the shared cel uniforms after a draw (the arena's sun is untouched) ... ok (91ms)
+SPEC Z48: the portrait frames the REAL rig on the plinth (every race), head below the badge band ...
+------- post-test output -------
+human: crown 1.86 m at 26.1 %, model top 1.80 m at 27.6 %
+elf: crown 1.86 m at 26.0 %, model top 1.80 m at 27.5 %
+dwarf: crown 1.83 m at 26.7 %, model top 1.81 m at 27.4 %
+ork: crown 1.84 m at 26.5 %, model top 1.91 m at 24.9 %
+----- post-test output end -----
+SPEC Z48: the portrait frames the REAL rig on the plinth (every race), head below the badge band ... ok (5s)
+SPEC Z49: a foot reserve (lane F's floating band) keeps the plinth above the band, one distance for every race ... ok (301µs)
+
+ ERRORS 
+
+SPEC G3: with no stats generateBody == the pre-wave composition, byte for byte (8 race/sex specs) => ./tests/wave_gen_pipeline_test.ts:100:6
+error: Error: elf/male mesh expected "bd498fa0d2610f9428fe3954:c308b2dff31a0345abc893c3:8558bd58982d3543182fd8d6:f4fad98558e6fd55e5035390:c1ae9a0bd052e2f613ace633" got "f7f0b0ebe78f5aef7b08490c:d33039b9f691400aa9ffb884:7249d679f06c06b9880b5519:ee60cb6614617543db2c3ba3:ac6ad1bdc25ea4217b31316e"
+  if (x !== y) throw new Error(`${msg} expected ${y.slice(0, 300)} got ${x.slice(0, 300)}`);
+                     ^
+    at assertEquals (file:///Users/macmax/Desktop/Mytherrania/tests/wave_gen_pipeline_test.ts:30:22)
+    at file:///Users/macmax/Desktop/Mytherrania/tests/wave_gen_pipeline_test.ts:107:5
+
+SPEC G4: with no stats the physics plan of every race and the human/elf meshes equal HEAD 6a5f588 => ./tests/wave_gen_pipeline_test.ts:114:6
+error: Error: elf/male mesh expected "d93ab43f1331bc47c0a0a562:95297b84875f3a49b8bf3873:dbecebaf62b690a32280b847:c0a054790eaceb83fda2ea97:416e41f525f35b939514b51e" got "f7f0b0ebe78f5aef7b08490c:d33039b9f691400aa9ffb884:7249d679f06c06b9880b5519:ee60cb6614617543db2c3ba3:ac6ad1bdc25ea4217b31316e"
+  if (x !== y) throw new Error(`${msg} expected ${y.slice(0, 300)} got ${x.slice(0, 300)}`);
+                     ^
+    at assertEquals (file:///Users/macmax/Desktop/Mytherrania/tests/wave_gen_pipeline_test.ts:30:22)
+    at file:///Users/macmax/Desktop/Mytherrania/tests/wave_gen_pipeline_test.ts:118:20
+
+SPEC X55: slimmer — the waist tape drops >= 8 % on every race and sex, the race order of the waists survives => ./tests/wave_x_body_test.ts:107:6
+error: Error: elf/female: the shoulders were not narrowed
+function assert(ok: boolean, msg = "assertion failed"): void { if (!ok) throw new Error(msg); }
+                                                                              ^
+    at assert (file:///Users/macmax/Desktop/Mytherrania/tests/wave_x_body_test.ts:19:79)
+    at file:///Users/macmax/Desktop/Mytherrania/tests/wave_x_body_test.ts:117:7
+
+ FAILURES 
+
+SPEC G3: with no stats generateBody == the pre-wave composition, byte for byte (8 race/sex specs) => ./tests/wave_gen_pipeline_test.ts:100:6
+SPEC G4: with no stats the physics plan of every race and the human/elf meshes equal HEAD 6a5f588 => ./tests/wave_gen_pipeline_test.ts:114:6
+SPEC X55: slimmer — the waist tape drops >= 8 % on every race and sex, the race order of the waists survives => ./tests/wave_x_body_test.ts:107:6
+
+FAILED | 286 passed | 3 failed (3m21s)
+
+error: Test failed

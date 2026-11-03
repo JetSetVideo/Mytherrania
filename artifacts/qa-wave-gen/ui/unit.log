@@ -1,0 +1,35 @@
+Check tests/wave_gen_ui_test.ts
+running 10 tests from ./tests/wave_gen_ui_test.ts
+SPEC G70: every race x sex reference body breaks no rule, and every number's band holds its current value ...
+------- output -------
+G70: 16 bodies x 10 numbers = 160 bands, 0 violations
+----- output end -----
+SPEC G70: every race x sex reference body breaks no rule, and every number's band holds its current value ... ok (92ms)
+SPEC G71: band edges are exact — the rule that stops a number holds AT the edge and breaks just past it (seeded states) ...
+------- output -------
+G71: 960 band edges checked, 124 set by a neighbour rule (the rest by the static band)
+----- output end -----
+SPEC G71: band edges are exact — the rule that stops a number holds AT the edge and breaks just past it (seeded states) ... ok (262ms)
+SPEC G72: waist <= hips — the hips' lower limit moves with the waist (a neighbour clamp, measured on Proportions) ...
+------- output -------
+G72: mountain dwarf hip floor 0.3114 (static 0.3094), with the waist pinched 0.3106
+----- output end -----
+SPEC G72: waist <= hips — the hips' lower limit moves with the waist (a neighbour clamp, measured on Proportions) ... ok (3ms)
+SPEC G73: weight within the BMI band of the height — the band is BMI_BAND x the race's mid BMI x height^2 ... ok (40ms)
+SPEC G74: a height edit is a DRIVER — the height is kept and the weight / head settle into their new bands ...
+------- output -------
+G74: weight settled in 16, head in 32 of 32 extreme height edits; human head max short 1.090 / tall 0.986
+----- output end -----
+SPEC G74: a height edit is a DRIVER — the height is kept and the weight / head settle into their new bands ... ok (47ms)
+SPEC G75: drag-to-scrub arithmetic — whole steps from the start, clamped, Shift is finer, a short or vertical travel is no drag ... ok (312µs)
+SPEC G76: the stage scrubber — the pipeline's seven stages in order, a radio group, readouts with ms + key metrics, CSP-safe ... ok (814µs)
+SPEC G77: the 0..1000 stat view — clamped integers, the what-if attribute is empty at the fighter's own numbers, CSP-safe ... ok (1ms)
+SPEC G78: every stage view builds from the real pipeline — distinct content, T-pose arms, one capsule per hitbox, finite geometry ...
+------- output -------
+G78: skeleton-bones+skeleton-joints+skeleton-disks:1477 | cage-ghost+cage-boxes:4942 | inflate-volumes:4542 | carve-skin+carve-strokes:4621 | skin-weights+skin-wire:31894 | hitboxes-skin+hitboxes-capsules:11318
+----- output end -----
+SPEC G78: every stage view builds from the real pipeline — distinct content, T-pose arms, one capsule per hitbox, finite geometry ... ok (2s)
+SPEC G79: the preview builds with the generator stats (StatScale), and an attribute or what-if change rebuilds it ... ok (479µs)
+
+ok | 10 passed | 0 failed (2s)
+

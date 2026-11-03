@@ -1,0 +1,42 @@
+{
+ "human/male": {
+  "mesh": "56037db943c9aab8375574c2:8793d4685d24da52e6fb74ef:903f48e8a2068fc4aabad61e:02f61494dad8b983b39fab30:224bca7e334e95eb201ce804",
+  "physics": "716457557001ec618acbb805",
+  "skin": "a0a4c6f8c5e5ee6cb9ba3773"
+ },
+ "human/female": {
+  "mesh": "36f0b8ac595e27f333d0e3ed:e87c36789d6935d0c5e0e611:a5b0297442a06461119b860d:d0d4559c3586b1c90714c001:70cfd4b5b44a169d98bbc879",
+  "physics": "7b5e9d730c683fea7cd91803",
+  "skin": "8ce0ff45135bb8b42c9beb8d"
+ },
+ "elf/male": {
+  "mesh": "d93ab43f1331bc47c0a0a562:95297b84875f3a49b8bf3873:dbecebaf62b690a32280b847:c0a054790eaceb83fda2ea97:416e41f525f35b939514b51e",
+  "physics": "6153a6d7d1f610021d41f738",
+  "skin": "1283edb65750d2660dab1897"
+ },
+ "elf/female": {
+  "mesh": "7d86338c91a32af68fa94090:ed3c73bf96e857616a1e2606:2aed372894f75a9cd4172242:0efe33c820639f7b6ffa6969:b3b356b76b54feb849547c05",
+  "physics": "6c729048e9a8aa6ee301b1c8",
+  "skin": "25e66aa5135be48e0a5f158c"
+ },
+ "dwarf/male": {
+  "mesh": "c6cd71da10a967cbc93f9154:bf63cd9c8fb88c7ca4581d78:367568b6c5d923145d265b67:fda0623ea42482bcf5870eb9:5e76e7e85904d01816b6db25",
+  "physics": "53c02fef29dd4d4e7335e83d",
+  "skin": "83e70685005344ec445866a8"
+ },
+ "dwarf/female": {
+  "mesh": "fc71667cf983d94170477e04:c4b9816686a0832fb018f650:b010b86bb28e51c9bdf27eb7:009b403602aa048bdd57ddae:a8ed2fc047a06511b65b9857",
+  "physics": "16dc73df58f5c3772519e3bc",
+  "skin": "a893fc90bb561f2f75d4f202"
+ },
+ "ork/male": {
+  "mesh": "d26d62b2f93161e7527a97bf:0e05bf23e2c73ece05f48201:6d4b5f7f36f9b17283acb791:bc2b5b681ad376d847dafeb1:9b31432c8ad8df62f8c210ca",
+  "physics": "685999f189f4790e1523190f",
+  "skin": "76243e261a31099a16128f18"
+ },
+ "ork/female": {
+  "mesh": "50ee0d77f8067f941c7f8dcc:94bc15438b4cfa59a6de73c3:416157f77ebb3feb589cacac:a65a422996a655a278f4aa20:180402df94d3a23e75eb4116",
+  "physics": "7808de5352e7262ecbd7fde7",
+  "skin": "324a3ea66d6c3faf03549963"
+ }
+}

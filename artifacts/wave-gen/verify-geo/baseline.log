@@ -1,0 +1,12 @@
+Q1 verify 'baseline': pipeline=no statScale=no profiles=none
+human/male/none: tris 9104 bnd 0 nm 0 comp 1 wind 0 degen 0 | sym skin p95 4.37 max 18.46 mm, phys p95 0.03 max 3.25 mm | skinDev 3.73e-8 | cov 97.19% over 25.39% caps 48 | det true | 1066 ms ok
+human/female/none: tris 9088 bnd 0 nm 0 comp 1 wind 0 degen 0 | sym skin p95 4.3 max 16.7 mm, phys p95 0.02 max 2.58 mm | skinDev 4.47e-8 | cov 98.7% over 26.83% caps 53 | det true | 974 ms ok
+elf/male/none: tris 9136 bnd 0 nm 0 comp 3 wind 0 degen 0 | sym skin p95 3.56 max 15.86 mm, phys p95 0.05 max 4.28 mm | skinDev 3.46e-8 | cov 98.4% over 33.42% caps 52 | det true | 1003 ms FAIL components=3
+elf/female/none: tris 9108 bnd 0 nm 0 comp 1 wind 0 degen 0 | sym skin p95 3.31 max 20.34 mm, phys p95 0.04 max 4.02 mm | skinDev 3.55e-8 | cov 97.15% over 35.22% caps 49 | det true | 954 ms ok
+dwarf/male/none: tris 8800 bnd 0 nm 0 comp 1 wind 0 degen 0 | sym skin p95 5.93 max 19.44 mm, phys p95 0.02 max 14.25 mm | skinDev 4.17e-8 | cov 99.55% over 21.96% caps 38 | det true | 834 ms ok
+dwarf/female/none: tris 9176 bnd 0 nm 0 comp 1 wind 0 degen 0 | sym skin p95 5.85 max 20.12 mm, phys p95 0.02 max 17.43 mm | skinDev 4.1e-8 | cov 99.96% over 22.31% caps 46 | det true | 873 ms ok
+ork/male/none: tris 9680 bnd 0 nm 0 comp 1 wind 0 degen 0 | sym skin p95 7.85 max 25.05 mm, phys p95 0.02 max 9.59 mm | skinDev 4.1e-8 | cov 99.34% over 22.82% caps 54 | det true | 1150 ms ok
+ork/female/none: tris 9984 bnd 0 nm 0 comp 1 wind 0 degen 0 | sym skin p95 7.25 max 24.18 mm, phys p95 0.03 max 11.2 mm | skinDev 4.28e-8 | cov 99.86% over 21.52% caps 60 | det true | 1274 ms ok
+
+8 bodies, 1 failing rows -> artifacts/wave-gen/verify-geo/baseline.json
+  FAIL elf/male/none: components=3

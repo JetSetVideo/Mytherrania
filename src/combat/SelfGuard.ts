@@ -41,7 +41,11 @@ export interface SelfOptions {
 export function gripExcluded(box: Hitbox, weapon: WeaponSpec, opts: SelfOptions = {}): boolean {
   if (opts.excludeGrip === false) return false;
   const grip = opts.gripSide ?? "R";
-  const hands = opts.handsUsed ?? (weapon.hands === 2 ? 2 : 1);
+  // Wave GEN (lane K): the same two-hand rule as the swing (Profile.profileTerms: hands >= 1.5 -> 2, and
+  // SwingDriver puts the off hand on the haft): a hand-and-a-half longsword counted as one-handed made the
+  // engine's ArmGuard push the blade out of the off hand that holds it, every frame (audit: elbowL bone
+  // pops 0.4-0.8 rad/frame walking, 47 mm "blade in the left hand").
+  const hands = opts.handsUsed ?? (weapon.hands >= 1.5 ? 2 : 1);
   if (box.zone !== "hand" && box.zone !== "foreArm") return false;
   return box.side === grip || hands === 2;
 }

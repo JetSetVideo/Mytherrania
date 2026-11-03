@@ -1,0 +1,467 @@
+{
+ "label": "paint-S-r3",
+ "at": "2026-11-03T13:39:07.501Z",
+ "rows": [
+  {
+   "race": "human",
+   "sex": "male",
+   "kind": "paint",
+   "length": 13662,
+   "want": 13662,
+   "nonFinite": 0,
+   "min": 0.0268,
+   "max": 0.8421,
+   "deterministic": true,
+   "meshUntouched": true,
+   "ms": 65.6,
+   "metrics": {
+    "vertices": 4554,
+    "layersMs": 35.917542000000026,
+    "formMs": 10.374333000000092,
+    "miniatureMs": 19.04420899999991,
+    "ridgeRatio": 1.0522828589324262,
+    "cavityRatio": 0.9158118538253259,
+    "ridgeCavityContrast": 1.1490164213719924,
+    "topRatio": 1.0058133749852598,
+    "bottomRatio": 0.9053974004859116,
+    "weatheredShare": 0.21479713603818615,
+    "metricsMs": 16.22066600000005
+   }
+  },
+  {
+   "race": "human",
+   "sex": "female",
+   "kind": "paint",
+   "length": 13638,
+   "want": 13638,
+   "nonFinite": 0,
+   "min": 0.0268,
+   "max": 0.8437,
+   "deterministic": true,
+   "meshUntouched": true,
+   "ms": 25.8,
+   "metrics": {
+    "vertices": 4546,
+    "layersMs": 10.786458999999923,
+    "formMs": 4.8287910000001375,
+    "miniatureMs": 10.122834000000012,
+    "ridgeRatio": 1.0600467893027299,
+    "cavityRatio": 0.9108987551898494,
+    "ridgeCavityContrast": 1.1637372246510482,
+    "topRatio": 1.0080800002570272,
+    "bottomRatio": 0.9018667300203413,
+    "weatheredShare": 0.21223185759926974,
+    "metricsMs": 11.922166000000061
+   }
+  },
+  {
+   "race": "elf",
+   "sex": "male",
+   "kind": "paint",
+   "length": 13722,
+   "want": 13722,
+   "nonFinite": 0,
+   "min": 0.0288,
+   "max": 0.8911,
+   "deterministic": true,
+   "meshUntouched": true,
+   "ms": 46.4,
+   "metrics": {
+    "vertices": 4574,
+    "layersMs": 12.391083999999864,
+    "formMs": 5.212749999999687,
+    "miniatureMs": 28.780583000000206,
+    "ridgeRatio": 1.0318042470973128,
+    "cavityRatio": 0.895173193064559,
+    "ridgeCavityContrast": 1.1526308596943207,
+    "topRatio": 0.994583621577023,
+    "bottomRatio": 0.9020646335037409,
+    "weatheredShare": 0.25229579507008215,
+    "metricsMs": 19.201208999999835
+   }
+  },
+  {
+   "race": "elf",
+   "sex": "female",
+   "kind": "paint",
+   "length": 13665,
+   "want": 13665,
+   "nonFinite": 0,
+   "min": 0.0282,
+   "max": 0.8947,
+   "deterministic": true,
+   "meshUntouched": true,
+   "ms": 19.8,
+   "metrics": {
+    "vertices": 4555,
+    "layersMs": 7.964333999999781,
+    "formMs": 4.943457999999737,
+    "miniatureMs": 6.845042000000376,
+    "ridgeRatio": 1.0299933459722466,
+    "cavityRatio": 0.9019516904068813,
+    "ridgeCavityContrast": 1.1419606581230577,
+    "topRatio": 0.9984393911956871,
+    "bottomRatio": 0.9033817153326074,
+    "weatheredShare": 0.24488825487398955,
+    "metricsMs": 10.653541000000132
+   }
+  },
+  {
+   "race": "dwarf",
+   "sex": "male",
+   "kind": "paint",
+   "length": 13212,
+   "want": 13212,
+   "nonFinite": 0,
+   "min": 0.028,
+   "max": 0.6542,
+   "deterministic": true,
+   "meshUntouched": true,
+   "ms": 21.6,
+   "metrics": {
+    "vertices": 4404,
+    "layersMs": 12.037792000000081,
+    "formMs": 4.5871250000000146,
+    "miniatureMs": 4.9027500000001965,
+    "ridgeRatio": 1.1078541922998166,
+    "cavityRatio": 0.9231303575704397,
+    "ridgeCavityContrast": 1.2001059040193915,
+    "topRatio": 1.0112417908111095,
+    "bottomRatio": 0.9181581754249186,
+    "weatheredShare": 0.23376007586533903,
+    "metricsMs": 10.924916999999368
+   }
+  },
+  {
+   "race": "dwarf",
+   "sex": "female",
+   "kind": "paint",
+   "length": 13782,
+   "want": 13782,
+   "nonFinite": 0,
+   "min": 0.0276,
+   "max": 0.67,
+   "deterministic": true,
+   "meshUntouched": true,
+   "ms": 29.6,
+   "metrics": {
+    "vertices": 4594,
+    "layersMs": 15.88170799999989,
+    "formMs": 6.648333000000093,
+    "miniatureMs": 7.0558750000000146,
+    "ridgeRatio": 1.0939001636774155,
+    "cavityRatio": 0.9306050889208356,
+    "ridgeCavityContrast": 1.175471934014398,
+    "topRatio": 1.006302118487784,
+    "bottomRatio": 0.9187170946604192,
+    "weatheredShare": 0.23680767553423462,
+    "metricsMs": 12.069333999999799
+   }
+  },
+  {
+   "race": "ork",
+   "sex": "male",
+   "kind": "paint",
+   "length": 14544,
+   "want": 14544,
+   "nonFinite": 0,
+   "min": 0.0253,
+   "max": 0.4367,
+   "deterministic": true,
+   "meshUntouched": true,
+   "ms": 60.9,
+   "metrics": {
+    "vertices": 4848,
+    "layersMs": 45.17116700000042,
+    "formMs": 4.58495799999946,
+    "miniatureMs": 11.085167000000183,
+    "ridgeRatio": 1.1147330850627082,
+    "cavityRatio": 0.9320002374310502,
+    "ridgeCavityContrast": 1.19606523720996,
+    "topRatio": 1.00795966905915,
+    "bottomRatio": 0.918195232883724,
+    "weatheredShare": 0.2590744101633394,
+    "metricsMs": 11.452957999999853
+   }
+  },
+  {
+   "race": "ork",
+   "sex": "female",
+   "kind": "paint",
+   "length": 14958,
+   "want": 14958,
+   "nonFinite": 0,
+   "min": 0.027,
+   "max": 0.445,
+   "deterministic": true,
+   "meshUntouched": true,
+   "ms": 25.4,
+   "metrics": {
+    "vertices": 4986,
+    "layersMs": 10.677292000000307,
+    "formMs": 7.883083999999144,
+    "miniatureMs": 6.806500000000597,
+    "ridgeRatio": 1.1036169805023979,
+    "cavityRatio": 0.9375887943608727,
+    "ridgeCavityContrast": 1.1770799599356365,
+    "topRatio": 1.0044487131844562,
+    "bottomRatio": 0.9240642947646635,
+    "weatheredShare": 0.23791348600508905,
+    "metricsMs": 14.555875000000015
+   }
+  },
+  {
+   "race": "human",
+   "sub": "imperial",
+   "seed": 3,
+   "kind": "hair",
+   "identity": true,
+   "tris": [
+    1094,
+    1092,
+    1090
+   ],
+   "bad": 0,
+   "budget": 1100
+  },
+  {
+   "race": "human",
+   "sub": "imperial",
+   "seed": 29,
+   "kind": "hair",
+   "identity": true,
+   "tris": [
+    1098,
+    1070,
+    1100
+   ],
+   "bad": 0,
+   "budget": 1100
+  },
+  {
+   "race": "human",
+   "sub": "imperial",
+   "seed": 101,
+   "kind": "hair",
+   "identity": true,
+   "tris": [
+    1088,
+    1100,
+    1094
+   ],
+   "bad": 0,
+   "budget": 1100
+  },
+  {
+   "race": "elf",
+   "sub": "high",
+   "seed": 3,
+   "kind": "hair",
+   "identity": true,
+   "tris": [
+    1093,
+    1093,
+    1087
+   ],
+   "bad": 0,
+   "budget": 1100
+  },
+  {
+   "race": "elf",
+   "sub": "high",
+   "seed": 29,
+   "kind": "hair",
+   "identity": true,
+   "tris": [
+    1081,
+    1089,
+    1095
+   ],
+   "bad": 0,
+   "budget": 1100
+  },
+  {
+   "race": "elf",
+   "sub": "high",
+   "seed": 101,
+   "kind": "hair",
+   "identity": true,
+   "tris": [
+    1087,
+    1087,
+    1097
+   ],
+   "bad": 0,
+   "budget": 1100
+  },
+  {
+   "race": "dwarf",
+   "sub": "mountain",
+   "seed": 3,
+   "kind": "hair",
+   "identity": true,
+   "tris": [
+    1092,
+    1090,
+    1096
+   ],
+   "bad": 0,
+   "budget": 1100
+  },
+  {
+   "race": "dwarf",
+   "sub": "mountain",
+   "seed": 29,
+   "kind": "hair",
+   "identity": true,
+   "tris": [
+    1098,
+    1100,
+    1084
+   ],
+   "bad": 0,
+   "budget": 1100
+  },
+  {
+   "race": "dwarf",
+   "sub": "mountain",
+   "seed": 101,
+   "kind": "hair",
+   "identity": true,
+   "tris": [
+    1096,
+    1094,
+    1080
+   ],
+   "bad": 0,
+   "budget": 1100
+  },
+  {
+   "race": "ork",
+   "sub": "ironhide",
+   "seed": 3,
+   "kind": "hair",
+   "identity": true,
+   "tris": [
+    1096,
+    1094,
+    1098
+   ],
+   "bad": 0,
+   "budget": 1100
+  },
+  {
+   "race": "ork",
+   "sub": "ironhide",
+   "seed": 29,
+   "kind": "hair",
+   "identity": true,
+   "tris": [
+    1094,
+    1100,
+    1090
+   ],
+   "bad": 0,
+   "budget": 1100
+  },
+  {
+   "race": "ork",
+   "sub": "ironhide",
+   "seed": 101,
+   "kind": "hair",
+   "identity": true,
+   "tris": [
+    214,
+    214,
+    214
+   ],
+   "bad": 0,
+   "budget": 1100
+  },
+  {
+   "race": "elf",
+   "sub": "wood",
+   "seed": 3,
+   "kind": "hair",
+   "identity": true,
+   "tris": [
+    1079,
+    1079,
+    1089
+   ],
+   "bad": 0,
+   "budget": 1100
+  },
+  {
+   "race": "elf",
+   "sub": "wood",
+   "seed": 29,
+   "kind": "hair",
+   "identity": true,
+   "tris": [
+    1095,
+    1093,
+    1081
+   ],
+   "bad": 0,
+   "budget": 1100
+  },
+  {
+   "race": "elf",
+   "sub": "wood",
+   "seed": 101,
+   "kind": "hair",
+   "identity": true,
+   "tris": [
+    1097,
+    1091,
+    1071
+   ],
+   "bad": 0,
+   "budget": 1100
+  },
+  {
+   "race": "dwarf",
+   "sub": "deep",
+   "seed": 3,
+   "kind": "hair",
+   "identity": true,
+   "tris": [
+    1092,
+    1096,
+    1082
+   ],
+   "bad": 0,
+   "budget": 1100
+  },
+  {
+   "race": "dwarf",
+   "sub": "deep",
+   "seed": 29,
+   "kind": "hair",
+   "identity": true,
+   "tris": [
+    1060,
+    1066,
+    1080
+   ],
+   "bad": 0,
+   "budget": 1100
+  },
+  {
+   "race": "dwarf",
+   "sub": "deep",
+   "seed": 101,
+   "kind": "hair",
+   "identity": true,
+   "tris": [
+    1098,
+    1100,
+    1078
+   ],
+   "bad": 0,
+   "budget": 1100
+  }
+ ],
+ "fails": 0
+}

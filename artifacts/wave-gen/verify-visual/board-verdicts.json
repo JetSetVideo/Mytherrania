@@ -1,0 +1,86 @@
+[
+ {
+  "id": "Z-31",
+  "lane": "S",
+  "ready": "Z-23 r1",
+  "verdict": "PASS",
+  "evidence": "artifacts/wave-gen/verify-visual/S-r1-lane/*-ref-final{,.diff}.png, S-r1/*-paint.png"
+ },
+ {
+  "id": "Z-35",
+  "lane": "S",
+  "ready": "Z-30 r2",
+  "verdict": "FAIL",
+  "evidence": "S-r2/{elf-male,elf-female,human-female}-intmax-final.png head; crown luma table"
+ },
+ {
+  "id": "Z-45",
+  "lane": "P",
+  "ready": "Z-26 r1",
+  "verdict": "PASS",
+  "evidence": "P-r1/* (216 sheets), baseline-head/*-skin,-hitboxes"
+ },
+ {
+  "id": "Z-51",
+  "lane": "B",
+  "ready": "Z-44 r1",
+  "verdict": "PASS",
+  "evidence": "B-r1/* (216 sheets); ork posture measured on +X tiles"
+ },
+ {
+  "id": "Z-52",
+  "lane": "S",
+  "ready": "Z-48 r3",
+  "verdict": "PASS",
+  "evidence": "S-r3/*-int{min,max}-final.png crown luma table"
+ },
+ {
+  "id": "Z-56",
+  "lane": "U",
+  "ready": "Z-32 r1",
+  "verdict": "PASS",
+  "evidence": "U-r1-ui/ui.json, creator-{390,1280}-<stage>.png, preview-*.png"
+ },
+ {
+  "id": "Z-58",
+  "lane": "K",
+  "ready": "Z-33 r1",
+  "verdict": "PASS (static)",
+  "evidence": "K-r1-lane/*-final, B-r1/*-skeleton*"
+ },
+ {
+  "id": "Z-59",
+  "lane": "B",
+  "ready": "Z-55 r2",
+  "verdict": "PASS",
+  "evidence": "B-r2/* (216 sheets), ork hitboxes side view"
+ },
+ {
+  "id": "Z-66",
+  "lane": "P",
+  "ready": "Z-61 r2",
+  "verdict": "PASS",
+  "evidence": "P-r2/* (216 sheets), pelvis cage containment numbers"
+ },
+ {
+  "id": "Z-70",
+  "lane": "P",
+  "ready": "Z-65 r3",
+  "verdict": "PASS",
+  "evidence": "P-r3/* (144 sheets)"
+ },
+ {
+  "id": "Z-71",
+  "lane": "K",
+  "ready": "Z-67 r2",
+  "verdict": "PASS (static)",
+  "evidence": "K-r2-lane/*-final"
+ },
+ {
+  "id": "Z-76",
+  "lane": "B",
+  "ready": "Z-75 r3",
+  "verdict": "PASS",
+  "evidence": "B-r3/* (216 sheets)"
+ }
+]

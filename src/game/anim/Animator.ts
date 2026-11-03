@@ -464,6 +464,13 @@ interface FallState {
   snapRoll: Float64Array;
   /** Heading turn (rad) the get-up makes on hands and knees to face the rival (latched at rise start). */
   turnTo: number;
+  /**
+   * Wave GEN (lane K): the body position (after this frame's bodyShift) the latches are relative to, so the
+   * next frame can take the body's OWN motion (M's fall velocity) out of them: latched contacts stay put in
+   * the WORLD. NaN = none yet (entering).
+   */
+  bodyX: number;
+  bodyZ: number;
 }
 
 /** The per-fighter animator. */
@@ -601,6 +608,7 @@ export class Animator {
     this.#fs = {
       mode: false, phase: "stand", pose: "back", seq, keys: seq.falling, heading: 0, yaw0: 0, cx: 0, cz: 0,
       latchX: new Float64Array(CONTACT_COUNT), latchZ: new Float64Array(CONTACT_COUNT), latched: new Uint8Array(CONTACT_COUNT),
+      bodyX: Number.NaN, bodyZ: Number.NaN,
       off: new Float64Array(FV), qOff: Float64Array.of(0, 0, 0, 1), offC: new Float64Array(3), offT: Infinity,
       last: new Float64Array(FV), lastQ: Float64Array.of(0, 0, 0, 1), lastYaw: 0, lastC: new Float64Array(3),
       handoff: false, exitT: -1, contact: new Float64Array(CONTACT_COUNT), clearance: 0, snapRoll: new Float64Array(4),
@@ -639,7 +647,7 @@ export class Animator {
     this.#lastX = x; this.#lastZ = z; this.#hasLast = true;
     this.#primed = false;
     this.#heldYaw = yaw; this.#heldInit = true; this.#refacing = false; this.#lastYawEff = yaw;
-    this.#fs.mode = false; this.#fs.exitT = -1; this.#fs.phase = "stand";
+    this.#fs.mode = false; this.#fs.exitT = -1; this.#fs.phase = "stand"; this.#fs.bodyX = this.#fs.bodyZ = Number.NaN;
   }
 
   /** Wave V lane P: the idle sway period of this fighter, s (seeded by the style's breath phase). */
@@ -1134,6 +1142,13 @@ export class Animator {
       fs.latched.fill(0);
       switched = true;
     }
+    // Wave GEN (lane K): the latches are body-relative, and the body travels on its own (M's fall pushes it):
+    // move them back by that travel so a latched foot / knee / hand stays where it touched down (audit: a
+    // loaded foot slid 70-114 mm through the buckle of every fall at 0.3 m/s body travel).
+    if (Number.isFinite(fs.bodyX)) {
+      const dx = inp.x - fs.bodyX, dz = inp.z - fs.bodyZ;
+      for (let c = 0; c < CONTACT_COUNT; c++) { fs.latchX[c] -= dx; fs.latchZ[c] -= dz; }
+    }
     if (switched && fin.phase === "rising") {
       // On hands and knees the body turns to face the rival (the roll-over may have turned it away).
       fs.turnTo = wrapAngle(inp.yaw - (fs.heading + fs.seq.yawAdd));
@@ -1273,6 +1288,7 @@ export class Animator {
     }
     fs.last.set(A); fs.lastQ.set(qF); fs.lastYaw = yawF; fs.lastC[0] = cx; fs.lastC[1] = cz; fs.lastC[2] = ry;
     fs.clearance = 0;
+    fs.bodyX = bx; fs.bodyZ = bz;
   }
 
   /** Rig-local position of contact c (feet: the sole between heel and ball). */
@@ -1293,7 +1309,7 @@ export class Animator {
     const ncx = out.rootOffsetLateral * Math.cos(yawNorm), ncz = -out.rootOffsetLateral * Math.sin(yawNorm);
     const qN = qmul(qaxis(1, yawNorm, this.#qt), qaxis(2, out.rootRoll, this.#rawQ), new Float64Array(4));
     if (fs.mode) {
-      fs.mode = false; fs.phase = "stand";
+      fs.mode = false; fs.phase = "stand"; fs.bodyX = fs.bodyZ = Number.NaN;
       for (let j = 0; j < FV; j++) fs.off[j] = fs.last[j] - nA[j];
       qmul(fs.lastQ, Float64Array.of(-qN[0], -qN[1], -qN[2], qN[3]), fs.qOff);
       fs.offC[0] = fs.lastC[0] - ncx; fs.offC[1] = fs.lastC[1] - ncz; fs.offC[2] = fs.lastC[2] - (baseRootY + out.rootOffsetY);

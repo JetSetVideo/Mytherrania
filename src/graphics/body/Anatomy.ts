@@ -27,7 +27,9 @@ import { BONE_IDS, compileSdf, nodeBounds, type BodyField } from "./Sdf.ts";
 import { applyFieldBrushes, brushReach } from "./Brushes.ts";
 import { CELL_MAX, CELL_MIN, proportionsFor, TRIANGLE_TARGET, type BodyProportions } from "./Proportions.ts";
 import { countSignChanges } from "./Polygonize.ts";
-import { type PhysiqueOptions, type PhysiqueRecord, sculptSkin } from "./Physique.ts";
+import { inflateTree, type PhysiqueOptions, type PhysiqueRecord, sculptSkin } from "./Physique.ts";
+import { ERECT_POSTURE } from "../../game/SpineCurve.ts";
+import { type GenStats, type Morph, statMorph } from "./StatMorph.ts";
 import {
   armNode, referenceForms, type ArmAnchors, blendWidth, type FaceAnchors, headNode, legNode, type LegAnchors, neckNode, op, prim, torsoNode,
 } from "./AnatomyParts.ts";
@@ -53,6 +55,8 @@ export const ARM_ABDUCTION_RANGE: [number, number] = [0.1, 0.9];
 export const LEG_ABDUCTION_RANGE: [number, number] = [0.0, 0.35];
 /** Bisection steps for each abduction solve (window / 2^steps ≈ 0.003 rad). */
 export const ABDUCTION_STEPS = 8;
+/** Wave GEN lane B: the morphed skin's cell never exceeds this multiple of the body's cell. */
+export const SKIN_CELL_MAX_GAIN = 1.12;
 /** Padding of the polygonising box beyond the solid, in cells (≥ 1 keeps the mesh closed). */
 export const BOUNDS_PAD_CELLS = 2;
 
@@ -84,6 +88,29 @@ export interface DetailedAnatomy extends AnatomyPlan {
   physique: PhysiqueRecord | null;
   /** Wave X lane B: the rendered skin's polygonising box (= bounds, grown by whole cells where the sculpt stands proud). */
   skinBounds: Bounds;
+  /**
+   * Wave GEN lane B: the rendered skin after the INFLATE stage (stat-morphed volumes and additions,
+   * before any cutter: deltoid valleys, linea alba, navel, lumbar hollow). `skinRoot` is the CARVED tree.
+   */
+  skinInflated: SdfNode;
+  /** Wave GEN lane B: the stat + race morph the skin was sculpted with (StatMorph.statMorph). */
+  morph: Morph;
+  /**
+   * Wave GEN lane B: the RENDERED skin's own grid cell (≥ cell) when the morph adds surface: the triangle
+   * count scales as 1/cell², so cell·√(E_morph / E_unmorphed) (sign-change counts at the coarse cell)
+   * keeps the skin at the unmorphed body's triangle count. Absent = cell. `skinBounds` is then built on
+   * this cell with the same grid-phase rules (soles mid-edge, an odd mirror-symmetric x count).
+   */
+  skinCell?: number;
+}
+
+/** Wave GEN lane B: the generator stats of a spec (BodySpec.stats, optional; absent = the reference). */
+export function specStats(spec: BodySpec): GenStats | null {
+  return spec.stats ?? null;
+}
+/** Wave GEN lane B: the morph a spec builds with. */
+export function morphForSpec(spec: BodySpec): Morph {
+  return statMorph(specStats(spec), spec.race, spec.subrace, spec.sex ?? null);
 }
 
 /** What the final symmetry step found and did. */
@@ -273,7 +300,10 @@ function buildPlan(P: BodyProportions, seed: number, asym: BilateralAsymmetry | 
   const body = sym.mirrored;
 
   // Wave X lane B: the physique sculpt rewrites ONLY the rendered skin (Physique.ts has the why).
-  const sculpt = phys ? sculptSkin(sym.node, P, bones, phys) : null;
+  // Wave GEN lane B: it also carries the stat + race morph (inflate, posture, carve).
+  // The effective morph: a caller's override (QA: the erect "before" view) or the spec's own.
+  const morph = phys?.morph ?? morphForSpec(P.spec);
+  const sculpt = phys ? sculptSkin(sym.node, P, bones, { ...phys, morph }) : null;
   // The ground: the half-space y ≥ 0 as a box whose bottom face is the plane y = 0.
   const raw = nodeBounds(body);
   const span = Math.max(raw.max[0] - raw.min[0], raw.max[2] - raw.min[2], P.y.crown) + 1;
@@ -281,6 +311,7 @@ function buildPlan(P: BodyProportions, seed: number, asym: BilateralAsymmetry | 
   const root: SdfNode = op("intersect", 0, body, ground);
   const skinRoot: SdfNode = sculpt ? op("intersect", 0, sculpt.node, ground)
     : sym.node === sym.mirrored ? root : op("intersect", 0, sym.node, ground);
+  const skinInflated: SdfNode = sculpt ? (sculpt.inflated === sculpt.node ? skinRoot : op("intersect", 0, sculpt.inflated, ground)) : skinRoot;
 
   const strokes = strokesFor(P, torso, head.face, arms.map((a) => a.anchors), legs.map((l) => l.anchors));
   const pad = BOUNDS_PAD_CELLS * c + brushReach(strokes);
@@ -308,12 +339,88 @@ function buildPlan(P: BodyProportions, seed: number, asym: BilateralAsymmetry | 
     skinBounds.min[0] = -hx; skinBounds.max[0] = hx - 1e-9;
   }
 
+  // Wave GEN lane B: the skin's own cell (see DetailedAnatomy.skinCell) when the morph adds surface.
+  let skinCell: number | undefined;
+  // Only for the STAT terms: the race posture adds ~0.1 % surface (measured skin-cell ratio 1.0005-1.0015)
+  // and a no-stats body keeps the very grid every pre-wave pin (ears, mirror, slimming) was measured on.
+  if (sculpt && phys && !morph.statIdentity) {
+    const plain = sculptSkin(sym.node, P, bones, { ...phys, morph: undefined });
+    const coarse = COARSE_FACTOR * c;
+    const edgesOf = (n: SdfNode, b: Bounds) => countSignChanges(applyFieldBrushes(compileSdf(op("intersect", 0, n, ground)), strokes), b, coarse);
+    // One box for both counts (the union), so the ratio is the surfaces' and not the boxes'.
+    const box = growBounds(skinBounds, nodeBounds(plain.node), c, pad);
+    const ratio = edgesOf(sculpt.node, box) / Math.max(1, edgesOf(plain.node, box));
+    if (ratio > 1) {
+      // Capped at SKIN_CELL_MAX_GAIN × the body's cell (an ork already at CELL_MAX may coarsen its skin a little).
+      const sc = c * Math.min(SKIN_CELL_MAX_GAIN, Math.sqrt(ratio));
+      const sb = nodeBounds(sculpt.node), spad = BOUNDS_PAD_CELLS * sc + brushReach(strokes);
+      const half = Math.ceil(Math.max(-sb.min[0], sb.max[0], -raw.min[0], raw.max[0]) / sc + spad / sc);
+      skinCell = sc;
+      skinBounds.min = [-(half + 0.5) * sc, -(BOUNDS_PAD_CELLS + 0.5) * sc, Math.min(raw.min[2], sb.min[2]) - spad];
+      skinBounds.max = [(half + 0.5) * sc - 1e-9, Math.max(bounds.max[1], sb.max[1] + spad), Math.max(raw.max[2], sb.max[2]) + spad];
+    }
+  }
+
+  // Wave GEN lane B (for lane P's Hitboxes): the PHYSICS tree with the morph's stat terms (muscle girth,
+  // bone density, breadth, maturity, brow) AND the race posture (the ork's head forward, its trapezius),
+  // no physique sculpt, no asymmetry — so the combat capsules follow the body the player sees (Q1 Z-38:
+  // a posture-free hit tree left the ork's face 35 mm in front of its head capsule). Absent when the
+  // morph is the identity (human/elf at the reference): capsules exactly as today.
+  const postureOn = morph.posture.neckForwardPerHead !== 0 || morph.posture.trapezius !== 1;
+  const hitMorph: Morph = { ...morph, posture: { ...ERECT_POSTURE, neckForwardPerHead: morph.posture.neckForwardPerHead, trapezius: morph.posture.trapezius } };
+  const hitRoot: SdfNode | undefined = morph.statIdentity && !postureOn ? undefined : op("intersect", 0, inflateTree(body, hitMorph, P), ground);
+  let hitBounds: Bounds | undefined;
+  if (hitRoot) {
+    hitBounds = { min: [...bounds.min], max: [...bounds.max] };
+    const hb = nodeBounds(inflateTree(body, hitMorph, P));
+    for (let k = 0; k < 3; k++) {
+      const lo = hb.min[k] - BOUNDS_PAD_CELLS * c, hi = hb.max[k] + BOUNDS_PAD_CELLS * c;
+      if (k !== 1 && lo < hitBounds.min[k]) hitBounds.min[k] -= Math.ceil((hitBounds.min[k] - lo) / c) * c;
+      if (hi > hitBounds.max[k]) hitBounds.max[k] += Math.ceil((hi - hitBounds.max[k]) / c) * c;
+    }
+    const hx = Math.max(-hitBounds.min[0], hitBounds.max[0] + 1e-9);
+    hitBounds.min[0] = -hx; hitBounds.max[0] = hx - 1e-9;
+  }
   return {
     root, strokes, bones, bounds, cell: c,
-    proportions: P, armAbduction, legAbduction, armDisplayAbduction, face: head.face,
+    proportions: P, armAbduction, legAbduction, armDisplayAbduction, face: sculpt ? morphedFace(head.face, morph, P) : head.face,
     arms: [arms[0].anchors, arms[1].anchors], legs: [legs[0].anchors, legs[1].anchors],
-    symmetry: sym.record, skinRoot, physique: sculpt?.record ?? null, skinBounds,
+    symmetry: sym.record, skinRoot, physique: sculpt?.record ?? null, skinBounds, skinInflated, morph,
+    ...(hitRoot ? { hitRoot, hitBounds } : {}),
+    ...(skinCell !== undefined ? { skinCell } : {}),
   };
+}
+
+/** A copy of `bounds` grown by whole cells of `c` (y only upward, x kept mirror-symmetric) to hold `nb` + pad. */
+function growBounds(bounds: Bounds, nb: Bounds, c: number, pad: number): Bounds {
+  const out: Bounds = { min: [...bounds.min], max: [...bounds.max] };
+  for (let k = 0; k < 3; k++) {
+    const lo = nb.min[k] - pad, hi = nb.max[k] + pad;
+    if (k !== 1 && lo < out.min[k]) out.min[k] -= Math.ceil((out.min[k] - lo) / c) * c;
+    if (hi > out.max[k]) out.max[k] += Math.ceil((hi - out.max[k]) / c) * c;
+  }
+  const hx = Math.max(-out.min[0], out.max[0] + 1e-9);
+  out.min[0] = -hx; out.max[0] = hx - 1e-9;
+  return out;
+}
+
+/**
+ * Wave GEN lane B: the face anchors follow the rendered head (FaceParts, hair): the ork's forward neck
+ * carries the whole head forward; the brow anchors sit back with the recessed brow ridge. Identity
+ * morph = the very same object. Bones and the physics tree are not moved.
+ */
+function morphedFace(face: FaceAnchors, M: Morph, P: BodyProportions): FaceAnchors {
+  const off = M.posture.neckForwardPerHead * P.head, brow = -M.browRecessMm / 1000;
+  if (off === 0 && brow === 0) return face;
+  const mv = (v: Vec3, dz = 0): Vec3 => [v[0], v[1], v[2] + off + dz];
+  const out = {} as Record<string, unknown>;
+  for (const [k, v] of Object.entries(face)) {
+    const isVec = (x: unknown): x is Vec3 => Array.isArray(x) && x.length === 3 && typeof x[0] === "number";
+    if (k === "skullRadii" || !Array.isArray(v)) out[k] = v;
+    else if (isVec(v)) out[k] = mv(v);
+    else out[k] = (v as unknown[]).map((e) => isVec(e) ? mv(e, k === "brow" ? brow : 0) : e);
+  }
+  return out as unknown as FaceAnchors;
 }
 
 // ---------------------------------------------------------------------------------------------

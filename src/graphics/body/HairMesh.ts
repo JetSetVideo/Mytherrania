@@ -28,6 +28,7 @@ import {
 } from "./HairGrowth.ts";
 import { clumpIsGrey, clumpTone, greyRgb, HAIR_SHADE, type Rgb, strandColour, subStrandGrey } from "./HairShade.ts";
 import { hexToLinear } from "../paint/Blend.ts";
+import { HAIR_INTELLECT, intellectDensity, intellectGrey, intellectLengthMul, intellectSilver, intellectUnit, silverShift } from "./HairIntellect.ts";
 
 /** Triangles the hair may use (the rig's 12 k budget minus the body and face; see the header). */
 export const HAIR_TRI_BUDGET = 1100;
@@ -76,6 +77,11 @@ export interface HairInput {
   baseHex: string;
   skinHex: string;
   budget?: number;
+  /**
+   * Wave GEN lane S: the generator's 0..1000 intelligence (BodySpec.stats). Longer, denser, silvering hair
+   * above the reference (HairIntellect.ts); absent = the reference = byte-identical to wave X.
+   */
+  intelligence?: number | null;
 }
 
 /** One drawable group of vertices. */
@@ -109,6 +115,14 @@ export interface HairData {
     grey: number;
     greyClumps: number;
     recession: number;
+    /** Wave GEN: the age-only grey share (grey = this after the intelligence term) and the pigment drift to silver. */
+    ageGrey: number;
+    silver: number;
+    /** The shader's sub-strand grey rate (HairShade.subStrandGrey(grey) without the stat). */
+    greySub: number;
+    /** The cut length after the intelligence multiplier (m) and the follicle density used. */
+    lengthM: number;
+    density: number;
   };
 }
 
@@ -307,14 +321,37 @@ function trisOf(bufs: Iterable<HairBuffer>): number {
 export function buildHairData(input: HairInput): HairData {
   const f = input.frame, h = f.h;
   const budget = input.budget ?? HAIR_TRI_BUDGET;
-  const plan = hairPlanFor(input.spec, f, input.lengthM, input.seed, input.ancestryIds);
+  // Wave GEN lane S: intelligence -> length tier, follicle density, silver (identity at the reference).
+  const I = input.intelligence;
+  const lengthMul = intellectLengthMul(I);
+  const specI = intellectUnit(I) === 0 ? input.spec : { ...input.spec, density: intellectDensity(input.spec.density, I) };
+  const plan = hairPlanFor(specI, f, lengthMul === 1 ? input.lengthM : input.lengthM * lengthMul, input.seed, input.ancestryIds);
   const recession = recessionFor(input.sex, input.race, input.lifeFraction, ((input.seed >>> 3) % 1000) / 1000);
   const field = placeFollicles(f, { density: plan.density, seed: input.seed, recession });
   const base = hexToLinear(input.baseHex) as Rgb;
   const skin = hexToLinear(input.skinHex) as Rgb;
-  const g = Math.max(0, Math.min(1, input.grey));
+  const gAge = Math.max(0, Math.min(1, input.grey));
+  const g = intellectGrey(gAge, I);
+  const silver = intellectSilver(I);
+  const silverC = hexToLinear(HAIR_INTELLECT.silverWhite);
   const greyC = greyRgb(input.race, g);
-  const meanGrey = lerpRgb(base, greyC, g);
+  const greyAgeC = greyRgb(input.race, gAge);
+  // Never darker than the age alone: a clump grey by age keeps its (lighter-or-equal) grey; a clump the
+  // intelligence turned grey takes the per-channel max of the grey and its silvered pigment; the rest
+  // silvers its pigment (per-channel max). At silver 0 and g = gAge every colour is the wave-X colour.
+  const maxRgb = (a: Rgb, b: Rgb): Rgb => [Math.max(a[0], b[0]), Math.max(a[1], b[1]), Math.max(a[2], b[2])];
+  const strandAt = (tone: { k: number; warm: number }, isGrey: boolean, wasGrey: boolean, t: number): Rgb => {
+    if (silver === 0 && g === gAge) return strandColour(base, tone, isGrey ? greyC : null, t);
+    // The pigment silvers toward the TIPS (s·t^SILVER_TIP_POW): the roots on the crown keep their colour,
+    // so the silver reads through the length of the hair, not as a lit silver cap (Q2's r2 finding).
+    const pig = silverShift(strandColour(base, tone, null, t), silverC, silver * Math.pow(Math.max(0, Math.min(1, t)), HAIR_INTELLECT.silverTipPow)) as Rgb;
+    if (!isGrey) return pig;
+    const gc = strandColour(base, tone, greyC, t);
+    return wasGrey ? maxRgb(gc, strandColour(base, tone, greyAgeC, t)) : maxRgb(gc, pig);
+  };
+  // The underlayer (the scalp tint under the cards, i.e. the crown) keeps the AGE colour: the intelligence
+  // silver lives in the strands (grey share + tip silvering), so it never reads as a silver cap.
+  const meanGrey = lerpRgb(base, greyAgeC, gAge);
   const tieHex = input.race === "dwarf" ? "#b08d57" : input.race === "elf" ? "#7a8a6a" : "#4a3424";
   const tieC = hexToLinear(tieHex) as Rgb;
 
@@ -329,9 +366,13 @@ export function buildHairData(input: HairInput): HairData {
     let greyClumps = 0;
     for (const s of growth.strands) {
       const tone = clumpTone(s.clump, input.seed);
-      const isGrey = clumpIsGrey(s.clump, input.seed, g);
+      // Whole grey clumps follow the AGE share only; the intelligence's extra share is salt-and-pepper (the
+      // shader's sub-strand rate, greySub) plus tip silvering, spread evenly over crown, locks and braids so it
+      // never reads as a silver cap or as silver-only locks (Q2 r2).
+      const isGrey = clumpIsGrey(s.clump, input.seed, gAge);
+      const wasGrey = isGrey;
       if (isGrey) greyClumps++;
-      const colourAt = (t: number) => strandColour(base, tone, isGrey ? greyC : null, t);
+      const colourAt = (t: number) => strandAt(tone, isGrey, wasGrey, t);
       const width = Math.max(HAIR_MESH.widthMin * h, Math.min(HAIR_MESH.widthMax * h, HAIR_MESH.widthPerRadius * s.radius * (0.8 + 0.4 * plan.density)));
       // Braid strands draw their scalp part only (the braid bundles are drawn below).
       const drawn = s.kind === "braid" ? s.points.slice(0, s.spine.length) : s.points;
@@ -368,9 +409,9 @@ export function buildHairData(input: HairInput): HairData {
       const nseg = Math.max(8, Math.min(HAIR_MESH.braidSegMax, Math.round(arcLength(br.spine) / h * HAIR_MESH.braidSegPerH)));
       for (let k = 0; k < 3; k++) {
         const tone = clumpTone(1000 + b * 3 + k, input.seed);
-        const isGrey = clumpIsGrey(1000 + b * 3 + k, input.seed, g);
+        const isGrey = clumpIsGrey(1000 + b * 3 + k, input.seed, gAge);
         const rs = resample(br.strands[k], br.strands[k].map(() => 1), nseg);
-        pushCard(f, buf, rs.p, rs.w, 0.8 * br.width, (t) => strandColour(base, tone, isGrey ? greyC : null, 0.35 + 0.65 * t), 500 + b * 3 + k, 0, 1);
+        pushCard(f, buf, rs.p, rs.w, 0.8 * br.width, (t) => strandAt(tone, isGrey, isGrey, 0.35 + 0.65 * t), 500 + b * 3 + k, 0, 1);
       }
       pushRing(f, buf, br.tie, sub(br.spine[Math.min(br.spine.length - 1, br.tieIndex + 1)], br.spine[Math.max(0, br.tieIndex - 1)]), br.tieRadius, tieC);
       braidT += buf.idx.length / 3 - before;
@@ -411,6 +452,9 @@ export function buildHairData(input: HairInput): HairData {
       follicles: field.follicles.length, clumps: out.growth.strands.length, triangles: out.total,
       cardTriangles: out.total - out.underT - out.braidT - out.tieT, underTriangles: out.underT, braidTriangles: out.braidT, tieTriangles: out.tieT,
       minClearance: minC === Infinity ? 0 : minC, grey: g, greyClumps: out.greyClumps, recession: field.recession,
+      ageGrey: gAge, silver, lengthM: plan.lengthM, density: plan.density,
+      // The shader's sub-strand grey rate so the expected grey share is g with whole clumps at 0.8·gAge.
+      greySub: g === gAge ? subStrandGrey(gAge) : Math.max(0, Math.min(1, (g - HAIR_SHADE.clumpGreyShare * gAge) / Math.max(1e-9, 1 - HAIR_SHADE.clumpGreyShare * gAge))),
     },
   };
 }
@@ -551,7 +595,7 @@ export interface HairMeshes {
 /** Build the hair meshes under `head` (the head bone) from pure hair data. */
 export function buildHairMeshes(head: THREE.Object3D, input: HairInput): HairMeshes {
   const data = buildHairData(input);
-  const mat = hairMaterial(subStrandGrey(data.stats.grey), greyRgb(input.race, data.stats.grey));
+  const mat = hairMaterial(data.stats.greySub, greyRgb(input.race, data.stats.grey));
   const statics: THREE.Mesh[] = [], hanging: THREE.Mesh[] = [];
   for (const [key, buf] of data.groups) {
     const mesh = new THREE.Mesh(hairGeometry(buf), mat);

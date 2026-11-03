@@ -1,0 +1,908 @@
+{
+ "generated": "2026-11-03T13:59:57.465Z",
+ "stageIds": [
+  "skeleton",
+  "cage",
+  "inflate",
+  "carve",
+  "skin",
+  "hitboxes",
+  "paint"
+ ],
+ "stageSamples": [
+  {
+   "name": "human male, no stats",
+   "stats": null,
+   "stages": [
+    {
+     "id": "skeleton",
+     "ms": 0.5,
+     "metrics": {
+      "bones": 17,
+      "disks": 24,
+      "armAbductionDeg": 18.442,
+      "legAbductionDeg": 3.995,
+      "headJointY": 1.563
+     },
+     "warnings": []
+    },
+    {
+     "id": "cage",
+     "ms": 0.9,
+     "metrics": {
+      "parts": 16,
+      "meanWidthMm": 233.856
+     },
+     "warnings": []
+    },
+    {
+     "id": "inflate",
+     "ms": 310,
+     "metrics": {
+      "primitives": 105,
+      "clampedPrimitives": 0,
+      "cageViolationBeforeMm": 0,
+      "cageViolationMm": 0,
+      "cageFill": 0.498,
+      "cageFillMin": 0.402,
+      "solveMs": 308.83,
+      "cell": 0.025
+     },
+     "warnings": []
+    },
+    {
+     "id": "carve",
+     "ms": 0.2,
+     "metrics": {
+      "strokes": 17,
+      "strokeReachMm": 25.187,
+      "physiqueParts": 7,
+      "skinDiffersFromPhysics": 1
+     },
+     "warnings": []
+    },
+    {
+     "id": "skin",
+     "ms": 266.2,
+     "metrics": {
+      "vertices": 4192,
+      "triangles": 8380,
+      "boundaryEdges": 0,
+      "nonManifoldEdges": 0,
+      "components": 1,
+      "polygonizeMs": 241.981,
+      "sampleMs": 162.006,
+      "meshBrushMs": 5.68,
+      "weightsMs": 15.278,
+      "weightSumMaxErr": 0,
+      "corners": 98592,
+      "cell": 0.025
+     },
+     "warnings": []
+    },
+    {
+     "id": "hitboxes",
+     "ms": 313.5,
+     "metrics": {
+      "capsules": 56,
+      "fitMs": 287.472,
+      "coveragePct": 97.758,
+      "coverageStrictPct": 90.506,
+      "uncoveredMaxMm": 50.166,
+      "overshootP95Mm": 15.723,
+      "overshootMaxMm": 53.356,
+      "fromStatTree": 0
+     },
+     "warnings": []
+    },
+    {
+     "id": "paint",
+     "ms": 50.4,
+     "metrics": {
+      "vertices": 4192,
+      "layersMs": 24.022,
+      "formMs": 8.903,
+      "miniatureMs": 17.253,
+      "ridgeRatio": 1.079,
+      "cavityRatio": 0.909,
+      "ridgeCavityContrast": 1.187,
+      "topRatio": 1.014,
+      "bottomRatio": 0.915,
+      "weatheredShare": 0.211,
+      "metricsMs": 12.507
+     },
+     "warnings": []
+    }
+   ]
+  },
+  {
+   "name": "ork male, max stats",
+   "stats": {
+    "strength": 1000,
+    "agility": 1000,
+    "intelligence": 1000,
+    "level": 1000
+   },
+   "stages": [
+    {
+     "id": "skeleton",
+     "ms": 0.1,
+     "metrics": {
+      "bones": 17,
+      "disks": 24,
+      "armAbductionDeg": 51.566,
+      "legAbductionDeg": 8.147,
+      "headJointY": 1.548
+     },
+     "warnings": []
+    },
+    {
+     "id": "cage",
+     "ms": 0.2,
+     "metrics": {
+      "parts": 16,
+      "meanWidthMm": 471.837
+     },
+     "warnings": []
+    },
+    {
+     "id": "inflate",
+     "ms": 1077.8,
+     "metrics": {
+      "primitives": 107,
+      "clampedPrimitives": 0,
+      "cageViolationBeforeMm": 0,
+      "cageViolationMm": 0,
+      "cageFill": 0.4,
+      "cageFillMin": 0.307,
+      "solveMs": 1076.93,
+      "cell": 0.032
+     },
+     "warnings": []
+    },
+    {
+     "id": "carve",
+     "ms": 0.1,
+     "metrics": {
+      "strokes": 18,
+      "strokeReachMm": 32.058,
+      "physiqueParts": 7,
+      "skinDiffersFromPhysics": 1
+     },
+     "warnings": []
+    },
+    {
+     "id": "skin",
+     "ms": 316.5,
+     "metrics": {
+      "vertices": 4482,
+      "triangles": 8960,
+      "boundaryEdges": 0,
+      "nonManifoldEdges": 0,
+      "components": 1,
+      "polygonizeMs": 296.224,
+      "sampleMs": 204.456,
+      "meshBrushMs": 3.04,
+      "weightsMs": 14.314,
+      "weightSumMaxErr": 0,
+      "corners": 108108,
+      "cell": 0.033
+     },
+     "warnings": []
+    },
+    {
+     "id": "hitboxes",
+     "ms": 362.1,
+     "metrics": {
+      "capsules": 49,
+      "fitMs": 334.09,
+      "coveragePct": 99.108,
+      "coverageStrictPct": 92.838,
+      "uncoveredMaxMm": 31.785,
+      "overshootP95Mm": 23.477,
+      "overshootMaxMm": 85.085,
+      "fromStatTree": 1
+     },
+     "warnings": []
+    },
+    {
+     "id": "paint",
+     "ms": 46.2,
+     "metrics": {
+      "vertices": 4482,
+      "layersMs": 18.433,
+      "formMs": 7.323,
+      "miniatureMs": 20.438,
+      "ridgeRatio": 1.1,
+      "cavityRatio": 0.907,
+      "ridgeCavityContrast": 1.213,
+      "topRatio": 1.004,
+      "bottomRatio": 0.895,
+      "weatheredShare": 0.246,
+      "metricsMs": 17.84
+     },
+     "warnings": []
+    }
+   ]
+  },
+  {
+   "name": "elf female, min stats",
+   "stats": {
+    "strength": 0,
+    "agility": 0,
+    "intelligence": 0,
+    "level": 0
+   },
+   "stages": [
+    {
+     "id": "skeleton",
+     "ms": 0.1,
+     "metrics": {
+      "bones": 17,
+      "disks": 24,
+      "armAbductionDeg": 14.682,
+      "legAbductionDeg": 3.995,
+      "headJointY": 1.567
+     },
+     "warnings": []
+    },
+    {
+     "id": "cage",
+     "ms": 0.1,
+     "metrics": {
+      "parts": 16,
+      "meanWidthMm": 195.23
+     },
+     "warnings": []
+    },
+    {
+     "id": "inflate",
+     "ms": 772.9,
+     "metrics": {
+      "primitives": 108,
+      "clampedPrimitives": 0,
+      "cageViolationBeforeMm": 0,
+      "cageViolationMm": 0,
+      "cageFill": 0.527,
+      "cageFillMin": 0.428,
+      "solveMs": 772.532,
+      "cell": 0.023
+     },
+     "warnings": []
+    },
+    {
+     "id": "carve",
+     "ms": 0.1,
+     "metrics": {
+      "strokes": 17,
+      "strokeReachMm": 22.724,
+      "physiqueParts": 6,
+      "skinDiffersFromPhysics": 1
+     },
+     "warnings": []
+    },
+    {
+     "id": "skin",
+     "ms": 308,
+     "metrics": {
+      "vertices": 4362,
+      "triangles": 8720,
+      "boundaryEdges": 0,
+      "nonManifoldEdges": 0,
+      "components": 1,
+      "polygonizeMs": 276.726,
+      "sampleMs": 187.256,
+      "meshBrushMs": 8.662,
+      "weightsMs": 18.354,
+      "weightSumMaxErr": 0,
+      "corners": 106812,
+      "cell": 0.023
+     },
+     "warnings": []
+    },
+    {
+     "id": "hitboxes",
+     "ms": 261.9,
+     "metrics": {
+      "capsules": 52,
+      "fitMs": 236.717,
+      "coveragePct": 99.312,
+      "coverageStrictPct": 91.495,
+      "uncoveredMaxMm": 22.26,
+      "overshootP95Mm": 20.266,
+      "overshootMaxMm": 48.878,
+      "fromStatTree": 1
+     },
+     "warnings": []
+    },
+    {
+     "id": "paint",
+     "ms": 49.3,
+     "metrics": {
+      "vertices": 4362,
+      "layersMs": 16.008,
+      "formMs": 11.772,
+      "miniatureMs": 21.479,
+      "ridgeRatio": 1.053,
+      "cavityRatio": 0.912,
+      "ridgeCavityContrast": 1.154,
+      "topRatio": 1.014,
+      "bottomRatio": 0.897,
+      "weatheredShare": 0.238,
+      "metricsMs": 11.443
+     },
+     "warnings": []
+    }
+   ]
+  },
+  {
+   "name": "dwarf female, Sir Aldric's sheet",
+   "stats": {
+    "strength": 644.4444444444445,
+    "agility": 411.7647058823529,
+    "intelligence": 448.5981308411215,
+    "level": 500
+   },
+   "stages": [
+    {
+     "id": "skeleton",
+     "ms": 0.1,
+     "metrics": {
+      "bones": 17,
+      "disks": 24,
+      "armAbductionDeg": 40.107,
+      "legAbductionDeg": 5.875,
+      "headJointY": 1.541
+     },
+     "warnings": []
+    },
+    {
+     "id": "cage",
+     "ms": 0.1,
+     "metrics": {
+      "parts": 16,
+      "meanWidthMm": 366.048
+     },
+     "warnings": []
+    },
+    {
+     "id": "inflate",
+     "ms": 925.2,
+     "metrics": {
+      "primitives": 106,
+      "clampedPrimitives": 0,
+      "cageViolationBeforeMm": 0,
+      "cageViolationMm": 0,
+      "cageFill": 0.472,
+      "cageFillMin": 0.394,
+      "solveMs": 924.791,
+      "cell": 0.03
+     },
+     "warnings": []
+    },
+    {
+     "id": "carve",
+     "ms": 0.1,
+     "metrics": {
+      "strokes": 18,
+      "strokeReachMm": 29.748,
+      "physiqueParts": 6,
+      "skinDiffersFromPhysics": 1
+     },
+     "warnings": []
+    },
+    {
+     "id": "skin",
+     "ms": 297.4,
+     "metrics": {
+      "vertices": 4478,
+      "triangles": 8952,
+      "boundaryEdges": 0,
+      "nonManifoldEdges": 0,
+      "components": 1,
+      "polygonizeMs": 284.242,
+      "sampleMs": 195.978,
+      "meshBrushMs": 1.629,
+      "weightsMs": 9.816,
+      "weightSumMaxErr": 0,
+      "corners": 119784,
+      "cell": 0.03
+     },
+     "warnings": []
+    },
+    {
+     "id": "hitboxes",
+     "ms": 296.7,
+     "metrics": {
+      "capsules": 57,
+      "fitMs": 270.562,
+      "coveragePct": 98.906,
+      "coverageStrictPct": 90.598,
+      "uncoveredMaxMm": 26.867,
+      "overshootP95Mm": 20.685,
+      "overshootMaxMm": 48.419,
+      "fromStatTree": 1
+     },
+     "warnings": []
+    },
+    {
+     "id": "paint",
+     "ms": 27.2,
+     "metrics": {
+      "vertices": 4478,
+      "layersMs": 11.593,
+      "formMs": 5.874,
+      "miniatureMs": 9.724,
+      "ridgeRatio": 1.089,
+      "cavityRatio": 0.918,
+      "ridgeCavityContrast": 1.186,
+      "topRatio": 1.008,
+      "bottomRatio": 0.91,
+      "weatheredShare": 0.232,
+      "metricsMs": 12.095
+     },
+     "warnings": []
+    }
+   ]
+  }
+ ],
+ "identity": [
+  {
+   "spec": "human/male",
+   "mesh": "56037db943c9aab8375574c2:8793d4685d24da52e6fb74ef:903f48e8a2068fc4aabad61e:02f61494dad8b983b39fab30:224bca7e334e95eb201ce804",
+   "legacyEqual": true,
+   "headMeshEqual": true,
+   "headPhysicsEqual": true
+  },
+  {
+   "spec": "human/female",
+   "mesh": "36f0b8ac595e27f333d0e3ed:e87c36789d6935d0c5e0e611:a5b0297442a06461119b860d:d0d4559c3586b1c90714c001:70cfd4b5b44a169d98bbc879",
+   "legacyEqual": true,
+   "headMeshEqual": true,
+   "headPhysicsEqual": true
+  },
+  {
+   "spec": "elf/male",
+   "mesh": "d93ab43f1331bc47c0a0a562:95297b84875f3a49b8bf3873:dbecebaf62b690a32280b847:c0a054790eaceb83fda2ea97:416e41f525f35b939514b51e",
+   "legacyEqual": true,
+   "headMeshEqual": true,
+   "headPhysicsEqual": true
+  },
+  {
+   "spec": "elf/female",
+   "mesh": "7d86338c91a32af68fa94090:ed3c73bf96e857616a1e2606:2aed372894f75a9cd4172242:0efe33c820639f7b6ffa6969:b3b356b76b54feb849547c05",
+   "legacyEqual": true,
+   "headMeshEqual": true,
+   "headPhysicsEqual": true
+  },
+  {
+   "spec": "dwarf/male",
+   "mesh": "e7bfeba0be3419625ec34278:c2fb1e1822d2c98c50b55fdb:ad3e852dbc7bd4e64484c5f3:86320dc39c9985dffd35721d:46700937d0f108628978a658",
+   "legacyEqual": true,
+   "headMeshEqual": false,
+   "headPhysicsEqual": true
+  },
+  {
+   "spec": "dwarf/female",
+   "mesh": "979c0aa07575eec609f04138:96e69c29f9b22b3803061882:cdcd8700f9fd0e917f99e9b9:470434ccc4e0d41e5e081253:63705e5e0c65d7e2ceeabae3",
+   "legacyEqual": true,
+   "headMeshEqual": false,
+   "headPhysicsEqual": true
+  },
+  {
+   "spec": "ork/male",
+   "mesh": "f57c7436d931a2e3f0071397:fa00e0aa04c76f6a85821ca0:7ad76483910e75c17b459d1b:331f65d4bd15d3c5c057a18d:1ca826c9c294a3009444b3fc",
+   "legacyEqual": true,
+   "headMeshEqual": false,
+   "headPhysicsEqual": true
+  },
+  {
+   "spec": "ork/female",
+   "mesh": "5445b6f7c7a95599b7747386:a29183434bee73e469561226:7b60b39e26957ab1e0e5cf9b:a1d001c791bf54c112318fbc:c02cbe9155ef48f7c6efe681",
+   "legacyEqual": true,
+   "headMeshEqual": false,
+   "headPhysicsEqual": true
+  }
+ ],
+ "anchors": {
+  "sheet": {
+   "strength": {
+    "lo": 0,
+    "ref": 10.75,
+    "hi": 22
+   },
+   "agility": {
+    "lo": 3,
+    "ref": 11.5,
+    "hi": 23
+   },
+   "intelligence": {
+    "lo": -2,
+    "ref": 11.375,
+    "hi": 25
+   }
+  },
+  "runtime": {
+   "strength": {
+    "lo": -2,
+    "ref": 5.875,
+    "hi": 15
+   },
+   "agility": {
+    "lo": 0,
+    "ref": 5.625,
+    "hi": 14
+   },
+   "intelligence": {
+    "lo": -5,
+    "ref": 5.25,
+    "hi": 16
+   }
+  }
+ },
+ "presets": [
+  {
+   "name": "Sir Aldric",
+   "race": "human",
+   "className": "Warrior",
+   "level": 1,
+   "stats": {
+    "strength": 644.4,
+    "agility": 411.8,
+    "intelligence": 448.6,
+    "level": 500
+   }
+  },
+  {
+   "name": "Vex",
+   "race": "elf",
+   "className": "Rogue",
+   "level": 1,
+   "stats": {
+    "strength": 418.6,
+    "agility": 739.1,
+    "intelligence": 522.9,
+    "level": 500
+   }
+  },
+  {
+   "name": "Merideth",
+   "race": "human",
+   "className": "Mage",
+   "level": 1,
+   "stats": {
+    "strength": 325.6,
+    "agility": 470.6,
+    "intelligence": 743.1,
+    "level": 500
+   }
+  }
+ ],
+ "cage": {
+  "sculptRoomMmPerM": {
+   "head": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    21.6
+   ],
+   "neck": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    18.7
+   ],
+   "torso": [
+    0,
+    0,
+    77.7,
+    10.4,
+    0.2,
+    34.9
+   ],
+   "pelvis": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    17.7
+   ],
+   "upperArmL": [
+    0.8,
+    0,
+    0,
+    17.9,
+    0,
+    0
+   ],
+   "upperArmR": [
+    0.6,
+    0.8,
+    0.6,
+    17.9,
+    1,
+    1
+   ],
+   "foreArmL": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "foreArmR": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "handL": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "handR": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "thighL": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "thighR": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "shinL": [
+    0,
+    0,
+    0,
+    0.3,
+    0,
+    0
+   ],
+   "shinR": [
+    0,
+    0,
+    0,
+    0.3,
+    0,
+    0
+   ],
+   "footL": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "footR": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  "sculptRoomUsed": {
+   "head": [
+    1,
+    1,
+    1,
+    1,
+    1,
+    28
+   ],
+   "neck": [
+    1,
+    1,
+    1,
+    1,
+    1,
+    24.38
+   ],
+   "torso": [
+    1,
+    1,
+    98.13,
+    14,
+    1.25,
+    44.63
+   ],
+   "pelvis": [
+    1,
+    1,
+    1,
+    1,
+    1,
+    29.5
+   ],
+   "upperArmL": [
+    2,
+    2,
+    1.75,
+    23.38,
+    2.25,
+    2.25
+   ],
+   "upperArmR": [
+    2,
+    2,
+    1.75,
+    23.38,
+    2.25,
+    2.25
+   ],
+   "foreArmL": [
+    1,
+    1,
+    1,
+    1,
+    1,
+    1
+   ],
+   "foreArmR": [
+    1,
+    1,
+    1,
+    1,
+    1,
+    1
+   ],
+   "handL": [
+    1,
+    1,
+    1,
+    1,
+    1,
+    1
+   ],
+   "handR": [
+    1,
+    1,
+    1,
+    1,
+    1,
+    1
+   ],
+   "thighL": [
+    1.38,
+    1.38,
+    1,
+    1,
+    1,
+    1
+   ],
+   "thighR": [
+    1.38,
+    1.38,
+    1,
+    1,
+    1,
+    1
+   ],
+   "shinL": [
+    1.75,
+    1.75,
+    1.38,
+    1.38,
+    1,
+    2.75
+   ],
+   "shinR": [
+    1.75,
+    1.75,
+    1.38,
+    1.38,
+    1,
+    2.75
+   ],
+   "footL": [
+    1,
+    1,
+    1,
+    1,
+    1,
+    1
+   ],
+   "footR": [
+    1,
+    1,
+    1,
+    1,
+    1,
+    1
+   ]
+  },
+  "sweep": 128,
+  "sweepViolations": 0,
+  "sweepWorstMm": 0
+ },
+ "statSweep": [
+  {
+   "stat": 0,
+   "torsoCageWidthMm": 442.3,
+   "clamped": 0,
+   "beforeMm": 0,
+   "afterMm": 0,
+   "fill": 0.533,
+   "coveragePct": 98.34,
+   "overshootP95Mm": 16.3,
+   "fromStatTree": 1,
+   "warnings": []
+  },
+  {
+   "stat": 250,
+   "torsoCageWidthMm": 457.7,
+   "clamped": 0,
+   "beforeMm": 0,
+   "afterMm": 0,
+   "fill": 0.515,
+   "coveragePct": 98.08,
+   "overshootP95Mm": 17.3,
+   "fromStatTree": 1,
+   "warnings": []
+  },
+  {
+   "stat": 500,
+   "torsoCageWidthMm": 473.2,
+   "clamped": 0,
+   "beforeMm": 0,
+   "afterMm": 0,
+   "fill": 0.498,
+   "coveragePct": 97.71,
+   "overshootP95Mm": 15.7,
+   "fromStatTree": 0,
+   "warnings": []
+  },
+  {
+   "stat": 750,
+   "torsoCageWidthMm": 534.9,
+   "clamped": 0,
+   "beforeMm": 0,
+   "afterMm": 0,
+   "fill": 0.428,
+   "coveragePct": 97.57,
+   "overshootP95Mm": 18.2,
+   "fromStatTree": 1,
+   "warnings": []
+  },
+  {
+   "stat": 1000,
+   "torsoCageWidthMm": 596.6,
+   "clamped": 0,
+   "beforeMm": 0,
+   "afterMm": 0,
+   "fill": 0.374,
+   "coveragePct": 96.42,
+   "overshootP95Mm": 19.4,
+   "fromStatTree": 1,
+   "warnings": []
+  }
+ ]
+}

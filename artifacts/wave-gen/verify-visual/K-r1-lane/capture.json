@@ -1,0 +1,3014 @@
+{
+ "run": "K-r1-lane",
+ "src": "/Users/macmax/.hermes/cache/scratch/q2-lane-K",
+ "hasPipe": false,
+ "hasStats": false,
+ "bundleMs": 310,
+ "when": "2026-11-03T13:43:54.664Z",
+ "baseline": "baseline-head",
+ "errors": [],
+ "characters": [
+  {
+   "race": "human",
+   "sex": "male",
+   "stats": "ref",
+   "ms": 1227,
+   "avail": [
+    "final",
+    "skin",
+    "hitboxes"
+   ],
+   "pipeErr": "",
+   "skeletonCheck": {
+    "bones": 17,
+    "disks": 0,
+    "bindMirror": {
+     "maxMm": 0,
+     "pair": ""
+    },
+    "tPoseMirror": {
+     "maxMm": 0,
+     "pair": ""
+    },
+    "tPoseArmSlopeDeg": {
+     "L": null,
+     "R": null
+    },
+    "tPoseKeys": 0
+   },
+   "records": [],
+   "hairMeshes": 0,
+   "bbox": {
+    "min": [
+     -0.4959761152183565,
+     0,
+     -0.12635116279125214
+    ],
+    "max": [
+     0.4708972098382769,
+     1.7471911907196045,
+     0.19259847700595856
+    ]
+   },
+   "rigTris": 9668,
+   "spec": {
+    "race": "human",
+    "subrace": null,
+    "className": "Warrior",
+    "height": 1.75,
+    "weight": 72,
+    "seed": 2393625784,
+    "birthsign": null,
+    "sex": "male"
+   }
+  },
+  {
+   "race": "human",
+   "sex": "female",
+   "stats": "ref",
+   "ms": 1140,
+   "avail": [
+    "final",
+    "skin",
+    "hitboxes"
+   ],
+   "pipeErr": "",
+   "skeletonCheck": {
+    "bones": 17,
+    "disks": 0,
+    "bindMirror": {
+     "maxMm": 0,
+     "pair": ""
+    },
+    "tPoseMirror": {
+     "maxMm": 0,
+     "pair": ""
+    },
+    "tPoseArmSlopeDeg": {
+     "L": null,
+     "R": null
+    },
+    "tPoseKeys": 0
+   },
+   "records": [],
+   "hairMeshes": 3,
+   "bbox": {
+    "min": [
+     -0.45520655839396834,
+     0.00011821912630693987,
+     -0.12517571449279785
+    ],
+    "max": [
+     0.4278236182165993,
+     1.6763130804300308,
+     0.19021987915039062
+    ]
+   },
+   "rigTris": 10694,
+   "spec": {
+    "race": "human",
+    "subrace": null,
+    "className": "Warrior",
+    "height": 1.65,
+    "weight": 60,
+    "seed": 3920036033,
+    "birthsign": null,
+    "sex": "female"
+   }
+  },
+  {
+   "race": "elf",
+   "sex": "male",
+   "stats": "ref",
+   "ms": 1364,
+   "avail": [
+    "final",
+    "skin",
+    "hitboxes"
+   ],
+   "pipeErr": "",
+   "skeletonCheck": {
+    "bones": 17,
+    "disks": 0,
+    "bindMirror": {
+     "maxMm": 0,
+     "pair": ""
+    },
+    "tPoseMirror": {
+     "maxMm": 0,
+     "pair": ""
+    },
+    "tPoseArmSlopeDeg": {
+     "L": null,
+     "R": null
+    },
+    "tPoseKeys": 0
+   },
+   "records": [],
+   "hairMeshes": 7,
+   "bbox": {
+    "min": [
+     -0.48783649999603274,
+     0,
+     -0.1755972252154668
+    ],
+    "max": [
+     0.4572015650360633,
+     1.8214268738740285,
+     0.2073783576488495
+    ]
+   },
+   "rigTris": 11045,
+   "spec": {
+    "race": "elf",
+    "subrace": null,
+    "className": "Warrior",
+    "height": 1.82,
+    "weight": 63.4,
+    "seed": 1591839228,
+    "birthsign": null,
+    "sex": "male"
+   }
+  },
+  {
+   "race": "elf",
+   "sex": "female",
+   "stats": "ref",
+   "ms": 1272,
+   "avail": [
+    "final",
+    "skin",
+    "hitboxes"
+   ],
+   "pipeErr": "",
+   "skeletonCheck": {
+    "bones": 17,
+    "disks": 0,
+    "bindMirror": {
+     "maxMm": 0,
+     "pair": ""
+    },
+    "tPoseMirror": {
+     "maxMm": 0,
+     "pair": ""
+    },
+    "tPoseArmSlopeDeg": {
+     "L": null,
+     "R": null
+    },
+    "tPoseKeys": 0
+   },
+   "records": [],
+   "hairMeshes": 7,
+   "bbox": {
+    "min": [
+     -0.4656395513073895,
+     -1.734595573174591e-18,
+     -0.11267957836389542
+    ],
+    "max": [
+     0.43768454628673636,
+     1.7174585504348756,
+     0.19578446447849274
+    ]
+   },
+   "rigTris": 11061,
+   "spec": {
+    "race": "elf",
+    "subrace": null,
+    "className": "Warrior",
+    "height": 1.716,
+    "weight": 52.8,
+    "seed": 2261264341,
+    "birthsign": null,
+    "sex": "female"
+   }
+  },
+  {
+   "race": "dwarf",
+   "sex": "male",
+   "stats": "ref",
+   "ms": 1149,
+   "avail": [
+    "final",
+    "skin",
+    "hitboxes"
+   ],
+   "pipeErr": "",
+   "skeletonCheck": {
+    "bones": 17,
+    "disks": 0,
+    "bindMirror": {
+     "maxMm": 0,
+     "pair": ""
+    },
+    "tPoseMirror": {
+     "maxMm": 0,
+     "pair": ""
+    },
+    "tPoseArmSlopeDeg": {
+     "L": null,
+     "R": null
+    },
+    "tPoseKeys": 0
+   },
+   "records": [],
+   "hairMeshes": 7,
+   "bbox": {
+    "min": [
+     -0.7340998740920777,
+     0.00014090434706304222,
+     -0.15854951739311218
+    ],
+    "max": [
+     0.7448205471271939,
+     1.4423363076117834,
+     0.18990440666675568
+    ]
+   },
+   "rigTris": 11372,
+   "spec": {
+    "race": "dwarf",
+    "subrace": null,
+    "className": "Warrior",
+    "height": 1.435,
+    "weight": 97.2,
+    "seed": 2313412695,
+    "birthsign": null,
+    "sex": "male"
+   }
+  },
+  {
+   "race": "dwarf",
+   "sex": "female",
+   "stats": "ref",
+   "ms": 1181,
+   "avail": [
+    "final",
+    "skin",
+    "hitboxes"
+   ],
+   "pipeErr": "",
+   "skeletonCheck": {
+    "bones": 17,
+    "disks": 0,
+    "bindMirror": {
+     "maxMm": 0,
+     "pair": ""
+    },
+    "tPoseMirror": {
+     "maxMm": 0,
+     "pair": ""
+    },
+    "tPoseArmSlopeDeg": {
+     "L": null,
+     "R": null
+    },
+    "tPoseKeys": 0
+   },
+   "records": [],
+   "hairMeshes": 0,
+   "bbox": {
+    "min": [
+     -0.6735821206386561,
+     -6.938894110702382e-18,
+     -0.15934759734602855
+    ],
+    "max": [
+     0.6767889223568864,
+     1.350670576095581,
+     0.15121467411518097
+    ]
+   },
+   "rigTris": 10176,
+   "spec": {
+    "race": "dwarf",
+    "subrace": null,
+    "className": "Warrior",
+    "height": 1.353,
+    "weight": 81,
+    "seed": 3242186542,
+    "birthsign": null,
+    "sex": "female"
+   }
+  },
+  {
+   "race": "ork",
+   "sex": "male",
+   "stats": "ref",
+   "ms": 1585,
+   "avail": [
+    "final",
+    "skin",
+    "hitboxes"
+   ],
+   "pipeErr": "",
+   "skeletonCheck": {
+    "bones": 17,
+    "disks": 0,
+    "bindMirror": {
+     "maxMm": 0,
+     "pair": ""
+    },
+    "tPoseMirror": {
+     "maxMm": 0,
+     "pair": ""
+    },
+    "tPoseArmSlopeDeg": {
+     "L": null,
+     "R": null
+    },
+    "tPoseKeys": 0
+   },
+   "records": [],
+   "hairMeshes": 7,
+   "bbox": {
+    "min": [
+     -1.0019146535612298,
+     -1.3877787807814457e-17,
+     -0.2532265071722031
+    ],
+    "max": [
+     1.0303969920060199,
+     2.0738875988082883,
+     0.21762165427207947
+    ]
+   },
+   "rigTris": 12318,
+   "spec": {
+    "race": "ork",
+    "subrace": null,
+    "className": "Warrior",
+    "height": 1.96,
+    "weight": 111.6,
+    "seed": 1729089733,
+    "birthsign": null,
+    "sex": "male"
+   }
+  },
+  {
+   "race": "ork",
+   "sex": "female",
+   "stats": "ref",
+   "ms": 1553,
+   "avail": [
+    "final",
+    "skin",
+    "hitboxes"
+   ],
+   "pipeErr": "",
+   "skeletonCheck": {
+    "bones": 17,
+    "disks": 0,
+    "bindMirror": {
+     "maxMm": 0,
+     "pair": ""
+    },
+    "tPoseMirror": {
+     "maxMm": 0,
+     "pair": ""
+    },
+    "tPoseArmSlopeDeg": {
+     "L": null,
+     "R": null
+    },
+    "tPoseKeys": 0
+   },
+   "records": [],
+   "hairMeshes": 0,
+   "bbox": {
+    "min": [
+     -0.9024789145407307,
+     0,
+     -0.20328529482014912
+    ],
+    "max": [
+     0.925056470301942,
+     1.8448820114135742,
+     0.21109332144260406
+    ]
+   },
+   "rigTris": 10128,
+   "spec": {
+    "race": "ork",
+    "subrace": null,
+    "className": "Warrior",
+    "height": 1.848,
+    "weight": 93,
+    "seed": 3751300264,
+    "birthsign": null,
+    "sex": "female"
+   }
+  }
+ ],
+ "sheets": [
+  {
+   "name": "human-male-ref-final",
+   "race": "human",
+   "sex": "male",
+   "stats": "ref",
+   "stage": "final",
+   "file": "artifacts/wave-gen/verify-visual/K-r1-lane/human-male-ref-final.png",
+   "tiles": [
+    {
+     "axis": "+Z",
+     "area": 335135,
+     "interiorInk": 0.3561,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.9602,
+     "mirrorColourDiff": 7.36,
+     "lrBandImbalance": [
+      0.005,
+      -0.011,
+      -0.002
+     ]
+    },
+    {
+     "axis": "-Z",
+     "area": 338638,
+     "interiorInk": 0.5003,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.9594,
+     "mirrorColourDiff": 4.12,
+     "lrBandImbalance": [
+      -0.004,
+      0.013,
+      0.002
+     ]
+    },
+    {
+     "axis": "+X",
+     "area": 175664,
+     "interiorInk": 0.3971,
+     "components": 1,
+     "detached": []
+    },
+    {
+     "axis": "-X",
+     "area": 174664,
+     "interiorInk": 0.4056,
+     "components": 1,
+     "detached": []
+    },
+    {
+     "axis": "+Y",
+     "area": 85847,
+     "interiorInk": 0.2965,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.9351,
+     "mirrorColourDiff": 9.36,
+     "lrBandImbalance": [
+      0.038,
+      0.033,
+      -0.001
+     ]
+    },
+    {
+     "axis": "-Y",
+     "area": 89175,
+     "interiorInk": 0.6949,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.9421,
+     "mirrorColourDiff": 4.97,
+     "lrBandImbalance": [
+      0,
+      0.024,
+      0.037
+     ]
+    }
+   ],
+   "scaleMmPerPx": 1.41,
+   "vsBaseline": {
+    "sameSize": true,
+    "meanAbs": 0.288,
+    "changedShare": 0,
+    "bands": {
+     "+Z:top": 0,
+     "-Z:top": 0,
+     "+X:top": 0,
+     "+Z:mid": 0,
+     "-Z:mid": 0,
+     "+X:mid": 0,
+     "+Z:bottom": 0,
+     "-Z:bottom": 0,
+     "+X:bottom": 0,
+     "-X:top": 0,
+     "+Y:top": 0,
+     "-Y:top": 0,
+     "-X:mid": 0,
+     "+Y:mid": 0,
+     "-Y:mid": 0,
+     "-X:bottom": 0,
+     "+Y:bottom": 0,
+     "-Y:bottom": 0
+    },
+    "diffFile": "artifacts/wave-gen/verify-visual/K-r1-lane/human-male-ref-final.diff.png"
+   }
+  },
+  {
+   "name": "human-male-ref-skin",
+   "race": "human",
+   "sex": "male",
+   "stats": "ref",
+   "stage": "skin",
+   "file": "artifacts/wave-gen/verify-visual/K-r1-lane/human-male-ref-skin.png",
+   "tiles": [
+    {
+     "axis": "+Z",
+     "area": 276148,
+     "interiorInk": 0.029,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.9922,
+     "mirrorColourDiff": 15.26,
+     "lrBandImbalance": [
+      0.005,
+      -0.001,
+      -0.003
+     ]
+    },
+    {
+     "axis": "-Z",
+     "area": 279617,
+     "interiorInk": 0.0258,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.9924,
+     "mirrorColourDiff": 14.75,
+     "lrBandImbalance": [
+      -0.005,
+      0.002,
+      0.003
+     ]
+    },
+    {
+     "axis": "+X",
+     "area": 141702,
+     "interiorInk": 0.0225,
+     "components": 1,
+     "detached": []
+    },
+    {
+     "axis": "-X",
+     "area": 140844,
+     "interiorInk": 0.0372,
+     "components": 1,
+     "detached": []
+    },
+    {
+     "axis": "+Y",
+     "area": 69947,
+     "interiorInk": 0.0951,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.9907,
+     "mirrorColourDiff": 13.97,
+     "lrBandImbalance": [
+      0.005,
+      0.003,
+      0.005
+     ]
+    },
+    {
+     "axis": "-Y",
+     "area": 71835,
+     "interiorInk": 0.2714,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.9926,
+     "mirrorColourDiff": 11.98,
+     "lrBandImbalance": [
+      0.004,
+      0.003,
+      0.003
+     ]
+    }
+   ],
+   "scaleMmPerPx": 1.41,
+   "vsBaseline": {
+    "sameSize": true,
+    "meanAbs": 0.288,
+    "changedShare": 0,
+    "bands": {
+     "+Z:top": 0,
+     "-Z:top": 0,
+     "+X:top": 0,
+     "+Z:mid": 0,
+     "-Z:mid": 0,
+     "+X:mid": 0,
+     "+Z:bottom": 0,
+     "-Z:bottom": 0,
+     "+X:bottom": 0,
+     "-X:top": 0,
+     "+Y:top": 0,
+     "-Y:top": 0,
+     "-X:mid": 0,
+     "+Y:mid": 0,
+     "-Y:mid": 0,
+     "-X:bottom": 0,
+     "+Y:bottom": 0,
+     "-Y:bottom": 0
+    },
+    "diffFile": "artifacts/wave-gen/verify-visual/K-r1-lane/human-male-ref-skin.diff.png"
+   }
+  },
+  {
+   "name": "human-male-ref-hitboxes",
+   "race": "human",
+   "sex": "male",
+   "stats": "ref",
+   "stage": "hitboxes",
+   "file": "artifacts/wave-gen/verify-visual/K-r1-lane/human-male-ref-hitboxes.png",
+   "tiles": [
+    {
+     "axis": "+Z",
+     "area": 323475,
+     "interiorInk": 0.0129,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.9519,
+     "mirrorColourDiff": 8.12,
+     "lrBandImbalance": [
+      0.004,
+      0.005,
+      0.026
+     ]
+    },
+    {
+     "axis": "-Z",
+     "area": 326740,
+     "interiorInk": 0.035,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.9511,
+     "mirrorColourDiff": 10.89,
+     "lrBandImbalance": [
+      -0.003,
+      -0.003,
+      -0.03
+     ]
+    },
+    {
+     "axis": "+X",
+     "area": 162869,
+     "interiorInk": 0.0204,
+     "components": 1,
+     "detached": []
+    },
+    {
+     "axis": "-X",
+     "area": 162001,
+     "interiorInk": 0.0217,
+     "components": 1,
+     "detached": []
+    },
+    {
+     "axis": "+Y",
+     "area": 83123,
+     "interiorInk": 0.0177,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.9713,
+     "mirrorColourDiff": 13.68,
+     "lrBandImbalance": [
+      0.01,
+      0.008,
+      0.036
+     ]
+    },
+    {
+     "axis": "-Y",
+     "area": 86121,
+     "interiorInk": 0.198,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.9854,
+     "mirrorColourDiff": 8.05,
+     "lrBandImbalance": [
+      0.014,
+      0.001,
+      0.005
+     ]
+    }
+   ],
+   "scaleMmPerPx": 1.41,
+   "vsBaseline": {
+    "sameSize": true,
+    "meanAbs": 0.288,
+    "changedShare": 0,
+    "bands": {
+     "+Z:top": 0,
+     "-Z:top": 0,
+     "+X:top": 0,
+     "+Z:mid": 0,
+     "-Z:mid": 0,
+     "+X:mid": 0,
+     "+Z:bottom": 0,
+     "-Z:bottom": 0,
+     "+X:bottom": 0,
+     "-X:top": 0,
+     "+Y:top": 0,
+     "-Y:top": 0,
+     "-X:mid": 0,
+     "+Y:mid": 0,
+     "-Y:mid": 0,
+     "-X:bottom": 0,
+     "+Y:bottom": 0,
+     "-Y:bottom": 0
+    },
+    "diffFile": "artifacts/wave-gen/verify-visual/K-r1-lane/human-male-ref-hitboxes.diff.png"
+   }
+  },
+  {
+   "name": "human-female-ref-final",
+   "race": "human",
+   "sex": "female",
+   "stats": "ref",
+   "stage": "final",
+   "file": "artifacts/wave-gen/verify-visual/K-r1-lane/human-female-ref-final.png",
+   "tiles": [
+    {
+     "axis": "+Z",
+     "area": 321325,
+     "interiorInk": 0.3942,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.9603,
+     "mirrorColourDiff": 7.27,
+     "lrBandImbalance": [
+      0.004,
+      -0.011,
+      -0.002
+     ]
+    },
+    {
+     "axis": "-Z",
+     "area": 325179,
+     "interiorInk": 0.5158,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.959,
+     "mirrorColourDiff": 3.98,
+     "lrBandImbalance": [
+      -0.003,
+      0.013,
+      0.002
+     ]
+    },
+    {
+     "axis": "+X",
+     "area": 172846,
+     "interiorInk": 0.4538,
+     "components": 1,
+     "detached": []
+    },
+    {
+     "axis": "-X",
+     "area": 171869,
+     "interiorInk": 0.4621,
+     "components": 1,
+     "detached": []
+    },
+    {
+     "axis": "+Y",
+     "area": 84529,
+     "interiorInk": 0.4666,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.9341,
+     "mirrorColourDiff": 8.21,
+     "lrBandImbalance": [
+      0.038,
+      0.032,
+      0.001
+     ]
+    },
+    {
+     "axis": "-Y",
+     "area": 88599,
+     "interiorInk": 0.6996,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.9415,
+     "mirrorColourDiff": 4.54,
+     "lrBandImbalance": [
+      0.003,
+      0.024,
+      0.037
+     ]
+    }
+   ],
+   "scaleMmPerPx": 1.36,
+   "vsBaseline": {
+    "sameSize": true,
+    "meanAbs": 0.288,
+    "changedShare": 0,
+    "bands": {
+     "+Z:top": 0,
+     "-Z:top": 0,
+     "+X:top": 0,
+     "+Z:mid": 0,
+     "-Z:mid": 0,
+     "+X:mid": 0,
+     "+Z:bottom": 0,
+     "-Z:bottom": 0,
+     "+X:bottom": 0,
+     "-X:top": 0,
+     "+Y:top": 0,
+     "-Y:top": 0,
+     "-X:mid": 0,
+     "+Y:mid": 0,
+     "-Y:mid": 0,
+     "-X:bottom": 0,
+     "+Y:bottom": 0,
+     "-Y:bottom": 0
+    },
+    "diffFile": "artifacts/wave-gen/verify-visual/K-r1-lane/human-female-ref-final.diff.png"
+   }
+  },
+  {
+   "name": "human-female-ref-skin",
+   "race": "human",
+   "sex": "female",
+   "stats": "ref",
+   "stage": "skin",
+   "file": "artifacts/wave-gen/verify-visual/K-r1-lane/human-female-ref-skin.png",
+   "tiles": [
+    {
+     "axis": "+Z",
+     "area": 260580,
+     "interiorInk": 0.0321,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.9934,
+     "mirrorColourDiff": 15.35,
+     "lrBandImbalance": [
+      0.004,
+      -0.001,
+      -0.002
+     ]
+    },
+    {
+     "axis": "-Z",
+     "area": 264304,
+     "interiorInk": 0.0273,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.9932,
+     "mirrorColourDiff": 14.64,
+     "lrBandImbalance": [
+      -0.004,
+      0.002,
+      0.003
+     ]
+    },
+    {
+     "axis": "+X",
+     "area": 137789,
+     "interiorInk": 0.025,
+     "components": 1,
+     "detached": []
+    },
+    {
+     "axis": "-X",
+     "area": 136802,
+     "interiorInk": 0.0376,
+     "components": 1,
+     "detached": []
+    },
+    {
+     "axis": "+Y",
+     "area": 68160,
+     "interiorInk": 0.098,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.9934,
+     "mirrorColourDiff": 14.06,
+     "lrBandImbalance": [
+      0.003,
+      0.002,
+      0.004
+     ]
+    },
+    {
+     "axis": "-Y",
+     "area": 70805,
+     "interiorInk": 0.2628,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.994,
+     "mirrorColourDiff": 11.21,
+     "lrBandImbalance": [
+      0.005,
+      0.002,
+      0.003
+     ]
+    }
+   ],
+   "scaleMmPerPx": 1.36,
+   "vsBaseline": {
+    "sameSize": true,
+    "meanAbs": 0.287,
+    "changedShare": 0,
+    "bands": {
+     "+Z:top": 0,
+     "-Z:top": 0,
+     "+X:top": 0,
+     "+Z:mid": 0,
+     "-Z:mid": 0,
+     "+X:mid": 0,
+     "+Z:bottom": 0,
+     "-Z:bottom": 0,
+     "+X:bottom": 0,
+     "-X:top": 0,
+     "+Y:top": 0,
+     "-Y:top": 0,
+     "-X:mid": 0,
+     "+Y:mid": 0,
+     "-Y:mid": 0,
+     "-X:bottom": 0,
+     "+Y:bottom": 0,
+     "-Y:bottom": 0
+    },
+    "diffFile": "artifacts/wave-gen/verify-visual/K-r1-lane/human-female-ref-skin.diff.png"
+   }
+  },
+  {
+   "name": "human-female-ref-hitboxes",
+   "race": "human",
+   "sex": "female",
+   "stats": "ref",
+   "stage": "hitboxes",
+   "file": "artifacts/wave-gen/verify-visual/K-r1-lane/human-female-ref-hitboxes.png",
+   "tiles": [
+    {
+     "axis": "+Z",
+     "area": 303499,
+     "interiorInk": 0.0129,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.9555,
+     "mirrorColourDiff": 7.33,
+     "lrBandImbalance": [
+      -0.008,
+      0.003,
+      0.011
+     ]
+    },
+    {
+     "axis": "-Z",
+     "area": 307895,
+     "interiorInk": 0.0383,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.9563,
+     "mirrorColourDiff": 10.15,
+     "lrBandImbalance": [
+      0.008,
+      -0.003,
+      -0.01
+     ]
+    },
+    {
+     "axis": "+X",
+     "area": 156354,
+     "interiorInk": 0.0235,
+     "components": 1,
+     "detached": []
+    },
+    {
+     "axis": "-X",
+     "area": 155771,
+     "interiorInk": 0.0196,
+     "components": 1,
+     "detached": []
+    },
+    {
+     "axis": "+Y",
+     "area": 80032,
+     "interiorInk": 0.0261,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.9223,
+     "mirrorColourDiff": 12.24,
+     "lrBandImbalance": [
+      0.063,
+      0.013,
+      0.049
+     ]
+    },
+    {
+     "axis": "-Y",
+     "area": 82563,
+     "interiorInk": 0.1911,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.9603,
+     "mirrorColourDiff": 7.55,
+     "lrBandImbalance": [
+      0.008,
+      0.002,
+      0.028
+     ]
+    }
+   ],
+   "scaleMmPerPx": 1.36,
+   "vsBaseline": {
+    "sameSize": true,
+    "meanAbs": 0.288,
+    "changedShare": 0,
+    "bands": {
+     "+Z:top": 0,
+     "-Z:top": 0,
+     "+X:top": 0,
+     "+Z:mid": 0,
+     "-Z:mid": 0,
+     "+X:mid": 0,
+     "+Z:bottom": 0,
+     "-Z:bottom": 0,
+     "+X:bottom": 0,
+     "-X:top": 0,
+     "+Y:top": 0,
+     "-Y:top": 0,
+     "-X:mid": 0,
+     "+Y:mid": 0,
+     "-Y:mid": 0,
+     "-X:bottom": 0,
+     "+Y:bottom": 0,
+     "-Y:bottom": 0
+    },
+    "diffFile": "artifacts/wave-gen/verify-visual/K-r1-lane/human-female-ref-hitboxes.diff.png"
+   }
+  },
+  {
+   "name": "elf-male-ref-final",
+   "race": "elf",
+   "sex": "male",
+   "stats": "ref",
+   "stage": "final",
+   "file": "artifacts/wave-gen/verify-visual/K-r1-lane/elf-male-ref-final.png",
+   "tiles": [
+    {
+     "axis": "+Z",
+     "area": 274661,
+     "interiorInk": 0.3875,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.9552,
+     "mirrorColourDiff": 9.44,
+     "lrBandImbalance": [
+      0.002,
+      -0.009,
+      -0.003
+     ]
+    },
+    {
+     "axis": "-Z",
+     "area": 276383,
+     "interiorInk": 0.5806,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.9539,
+     "mirrorColourDiff": 5.12,
+     "lrBandImbalance": [
+      -0.001,
+      0.011,
+      0.004
+     ]
+    },
+    {
+     "axis": "+X",
+     "area": 155184,
+     "interiorInk": 0.4803,
+     "components": 1,
+     "detached": []
+    },
+    {
+     "axis": "-X",
+     "area": 154303,
+     "interiorInk": 0.4928,
+     "components": 1,
+     "detached": []
+    },
+    {
+     "axis": "+Y",
+     "area": 66420,
+     "interiorInk": 0.4347,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.8976,
+     "mirrorColourDiff": 12.27,
+     "lrBandImbalance": [
+      0.056,
+      0.035,
+      -0.004
+     ]
+    },
+    {
+     "axis": "-Y",
+     "area": 69714,
+     "interiorInk": 0.6496,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.9243,
+     "mirrorColourDiff": 5.91,
+     "lrBandImbalance": [
+      0,
+      0.026,
+      0.056
+     ]
+    }
+   ],
+   "scaleMmPerPx": 1.47,
+   "vsBaseline": {
+    "sameSize": true,
+    "meanAbs": 0.288,
+    "changedShare": 0,
+    "bands": {
+     "+Z:top": 0,
+     "-Z:top": 0,
+     "+X:top": 0,
+     "+Z:mid": 0,
+     "-Z:mid": 0,
+     "+X:mid": 0,
+     "+Z:bottom": 0,
+     "-Z:bottom": 0,
+     "+X:bottom": 0,
+     "-X:top": 0,
+     "+Y:top": 0,
+     "-Y:top": 0,
+     "-X:mid": 0,
+     "+Y:mid": 0,
+     "-Y:mid": 0,
+     "-X:bottom": 0,
+     "+Y:bottom": 0,
+     "-Y:bottom": 0
+    },
+    "diffFile": "artifacts/wave-gen/verify-visual/K-r1-lane/elf-male-ref-final.diff.png"
+   }
+  },
+  {
+   "name": "elf-male-ref-skin",
+   "race": "elf",
+   "sex": "male",
+   "stats": "ref",
+   "stage": "skin",
+   "file": "artifacts/wave-gen/verify-visual/K-r1-lane/elf-male-ref-skin.png",
+   "tiles": [
+    {
+     "axis": "+Z",
+     "area": 217370,
+     "interiorInk": 0.0316,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.9907,
+     "mirrorColourDiff": 15.67,
+     "lrBandImbalance": [
+      0.005,
+      -0.001,
+      -0.005
+     ]
+    },
+    {
+     "axis": "-Z",
+     "area": 219066,
+     "interiorInk": 0.0195,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.9923,
+     "mirrorColourDiff": 15.1,
+     "lrBandImbalance": [
+      -0.005,
+      0.001,
+      0.006
+     ]
+    },
+    {
+     "axis": "+X",
+     "area": 114406,
+     "interiorInk": 0.0261,
+     "components": 1,
+     "detached": []
+    },
+    {
+     "axis": "-X",
+     "area": 113598,
+     "interiorInk": 0.0445,
+     "components": 1,
+     "detached": []
+    },
+    {
+     "axis": "+Y",
+     "area": 51441,
+     "interiorInk": 0.1006,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.9938,
+     "mirrorColourDiff": 15.26,
+     "lrBandImbalance": [
+      0.003,
+      0.002,
+      0.002
+     ]
+    },
+    {
+     "axis": "-Y",
+     "area": 52681,
+     "interiorInk": 0.2421,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.9944,
+     "mirrorColourDiff": 11.86,
+     "lrBandImbalance": [
+      0,
+      0.003,
+      0.002
+     ]
+    }
+   ],
+   "scaleMmPerPx": 1.47,
+   "vsBaseline": {
+    "sameSize": true,
+    "meanAbs": 0.287,
+    "changedShare": 0,
+    "bands": {
+     "+Z:top": 0,
+     "-Z:top": 0,
+     "+X:top": 0,
+     "+Z:mid": 0,
+     "-Z:mid": 0,
+     "+X:mid": 0,
+     "+Z:bottom": 0,
+     "-Z:bottom": 0,
+     "+X:bottom": 0,
+     "-X:top": 0,
+     "+Y:top": 0,
+     "-Y:top": 0,
+     "-X:mid": 0,
+     "+Y:mid": 0,
+     "-Y:mid": 0,
+     "-X:bottom": 0,
+     "+Y:bottom": 0,
+     "-Y:bottom": 0
+    },
+    "diffFile": "artifacts/wave-gen/verify-visual/K-r1-lane/elf-male-ref-skin.diff.png"
+   }
+  },
+  {
+   "name": "elf-male-ref-hitboxes",
+   "race": "elf",
+   "sex": "male",
+   "stats": "ref",
+   "stage": "hitboxes",
+   "file": "artifacts/wave-gen/verify-visual/K-r1-lane/elf-male-ref-hitboxes.png",
+   "tiles": [
+    {
+     "axis": "+Z",
+     "area": 258669,
+     "interiorInk": 0.013,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.9639,
+     "mirrorColourDiff": 7.18,
+     "lrBandImbalance": [
+      0.007,
+      0.007,
+      -0.014
+     ]
+    },
+    {
+     "axis": "-Z",
+     "area": 260143,
+     "interiorInk": 0.0221,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.9626,
+     "mirrorColourDiff": 9.78,
+     "lrBandImbalance": [
+      -0.006,
+      -0.007,
+      0.014
+     ]
+    },
+    {
+     "axis": "+X",
+     "area": 142284,
+     "interiorInk": 0.0293,
+     "components": 1,
+     "detached": []
+    },
+    {
+     "axis": "-X",
+     "area": 141325,
+     "interiorInk": 0.0312,
+     "components": 1,
+     "detached": []
+    },
+    {
+     "axis": "+Y",
+     "area": 62656,
+     "interiorInk": 0.0092,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.9359,
+     "mirrorColourDiff": 11.45,
+     "lrBandImbalance": [
+      0.029,
+      -0.014,
+      -0.071
+     ]
+    },
+    {
+     "axis": "-Y",
+     "area": 63056,
+     "interiorInk": 0.3001,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.9541,
+     "mirrorColourDiff": 9.23,
+     "lrBandImbalance": [
+      0.002,
+      -0.026,
+      0.01
+     ]
+    }
+   ],
+   "scaleMmPerPx": 1.47,
+   "vsBaseline": {
+    "sameSize": true,
+    "meanAbs": 0.288,
+    "changedShare": 0,
+    "bands": {
+     "+Z:top": 0,
+     "-Z:top": 0,
+     "+X:top": 0,
+     "+Z:mid": 0,
+     "-Z:mid": 0,
+     "+X:mid": 0,
+     "+Z:bottom": 0,
+     "-Z:bottom": 0,
+     "+X:bottom": 0,
+     "-X:top": 0,
+     "+Y:top": 0,
+     "-Y:top": 0,
+     "-X:mid": 0,
+     "+Y:mid": 0,
+     "-Y:mid": 0,
+     "-X:bottom": 0,
+     "+Y:bottom": 0,
+     "-Y:bottom": 0
+    },
+    "diffFile": "artifacts/wave-gen/verify-visual/K-r1-lane/elf-male-ref-hitboxes.diff.png"
+   }
+  },
+  {
+   "name": "elf-female-ref-final",
+   "race": "elf",
+   "sex": "female",
+   "stats": "ref",
+   "stage": "final",
+   "file": "artifacts/wave-gen/verify-visual/K-r1-lane/elf-female-ref-final.png",
+   "tiles": [
+    {
+     "axis": "+Z",
+     "area": 272988,
+     "interiorInk": 0.4025,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.9541,
+     "mirrorColourDiff": 9.36,
+     "lrBandImbalance": [
+      0.002,
+      -0.008,
+      -0.004
+     ]
+    },
+    {
+     "axis": "-Z",
+     "area": 277703,
+     "interiorInk": 0.5354,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.9535,
+     "mirrorColourDiff": 5.15,
+     "lrBandImbalance": [
+      -0.002,
+      0.01,
+      0.003
+     ]
+    },
+    {
+     "axis": "+X",
+     "area": 148933,
+     "interiorInk": 0.4482,
+     "components": 1,
+     "detached": []
+    },
+    {
+     "axis": "-X",
+     "area": 148106,
+     "interiorInk": 0.4518,
+     "components": 1,
+     "detached": []
+    },
+    {
+     "axis": "+Y",
+     "area": 68084,
+     "interiorInk": 0.3622,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.9211,
+     "mirrorColourDiff": 12.62,
+     "lrBandImbalance": [
+      0.05,
+      0.031,
+      -0.003
+     ]
+    },
+    {
+     "axis": "-Y",
+     "area": 70994,
+     "interiorInk": 0.6509,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.929,
+     "mirrorColourDiff": 5.98,
+     "lrBandImbalance": [
+      -0.001,
+      0.022,
+      0.049
+     ]
+    }
+   ],
+   "scaleMmPerPx": 1.39,
+   "vsBaseline": {
+    "sameSize": true,
+    "meanAbs": 0.288,
+    "changedShare": 0,
+    "bands": {
+     "+Z:top": 0,
+     "-Z:top": 0,
+     "+X:top": 0,
+     "+Z:mid": 0,
+     "-Z:mid": 0,
+     "+X:mid": 0,
+     "+Z:bottom": 0,
+     "-Z:bottom": 0,
+     "+X:bottom": 0,
+     "-X:top": 0,
+     "+Y:top": 0,
+     "-Y:top": 0,
+     "-X:mid": 0,
+     "+Y:mid": 0,
+     "-Y:mid": 0,
+     "-X:bottom": 0,
+     "+Y:bottom": 0,
+     "-Y:bottom": 0
+    },
+    "diffFile": "artifacts/wave-gen/verify-visual/K-r1-lane/elf-female-ref-final.diff.png"
+   }
+  },
+  {
+   "name": "elf-female-ref-skin",
+   "race": "elf",
+   "sex": "female",
+   "stats": "ref",
+   "stage": "skin",
+   "file": "artifacts/wave-gen/verify-visual/K-r1-lane/elf-female-ref-skin.png",
+   "tiles": [
+    {
+     "axis": "+Z",
+     "area": 212327,
+     "interiorInk": 0.033,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.9922,
+     "mirrorColourDiff": 15.66,
+     "lrBandImbalance": [
+      0.005,
+      0.001,
+      -0.005
+     ]
+    },
+    {
+     "axis": "-Z",
+     "area": 216048,
+     "interiorInk": 0.0216,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.9927,
+     "mirrorColourDiff": 14.96,
+     "lrBandImbalance": [
+      -0.005,
+      0,
+      0.005
+     ]
+    },
+    {
+     "axis": "+X",
+     "area": 114286,
+     "interiorInk": 0.0313,
+     "components": 1,
+     "detached": []
+    },
+    {
+     "axis": "-X",
+     "area": 113602,
+     "interiorInk": 0.0432,
+     "components": 1,
+     "detached": []
+    },
+    {
+     "axis": "+Y",
+     "area": 52340,
+     "interiorInk": 0.0959,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.9905,
+     "mirrorColourDiff": 15.28,
+     "lrBandImbalance": [
+      0.005,
+      0.004,
+      0.003
+     ]
+    },
+    {
+     "axis": "-Y",
+     "area": 53562,
+     "interiorInk": 0.2312,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.9928,
+     "mirrorColourDiff": 11.74,
+     "lrBandImbalance": [
+      0.001,
+      0.003,
+      0.003
+     ]
+    }
+   ],
+   "scaleMmPerPx": 1.39,
+   "vsBaseline": {
+    "sameSize": true,
+    "meanAbs": 0.288,
+    "changedShare": 0,
+    "bands": {
+     "+Z:top": 0,
+     "-Z:top": 0,
+     "+X:top": 0,
+     "+Z:mid": 0,
+     "-Z:mid": 0,
+     "+X:mid": 0,
+     "+Z:bottom": 0,
+     "-Z:bottom": 0,
+     "+X:bottom": 0,
+     "-X:top": 0,
+     "+Y:top": 0,
+     "-Y:top": 0,
+     "-X:mid": 0,
+     "+Y:mid": 0,
+     "-Y:mid": 0,
+     "-X:bottom": 0,
+     "+Y:bottom": 0,
+     "-Y:bottom": 0
+    },
+    "diffFile": "artifacts/wave-gen/verify-visual/K-r1-lane/elf-female-ref-skin.diff.png"
+   }
+  },
+  {
+   "name": "elf-female-ref-hitboxes",
+   "race": "elf",
+   "sex": "female",
+   "stats": "ref",
+   "stage": "hitboxes",
+   "file": "artifacts/wave-gen/verify-visual/K-r1-lane/elf-female-ref-hitboxes.png",
+   "tiles": [
+    {
+     "axis": "+Z",
+     "area": 260458,
+     "interiorInk": 0.0103,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.9794,
+     "mirrorColourDiff": 7.23,
+     "lrBandImbalance": [
+      0.013,
+      0.003,
+      -0.003
+     ]
+    },
+    {
+     "axis": "-Z",
+     "area": 264222,
+     "interiorInk": 0.0283,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.9801,
+     "mirrorColourDiff": 9.39,
+     "lrBandImbalance": [
+      -0.014,
+      -0.002,
+      0.002
+     ]
+    },
+    {
+     "axis": "+X",
+     "area": 133802,
+     "interiorInk": 0.0225,
+     "components": 1,
+     "detached": []
+    },
+    {
+     "axis": "-X",
+     "area": 133132,
+     "interiorInk": 0.0208,
+     "components": 1,
+     "detached": []
+    },
+    {
+     "axis": "+Y",
+     "area": 60406,
+     "interiorInk": 0.0229,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.9628,
+     "mirrorColourDiff": 12.14,
+     "lrBandImbalance": [
+      0.026,
+      0.012,
+      0.004
+     ]
+    },
+    {
+     "axis": "-Y",
+     "area": 61481,
+     "interiorInk": 0.2224,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.973,
+     "mirrorColourDiff": 9.05,
+     "lrBandImbalance": [
+      -0.001,
+      0.001,
+      0.015
+     ]
+    }
+   ],
+   "scaleMmPerPx": 1.39,
+   "vsBaseline": {
+    "sameSize": true,
+    "meanAbs": 0.287,
+    "changedShare": 0,
+    "bands": {
+     "+Z:top": 0,
+     "-Z:top": 0,
+     "+X:top": 0,
+     "+Z:mid": 0,
+     "-Z:mid": 0,
+     "+X:mid": 0,
+     "+Z:bottom": 0,
+     "-Z:bottom": 0,
+     "+X:bottom": 0,
+     "-X:top": 0,
+     "+Y:top": 0,
+     "-Y:top": 0,
+     "-X:mid": 0,
+     "+Y:mid": 0,
+     "-Y:mid": 0,
+     "-X:bottom": 0,
+     "+Y:bottom": 0,
+     "-Y:bottom": 0
+    },
+    "diffFile": "artifacts/wave-gen/verify-visual/K-r1-lane/elf-female-ref-hitboxes.diff.png"
+   }
+  },
+  {
+   "name": "dwarf-male-ref-final",
+   "race": "dwarf",
+   "sex": "male",
+   "stats": "ref",
+   "stage": "final",
+   "file": "artifacts/wave-gen/verify-visual/K-r1-lane/dwarf-male-ref-final.png",
+   "tiles": [
+    {
+     "axis": "+Z",
+     "area": 207057,
+     "interiorInk": 0.35,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.9716,
+     "mirrorColourDiff": 3.71,
+     "lrBandImbalance": [
+      0.004,
+      -0.008,
+      -0.004
+     ]
+    },
+    {
+     "axis": "-Z",
+     "area": 207965,
+     "interiorInk": 0.515,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.9708,
+     "mirrorColourDiff": 3.53,
+     "lrBandImbalance": [
+      -0.004,
+      0.009,
+      0.005
+     ]
+    },
+    {
+     "axis": "+X",
+     "area": 102564,
+     "interiorInk": 0.3933,
+     "components": 1,
+     "detached": []
+    },
+    {
+     "axis": "-X",
+     "area": 102458,
+     "interiorInk": 0.4141,
+     "components": 1,
+     "detached": []
+    },
+    {
+     "axis": "+Y",
+     "area": 90137,
+     "interiorInk": 0.1721,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.9816,
+     "mirrorColourDiff": 7.16,
+     "lrBandImbalance": [
+      0.007,
+      0,
+      0.008
+     ]
+    },
+    {
+     "axis": "-Y",
+     "area": 88681,
+     "interiorInk": 0.8375,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.983,
+     "mirrorColourDiff": 2.27,
+     "lrBandImbalance": [
+      0.003,
+      -0.003,
+      0.007
+     ]
+    }
+   ],
+   "scaleMmPerPx": 1.94,
+   "vsBaseline": {
+    "sameSize": true,
+    "meanAbs": 0.288,
+    "changedShare": 0,
+    "bands": {
+     "+Z:top": 0,
+     "-Z:top": 0,
+     "+X:top": 0,
+     "+Z:mid": 0,
+     "-Z:mid": 0,
+     "+X:mid": 0,
+     "+Z:bottom": 0,
+     "-Z:bottom": 0,
+     "+X:bottom": 0,
+     "-X:top": 0,
+     "+Y:top": 0,
+     "-Y:top": 0,
+     "-X:mid": 0,
+     "+Y:mid": 0,
+     "-Y:mid": 0,
+     "-X:bottom": 0,
+     "+Y:bottom": 0,
+     "-Y:bottom": 0
+    },
+    "diffFile": "artifacts/wave-gen/verify-visual/K-r1-lane/dwarf-male-ref-final.diff.png"
+   }
+  },
+  {
+   "name": "dwarf-male-ref-skin",
+   "race": "dwarf",
+   "sex": "male",
+   "stats": "ref",
+   "stage": "skin",
+   "file": "artifacts/wave-gen/verify-visual/K-r1-lane/dwarf-male-ref-skin.png",
+   "tiles": [
+    {
+     "axis": "+Z",
+     "area": 184954,
+     "interiorInk": 0.0393,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.9925,
+     "mirrorColourDiff": 13.04,
+     "lrBandImbalance": [
+      0.005,
+      -0.001,
+      -0.004
+     ]
+    },
+    {
+     "axis": "-Z",
+     "area": 185949,
+     "interiorInk": 0.0443,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.9914,
+     "mirrorColourDiff": 11.94,
+     "lrBandImbalance": [
+      -0.005,
+      0.001,
+      0.006
+     ]
+    },
+    {
+     "axis": "+X",
+     "area": 88636,
+     "interiorInk": 0.0234,
+     "components": 1,
+     "detached": []
+    },
+    {
+     "axis": "-X",
+     "area": 88441,
+     "interiorInk": 0.0346,
+     "components": 1,
+     "detached": []
+    },
+    {
+     "axis": "+Y",
+     "area": 81366,
+     "interiorInk": 0.0891,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.9908,
+     "mirrorColourDiff": 11.32,
+     "lrBandImbalance": [
+      0.006,
+      0,
+      0.007
+     ]
+    },
+    {
+     "axis": "-Y",
+     "area": 79844,
+     "interiorInk": 0.1979,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.9924,
+     "mirrorColourDiff": 11.97,
+     "lrBandImbalance": [
+      0,
+      0,
+      0.006
+     ]
+    }
+   ],
+   "scaleMmPerPx": 1.94,
+   "vsBaseline": {
+    "sameSize": true,
+    "meanAbs": 0.287,
+    "changedShare": 0,
+    "bands": {
+     "+Z:top": 0,
+     "-Z:top": 0,
+     "+X:top": 0,
+     "+Z:mid": 0,
+     "-Z:mid": 0,
+     "+X:mid": 0,
+     "+Z:bottom": 0,
+     "-Z:bottom": 0,
+     "+X:bottom": 0,
+     "-X:top": 0,
+     "+Y:top": 0,
+     "-Y:top": 0,
+     "-X:mid": 0,
+     "+Y:mid": 0,
+     "-Y:mid": 0,
+     "-X:bottom": 0,
+     "+Y:bottom": 0,
+     "-Y:bottom": 0
+    },
+    "diffFile": "artifacts/wave-gen/verify-visual/K-r1-lane/dwarf-male-ref-skin.diff.png"
+   }
+  },
+  {
+   "name": "dwarf-male-ref-hitboxes",
+   "race": "dwarf",
+   "sex": "male",
+   "stats": "ref",
+   "stage": "hitboxes",
+   "file": "artifacts/wave-gen/verify-visual/K-r1-lane/dwarf-male-ref-hitboxes.png",
+   "tiles": [
+    {
+     "axis": "+Z",
+     "area": 220011,
+     "interiorInk": 0.0176,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.9613,
+     "mirrorColourDiff": 7.02,
+     "lrBandImbalance": [
+      -0.007,
+      -0.005,
+      0.001
+     ]
+    },
+    {
+     "axis": "-Z",
+     "area": 220998,
+     "interiorInk": 0.0404,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.9612,
+     "mirrorColourDiff": 7.91,
+     "lrBandImbalance": [
+      0.009,
+      0.005,
+      0
+     ]
+    },
+    {
+     "axis": "+X",
+     "area": 97349,
+     "interiorInk": 0.0377,
+     "components": 1,
+     "detached": []
+    },
+    {
+     "axis": "-X",
+     "area": 97098,
+     "interiorInk": 0.0293,
+     "components": 1,
+     "detached": []
+    },
+    {
+     "axis": "+Y",
+     "area": 92264,
+     "interiorInk": 0.0184,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.9568,
+     "mirrorColourDiff": 10.59,
+     "lrBandImbalance": [
+      0.018,
+      0.004,
+      0.03
+     ]
+    },
+    {
+     "axis": "-Y",
+     "area": 91615,
+     "interiorInk": 0.1138,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.9583,
+     "mirrorColourDiff": 8.73,
+     "lrBandImbalance": [
+      0.028,
+      0.005,
+      0.016
+     ]
+    }
+   ],
+   "scaleMmPerPx": 1.94,
+   "vsBaseline": {
+    "sameSize": true,
+    "meanAbs": 0.288,
+    "changedShare": 0,
+    "bands": {
+     "+Z:top": 0,
+     "-Z:top": 0,
+     "+X:top": 0,
+     "+Z:mid": 0,
+     "-Z:mid": 0,
+     "+X:mid": 0,
+     "+Z:bottom": 0,
+     "-Z:bottom": 0,
+     "+X:bottom": 0,
+     "-X:top": 0,
+     "+Y:top": 0,
+     "-Y:top": 0,
+     "-X:mid": 0,
+     "+Y:mid": 0,
+     "-Y:mid": 0,
+     "-X:bottom": 0,
+     "+Y:bottom": 0,
+     "-Y:bottom": 0
+    },
+    "diffFile": "artifacts/wave-gen/verify-visual/K-r1-lane/dwarf-male-ref-hitboxes.diff.png"
+   }
+  },
+  {
+   "name": "dwarf-female-ref-final",
+   "race": "dwarf",
+   "sex": "female",
+   "stats": "ref",
+   "stage": "final",
+   "file": "artifacts/wave-gen/verify-visual/K-r1-lane/dwarf-female-ref-final.png",
+   "tiles": [
+    {
+     "axis": "+Z",
+     "area": 224752,
+     "interiorInk": 0.4008,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.9708,
+     "mirrorColourDiff": 3.22,
+     "lrBandImbalance": [
+      0.004,
+      -0.004,
+      0.004
+     ]
+    },
+    {
+     "axis": "-Z",
+     "area": 224679,
+     "interiorInk": 0.4921,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.9706,
+     "mirrorColourDiff": 2.85,
+     "lrBandImbalance": [
+      -0.004,
+      0.005,
+      -0.003
+     ]
+    },
+    {
+     "axis": "+X",
+     "area": 110137,
+     "interiorInk": 0.4104,
+     "components": 1,
+     "detached": []
+    },
+    {
+     "axis": "-X",
+     "area": 110531,
+     "interiorInk": 0.4237,
+     "components": 1,
+     "detached": []
+    },
+    {
+     "axis": "+Y",
+     "area": 94890,
+     "interiorInk": 0.1736,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.9805,
+     "mirrorColourDiff": 4.89,
+     "lrBandImbalance": [
+      0.01,
+      0.003,
+      0.005
+     ]
+    },
+    {
+     "axis": "-Y",
+     "area": 94280,
+     "interiorInk": 0.8289,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.9839,
+     "mirrorColourDiff": 2.47,
+     "lrBandImbalance": [
+      0.002,
+      -0.001,
+      0.01
+     ]
+    }
+   ],
+   "scaleMmPerPx": 1.77,
+   "vsBaseline": {
+    "sameSize": true,
+    "meanAbs": 0.288,
+    "changedShare": 0,
+    "bands": {
+     "+Z:top": 0,
+     "-Z:top": 0,
+     "+X:top": 0,
+     "+Z:mid": 0,
+     "-Z:mid": 0,
+     "+X:mid": 0,
+     "+Z:bottom": 0,
+     "-Z:bottom": 0,
+     "+X:bottom": 0,
+     "-X:top": 0,
+     "+Y:top": 0,
+     "-Y:top": 0,
+     "-X:mid": 0,
+     "+Y:mid": 0,
+     "-Y:mid": 0,
+     "-X:bottom": 0,
+     "+Y:bottom": 0,
+     "-Y:bottom": 0
+    },
+    "diffFile": "artifacts/wave-gen/verify-visual/K-r1-lane/dwarf-female-ref-final.diff.png"
+   }
+  },
+  {
+   "name": "dwarf-female-ref-skin",
+   "race": "dwarf",
+   "sex": "female",
+   "stats": "ref",
+   "stage": "skin",
+   "file": "artifacts/wave-gen/verify-visual/K-r1-lane/dwarf-female-ref-skin.png",
+   "tiles": [
+    {
+     "axis": "+Z",
+     "area": 197993,
+     "interiorInk": 0.0417,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.992,
+     "mirrorColourDiff": 13.26,
+     "lrBandImbalance": [
+      0.005,
+      0.003,
+      0.004
+     ]
+    },
+    {
+     "axis": "-Z",
+     "area": 198203,
+     "interiorInk": 0.0466,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.9922,
+     "mirrorColourDiff": 12.01,
+     "lrBandImbalance": [
+      -0.005,
+      -0.003,
+      -0.004
+     ]
+    },
+    {
+     "axis": "+X",
+     "area": 94005,
+     "interiorInk": 0.0267,
+     "components": 1,
+     "detached": []
+    },
+    {
+     "axis": "-X",
+     "area": 94420,
+     "interiorInk": 0.0321,
+     "components": 1,
+     "detached": []
+    },
+    {
+     "axis": "+Y",
+     "area": 84594,
+     "interiorInk": 0.0514,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.9924,
+     "mirrorColourDiff": 12.14,
+     "lrBandImbalance": [
+      0.007,
+      0,
+      0.006
+     ]
+    },
+    {
+     "axis": "-Y",
+     "area": 83746,
+     "interiorInk": 0.2194,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.994,
+     "mirrorColourDiff": 12.34,
+     "lrBandImbalance": [
+      0.004,
+      0,
+      0.007
+     ]
+    }
+   ],
+   "scaleMmPerPx": 1.77,
+   "vsBaseline": {
+    "sameSize": true,
+    "meanAbs": 0.288,
+    "changedShare": 0,
+    "bands": {
+     "+Z:top": 0,
+     "-Z:top": 0,
+     "+X:top": 0,
+     "+Z:mid": 0,
+     "-Z:mid": 0,
+     "+X:mid": 0,
+     "+Z:bottom": 0,
+     "-Z:bottom": 0,
+     "+X:bottom": 0,
+     "-X:top": 0,
+     "+Y:top": 0,
+     "-Y:top": 0,
+     "-X:mid": 0,
+     "+Y:mid": 0,
+     "-Y:mid": 0,
+     "-X:bottom": 0,
+     "+Y:bottom": 0,
+     "-Y:bottom": 0
+    },
+    "diffFile": "artifacts/wave-gen/verify-visual/K-r1-lane/dwarf-female-ref-skin.diff.png"
+   }
+  },
+  {
+   "name": "dwarf-female-ref-hitboxes",
+   "race": "dwarf",
+   "sex": "female",
+   "stats": "ref",
+   "stage": "hitboxes",
+   "file": "artifacts/wave-gen/verify-visual/K-r1-lane/dwarf-female-ref-hitboxes.png",
+   "tiles": [
+    {
+     "axis": "+Z",
+     "area": 232212,
+     "interiorInk": 0.031,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.9595,
+     "mirrorColourDiff": 8.6,
+     "lrBandImbalance": [
+      -0.01,
+      -0.003,
+      -0.005
+     ]
+    },
+    {
+     "axis": "-Z",
+     "area": 232517,
+     "interiorInk": 0.0354,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.9595,
+     "mirrorColourDiff": 7.84,
+     "lrBandImbalance": [
+      0.01,
+      0.003,
+      0.005
+     ]
+    },
+    {
+     "axis": "+X",
+     "area": 106276,
+     "interiorInk": 0.037,
+     "components": 1,
+     "detached": []
+    },
+    {
+     "axis": "-X",
+     "area": 106516,
+     "interiorInk": 0.043,
+     "components": 1,
+     "detached": []
+    },
+    {
+     "axis": "+Y",
+     "area": 99067,
+     "interiorInk": 0.021,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.962,
+     "mirrorColourDiff": 9.76,
+     "lrBandImbalance": [
+      0.033,
+      0.001,
+      -0.004
+     ]
+    },
+    {
+     "axis": "-Y",
+     "area": 99374,
+     "interiorInk": 0.0963,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.9596,
+     "mirrorColourDiff": 7.33,
+     "lrBandImbalance": [
+      -0.001,
+      0.002,
+      0.03
+     ]
+    }
+   ],
+   "scaleMmPerPx": 1.77,
+   "vsBaseline": {
+    "sameSize": true,
+    "meanAbs": 0.287,
+    "changedShare": 0,
+    "bands": {
+     "+Z:top": 0,
+     "-Z:top": 0,
+     "+X:top": 0,
+     "+Z:mid": 0,
+     "-Z:mid": 0,
+     "+X:mid": 0,
+     "+Z:bottom": 0,
+     "-Z:bottom": 0,
+     "+X:bottom": 0,
+     "-X:top": 0,
+     "+Y:top": 0,
+     "-Y:top": 0,
+     "-X:mid": 0,
+     "+Y:mid": 0,
+     "-Y:mid": 0,
+     "-X:bottom": 0,
+     "+Y:bottom": 0,
+     "-Y:bottom": 0
+    },
+    "diffFile": "artifacts/wave-gen/verify-visual/K-r1-lane/dwarf-female-ref-hitboxes.diff.png"
+   }
+  },
+  {
+   "name": "ork-male-ref-final",
+   "race": "ork",
+   "sex": "male",
+   "stats": "ref",
+   "stage": "final",
+   "file": "artifacts/wave-gen/verify-visual/K-r1-lane/ork-male-ref-final.png",
+   "tiles": [
+    {
+     "axis": "+Z",
+     "area": 199070,
+     "interiorInk": 0.323,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.9695,
+     "mirrorColourDiff": 3.35,
+     "lrBandImbalance": [
+      0.004,
+      -0.008,
+      -0.005
+     ]
+    },
+    {
+     "axis": "-Z",
+     "area": 198348,
+     "interiorInk": 0.5066,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.9683,
+     "mirrorColourDiff": 2.58,
+     "lrBandImbalance": [
+      -0.003,
+      0.01,
+      0.006
+     ]
+    },
+    {
+     "axis": "+X",
+     "area": 94263,
+     "interiorInk": 0.3618,
+     "components": 1,
+     "detached": []
+    },
+    {
+     "axis": "-X",
+     "area": 94354,
+     "interiorInk": 0.3814,
+     "components": 1,
+     "detached": []
+    },
+    {
+     "axis": "+Y",
+     "area": 82514,
+     "interiorInk": 0.1518,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.9743,
+     "mirrorColourDiff": 5.8,
+     "lrBandImbalance": [
+      0.012,
+      -0.001,
+      0.005
+     ]
+    },
+    {
+     "axis": "-Y",
+     "area": 81510,
+     "interiorInk": 0.8036,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.9735,
+     "mirrorColourDiff": 2.43,
+     "lrBandImbalance": [
+      0.002,
+      -0.008,
+      0.011
+     ]
+    }
+   ],
+   "scaleMmPerPx": 2.66,
+   "vsBaseline": {
+    "sameSize": true,
+    "meanAbs": 0.288,
+    "changedShare": 0,
+    "bands": {
+     "+Z:top": 0,
+     "-Z:top": 0,
+     "+X:top": 0,
+     "+Z:mid": 0,
+     "-Z:mid": 0,
+     "+X:mid": 0,
+     "+Z:bottom": 0,
+     "-Z:bottom": 0,
+     "+X:bottom": 0,
+     "-X:top": 0,
+     "+Y:top": 0,
+     "-Y:top": 0,
+     "-X:mid": 0,
+     "+Y:mid": 0,
+     "-Y:mid": 0,
+     "-X:bottom": 0,
+     "+Y:bottom": 0,
+     "-Y:bottom": 0
+    },
+    "diffFile": "artifacts/wave-gen/verify-visual/K-r1-lane/ork-male-ref-final.diff.png"
+   }
+  },
+  {
+   "name": "ork-male-ref-skin",
+   "race": "ork",
+   "sex": "male",
+   "stats": "ref",
+   "stage": "skin",
+   "file": "artifacts/wave-gen/verify-visual/K-r1-lane/ork-male-ref-skin.png",
+   "tiles": [
+    {
+     "axis": "+Z",
+     "area": 183506,
+     "interiorInk": 0.0388,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.9911,
+     "mirrorColourDiff": 12.91,
+     "lrBandImbalance": [
+      0.006,
+      -0.001,
+      -0.006
+     ]
+    },
+    {
+     "axis": "-Z",
+     "area": 183114,
+     "interiorInk": 0.0494,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.9907,
+     "mirrorColourDiff": 12.08,
+     "lrBandImbalance": [
+      -0.006,
+      0.001,
+      0.006
+     ]
+    },
+    {
+     "axis": "+X",
+     "area": 79869,
+     "interiorInk": 0.0306,
+     "components": 1,
+     "detached": []
+    },
+    {
+     "axis": "-X",
+     "area": 79994,
+     "interiorInk": 0.0331,
+     "components": 1,
+     "detached": []
+    },
+    {
+     "axis": "+Y",
+     "area": 77077,
+     "interiorInk": 0.0569,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.9894,
+     "mirrorColourDiff": 10.98,
+     "lrBandImbalance": [
+      0.007,
+      0,
+      0.007
+     ]
+    },
+    {
+     "axis": "-Y",
+     "area": 76487,
+     "interiorInk": 0.1769,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.9916,
+     "mirrorColourDiff": 12.64,
+     "lrBandImbalance": [
+      0.002,
+      0,
+      0.005
+     ]
+    }
+   ],
+   "scaleMmPerPx": 2.66,
+   "vsBaseline": {
+    "sameSize": true,
+    "meanAbs": 0.288,
+    "changedShare": 0,
+    "bands": {
+     "+Z:top": 0,
+     "-Z:top": 0,
+     "+X:top": 0,
+     "+Z:mid": 0,
+     "-Z:mid": 0,
+     "+X:mid": 0,
+     "+Z:bottom": 0,
+     "-Z:bottom": 0,
+     "+X:bottom": 0,
+     "-X:top": 0,
+     "+Y:top": 0,
+     "-Y:top": 0,
+     "-X:mid": 0,
+     "+Y:mid": 0,
+     "-Y:mid": 0,
+     "-X:bottom": 0,
+     "+Y:bottom": 0,
+     "-Y:bottom": 0
+    },
+    "diffFile": "artifacts/wave-gen/verify-visual/K-r1-lane/ork-male-ref-skin.diff.png"
+   }
+  },
+  {
+   "name": "ork-male-ref-hitboxes",
+   "race": "ork",
+   "sex": "male",
+   "stats": "ref",
+   "stage": "hitboxes",
+   "file": "artifacts/wave-gen/verify-visual/K-r1-lane/ork-male-ref-hitboxes.png",
+   "tiles": [
+    {
+     "axis": "+Z",
+     "area": 213631,
+     "interiorInk": 0.028,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.9655,
+     "mirrorColourDiff": 8.44,
+     "lrBandImbalance": [
+      -0.006,
+      -0.009,
+      -0.026
+     ]
+    },
+    {
+     "axis": "-Z",
+     "area": 212852,
+     "interiorInk": 0.0516,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.9659,
+     "mirrorColourDiff": 8.72,
+     "lrBandImbalance": [
+      0.007,
+      0.009,
+      0.028
+     ]
+    },
+    {
+     "axis": "+X",
+     "area": 91320,
+     "interiorInk": 0.0503,
+     "components": 1,
+     "detached": []
+    },
+    {
+     "axis": "-X",
+     "area": 90754,
+     "interiorInk": 0.0365,
+     "components": 1,
+     "detached": []
+    },
+    {
+     "axis": "+Y",
+     "area": 91428,
+     "interiorInk": 0.0354,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.9654,
+     "mirrorColourDiff": 8.49,
+     "lrBandImbalance": [
+      -0.007,
+      0.002,
+      -0.013
+     ]
+    },
+    {
+     "axis": "-Y",
+     "area": 91194,
+     "interiorInk": 0.1209,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.9647,
+     "mirrorColourDiff": 9.15,
+     "lrBandImbalance": [
+      -0.007,
+      0.002,
+      -0.006
+     ]
+    }
+   ],
+   "scaleMmPerPx": 2.66,
+   "vsBaseline": {
+    "sameSize": true,
+    "meanAbs": 0.287,
+    "changedShare": 0,
+    "bands": {
+     "+Z:top": 0,
+     "-Z:top": 0,
+     "+X:top": 0,
+     "+Z:mid": 0,
+     "-Z:mid": 0,
+     "+X:mid": 0,
+     "+Z:bottom": 0,
+     "-Z:bottom": 0,
+     "+X:bottom": 0,
+     "-X:top": 0,
+     "+Y:top": 0,
+     "-Y:top": 0,
+     "-X:mid": 0,
+     "+Y:mid": 0,
+     "-Y:mid": 0,
+     "-X:bottom": 0,
+     "+Y:bottom": 0,
+     "-Y:bottom": 0
+    },
+    "diffFile": "artifacts/wave-gen/verify-visual/K-r1-lane/ork-male-ref-hitboxes.diff.png"
+   }
+  },
+  {
+   "name": "ork-female-ref-final",
+   "race": "ork",
+   "sex": "female",
+   "stats": "ref",
+   "stage": "final",
+   "file": "artifacts/wave-gen/verify-visual/K-r1-lane/ork-female-ref-final.png",
+   "tiles": [
+    {
+     "axis": "+Z",
+     "area": 212588,
+     "interiorInk": 0.3903,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.9739,
+     "mirrorColourDiff": 2.9,
+     "lrBandImbalance": [
+      0.003,
+      -0.01,
+      -0.005
+     ]
+    },
+    {
+     "axis": "-Z",
+     "area": 212969,
+     "interiorInk": 0.5114,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.973,
+     "mirrorColourDiff": 2.3,
+     "lrBandImbalance": [
+      -0.003,
+      0.012,
+      0.006
+     ]
+    },
+    {
+     "axis": "+X",
+     "area": 99454,
+     "interiorInk": 0.3867,
+     "components": 1,
+     "detached": []
+    },
+    {
+     "axis": "-X",
+     "area": 99547,
+     "interiorInk": 0.4151,
+     "components": 1,
+     "detached": []
+    },
+    {
+     "axis": "+Y",
+     "area": 87749,
+     "interiorInk": 0.1681,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.9831,
+     "mirrorColourDiff": 4.46,
+     "lrBandImbalance": [
+      0.012,
+      0,
+      0.004
+     ]
+    },
+    {
+     "axis": "-Y",
+     "area": 86051,
+     "interiorInk": 0.8643,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.9821,
+     "mirrorColourDiff": 1.73,
+     "lrBandImbalance": [
+      0.002,
+      -0.004,
+      0.012
+     ]
+    }
+   ],
+   "scaleMmPerPx": 2.39,
+   "vsBaseline": {
+    "sameSize": true,
+    "meanAbs": 0.288,
+    "changedShare": 0,
+    "bands": {
+     "+Z:top": 0,
+     "-Z:top": 0,
+     "+X:top": 0,
+     "+Z:mid": 0,
+     "-Z:mid": 0,
+     "+X:mid": 0,
+     "+Z:bottom": 0,
+     "-Z:bottom": 0,
+     "+X:bottom": 0,
+     "-X:top": 0,
+     "+Y:top": 0,
+     "-Y:top": 0,
+     "-X:mid": 0,
+     "+Y:mid": 0,
+     "-Y:mid": 0,
+     "-X:bottom": 0,
+     "+Y:bottom": 0,
+     "-Y:bottom": 0
+    },
+    "diffFile": "artifacts/wave-gen/verify-visual/K-r1-lane/ork-female-ref-final.diff.png"
+   }
+  },
+  {
+   "name": "ork-female-ref-skin",
+   "race": "ork",
+   "sex": "female",
+   "stats": "ref",
+   "stage": "skin",
+   "file": "artifacts/wave-gen/verify-visual/K-r1-lane/ork-female-ref-skin.png",
+   "tiles": [
+    {
+     "axis": "+Z",
+     "area": 195907,
+     "interiorInk": 0.0404,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.9936,
+     "mirrorColourDiff": 13.28,
+     "lrBandImbalance": [
+      0.004,
+      0,
+      -0.006
+     ]
+    },
+    {
+     "axis": "-Z",
+     "area": 196519,
+     "interiorInk": 0.0492,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.9929,
+     "mirrorColourDiff": 12.23,
+     "lrBandImbalance": [
+      -0.004,
+      0,
+      0.007
+     ]
+    },
+    {
+     "axis": "+X",
+     "area": 88016,
+     "interiorInk": 0.0328,
+     "components": 1,
+     "detached": []
+    },
+    {
+     "axis": "-X",
+     "area": 88093,
+     "interiorInk": 0.0365,
+     "components": 1,
+     "detached": []
+    },
+    {
+     "axis": "+Y",
+     "area": 81876,
+     "interiorInk": 0.0456,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.9932,
+     "mirrorColourDiff": 11.25,
+     "lrBandImbalance": [
+      0.005,
+      0,
+      0.006
+     ]
+    },
+    {
+     "axis": "-Y",
+     "area": 80170,
+     "interiorInk": 0.2042,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.9946,
+     "mirrorColourDiff": 12.79,
+     "lrBandImbalance": [
+      0.003,
+      0,
+      0.004
+     ]
+    }
+   ],
+   "scaleMmPerPx": 2.39,
+   "vsBaseline": {
+    "sameSize": true,
+    "meanAbs": 0.288,
+    "changedShare": 0,
+    "bands": {
+     "+Z:top": 0,
+     "-Z:top": 0,
+     "+X:top": 0,
+     "+Z:mid": 0,
+     "-Z:mid": 0,
+     "+X:mid": 0,
+     "+Z:bottom": 0,
+     "-Z:bottom": 0,
+     "+X:bottom": 0,
+     "-X:top": 0,
+     "+Y:top": 0,
+     "-Y:top": 0,
+     "-X:mid": 0,
+     "+Y:mid": 0,
+     "-Y:mid": 0,
+     "-X:bottom": 0,
+     "+Y:bottom": 0,
+     "-Y:bottom": 0
+    },
+    "diffFile": "artifacts/wave-gen/verify-visual/K-r1-lane/ork-female-ref-skin.diff.png"
+   }
+  },
+  {
+   "name": "ork-female-ref-hitboxes",
+   "race": "ork",
+   "sex": "female",
+   "stats": "ref",
+   "stage": "hitboxes",
+   "file": "artifacts/wave-gen/verify-visual/K-r1-lane/ork-female-ref-hitboxes.png",
+   "tiles": [
+    {
+     "axis": "+Z",
+     "area": 228073,
+     "interiorInk": 0.024,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.9468,
+     "mirrorColourDiff": 9.53,
+     "lrBandImbalance": [
+      -0.004,
+      0.03,
+      -0.004
+     ]
+    },
+    {
+     "axis": "-Z",
+     "area": 228620,
+     "interiorInk": 0.0421,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.9474,
+     "mirrorColourDiff": 10.1,
+     "lrBandImbalance": [
+      0.005,
+      -0.029,
+      0.003
+     ]
+    },
+    {
+     "axis": "+X",
+     "area": 102517,
+     "interiorInk": 0.0371,
+     "components": 1,
+     "detached": []
+    },
+    {
+     "axis": "-X",
+     "area": 102777,
+     "interiorInk": 0.0312,
+     "components": 1,
+     "detached": []
+    },
+    {
+     "axis": "+Y",
+     "area": 93047,
+     "interiorInk": 0.0163,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.9563,
+     "mirrorColourDiff": 10.79,
+     "lrBandImbalance": [
+      0.015,
+      0.002,
+      0.018
+     ]
+    },
+    {
+     "axis": "-Y",
+     "area": 92041,
+     "interiorInk": 0.1079,
+     "components": 1,
+     "detached": [],
+     "mirrorIoU": 0.9586,
+     "mirrorColourDiff": 8.67,
+     "lrBandImbalance": [
+      0.019,
+      0.002,
+      0.019
+     ]
+    }
+   ],
+   "scaleMmPerPx": 2.39,
+   "vsBaseline": {
+    "sameSize": true,
+    "meanAbs": 0.288,
+    "changedShare": 0,
+    "bands": {
+     "+Z:top": 0,
+     "-Z:top": 0,
+     "+X:top": 0,
+     "+Z:mid": 0,
+     "-Z:mid": 0,
+     "+X:mid": 0,
+     "+Z:bottom": 0,
+     "-Z:bottom": 0,
+     "+X:bottom": 0,
+     "-X:top": 0,
+     "+Y:top": 0,
+     "-Y:top": 0,
+     "-X:mid": 0,
+     "+Y:mid": 0,
+     "-Y:mid": 0,
+     "-X:bottom": 0,
+     "+Y:bottom": 0,
+     "-Y:bottom": 0
+    },
+    "diffFile": "artifacts/wave-gen/verify-visual/K-r1-lane/ork-female-ref-hitboxes.diff.png"
+   }
+  }
+ ]
+}

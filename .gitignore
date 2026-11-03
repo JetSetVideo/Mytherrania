@@ -6,3 +6,5 @@ artifacts/coverage/
 artifacts/batch*/records.jsonl
 artifacts/batch-vars*/records.jsonl
 dist-*/
+artifacts/wave-gen/verify-visual/**/*.png
+artifacts/qa-wave-gen/**/*.png

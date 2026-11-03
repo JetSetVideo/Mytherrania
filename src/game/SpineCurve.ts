@@ -92,3 +92,63 @@ export function smoothSpine(column: Vertebra[], passes = 1): Vertebra[] {
   }
   return column.map((v, i) => ({ ...v, z: z[i] }));
 }
+
+// ---------------------------------------------------------------------------------------------
+// Wave GEN lane B: sub-race posture curves. The canonical column above is the erect human; each
+// race scales its curves and adds the two posture terms the generator sculpts on the rendered skin
+// (StatMorph.posture): the cervical FORWARD offset of the head over the shoulders and the lumbar
+// hollow's extra depth, both in head heights (so a dwarf and an ork get proportionate curves), plus
+// the trapezius' share of the neck-to-shoulder slope. Human and elf are erect: every term 0 / 1.
+
+/** One race's posture curve: amplitude multipliers per curve plus the sculpt terms (head heights). */
+export interface PostureCurve {
+  /** Multipliers on SEGMENTS' amplitudes (1 = the canonical human column). */
+  cervical: number; thoracic: number; lumbar: number;
+  /** Head displacement forward of the erect column at the head pivot (head heights). */
+  neckForwardPerHead: number;
+  /** Extra depth of the lumbar hollow behind the waist (head heights). */
+  lumbarDepthPerHead: number;
+  /** Trapezius girth multiplier (neck-to-shoulder slope). */
+  trapezius: number;
+}
+
+/** Erect: the canonical column, no posture sculpt. */
+export const ERECT_POSTURE: PostureCurve = { cervical: 1, thoracic: 1, lumbar: 1, neckForwardPerHead: 0, lumbarDepthPerHead: 0, trapezius: 1 };
+
+/**
+ * Race posture (sub-races inherit their race unless SUBRACE_POSTURE overrides). Ork: the head carried
+ * forward of the shoulders on a heavy trapezius (cervical forward, thoracic rounder). Dwarf: a deep
+ * lumbar curve under a barrel chest. Human and elf: erect, minimal deviation.
+ */
+export const RACE_POSTURE: Record<string, PostureCurve> = {
+  human: ERECT_POSTURE,
+  elf: ERECT_POSTURE,
+  dwarf: { cervical: 1, thoracic: 1.1, lumbar: 1.6, neckForwardPerHead: 0, lumbarDepthPerHead: 0.07, trapezius: 1.08 },
+  ork: { cervical: 1.8, thoracic: 1.35, lumbar: 1, neckForwardPerHead: 0.13, lumbarDepthPerHead: 0, trapezius: 1.3 },
+};
+/** Sub-race overrides (partial, layered on the race's curve). */
+export const SUBRACE_POSTURE: Record<string, Partial<PostureCurve>> = {
+  ironhide: { neckForwardPerHead: 0.15, trapezius: 1.36 },
+  mountain: { lumbarDepthPerHead: 0.08 },
+};
+/** Bounds every posture term is clamped into (the sculpt never exceeds them). */
+export const POSTURE_BOUNDS = { neckForwardPerHead: [0, 0.2], lumbarDepthPerHead: [0, 0.12], trapezius: [1, 1.5] } as const;
+
+export function postureCurve(race: string, subrace: string | null = null): PostureCurve {
+  const base = RACE_POSTURE[race] ?? ERECT_POSTURE;
+  const p = { ...base, ...(subrace ? SUBRACE_POSTURE[subrace] ?? {} : {}) };
+  const cl = (v: number, [lo, hi]: readonly [number, number]) => Math.max(lo, Math.min(hi, v));
+  return {
+    ...p,
+    neckForwardPerHead: cl(p.neckForwardPerHead, POSTURE_BOUNDS.neckForwardPerHead),
+    lumbarDepthPerHead: cl(p.lumbarDepthPerHead, POSTURE_BOUNDS.lumbarDepthPerHead),
+    trapezius: cl(p.trapezius, POSTURE_BOUNDS.trapezius),
+  };
+}
+
+/** The race's 33-vertebra column: the canonical curves scaled by the race's posture multipliers. */
+export function raceSpineColumn(race: string, subrace: string | null = null): Vertebra[] {
+  const p = postureCurve(race, subrace);
+  const k: Record<Vertebra["curve"], number> = { cervical: p.cervical, thoracic: p.thoracic, lumbar: p.lumbar, sacral: 1 };
+  return spineColumn().map((v) => ({ ...v, z: v.z * k[v.curve] }));
+}

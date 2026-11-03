@@ -65,6 +65,35 @@ export interface SkinnedExtras {
    */
   readonly hands?: HandRigApi;
   readonly jointHelpers?: readonly JointHelper[];
+  /**
+   * Wave GEN (lane K): the rig's frame clock — `n` counts update() calls, `dt` is the last update's step
+   * (s). Render-side solvers that run after update() in the same frame (combat/OffHand's temporal limiter)
+   * read it to tell "this frame" from "the previous frame" and to rate-limit by time.
+   */
+  readonly frameClock?: RigFrameClock;
+}
+
+/**
+ * Wave GEN (lane K): the rig's frame clock and the left arm's render continuity. `armL` holds the
+ * shoulderL / elbowL local rotations as DRAWN last frame (snapshotted at the start of update());
+ * a render-side solver that overrides the left arm (combat/OffHand) limits its output against them and
+ * stamps `editedL = n`; when the override stops (a fall takes the body, the hand releases), update()
+ * eases the arm from the drawn pose to the Skeleton's at ARM_RELEASE_RATE instead of snapping.
+ */
+export interface RigFrameClock {
+  readonly n: number; readonly dt: number; readonly armL: readonly [THREE.Quaternion, THREE.Quaternion]; editedL: number;
+  /** The weapon shoulder as drawn last frame and the frame a render-side edit (OffHand convergence) last moved it. */
+  readonly shoulderR: THREE.Quaternion; editedR: number;
+}
+/** Fastest a released (no longer overridden) left arm returns to the Skeleton's pose, rad/s (0.33 rad per 60 Hz frame). */
+export const ARM_RELEASE_RATE = 20;
+const qRel = new THREE.Quaternion();
+/** Turn q from `ref` toward itself by at most `step` rad (in place); true when it was limited. */
+export function limitQuatStep(q: THREE.Quaternion, ref: THREE.Quaternion, step: number): boolean {
+  const ang = 2 * Math.acos(Math.min(1, Math.abs(q.dot(ref))));
+  if (!(ang > step)) return false;
+  q.copy(qRel.copy(ref).slerp(q, step / ang));
+  return true;
 }
 
 /** Build options. */
@@ -231,7 +260,7 @@ export function buildSkinnedHumanoid(
   // Rigid parts on the head bone (its world rest rotation is the identity).
   const headBone = bones.get("head")!;
   const headSeg = plan.bones.find((b) => b.id === "head")!;
-  const face = buildFaceParts(headBone, plan.face, headSeg.head, plan.proportions.head, appearance);
+  const face = buildFaceParts(headBone, plan.face, headSeg.head, plan.proportions.head, appearance, bodySpec.stats); // wave GEN (S Z-17): intelligence -> hair
   triangleCount += face.triangleCount;
 
   // Weapon on the right forearm bone, at the grip point, in a mount that undoes the arm's
@@ -372,6 +401,12 @@ export function buildSkinnedHumanoid(
   let gripTaken = false, carryHand: [V3t, V3t, V3t] | null = null;
   const carryEuler: [number, number] = [0, 0];
 
+  const frameClock = {
+    n: 0, dt: 0, armL: [new THREE.Quaternion(), new THREE.Quaternion()] as [THREE.Quaternion, THREE.Quaternion], editedL: -1,
+    shoulderR: new THREE.Quaternion(), editedR: -1,
+  };
+  const armSL = bones.get("shoulderL" as BoneId), armEL = bones.get("elbowL" as BoneId), armSR = bones.get("shoulderR" as BoneId);
+  let releasingL = false, releasingR = false;
   const rig: HumanoidRig & SkinnedExtras = {
     group,
     triangleCount,
@@ -390,6 +425,7 @@ export function buildSkinnedHumanoid(
     timing: cached ? { anatomyMs: 0, polygonizeMs: 0, sampleMs: 0, meshBrushMs: 0, statsMs: 0, totalMs: 0, corners: 0 } : body.timing,
     hands,
     jointHelpers: helpers,
+    frameClock,
     // Wave H: the movable hair/beard masses, so the engine's SecondaryMotion can drive them with
     // the weather's wind and the head's own motion. Empty when the ancestry has no such mass.
     secondaryMasses: face.secondary,
@@ -402,6 +438,11 @@ export function buildSkinnedHumanoid(
       hands.update();
     },
     update(sk: GameSkeleton, dt: number): void {
+      // Wave GEN (lane K): the left arm as drawn last frame, and whether something overrode it then.
+      if (armSL && armEL) { frameClock.armL[0].copy(armSL.quaternion); frameClock.armL[1].copy(armEL.quaternion); }
+      if (armSR) frameClock.shoulderR.copy(armSR.quaternion);
+      const easeL = releasingL || frameClock.editedL === frameClock.n, easeR = releasingR || frameClock.editedR === frameClock.n;
+      frameClock.n++; frameClock.dt = dt;
       sk.update(dt);
       for (const jb of jointBones) {
         // `rot` is in RIG space (sign applied); levelFeet cancels the chain's rig rotation.
@@ -448,6 +489,21 @@ export function buildSkinnedHumanoid(
         const pitch = gripPitchFor(carryBlade, sk.joint("spine").angle, sk.joint("shoulderR").angle, sk.joint("elbowR").angle, carryReverse);
         gripEuler(carryHand, pitch, 0, carryRule.band, carryEuler);
         grip.rotation.x = carryEuler[0]; grip.rotation.z = carryEuler[1];
+      }
+      // Wave GEN (lane K): an override that stopped (OffHand not applied this frame: a fall owns the body)
+      // releases the arm at ARM_RELEASE_RATE from the drawn pose (audit: 1.34 rad elbowL pop at a fall's
+      // first frame). If the override runs again this frame it writes over this (limited against armL too).
+      releasingL = false;
+      if (easeL && dt > 0 && armSL && armEL) {
+        const step = ARM_RELEASE_RATE * dt;
+        const a = limitQuatStep(armSL.quaternion, frameClock.armL[0], step), b = limitQuatStep(armEL.quaternion, frameClock.armL[1], step);
+        releasingL = a || b;
+        armSL.updateMatrixWorld(true);
+      }
+      releasingR = false;
+      if (easeR && dt > 0 && armSR) {
+        releasingR = limitQuatStep(armSR.quaternion, frameClock.shoulderR, ARM_RELEASE_RATE * dt);
+        armSR.updateMatrixWorld(true);
       }
       applyFaceMorph(face, sk.face.face());
       soleOffset = measureSoles();
