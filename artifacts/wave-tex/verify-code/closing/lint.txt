@@ -1,0 +1,2 @@
+Checked 721 files
+exit 0

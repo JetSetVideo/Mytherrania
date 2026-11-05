@@ -1,0 +1,57 @@
+{
+ "L": [
+  "Z-40 FAIL",
+  "Z-70 PASS"
+ ],
+ "P": [
+  "Z-47 PASS",
+  "Z-60 PASS",
+  "Z-73 PASS",
+  "Z-133 PASS (r4-5)"
+ ],
+ "C": [
+  "Z-49 PASS",
+  "Z-134 FAIL (r2)",
+  "Z-145 PASS (Z-134 closed)"
+ ],
+ "M": [
+  "Z-57 PASS",
+  "Z-132 PASS (r2-3)"
+ ],
+ "M/R": [
+  "Z-57 PASS",
+  "Z-130 FAIL (REN-9)",
+  "Z-144 PASS (REN-9 closed)"
+ ],
+ "L/P/R": [
+  "Z-40",
+  "Z-47",
+  "Z-70"
+ ],
+ "R": [
+  "Z-130 FAIL (closing)",
+  "Z-144 PASS (Z-130 closed)"
+ ],
+ "U": [
+  "Z-131 PASS (closing)"
+ ],
+ "_notes": [
+  "R and U had not posted READY when QC stopped (~150 min); EXP-R/EXP-U rows only check their diffs for deleted exports (0 lost).",
+  "Full suite (NO_COLOR=1 deno task test, artifacts/wave-tex/verify-code/full-suite.txt): 2102 passed, 1 failed in 12m47s \u2014 TX59 'MARKS.md tables are stale', transient: M rewrote MarkLibrary.ts/Tattoo.ts/MARKS.md at 00:45-00:46 during the run; tests/wave_tex_marks_test.ts re-run alone: 20 passed.",
+  "Closing round (QC, 2026-11-05 03:15-06:00 UTC, board Z-110 CLAIM): sections render, renderbench, ui, marks2, presets2, capture2 added; exports/marks/presets/capture re-run on the closing tree (20 rows, 0 FAIL).",
+  "R FAIL Z-130 = REN-9 (stitched scar line displaced by (count-1)/2 x spacing in the GLSL; REN-1b is the same defect seen as covered points outside the footprint radius). Identity 0 px / 24 (REN-7) and bench (REN-8) are QC's own runs: artifacts/wave-tex/verify-code/closing/{identity,bench-head,bench-work}.",
+  "U PASS Z-131 is code only: QC did NOT re-run tools/probe-wave-tex-ui.ts (UI-6 SKIP); UI-3b is a latent defect (LayerRow.locked is never set by game rows).",
+  "C FAIL Z-134 = CAP-5 (fixed MARKED_SET face anchors fail M's current validator; M Z-80 anchors not adopted).",
+  "Full suite on the closing tree (NO_COLOR=1 deno task test, artifacts/wave-tex/verify-code/closing/full-suite.txt, 05:44-06:08 UTC, while F was editing): ok | 2104 passed | 0 failed (8m47s). deno task check exit 0, deno lint 721 files 0 problems, 7 wave_tex test files 87 passed (03:20 UTC).",
+  "F had not posted READY when QC stopped (~06:20 UTC): no QC verdict on F. F's in-flight edits already close two QC FAILs on the tree (re-run 06:18 UTC, Z-137): REN-9/REN-1b PASS (CelMaterial: n = 1 for stitched), CAP-5 PASS on r07q-closing (MARKED_SET uses M's Z-80 anchors). REN-3's count is an upper bound (the regex also counts the word 'uniform' in GLSL comments).",
+  "Final round (QC, 2026-11-05 10:10-10:40 CET) on F READY Z-138: Z-143 PASS (0 FAIL, 4 WARN). REN-7/REN-8 rows now read QC's FRESH runs on the post-F tree (closing/identity, bench-work, bench-head; 04:35 runs kept in closing/pre-F-0435): identity 0 px / 24 + HEAD-vs-HEAD control 0/24; arena 2 rigs over 4 interleaved runs HEAD 3.4/3.0/3.8/3.5 -> defaults 4.2/4.2/4.3/4.2 ms (+0.5..+1.2, mean +0.77; 1 of 4 runs over +1 ms). MeshOcclusion (closing/qc-occlusion.ts): cold 8-22 ms, warm <0.03 ms, deterministic, range [0,0.89], hangs on an Infinity coordinate / NaN voxel (hostile only). R Z-130 closed by Z-144, C Z-134 closed by Z-145. Stage text (Z-146): Z-121's >=365 d case fixed (0/625 'mature' words on raised scars); the <365 d keloid/hypertrophic case stays open as QD Z-141 (FAIL, narrowed). Evidence closing/final/."
+ ],
+ "R/M": [
+  "Z-130 FAIL",
+  "Z-132 PASS",
+  "Z-144 PASS (REN-9 closed)"
+ ],
+ "F": [
+  "Z-143 PASS (READY Z-138)"
+ ]
+}

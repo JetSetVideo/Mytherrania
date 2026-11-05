@@ -1,0 +1,1358 @@
+[
+ {
+  "run": "r07q-before-F",
+  "subject": "human-male",
+  "variant": "marked-bare",
+  "angles": {
+   "forearm": {
+    "maskPx": 586,
+    "mmPerPx": 1.25,
+    "parts": [
+     {
+      "px": 291,
+      "bbox": [
+       210,
+       235,
+       237,
+       279
+      ],
+      "albedo_dL": -12.2,
+      "albedo_da": -1.2,
+      "albedo_db": -7.5,
+      "albedo_dC": -6.8,
+      "final_dL": -12.0,
+      "final_dE": 14.1,
+      "markColour": [
+       115,
+       117,
+       125
+      ]
+     },
+     {
+      "px": 130,
+      "bbox": [
+       180,
+       272,
+       196,
+       295
+      ],
+      "albedo_dL": -2.4,
+      "albedo_da": 1.5,
+      "albedo_db": -1.3,
+      "albedo_dC": -0.3,
+      "final_dL": -2.6,
+      "final_dE": 3.0,
+      "markColour": [
+       124,
+       126,
+       132
+      ]
+     },
+     {
+      "px": 127,
+      "bbox": [
+       168,
+       188,
+       182,
+       243
+      ],
+      "albedo_dL": -2.8,
+      "albedo_da": -1.2,
+      "albedo_db": -8.0,
+      "albedo_dC": -7.3,
+      "final_dL": -2.1,
+      "final_dE": 6.7,
+      "markColour": [
+       203,
+       175,
+       166
+      ]
+     },
+     {
+      "px": 38,
+      "bbox": [
+       175,
+       253,
+       180,
+       261
+      ],
+      "albedo_dL": -3.9,
+      "albedo_da": 1.3,
+      "albedo_db": -2.1,
+      "albedo_dC": -0.9,
+      "final_dL": -7.1,
+      "final_dE": 7.2,
+      "markColour": [
+       110,
+       112,
+       119
+      ]
+     }
+    ]
+   }
+  }
+ },
+ {
+  "run": "r07q-before-F",
+  "subject": "ork-female",
+  "variant": "marked-bare",
+  "angles": {
+   "forearm": {
+    "maskPx": 1179,
+    "mmPerPx": 1.25,
+    "parts": [
+     {
+      "px": 419,
+      "bbox": [
+       163,
+       166,
+       205,
+       199
+      ],
+      "albedo_dL": -21.8,
+      "albedo_da": 9.8,
+      "albedo_db": -18.5,
+      "albedo_dC": -20.5,
+      "final_dL": -21.5,
+      "final_dE": 29.5,
+      "markColour": [
+       103,
+       105,
+       115
+      ]
+     },
+     {
+      "px": 317,
+      "bbox": [
+       131,
+       212,
+       169,
+       242
+      ],
+      "albedo_dL": -21.7,
+      "albedo_da": 9.8,
+      "albedo_db": -19.1,
+      "albedo_dC": -20.9,
+      "final_dL": -15.4,
+      "final_dE": 22.3,
+      "markColour": [
+       103,
+       106,
+       115
+      ]
+     },
+     {
+      "px": 215,
+      "bbox": [
+       112,
+       246,
+       145,
+       276
+      ],
+      "albedo_dL": -16.8,
+      "albedo_da": 8.3,
+      "albedo_db": -15.8,
+      "albedo_dC": -17.4,
+      "final_dL": -11.4,
+      "final_dE": 16.6,
+      "markColour": [
+       127,
+       129,
+       134
+      ]
+     },
+     {
+      "px": 118,
+      "bbox": [
+       107,
+       172,
+       120,
+       211
+      ],
+      "albedo_dL": 4.7,
+      "albedo_da": 7.5,
+      "albedo_db": -4.7,
+      "albedo_dC": -8.1,
+      "final_dL": 5.1,
+      "final_dE": 8.8,
+      "markColour": [
+       165,
+       167,
+       151
+      ]
+     },
+     {
+      "px": 67,
+      "bbox": [
+       204,
+       138,
+       217,
+       147
+      ],
+      "albedo_dL": -18.1,
+      "albedo_da": 8.4,
+      "albedo_db": -15.6,
+      "albedo_dC": -17.4,
+      "final_dL": -19.5,
+      "final_dE": 27.2,
+      "markColour": [
+       122,
+       123,
+       129
+      ]
+     },
+     {
+      "px": 33,
+      "bbox": [
+       124,
+       280,
+       139,
+       290
+      ],
+      "albedo_dL": 14.0,
+      "albedo_da": -7.2,
+      "albedo_db": 12.0,
+      "albedo_dC": 13.7,
+      "final_dL": 4.2,
+      "final_dE": 11.1,
+      "markColour": [
+       173,
+       174,
+       175
+      ]
+     },
+     {
+      "px": 10,
+      "bbox": [
+       108,
+       266,
+       112,
+       271
+      ],
+      "albedo_dL": 19.3,
+      "albedo_da": -4.7,
+      "albedo_db": 9.7,
+      "albedo_dC": 10.5,
+      "final_dL": 8.8,
+      "final_dE": 12.5,
+      "markColour": [
+       185,
+       185,
+       186
+      ]
+     }
+    ]
+   }
+  }
+ },
+ {
+  "run": "r07q-before-F",
+  "subject": "elf-female",
+  "variant": "marked-bare",
+  "angles": {
+   "forearm": {
+    "maskPx": 214,
+    "mmPerPx": 1.26,
+    "parts": [
+     {
+      "px": 106,
+      "bbox": [
+       189,
+       272,
+       203,
+       291
+      ],
+      "albedo_dL": -4.4,
+      "albedo_da": 1.2,
+      "albedo_db": -1.3,
+      "albedo_dC": -1.0,
+      "final_dL": -4.4,
+      "final_dE": 4.6,
+      "markColour": [
+       116,
+       118,
+       125
+      ]
+     },
+     {
+      "px": 48,
+      "bbox": [
+       179,
+       201,
+       184,
+       236
+      ],
+      "albedo_dL": 2.7,
+      "albedo_da": -2.8,
+      "albedo_db": -12.4,
+      "albedo_dC": -12.7,
+      "final_dL": 4.8,
+      "final_dE": 10.8,
+      "markColour": [
+       220,
+       212,
+       202
+      ]
+     },
+     {
+      "px": 43,
+      "bbox": [
+       183,
+       251,
+       190,
+       259
+      ],
+      "albedo_dL": -4.8,
+      "albedo_da": 0.9,
+      "albedo_db": -1.7,
+      "albedo_dC": -1.5,
+      "final_dL": -9.5,
+      "final_dE": 9.8,
+      "markColour": [
+       115,
+       117,
+       124
+      ]
+     },
+     {
+      "px": 14,
+      "bbox": [
+       224,
+       261,
+       226,
+       267
+      ],
+      "albedo_dL": 2.2,
+      "albedo_da": 1.0,
+      "albedo_db": 1.0,
+      "albedo_dC": 1.2,
+      "final_dL": 1.1,
+      "final_dE": 2.5,
+      "markColour": [
+       115,
+       118,
+       123
+      ]
+     }
+    ]
+   }
+  }
+ },
+ {
+  "run": "r07q-before-F",
+  "subject": "dwarf-male",
+  "variant": "marked-bare",
+  "angles": {
+   "forearm": {
+    "maskPx": 1559,
+    "mmPerPx": 0.92,
+    "parts": [
+     {
+      "px": 553,
+      "bbox": [
+       183,
+       152,
+       231,
+       208
+      ],
+      "albedo_dL": -27.4,
+      "albedo_da": -7.3,
+      "albedo_db": -19.9,
+      "albedo_dC": -19.8,
+      "final_dL": -28.4,
+      "final_dE": 37.1,
+      "markColour": [
+       92,
+       95,
+       106
+      ]
+     },
+     {
+      "px": 490,
+      "bbox": [
+       137,
+       198,
+       186,
+       241
+      ],
+      "albedo_dL": -28.6,
+      "albedo_da": -7.4,
+      "albedo_db": -20.8,
+      "albedo_dC": -20.4,
+      "final_dL": -28.5,
+      "final_dE": 37.0,
+      "markColour": [
+       86,
+       90,
+       102
+      ]
+     },
+     {
+      "px": 357,
+      "bbox": [
+       114,
+       249,
+       155,
+       287
+      ],
+      "albedo_dL": -24.1,
+      "albedo_da": -5.3,
+      "albedo_db": -15.8,
+      "albedo_dC": -15.7,
+      "final_dL": -19.6,
+      "final_dE": 24.9,
+      "markColour": [
+       106,
+       109,
+       118
+      ]
+     },
+     {
+      "px": 148,
+      "bbox": [
+       111,
+       186,
+       137,
+       222
+      ],
+      "albedo_dL": -4.2,
+      "albedo_da": -2.0,
+      "albedo_db": -9.3,
+      "albedo_dC": -8.7,
+      "final_dL": -6.5,
+      "final_dE": 11.1,
+      "markColour": [
+       196,
+       168,
+       159
+      ]
+     },
+     {
+      "px": 8,
+      "bbox": [
+       257,
+       202,
+       259,
+       207
+      ],
+      "albedo_dL": 2.3,
+      "albedo_da": 2.8,
+      "albedo_db": 1.6,
+      "albedo_dC": 3.0,
+      "final_dL": 4.3,
+      "final_dE": 6.9,
+      "markColour": [
+       158,
+       159,
+       161
+      ]
+     }
+    ]
+   }
+  }
+ },
+ {
+  "run": "r07q-closing",
+  "subject": "human-male",
+  "variant": "marked-bare",
+  "angles": {
+   "forearm": {
+    "maskPx": 530,
+    "mmPerPx": 1.25,
+    "parts": [
+     {
+      "px": 291,
+      "bbox": [
+       210,
+       235,
+       237,
+       279
+      ],
+      "albedo_dL": -12.2,
+      "albedo_da": -1.2,
+      "albedo_db": -7.5,
+      "albedo_dC": -6.8,
+      "final_dL": -12.0,
+      "final_dE": 14.1,
+      "markColour": [
+       115,
+       117,
+       125
+      ]
+     },
+     {
+      "px": 130,
+      "bbox": [
+       180,
+       272,
+       196,
+       295
+      ],
+      "albedo_dL": -2.4,
+      "albedo_da": 1.5,
+      "albedo_db": -1.3,
+      "albedo_dC": -0.3,
+      "final_dL": -2.6,
+      "final_dE": 3.0,
+      "markColour": [
+       124,
+       126,
+       132
+      ]
+     },
+     {
+      "px": 71,
+      "bbox": [
+       169,
+       192,
+       181,
+       241
+      ],
+      "albedo_dL": 6.4,
+      "albedo_da": -8.3,
+      "albedo_db": -13.5,
+      "albedo_dC": -15.9,
+      "final_dL": 5.7,
+      "final_dE": 14.1,
+      "markColour": [
+       211,
+       198,
+       189
+      ]
+     },
+     {
+      "px": 38,
+      "bbox": [
+       175,
+       253,
+       180,
+       261
+      ],
+      "albedo_dL": -3.9,
+      "albedo_da": 1.4,
+      "albedo_db": -1.6,
+      "albedo_dC": -0.4,
+      "final_dL": -7.1,
+      "final_dE": 7.2,
+      "markColour": [
+       110,
+       112,
+       119
+      ]
+     }
+    ]
+   }
+  }
+ },
+ {
+  "run": "r07q-closing",
+  "subject": "ork-female",
+  "variant": "marked-bare",
+  "angles": {
+   "forearm": {
+    "maskPx": 1148,
+    "mmPerPx": 1.25,
+    "parts": [
+     {
+      "px": 419,
+      "bbox": [
+       163,
+       166,
+       205,
+       199
+      ],
+      "albedo_dL": -9.0,
+      "albedo_da": 8.2,
+      "albedo_db": -12.0,
+      "albedo_dC": -14.4,
+      "final_dL": -9.3,
+      "final_dE": 16.1,
+      "markColour": [
+       103,
+       105,
+       115
+      ]
+     },
+     {
+      "px": 317,
+      "bbox": [
+       131,
+       212,
+       169,
+       242
+      ],
+      "albedo_dL": -22.5,
+      "albedo_da": 5.6,
+      "albedo_db": -11.5,
+      "albedo_dC": -12.4,
+      "final_dL": -16.1,
+      "final_dE": 19.3,
+      "markColour": [
+       103,
+       106,
+       115
+      ]
+     },
+     {
+      "px": 215,
+      "bbox": [
+       112,
+       246,
+       145,
+       276
+      ],
+      "albedo_dL": -16.4,
+      "albedo_da": 6.8,
+      "albedo_db": -12.7,
+      "albedo_dC": -14.1,
+      "final_dL": -11.0,
+      "final_dE": 14.8,
+      "markColour": [
+       127,
+       129,
+       134
+      ]
+     },
+     {
+      "px": 87,
+      "bbox": [
+       107,
+       174,
+       120,
+       211
+      ],
+      "albedo_dL": 15.2,
+      "albedo_da": 3.5,
+      "albedo_db": -2.6,
+      "albedo_dC": -4.3,
+      "final_dL": 16.9,
+      "final_dE": 17.1,
+      "markColour": [
+       188,
+       195,
+       180
+      ]
+     },
+     {
+      "px": 67,
+      "bbox": [
+       204,
+       138,
+       217,
+       147
+      ],
+      "albedo_dL": -5.2,
+      "albedo_da": 8.4,
+      "albedo_db": -11.7,
+      "albedo_dC": -14.4,
+      "final_dL": -5.7,
+      "final_dE": 15.8,
+      "markColour": [
+       122,
+       123,
+       129
+      ]
+     },
+     {
+      "px": 33,
+      "bbox": [
+       124,
+       280,
+       139,
+       290
+      ],
+      "albedo_dL": 13.8,
+      "albedo_da": -7.3,
+      "albedo_db": 12.2,
+      "albedo_dC": 14.0,
+      "final_dL": 4.1,
+      "final_dE": 11.1,
+      "markColour": [
+       173,
+       174,
+       175
+      ]
+     },
+     {
+      "px": 10,
+      "bbox": [
+       108,
+       266,
+       112,
+       271
+      ],
+      "albedo_dL": 29.0,
+      "albedo_da": -0.1,
+      "albedo_db": 3.5,
+      "albedo_dC": 2.5,
+      "final_dL": 15.3,
+      "final_dE": 16.2,
+      "markColour": [
+       185,
+       185,
+       186
+      ]
+     }
+    ]
+   }
+  }
+ },
+ {
+  "run": "r07q-closing",
+  "subject": "elf-female",
+  "variant": "marked-bare",
+  "angles": {
+   "forearm": {
+    "maskPx": 216,
+    "mmPerPx": 1.26,
+    "parts": [
+     {
+      "px": 106,
+      "bbox": [
+       189,
+       272,
+       203,
+       291
+      ],
+      "albedo_dL": 2.1,
+      "albedo_da": 0.9,
+      "albedo_db": -0.8,
+      "albedo_dC": -0.6,
+      "final_dL": 1.7,
+      "final_dE": 2.0,
+      "markColour": [
+       116,
+       118,
+       125
+      ]
+     },
+     {
+      "px": 50,
+      "bbox": [
+       179,
+       201,
+       184,
+       236
+      ],
+      "albedo_dL": 3.9,
+      "albedo_da": -2.5,
+      "albedo_db": -12.4,
+      "albedo_dC": -12.7,
+      "final_dL": 5.6,
+      "final_dE": 11.1,
+      "markColour": [
+       223,
+       215,
+       205
+      ]
+     },
+     {
+      "px": 43,
+      "bbox": [
+       183,
+       251,
+       190,
+       259
+      ],
+      "albedo_dL": -5.0,
+      "albedo_da": 0.9,
+      "albedo_db": -1.6,
+      "albedo_dC": -1.3,
+      "final_dL": -9.6,
+      "final_dE": 9.9,
+      "markColour": [
+       115,
+       117,
+       124
+      ]
+     },
+     {
+      "px": 14,
+      "bbox": [
+       224,
+       261,
+       226,
+       267
+      ],
+      "albedo_dL": 7.4,
+      "albedo_da": 0.6,
+      "albedo_db": -0.1,
+      "albedo_dC": -0.0,
+      "final_dL": 5.9,
+      "final_dE": 6.1,
+      "markColour": [
+       115,
+       118,
+       123
+      ]
+     }
+    ]
+   }
+  }
+ },
+ {
+  "run": "r07q-closing",
+  "subject": "dwarf-male",
+  "variant": "marked-bare",
+  "angles": {
+   "forearm": {
+    "maskPx": 1491,
+    "mmPerPx": 0.92,
+    "parts": [
+     {
+      "px": 553,
+      "bbox": [
+       183,
+       152,
+       231,
+       208
+      ],
+      "albedo_dL": -27.5,
+      "albedo_da": -7.2,
+      "albedo_db": -19.7,
+      "albedo_dC": -19.6,
+      "final_dL": -28.5,
+      "final_dE": 37.0,
+      "markColour": [
+       92,
+       95,
+       106
+      ]
+     },
+     {
+      "px": 490,
+      "bbox": [
+       137,
+       198,
+       186,
+       241
+      ],
+      "albedo_dL": -29.0,
+      "albedo_da": -6.8,
+      "albedo_db": -19.3,
+      "albedo_dC": -18.8,
+      "final_dL": -28.7,
+      "final_dE": 36.2,
+      "markColour": [
+       86,
+       90,
+       102
+      ]
+     },
+     {
+      "px": 357,
+      "bbox": [
+       114,
+       249,
+       155,
+       287
+      ],
+      "albedo_dL": -17.3,
+      "albedo_da": -5.4,
+      "albedo_db": -13.3,
+      "albedo_dC": -13.6,
+      "final_dL": -14.6,
+      "final_dE": 19.6,
+      "markColour": [
+       106,
+       109,
+       118
+      ]
+     },
+     {
+      "px": 83,
+      "bbox": [
+       112,
+       189,
+       134,
+       221
+      ],
+      "albedo_dL": 7.1,
+      "albedo_da": -7.5,
+      "albedo_db": -10.4,
+      "albedo_dC": -12.8,
+      "final_dL": 7.4,
+      "final_dE": 13.8,
+      "markColour": [
+       212,
+       198,
+       188
+      ]
+     },
+     {
+      "px": 8,
+      "bbox": [
+       257,
+       202,
+       259,
+       207
+      ],
+      "albedo_dL": 2.3,
+      "albedo_da": 2.8,
+      "albedo_db": 1.6,
+      "albedo_dC": 3.0,
+      "final_dL": 4.3,
+      "final_dE": 6.9,
+      "markColour": [
+       158,
+       159,
+       161
+      ]
+     }
+    ]
+   }
+  }
+ },
+ {
+  "run": "r08q-parent",
+  "subject": "human-male",
+  "variant": "marked-bare",
+  "angles": {
+   "forearm": {
+    "maskPx": 530,
+    "mmPerPx": 1.25,
+    "parts": [
+     {
+      "px": 291,
+      "bbox": [
+       210,
+       235,
+       237,
+       279
+      ],
+      "albedo_dL": -12.2,
+      "albedo_da": -1.2,
+      "albedo_db": -7.5,
+      "albedo_dC": -6.8,
+      "final_dL": -12.0,
+      "final_dE": 14.1,
+      "markColour": [
+       115,
+       117,
+       125
+      ]
+     },
+     {
+      "px": 130,
+      "bbox": [
+       180,
+       272,
+       196,
+       295
+      ],
+      "albedo_dL": -2.4,
+      "albedo_da": 1.5,
+      "albedo_db": -1.3,
+      "albedo_dC": -0.3,
+      "final_dL": -2.6,
+      "final_dE": 3.0,
+      "markColour": [
+       124,
+       126,
+       132
+      ]
+     },
+     {
+      "px": 71,
+      "bbox": [
+       169,
+       192,
+       181,
+       241
+      ],
+      "albedo_dL": 3.5,
+      "albedo_da": -7.6,
+      "albedo_db": -12.2,
+      "albedo_dC": -14.4,
+      "final_dL": 3.4,
+      "final_dE": 12.4,
+      "markColour": [
+       211,
+       198,
+       189
+      ]
+     },
+     {
+      "px": 38,
+      "bbox": [
+       175,
+       253,
+       180,
+       261
+      ],
+      "albedo_dL": -4.3,
+      "albedo_da": 1.5,
+      "albedo_db": -1.5,
+      "albedo_dC": -0.3,
+      "final_dL": -7.4,
+      "final_dE": 7.5,
+      "markColour": [
+       110,
+       112,
+       119
+      ]
+     }
+    ]
+   }
+  }
+ },
+ {
+  "run": "r08q-parent",
+  "subject": "ork-female",
+  "variant": "marked-bare",
+  "angles": {
+   "forearm": {
+    "maskPx": 1148,
+    "mmPerPx": 1.25,
+    "parts": [
+     {
+      "px": 419,
+      "bbox": [
+       163,
+       166,
+       205,
+       199
+      ],
+      "albedo_dL": -25.0,
+      "albedo_da": 6.4,
+      "albedo_db": -11.4,
+      "albedo_dC": -12.6,
+      "final_dL": -24.8,
+      "final_dE": 28.2,
+      "markColour": [
+       103,
+       105,
+       115
+      ]
+     },
+     {
+      "px": 317,
+      "bbox": [
+       131,
+       212,
+       169,
+       242
+      ],
+      "albedo_dL": -27.0,
+      "albedo_da": 5.1,
+      "albedo_db": -11.4,
+      "albedo_dC": -11.8,
+      "final_dL": -19.8,
+      "final_dE": 22.6,
+      "markColour": [
+       103,
+       106,
+       115
+      ]
+     },
+     {
+      "px": 215,
+      "bbox": [
+       112,
+       246,
+       145,
+       276
+      ],
+      "albedo_dL": -19.3,
+      "albedo_da": 6.0,
+      "albedo_db": -12.0,
+      "albedo_dC": -13.1,
+      "final_dL": -13.2,
+      "final_dE": 16.3,
+      "markColour": [
+       127,
+       129,
+       134
+      ]
+     },
+     {
+      "px": 87,
+      "bbox": [
+       107,
+       174,
+       120,
+       211
+      ],
+      "albedo_dL": 7.0,
+      "albedo_da": 0.7,
+      "albedo_db": 1.2,
+      "albedo_dC": 0.5,
+      "final_dL": 9.1,
+      "final_dE": 9.3,
+      "markColour": [
+       188,
+       195,
+       180
+      ]
+     },
+     {
+      "px": 67,
+      "bbox": [
+       204,
+       138,
+       217,
+       147
+      ],
+      "albedo_dL": -19.8,
+      "albedo_da": 6.3,
+      "albedo_db": -10.4,
+      "albedo_dC": -12.0,
+      "final_dL": -21.3,
+      "final_dE": 25.3,
+      "markColour": [
+       122,
+       123,
+       129
+      ]
+     },
+     {
+      "px": 33,
+      "bbox": [
+       124,
+       280,
+       139,
+       290
+      ],
+      "albedo_dL": 13.8,
+      "albedo_da": -7.3,
+      "albedo_db": 12.2,
+      "albedo_dC": 14.0,
+      "final_dL": 4.1,
+      "final_dE": 11.2,
+      "markColour": [
+       173,
+       174,
+       175
+      ]
+     },
+     {
+      "px": 10,
+      "bbox": [
+       108,
+       266,
+       112,
+       271
+      ],
+      "albedo_dL": 24.6,
+      "albedo_da": -0.8,
+      "albedo_db": 4.5,
+      "albedo_dC": 3.7,
+      "final_dL": 12.3,
+      "final_dE": 13.5,
+      "markColour": [
+       185,
+       185,
+       186
+      ]
+     }
+    ]
+   }
+  }
+ },
+ {
+  "run": "r08q-parent",
+  "subject": "elf-female",
+  "variant": "marked-bare",
+  "angles": {
+   "forearm": {
+    "maskPx": 216,
+    "mmPerPx": 1.26,
+    "parts": [
+     {
+      "px": 106,
+      "bbox": [
+       189,
+       272,
+       203,
+       291
+      ],
+      "albedo_dL": -4.8,
+      "albedo_da": 1.3,
+      "albedo_db": -0.6,
+      "albedo_dC": -0.3,
+      "final_dL": -4.8,
+      "final_dE": 4.9,
+      "markColour": [
+       116,
+       118,
+       125
+      ]
+     },
+     {
+      "px": 50,
+      "bbox": [
+       179,
+       201,
+       184,
+       236
+      ],
+      "albedo_dL": 3.9,
+      "albedo_da": -2.5,
+      "albedo_db": -12.4,
+      "albedo_dC": -12.7,
+      "final_dL": 5.6,
+      "final_dE": 11.1,
+      "markColour": [
+       223,
+       215,
+       205
+      ]
+     },
+     {
+      "px": 43,
+      "bbox": [
+       183,
+       251,
+       190,
+       259
+      ],
+      "albedo_dL": -5.0,
+      "albedo_da": 0.9,
+      "albedo_db": -1.6,
+      "albedo_dC": -1.3,
+      "final_dL": -9.7,
+      "final_dE": 9.9,
+      "markColour": [
+       115,
+       117,
+       124
+      ]
+     },
+     {
+      "px": 14,
+      "bbox": [
+       224,
+       261,
+       226,
+       267
+      ],
+      "albedo_dL": 2.8,
+      "albedo_da": 0.8,
+      "albedo_db": 0.4,
+      "albedo_dC": 0.5,
+      "final_dL": 1.6,
+      "final_dE": 2.4,
+      "markColour": [
+       115,
+       118,
+       123
+      ]
+     }
+    ]
+   }
+  }
+ },
+ {
+  "run": "r08q-parent",
+  "subject": "dwarf-male",
+  "variant": "marked-bare",
+  "angles": {
+   "forearm": {
+    "maskPx": 1491,
+    "mmPerPx": 0.92,
+    "parts": [
+     {
+      "px": 553,
+      "bbox": [
+       183,
+       152,
+       231,
+       208
+      ],
+      "albedo_dL": -27.5,
+      "albedo_da": -7.2,
+      "albedo_db": -19.6,
+      "albedo_dC": -19.5,
+      "final_dL": -28.6,
+      "final_dE": 37.0,
+      "markColour": [
+       92,
+       95,
+       106
+      ]
+     },
+     {
+      "px": 490,
+      "bbox": [
+       137,
+       198,
+       186,
+       241
+      ],
+      "albedo_dL": -29.8,
+      "albedo_da": -6.6,
+      "albedo_db": -19.2,
+      "albedo_dC": -18.6,
+      "final_dL": -29.4,
+      "final_dE": 36.7,
+      "markColour": [
+       86,
+       90,
+       102
+      ]
+     },
+     {
+      "px": 357,
+      "bbox": [
+       114,
+       249,
+       155,
+       287
+      ],
+      "albedo_dL": -25.5,
+      "albedo_da": -4.5,
+      "albedo_db": -13.2,
+      "albedo_dC": -13.0,
+      "final_dL": -20.6,
+      "final_dE": 24.7,
+      "markColour": [
+       106,
+       109,
+       118
+      ]
+     },
+     {
+      "px": 83,
+      "bbox": [
+       112,
+       189,
+       134,
+       221
+      ],
+      "albedo_dL": 0.2,
+      "albedo_da": -5.8,
+      "albedo_db": -7.5,
+      "albedo_dC": -9.5,
+      "final_dL": 1.0,
+      "final_dE": 9.0,
+      "markColour": [
+       212,
+       198,
+       188
+      ]
+     },
+     {
+      "px": 8,
+      "bbox": [
+       257,
+       202,
+       259,
+       207
+      ],
+      "albedo_dL": 2.3,
+      "albedo_da": 2.8,
+      "albedo_db": 1.6,
+      "albedo_dC": 3.0,
+      "final_dL": 4.3,
+      "final_dE": 6.9,
+      "markColour": [
+       158,
+       159,
+       161
+      ]
+     }
+    ]
+   }
+  }
+ }
+]

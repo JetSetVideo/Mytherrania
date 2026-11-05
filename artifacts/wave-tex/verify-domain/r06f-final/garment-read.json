@@ -1,0 +1,170 @@
+[
+ {
+  "subject": "human-male",
+  "final": {
+   "mmPerPx": 1.84,
+   "hpStd": 5.64,
+   "blobsPer100cm2": 3.9,
+   "nnMedianMm": 27.7,
+   "studBandShare": 0.0138,
+   "skinGarment_dE": 16.0,
+   "skinGarment_lumaRatio": 1.38
+  },
+  "head": {
+   "mmPerPx": 1.84,
+   "hpStd": 5.55,
+   "blobsPer100cm2": 3.3,
+   "nnMedianMm": 25.6,
+   "studBandShare": 0.0103,
+   "skinGarment_dE": 40.7,
+   "skinGarment_lumaRatio": 1.11
+  }
+ },
+ {
+  "subject": "human-female",
+  "final": {
+   "mmPerPx": 1.71,
+   "hpStd": 5.83,
+   "blobsPer100cm2": 3.5,
+   "nnMedianMm": 27.1,
+   "studBandShare": 0.0219,
+   "skinGarment_dE": 25.6,
+   "skinGarment_lumaRatio": 2.12
+  },
+  "head": {
+   "mmPerPx": 1.71,
+   "hpStd": 5.94,
+   "blobsPer100cm2": 3.3,
+   "nnMedianMm": 31.2,
+   "studBandShare": 0.023,
+   "skinGarment_dE": 40.5,
+   "skinGarment_lumaRatio": 1.48
+  }
+ },
+ {
+  "subject": "elf-male",
+  "final": {
+   "mmPerPx": 1.55,
+   "hpStd": 4.78,
+   "blobsPer100cm2": 4.1,
+   "nnMedianMm": 26.1,
+   "studBandShare": 0.0115,
+   "skinGarment_dE": 23.0,
+   "skinGarment_lumaRatio": 1.95
+  },
+  "head": {
+   "mmPerPx": 1.55,
+   "hpStd": 4.67,
+   "blobsPer100cm2": 3.4,
+   "nnMedianMm": 26.4,
+   "studBandShare": 0.0091,
+   "skinGarment_dE": 37.5,
+   "skinGarment_lumaRatio": 1.41
+  }
+ },
+ {
+  "subject": "elf-female",
+  "final": {
+   "mmPerPx": 1.44,
+   "hpStd": 4.74,
+   "blobsPer100cm2": 4.1,
+   "nnMedianMm": 25.3,
+   "studBandShare": 0.009,
+   "skinGarment_dE": 21.1,
+   "skinGarment_lumaRatio": 1.98
+  },
+  "head": {
+   "mmPerPx": 1.44,
+   "hpStd": 5.05,
+   "blobsPer100cm2": 3.4,
+   "nnMedianMm": 31.7,
+   "studBandShare": 0.0077,
+   "skinGarment_dE": 32.6,
+   "skinGarment_lumaRatio": 1.44
+  }
+ },
+ {
+  "subject": "dwarf-male",
+  "final": {
+   "mmPerPx": 2.54,
+   "hpStd": 4.18,
+   "blobsPer100cm2": 3.0,
+   "nnMedianMm": 30.9,
+   "studBandShare": 0.0458,
+   "skinGarment_dE": 33.0,
+   "skinGarment_lumaRatio": 2.05
+  },
+  "head": {
+   "mmPerPx": 2.54,
+   "hpStd": 3.49,
+   "blobsPer100cm2": 1.8,
+   "nnMedianMm": 30.6,
+   "studBandShare": 0.0511,
+   "skinGarment_dE": 49.0,
+   "skinGarment_lumaRatio": 1.04
+  }
+ },
+ {
+  "subject": "dwarf-female",
+  "final": {
+   "mmPerPx": 2.4,
+   "hpStd": 5.07,
+   "blobsPer100cm2": 3.6,
+   "nnMedianMm": 33.4,
+   "studBandShare": 0.026,
+   "skinGarment_dE": 36.6,
+   "skinGarment_lumaRatio": 2.35
+  },
+  "head": {
+   "mmPerPx": 2.4,
+   "hpStd": 4.93,
+   "blobsPer100cm2": 2.7,
+   "nnMedianMm": 25.6,
+   "studBandShare": 0.018,
+   "skinGarment_dE": 50.9,
+   "skinGarment_lumaRatio": 1.33
+  }
+ },
+ {
+  "subject": "ork-male",
+  "final": {
+   "mmPerPx": 3.26,
+   "hpStd": 3.66,
+   "blobsPer100cm2": 2.6,
+   "nnMedianMm": 32.5,
+   "studBandShare": 0.0687,
+   "skinGarment_dE": 27.8,
+   "skinGarment_lumaRatio": 1.65
+  },
+  "head": {
+   "mmPerPx": 3.26,
+   "hpStd": 2.79,
+   "blobsPer100cm2": 1.3,
+   "nnMedianMm": 37.2,
+   "studBandShare": 0.0928,
+   "skinGarment_dE": 36.3,
+   "skinGarment_lumaRatio": 1.16
+  }
+ },
+ {
+  "subject": "ork-female",
+  "final": {
+   "mmPerPx": 3.0,
+   "hpStd": 4.86,
+   "blobsPer100cm2": 2.5,
+   "nnMedianMm": 38.1,
+   "studBandShare": 0.0497,
+   "skinGarment_dE": 30.7,
+   "skinGarment_lumaRatio": 1.92
+  },
+  "head": {
+   "mmPerPx": 3.0,
+   "hpStd": 5.15,
+   "blobsPer100cm2": 1.6,
+   "nnMedianMm": 29.8,
+   "studBandShare": 0.0508,
+   "skinGarment_dE": 33.9,
+   "skinGarment_lumaRatio": 1.12
+  }
+ }
+]

@@ -1,0 +1,135 @@
+{
+ "src": "/Users/macmax/Desktop/Mytherrania",
+ "when": "2026-11-05T05:38:27.078Z",
+ "edge": {},
+ "ao": {},
+ "scar": {
+  "human-male": {
+   "decals": 3,
+   "forearm": {
+    "maskPx": 157,
+    "normalDistOnOff": 17.337,
+    "normalInsideVsRing": 2.37,
+    "finalDelta": {
+     "n": 157,
+     "changedShare": 0.5159,
+     "meanAbsDL": 5.064,
+     "p95ChangedDL": 33.4
+    },
+    "heightInsideMinusRing": 6.89,
+    "heightNoDecalsInsideMinusRing": -1.21,
+    "heightDecalOnly": 8.1
+   },
+   "back-closeup": {
+    "maskPx": 679,
+    "normalDistOnOff": 9.776,
+    "normalInsideVsRing": 4.01,
+    "finalDelta": {
+     "n": 679,
+     "changedShare": 0.7261,
+     "meanAbsDL": 7.952,
+     "p95ChangedDL": 31.8
+    },
+    "heightInsideMinusRing": 5.4,
+    "heightNoDecalsInsideMinusRing": -0.11,
+    "heightDecalOnly": 5.51
+   }
+  },
+  "ork-female": {
+   "decals": 3,
+   "forearm": {
+    "maskPx": 127,
+    "normalDistOnOff": 18.649,
+    "normalInsideVsRing": 10.27,
+    "finalDelta": {
+     "n": 127,
+     "changedShare": 0.9134,
+     "meanAbsDL": 13.028,
+     "p95ChangedDL": 36.6
+    },
+    "heightInsideMinusRing": 10.55,
+    "heightNoDecalsInsideMinusRing": 2.49,
+    "heightDecalOnly": 8.06
+   },
+   "back-closeup": {
+    "maskPx": 344,
+    "normalDistOnOff": 23.829,
+    "normalInsideVsRing": 10.94,
+    "finalDelta": {
+     "n": 344,
+     "changedShare": 0.8605,
+     "meanAbsDL": 17.386,
+     "p95ChangedDL": 34.4
+    },
+    "heightInsideMinusRing": 14.73,
+    "heightNoDecalsInsideMinusRing": -1.38,
+    "heightDecalOnly": 16.11
+   }
+  },
+  "elf-female": {
+   "decals": 3,
+   "forearm": {
+    "maskPx": 70,
+    "normalDistOnOff": 0.86,
+    "normalInsideVsRing": 5.92,
+    "finalDelta": {
+     "n": 70,
+     "changedShare": 0.0429,
+     "meanAbsDL": 0.299,
+     "p95ChangedDL": 4.1
+    },
+    "heightInsideMinusRing": -4.27,
+    "heightNoDecalsInsideMinusRing": -2.73,
+    "heightDecalOnly": -1.8
+   },
+   "back-closeup": {
+    "maskPx": 1107,
+    "normalDistOnOff": 9.969,
+    "normalInsideVsRing": 6.23,
+    "finalDelta": {
+     "n": 1107,
+     "changedShare": 0.6016,
+     "meanAbsDL": 7.058,
+     "p95ChangedDL": 33.8
+    },
+    "heightInsideMinusRing": 2.9,
+    "heightNoDecalsInsideMinusRing": -2.68,
+    "heightDecalOnly": 5.59
+   }
+  },
+  "dwarf-male": {
+   "decals": 3,
+   "forearm": {
+    "maskPx": 185,
+    "normalDistOnOff": 18.583,
+    "normalInsideVsRing": 10.77,
+    "finalDelta": {
+     "n": 185,
+     "changedShare": 0.8162,
+     "meanAbsDL": 15.931,
+     "p95ChangedDL": 44.8
+    },
+    "heightInsideMinusRing": 7.26,
+    "heightNoDecalsInsideMinusRing": -1.2,
+    "heightDecalOnly": 8.46
+   },
+   "back-closeup": {
+    "maskPx": 398,
+    "normalDistOnOff": 26.542,
+    "normalInsideVsRing": 7.66,
+    "finalDelta": {
+     "n": 398,
+     "changedShare": 0.9347,
+     "meanAbsDL": 19.946,
+     "p95ChangedDL": 41.5
+    },
+    "heightInsideMinusRing": 18.86,
+    "heightNoDecalsInsideMinusRing": 0,
+    "heightDecalOnly": 18.86
+   }
+  }
+ },
+ "errors": [
+  "Failed to load resource: the server responded with a status of 404 (Not Found)"
+ ]
+}

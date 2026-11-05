@@ -1,0 +1,45 @@
+{
+ "run": "r3-head",
+ "src": "/Users/macmax/.hermes/cache/scratch/wtR-head",
+ "hasTex": false,
+ "commit": "19f5c8c",
+ "when": "2026-11-04T23:24:32.031Z",
+ "frames": 150,
+ "build": {
+  "human-male": {
+   "cold": 996.8,
+   "warm": 47.3
+  },
+  "ork-female": {
+   "cold": 1637.2,
+   "warm": 35.4
+  }
+ },
+ "preview": {
+  "legacy": {
+   "median": 2.5,
+   "mean": 2.716,
+   "mem": {
+    "geometry": 382192,
+    "textures": 0,
+    "aMaterial": 0,
+    "aEmissive": 0,
+    "decalUniformBytes": 0
+   }
+  }
+ },
+ "arena": {
+  "legacy": {
+   "median": 3.6,
+   "mean": 3.789,
+   "mem": {
+    "geometry": 798920,
+    "textures": 0,
+    "aMaterial": 0,
+    "aEmissive": 0,
+    "decalUniformBytes": 0
+   }
+  }
+ },
+ "errors": []
+}

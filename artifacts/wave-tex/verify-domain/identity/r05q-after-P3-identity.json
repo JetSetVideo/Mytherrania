@@ -1,0 +1,63 @@
+{
+ "run": "r05q-after-P3",
+ "order": [
+  "dwarf-male",
+  "ork-female",
+  "human-male",
+  "elf-female"
+ ],
+ "faceLabMedian": {
+  "human-male": [
+   43.2,
+   15.1,
+   24.6
+  ],
+  "ork-female": [
+   44.2,
+   -16.5,
+   31.4
+  ],
+  "elf-female": [
+   53.4,
+   4.7,
+   21.5
+  ],
+  "dwarf-male": [
+   51.3,
+   22.2,
+   32.6
+  ]
+ },
+ "pairDE": [
+  [
+   "dwarf-male",
+   "elf-female",
+   20.8
+  ],
+  [
+   "dwarf-male",
+   "human-male",
+   13.4
+  ],
+  [
+   "dwarf-male",
+   "ork-female",
+   39.4
+  ],
+  [
+   "elf-female",
+   "human-male",
+   14.9
+  ],
+  [
+   "elf-female",
+   "ork-female",
+   25.2
+  ],
+  [
+   "human-male",
+   "ork-female",
+   32.4
+  ]
+ ]
+}

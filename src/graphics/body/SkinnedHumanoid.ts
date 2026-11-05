@@ -13,6 +13,9 @@ import * as THREE from "three";
 import type { HumanoidRig } from "../Humanoid.ts";
 import { buildWeaponMesh } from "../WeaponMesh.ts";
 import { createCelSkinnedMesh } from "../shaders/CelSkinned.ts";
+import { attachMaterialAttributes, type MaterialInput, setChannelView, setDecals } from "../shaders/MaterialRender.ts";
+import type { ChannelView, FragmentDecal, PackedDecals } from "../shaders/MaterialChannels.ts";
+import { texMaterialFor, type TexStackInfo } from "../shaders/TexWiring.ts";
 import { nameSeed } from "../../game/RaceAppearance.ts";
 import type { Skeleton as GameSkeleton, JointName } from "../../game/Skeleton.ts";
 import type { GeneratedWeapon } from "../../game/WeaponGen.ts";
@@ -71,6 +74,8 @@ export interface SkinnedExtras {
    * read it to tell "this frame" from "the previous frame" and to rate-limit by time.
    */
   readonly frameClock?: RigFrameClock;
+  /** Wave TEX (lane R): channel debug views + live decals of the skin material. */
+  readonly material?: RigMaterialApi;
 }
 
 /**
@@ -127,6 +132,27 @@ export interface SkinnedHumanoidOptions {
    * supination and the leg swivel are render-side bone edits the hinge-only ragdoll cannot seed from.
    */
   restPose?: boolean;
+  /**
+   * Wave TEX (lane R): the layered material channels of the skin — per-vertex `aMaterial` / `aEmissive` and the
+   * fragment decals (scars, tattoos) — or a function of the skin mesh that returns them (null = neutral). The
+   * body ALWAYS carries the channels (neutral when absent: pixel-identical to the pre-TEX look) so the channel
+   * debug views and live decal edits work on every rig (`rig.material`).
+   */
+  material?: MaterialInput | ((mesh: MeshData) => MaterialInput | null);
+}
+
+/** Wave TEX (lane R): the material-channel controls of a built rig (MaterialRender.ts on `rig.skin`). */
+export interface RigMaterialApi {
+  /** Select a channel debug view (uniform write, no recompile). */
+  setChannelView(view: ChannelView): void;
+  /** Replace the fragment decals live (no rebuild). Returns the packing record (dropped = over budget / degenerate). */
+  setDecals(decals: readonly FragmentDecal[]): PackedDecals;
+  /** The decals given at build time (after packing). */
+  readonly packed: PackedDecals;
+  /** True when the skin carries an aEmissive attribute. */
+  readonly emissive: boolean;
+  /** What the default wiring evaluated (preset id + layers + overrides, marks drawn/dropped), null when bypassed. */
+  readonly stack: TexStackInfo | null;
 }
 
 const DEFAULT_APPEARANCE: Appearance = { body: "#ef7455", accent: "#dfaa55", height: 1.7, weight: 70, hair: "#172128", beard: false, moustache: false, eyes: "#172128" };
@@ -233,8 +259,13 @@ export function buildSkinnedHumanoid(
   geometry.setAttribute("skinIndex", new THREE.Uint16BufferAttribute(crease.skinIndex, 4));
   geometry.setAttribute("skinWeight", new THREE.Float32BufferAttribute(crease.skinWeight, 4));
   geometry.setIndex(new THREE.BufferAttribute(mesh.indices, 1));
+  // Wave TEX (lane R): the default body (no paint override, no explicit material) takes the layered materials —
+  // P's preset finish + M's marks (TexWiring.ts; TEX_DEFAULTS switches) — the preset's albedo replaces the v1 paint.
+  const tex = options.paint === undefined && options.material === undefined
+    ? texMaterialFor(mesh, bodySpec, appearance, plan.cell, options.garment ?? appearance.body, formGainsFor(bodySpec.seed), plan.face)
+    : null;
   const paint = options.paint === false ? null
-    : options.paint ? options.paint(mesh) : paintSkin(mesh, bodySpec, appearance, plan.cell, options.garment ?? appearance.body);
+    : options.paint ? options.paint(mesh) : tex?.albedo ?? paintSkin(mesh, bodySpec, appearance, plan.cell, options.garment ?? appearance.body);
   // Wave W (lane H): the hands are painted with the same recipe (no form shade: sub-cell curvature).
   const handPaint = options.paint === undefined
     ? (m: MeshData) => paintSkin(m, bodySpec, appearance, plan.cell, options.garment ?? appearance.body, false)
@@ -247,11 +278,31 @@ export function buildSkinnedHumanoid(
   const surf = new Float32Array((mesh.positions.length / 3) * 2);
   for (let v = 0; v < mesh.region.length; v++) {
     const r = REGIONS[mesh.region[v]];
-    surf[v * 2] = garmentOn && (GARMENT_REGIONS as readonly string[]).includes(r) ? 1 : 0;
+    // (wave TEX: the preset's skin mask when it painted the body; garment = not skin. The decals read it too.)
+    surf[v * 2] = tex?.skin ? (garmentOn && tex.skin[v] < 0.5 ? 1 : 0) : garmentOn && (GARMENT_REGIONS as readonly string[]).includes(r) ? 1 : 0;
     surf[v * 2 + 1] = r === "torso" || r === "pelvis" ? 1 : 0;
   }
   geometry.setAttribute("aSurface", new THREE.Float32BufferAttribute(surf, 2));
-  const cel = createCelSkinnedMesh(geometry, skeleton, appearance.body, { vertexColors: !!paint, detail: true });
+  // Wave TEX (lane R): material channels (neutral unless the caller gives layers/marks) + the region per vertex
+  // (lane U's mark raycast reads geometry.userData.region with the bind positions).
+  geometry.userData.region = mesh.region;
+  const matInput = typeof options.material === "function" ? options.material(mesh) : options.material ?? tex?.input ?? null;
+  const { emissive, neutral, details, edge } = attachMaterialAttributes(geometry, mesh.positions.length / 3, matInput);
+  const cel = createCelSkinnedMesh(geometry, skeleton, appearance.body, { vertexColors: !!paint, detail: true, material: { emissive, lit: !neutral, details, edge } });
+  const surfMat = cel.surface.material as THREE.ShaderMaterial;
+  surfMat.userData.wtVertexNeutral = neutral;
+  if (details && matInput?.details) {
+    (surfMat.uniforms.uMatDetail.value as Float32Array).set(matInput.details.slots);
+    // P's details replace the generic wave-X skin grain / cloth weave (the abs relief stays).
+    surfMat.uniforms.uDetailGain.value.y = 0;
+    surfMat.uniforms.uDetailGain.value.z = 0;
+  }
+  const packed = setDecals(cel.surface, matInput?.decals ?? [])!;
+  const materialApi: RigMaterialApi = {
+    setChannelView: (view) => void setChannelView(cel.surface, view),
+    setDecals: (decals) => { const p = setDecals(cel.surface, decals)!; (materialApi as { packed: PackedDecals }).packed = p; return p; },
+    packed, emissive, stack: tex?.info ?? null,
+  };
   const abs = plan.physique?.abs;
   if (abs) (cel.surface.material as THREE.ShaderMaterial).uniforms.uAbs.value.set(abs.yTop, abs.yBottom, abs.halfWidth, abs.frontZ);
   group.add(cel.group);
@@ -426,6 +477,7 @@ export function buildSkinnedHumanoid(
     hands,
     jointHelpers: helpers,
     frameClock,
+    material: materialApi,
     // Wave H: the movable hair/beard masses, so the engine's SecondaryMotion can drive them with
     // the weather's wind and the head's own motion. Empty when the ancestry has no such mass.
     secondaryMasses: face.secondary,

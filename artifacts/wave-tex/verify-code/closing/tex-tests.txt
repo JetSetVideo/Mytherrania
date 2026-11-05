@@ -1,0 +1,180 @@
+Check tests/wave_tex_render_test.ts
+Check tests/wave_tex_marks_test.ts
+Check tests/wave_tex_presets_test.ts
+Check tests/wave_tex_ui_test.ts
+Check tests/wave_tex_capture_test.ts
+Check tests/wave_tex_layers_test.ts
+Check tests/wave_tex_operators_test.ts
+running 12 tests from ./tests/wave_tex_render_test.ts
+SPEC TX30: packDecals writes the posted layout (7 vec4 per decal, unit frame, tangent orthogonal to the normal) ...
+------- output -------
+TX30: block 448 floats; scar radius 70.6 mm, band radius 86.5 mm
+----- output end -----
+SPEC TX30: packDecals writes the posted layout (7 vec4 per decal, unit frame, tangent orthogonal to the normal) ... ok (798µs)
+SPEC TX31: packing is total — budget, degenerate frames, NaN, relief clamp ... ok (265µs)
+SPEC TX32: the height-perturbed normal is bounded — tilt <= MAX_TILT, so a relief crosses at most ONE cel band ...
+------- output -------
+TX32: worst tilt 0.3000 rad (MAX 0.3), worst |dLambert| 0.2989 <= 0.2989 < band gap 0.38
+----- output end -----
+SPEC TX32: the height-perturbed normal is bounded — tilt <= MAX_TILT, so a relief crosses at most ONE cel band ... ok (9ms)
+SPEC TX33: uniform budget — the material fragment fits WebGL2's guaranteed 224 vec4 and 16 samplers ...
+------- output -------
+TX33: fragment uniform rows 158 / 224 (decals 112), samplers 2, 32 uniforms
+----- output end -----
+SPEC TX33: uniform budget — the material fragment fits WebGL2's guaranteed 224 vec4 and 16 samplers ... ok (521µs)
+SPEC TX34: neutral channels take the pre-TEX path — celShade's expression verbatim, neutral inside every dead zone ... ok (579µs)
+SPEC TX35: decal profiles — spindle lines, stitches, discs; anti-aliased coverage is monotone with 0.5 on the edge ... ok (210µs)
+SPEC TX36: the glyph atlas reproduces Symbols' distances within one texel, 64 KB, deterministic ...
+------- output -------
+TX36: 13 glyphs, bake 9.0 ms, worst |d - ref| 0.0165 glyph units (texel 0.0344)
+----- output end -----
+SPEC TX36: the glyph atlas reproduces Symbols' distances within one texel, 64 KB, deterministic ... ok (19ms)
+SPEC TX37: the rig carries neutral channels, the region per vertex, and live decal / view controls ... ok (670ms)
+SPEC TX37b (wiring): the default body takes P's preset + M's marks; explicit empty marks + no overrides + switches off = neutral ...
+------- output -------
+TX37b: ork rig 917 ms (preset 52.2 ms, marks 12.3 ms), 58 finish layers, marks generated 6 drawn / 0 dropped, mean roughness 0.674
+----- output end -----
+SPEC TX37b (wiring): the default body takes P's preset + M's marks; explicit empty marks + no overrides + switches off = neutral ... ok (997ms)
+SPEC TX38b: packDetails — materials own <= 2 slots, one-hot vertex weights by region, overflow dropped, total ... ok (259µs)
+SPEC TX38: per-body GPU memory and CPU build cost of the channels stay inside the budget ...
+------- output -------
+TX38: neutral aMaterial 0.29 ms / 12000 vertices, pack 16 decals 0.018 ms; per body 189 KB (+64 KB atlas once)
+----- output end -----
+SPEC TX38: per-body GPU memory and CPU build cost of the channels stay inside the budget ... ok (9ms)
+SPEC TX39: shader structure — bounded loops, ONE glyph fetch per decal, no derivatives in the decal loop, view codes ... ok (315µs)
+running 20 tests from ./tests/wave_tex_marks_test.ts
+TX40 marks: the C-MARK enums are exactly the brief's ... ok (260µs)
+TX41 marks: generation, resolution and decals are deterministic from the seed ...
+------- post-test output -------
+  200 seeds deterministic; 186/200 differ from seed+1000
+----- post-test output end -----
+TX41 marks: generation, resolution and decals are deterministic from the seed ... ok (40ms)
+TX42 marks: stage boundaries follow wound healing (inflammation < 4 d, proliferation < 21 d, remodelling < 1 y) ... ok (59µs)
+TX43 marks: older scars are paler and flatter (monotone over age, every kind, every skin) ...
+------- post-test output -------
+  450 luma checks; incision day 1 redness 0.987 h 0.49 mm -> 2 y redness 0.000 h 0.000 mm
+----- post-test output end -----
+TX43 marks: older scars are paler and flatter (monotone over age, every kind, every skin) ... ok (952µs)
+TX44 marks: inflammatory red > proliferative pink > mature pale; punctures heal atrophic ... ok (67µs)
+TX45 marks: keloids stay raised and spread; propensity by ancestry and site ...
+------- post-test output -------
+  hypertrophic burn peak 1.52 mm at day 105, 0.007 mm at 2 y
+----- post-test output end -----
+TX45 marks: keloids stay raised and spread; propensity by ancestry and site ... ok (690µs)
+TX46 marks: the default angle follows Langer's lines per region ... ok (167µs)
+TX47 marks: a wound across Langer's lines gapes and heals wider ... ok (138µs)
+TX48 marks: scar albedo contrast never exceeds fresh-ink contrast on the same skin ...
+------- post-test output -------
+  worst scar/ink contrast ratio 1.000
+----- post-test output end -----
+TX48 marks: scar albedo contrast never exceeds fresh-ink contrast on the same skin ... ok (689µs)
+TX49 marks: shapes are bounded, finite and drawn per kind (stitches, claw rakes) ... ok (39ms)
+TX50 marks: hair follicles are absent along the scar line (mask for the hair pass) ...
+------- post-test output -------
+  burn on the forearm: 9 hairless vertices of 4246
+----- post-test output end -----
+TX50 marks: hair follicles are absent along the scar line (mask for the hair pass) ... ok (545ms)
+TX51 marks: ink ages (blur grows, opacity fades, black fades least and turns blue-green); bands wrap ... ok (12ms)
+TX52 marks: motifs come from the sign / class / race symbol sets ... ok (8ms)
+TX53 marks: every generated mark lies inside its region bounds, clear of eyes and mouth, without overlap ...
+------- post-test output -------
+  1000 characters, 2312 marks placed with 0 issues
+----- post-test output end -----
+TX53 marks: every generated mark lies inside its region bounds, clear of eyes and mouth, without overlap ... ok (47ms)
+TX54 marks: the solver moves a colliding movable mark and reports a fixed one ... ok (256µs)
+TX55 marks: face rule — no tattoo on the face unless facial, nothing over the eyes or mouth ...
+------- post-test output -------
+  189 generated face marks on 8 real heads, 0 touching the real eye/mouth zones
+----- post-test output end -----
+TX55 marks: face rule — no tattoo on the face unless facial, nothing over the eyes or mouth ... ok (5s)
+TX56 marks: mirror swaps the side (paired) or negates u (midline); decals land mirrored on the mesh ... ok (4ms)
+TX57 marks: appearance.marks round-trips through JSON and the profile library; saves are sanitized ... ok (988µs)
+TX58 marks: generated frequencies by ancestry (orks most scars + woad tribal, dwarves clan bands, elves dotwork, humans rare) ...
+------- post-test output -------
+  human scars 1.04 tattooed 18.2 % keloid 6.3 % top script/black
+  elf   scars 0.53 tattooed 48.3 % keloid 1.2 % top dotwork/blueBlack
+  dwarf scars 1.60 tattooed 74.1 % keloid 10.2 % top band/black
+  ork   scars 2.41 tattooed 86.6 % keloid 18.1 % top tribal/woad
+----- post-test output end -----
+TX58 marks: generated frequencies by ancestry (orks most scars + woad tribal, dwarves clan bands, elves dotwork, humans rare) ... ok (261ms)
+TX59 marks: decals fit R's layout and the skin; layers validate and evaluate in L's API; MARKS.md tables in sync ...
+------- post-test output -------
+  67 decals on a human mesh, worst centre-to-skin (nearest triangle) 0.00 mm
+----- post-test output end -----
+TX59 marks: decals fit R's layout and the skin; layers validate and evaluate in L's API; MARKS.md tables in sync ... ok (353ms)
+running 10 tests from ./tests/wave_tex_presets_test.ts
+SPEC TX60: the wave-V FormShade + wave-GEN Miniature pass AS LAYERS (legacyFinish) is byte-identical to applyFormShade ... ok (5s)
+SPEC TX61: paintStage without a preset is unchanged (old law re-stated); with one it returns the channels ... ok (71ms)
+SPEC TX62: preset completeness — every race x sub-race skin, every garment kind, every class outfit, the six miniature steps ... ok (18ms)
+SPEC TX63: channel ranges — albedo 0..1, roughness/height/ao/subsurface inside the C-MAT ranges on painted bodies, no NaN ... ok (316ms)
+SPEC TX64: skin roughness by ancestry — elf satin < human < dwarf weathered < ork leathery, in the tables AND on painted skin ... ok (81ms)
+SPEC TX65: operators — glaze = W3C color keeps the base luminosity; relief heightBlend bounded; the finish touches the body; all finish layers off = basecoat ... ok (56ms)
+SPEC TX66: legibility at game distance — skin vs garment contrast ratio inside LEGIBLE on every race x sub-race x class (colours) and on painted bodies ... ok (203ms)
+SPEC TX67: the miniature workflow reads — ridge/cavity separation >= legacy, metal edges glossier than metal flats, recesses matter, studs raised ... ok (233ms)
+SPEC TX68: skin presets stay skin and match the THEME — painted skin median inside SKIN_MEDIAN_BOUNDS, glaze <= 15 %, plaque-cited glazes come from the sub-race swatch ... ok (236ms)
+SPEC TX69: determinism, overrides and the v2 export — same subject = same bytes; opacity 1 override = identity; v2 stack evaluates through L ... ok (176ms)
+running 11 tests from ./tests/wave_tex_ui_test.ts
+SPEC TX70: the channel view list is R's (same ids, same order) and the radio row's arrow law wraps ... ok (363µs)
+SPEC TX71: parseLayerOverrides is TOTAL on hostile saves (never throws, clamps, dedupes, drops junk) ... ok (5ms)
+SPEC TX72: the inspector's view of the overrides == L's applyLayerOverrides (enabled, opacity, op per channel, order) on 400 random edit sets ... ok (95ms)
+SPEC TX72b: any sequence of inspector drags (reorderOverride) renders in the SAME order under L's applyLayerOverrides (300 sequences x 1-6 drags) ... ok (131ms)
+SPEC TX73: setOverride/reorder/reset — a value back at the preset drops the override; a drag moves exactly one row; Reset clears ... ok (17ms)
+SPEC TX74: marks editing — lists equal M's, add/remove/update stay inside the ranges, caps hold, a hostile save sanitises ... ok (7ms)
+SPEC TX75: the placement raycast's frame anchor on a REAL rig skin — every sampled skin vertex of a mark region maps to its own region, side by x, anchor in [-1,1]², and back onto the region cylinder near the point ... ok (1s)
+SPEC TX76: previewKey is byte-identical without marks/overrides and changes with them (the model rebuilds on a mark edit) ... ok (418µs)
+SPEC TX77: the studio markup is CSP-clean (no style attribute, no script), ids unique, every control named, 44 px classes ... ok (4ms)
+SPEC TX78: placement notes come from M's validator — overlap flagged, a tidy pair on bare skin is clean, a mark under the outfit says so (QD Z-37) ... ok (1ms)
+SPEC TX79: save/load round trip — appearance.marks and appearance.layerOverrides survive the profile library (JSON) and re-parse unchanged ... ok (788µs)
+running 10 tests from ./tests/wave_tex_capture_test.ts
+TX80: the HUD prints every contract field, in HUD_FIELDS order ... ok (540µs)
+TX81: no line is wider than the band, for any width (fuzz) ... ok (8ms)
+TX82: wrapList keeps whole items, caps lines and counts what it hid ... ok (253µs)
+TX83: clipText and fmt are total ... ok (66µs)
+TX84: the dirty flag paints the commit line in the warn colour; layout is deterministic ... ok (147µs)
+TX85: orbitDirection and orbitOf are inverses; yaw +90 is the body's left (+X) ... ok (290µs)
+TX86: the angle set covers the brief (7 views + face/forearm/back close-ups), ids unique ... ok (89µs)
+TX87: diffImages — identical images read 0, a changed block reads its exact share and box ... ok (1ms)
+TX88: diffImages separates distant regions, drops specks below minPixels, is symmetric ... ok (957µs)
+TX89: sheetGrid lays cells row-major without overlap inside the sheet ... ok (126µs)
+running 14 tests from ./tests/wave_tex_layers_test.ts
+TX11 channels: every channel declares range/default/neutral/storage; aMaterial layout; mask ids ... ok (421µs)
+TX12 v1 adapter: evaluateStack(stackFromV1(s)).albedo is BYTE-identical to paintVertices(s) for every recipe (mannequin) + 4 real bodies, linear and sRGB, custom background ...
+------- post-test output -------
+v1 byte identity: 125 stacks, 714702 vertices x 2 spaces
+----- post-test output end -----
+TX12 v1 adapter: evaluateStack(stackFromV1(s)).albedo is BYTE-identical to paintVertices(s) for every recipe (mannequin) + 4 real bodies, linear and sRGB, custom background ... ok (3s)
+TX13 evaluate: an albedo-only stack leaves aMaterial at R's neutral (0.5, 0, 1, 0), no emissive, no masks ... ok (7ms)
+TX14 evaluate: one layer writes albedo + roughness + height + a named mask at once, only inside its mask ... ok (17ms)
+TX15 groups: normal-over is associative (group of normal layers == flat stack), opacity 0 / disabled are no-ops, isolation changes a multiply group ... ok (140ms)
+TX16 stack: order sort, enable/opacity, applyLayerOverrides (U's shape: id, enabled, opacity, blend per channel, order) is total and pure ... ok (1ms)
+TX17 masks: every source and combinator is closed on [0,1], never NaN, deterministic (2000 random trees on a real body) ... ok (4s)
+TX18 masks: algebra laws hold pointwise (2000 random pairs): and/or identities, De Morgan, invert involution, xor/subtract, commutativity ... ok (2s)
+TX19 masks: feather is a Gaussian of sigma = radius/2 in mm on the surface; grow/shrink move a boundary by the asked mm (grid 1 mm) ...
+------- post-test output -------
+feather 20 mm -> 10-90 % 24.94 mm (Gaussian 25.63); grow 15 -> 15.07 mm; shrink 15 -> 15.07 mm
+----- post-test output end -----
+TX19 masks: feather is a Gaussian of sigma = radius/2 in mm on the surface; grow/shrink move a boundary by the asked mm (grid 1 mm) ... ok (330ms)
+TX20 masks: sources mean what they say on a real body (up-facing = +y normals, region side, mark field, distance anchor, body height) ... ok (5ms)
+TX24 evaluate: total on hostile JSON (unknown mask channel, unknown write channel/op/source/pattern, NaN opacity, bad colours) — QC STK-2 ... ok (763µs)
+TX21 evaluate: stage 'fragment' layers skip the vertex pass and reach the fragment list with their group opacity; mark sources read M's field ... ok (2ms)
+TX22 perf: 12-layer stack on a ~10 k-vertex body (median of 5, fields cached and cold) + v1 vs v2 overhead ...
+------- post-test output -------
+perf {"vertices":10132,"layers":12,"vertexLayers":10,"coldMs":53.15,"medianMs":28.89,"v1Layers":12,"v1PaintMs":10.04,"v2SameStackMs":10.97}
+----- post-test output end -----
+TX22 perf: 12-layer stack on a ~10 k-vertex body (median of 5, fields cached and cold) + v1 vs v2 overhead ... ok (996ms)
+TX23 docs: docs/wave-tex/LAYERS.md carries the generated operator/channel/mask tables of this code (WAVE_TEX_WRITE_DOC=1 rewrites them) ... ok (2ms)
+running 10 tests from ./tests/wave_tex_operators_test.ts
+TX1 operators: 25 colour modes (21 separable incl. softLightW3C, 4 non-separable) + linearDodge alias; 19 scalar ops; every op documented ... ok (316µs)
+TX2 operators: v1 codes 0..5 bit-identical to Blend.blendChannelCode on [0,1] (24000 cases) ... ok (9ms)
+TX3 operators: range closure + no NaN for every colour mode on out-of-range/NaN/Inf inputs (4000 x 25 triples) ... ok (178ms)
+TX4 operators: identities (normal at alpha 0, multiply by white, screen by black, add 0, ... ) on 4000 bases ... ok (27ms)
+TX5 operators: commutativity where documented, a counterexample where not (4000 pairs) ... ok (53ms)
+TX6 operators: normal-over is associative; multiply/screen/add/darken/lighten/linearBurn are associative (4000 triples) ... ok (3ms)
+TX7 operators: W3C non-separable reference values (Lum preserved, hue/sat transferred) ... ok (220µs)
+TX8 operators: scalar ops total and closed on every channel range, alpha 0 identity, documented identities (4000 x 19 x 3 ranges) ... ok (78ms)
+TX9 operators: heightBlend — smooth "taller wins": monotone in s, b and a (QC OPS-12), identity at a = 0, exact max outside the transition, overshoot <= w/4 (4000 cases) ... ok (1ms)
+TX10 operators: deterministic (same inputs -> same bits across 4000 replays) ... ok (4ms)
+
+ok | 87 passed | 0 failed (32s)
+
+exit 0

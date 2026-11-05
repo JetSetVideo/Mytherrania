@@ -1,0 +1,542 @@
+[
+ {
+  "subject": "human-male",
+  "variant": "marked-bare",
+  "mark": "dotwork",
+  "px": 275,
+  "mmPerPx": 0.836,
+  "vsSame_median": 20.3,
+  "vsSame_ge10": 0.815,
+  "vsRing_median": 18.1,
+  "vsRing_ge10": 0.764,
+  "albedo_dLab": [
+   -14.2,
+   -3.6,
+   -22.5
+  ],
+  "albedo_dC": -18.1,
+  "refAlbedo_dL_samePx": 2.7
+ },
+ {
+  "subject": "human-male",
+  "variant": "marked-bare",
+  "mark": "incision",
+  "px": 37,
+  "mmPerPx": 0.836,
+  "vsSame_median": 14.5,
+  "vsSame_ge10": 1.0,
+  "vsRing_median": 16.3,
+  "vsRing_ge10": 1.0,
+  "albedo_dLab": [
+   3.0,
+   -9.5,
+   -16.2
+  ],
+  "albedo_dC": -18.8,
+  "refAlbedo_dL_samePx": 0.3
+ },
+ {
+  "subject": "human-male",
+  "variant": "marked",
+  "mark": "dotwork",
+  "px": 275,
+  "mmPerPx": 0.836,
+  "vsSame_median": 20.3,
+  "vsSame_ge10": 0.815,
+  "vsRing_median": 18.1,
+  "vsRing_ge10": 0.764,
+  "albedo_dLab": [
+   -14.2,
+   -3.6,
+   -22.5
+  ],
+  "albedo_dC": -18.1,
+  "refAlbedo_dL_samePx": 2.7
+ },
+ {
+  "subject": "human-male",
+  "variant": "marked",
+  "mark": "incision",
+  "px": 34,
+  "mmPerPx": 0.836,
+  "vsSame_median": 15.0,
+  "vsSame_ge10": 1.0,
+  "vsRing_median": 16.7,
+  "vsRing_ge10": 1.0,
+  "albedo_dLab": [
+   3.4,
+   -9.9,
+   -16.7
+  ],
+  "albedo_dC": -19.4,
+  "refAlbedo_dL_samePx": 0.3
+ },
+ {
+  "subject": "human-female",
+  "variant": "marked-bare",
+  "mark": "dotwork",
+  "px": 421,
+  "mmPerPx": 0.791,
+  "vsSame_median": 23.8,
+  "vsSame_ge10": 0.853,
+  "vsRing_median": 28.7,
+  "vsRing_ge10": 0.948,
+  "albedo_dLab": [
+   -17.0,
+   -3.6,
+   -23.2
+  ],
+  "albedo_dC": -17.9,
+  "refAlbedo_dL_samePx": 2.1
+ },
+ {
+  "subject": "human-female",
+  "variant": "marked-bare",
+  "mark": "incision",
+  "px": 49,
+  "mmPerPx": 0.791,
+  "vsSame_median": 19.3,
+  "vsSame_ge10": 1.0,
+  "vsRing_median": 23.0,
+  "vsRing_ge10": 1.0,
+  "albedo_dLab": [
+   4.0,
+   -11.2,
+   -17.9
+  ],
+  "albedo_dC": -21.1,
+  "refAlbedo_dL_samePx": -0.1
+ },
+ {
+  "subject": "human-female",
+  "variant": "marked",
+  "mark": "dotwork",
+  "px": 421,
+  "mmPerPx": 0.791,
+  "vsSame_median": 23.8,
+  "vsSame_ge10": 0.853,
+  "vsRing_median": 28.7,
+  "vsRing_ge10": 0.948,
+  "albedo_dLab": [
+   -17.0,
+   -3.6,
+   -23.2
+  ],
+  "albedo_dC": -17.9,
+  "refAlbedo_dL_samePx": 2.1
+ },
+ {
+  "subject": "human-female",
+  "variant": "marked",
+  "mark": "incision",
+  "px": 48,
+  "mmPerPx": 0.791,
+  "vsSame_median": 19.7,
+  "vsSame_ge10": 1.0,
+  "vsRing_median": 22.6,
+  "vsRing_ge10": 1.0,
+  "albedo_dLab": [
+   4.5,
+   -11.4,
+   -18.3
+  ],
+  "albedo_dC": -21.5,
+  "refAlbedo_dL_samePx": -0.0
+ },
+ {
+  "subject": "elf-male",
+  "variant": "marked-bare",
+  "mark": "dotwork",
+  "px": 511,
+  "mmPerPx": 0.753,
+  "vsSame_median": 25.6,
+  "vsSame_ge10": 0.867,
+  "vsRing_median": 19.3,
+  "vsRing_ge10": 0.789,
+  "albedo_dLab": [
+   -20.8,
+   0.1,
+   -18.4
+  ],
+  "albedo_dC": -16.0,
+  "refAlbedo_dL_samePx": 1.8
+ },
+ {
+  "subject": "elf-male",
+  "variant": "marked-bare",
+  "mark": "incision",
+  "px": 0
+ },
+ {
+  "subject": "elf-male",
+  "variant": "marked",
+  "mark": "dotwork",
+  "px": 511,
+  "mmPerPx": 0.753,
+  "vsSame_median": 25.6,
+  "vsSame_ge10": 0.867,
+  "vsRing_median": 19.3,
+  "vsRing_ge10": 0.789,
+  "albedo_dLab": [
+   -20.8,
+   0.1,
+   -18.4
+  ],
+  "albedo_dC": -16.0,
+  "refAlbedo_dL_samePx": 1.8
+ },
+ {
+  "subject": "elf-male",
+  "variant": "marked",
+  "mark": "incision",
+  "px": 0
+ },
+ {
+  "subject": "elf-female",
+  "variant": "marked-bare",
+  "mark": "dotwork",
+  "px": 508,
+  "mmPerPx": 0.71,
+  "vsSame_median": 27.9,
+  "vsSame_ge10": 0.882,
+  "vsRing_median": 24.7,
+  "vsRing_ge10": 0.943,
+  "albedo_dLab": [
+   -22.2,
+   0.3,
+   -20.1
+  ],
+  "albedo_dC": -16.9,
+  "refAlbedo_dL_samePx": 7.1
+ },
+ {
+  "subject": "elf-female",
+  "variant": "marked-bare",
+  "mark": "incision",
+  "px": 15,
+  "mmPerPx": 0.71,
+  "vsSame_median": 16.1,
+  "vsSame_ge10": 1.0,
+  "vsRing_median": 18.0,
+  "vsRing_ge10": 1.0,
+  "albedo_dLab": [
+   2.6,
+   -4.3,
+   -16.6
+  ],
+  "albedo_dC": -17.1,
+  "refAlbedo_dL_samePx": 0.0
+ },
+ {
+  "subject": "elf-female",
+  "variant": "marked",
+  "mark": "dotwork",
+  "px": 508,
+  "mmPerPx": 0.71,
+  "vsSame_median": 27.9,
+  "vsSame_ge10": 0.882,
+  "vsRing_median": 24.7,
+  "vsRing_ge10": 0.943,
+  "albedo_dLab": [
+   -22.2,
+   0.3,
+   -20.1
+  ],
+  "albedo_dC": -16.9,
+  "refAlbedo_dL_samePx": 7.1
+ },
+ {
+  "subject": "elf-female",
+  "variant": "marked",
+  "mark": "incision",
+  "px": 0
+ },
+ {
+  "subject": "dwarf-male",
+  "variant": "marked-bare",
+  "mark": "dotwork",
+  "px": 524,
+  "mmPerPx": 0.718,
+  "vsSame_median": 32.8,
+  "vsSame_ge10": 0.933,
+  "vsRing_median": 34.3,
+  "vsRing_ge10": 0.943,
+  "albedo_dLab": [
+   -15.1,
+   -4.2,
+   -27.9
+  ],
+  "albedo_dC": -19.8,
+  "refAlbedo_dL_samePx": 0.2
+ },
+ {
+  "subject": "dwarf-male",
+  "variant": "marked-bare",
+  "mark": "incision",
+  "px": 107,
+  "mmPerPx": 0.718,
+  "vsSame_median": 24.8,
+  "vsSame_ge10": 1.0,
+  "vsRing_median": 26.8,
+  "vsRing_ge10": 1.0,
+  "albedo_dLab": [
+   5.9,
+   -13.1,
+   -19.2
+  ],
+  "albedo_dC": -23.2,
+  "refAlbedo_dL_samePx": -0.1
+ },
+ {
+  "subject": "dwarf-male",
+  "variant": "marked",
+  "mark": "dotwork",
+  "px": 524,
+  "mmPerPx": 0.718,
+  "vsSame_median": 32.8,
+  "vsSame_ge10": 0.933,
+  "vsRing_median": 34.3,
+  "vsRing_ge10": 0.943,
+  "albedo_dLab": [
+   -15.1,
+   -4.2,
+   -27.9
+  ],
+  "albedo_dC": -19.8,
+  "refAlbedo_dL_samePx": 0.2
+ },
+ {
+  "subject": "dwarf-male",
+  "variant": "marked",
+  "mark": "incision",
+  "px": 105,
+  "mmPerPx": 0.718,
+  "vsSame_median": 25.1,
+  "vsSame_ge10": 1.0,
+  "vsRing_median": 27.5,
+  "vsRing_ge10": 1.0,
+  "albedo_dLab": [
+   6.6,
+   -13.2,
+   -19.5
+  ],
+  "albedo_dC": -23.6,
+  "refAlbedo_dL_samePx": -0.1
+ },
+ {
+  "subject": "dwarf-female",
+  "variant": "marked-bare",
+  "mark": "dotwork",
+  "px": 532,
+  "mmPerPx": 0.681,
+  "vsSame_median": 33.8,
+  "vsSame_ge10": 0.947,
+  "vsRing_median": 35.3,
+  "vsRing_ge10": 0.957,
+  "albedo_dLab": [
+   -14.1,
+   -4.2,
+   -29.1
+  ],
+  "albedo_dC": -20.2,
+  "refAlbedo_dL_samePx": 0.4
+ },
+ {
+  "subject": "dwarf-female",
+  "variant": "marked-bare",
+  "mark": "incision",
+  "px": 125,
+  "mmPerPx": 0.681,
+  "vsSame_median": 25.1,
+  "vsSame_ge10": 1.0,
+  "vsRing_median": 25.3,
+  "vsRing_ge10": 1.0,
+  "albedo_dLab": [
+   6.4,
+   -12.7,
+   -19.2
+  ],
+  "albedo_dC": -23.0,
+  "refAlbedo_dL_samePx": -0.0
+ },
+ {
+  "subject": "dwarf-female",
+  "variant": "marked",
+  "mark": "dotwork",
+  "px": 532,
+  "mmPerPx": 0.681,
+  "vsSame_median": 33.8,
+  "vsSame_ge10": 0.947,
+  "vsRing_median": 35.3,
+  "vsRing_ge10": 0.957,
+  "albedo_dLab": [
+   -14.1,
+   -4.2,
+   -29.1
+  ],
+  "albedo_dC": -20.2,
+  "refAlbedo_dL_samePx": 0.4
+ },
+ {
+  "subject": "dwarf-female",
+  "variant": "marked",
+  "mark": "incision",
+  "px": 117,
+  "mmPerPx": 0.681,
+  "vsSame_median": 25.9,
+  "vsSame_ge10": 1.0,
+  "vsRing_median": 26.1,
+  "vsRing_ge10": 1.0,
+  "albedo_dLab": [
+   7.7,
+   -13.2,
+   -19.9
+  ],
+  "albedo_dC": -23.9,
+  "refAlbedo_dL_samePx": -0.0
+ },
+ {
+  "subject": "ork-male",
+  "variant": "marked-bare",
+  "mark": "dotwork",
+  "px": 173,
+  "mmPerPx": 0.953,
+  "vsSame_median": 21.0,
+  "vsSame_ge10": 0.838,
+  "vsRing_median": 23.5,
+  "vsRing_ge10": 0.89,
+  "albedo_dLab": [
+   -12.2,
+   11.0,
+   -27.7
+  ],
+  "albedo_dC": -27.1,
+  "refAlbedo_dL_samePx": -6.8
+ },
+ {
+  "subject": "ork-male",
+  "variant": "marked-bare",
+  "mark": "incision",
+  "px": 77,
+  "mmPerPx": 0.953,
+  "vsSame_median": 18.4,
+  "vsSame_ge10": 0.987,
+  "vsRing_median": 19.0,
+  "vsRing_ge10": 0.987,
+  "albedo_dLab": [
+   2.6,
+   14.9,
+   -20.9
+  ],
+  "albedo_dC": -25.6,
+  "refAlbedo_dL_samePx": 0.2
+ },
+ {
+  "subject": "ork-male",
+  "variant": "marked",
+  "mark": "dotwork",
+  "px": 173,
+  "mmPerPx": 0.953,
+  "vsSame_median": 21.0,
+  "vsSame_ge10": 0.838,
+  "vsRing_median": 23.5,
+  "vsRing_ge10": 0.89,
+  "albedo_dLab": [
+   -12.2,
+   11.0,
+   -27.7
+  ],
+  "albedo_dC": -27.1,
+  "refAlbedo_dL_samePx": -6.8
+ },
+ {
+  "subject": "ork-male",
+  "variant": "marked",
+  "mark": "incision",
+  "px": 76,
+  "mmPerPx": 0.953,
+  "vsSame_median": 18.9,
+  "vsSame_ge10": 0.987,
+  "vsRing_median": 19.1,
+  "vsRing_ge10": 1.0,
+  "albedo_dLab": [
+   3.2,
+   15.2,
+   -21.3
+  ],
+  "albedo_dC": -26.2,
+  "refAlbedo_dL_samePx": 0.2
+ },
+ {
+  "subject": "ork-female",
+  "variant": "marked-bare",
+  "mark": "dotwork",
+  "px": 226,
+  "mmPerPx": 0.843,
+  "vsSame_median": 26.8,
+  "vsSame_ge10": 0.916,
+  "vsRing_median": 27.9,
+  "vsRing_ge10": 0.907,
+  "albedo_dLab": [
+   -11.3,
+   11.8,
+   -30.0
+  ],
+  "albedo_dC": -28.6,
+  "refAlbedo_dL_samePx": -8.6
+ },
+ {
+  "subject": "ork-female",
+  "variant": "marked-bare",
+  "mark": "incision",
+  "px": 98,
+  "mmPerPx": 0.843,
+  "vsSame_median": 23.6,
+  "vsSame_ge10": 1.0,
+  "vsRing_median": 26.9,
+  "vsRing_ge10": 1.0,
+  "albedo_dLab": [
+   6.4,
+   15.1,
+   -21.3
+  ],
+  "albedo_dC": -26.1,
+  "refAlbedo_dL_samePx": -0.2
+ },
+ {
+  "subject": "ork-female",
+  "variant": "marked",
+  "mark": "dotwork",
+  "px": 226,
+  "mmPerPx": 0.843,
+  "vsSame_median": 26.8,
+  "vsSame_ge10": 0.916,
+  "vsRing_median": 27.9,
+  "vsRing_ge10": 0.907,
+  "albedo_dLab": [
+   -11.3,
+   11.8,
+   -30.0
+  ],
+  "albedo_dC": -28.6,
+  "refAlbedo_dL_samePx": -8.6
+ },
+ {
+  "subject": "ork-female",
+  "variant": "marked",
+  "mark": "incision",
+  "px": 95,
+  "mmPerPx": 0.843,
+  "vsSame_median": 24.3,
+  "vsSame_ge10": 1.0,
+  "vsRing_median": 27.5,
+  "vsRing_ge10": 1.0,
+  "albedo_dLab": [
+   7.4,
+   15.6,
+   -21.9
+  ],
+  "albedo_dC": -26.8,
+  "refAlbedo_dL_samePx": -0.1
+ }
+]

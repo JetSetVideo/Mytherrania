@@ -1,0 +1,93 @@
+{
+ "run": "r09q-parent",
+ "subject": "elf-female",
+ "variant": "marked-bare",
+ "angles": {
+  "forearm": {
+   "maskPx": 216,
+   "mmPerPx": 1.26,
+   "parts": [
+    {
+     "px": 106,
+     "bbox": [
+      189,
+      272,
+      203,
+      291
+     ],
+     "albedo_dL": -3.5,
+     "albedo_da": 1.3,
+     "albedo_db": -0.1,
+     "albedo_dC": 0.2,
+     "final_dL": -3.6,
+     "final_dE": 3.9,
+     "markColour": [
+      116,
+      118,
+      125
+     ]
+    },
+    {
+     "px": 50,
+     "bbox": [
+      179,
+      201,
+      184,
+      236
+     ],
+     "albedo_dL": 3.9,
+     "albedo_da": -2.5,
+     "albedo_db": -12.4,
+     "albedo_dC": -12.7,
+     "final_dL": 5.6,
+     "final_dE": 11.1,
+     "markColour": [
+      223,
+      215,
+      205
+     ]
+    },
+    {
+     "px": 43,
+     "bbox": [
+      183,
+      251,
+      190,
+      259
+     ],
+     "albedo_dL": -5.0,
+     "albedo_da": 0.9,
+     "albedo_db": -1.6,
+     "albedo_dC": -1.3,
+     "final_dL": -9.6,
+     "final_dE": 9.9,
+     "markColour": [
+      115,
+      117,
+      124
+     ]
+    },
+    {
+     "px": 14,
+     "bbox": [
+      224,
+      261,
+      226,
+      267
+     ],
+     "albedo_dL": 4.0,
+     "albedo_da": 0.8,
+     "albedo_db": 0.8,
+     "albedo_dC": 0.9,
+     "final_dL": 2.7,
+     "final_dE": 3.5,
+     "markColour": [
+      115,
+      118,
+      123
+     ]
+    }
+   ]
+  }
+ }
+}

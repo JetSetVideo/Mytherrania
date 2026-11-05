@@ -1,0 +1,82 @@
+[0m[1m[31merror[no-explicit-any][0m: [0m[1m`any` type is not allowed[0m
+   [0m[38;5;12m-->[0m [0m[36m/Users/macmax/Desktop/Mytherrania/tools/bench-wave-tex.ts[0m[0m[33m:288:49[0m
+   [0m[38;5;12m | [0m
+[0m[38;5;12m288 | [0mawait page.waitForFunction(() => (globalThis as any).__WTB__, null, { timeout: 60000 });
+   [0m[38;5;12m | [0m                                                [0m[1m[31m^^^[0m
+    [0m[38;5;12m=[0m [0m[1mhint[0m: Use a specific type other than `any`
+
+  [0m[38;5;12mdocs[0m: https://docs.deno.com/lint/rules/no-explicit-any
+
+
+[0m[1m[31merror[no-explicit-any][0m: [0m[1m`any` type is not allowed[0m
+   [0m[38;5;12m-->[0m [0m[36m/Users/macmax/Desktop/Mytherrania/tools/bench-wave-tex.ts[0m[0m[33m:290:15[0m
+   [0m[38;5;12m | [0m
+[0m[38;5;12m290 | [0mconst report: any = { run: runName, src, hasTex, commit, when: new Date().toISOString(), frames: FRAMES };
+   [0m[38;5;12m | [0m              [0m[1m[31m^^^[0m
+    [0m[38;5;12m=[0m [0m[1mhint[0m: Use a specific type other than `any`
+
+  [0m[38;5;12mdocs[0m: https://docs.deno.com/lint/rules/no-explicit-any
+
+
+[0m[1m[31merror[no-explicit-any][0m: [0m[1m`any` type is not allowed[0m
+   [0m[38;5;12m-->[0m [0m[36m/Users/macmax/Desktop/Mytherrania/tools/bench-wave-tex.ts[0m[0m[33m:291:85[0m
+   [0m[38;5;12m | [0m
+[0m[38;5;12m291 | [0mconst ev = (f: string, ...a: unknown[]) => page.evaluate(([f, a]) => (globalThis as any).__WTB__[f as string](...(a as unknown[])), [f, a] as const);
+   [0m[38;5;12m | [0m                                                                                    [0m[1m[31m^^^[0m
+    [0m[38;5;12m=[0m [0m[1mhint[0m: Use a specific type other than `any`
+
+  [0m[38;5;12mdocs[0m: https://docs.deno.com/lint/rules/no-explicit-any
+
+
+[0m[1m[31merror[no-explicit-any][0m: [0m[1m`any` type is not allowed[0m
+   [0m[38;5;12m-->[0m [0m[36m/Users/macmax/Desktop/Mytherrania/tools/bench-wave-tex.ts[0m[0m[33m:305:71[0m
+   [0m[38;5;12m | [0m
+[0m[38;5;12m305 | [0m    for (const r of await ev("identity", race, sex, [0, 135, 270]) as any[]) report.identity.push({ race, sex, ...r });
+   [0m[38;5;12m | [0m                                                                      [0m[1m[31m^^^[0m
+    [0m[38;5;12m=[0m [0m[1mhint[0m: Use a specific type other than `any`
+
+  [0m[38;5;12mdocs[0m: https://docs.deno.com/lint/rules/no-explicit-any
+
+
+[0m[1m[31merror[no-explicit-any][0m: [0m[1m`any` type is not allowed[0m
+   [0m[38;5;12m-->[0m [0m[36m/Users/macmax/Desktop/Mytherrania/tools/bench-wave-tex.ts[0m[0m[33m:307:71[0m
+   [0m[38;5;12m | [0m
+[0m[38;5;12m307 | [0m  report.identityChangedTotal = report.identity.reduce((s: number, r: any) => s + r.changed, 0);
+   [0m[38;5;12m | [0m                                                                      [0m[1m[31m^^^[0m
+    [0m[38;5;12m=[0m [0m[1mhint[0m: Use a specific type other than `any`
+
+  [0m[38;5;12mdocs[0m: https://docs.deno.com/lint/rules/no-explicit-any
+
+
+[0m[1m[31merror[no-explicit-any][0m: [0m[1m`any` type is not allowed[0m
+   [0m[38;5;12m-->[0m [0m[36m/Users/macmax/Desktop/Mytherrania/tools/bench-wave-tex.ts[0m[0m[33m:308:78[0m
+   [0m[38;5;12m | [0m
+[0m[38;5;12m308 | [0m  report.identityControlChangedTotal = report.identity.reduce((s: number, r: any) => s + r.controlChanged, 0);
+   [0m[38;5;12m | [0m                                                                             [0m[1m[31m^^^[0m
+    [0m[38;5;12m=[0m [0m[1mhint[0m: Use a specific type other than `any`
+
+  [0m[38;5;12mdocs[0m: https://docs.deno.com/lint/rules/no-explicit-any
+
+
+[0m[1m[31merror[no-explicit-any][0m: [0m[1m`any` type is not allowed[0m
+   [0m[38;5;12m-->[0m [0m[36m/Users/macmax/Desktop/Mytherrania/tools/bench-wave-tex.ts[0m[0m[33m:312:61[0m
+   [0m[38;5;12m | [0m
+[0m[38;5;12m312 | [0m      const r = await ev("views", race, sex, { commit }) as any;
+   [0m[38;5;12m | [0m                                                            [0m[1m[31m^^^[0m
+    [0m[38;5;12m=[0m [0m[1mhint[0m: Use a specific type other than `any`
+
+  [0m[38;5;12mdocs[0m: https://docs.deno.com/lint/rules/no-explicit-any
+
+
+[0m[1m[31merror[require-await][0m: [0m[1mAsync function 'generated' has no 'await' expression or 'await using' declaration.[0m
+   [0m[38;5;12m-->[0m [0m[36m/Users/macmax/Desktop/Mytherrania/tools/verify-wave-tex-domain.ts[0m[0m[33m:273:1[0m
+   [0m[38;5;12m | [0m
+[0m[38;5;12m273 | [0masync function generated(lib: any, plc: any, SEEDS: number) {
+   [0m[38;5;12m | [0m[0m[1m[31m^^^^^[0m
+    [0m[38;5;12m=[0m [0m[1mhint[0m: Remove 'async' keyword from the function or use 'await' expression or 'await using' declaration inside.
+
+  [0m[38;5;12mdocs[0m: https://docs.deno.com/lint/rules/require-await
+
+
+Found 8 problems
+Checked 717 files

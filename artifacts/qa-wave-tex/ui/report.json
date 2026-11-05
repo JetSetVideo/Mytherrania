@@ -1,0 +1,1979 @@
+{
+  "dist": "dist-texui",
+  "port": 8871,
+  "generated": "2026-11-05T00:16:19.848Z",
+  "viewports": {
+    "320": {
+      "touch": true,
+      "step": "[data-hero-tab=\"new\"]",
+      "views": [
+        {
+          "view": "final",
+          "applied": "final",
+          "hash": "b52ee97e",
+          "mean": 32,
+          "checked": "final"
+        },
+        {
+          "view": "albedo",
+          "applied": "albedo",
+          "hash": "f068ab3f",
+          "mean": 33.6,
+          "checked": "albedo"
+        },
+        {
+          "view": "roughness",
+          "applied": "roughness",
+          "hash": "ad7f91df",
+          "mean": 34.2,
+          "checked": "roughness"
+        },
+        {
+          "view": "height",
+          "applied": "height",
+          "hash": "c2667e39",
+          "mean": 33.2,
+          "checked": "height"
+        },
+        {
+          "view": "normal",
+          "applied": "normal",
+          "hash": "aa56c9af",
+          "mean": 34.2,
+          "checked": "normal"
+        },
+        {
+          "view": "ao",
+          "applied": "ao",
+          "hash": "507d1c82",
+          "mean": 40,
+          "checked": "ao"
+        },
+        {
+          "view": "marks",
+          "applied": "marks",
+          "hash": "6651bbeb",
+          "mean": 37.5,
+          "checked": "marks"
+        }
+      ],
+      "viewHashesDistinct": 7,
+      "viewsApplied": 7,
+      "finalControlEqual": true,
+      "viewKeyArrow": {
+        "focused": "albedo",
+        "checked": "albedo"
+      },
+      "genLink": {
+        "menuStage": "paint",
+        "shown": "paint",
+        "applied": "roughness"
+      },
+      "placeArmed": "scar",
+      "covered": [
+        "torso",
+        "pelvis",
+        "foreArm",
+        "thigh"
+      ],
+      "skinHits": 74,
+      "skinRegions": [
+        "face",
+        "head",
+        "upperArm",
+        "torso",
+        "foreArm",
+        "pelvis",
+        "thigh",
+        "shin",
+        "foot"
+      ],
+      "scarClick": {
+        "at": {
+          "x": 177,
+          "y": 195,
+          "region": "upperArm",
+          "anchor": [
+            -0.04643400080814955,
+            0.18177300138789346
+          ]
+        },
+        "region": "upperArm",
+        "side": 0,
+        "anchor": [
+          -0.04626135614195648,
+          0.1593928465056801
+        ],
+        "pickRegion": "upperArm",
+        "pickAnchor": [
+          -0.04626135614195648,
+          0.1593928465056801
+        ],
+        "status": "Placed on the upper arm at -0.05, 0.16.",
+        "hashChanged": true,
+        "picks": 2
+      },
+      "scarDrag": {
+        "to": {
+          "x": 141,
+          "y": 177,
+          "region": "upperArm",
+          "anchor": [
+            -0.2760647325679626,
+            1
+          ]
+        },
+        "anchorBefore": [
+          -0.04626135614195648,
+          0.1593928465056801
+        ],
+        "anchorAfter": [
+          -0.24450505296418873,
+          0.9964846064467758
+        ],
+        "moved": true,
+        "yawUnchanged": true,
+        "picks": 12
+      },
+      "tattoo": {
+        "at": {
+          "x": 150,
+          "y": 303,
+          "region": "shin",
+          "anchor": [
+            -0.3353165557608748,
+            0.16561455937279002
+          ]
+        },
+        "region": "shin",
+        "anchor": [
+          -0.3317261196687445,
+          0.14012421248338772
+        ],
+        "inks": [
+          "woad"
+        ],
+        "mirror": true,
+        "status": "Placed on the shin at -0.33, 0.14."
+      },
+      "marksViewAfter": {
+        "hash": "64993b10",
+        "before": "6651bbeb",
+        "changed": true
+      },
+      "placeOffAfterEsc": true,
+      "ageStage": null,
+      "markIssues": [
+        "Laceration scarright upper arm · 45 mm · 1.1 y · runs off this body part×"
+      ],
+      "hashWithMarks": "91e8ebc1",
+      "hashMarksDiffer": true,
+      "layerFilter": {
+        "first": "skin",
+        "shownFirst": 11,
+        "total": 58,
+        "next": "hair",
+        "shownNext": 11,
+        "differ": true
+      },
+      "layerEdits": {
+        "rows": 58,
+        "toggled": true,
+        "opacity": 0.4,
+        "operator": {
+          "select": "tex-blend-p-skin-edge-form-albedo",
+          "before": "screenLift",
+          "after": "normal"
+        },
+        "overrides": [
+          {
+            "id": "p:skin.edge-form",
+            "opacity": 0.4,
+            "blend": {
+              "albedo": "normal"
+            }
+          },
+          {
+            "id": "p:skin.wash-form",
+            "enabled": false
+          }
+        ],
+        "hashChanged": true
+      },
+      "dragReorder": {
+        "moved": "p:skin.basecoat",
+        "from": 0,
+        "target": 10,
+        "newIndex": 10,
+        "ok": true
+      },
+      "keyReorder": {
+        "id": "p:skin.wash-form",
+        "from": 4,
+        "want": 9,
+        "newIndex": 9,
+        "focusKept": true,
+        "ok": true
+      },
+      "audit": {
+        "breaksN": 0,
+        "breaks": [],
+        "overflowN": 0,
+        "overflow": [],
+        "clippedN": 0,
+        "clipped": [],
+        "tinyN": 0,
+        "tiny": [],
+        "smallN": 0,
+        "small": [],
+        "outsideN": 0,
+        "outside": [],
+        "pageOverflowX": false
+      },
+      "contrast": {
+        "sampled": 28,
+        "min": 7.46,
+        "below45": 0,
+        "worst": [
+          {
+            "kind": "menu-btn menu-btn-sm",
+            "text": "+ Scar",
+            "ratio": 7.46
+          },
+          {
+            "kind": "menu-btn menu-btn-sm",
+            "text": "+ Tattoo",
+            "ratio": 7.47
+          },
+          {
+            "kind": "menu-btn menu-btn-sm tex-place-btn",
+            "text": "Place on the mod",
+            "ratio": 7.55
+          },
+          {
+            "kind": "tex-mark-detail",
+            "text": "right shin · 60 ",
+            "ratio": 7.55
+          }
+        ]
+      },
+      "tab": {
+        "reachedInside": 40,
+        "first": [
+          "tex-summary",
+          "scar",
+          "tattoo",
+          "tex-mark-scar-0",
+          "tex-mark-remove",
+          "tex-mark-tattoo-0",
+          "tex-mark-remove",
+          "stepper"
+        ],
+        "domOrder": true
+      },
+      "reset": {
+        "overrides": 0,
+        "orderRestored": true
+      },
+      "saveLoad": {
+        "stored": true,
+        "marksEqual": true,
+        "overridesEqual": true,
+        "keyEqual": true,
+        "hashEqual": true,
+        "savedMarks": 2,
+        "savedOverrides": 1
+      }
+    },
+    "390": {
+      "touch": true,
+      "step": "[data-hero-tab=\"new\"]",
+      "views": [
+        {
+          "view": "final",
+          "applied": "final",
+          "hash": "14cf7c45",
+          "mean": 29.5,
+          "checked": "final"
+        },
+        {
+          "view": "albedo",
+          "applied": "albedo",
+          "hash": "377f4e2e",
+          "mean": 30.7,
+          "checked": "albedo"
+        },
+        {
+          "view": "roughness",
+          "applied": "roughness",
+          "hash": "a11925c9",
+          "mean": 31.2,
+          "checked": "roughness"
+        },
+        {
+          "view": "height",
+          "applied": "height",
+          "hash": "ba133ae5",
+          "mean": 30.4,
+          "checked": "height"
+        },
+        {
+          "view": "normal",
+          "applied": "normal",
+          "hash": "18a05f3c",
+          "mean": 31.2,
+          "checked": "normal"
+        },
+        {
+          "view": "ao",
+          "applied": "ao",
+          "hash": "5a7b0894",
+          "mean": 35.7,
+          "checked": "ao"
+        },
+        {
+          "view": "marks",
+          "applied": "marks",
+          "hash": "f753acbf",
+          "mean": 33.7,
+          "checked": "marks"
+        }
+      ],
+      "viewHashesDistinct": 7,
+      "viewsApplied": 7,
+      "finalControlEqual": true,
+      "viewKeyArrow": {
+        "focused": "albedo",
+        "checked": "albedo"
+      },
+      "genLink": {
+        "menuStage": "paint",
+        "shown": "paint",
+        "applied": "roughness"
+      },
+      "placeArmed": "scar",
+      "covered": [
+        "torso",
+        "pelvis",
+        "foreArm",
+        "thigh"
+      ],
+      "skinHits": 77,
+      "skinRegions": [
+        "face",
+        "upperArm",
+        "neck",
+        "torso",
+        "foreArm",
+        "pelvis",
+        "thigh",
+        "shin",
+        "foot"
+      ],
+      "scarClick": {
+        "at": {
+          "x": 214,
+          "y": 128,
+          "region": "upperArm",
+          "anchor": [
+            0.04311218004979273,
+            0.1802873436485037
+          ]
+        },
+        "region": "upperArm",
+        "side": 0,
+        "anchor": [
+          0.048035829195273876,
+          0.19991359824768476
+        ],
+        "pickRegion": "upperArm",
+        "pickAnchor": [
+          0.048035829195273876,
+          0.19991359824768476
+        ],
+        "status": "Placed on the upper arm at 0.05, 0.20.",
+        "hashChanged": true,
+        "picks": 2
+      },
+      "scarDrag": {
+        "to": {
+          "x": 169,
+          "y": 128,
+          "region": "upperArm",
+          "anchor": [
+            0.23642512456937373,
+            0.14945750201983715
+          ]
+        },
+        "anchorBefore": [
+          0.048035829195273876,
+          0.19991359824768476
+        ],
+        "anchorAfter": [
+          0.19864636236915587,
+          0.16908275356066607
+        ],
+        "moved": true,
+        "yawUnchanged": true,
+        "picks": 12
+      },
+      "tattoo": {
+        "at": {
+          "x": 187,
+          "y": 310,
+          "region": "neck",
+          "anchor": [
+            -0.28133747093499184,
+            -0.05534727099730396
+          ]
+        },
+        "region": "neck",
+        "anchor": [
+          -0.2846799690487021,
+          -0.021074386205480165
+        ],
+        "inks": [
+          "woad"
+        ],
+        "mirror": true,
+        "status": "Placed on the neck at -0.28, -0.02."
+      },
+      "marksViewAfter": {
+        "hash": "f179163",
+        "before": "f753acbf",
+        "changed": true
+      },
+      "placeOffAfterEsc": true,
+      "ageStage": null,
+      "markIssues": [
+        "Runic tattooNeck · 60 mm · Woad (plant blue) · mirrored · overlaps another mark (mirror copy)×"
+      ],
+      "hashWithMarks": "78d1466e",
+      "hashMarksDiffer": true,
+      "layerFilter": {
+        "first": "skin",
+        "shownFirst": 11,
+        "total": 58,
+        "next": "hair",
+        "shownNext": 11,
+        "differ": true
+      },
+      "layerEdits": {
+        "rows": 58,
+        "toggled": true,
+        "opacity": 0.4,
+        "operator": {
+          "select": "tex-blend-p-skin-edge-form-albedo",
+          "before": "screenLift",
+          "after": "normal"
+        },
+        "overrides": [
+          {
+            "id": "p:skin.edge-form",
+            "opacity": 0.4,
+            "blend": {
+              "albedo": "normal"
+            }
+          },
+          {
+            "id": "p:skin.wash-form",
+            "enabled": false
+          }
+        ],
+        "hashChanged": true
+      },
+      "dragReorder": {
+        "moved": "p:skin.basecoat",
+        "from": 0,
+        "target": 10,
+        "newIndex": 10,
+        "ok": true
+      },
+      "keyReorder": {
+        "id": "p:skin.wash-form",
+        "from": 4,
+        "want": 9,
+        "newIndex": 9,
+        "focusKept": true,
+        "ok": true
+      },
+      "audit": {
+        "breaksN": 0,
+        "breaks": [],
+        "overflowN": 0,
+        "overflow": [],
+        "clippedN": 0,
+        "clipped": [],
+        "tinyN": 0,
+        "tiny": [],
+        "smallN": 0,
+        "small": [],
+        "outsideN": 0,
+        "outside": [],
+        "pageOverflowX": false
+      },
+      "contrast": {
+        "sampled": 28,
+        "min": 7.46,
+        "below45": 0,
+        "worst": [
+          {
+            "kind": "menu-btn menu-btn-sm",
+            "text": "+ Scar",
+            "ratio": 7.46
+          },
+          {
+            "kind": "menu-btn menu-btn-sm",
+            "text": "+ Tattoo",
+            "ratio": 7.47
+          },
+          {
+            "kind": "menu-btn menu-btn-sm tex-place-btn",
+            "text": "Place on the mod",
+            "ratio": 7.55
+          },
+          {
+            "kind": "SPAN",
+            "text": "Upright",
+            "ratio": 9.16
+          }
+        ]
+      },
+      "tab": {
+        "reachedInside": 40,
+        "first": [
+          "tex-summary",
+          "scar",
+          "tattoo",
+          "tex-mark-scar-0",
+          "tex-mark-remove",
+          "tex-mark-tattoo-0",
+          "tex-mark-remove",
+          "stepper"
+        ],
+        "domOrder": true
+      },
+      "reset": {
+        "overrides": 0,
+        "orderRestored": true
+      },
+      "saveLoad": {
+        "stored": true,
+        "marksEqual": true,
+        "overridesEqual": true,
+        "keyEqual": true,
+        "hashEqual": true,
+        "savedMarks": 2,
+        "savedOverrides": 1
+      }
+    },
+    "820": {
+      "touch": true,
+      "step": "[data-hero-tab=\"new\"]",
+      "views": [
+        {
+          "view": "final",
+          "applied": "final",
+          "hash": "9a82d123",
+          "mean": 29.9,
+          "checked": "final"
+        },
+        {
+          "view": "albedo",
+          "applied": "albedo",
+          "hash": "e45f21dd",
+          "mean": 31.2,
+          "checked": "albedo"
+        },
+        {
+          "view": "roughness",
+          "applied": "roughness",
+          "hash": "1683cb40",
+          "mean": 31.8,
+          "checked": "roughness"
+        },
+        {
+          "view": "height",
+          "applied": "height",
+          "hash": "2510fce1",
+          "mean": 30.9,
+          "checked": "height"
+        },
+        {
+          "view": "normal",
+          "applied": "normal",
+          "hash": "8b74a977",
+          "mean": 31.8,
+          "checked": "normal"
+        },
+        {
+          "view": "ao",
+          "applied": "ao",
+          "hash": "945ca121",
+          "mean": 36.6,
+          "checked": "ao"
+        },
+        {
+          "view": "marks",
+          "applied": "marks",
+          "hash": "8cedc312",
+          "mean": 34.5,
+          "checked": "marks"
+        }
+      ],
+      "viewHashesDistinct": 7,
+      "viewsApplied": 7,
+      "finalControlEqual": true,
+      "viewKeyArrow": {
+        "focused": "albedo",
+        "checked": "albedo"
+      },
+      "genLink": {
+        "menuStage": "paint",
+        "shown": "paint",
+        "applied": "roughness"
+      },
+      "placeArmed": "scar",
+      "covered": [
+        "torso",
+        "pelvis",
+        "foreArm",
+        "thigh"
+      ],
+      "skinHits": 50,
+      "skinRegions": [
+        "face",
+        "neck",
+        "torso",
+        "upperArm",
+        "foreArm",
+        "pelvis",
+        "thigh",
+        "shin",
+        "foot"
+      ],
+      "scarClick": {
+        "at": {
+          "x": 260,
+          "y": 185,
+          "region": "upperArm",
+          "anchor": [
+            -0.3363568720538229,
+            0.1523775269507699
+          ]
+        },
+        "region": "upperArm",
+        "side": 0,
+        "anchor": [
+          -0.35561321812478813,
+          0.13863146107657814
+        ],
+        "pickRegion": "upperArm",
+        "pickAnchor": [
+          -0.35561321812478813,
+          0.13863146107657814
+        ],
+        "status": "Placed on the upper arm at -0.36, 0.14.",
+        "hashChanged": true,
+        "picks": 2
+      },
+      "scarDrag": {
+        "to": {
+          "x": 218,
+          "y": 213,
+          "region": "upperArm",
+          "anchor": [
+            -0.11252516338017683,
+            -0.970450457968754
+          ]
+        },
+        "anchorBefore": [
+          -0.35561321812478813,
+          0.13863146107657814
+        ],
+        "anchorAfter": [
+          -0.09633604335000054,
+          -0.9857541102561765
+        ],
+        "moved": true,
+        "yawUnchanged": true,
+        "picks": 12
+      },
+      "tattoo": {
+        "at": {
+          "x": 232,
+          "y": 325,
+          "region": "shin",
+          "anchor": [
+            -0.43937606829272174,
+            0.09385268133907619
+          ]
+        },
+        "region": "shin",
+        "anchor": [
+          -0.4204232428808344,
+          0.08191928009388752
+        ],
+        "inks": [
+          "woad"
+        ],
+        "mirror": true,
+        "status": "Placed on the shin at -0.42, 0.08."
+      },
+      "marksViewAfter": {
+        "hash": "14885bf5",
+        "before": "8cedc312",
+        "changed": true
+      },
+      "placeOffAfterEsc": true,
+      "ageStage": null,
+      "markIssues": [
+        "Laceration scarright upper arm · 45 mm · 1.1 y · runs off this body part×"
+      ],
+      "hashWithMarks": "357ca703",
+      "hashMarksDiffer": true,
+      "layerFilter": {
+        "first": "skin",
+        "shownFirst": 11,
+        "total": 58,
+        "next": "hair",
+        "shownNext": 11,
+        "differ": true
+      },
+      "layerEdits": {
+        "rows": 58,
+        "toggled": true,
+        "opacity": 0.4,
+        "operator": {
+          "select": "tex-blend-p-skin-edge-form-albedo",
+          "before": "screenLift",
+          "after": "normal"
+        },
+        "overrides": [
+          {
+            "id": "p:skin.edge-form",
+            "opacity": 0.4,
+            "blend": {
+              "albedo": "normal"
+            }
+          },
+          {
+            "id": "p:skin.wash-form",
+            "enabled": false
+          }
+        ],
+        "hashChanged": true
+      },
+      "dragReorder": {
+        "moved": "p:skin.basecoat",
+        "from": 0,
+        "target": 10,
+        "newIndex": 10,
+        "ok": true
+      },
+      "keyReorder": {
+        "id": "p:skin.wash-form",
+        "from": 4,
+        "want": 9,
+        "newIndex": 9,
+        "focusKept": true,
+        "ok": true
+      },
+      "audit": {
+        "breaksN": 0,
+        "breaks": [],
+        "overflowN": 0,
+        "overflow": [],
+        "clippedN": 0,
+        "clipped": [],
+        "tinyN": 0,
+        "tiny": [],
+        "smallN": 0,
+        "small": [],
+        "outsideN": 0,
+        "outside": [],
+        "pageOverflowX": false
+      },
+      "contrast": {
+        "sampled": 28,
+        "min": 7.47,
+        "below45": 0,
+        "worst": [
+          {
+            "kind": "menu-btn menu-btn-sm",
+            "text": "+ Scar",
+            "ratio": 7.47
+          },
+          {
+            "kind": "menu-btn menu-btn-sm",
+            "text": "+ Tattoo",
+            "ratio": 7.47
+          },
+          {
+            "kind": "tex-mark-detail",
+            "text": "right shin · 60 ",
+            "ratio": 7.48
+          },
+          {
+            "kind": "menu-btn menu-btn-sm tex-place-btn",
+            "text": "Place on the mod",
+            "ratio": 7.55
+          }
+        ]
+      },
+      "tab": {
+        "reachedInside": 40,
+        "first": [
+          "tex-summary",
+          "scar",
+          "tattoo",
+          "tex-mark-scar-0",
+          "tex-mark-remove",
+          "tex-mark-tattoo-0",
+          "tex-mark-remove",
+          "stepper"
+        ],
+        "domOrder": true
+      },
+      "reset": {
+        "overrides": 0,
+        "orderRestored": true
+      },
+      "saveLoad": {
+        "stored": true,
+        "marksEqual": true,
+        "overridesEqual": true,
+        "keyEqual": true,
+        "hashEqual": true,
+        "savedMarks": 2,
+        "savedOverrides": 1
+      }
+    },
+    "1280": {
+      "touch": false,
+      "step": "[data-hero-tab=\"new\"]",
+      "views": [
+        {
+          "view": "final",
+          "applied": "final",
+          "hash": "cc36df0b",
+          "mean": 29.9,
+          "checked": "final"
+        },
+        {
+          "view": "albedo",
+          "applied": "albedo",
+          "hash": "979750d",
+          "mean": 31.2,
+          "checked": "albedo"
+        },
+        {
+          "view": "roughness",
+          "applied": "roughness",
+          "hash": "c8b0cc3e",
+          "mean": 31.7,
+          "checked": "roughness"
+        },
+        {
+          "view": "height",
+          "applied": "height",
+          "hash": "a3e09864",
+          "mean": 30.9,
+          "checked": "height"
+        },
+        {
+          "view": "normal",
+          "applied": "normal",
+          "hash": "8c9c472b",
+          "mean": 31.7,
+          "checked": "normal"
+        },
+        {
+          "view": "ao",
+          "applied": "ao",
+          "hash": "1f43fbb9",
+          "mean": 36.5,
+          "checked": "ao"
+        },
+        {
+          "view": "marks",
+          "applied": "marks",
+          "hash": "833f395a",
+          "mean": 34.4,
+          "checked": "marks"
+        }
+      ],
+      "viewHashesDistinct": 7,
+      "viewsApplied": 7,
+      "finalControlEqual": true,
+      "viewKeyArrow": {
+        "focused": "albedo",
+        "checked": "albedo"
+      },
+      "genLink": {
+        "menuStage": "paint",
+        "shown": "paint",
+        "applied": "roughness"
+      },
+      "placeArmed": "scar",
+      "covered": [
+        "torso",
+        "pelvis",
+        "foreArm",
+        "thigh"
+      ],
+      "skinHits": 59,
+      "skinRegions": [
+        "head",
+        "face",
+        "torso",
+        "upperArm",
+        "foreArm",
+        "pelvis",
+        "thigh",
+        "shin",
+        "foot"
+      ],
+      "scarClick": {
+        "at": {
+          "x": 304,
+          "y": 191,
+          "region": "upperArm",
+          "anchor": [
+            -0.022181436942923065,
+            0.22490008803705924
+          ]
+        },
+        "region": "upperArm",
+        "side": 0,
+        "anchor": [
+          -0.027572313325937535,
+          0.23441928129776046
+        ],
+        "pickRegion": "upperArm",
+        "pickAnchor": [
+          -0.027572313325937535,
+          0.23441928129776046
+        ],
+        "status": "Placed on the upper arm at -0.03, 0.23.",
+        "hashChanged": true,
+        "picks": 2
+      },
+      "scarDrag": {
+        "to": {
+          "x": 248,
+          "y": 219,
+          "region": "upperArm",
+          "anchor": [
+            0.05011457014937218,
+            -0.802040850834043
+          ]
+        },
+        "anchorBefore": [
+          -0.027572313325937535,
+          0.23441928129776046
+        ],
+        "anchorAfter": [
+          0.052954692013367784,
+          -0.7912937409779396
+        ],
+        "moved": true,
+        "yawUnchanged": true,
+        "picks": 12
+      },
+      "tattoo": {
+        "at": {
+          "x": 262,
+          "y": 436,
+          "region": "shin",
+          "anchor": [
+            -0.20788723168965648,
+            0.18981074562299757
+          ]
+        },
+        "region": "shin",
+        "anchor": [
+          -0.20217491834593765,
+          0.2013096186890578
+        ],
+        "inks": [
+          "woad"
+        ],
+        "mirror": true,
+        "status": "Placed on the shin at -0.20, 0.20."
+      },
+      "marksViewAfter": {
+        "hash": "5d652274",
+        "before": "833f395a",
+        "changed": true
+      },
+      "placeOffAfterEsc": true,
+      "ageStage": null,
+      "markIssues": [],
+      "hashWithMarks": "5be915dd",
+      "hashMarksDiffer": true,
+      "layerFilter": {
+        "first": "skin",
+        "shownFirst": 11,
+        "total": 58,
+        "next": "hair",
+        "shownNext": 11,
+        "differ": true
+      },
+      "layerEdits": {
+        "rows": 58,
+        "toggled": true,
+        "opacity": 0.4,
+        "operator": {
+          "select": "tex-blend-p-skin-edge-form-albedo",
+          "before": "screenLift",
+          "after": "normal"
+        },
+        "overrides": [
+          {
+            "id": "p:skin.edge-form",
+            "opacity": 0.4,
+            "blend": {
+              "albedo": "normal"
+            }
+          },
+          {
+            "id": "p:skin.wash-form",
+            "enabled": false
+          }
+        ],
+        "hashChanged": true
+      },
+      "dragReorder": {
+        "moved": "p:skin.basecoat",
+        "from": 0,
+        "target": 10,
+        "newIndex": 10,
+        "ok": true
+      },
+      "keyReorder": {
+        "id": "p:skin.wash-form",
+        "from": 4,
+        "want": 9,
+        "newIndex": 9,
+        "focusKept": true,
+        "ok": true
+      },
+      "audit": {
+        "breaksN": 0,
+        "breaks": [],
+        "overflowN": 0,
+        "overflow": [],
+        "clippedN": 0,
+        "clipped": [],
+        "tinyN": 0,
+        "tiny": [],
+        "smallN": 0,
+        "small": [],
+        "outsideN": 0,
+        "outside": [],
+        "pageOverflowX": false
+      },
+      "contrast": {
+        "sampled": 40,
+        "min": 6.18,
+        "below45": 0,
+        "worst": [
+          {
+            "kind": "menu-btn menu-btn-sm tex-place-btn",
+            "text": "Place on the mod",
+            "ratio": 6.18
+          },
+          {
+            "kind": "menu-btn menu-btn-sm",
+            "text": "+ Tattoo",
+            "ratio": 6.18
+          },
+          {
+            "kind": "menu-btn menu-btn-sm",
+            "text": "Reset to preset",
+            "ratio": 6.18
+          },
+          {
+            "kind": "menu-btn menu-btn-sm",
+            "text": "+ Scar",
+            "ratio": 7.46
+          }
+        ]
+      },
+      "tab": {
+        "reachedInside": 40,
+        "first": [
+          "tex-summary",
+          "scar",
+          "tattoo",
+          "tex-mark-scar-0",
+          "tex-mark-remove",
+          "tex-mark-tattoo-0",
+          "tex-mark-remove",
+          "stepper"
+        ],
+        "domOrder": true
+      },
+      "reset": {
+        "overrides": 0,
+        "orderRestored": true
+      },
+      "saveLoad": {
+        "stored": true,
+        "marksEqual": true,
+        "overridesEqual": true,
+        "keyEqual": true,
+        "hashEqual": true,
+        "savedMarks": 2,
+        "savedOverrides": 1
+      }
+    },
+    "1920": {
+      "touch": false,
+      "step": "[data-hero-tab=\"new\"]",
+      "views": [
+        {
+          "view": "final",
+          "applied": "final",
+          "hash": "13b5d9fd",
+          "mean": 29.7,
+          "checked": "final"
+        },
+        {
+          "view": "albedo",
+          "applied": "albedo",
+          "hash": "52a15ac",
+          "mean": 31,
+          "checked": "albedo"
+        },
+        {
+          "view": "roughness",
+          "applied": "roughness",
+          "hash": "fb0a2a19",
+          "mean": 31.5,
+          "checked": "roughness"
+        },
+        {
+          "view": "height",
+          "applied": "height",
+          "hash": "e23d21bd",
+          "mean": 30.7,
+          "checked": "height"
+        },
+        {
+          "view": "normal",
+          "applied": "normal",
+          "hash": "262ce5b5",
+          "mean": 31.5,
+          "checked": "normal"
+        },
+        {
+          "view": "ao",
+          "applied": "ao",
+          "hash": "33e9ad4c",
+          "mean": 36.2,
+          "checked": "ao"
+        },
+        {
+          "view": "marks",
+          "applied": "marks",
+          "hash": "e836a75",
+          "mean": 34.2,
+          "checked": "marks"
+        }
+      ],
+      "viewHashesDistinct": 7,
+      "viewsApplied": 7,
+      "finalControlEqual": true,
+      "viewKeyArrow": {
+        "focused": "albedo",
+        "checked": "albedo"
+      },
+      "genLink": {
+        "menuStage": "paint",
+        "shown": "paint",
+        "applied": "roughness"
+      },
+      "placeArmed": "scar",
+      "covered": [
+        "torso",
+        "pelvis",
+        "foreArm",
+        "thigh"
+      ],
+      "skinHits": 90,
+      "skinRegions": [
+        "face",
+        "ear",
+        "upperArm",
+        "torso",
+        "foreArm",
+        "pelvis",
+        "thigh",
+        "shin",
+        "foot"
+      ],
+      "scarClick": {
+        "at": {
+          "x": 368,
+          "y": 411,
+          "region": "upperArm",
+          "anchor": [
+            -0.09010228131670873,
+            -0.16036473097374343
+          ]
+        },
+        "region": "upperArm",
+        "side": 0,
+        "anchor": [
+          -0.09805262956586569,
+          -0.1655810220962049
+        ],
+        "pickRegion": "upperArm",
+        "pickAnchor": [
+          -0.09805262956586569,
+          -0.1655810220962049
+        ],
+        "status": "Placed on the upper arm at -0.10, -0.17.",
+        "hashChanged": true,
+        "picks": 2
+      },
+      "scarDrag": {
+        "to": {
+          "x": 298,
+          "y": 397,
+          "region": "upperArm",
+          "anchor": [
+            0.16537887008697352,
+            0.21028262705111328
+          ]
+        },
+        "anchorBefore": [
+          -0.09805262956586569,
+          -0.1655810220962049
+        ],
+        "anchorAfter": [
+          0.20131158287090806,
+          0.20581388855100424
+        ],
+        "moved": true,
+        "yawUnchanged": true,
+        "picks": 12
+      },
+      "tattoo": {
+        "at": {
+          "x": 326,
+          "y": 409,
+          "region": "shin",
+          "anchor": [
+            -0.4047825321437269,
+            0.1373974925870285
+          ]
+        },
+        "region": "shin",
+        "anchor": [
+          -0.39410557654861456,
+          0.134235339766346
+        ],
+        "inks": [
+          "woad"
+        ],
+        "mirror": true,
+        "status": "Placed on the shin at -0.39, 0.13."
+      },
+      "marksViewAfter": {
+        "hash": "73a0608f",
+        "before": "e836a75",
+        "changed": true
+      },
+      "placeOffAfterEsc": true,
+      "ageStage": null,
+      "markIssues": [],
+      "hashWithMarks": "6ba3625a",
+      "hashMarksDiffer": true,
+      "layerFilter": {
+        "first": "skin",
+        "shownFirst": 11,
+        "total": 58,
+        "next": "hair",
+        "shownNext": 11,
+        "differ": true
+      },
+      "layerEdits": {
+        "rows": 58,
+        "toggled": true,
+        "opacity": 0.4,
+        "operator": {
+          "select": "tex-blend-p-skin-edge-form-albedo",
+          "before": "screenLift",
+          "after": "normal"
+        },
+        "overrides": [
+          {
+            "id": "p:skin.edge-form",
+            "opacity": 0.4,
+            "blend": {
+              "albedo": "normal"
+            }
+          },
+          {
+            "id": "p:skin.wash-form",
+            "enabled": false
+          }
+        ],
+        "hashChanged": true
+      },
+      "dragReorder": {
+        "moved": "p:skin.basecoat",
+        "from": 0,
+        "target": 10,
+        "newIndex": 10,
+        "ok": true
+      },
+      "keyReorder": {
+        "id": "p:skin.wash-form",
+        "from": 4,
+        "want": 9,
+        "newIndex": 9,
+        "focusKept": true,
+        "ok": true
+      },
+      "audit": {
+        "breaksN": 0,
+        "breaks": [],
+        "overflowN": 0,
+        "overflow": [],
+        "clippedN": 0,
+        "clipped": [],
+        "tinyN": 0,
+        "tiny": [],
+        "smallN": 0,
+        "small": [],
+        "outsideN": 0,
+        "outside": [],
+        "pageOverflowX": false
+      },
+      "contrast": {
+        "sampled": 40,
+        "min": 7.47,
+        "below45": 0,
+        "worst": [
+          {
+            "kind": "menu-btn menu-btn-sm",
+            "text": "+ Scar",
+            "ratio": 7.47
+          },
+          {
+            "kind": "menu-btn menu-btn-sm",
+            "text": "+ Tattoo",
+            "ratio": 7.47
+          },
+          {
+            "kind": "tex-mark-detail",
+            "text": "right shin · 60 ",
+            "ratio": 7.48
+          },
+          {
+            "kind": "menu-btn menu-btn-sm",
+            "text": "Reset to preset",
+            "ratio": 7.52
+          }
+        ]
+      },
+      "tab": {
+        "reachedInside": 40,
+        "first": [
+          "tex-summary",
+          "scar",
+          "tattoo",
+          "tex-mark-scar-0",
+          "tex-mark-remove",
+          "tex-mark-tattoo-0",
+          "tex-mark-remove",
+          "stepper"
+        ],
+        "domOrder": true
+      },
+      "reset": {
+        "overrides": 0,
+        "orderRestored": true
+      },
+      "saveLoad": {
+        "stored": true,
+        "marksEqual": true,
+        "overridesEqual": true,
+        "keyEqual": true,
+        "hashEqual": true,
+        "savedMarks": 2,
+        "savedOverrides": 1
+      }
+    },
+    "2560": {
+      "touch": false,
+      "step": "[data-hero-tab=\"new\"]",
+      "views": [
+        {
+          "view": "final",
+          "applied": "final",
+          "hash": "d6277fc3",
+          "mean": 28.8,
+          "checked": "final"
+        },
+        {
+          "view": "albedo",
+          "applied": "albedo",
+          "hash": "49f21821",
+          "mean": 29.9,
+          "checked": "albedo"
+        },
+        {
+          "view": "roughness",
+          "applied": "roughness",
+          "hash": "430d40a0",
+          "mean": 30.4,
+          "checked": "roughness"
+        },
+        {
+          "view": "height",
+          "applied": "height",
+          "hash": "efa47776",
+          "mean": 29.6,
+          "checked": "height"
+        },
+        {
+          "view": "normal",
+          "applied": "normal",
+          "hash": "3268f199",
+          "mean": 30.4,
+          "checked": "normal"
+        },
+        {
+          "view": "ao",
+          "applied": "ao",
+          "hash": "28ac180b",
+          "mean": 34.6,
+          "checked": "ao"
+        },
+        {
+          "view": "marks",
+          "applied": "marks",
+          "hash": "889c41b2",
+          "mean": 32.7,
+          "checked": "marks"
+        }
+      ],
+      "viewHashesDistinct": 7,
+      "viewsApplied": 7,
+      "finalControlEqual": true,
+      "viewKeyArrow": {
+        "focused": "albedo",
+        "checked": "albedo"
+      },
+      "genLink": {
+        "menuStage": "paint",
+        "shown": "paint",
+        "applied": "roughness"
+      },
+      "placeArmed": "scar",
+      "covered": [
+        "torso",
+        "pelvis",
+        "foreArm",
+        "thigh"
+      ],
+      "skinHits": 76,
+      "skinRegions": [
+        "head",
+        "face",
+        "torso",
+        "upperArm",
+        "foreArm",
+        "pelvis",
+        "thigh",
+        "shin",
+        "foot"
+      ],
+      "scarClick": {
+        "at": {
+          "x": 390,
+          "y": 235,
+          "region": "upperArm",
+          "anchor": [
+            -0.04024034689979337,
+            -0.1252162337886734
+          ]
+        },
+        "region": "upperArm",
+        "side": 0,
+        "anchor": [
+          -0.040062915364143886,
+          -0.11519745451062766
+        ],
+        "pickRegion": "upperArm",
+        "pickAnchor": [
+          -0.040062915364143886,
+          -0.11519745451062766
+        ],
+        "status": "Placed on the upper arm at -0.04, -0.12.",
+        "hashChanged": true,
+        "picks": 2
+      },
+      "scarDrag": {
+        "to": {
+          "x": 334,
+          "y": 263,
+          "region": "upperArm",
+          "anchor": [
+            -0.1936272743227747,
+            -1
+          ]
+        },
+        "anchorBefore": [
+          -0.040062915364143886,
+          -0.11519745451062766
+        ],
+        "anchorAfter": [
+          -0.18956777628283308,
+          -1
+        ],
+        "moved": true,
+        "yawUnchanged": true,
+        "picks": 12
+      },
+      "tattoo": {
+        "at": {
+          "x": 348,
+          "y": 403,
+          "region": "shin",
+          "anchor": [
+            -0.33354764326838027,
+            -0.0944598345153662
+          ]
+        },
+        "region": "shin",
+        "anchor": [
+          -0.33520541938482123,
+          -0.082958202549629
+        ],
+        "inks": [
+          "woad"
+        ],
+        "mirror": true,
+        "status": "Placed on the shin at -0.34, -0.08."
+      },
+      "marksViewAfter": {
+        "hash": "5e07f57f",
+        "before": "889c41b2",
+        "changed": true
+      },
+      "placeOffAfterEsc": true,
+      "ageStage": null,
+      "markIssues": [
+        "Laceration scarright upper arm · 45 mm · 1.1 y · runs off this body part×"
+      ],
+      "hashWithMarks": "f3264b22",
+      "hashMarksDiffer": true,
+      "layerFilter": {
+        "first": "skin",
+        "shownFirst": 11,
+        "total": 58,
+        "next": "hair",
+        "shownNext": 11,
+        "differ": true
+      },
+      "layerEdits": {
+        "rows": 58,
+        "toggled": true,
+        "opacity": 0.4,
+        "operator": {
+          "select": "tex-blend-p-skin-edge-form-albedo",
+          "before": "screenLift",
+          "after": "normal"
+        },
+        "overrides": [
+          {
+            "id": "p:skin.edge-form",
+            "opacity": 0.4,
+            "blend": {
+              "albedo": "normal"
+            }
+          },
+          {
+            "id": "p:skin.wash-form",
+            "enabled": false
+          }
+        ],
+        "hashChanged": true
+      },
+      "dragReorder": {
+        "moved": "p:skin.basecoat",
+        "from": 0,
+        "target": 10,
+        "newIndex": 10,
+        "ok": true
+      },
+      "keyReorder": {
+        "id": "p:skin.wash-form",
+        "from": 4,
+        "want": 9,
+        "newIndex": 9,
+        "focusKept": true,
+        "ok": true
+      },
+      "audit": {
+        "breaksN": 0,
+        "breaks": [],
+        "overflowN": 0,
+        "overflow": [],
+        "clippedN": 0,
+        "clipped": [],
+        "tinyN": 0,
+        "tiny": [],
+        "smallN": 0,
+        "small": [],
+        "outsideN": 0,
+        "outside": [],
+        "pageOverflowX": false
+      },
+      "contrast": {
+        "sampled": 40,
+        "min": 7.47,
+        "below45": 0,
+        "worst": [
+          {
+            "kind": "menu-btn menu-btn-sm",
+            "text": "+ Scar",
+            "ratio": 7.47
+          },
+          {
+            "kind": "menu-btn menu-btn-sm",
+            "text": "+ Tattoo",
+            "ratio": 7.47
+          },
+          {
+            "kind": "tex-mark-detail",
+            "text": "right shin · 60 ",
+            "ratio": 7.48
+          },
+          {
+            "kind": "menu-btn menu-btn-sm tex-place-btn",
+            "text": "Place on the mod",
+            "ratio": 7.55
+          }
+        ]
+      },
+      "tab": {
+        "reachedInside": 40,
+        "first": [
+          "tex-summary",
+          "scar",
+          "tattoo",
+          "tex-mark-scar-0",
+          "tex-mark-remove",
+          "tex-mark-tattoo-0",
+          "tex-mark-remove",
+          "stepper"
+        ],
+        "domOrder": true
+      },
+      "reset": {
+        "overrides": 0,
+        "orderRestored": true
+      },
+      "saveLoad": {
+        "stored": true,
+        "marksEqual": true,
+        "overridesEqual": true,
+        "keyEqual": true,
+        "hashEqual": true,
+        "savedMarks": 2,
+        "savedOverrides": 1
+      }
+    },
+    "844x390": {
+      "touch": true,
+      "step": "[data-hero-tab=\"new\"]",
+      "views": [
+        {
+          "view": "final",
+          "applied": "final",
+          "hash": "6558e17d",
+          "mean": 30.9,
+          "checked": "final"
+        },
+        {
+          "view": "albedo",
+          "applied": "albedo",
+          "hash": "d197a035",
+          "mean": 32.3,
+          "checked": "albedo"
+        },
+        {
+          "view": "roughness",
+          "applied": "roughness",
+          "hash": "5f2bbc9c",
+          "mean": 32.9,
+          "checked": "roughness"
+        },
+        {
+          "view": "height",
+          "applied": "height",
+          "hash": "1015cdf4",
+          "mean": 32,
+          "checked": "height"
+        },
+        {
+          "view": "normal",
+          "applied": "normal",
+          "hash": "7d9537c9",
+          "mean": 32.9,
+          "checked": "normal"
+        },
+        {
+          "view": "ao",
+          "applied": "ao",
+          "hash": "f3100c4",
+          "mean": 38.3,
+          "checked": "ao"
+        },
+        {
+          "view": "marks",
+          "applied": "marks",
+          "hash": "ea3fa736",
+          "mean": 35.9,
+          "checked": "marks"
+        }
+      ],
+      "viewHashesDistinct": 7,
+      "viewsApplied": 7,
+      "finalControlEqual": true,
+      "viewKeyArrow": {
+        "focused": "albedo",
+        "checked": "albedo"
+      },
+      "genLink": {
+        "menuStage": "paint",
+        "shown": "paint",
+        "applied": "roughness"
+      },
+      "placeArmed": "scar",
+      "covered": [
+        "torso",
+        "pelvis",
+        "foreArm",
+        "thigh"
+      ],
+      "skinHits": 30,
+      "skinRegions": [
+        "face",
+        "upperArm",
+        "torso",
+        "foreArm",
+        "pelvis",
+        "thigh",
+        "shin",
+        "foot"
+      ],
+      "scarClick": {
+        "at": {
+          "x": 225,
+          "y": 117,
+          "region": "upperArm",
+          "anchor": [
+            -0.18423944928565295,
+            0.2618248891285546
+          ]
+        },
+        "region": "upperArm",
+        "side": 1,
+        "anchor": [
+          -0.19038474204276623,
+          0.2522547030920631
+        ],
+        "pickRegion": "upperArm",
+        "pickAnchor": [
+          -0.19038474204276623,
+          0.2522547030920631
+        ],
+        "status": "Placed on the upper arm at -0.19, 0.25.",
+        "hashChanged": true,
+        "picks": 2
+      },
+      "scarDrag": {
+        "to": {
+          "x": 267,
+          "y": 103,
+          "region": "upperArm",
+          "anchor": [
+            0.34129128583538365,
+            0.9950201372612014
+          ]
+        },
+        "anchorBefore": [
+          -0.19038474204276623,
+          0.2522547030920631
+        ],
+        "anchorAfter": [
+          0.3224750401614498,
+          0.9878080590737789
+        ],
+        "moved": true,
+        "yawUnchanged": true,
+        "picks": 12
+      },
+      "tattoo": {
+        "at": {
+          "x": 239,
+          "y": 243,
+          "region": "shin",
+          "anchor": [
+            -0.5474801248469665,
+            -0.9900846854822751
+          ]
+        },
+        "region": "shin",
+        "anchor": [
+          -0.5574895580755942,
+          -1
+        ],
+        "inks": [
+          "woad"
+        ],
+        "mirror": true,
+        "status": "Placed on the shin at -0.56, -1.00."
+      },
+      "marksViewAfter": {
+        "hash": "22afb894",
+        "before": "ea3fa736",
+        "changed": true
+      },
+      "placeOffAfterEsc": true,
+      "ageStage": null,
+      "markIssues": [
+        "Laceration scarleft upper arm · 45 mm · 1.1 y · runs off this body part×",
+        "Runic tattooright shin · 60 mm · Woad (plant blue) · mirrored · runs off this body part; runs off this body part (mirror copy)×"
+      ],
+      "hashWithMarks": "4e82b61f",
+      "hashMarksDiffer": true,
+      "layerFilter": {
+        "first": "skin",
+        "shownFirst": 11,
+        "total": 58,
+        "next": "hair",
+        "shownNext": 11,
+        "differ": true
+      },
+      "layerEdits": {
+        "rows": 58,
+        "toggled": true,
+        "opacity": 0.4,
+        "operator": {
+          "select": "tex-blend-p-skin-edge-form-albedo",
+          "before": "screenLift",
+          "after": "normal"
+        },
+        "overrides": [
+          {
+            "id": "p:skin.edge-form",
+            "opacity": 0.4,
+            "blend": {
+              "albedo": "normal"
+            }
+          },
+          {
+            "id": "p:skin.wash-form",
+            "enabled": false
+          }
+        ],
+        "hashChanged": true
+      },
+      "dragReorder": {
+        "moved": "p:skin.basecoat",
+        "from": 0,
+        "target": 10,
+        "newIndex": 10,
+        "ok": true
+      },
+      "keyReorder": {
+        "id": "p:skin.wash-form",
+        "from": 4,
+        "want": 9,
+        "newIndex": 9,
+        "focusKept": true,
+        "ok": true
+      },
+      "audit": {
+        "breaksN": 0,
+        "breaks": [],
+        "overflowN": 0,
+        "overflow": [],
+        "clippedN": 0,
+        "clipped": [],
+        "tinyN": 0,
+        "tiny": [],
+        "smallN": 0,
+        "small": [],
+        "outsideN": 0,
+        "outside": [],
+        "pageOverflowX": false
+      },
+      "contrast": {
+        "sampled": 28,
+        "min": 7.47,
+        "below45": 0,
+        "worst": [
+          {
+            "kind": "menu-btn menu-btn-sm",
+            "text": "+ Scar",
+            "ratio": 7.47
+          },
+          {
+            "kind": "menu-btn menu-btn-sm",
+            "text": "+ Tattoo",
+            "ratio": 7.47
+          },
+          {
+            "kind": "menu-btn menu-btn-sm tex-place-btn",
+            "text": "Place on the mod",
+            "ratio": 7.55
+          },
+          {
+            "kind": "SPAN",
+            "text": "Upright",
+            "ratio": 9.16
+          }
+        ]
+      },
+      "tab": {
+        "reachedInside": 40,
+        "first": [
+          "tex-summary",
+          "scar",
+          "tattoo",
+          "tex-mark-scar-0",
+          "tex-mark-remove",
+          "tex-mark-tattoo-0",
+          "tex-mark-remove",
+          "stepper"
+        ],
+        "domOrder": true
+      },
+      "reset": {
+        "overrides": 0,
+        "orderRestored": true
+      },
+      "saveLoad": {
+        "stored": true,
+        "marksEqual": true,
+        "overridesEqual": true,
+        "keyEqual": true,
+        "hashEqual": true,
+        "savedMarks": 2,
+        "savedOverrides": 1
+      }
+    }
+  },
+  "pageErrors": 0,
+  "errors": []
+}

@@ -1,0 +1,176 @@
+{
+ "a": "artifacts/wave-tex/verify-code/closing/final/shots-head",
+ "b": "artifacts/wave-tex/verify-code/closing/shots-head",
+ "shots": 24,
+ "changedTotal": 0,
+ "rows": [
+  {
+   "shot": "dwarf-female-0",
+   "pixels": 1024000,
+   "sameSize": true,
+   "changed": 0,
+   "maxDiff": 0
+  },
+  {
+   "shot": "dwarf-female-135",
+   "pixels": 1024000,
+   "sameSize": true,
+   "changed": 0,
+   "maxDiff": 0
+  },
+  {
+   "shot": "dwarf-female-270",
+   "pixels": 1024000,
+   "sameSize": true,
+   "changed": 0,
+   "maxDiff": 0
+  },
+  {
+   "shot": "dwarf-male-0",
+   "pixels": 1024000,
+   "sameSize": true,
+   "changed": 0,
+   "maxDiff": 0
+  },
+  {
+   "shot": "dwarf-male-135",
+   "pixels": 1024000,
+   "sameSize": true,
+   "changed": 0,
+   "maxDiff": 0
+  },
+  {
+   "shot": "dwarf-male-270",
+   "pixels": 1024000,
+   "sameSize": true,
+   "changed": 0,
+   "maxDiff": 0
+  },
+  {
+   "shot": "elf-female-0",
+   "pixels": 1024000,
+   "sameSize": true,
+   "changed": 0,
+   "maxDiff": 0
+  },
+  {
+   "shot": "elf-female-135",
+   "pixels": 1024000,
+   "sameSize": true,
+   "changed": 0,
+   "maxDiff": 0
+  },
+  {
+   "shot": "elf-female-270",
+   "pixels": 1024000,
+   "sameSize": true,
+   "changed": 0,
+   "maxDiff": 0
+  },
+  {
+   "shot": "elf-male-0",
+   "pixels": 1024000,
+   "sameSize": true,
+   "changed": 0,
+   "maxDiff": 0
+  },
+  {
+   "shot": "elf-male-135",
+   "pixels": 1024000,
+   "sameSize": true,
+   "changed": 0,
+   "maxDiff": 0
+  },
+  {
+   "shot": "elf-male-270",
+   "pixels": 1024000,
+   "sameSize": true,
+   "changed": 0,
+   "maxDiff": 0
+  },
+  {
+   "shot": "human-female-0",
+   "pixels": 1024000,
+   "sameSize": true,
+   "changed": 0,
+   "maxDiff": 0
+  },
+  {
+   "shot": "human-female-135",
+   "pixels": 1024000,
+   "sameSize": true,
+   "changed": 0,
+   "maxDiff": 0
+  },
+  {
+   "shot": "human-female-270",
+   "pixels": 1024000,
+   "sameSize": true,
+   "changed": 0,
+   "maxDiff": 0
+  },
+  {
+   "shot": "human-male-0",
+   "pixels": 1024000,
+   "sameSize": true,
+   "changed": 0,
+   "maxDiff": 0
+  },
+  {
+   "shot": "human-male-135",
+   "pixels": 1024000,
+   "sameSize": true,
+   "changed": 0,
+   "maxDiff": 0
+  },
+  {
+   "shot": "human-male-270",
+   "pixels": 1024000,
+   "sameSize": true,
+   "changed": 0,
+   "maxDiff": 0
+  },
+  {
+   "shot": "ork-female-0",
+   "pixels": 1024000,
+   "sameSize": true,
+   "changed": 0,
+   "maxDiff": 0
+  },
+  {
+   "shot": "ork-female-135",
+   "pixels": 1024000,
+   "sameSize": true,
+   "changed": 0,
+   "maxDiff": 0
+  },
+  {
+   "shot": "ork-female-270",
+   "pixels": 1024000,
+   "sameSize": true,
+   "changed": 0,
+   "maxDiff": 0
+  },
+  {
+   "shot": "ork-male-0",
+   "pixels": 1024000,
+   "sameSize": true,
+   "changed": 0,
+   "maxDiff": 0
+  },
+  {
+   "shot": "ork-male-135",
+   "pixels": 1024000,
+   "sameSize": true,
+   "changed": 0,
+   "maxDiff": 0
+  },
+  {
+   "shot": "ork-male-270",
+   "pixels": 1024000,
+   "sameSize": true,
+   "changed": 0,
+   "maxDiff": 0
+  }
+ ]
+}

@@ -1,0 +1,17 @@
+generated: 2000 characters, 4207 scars (keloid 569, hypertrophic 815), drawn raised >= 0.3 mm 799; wrong 'fading/mature' on raised 0; 'raised' on flat (<= 0.1 mm) 0
+matrix: 87624 cells (6 kinds x 4 flag pairs x 0..3650 d); wrong 'fading/mature' on raised 0; 'raised' on flat 265
+raised-on-flat ranges: claw k0h1 510-586 d (77); puncture k0h1 399-586 d (188)
+examples: RAISE claw 510d k0h1 0.10mm 'maturing: raised, pink (flattens over 1-2 years)' | RAISE claw 511d k0h1 0.10mm 'maturing: raised, pink (flattens over 1-2 years)' | RAISE claw 512d k0h1 0.10mm 'maturing: raised, pink (flattens over 1-2 years)' | RAISE claw 513d k0h1 0.09mm 'maturing: raised, pink (flattens over 1-2 years)' | RAISE claw 514d k0h1 0.09mm 'maturing: raised, pink (flattens over 1-2 years)' | RAISE claw 515d k0h1 0.09mm 'maturing: raised, pink (flattens over 1-2 years)' | RAISE claw 516d k0h1 0.09mm 'maturing: raised, pink (flattens over 1-2 years)' | RAISE claw 517d k0h1 0.09mm 'maturing: raised, pink (flattens over 1-2 years)'
+10d plain 'healing: pink' 0.62 | hyp 'healing: pink' 0.93 | keloid 'healing: pink' 0.82
+20d plain 'healing: pink' 0.48 | hyp 'healing: pink' 1.05 | keloid 'healing: pink' 0.87
+21d plain 'maturing: fading' 0.46 | hyp 'maturing: raised, pink (flattens over 1-2 years)' 1.06 | keloid 'keloid: raised, dark pink (does not fade)' 0.87
+60d plain 'maturing: fading' 0.16 | hyp 'maturing: raised, pink (flattens over 1-2 years)' 1.39 | keloid 'keloid: raised, dark pink (does not fade)' 1.16
+120d plain 'maturing: fading' 0.01 | hyp 'maturing: raised, pink (flattens over 1-2 years)' 1.51 | keloid 'keloid: raised, dark pink (does not fade)' 1.62
+180d plain 'maturing: fading' -0.03 | hyp 'maturing: raised, pink (flattens over 1-2 years)' 1.33 | keloid 'keloid: raised, dark pink (does not fade)' 1.95
+300d plain 'maturing: fading' -0.05 | hyp 'maturing: raised, pink (flattens over 1-2 years)' 0.79 | keloid 'keloid: raised, dark pink (does not fade)' 2.30
+364d plain 'maturing: fading' -0.05 | hyp 'maturing: raised, pink (flattens over 1-2 years)' 0.55 | keloid 'keloid: raised, dark pink (does not fade)' 2.38
+365d plain 'mature: pale, flat' -0.05 | hyp 'maturing: raised, pink (flattens over 1-2 years)' 0.54 | keloid 'keloid: raised, dark pink (does not fade)' 2.38
+400d plain 'mature: pale, flat' -0.05 | hyp 'maturing: raised, pink (flattens over 1-2 years)' 0.44 | keloid 'keloid: raised, dark pink (does not fade)' 2.41
+600d plain 'mature: pale, flat' -0.05 | hyp 'mature: pale, flat' 0.09 | keloid 'keloid: raised, dark pink (does not fade)' 2.48
+800d plain 'mature: pale, flat' -0.05 | hyp 'mature: pale, flat' -0.02 | keloid 'keloid: raised, dark pink (does not fade)' 2.50
+3650d plain 'mature: pale, flat' -0.05 | hyp 'mature: pale, flat' -0.05 | keloid 'keloid: raised, dark pink (does not fade)' 2.50

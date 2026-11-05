@@ -1,0 +1,153 @@
+{
+ "run": "r07q-before-F",
+ "subject": "ork-female",
+ "variant": "marked-bare",
+ "angles": {
+  "forearm": {
+   "maskPx": 1179,
+   "mmPerPx": 1.25,
+   "parts": [
+    {
+     "px": 419,
+     "bbox": [
+      163,
+      166,
+      205,
+      199
+     ],
+     "albedo_dL": -21.8,
+     "albedo_da": 9.8,
+     "albedo_db": -18.5,
+     "albedo_dC": -20.5,
+     "final_dL": -21.5,
+     "final_dE": 29.5,
+     "markColour": [
+      103,
+      105,
+      115
+     ]
+    },
+    {
+     "px": 317,
+     "bbox": [
+      131,
+      212,
+      169,
+      242
+     ],
+     "albedo_dL": -21.7,
+     "albedo_da": 9.8,
+     "albedo_db": -19.1,
+     "albedo_dC": -20.9,
+     "final_dL": -15.4,
+     "final_dE": 22.3,
+     "markColour": [
+      103,
+      106,
+      115
+     ]
+    },
+    {
+     "px": 215,
+     "bbox": [
+      112,
+      246,
+      145,
+      276
+     ],
+     "albedo_dL": -16.8,
+     "albedo_da": 8.3,
+     "albedo_db": -15.8,
+     "albedo_dC": -17.4,
+     "final_dL": -11.4,
+     "final_dE": 16.6,
+     "markColour": [
+      127,
+      129,
+      134
+     ]
+    },
+    {
+     "px": 118,
+     "bbox": [
+      107,
+      172,
+      120,
+      211
+     ],
+     "albedo_dL": 4.7,
+     "albedo_da": 7.5,
+     "albedo_db": -4.7,
+     "albedo_dC": -8.1,
+     "final_dL": 5.1,
+     "final_dE": 8.8,
+     "markColour": [
+      165,
+      167,
+      151
+     ]
+    },
+    {
+     "px": 67,
+     "bbox": [
+      204,
+      138,
+      217,
+      147
+     ],
+     "albedo_dL": -18.1,
+     "albedo_da": 8.4,
+     "albedo_db": -15.6,
+     "albedo_dC": -17.4,
+     "final_dL": -19.5,
+     "final_dE": 27.2,
+     "markColour": [
+      122,
+      123,
+      129
+     ]
+    },
+    {
+     "px": 33,
+     "bbox": [
+      124,
+      280,
+      139,
+      290
+     ],
+     "albedo_dL": 14.0,
+     "albedo_da": -7.2,
+     "albedo_db": 12.0,
+     "albedo_dC": 13.7,
+     "final_dL": 4.2,
+     "final_dE": 11.1,
+     "markColour": [
+      173,
+      174,
+      175
+     ]
+    },
+    {
+     "px": 10,
+     "bbox": [
+      108,
+      266,
+      112,
+      271
+     ],
+     "albedo_dL": 19.3,
+     "albedo_da": -4.7,
+     "albedo_db": 9.7,
+     "albedo_dC": 10.5,
+     "final_dL": 8.8,
+     "final_dE": 12.5,
+     "markColour": [
+      185,
+      185,
+      186
+     ]
+    }
+   ]
+  }
+ }
+}

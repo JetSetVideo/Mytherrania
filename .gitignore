@@ -8,3 +8,7 @@ artifacts/batch-vars*/records.jsonl
 dist-*/
 artifacts/wave-gen/verify-visual/**/*.png
 artifacts/qa-wave-gen/**/*.png
+artifacts/wave-tex/captures/**/*.png
+artifacts/wave-tex/render/**/*.png
+artifacts/qa-wave-tex/**/*.png
+artifacts/wave-tex/verify-*/**/*.png

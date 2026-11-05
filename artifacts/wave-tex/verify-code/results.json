@@ -1,0 +1,712 @@
+[
+ {
+  "id": "CAP-1",
+  "section": "capture",
+  "lane": "C",
+  "claim": "diffImages: changed count + meanAbs == brute force, symmetric in (a,b), box pixel counts real, minPixels=1 boxes cover every changed pixel",
+  "method": "200 random RGBA pairs 1..70 x 1..50, random cell/minPixels",
+  "result": "PASS",
+  "numbers": "0 violations ",
+  "at": "2026-11-05T05:46:00.670Z"
+ },
+ {
+  "id": "CAP-2",
+  "section": "capture",
+  "lane": "C",
+  "claim": "orbitOf inverts orbitDirection; sheetGrid cells inside the sheet, below the title, never overlapping",
+  "method": "20k orbits (pitch ±89°), 500 grids",
+  "result": "PASS",
+  "numbers": "orbit max err 6.82e-13, grid violations 0",
+  "at": "2026-11-05T05:46:00.679Z"
+ },
+ {
+  "id": "CAP-3",
+  "section": "capture",
+  "lane": "C",
+  "claim": "layoutHud: no line wider than maxChars, inside the band, height ≤ hudMaxHeight, no 'NaN/undefined/Infinity' printed",
+  "method": "400 random infos: 0-60 layers, 0-20 marks, 300-char names, NaN/Inf numbers, widths 60-960",
+  "result": "PASS",
+  "numbers": "0 violations ",
+  "at": "2026-11-05T05:46:00.689Z"
+ },
+ {
+  "id": "CAP-4",
+  "section": "capture2",
+  "lane": "C",
+  "claim": "HUD commit keeps the dirty-tree hash whole (sha cut to 10) and the marks line prints requested / drawn decals / under garment",
+  "method": "hudText on a synthetic info",
+  "result": "PASS",
+  "numbers": "commit 'commit 19f5c8c012+4e7c7a dirty', marks 'marks(1 req, 2 decals, 4 under garment) scar'",
+  "at": "2026-11-05T09:18:14.843Z"
+ },
+ {
+  "id": "CAP-5",
+  "section": "capture2",
+  "lane": "C",
+  "claim": "capture r07q-closing: the fixed MARKED_SET validates with M's CURRENT validator on every race (C Z-45 claim '0 issues'), reference subjects draw 0 decals, every HUD prints the drawn decal count",
+  "method": "artifacts/wave-tex/captures/r07q-closing/index.json (12 subjects, 280 images) + validateMarks(markedSet) re-run now",
+  "result": "PASS",
+  "numbers": "index issues 0 (); validateMarks now 0 (); reference subjects with decals 0; HUD lines without the drawn count 0. M Z-80 gave the anchors that validate: incision [0.18,-0.4], dotwork [0,0.45] 14 mm",
+  "at": "2026-11-05T09:18:14.847Z"
+ },
+ {
+  "id": "EXP-C",
+  "section": "exports",
+  "lane": "C",
+  "claim": "no existing export deleted",
+  "method": "git diff --name-only + export regex vs 19f5c8c",
+  "result": "SKIP",
+  "numbers": "no changed files yet",
+  "at": "2026-11-05T05:45:43.378Z"
+ },
+ {
+  "id": "EXP-L",
+  "section": "exports",
+  "lane": "L",
+  "claim": "no existing export deleted",
+  "method": "git diff --name-only + export regex vs 19f5c8c",
+  "result": "SKIP",
+  "numbers": "no changed files yet",
+  "at": "2026-11-05T05:45:43.204Z"
+ },
+ {
+  "id": "EXP-M",
+  "section": "exports",
+  "lane": "M",
+  "claim": "no existing export deleted (DO NOT DELETE rule)",
+  "method": "export-name regex on git show 19f5c8c:f vs working tree",
+  "result": "PASS",
+  "numbers": "1 changed files (+7/-0 lines), lost exports: none",
+  "at": "2026-11-05T05:45:43.292Z"
+ },
+ {
+  "id": "EXP-P",
+  "section": "exports",
+  "lane": "P",
+  "claim": "no existing export deleted (DO NOT DELETE rule)",
+  "method": "export-name regex on git show 19f5c8c:f vs working tree",
+  "result": "PASS",
+  "numbers": "1 changed files (+29/-1 lines), lost exports: none",
+  "at": "2026-11-05T05:45:43.317Z"
+ },
+ {
+  "id": "EXP-R",
+  "section": "exports",
+  "lane": "R",
+  "claim": "no existing export deleted (DO NOT DELETE rule)",
+  "method": "export-name regex on git show 19f5c8c:f vs working tree",
+  "result": "PASS",
+  "numbers": "2 changed files (+260/-5 lines), lost exports: none",
+  "at": "2026-11-05T05:45:43.267Z"
+ },
+ {
+  "id": "EXP-U",
+  "section": "exports",
+  "lane": "U",
+  "claim": "no existing export deleted (DO NOT DELETE rule)",
+  "method": "export-name regex on git show 19f5c8c:f vs working tree",
+  "result": "PASS",
+  "numbers": "2 changed files (+221/-2 lines), lost exports: none",
+  "at": "2026-11-05T05:45:43.378Z"
+ },
+ {
+  "id": "MRK-1",
+  "section": "marks",
+  "lane": "M",
+  "claim": "defaultMarks deterministic per seed; counts ≤ MAX_GENERATED; every field inside MARK_RANGES; solver report clean",
+  "method": "400 random inputs (4 races x classes, ages null/15-315 y, heights 1.3-2.0 m)",
+  "result": "PASS",
+  "numbers": "0 non-deterministic, 0 over cap, 0 out of range, 0 placement issues ",
+  "at": "2026-11-05T05:46:00.871Z"
+ },
+ {
+  "id": "MRK-2",
+  "section": "marks",
+  "lane": "M",
+  "claim": "no overlap beyond the 0.1 threshold between placed marks (QC Monte Carlo of the oriented footprints, wrap-aware)",
+  "method": "240 same-region pairs, 3000+3000 samples each, tol +0.02 MC",
+  "result": "PASS",
+  "numbers": "max overlap fraction 0.110; 0 pairs > 0.12 ",
+  "at": "2026-11-05T05:46:00.871Z"
+ },
+ {
+  "id": "MRK-3",
+  "section": "marks",
+  "lane": "M/R",
+  "claim": "decals finite, extents > 0, |height| ≤ 8 mm; ≤ 16 per body (DECAL_MAX); glyph-kind decals carry no relief (else 1 + 3 relief atlas fetches per decal > the 1-fetch budget)",
+  "method": "marksToDecals on the same 400 characters",
+  "result": "PASS",
+  "numbers": "1136 decals, max 10/body, 0 bodies > 16, 0 bad, 0 glyph/dots/band decals with height ≠ 0; mean 0.5 ms/character (defaultMarks x2 + resolve + decals + QC overlap MC)",
+  "at": "2026-11-05T05:46:00.871Z"
+ },
+ {
+  "id": "MRK-4",
+  "section": "marks",
+  "lane": "M",
+  "claim": "monotone ageing: after day 365 maturity ↑, redness ↓, lift ↑, raised height ↓ (non-keloid); roughnessScale < 1 always; ink blur ↑ and opacity ↓ with years",
+  "method": "6 kinds x {keloid, not} x log-spaced ages to 40 000 d; 5 inks x 0..1000 y",
+  "result": "PASS",
+  "numbers": "0 violations ",
+  "at": "2026-11-05T05:46:00.872Z"
+ },
+ {
+  "id": "MRK-5",
+  "section": "marks",
+  "lane": "M",
+  "claim": "sanitizeMarks/resolveMarks/marksToDecals total on garbage profiles (null, wrong types, NaN/Inf/negative fields, 100 mirrored scars)",
+  "method": "7 inputs",
+  "result": "PASS",
+  "numbers": "0 failures ",
+  "at": "2026-11-05T05:46:00.873Z"
+ },
+ {
+  "id": "MRK-6",
+  "section": "marks2",
+  "lane": "M",
+  "claim": "generated face marks on REAL heads (regionFrames(mesh, { face: plan.face, race })) keep off the eye/mouth zones and off QC's own eye discs (plan.face eye centre, r = eyeRadius)",
+  "method": "8 real bodies x 150 seeds (1200 sets), QC Monte Carlo 1500 samples per placed face footprint",
+  "result": "PASS",
+  "numbers": "192 face marks placed; 0 with > 2 % of the footprint in M's zones; 0 touching an eye disc (max 0.00 %) ",
+  "at": "2026-11-05T09:18:14.568Z"
+ },
+ {
+  "id": "MRK-7",
+  "section": "marks2",
+  "lane": "M",
+  "claim": "relief: a mature non-keloid scar is ≤ +0.1 mm by 10 y (flat/atrophic), hypertrophic regresses after its peak and never exceeds the keloid plateau",
+  "method": "scarLook per kind at fixed ages (data for QD's WARN-4 ruling: mature height)",
+  "result": "PASS",
+  "numbers": "0 kinds violate; incision: plain 365/400/730/3650 d 0.00/0.00/0.00/0.00 mm; hyp 30..3650 d 1.03/1.52/0.59/0.01/0.00; keloid 10 y 2.50 ; laceration: plain 365/400/730/3650 d -0.05/-0.05/-0.05/-0.05 mm; hyp 30..3650 d 1.16/1.51/0.54/-0.04/-0.05; keloid 10 y 2.50 ; claw: plain 365/400/730/3650 d -0.14/-0.15/-0.15/-0.15 mm; hyp 30..3650 d 1.09/1.44/0.45/-0.14/-0.15; keloid 10 y 2.50 ; puncture: plain 365/400/730/3650 d -0.39/-0.39/-0.40/-0.40 mm; hyp 30..3650 d 0.89/1.25/0.21/-0.39/-0.40; keloid 10 y 2.50 ; burn: plain 365/400/730/3650 d -0.05/-0.05/-0.05/-0.05 mm; hyp 30..3650 d 1.21/1.51/0.54/-0.04/-0.05; keloid 10 y 2.50 ; stitched: plain 365/400/730/3650 d 0.00/0.00/0.00/0.00 mm; hyp 30..3650 d 1.08/1.53/0.59/0.01/0.00; keloid 10 y 2.50",
+  "at": "2026-11-05T09:18:14.568Z"
+ },
+ {
+  "id": "MRK-8",
+  "section": "marks2",
+  "lane": "M",
+  "claim": "dotwork decal = DOT_RADIUS_MM 0.9 x dotScale, pitch 2.6 x dotScale (dotScale = max(1, size/40)), no relief (Z-85)",
+  "method": "sanitize -> resolve -> marksToDecals, 5 sizes",
+  "result": "PASS",
+  "numbers": "0 wrong; 20 mm: r 0.90 pitch 2.60, 40 mm: r 0.90 pitch 2.60, 60 mm: r 1.35 pitch 3.90, 90 mm: r 2.02 pitch 5.85, 120 mm: r 2.70 pitch 7.80",
+  "at": "2026-11-05T09:18:14.568Z"
+ },
+ {
+  "id": "MRK-9",
+  "section": "marks2",
+  "lane": "M",
+  "claim": "decal centres lie ON the real skin (ray-cast centres, Z-81 '0.00 mm')",
+  "method": "8 real bodies x 3 Barbarian sets, QC point-triangle distance",
+  "result": "PASS",
+  "numbers": "58 decals, max centre-to-surface 0.000 mm",
+  "at": "2026-11-05T09:18:14.590Z"
+ },
+ {
+  "id": "MSK-1",
+  "section": "masks",
+  "lane": "L",
+  "claim": "mask algebra laws (comm/assoc/identity/annihilator per mode, De Morgan x2, idempotence, absorption, involution, xor, subtract, feather/grow 0, grow/shrink duality, mix/scale/remap ids)",
+  "method": "29 laws on 4202 vertices of human-male; soft fields direction 0.00..1.00, height 0.00..1.00, distance 0.00..1.00; tol 1e-6 (float32 storage)",
+  "result": "PASS",
+  "numbers": "worst 5.96e-8",
+  "at": "2026-11-05T05:45:49.361Z"
+ },
+ {
+  "id": "MSK-2",
+  "section": "masks",
+  "lane": "L",
+  "claim": "grow ≥ a, shrink ≤ a, feather preserves constants and order",
+  "method": "20 mm grow/shrink of distance field; 40 mm feather of 0.37; 15 mm feather of and(A,B) ≤ feather(A)",
+  "result": "PASS",
+  "numbers": "grow<a−1e-6: 0, shrink>a+1e-6: 0 (worst raw excess 2.98e-8, float32 ulp), constant drift 4.77e-9, order violations 0",
+  "at": "2026-11-05T05:45:49.373Z"
+ },
+ {
+  "id": "MSK-3",
+  "section": "masks",
+  "lane": "L",
+  "claim": "grow/shrink continuous at 0 mm on a SOFT mask (grow(0.01 mm) ≈ identity)",
+  "method": "max|grow(A,0.01mm) − A|, A = direction field (soft 0..1)",
+  "result": "PASS",
+  "numbers": "grow 0.01 mm max|Δ| 0.000 (0/4202 vertices move > 0.05), shrink 0.01 mm max|Δ| 2.98e-8 — binary masks unaffected; soft masks snap at the 0.5 iso-line",
+  "at": "2026-11-05T05:45:49.378Z"
+ },
+ {
+  "id": "MSK-4",
+  "section": "masks",
+  "lane": "L",
+  "claim": "evaluateMask total: hostile params (NaN, ±Inf, empty/unknown region, zero dir, 1e9 mm feather/grow) -> finite [0,1], bounded time",
+  "method": "30 expressions on 4202 vertices",
+  "result": "PASS",
+  "numbers": "0 failures ; total 80 ms; slow (>250 ms): none",
+  "at": "2026-11-05T05:45:49.458Z"
+ },
+ {
+  "id": "MSK-5",
+  "section": "masks",
+  "lane": "L",
+  "claim": "feather/grow bounded loops",
+  "method": "FEATHER_MAX_STEPS export + Dijkstra heap",
+  "result": "PASS",
+  "numbers": "FEATHER_MAX_STEPS=400; grow = 1 Dijkstra O((V+E) log V)",
+  "at": "2026-11-05T05:45:49.458Z"
+ },
+ {
+  "id": "OPS-1",
+  "section": "ops",
+  "lane": "L",
+  "claim": "all 24 brief colour modes exist (+softLightW3C, linearDodge alias)",
+  "method": "name set vs BRIEF list",
+  "result": "PASS",
+  "numbers": "modes 26, missing: none",
+  "at": "2026-11-05T05:45:43.379Z"
+ },
+ {
+  "id": "OPS-2",
+  "section": "ops",
+  "lane": "L",
+  "claim": "21 separable modes == QC W3C/Photoshop reference on [0,1]²",
+  "method": "200000 random pairs + 12² edge grid per mode, tol 1e-12",
+  "result": "PASS",
+  "numbers": "max |Δ| over all modes 1.11e-16; normal:0.000 multiply:0.000 screen:1.11e-16 hardLight:1.11e-16 overlay:1.11e-16 softLight:0.000 softLightW3C:0.000 add:0.000 linearDodge:0.000 colorDodge:0.000 colorBurn:0.000 vividLight:2.83e-17 linearLight:0.000 pinLight:0.000 hardMix:0.000 linearBurn:0.000 darken:0.000 lighten:0.000 difference:0.000 exclusion:0.000 subtract:0.000 divide:0.000",
+  "at": "2026-11-05T05:45:43.617Z"
+ },
+ {
+  "id": "OPS-2b",
+  "section": "ops",
+  "lane": "L",
+  "claim": "hardMix vs the 'threshold of vividLight' variant (information)",
+  "method": "12² edge grid + 200000 random",
+  "result": "PASS",
+  "numbers": "differs at 1 edge-grid points (degenerate b,s ∈ {0,1} corners) and 0 random interior points",
+  "at": "2026-11-05T05:45:43.617Z"
+ },
+ {
+  "id": "OPS-3",
+  "section": "ops",
+  "lane": "L",
+  "claim": "hue/saturation/color/luminosity == QC W3C §10.2 reference",
+  "method": "50000 random triples per mode (15% edge components, 5% grey source), tol 1e-9",
+  "result": "PASS",
+  "numbers": "hue:2.22e-16 saturation:2.22e-16 color:2.22e-16 luminosity:2.22e-16",
+  "at": "2026-11-05T05:45:43.685Z"
+ },
+ {
+  "id": "OPS-4",
+  "section": "ops",
+  "lane": "L",
+  "claim": "identities: normal@α0, multiply·white, screen·black, add 0 (+15 more claimed in OPERATOR_DOCS)",
+  "method": "20k bases each, exact",
+  "result": "PASS",
+  "numbers": "19 identities max|Δ| 1.11e-16; normal α=0 max|Δ| 0",
+  "at": "2026-11-05T05:45:43.697Z"
+ },
+ {
+  "id": "OPS-5",
+  "section": "ops",
+  "lane": "L",
+  "claim": "commutativity where it holds (multiply screen difference exclusion darken lighten add) and doc flags match measurement",
+  "method": "20k RGB pairs per colour mode, both orders",
+  "result": "PASS",
+  "numbers": "commutative measured: multiply,screen,add,hardMix,linearBurn,darken,lighten,difference,exclusion; doc/measure mismatches: none",
+  "at": "2026-11-05T05:45:43.788Z"
+ },
+ {
+  "id": "OPS-6",
+  "section": "ops",
+  "lane": "L",
+  "claim": "colour modes closed in [0,1], no NaN on any input (NaN, ±Inf, ±1e300, -0, denormal, 0/0 cases)",
+  "method": "26 modes x 21² inputs x {sRGB, linear}",
+  "result": "PASS",
+  "numbers": "22932 evaluations, 0 outside [0,1]/non-finite ",
+  "at": "2026-11-05T05:45:43.794Z"
+ },
+ {
+  "id": "OPS-7",
+  "section": "ops",
+  "lane": "L",
+  "claim": "normal-over is associative: (b⊕s1)⊕s2 == b⊕(s1⊕s2) via QC Porter-Duff and lane compositeOver",
+  "method": "100k random (b,s1,a1,s2,a2)",
+  "result": "PASS",
+  "numbers": "max|Δ| 3.33e-16",
+  "at": "2026-11-05T05:45:43.806Z"
+ },
+ {
+  "id": "OPS-8",
+  "section": "ops",
+  "lane": "L",
+  "claim": "compositeOver == W3C source-over with non-opaque backdrop (isolated groups)",
+  "method": "100k random (cb,αb,cs,αs), B=multiply",
+  "result": "PASS",
+  "numbers": "max|Δ| 4.44e-16",
+  "at": "2026-11-05T05:45:43.811Z"
+ },
+ {
+  "id": "OPS-9",
+  "section": "ops",
+  "lane": "L",
+  "claim": "19 scalar ops == QC reference of the documented law (incl. heightBlend), both ranges [0,1] and ±8 mm",
+  "method": "40k random per op per range, rel tol 1e-9",
+  "result": "PASS",
+  "numbers": "max rel|Δ| 4.45e-15",
+  "at": "2026-11-05T05:45:44.051Z"
+ },
+ {
+  "id": "OPS-10",
+  "section": "ops",
+  "lane": "L",
+  "claim": "scalar composites closed in channel range, finite on NaN/±Inf inputs/params/alpha; alpha 0 = identity",
+  "method": "19 ops x 2 ranges x 21² x 5 params x {α=1, α=NaN}",
+  "result": "PASS",
+  "numbers": "167580 evaluations, 0 bad ; α=0 max|Δ| 0",
+  "at": "2026-11-05T05:45:44.072Z"
+ },
+ {
+  "id": "OPS-11",
+  "section": "ops",
+  "lane": "L",
+  "claim": "heightBlend hard (w=0) == max(b, s) (\"the taller wins\"); soft (a=1) result in [max(b,s), max(b,s) + w/4] (round-2 smooth-max law)",
+  "method": "50k random pairs in ±4 mm",
+  "result": "PASS",
+  "numbers": "0 hard-law violations, 0 outside [max, max + w/4]",
+  "at": "2026-11-05T05:45:44.083Z"
+ },
+ {
+  "id": "OPS-12",
+  "section": "ops",
+  "lane": "L",
+  "claim": "heightBlend soft (w=0.5 mm) monotone non-decreasing in s, b and a; commutative at a=1",
+  "method": "50k pairs: s/b +0.01 mm, a +0.05",
+  "result": "PASS",
+  "numbers": "0 monotonicity drops, 0 commutativity breaks (a=1); max dip below the taller (base) 0.000 mm = 0.000·w (lerp-by-smoothstep, not a smooth max: a slightly lower layer pulls the base down)",
+  "at": "2026-11-05T05:45:44.083Z"
+ },
+ {
+  "id": "PRE-1",
+  "section": "presets",
+  "lane": "P",
+  "claim": "presetFor deterministic + presetToV2 validateStack clean over every race x subrace x class; paintPreset channels finite and inside CHANNEL_RANGE",
+  "method": "128 subjects (every 4th painted on the mannequin, 5850 v)",
+  "result": "PASS",
+  "numbers": "0 non-deterministic, 0 v2 validation failures, 0 range failures ",
+  "at": "2026-11-05T05:45:58.611Z"
+ },
+ {
+  "id": "PRE-2",
+  "section": "presets",
+  "lane": "P",
+  "claim": "evaluateFinish(legacyFinish) == applyFormShade bit for bit (the old FormShade+Miniature path wrapped as layers)",
+  "method": "Object.is per channel, 8 bodies, garment regions",
+  "result": "PASS",
+  "numbers": "differing channels per body human-male:0 human-female:0 elf-male:0 elf-female:0 dwarf-male:0 dwarf-female:0 ork-male:0 ork-female:0",
+  "at": "2026-11-05T05:45:58.958Z"
+ },
+ {
+  "id": "PRE-3",
+  "section": "presets",
+  "lane": "P",
+  "claim": "Presets.colorBlend == W3C 'color' (QC reference)",
+  "method": "100k random sRGB pairs",
+  "result": "PASS",
+  "numbers": "max|Δ| 0.000 (note: duplicates Operators.blendRgb color code instead of importing it)",
+  "at": "2026-11-05T05:45:58.998Z"
+ },
+ {
+  "id": "PRE-4",
+  "section": "presets",
+  "lane": "P",
+  "claim": "applyPresetOverrides([]) and unknown ids are identity on the painted channels",
+  "method": "human-male preset, Object.is",
+  "result": "PASS",
+  "numbers": "identity true",
+  "at": "2026-11-05T05:45:59.110Z"
+ },
+ {
+  "id": "PRE-5",
+  "section": "presets",
+  "lane": "P",
+  "claim": "game path presetBuffers == paintPreset; v2 export (inspector) close to the game path",
+  "method": "human-male: presetBuffers vs paintPreset (Object.is) and vs evaluateStack(presetToV2)",
+  "result": "PASS",
+  "numbers": "presetBuffers==paintPreset true; v2 export vs game: albedo mean|Δ| 0.0129 max 0.160 (linear), roughness mean 0.0079 max 0.104, height max 0.096 mm (PASS bar = P's TX69 pins: mean albedo < 0.03, mean rough < 0.02, height < 2 mm)",
+  "at": "2026-11-05T05:45:59.168Z"
+ },
+ {
+  "id": "PRE-6",
+  "section": "presets",
+  "lane": "P",
+  "claim": "perf: paintPreset vs legacy paintSkin (rig build budget +30 ms)",
+  "method": "median of 5, ms legacy/preset, 8 bodies",
+  "result": "PASS",
+  "numbers": "worst extra 5.1 ms; human-male 14/17; human-female 14/19; elf-male 18/20; elf-female 17/22; dwarf-male 16/18; dwarf-female 16/19; ork-male 16/19; ork-female 16/19",
+  "at": "2026-11-05T05:46:00.637Z"
+ },
+ {
+  "id": "PRE-7",
+  "section": "presets2",
+  "lane": "P",
+  "claim": "studded leather: round heads are a fragment detail {studs, 70 mm, 2.5 mm} and no stud layer paints albedo per vertex (Z-74); every preset's details fit packDetails (≤ 4 materials x 2) — nothing listed is silently dropped",
+  "method": "128 subjects (race x subrace x class), packDetails on the mannequin",
+  "result": "PASS",
+  "numbers": "16 subjects with studded leather, 16 carry the stud detail, 0 stud layers write albedo; details dropped by the 4x2 budget: 0 ",
+  "at": "2026-11-05T09:18:14.605Z"
+ },
+ {
+  "id": "PRE-8",
+  "section": "presets2",
+  "lane": "P",
+  "claim": "edge highlight raised (Z-82): on the top-decile CONVEX bare-skin vertices (QC 1-ring convexity), painted/basecoat luminance ratio of the preset ≥ legacy + 0.05",
+  "method": "4 real male Warrior bodies, legacy = paintSkin / paintVertices(stackFor), preset = presetBuffers / paintVertices(preset.basecoat), linear luma",
+  "result": "PASS",
+  "numbers": "0 races below +0.05; ridge legacy -> preset: human 1.074 -> 1.195, elf 0.998 -> 1.054, dwarf 1.129 -> 1.308, ork 1.144 -> 1.362",
+  "at": "2026-11-05T09:18:14.840Z"
+ },
+ {
+  "id": "REN-1",
+  "section": "render",
+  "lane": "R",
+  "claim": "packDecals total on hostile lists: no throw, finite block, count ≤ 16, count + dropped = input, unit orthogonal frames, |h| ≤ 8 mm, anyHeight exact, unused slots zero",
+  "method": "3000 random lists (35904 decals, 0-24 each; NaN/±Inf/1e300, zero/parallel frames, unknown kinds)",
+  "result": "PASS",
+  "numbers": "0 threw, 0 lists with a violation ",
+  "at": "2026-11-05T09:18:06.192Z"
+ },
+ {
+  "id": "REN-1b",
+  "section": "render",
+  "lane": "R",
+  "claim": "decal footprint radius (shader early reject) contains every point a line/stitched/disc profile covers (QC port of the GLSL decalSdf)",
+  "method": "game decals: 756 unwrapped line/stitched/disc decals from M's marks on 400 characters x 2000 samples (pass criterion); synthetic: 7732 fuzzed decals x 400 (information)",
+  "result": "PASS",
+  "numbers": "game decals outside: 0 ; synthetic: 190 with a covered point outside (worst 4.26 x radius; all elongated blurred discs: the disc sdf scales by min(L,W), so a soft halo along the long axis reaches blur·L/W and the radius clips it) disc L50.3 W0.6 n8 sp7.6: covered point at 89.5 mm > radius 72.7 mm",
+  "at": "2026-11-05T09:18:06.354Z"
+ },
+ {
+  "id": "REN-1c",
+  "section": "render",
+  "lane": "R",
+  "claim": "packDecals with finite values a Float32 uniform cannot hold (1e300, denormals): dropped or clamped",
+  "method": "7 single-decal cases",
+  "result": "WARN",
+  "numbers": "7 not handled: halfLength 1e300: Infinity in block; center 1e300: Infinity in block; spacing 1e300: Infinity in block; blur 1e300: Infinity in block; band wrapRadius 1e300: Infinity in block; halfWidth 5e-324: W stored 0; height 1e-300: anyHeight true, h stored 0 (game producers sanitize first: MRK-3 found 0 non-finite decals)",
+  "at": "2026-11-05T09:18:06.384Z"
+ },
+ {
+  "id": "REN-2",
+  "section": "render",
+  "lane": "R",
+  "claim": "≤ 1 atlas fetch per decal per fragment: the only fetch is in glyphDist; decalShade evaluates decalSdf once; decalRelief skips h == 0 BEFORE decalSdf; packDecals forces h = 0 on glyph/dots/band (QC Z-89 caveat)",
+  "method": "GLSL text of CelMaterial.DECAL_GLSL/DETAIL_GLSL/CEL_MATERIAL_GLSL + the 3000 packed lists of REN-1",
+  "result": "PASS",
+  "numbers": "fetch sites: decal 1, detail 0, lighting 0; glyphDist uses in decalSdf 3 (one per glyph/dots/band branch); decalSdf calls in decalShade 1; h==0 skip before decalSdf in decalRelief: true; packed glyph-kind decals with h≠0: 0 -> colour pass 1 fetch (glyph kinds) / 0, relief pass (3 evaluations) 0",
+  "at": "2026-11-05T09:18:06.384Z"
+ },
+ {
+  "id": "REN-3",
+  "section": "render",
+  "lane": "R",
+  "claim": "fragment uniforms of the full-featured skin material fit the WebGL2 minimum (224 vec4) and ≤ 16 samplers",
+  "method": "QC regex over createCelSkinnedSurfaceMaterial({detail, emissive, lit, details}).fragmentShader, every #ifdef branch counted, no packing credit, + 8 vec4 three prefix",
+  "result": "PASS",
+  "numbers": "219 / 224 vec4 (declared 211 + prefix 8; lane claims 158); samplers 2; big: uShadowMatrix:4, too:4, returned:4, identity:4, n:4, l:4, viewPos:4, world:4, worldN:4, specular:4, uDecals:112, uMatDetail:8, flow:4, wtDy:4, before:4, vBind:4, wtPn:4, wtPx:4",
+  "at": "2026-11-05T09:18:06.385Z"
+ },
+ {
+  "id": "REN-4",
+  "section": "render",
+  "lane": "R",
+  "claim": "bounded normal: |r| = 1, tilt ≤ MAX_TILT, identity inside the cone, |Δ lambert| ≤ 2 sin(MAX_TILT/2) < narrowest cel band; GLSL boundTilt uses the same cos/sin",
+  "method": "200k random (n, nb, l) incl. nb = ±n",
+  "result": "PASS",
+  "numbers": "0 violations; worst |Δ lambert| 0.2989 ≤ 0.2989 < band gap 0.38; GLSL constants match true",
+  "at": "2026-11-05T09:18:06.431Z"
+ },
+ {
+  "id": "REN-5",
+  "section": "render",
+  "lane": "R",
+  "claim": "neutral path is a separate compile decided on the CPU: no decal + neutral vertex channels => no USE_WAVE_TEX_LIT; any decal or off-dead-zone channel => LIT + recompile; per-material uniforms",
+  "method": "real THREE ShaderMaterial in Deno, MaterialRender.setDecals/attachMaterialAttributes/setChannelView",
+  "result": "PASS",
+  "numbers": "neutral-built-off:ok []-stays-off:ok 1-decal-on+recompile:ok []-back-off:ok lit-vertex-stays-on:ok attach-null-neutral:ok attach-wrong-length-neutral:ok rough0.501-neutral:ok rough0.51-lit:ok height1e-9-lit:ok NaN-not-neutral:ok view-unknown->final:ok uniforms-not-shared:ok",
+  "at": "2026-11-05T09:18:06.432Z"
+ },
+ {
+  "id": "REN-6",
+  "section": "render",
+  "lane": "R",
+  "claim": "game wiring texMaterialFor on 8 real bodies x 4 seeds (age 60): defaults off => null; explicit empty marks => neutral; on => channels in range, decals ≤ 16 and HUD list == packed, centres on the skin surface, no centre on a garment vertex, wiring ≤ +30 ms",
+  "method": "TEX_DEFAULTS toggled (restored), QC point-triangle distance, packDecals/packDetails re-run, wiring ms = median of 3",
+  "result": "WARN",
+  "numbers": "0 violations; 40 decals drawn; centre-to-skin max 0.00 mm; decals centred on a GARMENT vertex (packed + counted in the HUD but hidden by the shader's skin mask: covered is decided per REGION, a partly bare region keeps its clothed marks) 3/40 dwarf-male seed 4242 scar.1 stitched centre on pelvis garment | dwarf-female seed 4242 scar.1 stitched centre on pelvis garment | ork-female seed 1234 scar.5 stitched centre on torso garment; preset details listed but dropped by packDetails 0; worst wiring 44.7 ms (median of 3, preset + marks, gross: the preset REPLACES paintSkin ~15-20 ms, machine loaded by the swarm)",
+  "at": "2026-11-05T09:18:14.439Z"
+ },
+ {
+  "id": "REN-7",
+  "section": "renderbench",
+  "lane": "R",
+  "claim": "neutral (TEX_DEFAULTS off) pixel-identical to git archive HEAD across builds (QC's own --save runs)",
+  "method": "tools/bench-wave-tex.ts --save on a git-archive HEAD scratch and on the work tree, --compare (24 renders 1280x800)",
+  "result": "PASS",
+  "numbers": "0 changed pixels over 24 renders (max diff 0); files artifacts/wave-tex/verify-code/closing/identity/identity.json",
+  "at": "2026-11-05T09:18:14.446Z"
+ },
+ {
+  "id": "REN-8",
+  "section": "renderbench",
+  "lane": "R",
+  "claim": "frame budget +1 ms (preview, arena 2 rigs) with the shipped defaults; worst case 16 decals reported",
+  "method": "QC's own bench-wave-tex.ts run, work vs git-archive HEAD, median frames (machine shared with the swarm)",
+  "result": "PASS",
+  "numbers": "preview HEAD 2.50 / neutral 2.10 / 16 decals 2.40 / defaults 3.00 ms (defaults +0.50); arena HEAD 3.40 / neutral 3.60 / 16 decals 4.50 / defaults 4.20 ms (defaults +0.80, 32 decals +1.10); build human-male off 36.2 -> on 43.6; ork-female off 21.9 -> on 34.8",
+  "at": "2026-11-05T09:18:14.447Z"
+ },
+ {
+  "id": "REN-9",
+  "section": "render",
+  "lane": "R/M",
+  "claim": "stitched scars: the scar line is drawn ON the stitch line (GLSL decalSdf kind 1 with count = number of stitches, as FragmentDecal.count documents)",
+  "method": "GLSL text of decalSdf (kind <= 1 loop) + 183 stitched decals M emits on 400 characters",
+  "result": "PASS",
+  "numbers": "GLSL forces n = 1 for stitched: true; offset-then-break loop present: true; M's stitched decals with count > 1: 183/183 -> the line is displaced sideways by up to 59.5 mm (56 x its half width) from the cross ticks at v = 0, and cut by the footprint radius; TS mirror profileSdf('stitched') has no offset (so TX tests cannot see it). Fix: n = 1 (off = 0) for kind 1, or M sends count 1",
+  "at": "2026-11-05T09:18:06.384Z"
+ },
+ {
+  "id": "STK-1",
+  "section": "stack",
+  "lane": "L",
+  "claim": "evaluateStack total + closed + deterministic on random hostile v2 stacks (nested groups ≤3, NaN/Inf/1e9 opacities/values/params, unknown ops/regions, linear-space writes, mask channels, mark sources)",
+  "method": "60 random stacks on human-male (4202 v), each evaluated twice",
+  "result": "PASS",
+  "numbers": "0 threw, 0 out-of-range/non-finite, 0 non-deterministic; mean 2.2 ms/stack ",
+  "at": "2026-11-05T05:45:56.513Z"
+ },
+ {
+  "id": "STK-2",
+  "section": "stack",
+  "lane": "L",
+  "claim": "evaluateStack total on invalid ids a JSON profile can carry (unknown mask channel, channel, source kind, pattern, colour, background)",
+  "method": "7 probe stacks",
+  "result": "PASS",
+  "numbers": "mask channel 'bogus': ok; write to channel 'bogus': ok; source kind 'bogus': ok; pattern 'bogus': ok; colour 'zzz': ok; background 'nope': ok; empty group: ok",
+  "at": "2026-11-05T05:45:56.519Z"
+ },
+ {
+  "id": "STK-3",
+  "section": "stack",
+  "lane": "L",
+  "claim": "isolated group of normal layers == flat stack (associativity of over on a real body); group opacity 0 == absent",
+  "method": "ork recipe (18 layers, all normal), sRGB",
+  "result": "PASS",
+  "numbers": "max|flat−group| 1.19e-7; opacity-0 group max|Δ| 0",
+  "at": "2026-11-05T05:45:56.544Z"
+ },
+ {
+  "id": "STK-4",
+  "section": "stack",
+  "lane": "L",
+  "claim": "applyLayerOverrides: [] / undefined / unknown id = identity; does not mutate input; enabled/opacity idempotent; all disabled = background; order moves the node",
+  "method": "JSON equality on the ork v1 stack",
+  "result": "PASS",
+  "numbers": "identity true, input untouched true, all-disabled max|Δ| from #808080 2.97e-8, order after {v1-1→5}: v1-0,v1-2,v1-3,v1-4,v1-5,v1-1,v1-6,v1-7",
+  "at": "2026-11-05T05:45:56.545Z"
+ },
+ {
+  "id": "STK-5",
+  "section": "stack",
+  "lane": "L",
+  "claim": "perf: evaluateStack(stackFromV1) vs paintVertices on the same v1 recipe, 8 bodies; per-evaluation heap",
+  "method": "median of 7, ms paintVertices/evaluateStack; heap via --expose-gc",
+  "result": "PASS",
+  "numbers": "worst ratio 1.13; human-male 6.4/7.0; human-female 6.1/6.7; elf-male 9.1/10.2; elf-female 8.9/9.8; dwarf-male 8.0/8.7; dwarf-female 8.0/8.9; ork-male 7.8/8.9; ork-female 7.8/8.6; heap/eval (out reused, before gc) 397 KiB, retained after gc -84 KiB",
+  "at": "2026-11-05T05:45:57.563Z"
+ },
+ {
+  "id": "UI-1",
+  "section": "ui",
+  "lane": "U",
+  "claim": "parseLayerOverrides total + idempotent: ≤ 64 entries, unique ids, opacity ∈ [0,1], order integer 0..255, no empty override",
+  "method": "3000 hostile saved lists (0-300 entries, junk types, NaN/±Inf, 80-char ids)",
+  "result": "PASS",
+  "numbers": "0 violations ",
+  "at": "2026-11-05T05:46:06.751Z"
+ },
+ {
+  "id": "UI-2",
+  "section": "ui",
+  "lane": "U",
+  "claim": "applyLayerOverrides: [] = identity; any override list gives a permutation of the rows; locked rows keep their slot",
+  "method": "400 random stacks (1-40 rows, 12 % locked) x random overrides (order collisions, out-of-range slots)",
+  "result": "PASS",
+  "numbers": "0 violations n26 move 1->20: got 0,10,2,3,4,5,8,7,6,9,11,12,22,13,14,15,16,17,18,19,20,21,1,23,25,24 want 0,10,2,3,4,5,6,7,8,9,11,12,14,13,16,15,17,18,20,19,1,21,22,23,25,24 | n39 move 5->21: got 0,1,2,3,4,6,22,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,5,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38 want 0,1,2,3,4,6,8,7,9,10,11,12,13,14,15,16,17,18,19,20,21,5,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38",
+  "at": "2026-11-05T05:46:06.826Z"
+ },
+ {
+  "id": "UI-3",
+  "section": "ui",
+  "lane": "U",
+  "claim": "drag / arrow reorder on the GAME's layer rows (randomProfile stacks, clamp/guard editLocked mid-stack): inspector order == QC's splice of the visible order == P's applyPresetOverrides order (what the rig paints)",
+  "method": "60 profiles x 12 drags (720 moves; rows with 'locked' set: 0)",
+  "result": "PASS",
+  "numbers": "0 inspector != splice, 0 inspector != game order ",
+  "at": "2026-11-05T05:46:06.938Z"
+ },
+ {
+  "id": "UI-3b",
+  "section": "ui",
+  "lane": "U",
+  "claim": "reorderOverride with a `locked` row (LayerRow.locked, pinned by applyLayerOverrides) strictly between from and to: the moved row lands on the requested slot",
+  "method": "400 synthetic sessions (12 % locked rows): 2141 moves, 976 refused/no-op; QC model = locked rows fixed, moved row at 'to', others keep relative order",
+  "result": "WARN",
+  "numbers": "278 sessions diverged n26 move 1->20: got 0,10,2,3,4,5,8,7,6,9,11,12,22,13,14,15,16,17,18,19,20,21,1,23,25,24 want 0,10,2,3,4,5,6,7,8,9,11,12,14,13,16,15,17,18,20,19,1,21,22,23,25,24 — latent: the game's rows never set 'locked' (clamp/guard are 'editLocked', grip disabled), see UI-3",
+  "at": "2026-11-05T05:46:06.826Z"
+ },
+ {
+  "id": "UI-4",
+  "section": "ui",
+  "lane": "U",
+  "claim": "texKey '' without marks/overrides (every pre-wave preview key byte-identical to HEAD); non-empty with an explicit (even empty) mark set or an override",
+  "method": "texKey cases + previewKey(randomProfile) from a git-archive HEAD scratch vs the work tree",
+  "result": "PASS",
+  "numbers": "texKey cases true; previewKey equal 200/200 ",
+  "at": "2026-11-05T05:46:07.036Z"
+ },
+ {
+  "id": "UI-5",
+  "section": "ui",
+  "lane": "U",
+  "claim": "every Marks-panel edit (add/remove/update with hostile patches) leaves a set that is a fixed point of M's sanitizeMarks and of parseMarkSet, within MAX_MARKS",
+  "method": "300 sessions x 25 edits (7500 edits)",
+  "result": "PASS",
+  "numbers": "0 sessions broke ",
+  "at": "2026-11-05T05:46:07.207Z"
+ },
+ {
+  "id": "UI-6",
+  "section": "ui",
+  "lane": "U",
+  "claim": "probe-wave-tex-ui in real Chrome",
+  "method": "QC run",
+  "result": "SKIP",
+  "numbers": "no report",
+  "at": "2026-11-05T05:46:07.208Z"
+ },
+ {
+  "id": "V1-1",
+  "section": "v1",
+  "lane": "L/P/R",
+  "claim": "legacy outputs byte-identical to base 19f5c8c (paintVertices linear+srgb, paintSkin, paintStage, stackFor JSON, body mesh) on 8 bodies + 112-subject recipe matrix",
+  "method": "fnv1a of Float32 bytes, artifacts/wave-tex/verify-code/legacy-hash.ts run on git-archive(19f5c8c) and the working tree",
+  "result": "PASS",
+  "numbers": "51 hashes, 0 differ ",
+  "at": "2026-11-05T05:45:56.031Z"
+ },
+ {
+  "id": "V1-2",
+  "section": "v1",
+  "lane": "L",
+  "claim": "paintVertices(v1) bytes == evaluateStack(stackFromV1(v1)).albedo on 8 bodies (4 races x 2 sexes); material = neutral (0.5,0,1,0)",
+  "method": "Object.is per Float32 element, stackFor recipe of each body",
+  "result": "PASS",
+  "numbers": "human-male:==(4202v) human-female:==(4264v) elf-male:==(4482v) elf-female:==(4396v) dwarf-male:==(4408v) dwarf-female:==(4546v) ork-male:==(4446v) ork-female:==(4478v); material max|Δ| from neutral 0 ",
+  "at": "2026-11-05T05:45:56.223Z"
+ }
+]

@@ -1,0 +1,28 @@
+cmp-r07q-closing-vs-r08q-parent: 280 tiles, changed 27, max share 0.0029
+  human-male-marked-bare/angles/forearm/studio/final share 0.00001 meanD 11 bbox 171,210,1,2 
+  human-male-marked-bare/channels/front-left-3q/studio/albedo share 0.00001 meanD 11.5 bbox 286,251,1,2 
+  human-male-marked-bare/channels/forearm/studio/final share 0.00001 meanD 11 bbox 171,210,1,2 
+  human-male-marked-bare/channels/forearm/studio/albedo share 0.00017 meanD 13.1 bbox 170,202,7,30 edge w50 1 hard 0.889 band 0
+  ork-female-marked-bare/angles/front/studio/final share 0.00004 meanD 12.6 bbox 335,209,18,28 
+  ork-female-marked-bare/angles/front-left-3q/studio/final share 0.00014 meanD 14.6 bbox 294,216,28,17 edge w50 2 hard 0.455 band 0.091
+  ork-female-marked-bare/angles/forearm/studio/final share 0.00277 meanD 43.5 bbox 107,138,111,131 edge w50 1 hard 0.527 band 0.022
+  ork-female-marked-bare/channels/front-left-3q/studio/final share 0.00014 meanD 14.6 bbox 294,216,28,17 edge w50 2 hard 0.455 band 0.091
+  ork-female-marked-bare/channels/front-left-3q/studio/albedo share 0.00017 meanD 15.2 bbox 291,216,31,32 edge w50 1 hard 0.571 band 0.143
+  ork-female-marked-bare/channels/forearm/studio/final share 0.00277 meanD 43.5 bbox 107,138,111,131 edge w50 1 hard 0.527 band 0.022
+  ork-female-marked-bare/channels/forearm/studio/albedo share 0.0029 meanD 43.5 bbox 107,138,111,133 edge w50 1 hard 0.586 band 0.01
+  elf-female-marked-bare/angles/front/studio/final share 0.00002 meanD 15.8 bbox 309,263,5,6 
+  elf-female-marked-bare/angles/back/studio/final share 0.0002 meanD 21.9 bbox 106,165,135,107 edge w50 1 hard 0.727 band 0
+  elf-female-marked-bare/angles/front-left-3q/studio/final share 0.00002 meanD 16.8 bbox 292,272,4,5 
+  elf-female-marked-bare/angles/forearm/studio/final share 0.00027 meanD 26.3 bbox 195,262,32,30 edge w50 2 hard 0.375 band 0
+  elf-female-marked-bare/angles/back-closeup/studio/final share 0.0007 meanD 28.9 bbox 0,366,289,194 edge w50 3 hard 0.182 band 0
+  elf-female-marked-bare/channels/front-left-3q/studio/final share 0.00002 meanD 16.8 bbox 292,272,4,5 
+  elf-female-marked-bare/channels/front-left-3q/studio/albedo share 0.00003 meanD 15.5 bbox 291,272,6,6 
+  elf-female-marked-bare/channels/forearm/studio/final share 0.00027 meanD 26.3 bbox 195,262,32,30 edge w50 2 hard 0.375 band 0
+  elf-female-marked-bare/channels/forearm/studio/albedo share 0.00028 meanD 27.3 bbox 194,262,33,30 edge w50 1 hard 0.556 band 0
+  dwarf-male-marked-bare/angles/front/studio/final share 0.00007 meanD 13.6 bbox 340,208,11,23 
+  dwarf-male-marked-bare/angles/front-left-3q/studio/final share 0.00009 meanD 14.7 bbox 296,221,8,22 
+  dwarf-male-marked-bare/angles/forearm/studio/final share 0.00112 meanD 29.7 bbox 111,186,34,90 edge w50 1 hard 0.625 band 0
+  dwarf-male-marked-bare/channels/front-left-3q/studio/final share 0.00009 meanD 14.7 bbox 296,221,8,22 
+  dwarf-male-marked-bare/channels/front-left-3q/studio/albedo share 0.00011 meanD 18 bbox 297,221,7,23 edge w50 1 hard 0.6 band 0
+  dwarf-male-marked-bare/channels/forearm/studio/final share 0.00112 meanD 29.7 bbox 111,186,34,90 edge w50 1 hard 0.625 band 0
+  dwarf-male-marked-bare/channels/forearm/studio/albedo share 0.00126 meanD 37.5 bbox 111,187,34,89 edge w50 1 hard 0.65 band 0.025

@@ -1,0 +1,905 @@
+{
+ "src": "/Users/macmax/.hermes/cache/scratch/F/before",
+ "when": "2026-11-05T05:38:19.648Z",
+ "edge": {
+  "human-male": {
+   "front-left-3q": {
+    "final": {
+     "on": {
+      "skin": {
+       "n": 12543,
+       "mean": 135.84,
+       "bright5": 200.2
+      },
+      "convex": {
+       "n": 789,
+       "mean": 180.81,
+       "bright5": 223.39
+      }
+     },
+     "off": {
+      "skin": {
+       "n": 12543,
+       "mean": 132.3,
+       "bright5": 180.35
+      },
+      "convex": {
+       "n": 789,
+       "mean": 152.85,
+       "bright5": 185.45
+      }
+     },
+     "skinDelta": {
+      "n": 12543,
+      "changedShare": 0.2199,
+      "meanAbsDL": 3.537,
+      "p95ChangedDL": 46.2
+     }
+    },
+    "albedo": {
+     "on": {
+      "skin": {
+       "n": 12543,
+       "mean": 159.88,
+       "bright5": 186.78
+      },
+      "convex": {
+       "n": 789,
+       "mean": 182.18,
+       "bright5": 200.11
+      }
+     },
+     "off": {
+      "skin": {
+       "n": 12543,
+       "mean": 156.24,
+       "bright5": 173.22
+      },
+      "convex": {
+       "n": 789,
+       "mean": 154.6,
+       "bright5": 173.54
+      }
+     },
+     "skinDelta": {
+      "n": 12543,
+      "changedShare": 0.2379,
+      "meanAbsDL": 3.643,
+      "p95ChangedDL": 41.7
+     }
+    }
+   },
+   "forearm": {
+    "final": {
+     "on": {
+      "skin": {
+       "n": 8459,
+       "mean": 147.78,
+       "bright5": 192.63
+      },
+      "convex": {
+       "n": 0,
+       "mean": null,
+       "bright5": null
+      }
+     },
+     "off": {
+      "skin": {
+       "n": 8459,
+       "mean": 145.5,
+       "bright5": 186.89
+      },
+      "convex": {
+       "n": 0,
+       "mean": null,
+       "bright5": null
+      }
+     },
+     "skinDelta": {
+      "n": 8459,
+      "changedShare": 0.4112,
+      "meanAbsDL": 2.287,
+      "p95ChangedDL": 8.6
+     }
+    },
+    "albedo": {
+     "on": {
+      "skin": {
+       "n": 8459,
+       "mean": 167.67,
+       "bright5": 179.83
+      },
+      "convex": {
+       "n": 0,
+       "mean": null,
+       "bright5": null
+      }
+     },
+     "off": {
+      "skin": {
+       "n": 8459,
+       "mean": 165.07,
+       "bright5": 170.91
+      },
+      "convex": {
+       "n": 0,
+       "mean": null,
+       "bright5": null
+      }
+     },
+     "skinDelta": {
+      "n": 8459,
+      "changedShare": 0.425,
+      "meanAbsDL": 2.595,
+      "p95ChangedDL": 10.7
+     }
+    }
+   }
+  },
+  "ork-female": {
+   "front-left-3q": {
+    "final": {
+     "on": {
+      "skin": {
+       "n": 13912,
+       "mean": 108.35,
+       "bright5": 173.41
+      },
+      "convex": {
+       "n": 1086,
+       "mean": 153.27,
+       "bright5": 210.76
+      }
+     },
+     "off": {
+      "skin": {
+       "n": 13912,
+       "mean": 104.95,
+       "bright5": 148.69
+      },
+      "convex": {
+       "n": 1086,
+       "mean": 122.8,
+       "bright5": 151.84
+      }
+     },
+     "skinDelta": {
+      "n": 13912,
+      "changedShare": 0.2688,
+      "meanAbsDL": 3.401,
+      "p95ChangedDL": 54.8
+     }
+    },
+    "albedo": {
+     "on": {
+      "skin": {
+       "n": 13912,
+       "mean": 128.85,
+       "bright5": 162.23
+      },
+      "convex": {
+       "n": 1086,
+       "mean": 155.39,
+       "bright5": 185.44
+      }
+     },
+     "off": {
+      "skin": {
+       "n": 13912,
+       "mean": 125.47,
+       "bright5": 148.46
+      },
+      "convex": {
+       "n": 1086,
+       "mean": 125.81,
+       "bright5": 148.25
+      }
+     },
+     "skinDelta": {
+      "n": 13912,
+      "changedShare": 0.295,
+      "meanAbsDL": 3.382,
+      "p95ChangedDL": 49.7
+     }
+    }
+   },
+   "forearm": {
+    "final": {
+     "on": {
+      "skin": {
+       "n": 19715,
+       "mean": 102.7,
+       "bright5": 146.57
+      },
+      "convex": {
+       "n": 48,
+       "mean": 121.22,
+       "bright5": 143.34
+      }
+     },
+     "off": {
+      "skin": {
+       "n": 19715,
+       "mean": 101.89,
+       "bright5": 144.06
+      },
+      "convex": {
+       "n": 48,
+       "mean": 96,
+       "bright5": 104.71
+      }
+     },
+     "skinDelta": {
+      "n": 19715,
+      "changedShare": 0.1575,
+      "meanAbsDL": 0.811,
+      "p95ChangedDL": 5.4
+     }
+    },
+    "albedo": {
+     "on": {
+      "skin": {
+       "n": 19715,
+       "mean": 128.72,
+       "bright5": 140.47
+      },
+      "convex": {
+       "n": 48,
+       "mean": 148.44,
+       "bright5": 162
+      }
+     },
+     "off": {
+      "skin": {
+       "n": 19715,
+       "mean": 127.8,
+       "bright5": 139.81
+      },
+      "convex": {
+       "n": 48,
+       "mean": 118.25,
+       "bright5": 123.48
+      }
+     },
+     "skinDelta": {
+      "n": 19715,
+      "changedShare": 0.178,
+      "meanAbsDL": 0.917,
+      "p95ChangedDL": 7.3
+     }
+    }
+   }
+  },
+  "elf-female": {
+   "front-left-3q": {
+    "final": {
+     "on": {
+      "skin": {
+       "n": 10122,
+       "mean": 167.38,
+       "bright5": 228.17
+      },
+      "convex": {
+       "n": 578,
+       "mean": 204.67,
+       "bright5": 249.93
+      }
+     },
+     "off": {
+      "skin": {
+       "n": 10122,
+       "mean": 164.57,
+       "bright5": 221.93
+      },
+      "convex": {
+       "n": 578,
+       "mean": 190.39,
+       "bright5": 234.65
+      }
+     },
+     "skinDelta": {
+      "n": 10122,
+      "changedShare": 0.2578,
+      "meanAbsDL": 2.809,
+      "p95ChangedDL": 25.2
+     }
+    },
+    "albedo": {
+     "on": {
+      "skin": {
+       "n": 10122,
+       "mean": 195.13,
+       "bright5": 215.85
+      },
+      "convex": {
+       "n": 578,
+       "mean": 209.59,
+       "bright5": 225.92
+      }
+     },
+     "off": {
+      "skin": {
+       "n": 10122,
+       "mean": 192.07,
+       "bright5": 208.29
+      },
+      "convex": {
+       "n": 578,
+       "mean": 195.12,
+       "bright5": 207.75
+      }
+     },
+     "skinDelta": {
+      "n": 10122,
+      "changedShare": 0.2805,
+      "meanAbsDL": 3.056,
+      "p95ChangedDL": 23.7
+     }
+    }
+   },
+   "forearm": {
+    "final": {
+     "on": {
+      "skin": {
+       "n": 6613,
+       "mean": 187.16,
+       "bright5": 239.82
+      },
+      "convex": {
+       "n": 22,
+       "mean": 149.12,
+       "bright5": 166.12
+      }
+     },
+     "off": {
+      "skin": {
+       "n": 6613,
+       "mean": 182.93,
+       "bright5": 230.36
+      },
+      "convex": {
+       "n": 22,
+       "mean": 134.61,
+       "bright5": 149.94
+      }
+     },
+     "skinDelta": {
+      "n": 6613,
+      "changedShare": 0.5769,
+      "meanAbsDL": 4.232,
+      "p95ChangedDL": 11.8
+     }
+    },
+    "albedo": {
+     "on": {
+      "skin": {
+       "n": 6613,
+       "mean": 204.65,
+       "bright5": 215.79
+      },
+      "convex": {
+       "n": 22,
+       "mean": 191.16,
+       "bright5": 207.59
+      }
+     },
+     "off": {
+      "skin": {
+       "n": 6613,
+       "mean": 200.03,
+       "bright5": 208.13
+      },
+      "convex": {
+       "n": 22,
+       "mean": 172.66,
+       "bright5": 185.79
+      }
+     },
+     "skinDelta": {
+      "n": 6613,
+      "changedShare": 0.5879,
+      "meanAbsDL": 4.622,
+      "p95ChangedDL": 13.2
+     }
+    }
+   }
+  },
+  "dwarf-male": {
+   "front-left-3q": {
+    "final": {
+     "on": {
+      "skin": {
+       "n": 11300,
+       "mean": 131.46,
+       "bright5": 189.9
+      },
+      "convex": {
+       "n": 881,
+       "mean": 168.35,
+       "bright5": 210.01
+      }
+     },
+     "off": {
+      "skin": {
+       "n": 11300,
+       "mean": 128.5,
+       "bright5": 177.13
+      },
+      "convex": {
+       "n": 881,
+       "mean": 138.25,
+       "bright5": 173.74
+      }
+     },
+     "skinDelta": {
+      "n": 11300,
+      "changedShare": 0.1574,
+      "meanAbsDL": 2.966,
+      "p95ChangedDL": 60.6
+     }
+    },
+    "albedo": {
+     "on": {
+      "skin": {
+       "n": 11300,
+       "mean": 149.6,
+       "bright5": 173.64
+      },
+      "convex": {
+       "n": 881,
+       "mean": 168.38,
+       "bright5": 186.48
+      }
+     },
+     "off": {
+      "skin": {
+       "n": 11300,
+       "mean": 146.71,
+       "bright5": 160.51
+      },
+      "convex": {
+       "n": 881,
+       "mean": 139.1,
+       "bright5": 159.99
+      }
+     },
+     "skinDelta": {
+      "n": 11300,
+      "changedShare": 0.1621,
+      "meanAbsDL": 2.889,
+      "p95ChangedDL": 56.5
+     }
+    }
+   },
+   "forearm": {
+    "final": {
+     "on": {
+      "skin": {
+       "n": 23098,
+       "mean": 142.3,
+       "bright5": 175.17
+      },
+      "convex": {
+       "n": 24,
+       "mean": 142.93,
+       "bright5": 146.4
+      }
+     },
+     "off": {
+      "skin": {
+       "n": 23098,
+       "mean": 141.64,
+       "bright5": 173.63
+      },
+      "convex": {
+       "n": 24,
+       "mean": 136.78,
+       "bright5": 139.25
+      }
+     },
+     "skinDelta": {
+      "n": 23098,
+      "changedShare": 0.0268,
+      "meanAbsDL": 0.661,
+      "p95ChangedDL": 4.6
+     }
+    },
+    "albedo": {
+     "on": {
+      "skin": {
+       "n": 23098,
+       "mean": 156.01,
+       "bright5": 159.66
+      },
+      "convex": {
+       "n": 24,
+       "mean": 163.7,
+       "bright5": 166.51
+      }
+     },
+     "off": {
+      "skin": {
+       "n": 23098,
+       "mean": 155.31,
+       "bright5": 158.28
+      },
+      "convex": {
+       "n": 24,
+       "mean": 156.69,
+       "bright5": 157.43
+      }
+     },
+     "skinDelta": {
+      "n": 23098,
+      "changedShare": 0.0291,
+      "meanAbsDL": 0.698,
+      "p95ChangedDL": 6.2
+     }
+    }
+   }
+  }
+ },
+ "ao": {
+  "human-male": {
+   "front-left-3q": {
+    "aoView": {
+     "n": 36928,
+     "p5": 252,
+     "p10": 253,
+     "p50": 255,
+     "p95": 255,
+     "below240": 0.001
+    },
+    "final": {
+     "body": {
+      "n": 36928,
+      "changedShare": 0.0304,
+      "meanAbsDL": 0.132,
+      "p95ChangedDL": 1.9
+     },
+     "lowest10": {
+      "n": 5810,
+      "changedShare": 0.1859,
+      "meanAbsDL": 0.585,
+      "p95ChangedDL": 2
+     },
+     "lowest10Lum": {
+      "on": 106.9,
+      "off": 107.49
+     }
+    }
+   },
+   "forearm": {
+    "aoView": {
+     "n": 72235,
+     "p5": 254,
+     "p10": 254,
+     "p50": 255,
+     "p95": 255,
+     "below240": 0.0001
+    },
+    "final": {
+     "body": {
+      "n": 72235,
+      "changedShare": 0.0024,
+      "meanAbsDL": 0.042,
+      "p95ChangedDL": 1.2
+     },
+     "lowest10": {
+      "n": 16741,
+      "changedShare": 0.0102,
+      "meanAbsDL": 0.181,
+      "p95ChangedDL": 1.2
+     },
+     "lowest10Lum": {
+      "on": 104.41,
+      "off": 104.59
+     }
+    }
+   }
+  },
+  "ork-female": {
+   "front-left-3q": {
+    "aoView": {
+     "n": 41279,
+     "p5": 252,
+     "p10": 253,
+     "p50": 255,
+     "p95": 255,
+     "below240": 0.0003
+    },
+    "final": {
+     "body": {
+      "n": 41279,
+      "changedShare": 0.019,
+      "meanAbsDL": 0.108,
+      "p95ChangedDL": 1.9
+     },
+     "lowest10": {
+      "n": 4970,
+      "changedShare": 0.1477,
+      "meanAbsDL": 0.537,
+      "p95ChangedDL": 1.9
+     },
+     "lowest10Lum": {
+      "on": 93.74,
+      "off": 94.28
+     }
+    }
+   },
+   "forearm": {
+    "aoView": {
+     "n": 111950,
+     "p5": 253,
+     "p10": 254,
+     "p50": 255,
+     "p95": 255,
+     "below240": 0
+    },
+    "final": {
+     "body": {
+      "n": 111950,
+      "changedShare": 0.0037,
+      "meanAbsDL": 0.07,
+      "p95ChangedDL": 1
+     },
+     "lowest10": {
+      "n": 37898,
+      "changedShare": 0.011,
+      "meanAbsDL": 0.207,
+      "p95ChangedDL": 1
+     },
+     "lowest10Lum": {
+      "on": 105.93,
+      "off": 106.13
+     }
+    }
+   }
+  },
+  "elf-female": {
+   "front-left-3q": {
+    "aoView": {
+     "n": 28690,
+     "p5": 251,
+     "p10": 253,
+     "p50": 255,
+     "p95": 255,
+     "below240": 0.0045
+    },
+    "final": {
+     "body": {
+      "n": 28690,
+      "changedShare": 0.0482,
+      "meanAbsDL": 0.178,
+      "p95ChangedDL": 3.1
+     },
+     "lowest10": {
+      "n": 4949,
+      "changedShare": 0.2677,
+      "meanAbsDL": 0.76,
+      "p95ChangedDL": 3.2
+     },
+     "lowest10Lum": {
+      "on": 119.64,
+      "off": 120.4
+     }
+    }
+   },
+   "forearm": {
+    "aoView": {
+     "n": 54784,
+     "p5": 254,
+     "p10": 254,
+     "p50": 255,
+     "p95": 255,
+     "below240": 0.0001
+    },
+    "final": {
+     "body": {
+      "n": 54784,
+      "changedShare": 0.0099,
+      "meanAbsDL": 0.08,
+      "p95ChangedDL": 1.7
+     },
+     "lowest10": {
+      "n": 18585,
+      "changedShare": 0.0291,
+      "meanAbsDL": 0.236,
+      "p95ChangedDL": 1.7
+     },
+     "lowest10Lum": {
+      "on": 118.23,
+      "off": 118.47
+     }
+    }
+   }
+  },
+  "dwarf-male": {
+   "front-left-3q": {
+    "aoView": {
+     "n": 38421,
+     "p5": 252,
+     "p10": 253,
+     "p50": 255,
+     "p95": 255,
+     "below240": 0.0005
+    },
+    "final": {
+     "body": {
+      "n": 38421,
+      "changedShare": 0.0262,
+      "meanAbsDL": 0.104,
+      "p95ChangedDL": 2
+     },
+     "lowest10": {
+      "n": 4673,
+      "changedShare": 0.2065,
+      "meanAbsDL": 0.601,
+      "p95ChangedDL": 2
+     },
+     "lowest10Lum": {
+      "on": 106.28,
+      "off": 106.88
+     }
+    }
+   },
+   "forearm": {
+    "aoView": {
+     "n": 112727,
+     "p5": 253,
+     "p10": 254,
+     "p50": 255,
+     "p95": 255,
+     "below240": 0
+    },
+    "final": {
+     "body": {
+      "n": 112727,
+      "changedShare": 0.0082,
+      "meanAbsDL": 0.076,
+      "p95ChangedDL": 1
+     },
+     "lowest10": {
+      "n": 30073,
+      "changedShare": 0.0308,
+      "meanAbsDL": 0.286,
+      "p95ChangedDL": 1
+     },
+     "lowest10Lum": {
+      "on": 130.01,
+      "off": 130.3
+     }
+    }
+   }
+  }
+ },
+ "scar": {
+  "human-male": {
+   "decals": 3,
+   "forearm": {
+    "maskPx": 157,
+    "normalDistOnOff": 12.714,
+    "normalInsideVsRing": 3.27,
+    "finalDelta": {
+     "n": 157,
+     "changedShare": 0.4204,
+     "meanAbsDL": 3.479,
+     "p95ChangedDL": 27.6
+    },
+    "heightInsideMinusRing": 6.29,
+    "heightNoDecalsInsideMinusRing": -1.21,
+    "heightDecalOnly": 7.64
+   },
+   "back-closeup": {
+    "maskPx": 679,
+    "normalDistOnOff": 7.705,
+    "normalInsideVsRing": 4.13,
+    "finalDelta": {
+     "n": 679,
+     "changedShare": 0.7378,
+     "meanAbsDL": 6.89,
+     "p95ChangedDL": 30
+    },
+    "heightInsideMinusRing": 5.09,
+    "heightNoDecalsInsideMinusRing": -0.11,
+    "heightDecalOnly": 5.26
+   }
+  },
+  "ork-female": {
+   "decals": 3,
+   "forearm": {
+    "maskPx": 127,
+    "normalDistOnOff": 13.451,
+    "normalInsideVsRing": 10.26,
+    "finalDelta": {
+     "n": 127,
+     "changedShare": 0.937,
+     "meanAbsDL": 9.594,
+     "p95ChangedDL": 33.1
+    },
+    "heightInsideMinusRing": 10.21,
+    "heightNoDecalsInsideMinusRing": 2.49,
+    "heightDecalOnly": 7.91
+   },
+   "back-closeup": {
+    "maskPx": 344,
+    "normalDistOnOff": 16.789,
+    "normalInsideVsRing": 12.36,
+    "finalDelta": {
+     "n": 344,
+     "changedShare": 0.8895,
+     "meanAbsDL": 11.787,
+     "p95ChangedDL": 29.3
+    },
+    "heightInsideMinusRing": 14.63,
+    "heightNoDecalsInsideMinusRing": -1.38,
+    "heightDecalOnly": 16.44
+   }
+  },
+  "elf-female": {
+   "decals": 3,
+   "forearm": {
+    "maskPx": 70,
+    "normalDistOnOff": 1.13,
+    "normalInsideVsRing": 5.88,
+    "finalDelta": {
+     "n": 70,
+     "changedShare": 0.0571,
+     "meanAbsDL": 0.301,
+     "p95ChangedDL": 4.8
+    },
+    "heightInsideMinusRing": -4.17,
+    "heightNoDecalsInsideMinusRing": -2.73,
+    "heightDecalOnly": -1.8
+   },
+   "back-closeup": {
+    "maskPx": 1107,
+    "normalDistOnOff": 7.74,
+    "normalInsideVsRing": 6.02,
+    "finalDelta": {
+     "n": 1107,
+     "changedShare": 0.6956,
+     "meanAbsDL": 5.427,
+     "p95ChangedDL": 29.3
+    },
+    "heightInsideMinusRing": 2.41,
+    "heightNoDecalsInsideMinusRing": -2.68,
+    "heightDecalOnly": 5.18
+   }
+  },
+  "dwarf-male": {
+   "decals": 3,
+   "forearm": {
+    "maskPx": 185,
+    "normalDistOnOff": 13.323,
+    "normalInsideVsRing": 11.15,
+    "finalDelta": {
+     "n": 185,
+     "changedShare": 0.8757,
+     "meanAbsDL": 11.901,
+     "p95ChangedDL": 38.8
+    },
+    "heightInsideMinusRing": 6.51,
+    "heightNoDecalsInsideMinusRing": -1.2,
+    "heightDecalOnly": 7.9
+   },
+   "back-closeup": {
+    "maskPx": 398,
+    "normalDistOnOff": 21.163,
+    "normalInsideVsRing": 7.8,
+    "finalDelta": {
+     "n": 398,
+     "changedShare": 0.9573,
+     "meanAbsDL": 16.913,
+     "p95ChangedDL": 36.4
+    },
+    "heightInsideMinusRing": 17.81,
+    "heightNoDecalsInsideMinusRing": 0,
+    "heightDecalOnly": 18.34
+   }
+  }
+ },
+ "errors": [
+  "Failed to load resource: the server responded with a status of 404 (Not Found)"
+ ]
+}

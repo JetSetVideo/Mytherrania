@@ -1,0 +1,131 @@
+{
+ "run": "qc-final-work",
+ "src": "/Users/macmax/Desktop/Mytherrania",
+ "hasTex": true,
+ "commit": "19f5c8c",
+ "when": "2026-11-05T09:14:02.431Z",
+ "frames": 90,
+ "build": {
+  "human-male": {
+   "defaultsOff": {
+    "cold": 711.9,
+    "warm": 36.2
+   },
+   "defaultsOn": {
+    "cold": 731.7,
+    "warm": 43.6
+   }
+  },
+  "ork-female": {
+   "defaultsOff": {
+    "cold": 1215.4,
+    "warm": 21.9
+   },
+   "defaultsOn": {
+    "cold": 1227.2,
+    "warm": 34.8
+   }
+  }
+ },
+ "preview": {
+  "legacy": {
+   "median": 2.7,
+   "mean": 3.099,
+   "mem": {
+    "geometry": 449712,
+    "textures": 0,
+    "aMaterial": 67520,
+    "aEmissive": 0,
+    "decalUniformBytes": 1792
+   }
+  },
+  "neutral": {
+   "median": 2.1,
+   "mean": 2.607,
+   "mem": {
+    "geometry": 449712,
+    "textures": 0,
+    "aMaterial": 67520,
+    "aEmissive": 0,
+    "decalUniformBytes": 1792
+   }
+  },
+  "marks16": {
+   "median": 2.4,
+   "mean": 2.901,
+   "mem": {
+    "geometry": 449712,
+    "textures": 65536,
+    "aMaterial": 67520,
+    "aEmissive": 0,
+    "decalUniformBytes": 1792
+   }
+  }
+ },
+ "arena": {
+  "legacy": {
+   "median": 3.6,
+   "mean": 3.641,
+   "mem": {
+    "geometry": 940008,
+    "textures": 0,
+    "aMaterial": 141088,
+    "aEmissive": 0,
+    "decalUniformBytes": 3584
+   }
+  },
+  "neutral": {
+   "median": 3.6,
+   "mean": 3.678,
+   "mem": {
+    "geometry": 940008,
+    "textures": 0,
+    "aMaterial": 141088,
+    "aEmissive": 0,
+    "decalUniformBytes": 3584
+   }
+  },
+  "marks16": {
+   "median": 4.5,
+   "mean": 4.29,
+   "mem": {
+    "geometry": 940008,
+    "textures": 65536,
+    "aMaterial": 141088,
+    "aEmissive": 0,
+    "decalUniformBytes": 3584
+   }
+  }
+ },
+ "previewDefaults": {
+  "asBuilt": {
+   "median": 3,
+   "mean": 3.039,
+   "mem": {
+    "geometry": 534112,
+    "textures": 0,
+    "aMaterial": 67520,
+    "aEmissive": 0,
+    "decalUniformBytes": 1792
+   }
+  }
+ },
+ "arenaDefaults": {
+  "asBuilt": {
+   "median": 4.2,
+   "mean": 4.066,
+   "mem": {
+    "geometry": 1116368,
+    "textures": 65536,
+    "aMaterial": 141088,
+    "aEmissive": 0,
+    "decalUniformBytes": 3584
+   }
+  }
+ },
+ "shots": {
+  "dir": "artifacts/wave-tex/verify-code/closing/final/shots-work",
+  "n": 24
+ },
+ "errors": []
+}

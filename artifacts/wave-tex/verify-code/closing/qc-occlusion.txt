@@ -1,0 +1,18 @@
+human-male: n=4196 cold 22.3 ms warm 0.010 ms sameArray=true deterministic(fresh clone)=true ownRings==adj=true keyOk=true range [0.000, 0.716] nonFinite=0 open(<0.06)=68.8% hash=3a7a7128
+human-female: n=4296 cold 15.2 ms warm 0.028 ms sameArray=true deterministic(fresh clone)=true ownRings==adj=true keyOk=true range [0.000, 0.770] nonFinite=0 open(<0.06)=66.0% hash=2fde0078
+elf-male: n=4490 cold 8.0 ms warm 0.004 ms sameArray=true deterministic(fresh clone)=true ownRings==adj=true keyOk=true range [0.000, 0.893] nonFinite=0 open(<0.06)=61.4% hash=be91de7b
+elf-female: n=4398 cold 16.9 ms warm 0.009 ms sameArray=true deterministic(fresh clone)=true ownRings==adj=true keyOk=true range [0.000, 0.893] nonFinite=0 open(<0.06)=61.3% hash=99d668d3
+dwarf-male: n=4462 cold 9.3 ms warm 0.004 ms sameArray=true deterministic(fresh clone)=true ownRings==adj=true keyOk=true range [0.000, 0.403] nonFinite=0 open(<0.06)=82.2% hash=93c0cea7
+dwarf-female: n=4500 cold 17.0 ms warm 0.024 ms sameArray=true deterministic(fresh clone)=true ownRings==adj=true keyOk=true range [0.000, 0.463] nonFinite=0 open(<0.06)=82.4% hash=4573d590
+ork-male: n=4450 cold 9.8 ms warm 0.005 ms sameArray=true deterministic(fresh clone)=true ownRings==adj=true keyOk=true range [0.000, 0.676] nonFinite=0 open(<0.06)=86.0% hash=6e3d2d56
+ork-female: n=4480 cold 9.9 ms warm 0.004 ms sameArray=true deterministic(fresh clone)=true ownRings==adj=true keyOk=true range [0.000, 0.452] nonFinite=0 open(<0.06)=84.3% hash=2c00821a
+MESHOCC bodies 8, failures 0
+plain: ok len 8 finite true in[0,1] true
+nanpos: ok len 8 finite true in[0,1] true
+infpos: HANG (>25 s, killed)
+allnan: threw Invalid typed array length: -Infinity
+nannormal: ok len 8 finite true in[0,1] true
+zeronormal: ok len 8 finite true in[0,1] true
+badindex: threw Cannot read properties of undefined (reading 'add')
+huge: ok len 8 finite true in[0,1] true
+badopts: HANG (>25 s, killed)

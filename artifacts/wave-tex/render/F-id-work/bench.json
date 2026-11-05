@@ -1,0 +1,14 @@
+{
+ "run": "F-id-work",
+ "src": "/Users/macmax/Desktop/Mytherrania",
+ "hasTex": true,
+ "commit": "19f5c8c",
+ "when": "2026-11-05T05:49:31.523Z",
+ "frames": 90,
+ "build": {},
+ "shots": {
+  "dir": "/Users/macmax/.hermes/cache/scratch/F/shots/work",
+  "n": 24
+ },
+ "errors": []
+}

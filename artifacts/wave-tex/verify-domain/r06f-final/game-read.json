@@ -1,0 +1,434 @@
+[
+ {
+  "subject": "human-male",
+  "angle": "face",
+  "mmPerPx": 0.84,
+  "maskPxFull": 312,
+  "player6.4": {
+   "px": 7,
+   "px_dE10": 7,
+   "medianDE": 23.8,
+   "maxDE": 36.1
+  },
+  "opponent9.3": {
+   "px": 3,
+   "px_dE10": 3,
+   "medianDE": 18.8,
+   "maxDE": 20.9
+  }
+ },
+ {
+  "subject": "human-male",
+  "angle": "forearm",
+  "mmPerPx": 1.25,
+  "maskPxFull": 586,
+  "player6.4": {
+   "px": 33,
+   "px_dE10": 15,
+   "medianDE": 8.8,
+   "maxDE": 30.8
+  },
+  "opponent9.3": {
+   "px": 18,
+   "px_dE10": 8,
+   "medianDE": 7.8,
+   "maxDE": 37.8
+  }
+ },
+ {
+  "subject": "human-male",
+  "angle": "back-closeup",
+  "mmPerPx": 1.84,
+  "maskPxFull": 5101,
+  "player6.4": {
+   "px": 507,
+   "px_dE10": 421,
+   "medianDE": 34.2,
+   "maxDE": 44.5
+  },
+  "opponent9.3": {
+   "px": 237,
+   "px_dE10": 194,
+   "medianDE": 29.4,
+   "maxDE": 45.3
+  }
+ },
+ {
+  "subject": "human-female",
+  "angle": "face",
+  "mmPerPx": 0.79,
+  "maskPxFull": 470,
+  "player6.4": {
+   "px": 9,
+   "px_dE10": 8,
+   "medianDE": 21.7,
+   "maxDE": 37.9
+  },
+  "opponent9.3": {
+   "px": 5,
+   "px_dE10": 4,
+   "medianDE": 19.4,
+   "maxDE": 32.7
+  }
+ },
+ {
+  "subject": "human-female",
+  "angle": "forearm",
+  "mmPerPx": 1.18,
+  "maskPxFull": 594,
+  "player6.4": {
+   "px": 35,
+   "px_dE10": 10,
+   "medianDE": 7.2,
+   "maxDE": 38.8
+  },
+  "opponent9.3": {
+   "px": 19,
+   "px_dE10": 5,
+   "medianDE": 6.0,
+   "maxDE": 17.9
+  }
+ },
+ {
+  "subject": "human-female",
+  "angle": "back-closeup",
+  "mmPerPx": 1.71,
+  "maskPxFull": 5729,
+  "player6.4": {
+   "px": 481,
+   "px_dE10": 413,
+   "medianDE": 35.1,
+   "maxDE": 44.7
+  },
+  "opponent9.3": {
+   "px": 237,
+   "px_dE10": 200,
+   "medianDE": 32.9,
+   "maxDE": 45.3
+  }
+ },
+ {
+  "subject": "elf-male",
+  "angle": "face",
+  "mmPerPx": 0.75,
+  "maskPxFull": 513,
+  "player6.4": {
+   "px": 10,
+   "px_dE10": 9,
+   "medianDE": 24.1,
+   "maxDE": 30.7
+  },
+  "opponent9.3": {
+   "px": 4,
+   "px_dE10": 3,
+   "medianDE": 18.7,
+   "maxDE": 25.8
+  }
+ },
+ {
+  "subject": "elf-male",
+  "angle": "forearm",
+  "mmPerPx": 1.33,
+  "maskPxFull": 211,
+  "player6.4": {
+   "px": 12,
+   "px_dE10": 10,
+   "medianDE": 16.7,
+   "maxDE": 36.6
+  },
+  "opponent9.3": {
+   "px": 5,
+   "px_dE10": 4,
+   "medianDE": 13.4,
+   "maxDE": 27.9
+  }
+ },
+ {
+  "subject": "elf-male",
+  "angle": "back-closeup",
+  "mmPerPx": 1.55,
+  "maskPxFull": 7180,
+  "player6.4": {
+   "px": 497,
+   "px_dE10": 440,
+   "medianDE": 42.4,
+   "maxDE": 60.1
+  },
+  "opponent9.3": {
+   "px": 243,
+   "px_dE10": 212,
+   "medianDE": 37.0,
+   "maxDE": 53.4
+  }
+ },
+ {
+  "subject": "elf-female",
+  "angle": "face",
+  "mmPerPx": 0.71,
+  "maskPxFull": 524,
+  "player6.4": {
+   "px": 10,
+   "px_dE10": 10,
+   "medianDE": 25.0,
+   "maxDE": 42.9
+  },
+  "opponent9.3": {
+   "px": 5,
+   "px_dE10": 5,
+   "medianDE": 23.1,
+   "maxDE": 40.0
+  }
+ },
+ {
+  "subject": "elf-female",
+  "angle": "forearm",
+  "mmPerPx": 1.26,
+  "maskPxFull": 214,
+  "player6.4": {
+   "px": 14,
+   "px_dE10": 6,
+   "medianDE": 9.6,
+   "maxDE": 45.0
+  },
+  "opponent9.3": {
+   "px": 5,
+   "px_dE10": 3,
+   "medianDE": 11.3,
+   "maxDE": 54.1
+  }
+ },
+ {
+  "subject": "elf-female",
+  "angle": "back-closeup",
+  "mmPerPx": 1.44,
+  "maskPxFull": 8183,
+  "player6.4": {
+   "px": 485,
+   "px_dE10": 431,
+   "medianDE": 44.8,
+   "maxDE": 53.7
+  },
+  "opponent9.3": {
+   "px": 245,
+   "px_dE10": 201,
+   "medianDE": 35.6,
+   "maxDE": 53.8
+  }
+ },
+ {
+  "subject": "dwarf-male",
+  "angle": "face",
+  "mmPerPx": 0.72,
+  "maskPxFull": 631,
+  "player6.4": {
+   "px": 13,
+   "px_dE10": 13,
+   "medianDE": 20.2,
+   "maxDE": 36.2
+  },
+  "opponent9.3": {
+   "px": 4,
+   "px_dE10": 4,
+   "medianDE": 20.0,
+   "maxDE": 24.7
+  }
+ },
+ {
+  "subject": "dwarf-male",
+  "angle": "forearm",
+  "mmPerPx": 0.92,
+  "maskPxFull": 1559,
+  "player6.4": {
+   "px": 51,
+   "px_dE10": 39,
+   "medianDE": 15.7,
+   "maxDE": 36.4
+  },
+  "opponent9.3": {
+   "px": 26,
+   "px_dE10": 14,
+   "medianDE": 11.3,
+   "maxDE": 33.4
+  }
+ },
+ {
+  "subject": "dwarf-male",
+  "angle": "back-closeup",
+  "mmPerPx": 2.54,
+  "maskPxFull": 2232,
+  "player6.4": {
+   "px": 423,
+   "px_dE10": 337,
+   "medianDE": 29.6,
+   "maxDE": 45.4
+  },
+  "opponent9.3": {
+   "px": 217,
+   "px_dE10": 157,
+   "medianDE": 22.4,
+   "maxDE": 46.3
+  }
+ },
+ {
+  "subject": "dwarf-female",
+  "angle": "face",
+  "mmPerPx": 0.68,
+  "maskPxFull": 657,
+  "player6.4": {
+   "px": 14,
+   "px_dE10": 12,
+   "medianDE": 16.3,
+   "maxDE": 26.2
+  },
+  "opponent9.3": {
+   "px": 5,
+   "px_dE10": 4,
+   "medianDE": 10.7,
+   "maxDE": 16.9
+  }
+ },
+ {
+  "subject": "dwarf-female",
+  "angle": "forearm",
+  "mmPerPx": 0.87,
+  "maskPxFull": 1696,
+  "player6.4": {
+   "px": 48,
+   "px_dE10": 33,
+   "medianDE": 14.9,
+   "maxDE": 33.8
+  },
+  "opponent9.3": {
+   "px": 27,
+   "px_dE10": 15,
+   "medianDE": 10.3,
+   "maxDE": 30.6
+  }
+ },
+ {
+  "subject": "dwarf-female",
+  "angle": "back-closeup",
+  "mmPerPx": 2.4,
+  "maskPxFull": 2449,
+  "player6.4": {
+   "px": 423,
+   "px_dE10": 316,
+   "medianDE": 31.2,
+   "maxDE": 43.8
+  },
+  "opponent9.3": {
+   "px": 218,
+   "px_dE10": 161,
+   "medianDE": 22.3,
+   "maxDE": 44.8
+  }
+ },
+ {
+  "subject": "ork-male",
+  "angle": "face",
+  "mmPerPx": 0.95,
+  "maskPxFull": 250,
+  "player6.4": {
+   "px": 9,
+   "px_dE10": 6,
+   "medianDE": 20.0,
+   "maxDE": 28.2
+  },
+  "opponent9.3": {
+   "px": 5,
+   "px_dE10": 4,
+   "medianDE": 23.0,
+   "maxDE": 27.4
+  }
+ },
+ {
+  "subject": "ork-male",
+  "angle": "forearm",
+  "mmPerPx": 1.33,
+  "maskPxFull": 1259,
+  "player6.4": {
+   "px": 79,
+   "px_dE10": 60,
+   "medianDE": 18.6,
+   "maxDE": 41.2
+  },
+  "opponent9.3": {
+   "px": 45,
+   "px_dE10": 30,
+   "medianDE": 12.9,
+   "maxDE": 35.2
+  }
+ },
+ {
+  "subject": "ork-male",
+  "angle": "back-closeup",
+  "mmPerPx": 3.26,
+  "maskPxFull": 1417,
+  "player6.4": {
+   "px": 447,
+   "px_dE10": 329,
+   "medianDE": 20.5,
+   "maxDE": 39.1
+  },
+  "opponent9.3": {
+   "px": 223,
+   "px_dE10": 160,
+   "medianDE": 21.0,
+   "maxDE": 39.6
+  }
+ },
+ {
+  "subject": "ork-female",
+  "angle": "face",
+  "mmPerPx": 0.84,
+  "maskPxFull": 324,
+  "player6.4": {
+   "px": 9,
+   "px_dE10": 9,
+   "medianDE": 21.6,
+   "maxDE": 41.4
+  },
+  "opponent9.3": {
+   "px": 5,
+   "px_dE10": 4,
+   "medianDE": 23.6,
+   "maxDE": 31.7
+  }
+ },
+ {
+  "subject": "ork-female",
+  "angle": "forearm",
+  "mmPerPx": 1.25,
+  "maskPxFull": 1179,
+  "player6.4": {
+   "px": 64,
+   "px_dE10": 54,
+   "medianDE": 18.9,
+   "maxDE": 36.5
+  },
+  "opponent9.3": {
+   "px": 37,
+   "px_dE10": 28,
+   "medianDE": 16.1,
+   "maxDE": 31.2
+  }
+ },
+ {
+  "subject": "ork-female",
+  "angle": "back-closeup",
+  "mmPerPx": 3.0,
+  "maskPxFull": 1694,
+  "player6.4": {
+   "px": 446,
+   "px_dE10": 347,
+   "medianDE": 23.5,
+   "maxDE": 37.3
+  },
+  "opponent9.3": {
+   "px": 215,
+   "px_dE10": 149,
+   "medianDE": 20.6,
+   "maxDE": 37.5
+  }
+ }
+]

@@ -1,0 +1,4 @@
+human male {"skinV":4228,"aoMean":0.966,"aoP5":0.768,"convexMean":0.988,"convexP5":0.956,"concaveMean":0.919,"concaveP5":0.552,"darkest5Convex25":0.075,"darkest5Concave25":0.575}
+ork female {"skinV":4426,"aoMean":0.992,"aoP5":0.966,"convexMean":0.997,"convexP5":0.989,"concaveMean":0.96,"concaveP5":0.792,"darkest5Convex25":0.068,"darkest5Concave25":0.712}
+elf female {"skinV":4448,"aoMean":0.958,"aoP5":0.689,"convexMean":0.98,"convexP5":0.863,"concaveMean":0.847,"concaveP5":0.539,"darkest5Convex25":0.036,"darkest5Concave25":0.628}
+dwarf male {"skinV":4450,"aoMean":0.992,"aoP5":0.957,"convexMean":0.991,"convexP5":0.983,"concaveMean":0.971,"concaveP5":0.875,"darkest5Convex25":0.072,"darkest5Concave25":0.619}

@@ -1,0 +1,113 @@
+{
+ "run": "r07q-before-F",
+ "subject": "dwarf-male",
+ "variant": "marked-bare",
+ "angles": {
+  "forearm": {
+   "maskPx": 1559,
+   "mmPerPx": 0.92,
+   "parts": [
+    {
+     "px": 553,
+     "bbox": [
+      183,
+      152,
+      231,
+      208
+     ],
+     "albedo_dL": -27.4,
+     "albedo_da": -7.3,
+     "albedo_db": -19.9,
+     "albedo_dC": -19.8,
+     "final_dL": -28.4,
+     "final_dE": 37.1,
+     "markColour": [
+      92,
+      95,
+      106
+     ]
+    },
+    {
+     "px": 490,
+     "bbox": [
+      137,
+      198,
+      186,
+      241
+     ],
+     "albedo_dL": -28.6,
+     "albedo_da": -7.4,
+     "albedo_db": -20.8,
+     "albedo_dC": -20.4,
+     "final_dL": -28.5,
+     "final_dE": 37.0,
+     "markColour": [
+      86,
+      90,
+      102
+     ]
+    },
+    {
+     "px": 357,
+     "bbox": [
+      114,
+      249,
+      155,
+      287
+     ],
+     "albedo_dL": -24.1,
+     "albedo_da": -5.3,
+     "albedo_db": -15.8,
+     "albedo_dC": -15.7,
+     "final_dL": -19.6,
+     "final_dE": 24.9,
+     "markColour": [
+      106,
+      109,
+      118
+     ]
+    },
+    {
+     "px": 148,
+     "bbox": [
+      111,
+      186,
+      137,
+      222
+     ],
+     "albedo_dL": -4.2,
+     "albedo_da": -2.0,
+     "albedo_db": -9.3,
+     "albedo_dC": -8.7,
+     "final_dL": -6.5,
+     "final_dE": 11.1,
+     "markColour": [
+      196,
+      168,
+      159
+     ]
+    },
+    {
+     "px": 8,
+     "bbox": [
+      257,
+      202,
+      259,
+      207
+     ],
+     "albedo_dL": 2.3,
+     "albedo_da": 2.8,
+     "albedo_db": 1.6,
+     "albedo_dC": 3.0,
+     "final_dL": 4.3,
+     "final_dE": 6.9,
+     "markColour": [
+      158,
+      159,
+      161
+     ]
+    }
+   ]
+  }
+ }
+}

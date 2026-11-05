@@ -1,0 +1,154 @@
+[
+ {
+  "at": "2026-11-04T21:33:10.514Z",
+  "lane": "C",
+  "ready": "Z-35",
+  "verdict": "FAIL",
+  "board": "Z-36",
+  "evidence": "framing PASS (vision+control); MARKED_SET 3/6 marks invalid per M's validateMarks (face u>0.24 x2, tribal overlaps claw); torso under garment"
+ },
+ {
+  "at": "2026-11-04T21:33:30.171Z",
+  "lane": "P",
+  "ready": "Z-30",
+  "verdict": "PASS",
+  "board": "Z-38",
+  "evidence": "skin roughness ordering elf .35<human .5<dwarf .6<ork .7 sound; scar x skin roughness stays below skin on all races (judgement, no sheets)"
+ },
+ {
+  "at": "2026-11-04T21:56:12.563Z",
+  "lane": "M",
+  "ready": "Z-44",
+  "verdict": "PASS",
+  "board": "Z-52",
+  "evidence": "model + 2000-seed generated stats all PASS (S1-S9,T1-T3,G1-G10,R1); hypertrophic branch added on QD request; no pictures yet (R wiring)"
+ },
+ {
+  "at": "2026-11-04T21:56:48.878Z",
+  "lane": "C",
+  "ready": "Z-46",
+  "verdict": "PASS",
+  "board": "Z-53",
+  "evidence": "mark set 6/6 valid all races; marked-bare back is skin (crop RGB + vision + control); HUD drawn count truthful"
+ },
+ {
+  "at": "2026-11-04T23:22:12.750Z",
+  "lane": "M",
+  "ready": "Z-44",
+  "verdict": "FAIL",
+  "board": "Z-69",
+  "evidence": "face-feature zones are real-human mm, game heads are stylised: zones off 30-62 mm from real eyes; 33-59 % of generated face marks touch real eye/mouth zones"
+ },
+ {
+  "at": "2026-11-04T23:45:29.194Z",
+  "lane": "M",
+  "ready": "Z-81",
+  "verdict": "PASS",
+  "board": "Z-83",
+  "evidence": "G11 face marks on real eyes/mouth 0 on 6 heads (with plan.face); full model suite PASS; dotwork readability open (Z-78)"
+ },
+ {
+  "at": "2026-11-04T23:45:29.233Z",
+  "lane": "R",
+  "ready": "Z-79",
+  "verdict": "FAIL",
+  "board": "Z-84",
+  "evidence": "medical colours on pixels PASS; FAIL face placement on game path (no plan.face/race: 3 hits) + dotwork unreadable in face close-up (max dE 11.9)"
+ },
+ {
+  "at": "2026-11-05T00:11:26.272Z",
+  "lane": "U",
+  "ready": "Z-91",
+  "verdict": "PASS",
+  "board": "Z-93",
+  "evidence": "UX numbers (0 overflow/<44px, contrast 6.18) + domain texts (covered, facial, refusals) PASS; notes: stage label for scar age, marks-view shot before placement"
+ },
+ {
+  "at": "2026-11-05T00:19:17.431Z",
+  "lane": "R",
+  "ready": "Z-97",
+  "verdict": "PASS",
+  "board": "Z-102",
+  "evidence": "face path fixed (G11b 0 hits); dotwork readable: dE median 49 (sim. Creator scale 47), 100 % >= 10; pending confirmation on C capture"
+ },
+ {
+  "at": "2026-11-05T05:36:59.003Z",
+  "lane": "R",
+  "ready": "Z-97",
+  "verdict": "PASS",
+  "board": "Z-116",
+  "evidence": "closing confirm on C r06f-final: drawn face decals on real eyes/drawn lips 0 px on 16/16 face tiles (rig globes+lip boxes projected with C's camera); dotwork 76-95 % px dE>=10 vs ring (target 60 %); face marks 3-5 px at dE>=10 at 9.3 mm/px"
+ },
+ {
+  "at": "2026-11-05T05:36:59.022Z",
+  "lane": "M",
+  "ready": "Z-81",
+  "verdict": "PASS",
+  "board": "Z-117",
+  "evidence": "rounds 2-3 on current code: model suite 26/26 PASS (2000 seeds), G11 0 face marks on real features, hypertrophic law reproduced (ruling Z-115)"
+ },
+ {
+  "at": "2026-11-05T05:36:59.041Z",
+  "lane": "P",
+  "ready": "Z-82",
+  "verdict": "PASS",
+  "board": "Z-118",
+  "evidence": "rounds 4-5 pictures r06f-final vs HEAD r00: stud period 65-75 mm in height view 8/8 (spec 70), neutral vision 'grid of dome studs' vs HEAD 'smooth'; skin/garment luma ratio 1.38-2.35 (HEAD 1.04-1.48), dE 16-37; race+sex 8/8 at 9.3 mm/px"
+ },
+ {
+  "at": "2026-11-05T05:36:59.060Z",
+  "lane": "C",
+  "ready": "Z-46",
+  "verdict": "PASS",
+  "board": "Z-119",
+  "evidence": "round 2 re-check on r06f-final: marked-bare plausible on 8 subjects (claw 30 d 3 red rakes, tribal/band ink darker, ordinary laceration paler); clothed marks hidden 0 % change; HUD notes: show 'hypertrophic', '!faceFeature' = perioral margin"
+ },
+ {
+  "at": "2026-11-05T05:36:59.078Z",
+  "lane": "U",
+  "ready": "Z-104",
+  "verdict": "FAIL",
+  "board": "Z-121",
+  "evidence": "controls/texts PASS except the scar stage text ignores keloid/hypertrophic: a >1 y keloid (ork 21 % of generated scars) is labelled 'mature: pale, flat' while drawn raised +2.5 mm, dark pink"
+ },
+ {
+  "at": "2026-11-05T09:15:47.649Z",
+  "lane": "F",
+  "ready": "Z-138",
+  "verdict": "PASS",
+  "board": "Z-140",
+  "evidence": "r07q-closing: ordinary 400-d laceration decal-only height -1.70/-1.16/-1.86/-1.58 levels (human/ork/elf/dwarf, on/off toggle), albedo dL* +6.4/+15.2/+3.9/+7.1, dC* -15.9/-4.3/-12.7/-12.8; AO dark only in recesses (enclosed 0.99-1.0); 30-d claw raised +5.5..+18.9; model 26/26"
+ },
+ {
+  "at": "2026-11-05T09:15:47.670Z",
+  "lane": "U+F",
+  "ready": "Z-121 (fix in Z-138)",
+  "verdict": "FAIL",
+  "board": "Z-141",
+  "evidence": "stage text fixed at >= 365 d but 21-365 d keloid/active hypertrophic still 'maturing: fading' (hypertrophic 120 d +1.51 mm, keloid 180 d +1.95 mm); 76/3023 generated scars (2.5 %)"
+ },
+ {
+  "at": "2026-11-05T09:40:01.335Z",
+  "lane": "U+F+PARENT",
+  "ready": "Z-154 (Z-121/Z-141)",
+  "verdict": "PASS",
+  "board": "Z-156",
+  "evidence": "stage text: 0/3023 generated scars misdescribed (was 76); hypertrophic 120 d 'maturing: raised, pink', keloid 21 d..10 y 'keloid: raised, dark pink', regressed 3 y / ordinary 400 d 'mature: pale, flat', fresh keloid 10 d 'healing: pink'; over-claim 1/463 (pre-existing branch)"
+ },
+ {
+  "at": "2026-11-05T09:40:01.354Z",
+  "lane": "PARENT",
+  "ready": "Z-154 (edge before decals)",
+  "verdict": "FAIL",
+  "board": "Z-157",
+  "evidence": "r08q-parent 400-d laceration: flat (decal-only -1.16..-1.86 levels, 4/4) and tattoo ink restored (ork band -9.0 -> -25.0 dL*), but dwarf/ork scar no longer paler: dwarf dL* +7.1 -> +0.2 (vs ring median -4.4), ork +15.2 -> +7.0 (median -4.5, dC* -1.0); human +3.5, elf +3.9"
+ },
+ {
+  "at": "2026-11-05T09:56:58.157Z",
+  "lane": "PARENT",
+  "ready": "Z-160 (edge after decals x (1-ink))",
+  "verdict": "PASS",
+  "board": "Z-161",
+  "evidence": "r09q-parent 400-d laceration paler on 4/4: dL* vs ring mean/median human +6.4/+6.6, elf +3.9/+3.3, dwarf +7.1/+2.5 (87 % px), ork +15.2/+3.6 (99 %); flat decal-only -1.16..-1.86 levels; ink dark (ork band -23.4, dwarf -24.5..-29.7, human -12.2, elf -3.5/-5.0); stage 0/3023 wrong -> Z-157 closed"
+ }
+]

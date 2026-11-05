@@ -1,0 +1,152 @@
+Check tests/wave_tex_closing_test.ts
+Check tests/wave_tex_ui_test.ts
+Check tests/wave_tex_render_test.ts
+Check tests/wave_tex_marks_test.ts
+running 8 tests from ./tests/wave_tex_closing_test.ts
+SPEC TX90: the off-neutral lit path looks the key's shadow up ONCE (arena budget); the neutral return is celShade alone ... ok (453µs)
+SPEC TX91: scar relief reaches the shading — plateau with steep shoulders, tilt still bounded by MAX_TILT ...
+------- output -------
+TX91: px 1.24 mm: edge slope 0.471 (first law 0.165), tilt 0.300 rad
+TX91: px 3.60 mm: edge slope 0.183 (first law 0.092), tilt 0.181 rad
+----- output end -----
+SPEC TX91: scar relief reaches the shading — plateau with steep shoulders, tilt still bounded by MAX_TILT ... ok (1ms)
+SPEC TX92: stitched decals draw ONE centred line (QC REN-9): count = stitches, not parallel strokes ... ok (50µs)
+SPEC TX93: geometric AO — hemisphere occlusion is 0 on an open convex surface, high between facing parts; deterministic and cached ... ok (19ms)
+SPEC TX94: the AO channel is populated on painted bodies — open skin stays 1, recesses darken within bounds, convex skin is not darkened ...
+------- output -------
+TX94 human: ao min 0.537 p1 0.565 p5 0.788 p50 0.997 convex mean 0.990
+TX94 elf: ao min 0.538 p1 0.546 p5 0.687 p50 0.997 convex mean 0.972
+TX94 dwarf: ao min 0.685 p1 0.846 p5 0.950 p50 0.999 convex mean 0.995
+TX94 ork: ao min 0.511 p1 0.817 p5 0.970 p50 0.999 convex mean 0.994
+----- output end -----
+SPEC TX94: the AO channel is populated on painted bodies — open skin stays 1, recesses darken within bounds, convex skin is not darkened ... ok (3s)
+SPEC TX95: the fine edge highlight — a crest weight per vertex in [0, 1], off with the edge layer, drawn per fragment ...
+------- output -------
+TX95 human: crest > onset on 3.7 % of skin vertices
+TX95 elf: crest > onset on 3.3 % of skin vertices
+TX95 dwarf: crest > onset on 6.4 % of skin vertices
+TX95 ork: crest > onset on 6.4 % of skin vertices
+----- output end -----
+SPEC TX95: the fine edge highlight — a crest weight per vertex in [0, 1], off with the edge layer, drawn per fragment ... ok (258ms)
+SPEC TX96: mature scars (QD Z-115) — an ordinary 400-day laceration is flat/atrophic; a raised scar never reads 'mature' ... ok (2ms)
+SPEC TX97: a mature ordinary scar reads PALER and less saturated than the painted skin around it (QD Z-115 / Z-128) ...
+------- output -------
+TX97 human: dL* +5.74 dC* -17.92 height -0.049 mm
+TX97 elf: dL* +4.00 dC* -13.72 height -0.049 mm
+TX97 dwarf: dL* +6.78 dC* -21.20 height -0.049 mm
+TX97 ork: dL* +9.07 dC* -29.76 height -0.049 mm
+----- output end -----
+SPEC TX97: a mature ordinary scar reads PALER and less saturated than the painted skin around it (QD Z-115 / Z-128) ... ok (98ms)
+running 11 tests from ./tests/wave_tex_ui_test.ts
+SPEC TX70: the channel view list is R's (same ids, same order) and the radio row's arrow law wraps ... ok (411µs)
+SPEC TX71: parseLayerOverrides is TOTAL on hostile saves (never throws, clamps, dedupes, drops junk) ... ok (5ms)
+SPEC TX72: the inspector's view of the overrides == L's applyLayerOverrides (enabled, opacity, op per channel, order) on 400 random edit sets ... ok (104ms)
+SPEC TX72b: any sequence of inspector drags (reorderOverride) renders in the SAME order under L's applyLayerOverrides (300 sequences x 1-6 drags) ... ok (139ms)
+SPEC TX73: setOverride/reorder/reset — a value back at the preset drops the override; a drag moves exactly one row; Reset clears ... ok (18ms)
+SPEC TX74: marks editing — lists equal M's, add/remove/update stay inside the ranges, caps hold, a hostile save sanitises ... ok (7ms)
+SPEC TX75: the placement raycast's frame anchor on a REAL rig skin — every sampled skin vertex of a mark region maps to its own region, side by x, anchor in [-1,1]², and back onto the region cylinder near the point ... ok (1s)
+SPEC TX76: previewKey is byte-identical without marks/overrides and changes with them (the model rebuilds on a mark edit) ... ok (376µs)
+SPEC TX77: the studio markup is CSP-clean (no style attribute, no script), ids unique, every control named, 44 px classes ... ok (4ms)
+SPEC TX78: placement notes come from M's validator — overlap flagged, a tidy pair on bare skin is clean, a mark under the outfit says so (QD Z-37) ... ok (1ms)
+SPEC TX79: save/load round trip — appearance.marks and appearance.layerOverrides survive the profile library (JSON) and re-parse unchanged ... ok (963µs)
+running 12 tests from ./tests/wave_tex_render_test.ts
+SPEC TX30: packDecals writes the posted layout (7 vec4 per decal, unit frame, tangent orthogonal to the normal) ...
+------- post-test output -------
+TX30: block 448 floats; scar radius 70.6 mm, band radius 86.5 mm
+----- post-test output end -----
+SPEC TX30: packDecals writes the posted layout (7 vec4 per decal, unit frame, tangent orthogonal to the normal) ... ok (738µs)
+SPEC TX31: packing is total — budget, degenerate frames, NaN, relief clamp ... ok (276µs)
+SPEC TX32: the height-perturbed normal is bounded — tilt <= MAX_TILT, so a relief crosses at most ONE cel band ...
+------- post-test output -------
+TX32: worst tilt 0.3000 rad (MAX 0.3), worst |dLambert| 0.2989 <= 0.2989 < band gap 0.38
+----- post-test output end -----
+SPEC TX32: the height-perturbed normal is bounded — tilt <= MAX_TILT, so a relief crosses at most ONE cel band ... ok (11ms)
+SPEC TX33: uniform budget — the material fragment fits WebGL2's guaranteed 224 vec4 and 16 samplers ...
+------- post-test output -------
+TX33: fragment uniform rows 158 / 224 (decals 112), samplers 2, 32 uniforms
+----- post-test output end -----
+SPEC TX33: uniform budget — the material fragment fits WebGL2's guaranteed 224 vec4 and 16 samplers ... ok (490µs)
+SPEC TX34: neutral channels take the pre-TEX path — celShade's expression verbatim, neutral inside every dead zone ... ok (694µs)
+SPEC TX35: decal profiles — spindle lines, stitches, discs; anti-aliased coverage is monotone with 0.5 on the edge ... ok (273µs)
+SPEC TX36: the glyph atlas reproduces Symbols' distances within one texel, 64 KB, deterministic ...
+------- post-test output -------
+TX36: 13 glyphs, bake 11.8 ms, worst |d - ref| 0.0165 glyph units (texel 0.0344)
+----- post-test output end -----
+SPEC TX36: the glyph atlas reproduces Symbols' distances within one texel, 64 KB, deterministic ... ok (22ms)
+SPEC TX37: the rig carries neutral channels, the region per vertex, and live decal / view controls ... ok (718ms)
+SPEC TX37b (wiring): the default body takes P's preset + M's marks; explicit empty marks + no overrides + switches off = neutral ...
+------- post-test output -------
+TX37b: ork rig 982 ms (preset 86.2 ms, marks 13.4 ms), 58 finish layers, marks generated 6 drawn / 0 dropped, mean roughness 0.674
+----- post-test output end -----
+SPEC TX37b (wiring): the default body takes P's preset + M's marks; explicit empty marks + no overrides + switches off = neutral ... ok (1s)
+SPEC TX38b: packDetails — materials own <= 2 slots, one-hot vertex weights by region, overflow dropped, total ... ok (358µs)
+SPEC TX38: per-body GPU memory and CPU build cost of the channels stay inside the budget ...
+------- post-test output -------
+TX38: neutral aMaterial 0.29 ms / 12000 vertices, pack 16 decals 0.020 ms; per body 189 KB (+64 KB atlas once)
+----- post-test output end -----
+SPEC TX38: per-body GPU memory and CPU build cost of the channels stay inside the budget ... ok (10ms)
+SPEC TX39: shader structure — bounded loops, ONE glyph fetch per decal, no derivatives in the decal loop, view codes ... ok (281µs)
+running 20 tests from ./tests/wave_tex_marks_test.ts
+TX40 marks: the C-MARK enums are exactly the brief's ... ok (222µs)
+TX41 marks: generation, resolution and decals are deterministic from the seed ...
+------- post-test output -------
+  200 seeds deterministic; 186/200 differ from seed+1000
+----- post-test output end -----
+TX41 marks: generation, resolution and decals are deterministic from the seed ... ok (42ms)
+TX42 marks: stage boundaries follow wound healing (inflammation < 4 d, proliferation < 21 d, remodelling < 1 y) ... ok (111µs)
+TX43 marks: older scars are paler and flatter (monotone over age, every kind, every skin) ...
+------- post-test output -------
+  450 luma checks; incision day 1 redness 0.987 h 0.49 mm -> 2 y redness 0.000 h 0.000 mm
+----- post-test output end -----
+TX43 marks: older scars are paler and flatter (monotone over age, every kind, every skin) ... ok (1ms)
+TX44 marks: inflammatory red > proliferative pink > mature pale; punctures heal atrophic ... ok (223µs)
+TX45 marks: keloids stay raised and spread; propensity by ancestry and site ...
+------- post-test output -------
+  hypertrophic burn peak 1.52 mm at day 105, 0.007 mm at 2 y
+----- post-test output end -----
+TX45 marks: keloids stay raised and spread; propensity by ancestry and site ... ok (2ms)
+TX46 marks: the default angle follows Langer's lines per region ... ok (283µs)
+TX47 marks: a wound across Langer's lines gapes and heals wider ... ok (129µs)
+TX48 marks: scar albedo contrast never exceeds fresh-ink contrast on the same skin ...
+------- post-test output -------
+  worst scar/ink contrast ratio 1.000
+----- post-test output end -----
+TX48 marks: scar albedo contrast never exceeds fresh-ink contrast on the same skin ... ok (676µs)
+TX49 marks: shapes are bounded, finite and drawn per kind (stitches, claw rakes) ... ok (40ms)
+TX50 marks: hair follicles are absent along the scar line (mask for the hair pass) ...
+------- post-test output -------
+  burn on the forearm: 9 hairless vertices of 4246
+----- post-test output end -----
+TX50 marks: hair follicles are absent along the scar line (mask for the hair pass) ... ok (629ms)
+TX51 marks: ink ages (blur grows, opacity fades, black fades least and turns blue-green); bands wrap ... ok (14ms)
+TX52 marks: motifs come from the sign / class / race symbol sets ... ok (8ms)
+TX53 marks: every generated mark lies inside its region bounds, clear of eyes and mouth, without overlap ...
+------- post-test output -------
+  1000 characters, 2312 marks placed with 0 issues
+----- post-test output end -----
+TX53 marks: every generated mark lies inside its region bounds, clear of eyes and mouth, without overlap ... ok (54ms)
+TX54 marks: the solver moves a colliding movable mark and reports a fixed one ... ok (253µs)
+TX55 marks: face rule — no tattoo on the face unless facial, nothing over the eyes or mouth ...
+------- post-test output -------
+  189 generated face marks on 8 real heads, 0 touching the real eye/mouth zones
+----- post-test output end -----
+TX55 marks: face rule — no tattoo on the face unless facial, nothing over the eyes or mouth ... ok (5s)
+TX56 marks: mirror swaps the side (paired) or negates u (midline); decals land mirrored on the mesh ... ok (3ms)
+TX57 marks: appearance.marks round-trips through JSON and the profile library; saves are sanitized ... ok (705µs)
+TX58 marks: generated frequencies by ancestry (orks most scars + woad tribal, dwarves clan bands, elves dotwork, humans rare) ...
+------- post-test output -------
+  human scars 1.04 tattooed 18.2 % keloid 6.3 % top script/black
+  elf   scars 0.53 tattooed 48.3 % keloid 1.2 % top dotwork/blueBlack
+  dwarf scars 1.60 tattooed 74.1 % keloid 10.2 % top band/black
+  ork   scars 2.41 tattooed 86.6 % keloid 18.1 % top tribal/woad
+----- post-test output end -----
+TX58 marks: generated frequencies by ancestry (orks most scars + woad tribal, dwarves clan bands, elves dotwork, humans rare) ... ok (252ms)
+TX59 marks: decals fit R's layout and the skin; layers validate and evaluate in L's API; MARKS.md tables in sync ...
+------- post-test output -------
+  67 decals on a human mesh, worst centre-to-skin (nearest triangle) 0.00 mm
+----- post-test output end -----
+TX59 marks: decals fit R's layout and the skin; layers validate and evaluate in L's API; MARKS.md tables in sync ... ok (350ms)
+
+ok | 51 passed | 0 failed (14s)
+
+EXIT 0

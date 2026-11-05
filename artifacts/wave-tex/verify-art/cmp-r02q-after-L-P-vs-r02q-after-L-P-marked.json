@@ -1,0 +1,702 @@
+[
+ {
+  "id": "human-male-marked/angles/front/studio/final",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "human-male-marked/angles/back/studio/final",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "human-male-marked/angles/front-left-3q/studio/final",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "human-male-marked/angles/face/studio/final",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "human-male-marked/angles/forearm/studio/final",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "human-male-marked/angles/back-closeup/studio/final",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "human-male-marked/lights/front-left-3q/studio/final",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "human-male-marked/lights/front-left-3q/rim/final",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "human-male-marked/lights/front-left-3q/flat/final",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "human-male-marked/lights/front-left-3q/daylight/final",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "human-male-marked/lights/front-left-3q/dusk/final",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "human-male-marked/channels/front-left-3q/studio/final",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "human-male-marked/channels/front-left-3q/studio/albedo",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "human-male-marked/channels/front-left-3q/studio/roughness",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "human-male-marked/channels/front-left-3q/studio/height",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "human-male-marked/channels/front-left-3q/studio/normal",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "human-male-marked/channels/front-left-3q/studio/ao",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "human-male-marked/channels/front-left-3q/studio/marks",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "human-male-marked/channels/forearm/studio/final",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "human-male-marked/channels/forearm/studio/albedo",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "human-male-marked/channels/forearm/studio/roughness",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "human-male-marked/channels/forearm/studio/height",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "human-male-marked/channels/forearm/studio/normal",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "human-male-marked/channels/forearm/studio/ao",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "human-male-marked/channels/forearm/studio/marks",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "ork-female-marked/angles/front/studio/final",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "ork-female-marked/angles/back/studio/final",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "ork-female-marked/angles/front-left-3q/studio/final",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "ork-female-marked/angles/face/studio/final",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "ork-female-marked/angles/forearm/studio/final",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "ork-female-marked/angles/back-closeup/studio/final",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "ork-female-marked/lights/front-left-3q/studio/final",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "ork-female-marked/lights/front-left-3q/rim/final",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "ork-female-marked/lights/front-left-3q/flat/final",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "ork-female-marked/lights/front-left-3q/daylight/final",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "ork-female-marked/lights/front-left-3q/dusk/final",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "ork-female-marked/channels/front-left-3q/studio/final",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "ork-female-marked/channels/front-left-3q/studio/albedo",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "ork-female-marked/channels/front-left-3q/studio/roughness",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "ork-female-marked/channels/front-left-3q/studio/height",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "ork-female-marked/channels/front-left-3q/studio/normal",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "ork-female-marked/channels/front-left-3q/studio/ao",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "ork-female-marked/channels/front-left-3q/studio/marks",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "ork-female-marked/channels/forearm/studio/final",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "ork-female-marked/channels/forearm/studio/albedo",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "ork-female-marked/channels/forearm/studio/roughness",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "ork-female-marked/channels/forearm/studio/height",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "ork-female-marked/channels/forearm/studio/normal",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "ork-female-marked/channels/forearm/studio/ao",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "ork-female-marked/channels/forearm/studio/marks",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "elf-female-marked/angles/front/studio/final",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "elf-female-marked/angles/back/studio/final",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "elf-female-marked/angles/front-left-3q/studio/final",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "elf-female-marked/angles/face/studio/final",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "elf-female-marked/angles/forearm/studio/final",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "elf-female-marked/angles/back-closeup/studio/final",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "elf-female-marked/lights/front-left-3q/studio/final",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "elf-female-marked/lights/front-left-3q/rim/final",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "elf-female-marked/lights/front-left-3q/flat/final",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "elf-female-marked/lights/front-left-3q/daylight/final",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "elf-female-marked/lights/front-left-3q/dusk/final",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "elf-female-marked/channels/front-left-3q/studio/final",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "elf-female-marked/channels/front-left-3q/studio/albedo",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "elf-female-marked/channels/front-left-3q/studio/roughness",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "elf-female-marked/channels/front-left-3q/studio/height",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "elf-female-marked/channels/front-left-3q/studio/normal",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "elf-female-marked/channels/front-left-3q/studio/ao",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "elf-female-marked/channels/front-left-3q/studio/marks",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "elf-female-marked/channels/forearm/studio/final",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "elf-female-marked/channels/forearm/studio/albedo",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "elf-female-marked/channels/forearm/studio/roughness",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "elf-female-marked/channels/forearm/studio/height",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "elf-female-marked/channels/forearm/studio/normal",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "elf-female-marked/channels/forearm/studio/ao",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "elf-female-marked/channels/forearm/studio/marks",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "dwarf-male-marked/angles/front/studio/final",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "dwarf-male-marked/angles/back/studio/final",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "dwarf-male-marked/angles/front-left-3q/studio/final",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "dwarf-male-marked/angles/face/studio/final",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "dwarf-male-marked/angles/forearm/studio/final",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "dwarf-male-marked/angles/back-closeup/studio/final",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "dwarf-male-marked/lights/front-left-3q/studio/final",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "dwarf-male-marked/lights/front-left-3q/rim/final",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "dwarf-male-marked/lights/front-left-3q/flat/final",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "dwarf-male-marked/lights/front-left-3q/daylight/final",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "dwarf-male-marked/lights/front-left-3q/dusk/final",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "dwarf-male-marked/channels/front-left-3q/studio/final",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "dwarf-male-marked/channels/front-left-3q/studio/albedo",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "dwarf-male-marked/channels/front-left-3q/studio/roughness",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "dwarf-male-marked/channels/front-left-3q/studio/height",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "dwarf-male-marked/channels/front-left-3q/studio/normal",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "dwarf-male-marked/channels/front-left-3q/studio/ao",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "dwarf-male-marked/channels/front-left-3q/studio/marks",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "dwarf-male-marked/channels/forearm/studio/final",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "dwarf-male-marked/channels/forearm/studio/albedo",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "dwarf-male-marked/channels/forearm/studio/roughness",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "dwarf-male-marked/channels/forearm/studio/height",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "dwarf-male-marked/channels/forearm/studio/normal",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "dwarf-male-marked/channels/forearm/studio/ao",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "dwarf-male-marked/channels/forearm/studio/marks",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ }
+]

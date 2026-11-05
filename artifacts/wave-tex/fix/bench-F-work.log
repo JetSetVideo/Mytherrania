@@ -1,0 +1,877 @@
+{
+ "run": "F-work",
+ "src": "/Users/macmax/Desktop/Mytherrania",
+ "hasTex": true,
+ "commit": "19f5c8c",
+ "when": "2026-11-05T08:19:51.329Z",
+ "frames": 120,
+ "build": {
+  "human-male": {
+   "defaultsOff": {
+    "cold": 715.3,
+    "warm": 36
+   },
+   "defaultsOn": {
+    "cold": 722,
+    "warm": 39
+   }
+  },
+  "ork-female": {
+   "defaultsOff": {
+    "cold": 1203.4,
+    "warm": 23.9
+   },
+   "defaultsOn": {
+    "cold": 1223.9,
+    "warm": 32.5
+   }
+  }
+ },
+ "preview": {
+  "legacy": {
+   "median": 2.5,
+   "mean": 2.477,
+   "mem": "{\"geometry\":449712,\"textures\":0,\"aMaterial\":67520,\"aEmissive\":0,\"decalUniformBytes\":1792}"
+  },
+  "neutral": {
+   "median": 2.4,
+   "mean": 2.406,
+   "mem": "{\"geometry\":449712,\"textures\":0,\"aMaterial\":67520,\"aEmissive\":0,\"decalUniformBytes\":1792}"
+  },
+  "marks16": {
+   "median": 2.7,
+   "mean": 2.647,
+   "mem": "{\"geometry\":449712,\"textures\":65536,\"aMaterial\":67520,\"aEmissive\":0,\"decalUniformBytes\":1792}"
+  }
+ },
+ "arena": {
+  "legacy": {
+   "median": 3.4,
+   "mean": 3.493,
+   "mem": "{\"geometry\":940008,\"textures\":0,\"aMaterial\":141088,\"aEmissive\":0,\"decalUniformBytes\":3584}"
+  },
+  "neutral": {
+   "median": 3.2,
+   "mean": 3.212,
+   "mem": "{\"geometry\":940008,\"textures\":0,\"aMaterial\":141088,\"aEmissive\":0,\"decalUniformBytes\":3584}"
+  },
+  "marks16": {
+   "median": 4.3,
+   "mean": 4.288,
+   "mem": "{\"geometry\":940008,\"textures\":65536,\"aMaterial\":141088,\"aEmissive\":0,\"decalUniformBytes\":3584}"
+  }
+ },
+ "previewDefaults": {
+  "asBuilt": {
+   "median": 2.5,
+   "mean": 2.46,
+   "mem": "{\"geometry\":534112,\"textures\":0,\"aMaterial\":67520,\"aEmissive\":0,\"decalUniformBytes\":1792}"
+  }
+ },
+ "arenaDefaults": {
+  "asBuilt": {
+   "median": 3.9,
+   "mean": 3.78,
+   "mem": "{\"geometry\":1116368,\"textures\":65536,\"aMaterial\":141088,\"aEmissive\":0,\"decalUniformBytes\":3584}"
+  }
+ },
+ "pictures": [
+  {
+   "file": "artifacts/wave-tex/render/F-work/views-demo16-human-male.png",
+   "variant": "demo16",
+   "race": "human",
+   "sex": "male",
+   "decals": 16,
+   "stack": null,
+   "ids": null,
+   "perDecal": [
+    {
+     "k": 0,
+     "kind": "line",
+     "px": 0
+    },
+    {
+     "k": 1,
+     "kind": "stitched",
+     "px": 0
+    },
+    {
+     "k": 2,
+     "kind": "line",
+     "px": 0
+    },
+    {
+     "k": 3,
+     "kind": "disc",
+     "px": 0
+    },
+    {
+     "k": 4,
+     "kind": "disc",
+     "px": 0
+    },
+    {
+     "k": 5,
+     "kind": "line",
+     "px": 22
+    },
+    {
+     "k": 6,
+     "kind": "glyph",
+     "px": 0
+    },
+    {
+     "k": 7,
+     "kind": "dots",
+     "px": 0
+    },
+    {
+     "k": 8,
+     "kind": "glyph",
+     "px": 219
+    },
+    {
+     "k": 9,
+     "kind": "band",
+     "px": 725
+    },
+    {
+     "k": 10,
+     "kind": "band",
+     "px": 430
+    },
+    {
+     "k": 11,
+     "kind": "glyph",
+     "px": 0
+    },
+    {
+     "k": 12,
+     "kind": "glyph",
+     "px": 281
+    },
+    {
+     "k": 13,
+     "kind": "glyph",
+     "px": 0
+    },
+    {
+     "k": 14,
+     "kind": "glyph",
+     "px": 104
+    },
+    {
+     "k": 15,
+     "kind": "line",
+     "px": 0
+    }
+   ]
+  },
+  {
+   "file": "artifacts/wave-tex/render/F-work/views-demo16-ork-female.png",
+   "variant": "demo16",
+   "race": "ork",
+   "sex": "female",
+   "decals": 16,
+   "stack": null,
+   "ids": null,
+   "perDecal": [
+    {
+     "k": 0,
+     "kind": "line",
+     "px": 0
+    },
+    {
+     "k": 1,
+     "kind": "stitched",
+     "px": 0
+    },
+    {
+     "k": 2,
+     "kind": "line",
+     "px": 0
+    },
+    {
+     "k": 3,
+     "kind": "disc",
+     "px": 0
+    },
+    {
+     "k": 4,
+     "kind": "disc",
+     "px": 0
+    },
+    {
+     "k": 5,
+     "kind": "line",
+     "px": 15
+    },
+    {
+     "k": 6,
+     "kind": "glyph",
+     "px": 0
+    },
+    {
+     "k": 7,
+     "kind": "dots",
+     "px": 0
+    },
+    {
+     "k": 8,
+     "kind": "glyph",
+     "px": 278
+    },
+    {
+     "k": 9,
+     "kind": "band",
+     "px": 0
+    },
+    {
+     "k": 10,
+     "kind": "band",
+     "px": 0
+    },
+    {
+     "k": 11,
+     "kind": "glyph",
+     "px": 0
+    },
+    {
+     "k": 12,
+     "kind": "glyph",
+     "px": 255
+    },
+    {
+     "k": 13,
+     "kind": "glyph",
+     "px": 0
+    },
+    {
+     "k": 14,
+     "kind": "glyph",
+     "px": 54
+    },
+    {
+     "k": 15,
+     "kind": "line",
+     "px": 0
+    }
+   ]
+  },
+  {
+   "file": "artifacts/wave-tex/render/F-work/views-demo16-elf-female.png",
+   "variant": "demo16",
+   "race": "elf",
+   "sex": "female",
+   "decals": 16,
+   "stack": null,
+   "ids": null,
+   "perDecal": [
+    {
+     "k": 0,
+     "kind": "line",
+     "px": 0
+    },
+    {
+     "k": 1,
+     "kind": "stitched",
+     "px": 0
+    },
+    {
+     "k": 2,
+     "kind": "line",
+     "px": 0
+    },
+    {
+     "k": 3,
+     "kind": "disc",
+     "px": 0
+    },
+    {
+     "k": 4,
+     "kind": "disc",
+     "px": 0
+    },
+    {
+     "k": 5,
+     "kind": "line",
+     "px": 6
+    },
+    {
+     "k": 6,
+     "kind": "glyph",
+     "px": 0
+    },
+    {
+     "k": 7,
+     "kind": "dots",
+     "px": 0
+    },
+    {
+     "k": 8,
+     "kind": "glyph",
+     "px": 219
+    },
+    {
+     "k": 9,
+     "kind": "band",
+     "px": 565
+    },
+    {
+     "k": 10,
+     "kind": "band",
+     "px": 440
+    },
+    {
+     "k": 11,
+     "kind": "glyph",
+     "px": 0
+    },
+    {
+     "k": 12,
+     "kind": "glyph",
+     "px": 308
+    },
+    {
+     "k": 13,
+     "kind": "glyph",
+     "px": 0
+    },
+    {
+     "k": 14,
+     "kind": "glyph",
+     "px": 123
+    },
+    {
+     "k": 15,
+     "kind": "line",
+     "px": 0
+    }
+   ]
+  },
+  {
+   "file": "artifacts/wave-tex/render/F-work/views-demo16-dwarf-male.png",
+   "variant": "demo16",
+   "race": "dwarf",
+   "sex": "male",
+   "decals": 16,
+   "stack": null,
+   "ids": null,
+   "perDecal": [
+    {
+     "k": 0,
+     "kind": "line",
+     "px": 0
+    },
+    {
+     "k": 1,
+     "kind": "stitched",
+     "px": 0
+    },
+    {
+     "k": 2,
+     "kind": "line",
+     "px": 0
+    },
+    {
+     "k": 3,
+     "kind": "disc",
+     "px": 0
+    },
+    {
+     "k": 4,
+     "kind": "disc",
+     "px": 0
+    },
+    {
+     "k": 5,
+     "kind": "line",
+     "px": 44
+    },
+    {
+     "k": 6,
+     "kind": "glyph",
+     "px": 0
+    },
+    {
+     "k": 7,
+     "kind": "dots",
+     "px": 0
+    },
+    {
+     "k": 8,
+     "kind": "glyph",
+     "px": 300
+    },
+    {
+     "k": 9,
+     "kind": "band",
+     "px": 20
+    },
+    {
+     "k": 10,
+     "kind": "band",
+     "px": 246
+    },
+    {
+     "k": 11,
+     "kind": "glyph",
+     "px": 0
+    },
+    {
+     "k": 12,
+     "kind": "glyph",
+     "px": 125
+    },
+    {
+     "k": 13,
+     "kind": "glyph",
+     "px": 0
+    },
+    {
+     "k": 14,
+     "kind": "glyph",
+     "px": 103
+    },
+    {
+     "k": 15,
+     "kind": "line",
+     "px": 0
+    }
+   ]
+  },
+  {
+   "file": "artifacts/wave-tex/render/F-work/views-default-human-male.png",
+   "variant": "default",
+   "race": "human",
+   "sex": "male",
+   "decals": 0,
+   "stack": {
+    "paint": "preset:human/-",
+    "marksSource": "generated",
+    "marks": [],
+    "dropped": [],
+    "ms": {
+     "preset": 23.100000143051147,
+     "marks": 1.2999999523162842
+    }
+   },
+   "ids": [],
+   "perDecal": []
+  },
+  {
+   "file": "artifacts/wave-tex/render/F-work/views-default-ork-female.png",
+   "variant": "default",
+   "race": "ork",
+   "sex": "female",
+   "decals": 4,
+   "stack": {
+    "paint": "preset:ork/-",
+    "marksSource": "generated",
+    "marks": [
+     "tattoo.1",
+     "tattoo.2",
+     "tattoo.2.m",
+     "tattoo.3"
+    ],
+    "dropped": [],
+    "ms": {
+     "preset": 29.5,
+     "marks": 2.200000047683716
+    }
+   },
+   "ids": [
+    "tattoo.1",
+    "tattoo.2",
+    "tattoo.2.m",
+    "tattoo.3"
+   ],
+   "perDecal": [
+    {
+     "k": 0,
+     "kind": "glyph",
+     "px": 78
+    },
+    {
+     "k": 1,
+     "kind": "glyph",
+     "px": 1906
+    },
+    {
+     "k": 2,
+     "kind": "glyph",
+     "px": 1278
+    },
+    {
+     "k": 3,
+     "kind": "glyph",
+     "px": 52
+    }
+   ]
+  },
+  {
+   "file": "artifacts/wave-tex/render/F-work/views-default-elf-female.png",
+   "variant": "default",
+   "race": "elf",
+   "sex": "female",
+   "decals": 1,
+   "stack": {
+    "paint": "preset:elf/-",
+    "marksSource": "generated",
+    "marks": [
+     "tattoo.0"
+    ],
+    "dropped": [],
+    "ms": {
+     "preset": 29.699999809265137,
+     "marks": 1.9000000953674316
+    }
+   },
+   "ids": [
+    "tattoo.0"
+   ],
+   "perDecal": [
+    {
+     "k": 0,
+     "kind": "dots",
+     "px": 0
+    }
+   ]
+  },
+  {
+   "file": "artifacts/wave-tex/render/F-work/views-default-dwarf-male.png",
+   "variant": "default",
+   "race": "dwarf",
+   "sex": "male",
+   "decals": 5,
+   "stack": {
+    "paint": "preset:dwarf/-",
+    "marksSource": "generated",
+    "marks": [
+     "scar.1",
+     "tattoo.1",
+     "tattoo.1.m",
+     "tattoo.2",
+     "tattoo.2.m"
+    ],
+    "dropped": [],
+    "ms": {
+     "preset": 30.199999809265137,
+     "marks": 2.4000000953674316
+    }
+   },
+   "ids": [
+    "scar.1",
+    "tattoo.1",
+    "tattoo.1.m",
+    "tattoo.2",
+    "tattoo.2.m"
+   ],
+   "perDecal": [
+    {
+     "k": 0,
+     "kind": "disc",
+     "px": 33
+    },
+    {
+     "k": 1,
+     "kind": "band",
+     "px": 869
+    },
+    {
+     "k": 2,
+     "kind": "band",
+     "px": 719
+    },
+    {
+     "k": 3,
+     "kind": "band",
+     "px": 671
+    },
+    {
+     "k": 4,
+     "kind": "band",
+     "px": 546
+    }
+   ]
+  },
+  {
+   "file": "artifacts/wave-tex/render/F-work/views-marked-human-male.png",
+   "variant": "marked",
+   "race": "human",
+   "sex": "male",
+   "decals": 5,
+   "stack": {
+    "paint": "preset:human/-",
+    "marksSource": "explicit",
+    "marks": [
+     "scar.1",
+     "scar.2",
+     "tattoo.1",
+     "tattoo.2",
+     "tattoo.3"
+    ],
+    "dropped": [],
+    "ms": {
+     "preset": 15.700000047683716,
+     "marks": 1.9000000953674316
+    }
+   },
+   "ids": [
+    "scar.1",
+    "scar.2",
+    "tattoo.1",
+    "tattoo.2",
+    "tattoo.3"
+   ],
+   "perDecal": [
+    {
+     "k": 0,
+     "kind": "line",
+     "px": 295
+    },
+    {
+     "k": 1,
+     "kind": "line",
+     "px": 1
+    },
+    {
+     "k": 2,
+     "kind": "glyph",
+     "px": 651
+    },
+    {
+     "k": 3,
+     "kind": "dots",
+     "px": 108
+    },
+    {
+     "k": 4,
+     "kind": "glyph",
+     "px": 261
+    }
+   ]
+  },
+  {
+   "file": "artifacts/wave-tex/render/F-work/views-marked-ork-female.png",
+   "variant": "marked",
+   "race": "ork",
+   "sex": "female",
+   "decals": 5,
+   "stack": {
+    "paint": "preset:ork/-",
+    "marksSource": "explicit",
+    "marks": [
+     "scar.1",
+     "scar.2",
+     "tattoo.1",
+     "tattoo.2",
+     "tattoo.3"
+    ],
+    "dropped": [],
+    "ms": {
+     "preset": 20,
+     "marks": 2.0999999046325684
+    }
+   },
+   "ids": [
+    "scar.1",
+    "scar.2",
+    "tattoo.1",
+    "tattoo.2",
+    "tattoo.3"
+   ],
+   "perDecal": [
+    {
+     "k": 0,
+     "kind": "line",
+     "px": 371
+    },
+    {
+     "k": 1,
+     "kind": "line",
+     "px": 19
+    },
+    {
+     "k": 2,
+     "kind": "glyph",
+     "px": 644
+    },
+    {
+     "k": 3,
+     "kind": "dots",
+     "px": 60
+    },
+    {
+     "k": 4,
+     "kind": "glyph",
+     "px": 264
+    }
+   ]
+  },
+  {
+   "file": "artifacts/wave-tex/render/F-work/views-marked-elf-female.png",
+   "variant": "marked",
+   "race": "elf",
+   "sex": "female",
+   "decals": 5,
+   "stack": {
+    "paint": "preset:elf/-",
+    "marksSource": "explicit",
+    "marks": [
+     "scar.1",
+     "scar.2",
+     "tattoo.1",
+     "tattoo.2",
+     "tattoo.3"
+    ],
+    "dropped": [],
+    "ms": {
+     "preset": 21.200000047683716,
+     "marks": 2.0999999046325684
+    }
+   },
+   "ids": [
+    "scar.1",
+    "scar.2",
+    "tattoo.1",
+    "tattoo.2",
+    "tattoo.3"
+   ],
+   "perDecal": [
+    {
+     "k": 0,
+     "kind": "line",
+     "px": 277
+    },
+    {
+     "k": 1,
+     "kind": "line",
+     "px": 0
+    },
+    {
+     "k": 2,
+     "kind": "glyph",
+     "px": 573
+    },
+    {
+     "k": 3,
+     "kind": "dots",
+     "px": 67
+    },
+    {
+     "k": 4,
+     "kind": "glyph",
+     "px": 245
+    }
+   ]
+  },
+  {
+   "file": "artifacts/wave-tex/render/F-work/views-marked-dwarf-male.png",
+   "variant": "marked",
+   "race": "dwarf",
+   "sex": "male",
+   "decals": 5,
+   "stack": {
+    "paint": "preset:dwarf/-",
+    "marksSource": "explicit",
+    "marks": [
+     "scar.1",
+     "scar.2",
+     "tattoo.1",
+     "tattoo.2",
+     "tattoo.3"
+    ],
+    "dropped": [],
+    "ms": {
+     "preset": 21.40000009536743,
+     "marks": 2
+    }
+   },
+   "ids": [
+    "scar.1",
+    "scar.2",
+    "tattoo.1",
+    "tattoo.2",
+    "tattoo.3"
+   ],
+   "perDecal": [
+    {
+     "k": 0,
+     "kind": "line",
+     "px": 397
+    },
+    {
+     "k": 1,
+     "kind": "line",
+     "px": 21
+    },
+    {
+     "k": 2,
+     "kind": "glyph",
+     "px": 686
+    },
+    {
+     "k": 3,
+     "kind": "dots",
+     "px": 109
+    },
+    {
+     "k": 4,
+     "kind": "glyph",
+     "px": 286
+    }
+   ]
+  },
+  {
+   "file": "artifacts/wave-tex/render/F-work/closeup-marked-ork-female-spine.png",
+   "variant": "marked",
+   "race": "ork",
+   "sex": "female",
+   "focus": "spine",
+   "span": 0.5,
+   "closeup": true,
+   "perDecal": [],
+   "hfDetailsOn": 2.782,
+   "hfDetailsOff": 0.981
+  },
+  {
+   "file": "artifacts/wave-tex/render/F-work/closeup-marked-human-male-shoulderL.png",
+   "variant": "marked",
+   "race": "human",
+   "sex": "male",
+   "focus": "shoulderL",
+   "span": 0.45,
+   "closeup": true,
+   "perDecal": [],
+   "hfDetailsOn": 1.878,
+   "hfDetailsOff": 0.98
+  },
+  {
+   "file": "artifacts/wave-tex/render/F-work/closeup-default-dwarf-male-spine.png",
+   "variant": "default",
+   "race": "dwarf",
+   "sex": "male",
+   "focus": "spine",
+   "span": 0.5,
+   "closeup": true,
+   "perDecal": [],
+   "hfDetailsOn": 2.421,
+   "hfDetailsOff": 1.018
+  },
+  {
+   "file": "artifacts/wave-tex/render/F-work/closeup-marked-elf-female-head.png",
+   "variant": "marked",
+   "race": "elf",
+   "sex": "female",
+   "focus": "head",
+   "span": 0.3,
+   "closeup": true,
+   "perDecal": [],
+   "hfDetailsOn": 2.635,
+   "hfDetailsOff": 1.81
+  }
+ ],
+ "errors": []
+}
+report: /Users/macmax/Desktop/Mytherrania/artifacts/wave-tex/render/F-work/bench.json

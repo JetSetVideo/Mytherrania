@@ -1,0 +1,34 @@
+/Users/macmax/Desktop/Mytherrania/artifacts/wave-tex/verify-art/warns-r07q-before-F-vs-r07q-closing.json
+r07q-before-F human-male: W1 hi5 183.4 p50 113.6 ridge 1.614 face hi5 180.3 ridge 1.108 finalP95 167.7 | P skin-garment dE 33.8 dL 26.9 | studs std {}
+   W2 ao front-left-3q p5 247 p50 255 <250 0.0595 <230 0.0425 ; forearm p5 254 p50 255 <250 0.0092 <230 0.0076
+   scar forearm area 51 bbox 171,217,13,27 marksLab 76.6,5.9,5.6 dE 5.6 dL -2.1 dHeight 7 (in 135) nDE 0.5 rough 99,121
+   scar forearm area 36 bbox 168,188,4,20 marksLab 78.4,4.8,4.6 dE 5.1 dL -1.5 dHeight 6 (in 134) nDE 1.5 rough 104,121
+   ink-forearm [{"area":360,"dE":22.4,"dL":-19.1,"edgeW50":2,"banding":0.05,"normalDE":5.4},{"area":152,"dE":19.3,"dL":-17.1,"edgeW50":1,"banding":0.053,"normalDE":3.5}]
+r07q-before-F ork-female: W1 hi5 165.7 p50 111.6 ridge 1.485 face hi5 184.9 ridge 1.348 finalP95 148.3 | P skin-garment dE 30.5 dL 10 | studs std {}
+   W2 ao front-left-3q p5 252 p50 255 <250 0.024 <230 0.0099 ; forearm p5 253 p50 255 <250 0.0038 <230 0.0028
+   scar forearm area 133 bbox 101,170,20,43 marksLab 73.3,-2,4.4 dE 11.5 dL -2.9 dHeight 11 (in 168) nDE 23.4 rough 142,173
+   ink-forearm [{"area":458,"dE":28.3,"dL":-20.8,"edgeW50":2,"banding":0.032,"normalDE":0.8},{"area":346,"dE":27.3,"dL":-17.9,"edgeW50":2,"banding":0,"normalDE":1.7}]
+r07q-before-F elf-female: W1 hi5 216.6 p50 116.2 ridge 1.864 face hi5 209.3 ridge 1.028 finalP95 205.4 | P skin-garment dE 36.1 dL 34.4 | studs std {}
+   W2 ao front-left-3q p5 250 p50 255 <250 0.0459 <230 0.0189 ; forearm p5 253 p50 255 <250 0.015 <230 0.0099
+   ink-forearm [{"area":129,"dE":22.6,"dL":-21.9,"edgeW50":2,"banding":0,"normalDE":5.5},{"area":47,"dE":25,"dL":-23.8,"edgeW50":1,"banding":0,"normalDE":5.6}]
+r07q-before-F dwarf-male: W1 hi5 176 p50 110.6 ridge 1.591 face hi5 166 ridge 1.081 finalP95 172.2 | P skin-garment dE 31.8 dL 17.1 | studs std {}
+   W2 ao front-left-3q p5 252 p50 255 <250 0.0216 <230 0.0092 ; forearm p5 253 p50 255 <250 0.0052 <230 0.0028
+   scar forearm area 115 bbox 111,185,27,39 marksLab 75.8,5.4,4.9 dE 7.3 dL -3.1 dHeight 6 (in 134) nDE 6.7 rough 122,148
+   scar forearm area 20 bbox 203,301,17,11 marksLab 77.3,12.2,17.6 dE 6.6 dL 2.8 dHeight 20.5 (in 148.5) nDE 38.9 rough 160.4,151
+   ink-forearm [{"area":600,"dE":33.8,"dL":-27.1,"edgeW50":1,"banding":0,"normalDE":1},{"area":531,"dE":37.2,"dL":-29.7,"edgeW50":1,"banding":0.018,"normalDE":3.6}]
+r07q-closing human-male: W1 hi5 187.8 p50 113.6 ridge 1.653 face hi5 180.3 ridge 1.108 finalP95 167.9 | P skin-garment dE 33.7 dL 26.9 | studs std {}
+   W2 ao front-left-3q p5 188 p50 254 <250 0.2268 <230 0.1231 ; forearm p5 238 p50 255 <250 0.1008 <230 0.0362
+   scar forearm area 20 bbox 170,209,4,15 marksLab 80.5,3.6,6.9 dE 14.2 dL 4.3 dHeight -2 (in 126) nDE 0.7 rough 81,121
+   ink-forearm [{"area":360,"dE":22.4,"dL":-19.1,"edgeW50":2,"banding":0.05,"normalDE":5.4},{"area":152,"dE":19.3,"dL":-17.1,"edgeW50":1,"banding":0.053,"normalDE":3.5}]
+r07q-closing ork-female: W1 hi5 167.7 p50 111.6 ridge 1.503 face hi5 190.7 ridge 1.388 finalP95 148.3 | P skin-garment dE 30.5 dL 10 | studs std {}
+   W2 ao front-left-3q p5 243 p50 255 <250 0.0789 <230 0.0307 ; forearm p5 253 p50 255 <250 0.007 <230 0.0038
+   scar forearm area 93 bbox 107,174,14,38 marksLab 78.2,-5.1,6.3 dE 7.9 dL 3.7 dHeight 5 (in 162) nDE 13.4 rough 125,173
+   ink-forearm [{"area":448,"dE":14.1,"dL":-6.5,"edgeW50":7,"banding":0.108,"normalDE":0.8},{"area":345,"dE":29.2,"dL":-10.4,"edgeW50":2,"banding":0.024,"normalDE":1.7}]
+r07q-closing elf-female: W1 hi5 218.1 p50 116.2 ridge 1.877 face hi5 209.3 ridge 1.028 finalP95 205 | P skin-garment dE 36.2 dL 34.4 | studs std {}
+   W2 ao front-left-3q p5 198.7 p50 254 <250 0.2464 <230 0.1047 ; forearm p5 241 p50 255 <250 0.1044 <230 0.028
+   ink-forearm [{"area":127,"dE":20.4,"dL":-19.5,"edgeW50":2,"banding":0,"normalDE":6.3},{"area":48,"dE":25,"dL":-23.8,"edgeW50":1,"banding":0,"normalDE":5.4}]
+r07q-closing dwarf-male: W1 hi5 179.2 p50 110.6 ridge 1.62 face hi5 174 ridge 1.131 finalP95 172.3 | P skin-garment dE 31.8 dL 17.1 | studs std {}
+   W2 ao front-left-3q p5 245 p50 255 <250 0.0787 <230 0.0218 ; forearm p5 253 p50 255 <250 0.0145 <230 0.0028
+   scar forearm area 98 bbox 111,187,20,33 marksLab 81.1,3.5,6.4 dE 8.2 dL 3.5 dHeight -2 (in 126) nDE 4 rough 101,147
+   scar forearm area 20 bbox 203,301,17,11 marksLab 77.3,12.2,17.6 dE 6.6 dL 2.8 dHeight 20.5 (in 148.5) nDE 38.9 rough 160.4,151
+   ink-forearm [{"area":600,"dE":33.4,"dL":-26.6,"edgeW50":1,"banding":0,"normalDE":1},{"area":531,"dE":36,"dL":-27.3,"edgeW50":1,"banding":0.018,"normalDE":3.5}]

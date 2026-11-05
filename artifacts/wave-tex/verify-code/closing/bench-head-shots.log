@@ -1,0 +1,16 @@
+{
+ "run": "qc-head",
+ "src": "/Users/macmax/.hermes/cache/scratch/qc-tex-head",
+ "hasTex": false,
+ "commit": "19f5c8c",
+ "when": "2026-11-05T03:35:01.589Z",
+ "frames": 90,
+ "build": {},
+ "shots": {
+  "dir": "/Users/macmax/Desktop/Mytherrania/artifacts/wave-tex/verify-code/closing/shots-head",
+  "n": 24
+ },
+ "errors": []
+}
+report: /Users/macmax/Desktop/Mytherrania/artifacts/wave-tex/verify-code/closing/bench-head/bench.json
+exit 0

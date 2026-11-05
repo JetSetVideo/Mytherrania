@@ -1,0 +1,2 @@
+280 images in artifacts/wave-tex/captures/r08q-parent/index.json
+{"images":280,"hudIssues":0,"lightGroups":216,"markPairs":88,"raceDE":2,"out":"/Users/macmax/Desktop/Mytherrania/artifacts/wave-tex/verify-art/r08q-parent/metrics.json"}

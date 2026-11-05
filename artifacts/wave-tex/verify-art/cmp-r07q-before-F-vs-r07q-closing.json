@@ -1,0 +1,4717 @@
+[
+ {
+  "id": "human-male-reference/angles/front/studio/final",
+  "share": 0.00644,
+  "meanD": 23.7,
+  "bbox": [
+   139,
+   52,
+   151,
+   276
+  ],
+  "edge": {
+   "boundarySamples": 175,
+   "width10_90": {
+    "p25": 1,
+    "p50": 3,
+    "p75": 6
+   },
+   "hardShare": 0.417,
+   "bandingShare": 0.063
+  }
+ },
+ {
+  "id": "human-male-reference/angles/back/studio/final",
+  "share": 0.00569,
+  "meanD": 22.6,
+  "bbox": [
+   129,
+   85,
+   154,
+   449
+  ],
+  "edge": {
+   "boundarySamples": 145,
+   "width10_90": {
+    "p25": 1,
+    "p50": 2,
+    "p75": 7
+   },
+   "hardShare": 0.462,
+   "bandingShare": 0.055
+  }
+ },
+ {
+  "id": "human-male-reference/angles/front-left-3q/studio/final",
+  "share": 0.00782,
+  "meanD": 21.4,
+  "bbox": [
+   163,
+   50,
+   121,
+   447
+  ],
+  "edge": {
+   "boundarySamples": 138,
+   "width10_90": {
+    "p25": 1,
+    "p50": 4,
+    "p75": 7
+   },
+   "hardShare": 0.326,
+   "bandingShare": 0.08
+  }
+ },
+ {
+  "id": "human-male-reference/angles/face/studio/final",
+  "share": 0.01557,
+  "meanD": 21.2,
+  "bbox": [
+   0,
+   309,
+   420,
+   239
+  ],
+  "edge": {
+   "boundarySamples": 99,
+   "width10_90": {
+    "p25": 1,
+    "p50": 5,
+    "p75": 9
+   },
+   "hardShare": 0.374,
+   "bandingShare": 0.091
+  }
+ },
+ {
+  "id": "human-male-reference/angles/forearm/studio/final",
+  "share": 0.00043,
+  "meanD": 12.8,
+  "bbox": [
+   67,
+   0,
+   56,
+   311
+  ],
+  "edge": {
+   "boundarySamples": 9,
+   "width10_90": {
+    "p25": 1,
+    "p50": 3,
+    "p75": 6
+   },
+   "hardShare": 0.444,
+   "bandingShare": 0
+  }
+ },
+ {
+  "id": "human-male-reference/angles/back-closeup/studio/final",
+  "share": 0.01588,
+  "meanD": 26.2,
+  "bbox": [
+   72,
+   190,
+   275,
+   321
+  ],
+  "edge": {
+   "boundarySamples": 205,
+   "width10_90": {
+    "p25": 1,
+    "p50": 4,
+    "p75": 7
+   },
+   "hardShare": 0.439,
+   "bandingShare": 0.107
+  }
+ },
+ {
+  "id": "human-male-reference/lights/front-left-3q/studio/final",
+  "share": 0.00782,
+  "meanD": 21.4,
+  "bbox": [
+   163,
+   50,
+   121,
+   447
+  ],
+  "edge": {
+   "boundarySamples": 138,
+   "width10_90": {
+    "p25": 1,
+    "p50": 4,
+    "p75": 7
+   },
+   "hardShare": 0.326,
+   "bandingShare": 0.08
+  }
+ },
+ {
+  "id": "human-male-reference/lights/front-left-3q/rim/final",
+  "share": 0.00532,
+  "meanD": 18.1,
+  "bbox": [
+   163,
+   61,
+   121,
+   397
+  ],
+  "edge": {
+   "boundarySamples": 108,
+   "width10_90": {
+    "p25": 1,
+    "p50": 5,
+    "p75": 7
+   },
+   "hardShare": 0.287,
+   "bandingShare": 0.074
+  }
+ },
+ {
+  "id": "human-male-reference/lights/front-left-3q/flat/final",
+  "share": 0.01051,
+  "meanD": 22.3,
+  "bbox": [
+   162,
+   47,
+   122,
+   410
+  ],
+  "edge": {
+   "boundarySamples": 155,
+   "width10_90": {
+    "p25": 1,
+    "p50": 5,
+    "p75": 8
+   },
+   "hardShare": 0.258,
+   "bandingShare": 0.065
+  }
+ },
+ {
+  "id": "human-male-reference/lights/front-left-3q/daylight/final",
+  "share": 0.01027,
+  "meanD": 21.6,
+  "bbox": [
+   162,
+   48,
+   122,
+   410
+  ],
+  "edge": {
+   "boundarySamples": 157,
+   "width10_90": {
+    "p25": 2,
+    "p50": 5,
+    "p75": 7
+   },
+   "hardShare": 0.21,
+   "bandingShare": 0.121
+  }
+ },
+ {
+  "id": "human-male-reference/lights/front-left-3q/dusk/final",
+  "share": 0.00956,
+  "meanD": 22.6,
+  "bbox": [
+   162,
+   48,
+   122,
+   409
+  ],
+  "edge": {
+   "boundarySamples": 142,
+   "width10_90": {
+    "p25": 1,
+    "p50": 4,
+    "p75": 8
+   },
+   "hardShare": 0.254,
+   "bandingShare": 0.113
+  }
+ },
+ {
+  "id": "human-male-reference/channels/front-left-3q/studio/final",
+  "share": 0.00782,
+  "meanD": 21.4,
+  "bbox": [
+   163,
+   50,
+   121,
+   447
+  ],
+  "edge": {
+   "boundarySamples": 138,
+   "width10_90": {
+    "p25": 1,
+    "p50": 4,
+    "p75": 7
+   },
+   "hardShare": 0.326,
+   "bandingShare": 0.08
+  }
+ },
+ {
+  "id": "human-male-reference/channels/front-left-3q/studio/albedo",
+  "share": 0.0022,
+  "meanD": 38.3,
+  "bbox": [
+   162,
+   99,
+   122,
+   359
+  ],
+  "edge": {
+   "boundarySamples": 30,
+   "width10_90": {
+    "p25": 1,
+    "p50": 2,
+    "p75": 4
+   },
+   "hardShare": 0.467,
+   "bandingShare": 0.067
+  }
+ },
+ {
+  "id": "human-male-reference/channels/front-left-3q/studio/roughness",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "human-male-reference/channels/front-left-3q/studio/height",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "human-male-reference/channels/front-left-3q/studio/normal",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "human-male-reference/channels/front-left-3q/studio/ao",
+  "share": 0.02464,
+  "meanD": 38.6,
+  "bbox": [
+   157,
+   42,
+   118,
+   339
+  ],
+  "edge": {
+   "boundarySamples": 265,
+   "width10_90": {
+    "p25": 3,
+    "p50": 6,
+    "p75": 7
+   },
+   "hardShare": 0.185,
+   "bandingShare": 0.057
+  }
+ },
+ {
+  "id": "human-male-reference/channels/front-left-3q/studio/marks",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "human-male-reference/channels/forearm/studio/final",
+  "share": 0.00043,
+  "meanD": 12.8,
+  "bbox": [
+   67,
+   0,
+   56,
+   311
+  ],
+  "edge": {
+   "boundarySamples": 9,
+   "width10_90": {
+    "p25": 1,
+    "p50": 3,
+    "p75": 6
+   },
+   "hardShare": 0.444,
+   "bandingShare": 0
+  }
+ },
+ {
+  "id": "human-male-reference/channels/forearm/studio/albedo",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "human-male-reference/channels/forearm/studio/roughness",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "human-male-reference/channels/forearm/studio/height",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "human-male-reference/channels/forearm/studio/normal",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "human-male-reference/channels/forearm/studio/ao",
+  "share": 0.02124,
+  "meanD": 25.4,
+  "bbox": [
+   53,
+   0,
+   101,
+   370
+  ],
+  "edge": {
+   "boundarySamples": 214,
+   "width10_90": {
+    "p25": 1,
+    "p50": 1,
+    "p75": 9
+   },
+   "hardShare": 0.514,
+   "bandingShare": 0.037
+  }
+ },
+ {
+  "id": "human-male-reference/channels/forearm/studio/marks",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "human-male-marked/angles/front/studio/final",
+  "share": 0.0068,
+  "meanD": 23.9,
+  "bbox": [
+   139,
+   52,
+   151,
+   276
+  ],
+  "edge": {
+   "boundarySamples": 188,
+   "width10_90": {
+    "p25": 1,
+    "p50": 3,
+    "p75": 7
+   },
+   "hardShare": 0.399,
+   "bandingShare": 0.074
+  }
+ },
+ {
+  "id": "human-male-marked/angles/back/studio/final",
+  "share": 0.00569,
+  "meanD": 22.6,
+  "bbox": [
+   129,
+   85,
+   154,
+   449
+  ],
+  "edge": {
+   "boundarySamples": 145,
+   "width10_90": {
+    "p25": 1,
+    "p50": 2,
+    "p75": 7
+   },
+   "hardShare": 0.462,
+   "bandingShare": 0.055
+  }
+ },
+ {
+  "id": "human-male-marked/angles/front-left-3q/studio/final",
+  "share": 0.008,
+  "meanD": 21.5,
+  "bbox": [
+   163,
+   50,
+   121,
+   447
+  ],
+  "edge": {
+   "boundarySamples": 149,
+   "width10_90": {
+    "p25": 1,
+    "p50": 4,
+    "p75": 7
+   },
+   "hardShare": 0.322,
+   "bandingShare": 0.094
+  }
+ },
+ {
+  "id": "human-male-marked/angles/face/studio/final",
+  "share": 0.01843,
+  "meanD": 25.2,
+  "bbox": [
+   0,
+   309,
+   420,
+   239
+  ],
+  "edge": {
+   "boundarySamples": 159,
+   "width10_90": {
+    "p25": 1,
+    "p50": 2,
+    "p75": 7
+   },
+   "hardShare": 0.396,
+   "bandingShare": 0.082
+  }
+ },
+ {
+  "id": "human-male-marked/angles/forearm/studio/final",
+  "share": 0.00043,
+  "meanD": 12.8,
+  "bbox": [
+   67,
+   0,
+   56,
+   311
+  ],
+  "edge": {
+   "boundarySamples": 9,
+   "width10_90": {
+    "p25": 1,
+    "p50": 3,
+    "p75": 6
+   },
+   "hardShare": 0.444,
+   "bandingShare": 0
+  }
+ },
+ {
+  "id": "human-male-marked/angles/back-closeup/studio/final",
+  "share": 0.01588,
+  "meanD": 26.2,
+  "bbox": [
+   72,
+   190,
+   275,
+   321
+  ],
+  "edge": {
+   "boundarySamples": 205,
+   "width10_90": {
+    "p25": 1,
+    "p50": 4,
+    "p75": 7
+   },
+   "hardShare": 0.439,
+   "bandingShare": 0.107
+  }
+ },
+ {
+  "id": "human-male-marked/lights/front-left-3q/studio/final",
+  "share": 0.008,
+  "meanD": 21.5,
+  "bbox": [
+   163,
+   50,
+   121,
+   447
+  ],
+  "edge": {
+   "boundarySamples": 149,
+   "width10_90": {
+    "p25": 1,
+    "p50": 4,
+    "p75": 7
+   },
+   "hardShare": 0.322,
+   "bandingShare": 0.094
+  }
+ },
+ {
+  "id": "human-male-marked/lights/front-left-3q/rim/final",
+  "share": 0.00545,
+  "meanD": 18.2,
+  "bbox": [
+   163,
+   55,
+   121,
+   403
+  ],
+  "edge": {
+   "boundarySamples": 116,
+   "width10_90": {
+    "p25": 1,
+    "p50": 5,
+    "p75": 7
+   },
+   "hardShare": 0.293,
+   "bandingShare": 0.078
+  }
+ },
+ {
+  "id": "human-male-marked/lights/front-left-3q/flat/final",
+  "share": 0.0107,
+  "meanD": 22.4,
+  "bbox": [
+   162,
+   47,
+   122,
+   410
+  ],
+  "edge": {
+   "boundarySamples": 166,
+   "width10_90": {
+    "p25": 1,
+    "p50": 5,
+    "p75": 8
+   },
+   "hardShare": 0.259,
+   "bandingShare": 0.06
+  }
+ },
+ {
+  "id": "human-male-marked/lights/front-left-3q/daylight/final",
+  "share": 0.01045,
+  "meanD": 21.8,
+  "bbox": [
+   162,
+   48,
+   122,
+   410
+  ],
+  "edge": {
+   "boundarySamples": 167,
+   "width10_90": {
+    "p25": 2,
+    "p50": 5,
+    "p75": 7
+   },
+   "hardShare": 0.228,
+   "bandingShare": 0.114
+  }
+ },
+ {
+  "id": "human-male-marked/lights/front-left-3q/dusk/final",
+  "share": 0.00974,
+  "meanD": 22.6,
+  "bbox": [
+   162,
+   48,
+   122,
+   409
+  ],
+  "edge": {
+   "boundarySamples": 153,
+   "width10_90": {
+    "p25": 1,
+    "p50": 4,
+    "p75": 7
+   },
+   "hardShare": 0.255,
+   "bandingShare": 0.105
+  }
+ },
+ {
+  "id": "human-male-marked/channels/front-left-3q/studio/final",
+  "share": 0.008,
+  "meanD": 21.5,
+  "bbox": [
+   163,
+   50,
+   121,
+   447
+  ],
+  "edge": {
+   "boundarySamples": 149,
+   "width10_90": {
+    "p25": 1,
+    "p50": 4,
+    "p75": 7
+   },
+   "hardShare": 0.322,
+   "bandingShare": 0.094
+  }
+ },
+ {
+  "id": "human-male-marked/channels/front-left-3q/studio/albedo",
+  "share": 0.00239,
+  "meanD": 37.4,
+  "bbox": [
+   162,
+   55,
+   122,
+   403
+  ],
+  "edge": {
+   "boundarySamples": 41,
+   "width10_90": {
+    "p25": 1,
+    "p50": 2,
+    "p75": 3
+   },
+   "hardShare": 0.415,
+   "bandingShare": 0.073
+  }
+ },
+ {
+  "id": "human-male-marked/channels/front-left-3q/studio/roughness",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "human-male-marked/channels/front-left-3q/studio/height",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "human-male-marked/channels/front-left-3q/studio/normal",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "human-male-marked/channels/front-left-3q/studio/ao",
+  "share": 0.02464,
+  "meanD": 38.6,
+  "bbox": [
+   157,
+   42,
+   118,
+   339
+  ],
+  "edge": {
+   "boundarySamples": 265,
+   "width10_90": {
+    "p25": 3,
+    "p50": 6,
+    "p75": 7
+   },
+   "hardShare": 0.185,
+   "bandingShare": 0.057
+  }
+ },
+ {
+  "id": "human-male-marked/channels/front-left-3q/studio/marks",
+  "share": 0.00018,
+  "meanD": 30.3,
+  "bbox": [
+   191,
+   55,
+   11,
+   17
+  ],
+  "edge": {
+   "boundarySamples": 11,
+   "width10_90": {
+    "p25": 2,
+    "p50": 2,
+    "p75": 3
+   },
+   "hardShare": 0.273,
+   "bandingShare": 0
+  }
+ },
+ {
+  "id": "human-male-marked/channels/forearm/studio/final",
+  "share": 0.00043,
+  "meanD": 12.8,
+  "bbox": [
+   67,
+   0,
+   56,
+   311
+  ],
+  "edge": {
+   "boundarySamples": 9,
+   "width10_90": {
+    "p25": 1,
+    "p50": 3,
+    "p75": 6
+   },
+   "hardShare": 0.444,
+   "bandingShare": 0
+  }
+ },
+ {
+  "id": "human-male-marked/channels/forearm/studio/albedo",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "human-male-marked/channels/forearm/studio/roughness",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "human-male-marked/channels/forearm/studio/height",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "human-male-marked/channels/forearm/studio/normal",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "human-male-marked/channels/forearm/studio/ao",
+  "share": 0.02124,
+  "meanD": 25.4,
+  "bbox": [
+   53,
+   0,
+   101,
+   370
+  ],
+  "edge": {
+   "boundarySamples": 214,
+   "width10_90": {
+    "p25": 1,
+    "p50": 1,
+    "p75": 9
+   },
+   "hardShare": 0.514,
+   "bandingShare": 0.037
+  }
+ },
+ {
+  "id": "human-male-marked/channels/forearm/studio/marks",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "human-male-marked-bare/angles/front/studio/final",
+  "share": 0.01516,
+  "meanD": 23.4,
+  "bbox": [
+   100,
+   37,
+   228,
+   373
+  ],
+  "edge": {
+   "boundarySamples": 391,
+   "width10_90": {
+    "p25": 1,
+    "p50": 3,
+    "p75": 6
+   },
+   "hardShare": 0.368,
+   "bandingShare": 0.061
+  }
+ },
+ {
+  "id": "human-male-marked-bare/angles/back/studio/final",
+  "share": 0.00947,
+  "meanD": 21.7,
+  "bbox": [
+   91,
+   85,
+   230,
+   449
+  ],
+  "edge": {
+   "boundarySamples": 257,
+   "width10_90": {
+    "p25": 1,
+    "p50": 2,
+    "p75": 5
+   },
+   "hardShare": 0.486,
+   "bandingShare": 0.054
+  }
+ },
+ {
+  "id": "human-male-marked-bare/angles/front-left-3q/studio/final",
+  "share": 0.01757,
+  "meanD": 22.9,
+  "bbox": [
+   144,
+   36,
+   166,
+   461
+  ],
+  "edge": {
+   "boundarySamples": 298,
+   "width10_90": {
+    "p25": 2,
+    "p50": 4,
+    "p75": 7
+   },
+   "hardShare": 0.228,
+   "bandingShare": 0.094
+  }
+ },
+ {
+  "id": "human-male-marked-bare/angles/face/studio/final",
+  "share": 0.02959,
+  "meanD": 24.4,
+  "bbox": [
+   0,
+   252,
+   420,
+   304
+  ],
+  "edge": {
+   "boundarySamples": 216,
+   "width10_90": {
+    "p25": 1,
+    "p50": 4,
+    "p75": 8
+   },
+   "hardShare": 0.343,
+   "bandingShare": 0.106
+  }
+ },
+ {
+  "id": "human-male-marked-bare/angles/forearm/studio/final",
+  "share": 0.01718,
+  "meanD": 21.1,
+  "bbox": [
+   50,
+   0,
+   192,
+   560
+  ],
+  "edge": {
+   "boundarySamples": 216,
+   "width10_90": {
+    "p25": 1,
+    "p50": 2,
+    "p75": 6
+   },
+   "hardShare": 0.495,
+   "bandingShare": 0.032
+  }
+ },
+ {
+  "id": "human-male-marked-bare/angles/back-closeup/studio/final",
+  "share": 0.02295,
+  "meanD": 25,
+  "bbox": [
+   10,
+   192,
+   400,
+   356
+  ],
+  "edge": {
+   "boundarySamples": 406,
+   "width10_90": {
+    "p25": 1,
+    "p50": 2,
+    "p75": 7
+   },
+   "hardShare": 0.485,
+   "bandingShare": 0.084
+  }
+ },
+ {
+  "id": "human-male-marked-bare/channels/front-left-3q/studio/final",
+  "share": 0.01757,
+  "meanD": 22.9,
+  "bbox": [
+   144,
+   36,
+   166,
+   461
+  ],
+  "edge": {
+   "boundarySamples": 298,
+   "width10_90": {
+    "p25": 2,
+    "p50": 4,
+    "p75": 7
+   },
+   "hardShare": 0.228,
+   "bandingShare": 0.094
+  }
+ },
+ {
+  "id": "human-male-marked-bare/channels/front-left-3q/studio/albedo",
+  "share": 0.00691,
+  "meanD": 33.9,
+  "bbox": [
+   144,
+   36,
+   167,
+   424
+  ],
+  "edge": {
+   "boundarySamples": 134,
+   "width10_90": {
+    "p25": 1,
+    "p50": 2,
+    "p75": 4
+   },
+   "hardShare": 0.336,
+   "bandingShare": 0.06
+  }
+ },
+ {
+  "id": "human-male-marked-bare/channels/front-left-3q/studio/roughness",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "human-male-marked-bare/channels/front-left-3q/studio/height",
+  "share": 0.00003,
+  "meanD": 11.3,
+  "bbox": [
+   285,
+   246,
+   4,
+   12
+  ],
+  "edge": null
+ },
+ {
+  "id": "human-male-marked-bare/channels/front-left-3q/studio/normal",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "human-male-marked-bare/channels/front-left-3q/studio/ao",
+  "share": 0.02464,
+  "meanD": 38.6,
+  "bbox": [
+   157,
+   42,
+   118,
+   339
+  ],
+  "edge": {
+   "boundarySamples": 265,
+   "width10_90": {
+    "p25": 3,
+    "p50": 6,
+    "p75": 7
+   },
+   "hardShare": 0.185,
+   "bandingShare": 0.057
+  }
+ },
+ {
+  "id": "human-male-marked-bare/channels/front-left-3q/studio/marks",
+  "share": 0.00029,
+  "meanD": 25.7,
+  "bbox": [
+   191,
+   55,
+   100,
+   207
+  ],
+  "edge": {
+   "boundarySamples": 17,
+   "width10_90": {
+    "p25": 1,
+    "p50": 1,
+    "p75": 2
+   },
+   "hardShare": 0.529,
+   "bandingShare": 0
+  }
+ },
+ {
+  "id": "human-male-marked-bare/channels/forearm/studio/final",
+  "share": 0.01718,
+  "meanD": 21.1,
+  "bbox": [
+   50,
+   0,
+   192,
+   560
+  ],
+  "edge": {
+   "boundarySamples": 216,
+   "width10_90": {
+    "p25": 1,
+    "p50": 2,
+    "p75": 6
+   },
+   "hardShare": 0.495,
+   "bandingShare": 0.032
+  }
+ },
+ {
+  "id": "human-male-marked-bare/channels/forearm/studio/albedo",
+  "share": 0.01145,
+  "meanD": 32.7,
+  "bbox": [
+   50,
+   90,
+   192,
+   470
+  ],
+  "edge": {
+   "boundarySamples": 134,
+   "width10_90": {
+    "p25": 1,
+    "p50": 2,
+    "p75": 6
+   },
+   "hardShare": 0.433,
+   "bandingShare": 0.037
+  }
+ },
+ {
+  "id": "human-male-marked-bare/channels/forearm/studio/roughness",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "human-male-marked-bare/channels/forearm/studio/height",
+  "share": 0.0003,
+  "meanD": 12.7,
+  "bbox": [
+   169,
+   192,
+   13,
+   50
+  ],
+  "edge": {
+   "boundarySamples": 19,
+   "width10_90": {
+    "p25": 1,
+    "p50": 1,
+    "p75": 1
+   },
+   "hardShare": 0.895,
+   "bandingShare": 0.053
+  }
+ },
+ {
+  "id": "human-male-marked-bare/channels/forearm/studio/normal",
+  "share": 0.00054,
+  "meanD": 13.9,
+  "bbox": [
+   169,
+   188,
+   15,
+   56
+  ],
+  "edge": {
+   "boundarySamples": 26,
+   "width10_90": {
+    "p25": 1,
+    "p50": 1,
+    "p75": 2
+   },
+   "hardShare": 0.577,
+   "bandingShare": 0.077
+  }
+ },
+ {
+  "id": "human-male-marked-bare/channels/forearm/studio/ao",
+  "share": 0.02124,
+  "meanD": 25.4,
+  "bbox": [
+   53,
+   0,
+   101,
+   370
+  ],
+  "edge": {
+   "boundarySamples": 214,
+   "width10_90": {
+    "p25": 1,
+    "p50": 1,
+    "p75": 9
+   },
+   "hardShare": 0.514,
+   "bandingShare": 0.037
+  }
+ },
+ {
+  "id": "human-male-marked-bare/channels/forearm/studio/marks",
+  "share": 0.00052,
+  "meanD": 27.2,
+  "bbox": [
+   168,
+   188,
+   15,
+   56
+  ],
+  "edge": {
+   "boundarySamples": 29,
+   "width10_90": {
+    "p25": 1,
+    "p50": 1,
+    "p75": 1
+   },
+   "hardShare": 0.966,
+   "bandingShare": 0
+  }
+ },
+ {
+  "id": "ork-female-reference/angles/front/studio/final",
+  "share": 0.00162,
+  "meanD": 35.6,
+  "bbox": [
+   85,
+   91,
+   243,
+   313
+  ],
+  "edge": {
+   "boundarySamples": 36,
+   "width10_90": {
+    "p25": 1,
+    "p50": 2,
+    "p75": 3
+   },
+   "hardShare": 0.333,
+   "bandingShare": 0.111
+  }
+ },
+ {
+  "id": "ork-female-reference/angles/back/studio/final",
+  "share": 0.00415,
+  "meanD": 37.3,
+  "bbox": [
+   128,
+   146,
+   167,
+   284
+  ],
+  "edge": {
+   "boundarySamples": 61,
+   "width10_90": {
+    "p25": 2,
+    "p50": 4,
+    "p75": 5
+   },
+   "hardShare": 0.164,
+   "bandingShare": 0.115
+  }
+ },
+ {
+  "id": "ork-female-reference/angles/front-left-3q/studio/final",
+  "share": 0.00143,
+  "meanD": 34,
+  "bbox": [
+   117,
+   92,
+   171,
+   362
+  ],
+  "edge": {
+   "boundarySamples": 36,
+   "width10_90": {
+    "p25": 0,
+    "p50": 2,
+    "p75": 4
+   },
+   "hardShare": 0.5,
+   "bandingShare": 0.028
+  }
+ },
+ {
+  "id": "ork-female-reference/angles/face/studio/final",
+  "share": 0.00886,
+  "meanD": 38.1,
+  "bbox": [
+   128,
+   229,
+   147,
+   330
+  ],
+  "edge": {
+   "boundarySamples": 49,
+   "width10_90": {
+    "p25": 3,
+    "p50": 6,
+    "p75": 10
+   },
+   "hardShare": 0.204,
+   "bandingShare": 0.061
+  }
+ },
+ {
+  "id": "ork-female-reference/angles/forearm/studio/final",
+  "share": 0.00096,
+  "meanD": 31.3,
+  "bbox": [
+   26,
+   12,
+   82,
+   495
+  ],
+  "edge": {
+   "boundarySamples": 26,
+   "width10_90": {
+    "p25": 2,
+    "p50": 3,
+    "p75": 4
+   },
+   "hardShare": 0.192,
+   "bandingShare": 0.077
+  }
+ },
+ {
+  "id": "ork-female-reference/angles/back-closeup/studio/final",
+  "share": 0.00094,
+  "meanD": 25.8,
+  "bbox": [
+   107,
+   245,
+   190,
+   192
+  ],
+  "edge": {
+   "boundarySamples": 25,
+   "width10_90": {
+    "p25": 0,
+    "p50": 3,
+    "p75": 5
+   },
+   "hardShare": 0.32,
+   "bandingShare": 0.16
+  }
+ },
+ {
+  "id": "ork-female-reference/lights/front-left-3q/studio/final",
+  "share": 0.00143,
+  "meanD": 34,
+  "bbox": [
+   117,
+   92,
+   171,
+   362
+  ],
+  "edge": {
+   "boundarySamples": 36,
+   "width10_90": {
+    "p25": 0,
+    "p50": 2,
+    "p75": 4
+   },
+   "hardShare": 0.5,
+   "bandingShare": 0.028
+  }
+ },
+ {
+  "id": "ork-female-reference/lights/front-left-3q/rim/final",
+  "share": 0.00114,
+  "meanD": 29.2,
+  "bbox": [
+   196,
+   92,
+   89,
+   319
+  ],
+  "edge": {
+   "boundarySamples": 31,
+   "width10_90": {
+    "p25": 1,
+    "p50": 1,
+    "p75": 3
+   },
+   "hardShare": 0.548,
+   "bandingShare": 0.065
+  }
+ },
+ {
+  "id": "ork-female-reference/lights/front-left-3q/flat/final",
+  "share": 0.00152,
+  "meanD": 37.4,
+  "bbox": [
+   121,
+   92,
+   166,
+   320
+  ],
+  "edge": {
+   "boundarySamples": 37,
+   "width10_90": {
+    "p25": 1,
+    "p50": 2,
+    "p75": 3
+   },
+   "hardShare": 0.432,
+   "bandingShare": 0.054
+  }
+ },
+ {
+  "id": "ork-female-reference/lights/front-left-3q/daylight/final",
+  "share": 0.00172,
+  "meanD": 41.7,
+  "bbox": [
+   117,
+   92,
+   171,
+   320
+  ],
+  "edge": {
+   "boundarySamples": 48,
+   "width10_90": {
+    "p25": 1,
+    "p50": 2,
+    "p75": 4
+   },
+   "hardShare": 0.354,
+   "bandingShare": 0.104
+  }
+ },
+ {
+  "id": "ork-female-reference/lights/front-left-3q/dusk/final",
+  "share": 0.00137,
+  "meanD": 40.9,
+  "bbox": [
+   195,
+   92,
+   91,
+   320
+  ],
+  "edge": {
+   "boundarySamples": 31,
+   "width10_90": {
+    "p25": 1,
+    "p50": 2,
+    "p75": 2
+   },
+   "hardShare": 0.484,
+   "bandingShare": 0.032
+  }
+ },
+ {
+  "id": "ork-female-reference/channels/front-left-3q/studio/final",
+  "share": 0.00143,
+  "meanD": 34,
+  "bbox": [
+   117,
+   92,
+   171,
+   362
+  ],
+  "edge": {
+   "boundarySamples": 36,
+   "width10_90": {
+    "p25": 0,
+    "p50": 2,
+    "p75": 4
+   },
+   "hardShare": 0.5,
+   "bandingShare": 0.028
+  }
+ },
+ {
+  "id": "ork-female-reference/channels/front-left-3q/studio/albedo",
+  "share": 0.00137,
+  "meanD": 40.7,
+  "bbox": [
+   195,
+   92,
+   90,
+   320
+  ],
+  "edge": {
+   "boundarySamples": 33,
+   "width10_90": {
+    "p25": 1,
+    "p50": 2,
+    "p75": 2
+   },
+   "hardShare": 0.455,
+   "bandingShare": 0.03
+  }
+ },
+ {
+  "id": "ork-female-reference/channels/front-left-3q/studio/roughness",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "ork-female-reference/channels/front-left-3q/studio/height",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "ork-female-reference/channels/front-left-3q/studio/normal",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "ork-female-reference/channels/front-left-3q/studio/ao",
+  "share": 0.00741,
+  "meanD": 27,
+  "bbox": [
+   109,
+   96,
+   183,
+   236
+  ],
+  "edge": {
+   "boundarySamples": 108,
+   "width10_90": {
+    "p25": 3,
+    "p50": 6,
+    "p75": 7
+   },
+   "hardShare": 0.111,
+   "bandingShare": 0.083
+  }
+ },
+ {
+  "id": "ork-female-reference/channels/front-left-3q/studio/marks",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "ork-female-reference/channels/forearm/studio/final",
+  "share": 0.00096,
+  "meanD": 31.3,
+  "bbox": [
+   26,
+   12,
+   82,
+   495
+  ],
+  "edge": {
+   "boundarySamples": 26,
+   "width10_90": {
+    "p25": 2,
+    "p50": 3,
+    "p75": 4
+   },
+   "hardShare": 0.192,
+   "bandingShare": 0.077
+  }
+ },
+ {
+  "id": "ork-female-reference/channels/forearm/studio/albedo",
+  "share": 0.00091,
+  "meanD": 44.3,
+  "bbox": [
+   26,
+   12,
+   10,
+   31
+  ],
+  "edge": {
+   "boundarySamples": 13,
+   "width10_90": {
+    "p25": 3,
+    "p50": 4,
+    "p75": 4
+   },
+   "hardShare": 0,
+   "bandingShare": 0.077
+  }
+ },
+ {
+  "id": "ork-female-reference/channels/forearm/studio/roughness",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "ork-female-reference/channels/forearm/studio/height",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "ork-female-reference/channels/forearm/studio/normal",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "ork-female-reference/channels/forearm/studio/ao",
+  "share": 0.00102,
+  "meanD": 26.4,
+  "bbox": [
+   97,
+   142,
+   18,
+   28
+  ],
+  "edge": {
+   "boundarySamples": 27,
+   "width10_90": {
+    "p25": 1,
+    "p50": 4,
+    "p75": 6
+   },
+   "hardShare": 0.296,
+   "bandingShare": 0.037
+  }
+ },
+ {
+  "id": "ork-female-reference/channels/forearm/studio/marks",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "ork-female-marked/angles/front/studio/final",
+  "share": 0.00179,
+  "meanD": 34.2,
+  "bbox": [
+   85,
+   91,
+   243,
+   313
+  ],
+  "edge": {
+   "boundarySamples": 42,
+   "width10_90": {
+    "p25": 1,
+    "p50": 3,
+    "p75": 4
+   },
+   "hardShare": 0.31,
+   "bandingShare": 0.119
+  }
+ },
+ {
+  "id": "ork-female-marked/angles/back/studio/final",
+  "share": 0.00415,
+  "meanD": 37.3,
+  "bbox": [
+   128,
+   146,
+   167,
+   284
+  ],
+  "edge": {
+   "boundarySamples": 61,
+   "width10_90": {
+    "p25": 2,
+    "p50": 4,
+    "p75": 5
+   },
+   "hardShare": 0.164,
+   "bandingShare": 0.115
+  }
+ },
+ {
+  "id": "ork-female-marked/angles/front-left-3q/studio/final",
+  "share": 0.00153,
+  "meanD": 32.8,
+  "bbox": [
+   117,
+   92,
+   171,
+   362
+  ],
+  "edge": {
+   "boundarySamples": 44,
+   "width10_90": {
+    "p25": 0,
+    "p50": 2,
+    "p75": 4
+   },
+   "hardShare": 0.455,
+   "bandingShare": 0.023
+  }
+ },
+ {
+  "id": "ork-female-marked/angles/face/studio/final",
+  "share": 0.01188,
+  "meanD": 37.4,
+  "bbox": [
+   94,
+   229,
+   181,
+   330
+  ],
+  "edge": {
+   "boundarySamples": 129,
+   "width10_90": {
+    "p25": 1,
+    "p50": 2,
+    "p75": 6
+   },
+   "hardShare": 0.457,
+   "bandingShare": 0.047
+  }
+ },
+ {
+  "id": "ork-female-marked/angles/forearm/studio/final",
+  "share": 0.00096,
+  "meanD": 31.3,
+  "bbox": [
+   26,
+   12,
+   82,
+   495
+  ],
+  "edge": {
+   "boundarySamples": 26,
+   "width10_90": {
+    "p25": 2,
+    "p50": 3,
+    "p75": 4
+   },
+   "hardShare": 0.192,
+   "bandingShare": 0.077
+  }
+ },
+ {
+  "id": "ork-female-marked/angles/back-closeup/studio/final",
+  "share": 0.00094,
+  "meanD": 25.8,
+  "bbox": [
+   107,
+   245,
+   190,
+   192
+  ],
+  "edge": {
+   "boundarySamples": 25,
+   "width10_90": {
+    "p25": 0,
+    "p50": 3,
+    "p75": 5
+   },
+   "hardShare": 0.32,
+   "bandingShare": 0.16
+  }
+ },
+ {
+  "id": "ork-female-marked/lights/front-left-3q/studio/final",
+  "share": 0.00153,
+  "meanD": 32.8,
+  "bbox": [
+   117,
+   92,
+   171,
+   362
+  ],
+  "edge": {
+   "boundarySamples": 44,
+   "width10_90": {
+    "p25": 0,
+    "p50": 2,
+    "p75": 4
+   },
+   "hardShare": 0.455,
+   "bandingShare": 0.023
+  }
+ },
+ {
+  "id": "ork-female-marked/lights/front-left-3q/rim/final",
+  "share": 0.00119,
+  "meanD": 28.5,
+  "bbox": [
+   181,
+   92,
+   104,
+   319
+  ],
+  "edge": {
+   "boundarySamples": 34,
+   "width10_90": {
+    "p25": 1,
+    "p50": 1,
+    "p75": 3
+   },
+   "hardShare": 0.559,
+   "bandingShare": 0.059
+  }
+ },
+ {
+  "id": "ork-female-marked/lights/front-left-3q/flat/final",
+  "share": 0.00166,
+  "meanD": 35.7,
+  "bbox": [
+   121,
+   92,
+   166,
+   320
+  ],
+  "edge": {
+   "boundarySamples": 45,
+   "width10_90": {
+    "p25": 1,
+    "p50": 2,
+    "p75": 3
+   },
+   "hardShare": 0.4,
+   "bandingShare": 0.067
+  }
+ },
+ {
+  "id": "ork-female-marked/lights/front-left-3q/daylight/final",
+  "share": 0.00188,
+  "meanD": 39.6,
+  "bbox": [
+   117,
+   92,
+   171,
+   320
+  ],
+  "edge": {
+   "boundarySamples": 58,
+   "width10_90": {
+    "p25": 1,
+    "p50": 2,
+    "p75": 4
+   },
+   "hardShare": 0.345,
+   "bandingShare": 0.086
+  }
+ },
+ {
+  "id": "ork-female-marked/lights/front-left-3q/dusk/final",
+  "share": 0.00151,
+  "meanD": 38.5,
+  "bbox": [
+   181,
+   92,
+   105,
+   320
+  ],
+  "edge": {
+   "boundarySamples": 39,
+   "width10_90": {
+    "p25": 1,
+    "p50": 2,
+    "p75": 3
+   },
+   "hardShare": 0.462,
+   "bandingShare": 0.026
+  }
+ },
+ {
+  "id": "ork-female-marked/channels/front-left-3q/studio/final",
+  "share": 0.00153,
+  "meanD": 32.8,
+  "bbox": [
+   117,
+   92,
+   171,
+   362
+  ],
+  "edge": {
+   "boundarySamples": 44,
+   "width10_90": {
+    "p25": 0,
+    "p50": 2,
+    "p75": 4
+   },
+   "hardShare": 0.455,
+   "bandingShare": 0.023
+  }
+ },
+ {
+  "id": "ork-female-marked/channels/front-left-3q/studio/albedo",
+  "share": 0.00151,
+  "meanD": 38.5,
+  "bbox": [
+   181,
+   92,
+   104,
+   320
+  ],
+  "edge": {
+   "boundarySamples": 42,
+   "width10_90": {
+    "p25": 0,
+    "p50": 1,
+    "p75": 2
+   },
+   "hardShare": 0.524,
+   "bandingShare": 0.024
+  }
+ },
+ {
+  "id": "ork-female-marked/channels/front-left-3q/studio/roughness",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "ork-female-marked/channels/front-left-3q/studio/height",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "ork-female-marked/channels/front-left-3q/studio/normal",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "ork-female-marked/channels/front-left-3q/studio/ao",
+  "share": 0.00741,
+  "meanD": 27,
+  "bbox": [
+   109,
+   96,
+   183,
+   236
+  ],
+  "edge": {
+   "boundarySamples": 108,
+   "width10_90": {
+    "p25": 3,
+    "p50": 6,
+    "p75": 7
+   },
+   "hardShare": 0.111,
+   "bandingShare": 0.083
+  }
+ },
+ {
+  "id": "ork-female-marked/channels/front-left-3q/studio/marks",
+  "share": 0.00012,
+  "meanD": 25.6,
+  "bbox": [
+   181,
+   109,
+   9,
+   16
+  ],
+  "edge": {
+   "boundarySamples": 8,
+   "width10_90": {
+    "p25": 0,
+    "p50": 1,
+    "p75": 1
+   },
+   "hardShare": 0.875,
+   "bandingShare": 0
+  }
+ },
+ {
+  "id": "ork-female-marked/channels/forearm/studio/final",
+  "share": 0.00096,
+  "meanD": 31.3,
+  "bbox": [
+   26,
+   12,
+   82,
+   495
+  ],
+  "edge": {
+   "boundarySamples": 26,
+   "width10_90": {
+    "p25": 2,
+    "p50": 3,
+    "p75": 4
+   },
+   "hardShare": 0.192,
+   "bandingShare": 0.077
+  }
+ },
+ {
+  "id": "ork-female-marked/channels/forearm/studio/albedo",
+  "share": 0.00091,
+  "meanD": 44.3,
+  "bbox": [
+   26,
+   12,
+   10,
+   31
+  ],
+  "edge": {
+   "boundarySamples": 13,
+   "width10_90": {
+    "p25": 3,
+    "p50": 4,
+    "p75": 4
+   },
+   "hardShare": 0,
+   "bandingShare": 0.077
+  }
+ },
+ {
+  "id": "ork-female-marked/channels/forearm/studio/roughness",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "ork-female-marked/channels/forearm/studio/height",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "ork-female-marked/channels/forearm/studio/normal",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "ork-female-marked/channels/forearm/studio/ao",
+  "share": 0.00102,
+  "meanD": 26.4,
+  "bbox": [
+   97,
+   142,
+   18,
+   28
+  ],
+  "edge": {
+   "boundarySamples": 27,
+   "width10_90": {
+    "p25": 1,
+    "p50": 4,
+    "p75": 6
+   },
+   "hardShare": 0.296,
+   "bandingShare": 0.037
+  }
+ },
+ {
+  "id": "ork-female-marked/channels/forearm/studio/marks",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "ork-female-marked-bare/angles/front/studio/final",
+  "share": 0.01192,
+  "meanD": 47.6,
+  "bbox": [
+   59,
+   91,
+   299,
+   314
+  ],
+  "edge": {
+   "boundarySamples": 162,
+   "width10_90": {
+    "p25": 2,
+    "p50": 3,
+    "p75": 5
+   },
+   "hardShare": 0.241,
+   "bandingShare": 0.093
+  }
+ },
+ {
+  "id": "ork-female-marked-bare/angles/back/studio/final",
+  "share": 0.00893,
+  "meanD": 39.3,
+  "bbox": [
+   64,
+   145,
+   295,
+   288
+  ],
+  "edge": {
+   "boundarySamples": 145,
+   "width10_90": {
+    "p25": 2,
+    "p50": 4,
+    "p75": 5
+   },
+   "hardShare": 0.241,
+   "bandingShare": 0.11
+  }
+ },
+ {
+  "id": "ork-female-marked-bare/angles/front-left-3q/studio/final",
+  "share": 0.01034,
+  "meanD": 47.7,
+  "bbox": [
+   103,
+   92,
+   226,
+   362
+  ],
+  "edge": {
+   "boundarySamples": 150,
+   "width10_90": {
+    "p25": 1,
+    "p50": 3,
+    "p75": 5
+   },
+   "hardShare": 0.28,
+   "bandingShare": 0.1
+  }
+ },
+ {
+  "id": "ork-female-marked-bare/angles/face/studio/final",
+  "share": 0.01466,
+  "meanD": 37.7,
+  "bbox": [
+   94,
+   227,
+   188,
+   328
+  ],
+  "edge": {
+   "boundarySamples": 148,
+   "width10_90": {
+    "p25": 1,
+    "p50": 2,
+    "p75": 6
+   },
+   "hardShare": 0.446,
+   "bandingShare": 0.068
+  }
+ },
+ {
+  "id": "ork-female-marked-bare/angles/forearm/studio/final",
+  "share": 0.04476,
+  "meanD": 58.5,
+  "bbox": [
+   1,
+   9,
+   243,
+   502
+  ],
+  "edge": {
+   "boundarySamples": 141,
+   "width10_90": {
+    "p25": 2,
+    "p50": 5,
+    "p75": 6
+   },
+   "hardShare": 0.199,
+   "bandingShare": 0.085
+  }
+ },
+ {
+  "id": "ork-female-marked-bare/angles/back-closeup/studio/final",
+  "share": 0.00513,
+  "meanD": 26.9,
+  "bbox": [
+   77,
+   244,
+   245,
+   212
+  ],
+  "edge": {
+   "boundarySamples": 142,
+   "width10_90": {
+    "p25": 1,
+    "p50": 4,
+    "p75": 6
+   },
+   "hardShare": 0.275,
+   "bandingShare": 0.085
+  }
+ },
+ {
+  "id": "ork-female-marked-bare/channels/front-left-3q/studio/final",
+  "share": 0.01034,
+  "meanD": 47.7,
+  "bbox": [
+   103,
+   92,
+   226,
+   362
+  ],
+  "edge": {
+   "boundarySamples": 150,
+   "width10_90": {
+    "p25": 1,
+    "p50": 3,
+    "p75": 5
+   },
+   "hardShare": 0.28,
+   "bandingShare": 0.1
+  }
+ },
+ {
+  "id": "ork-female-marked-bare/channels/front-left-3q/studio/albedo",
+  "share": 0.01036,
+  "meanD": 58.2,
+  "bbox": [
+   103,
+   92,
+   226,
+   323
+  ],
+  "edge": {
+   "boundarySamples": 139,
+   "width10_90": {
+    "p25": 1,
+    "p50": 2,
+    "p75": 4
+   },
+   "hardShare": 0.345,
+   "bandingShare": 0.094
+  }
+ },
+ {
+  "id": "ork-female-marked-bare/channels/front-left-3q/studio/roughness",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "ork-female-marked-bare/channels/front-left-3q/studio/height",
+  "share": 0,
+  "meanD": 11,
+  "bbox": [
+   296,
+   223,
+   1,
+   1
+  ],
+  "edge": null
+ },
+ {
+  "id": "ork-female-marked-bare/channels/front-left-3q/studio/normal",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "ork-female-marked-bare/channels/front-left-3q/studio/ao",
+  "share": 0.00741,
+  "meanD": 27,
+  "bbox": [
+   109,
+   96,
+   183,
+   236
+  ],
+  "edge": {
+   "boundarySamples": 108,
+   "width10_90": {
+    "p25": 3,
+    "p50": 6,
+    "p75": 7
+   },
+   "hardShare": 0.111,
+   "bandingShare": 0.083
+  }
+ },
+ {
+  "id": "ork-female-marked-bare/channels/front-left-3q/studio/marks",
+  "share": 0.00017,
+  "meanD": 22.2,
+  "bbox": [
+   181,
+   109,
+   121,
+   121
+  ],
+  "edge": {
+   "boundarySamples": 12,
+   "width10_90": {
+    "p25": 0,
+    "p50": 1,
+    "p75": 1
+   },
+   "hardShare": 0.917,
+   "bandingShare": 0
+  }
+ },
+ {
+  "id": "ork-female-marked-bare/channels/forearm/studio/final",
+  "share": 0.04476,
+  "meanD": 58.5,
+  "bbox": [
+   1,
+   9,
+   243,
+   502
+  ],
+  "edge": {
+   "boundarySamples": 141,
+   "width10_90": {
+    "p25": 2,
+    "p50": 5,
+    "p75": 6
+   },
+   "hardShare": 0.199,
+   "bandingShare": 0.085
+  }
+ },
+ {
+  "id": "ork-female-marked-bare/channels/forearm/studio/albedo",
+  "share": 0.04546,
+  "meanD": 66.9,
+  "bbox": [
+   26,
+   8,
+   224,
+   273
+  ],
+  "edge": {
+   "boundarySamples": 132,
+   "width10_90": {
+    "p25": 3,
+    "p50": 5,
+    "p75": 6
+   },
+   "hardShare": 0.152,
+   "bandingShare": 0.076
+  }
+ },
+ {
+  "id": "ork-female-marked-bare/channels/forearm/studio/roughness",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "ork-female-marked-bare/channels/forearm/studio/height",
+  "share": 0.00021,
+  "meanD": 12.8,
+  "bbox": [
+   108,
+   175,
+   12,
+   36
+  ],
+  "edge": {
+   "boundarySamples": 7,
+   "width10_90": {
+    "p25": 1,
+    "p50": 2,
+    "p75": 2
+   },
+   "hardShare": 0.429,
+   "bandingShare": 0
+  }
+ },
+ {
+  "id": "ork-female-marked-bare/channels/forearm/studio/normal",
+  "share": 0.00026,
+  "meanD": 13.5,
+  "bbox": [
+   108,
+   191,
+   14,
+   22
+  ],
+  "edge": {
+   "boundarySamples": 14,
+   "width10_90": {
+    "p25": 1,
+    "p50": 1,
+    "p75": 2
+   },
+   "hardShare": 0.643,
+   "bandingShare": 0
+  }
+ },
+ {
+  "id": "ork-female-marked-bare/channels/forearm/studio/ao",
+  "share": 0.00102,
+  "meanD": 26.4,
+  "bbox": [
+   97,
+   142,
+   18,
+   28
+  ],
+  "edge": {
+   "boundarySamples": 27,
+   "width10_90": {
+    "p25": 1,
+    "p50": 4,
+    "p75": 6
+   },
+   "hardShare": 0.296,
+   "bandingShare": 0.037
+  }
+ },
+ {
+  "id": "ork-female-marked-bare/channels/forearm/studio/marks",
+  "share": 0.0005,
+  "meanD": 31,
+  "bbox": [
+   107,
+   172,
+   14,
+   40
+  ],
+  "edge": {
+   "boundarySamples": 29,
+   "width10_90": {
+    "p25": 1,
+    "p50": 1,
+    "p75": 2
+   },
+   "hardShare": 0.655,
+   "bandingShare": 0
+  }
+ },
+ {
+  "id": "elf-female-reference/angles/front/studio/final",
+  "share": 0.00724,
+  "meanD": 21,
+  "bbox": [
+   143,
+   36,
+   130,
+   296
+  ],
+  "edge": {
+   "boundarySamples": 190,
+   "width10_90": {
+    "p25": 1,
+    "p50": 3,
+    "p75": 6
+   },
+   "hardShare": 0.321,
+   "bandingShare": 0.079
+  }
+ },
+ {
+  "id": "elf-female-reference/angles/back/studio/final",
+  "share": 0.00365,
+  "meanD": 18,
+  "bbox": [
+   146,
+   30,
+   119,
+   510
+  ],
+  "edge": {
+   "boundarySamples": 124,
+   "width10_90": {
+    "p25": 1,
+    "p50": 3,
+    "p75": 6
+   },
+   "hardShare": 0.435,
+   "bandingShare": 0.065
+  }
+ },
+ {
+  "id": "elf-female-reference/angles/front-left-3q/studio/final",
+  "share": 0.00711,
+  "meanD": 18.3,
+  "bbox": [
+   168,
+   32,
+   102,
+   484
+  ],
+  "edge": {
+   "boundarySamples": 155,
+   "width10_90": {
+    "p25": 3,
+    "p50": 5,
+    "p75": 7
+   },
+   "hardShare": 0.206,
+   "bandingShare": 0.077
+  }
+ },
+ {
+  "id": "elf-female-reference/angles/face/studio/final",
+  "share": 0.04496,
+  "meanD": 18.7,
+  "bbox": [
+   0,
+   240,
+   420,
+   320
+  ],
+  "edge": {
+   "boundarySamples": 315,
+   "width10_90": {
+    "p25": 1,
+    "p50": 3,
+    "p75": 8
+   },
+   "hardShare": 0.381,
+   "bandingShare": 0.083
+  }
+ },
+ {
+  "id": "elf-female-reference/angles/forearm/studio/final",
+  "share": 0.00045,
+  "meanD": 12.3,
+  "bbox": [
+   123,
+   0,
+   31,
+   127
+  ],
+  "edge": {
+   "boundarySamples": 5,
+   "width10_90": {
+    "p25": 1,
+    "p50": 1,
+    "p75": 5
+   },
+   "hardShare": 0.6,
+   "bandingShare": 0
+  }
+ },
+ {
+  "id": "elf-female-reference/angles/back-closeup/studio/final",
+  "share": 0.01504,
+  "meanD": 19.3,
+  "bbox": [
+   77,
+   60,
+   266,
+   495
+  ],
+  "edge": {
+   "boundarySamples": 240,
+   "width10_90": {
+    "p25": 1,
+    "p50": 4,
+    "p75": 8
+   },
+   "hardShare": 0.442,
+   "bandingShare": 0.096
+  }
+ },
+ {
+  "id": "elf-female-reference/lights/front-left-3q/studio/final",
+  "share": 0.00711,
+  "meanD": 18.3,
+  "bbox": [
+   168,
+   32,
+   102,
+   484
+  ],
+  "edge": {
+   "boundarySamples": 155,
+   "width10_90": {
+    "p25": 3,
+    "p50": 5,
+    "p75": 7
+   },
+   "hardShare": 0.206,
+   "bandingShare": 0.077
+  }
+ },
+ {
+  "id": "elf-female-reference/lights/front-left-3q/rim/final",
+  "share": 0.00452,
+  "meanD": 15.7,
+  "bbox": [
+   168,
+   34,
+   102,
+   362
+  ],
+  "edge": {
+   "boundarySamples": 102,
+   "width10_90": {
+    "p25": 1,
+    "p50": 6,
+    "p75": 7
+   },
+   "hardShare": 0.275,
+   "bandingShare": 0.098
+  }
+ },
+ {
+  "id": "elf-female-reference/lights/front-left-3q/flat/final",
+  "share": 0.00869,
+  "meanD": 20.5,
+  "bbox": [
+   168,
+   32,
+   102,
+   364
+  ],
+  "edge": {
+   "boundarySamples": 169,
+   "width10_90": {
+    "p25": 2,
+    "p50": 5,
+    "p75": 7
+   },
+   "hardShare": 0.237,
+   "bandingShare": 0.059
+  }
+ },
+ {
+  "id": "elf-female-reference/lights/front-left-3q/daylight/final",
+  "share": 0.00789,
+  "meanD": 20.1,
+  "bbox": [
+   168,
+   32,
+   102,
+   364
+  ],
+  "edge": {
+   "boundarySamples": 164,
+   "width10_90": {
+    "p25": 2,
+    "p50": 5,
+    "p75": 7
+   },
+   "hardShare": 0.195,
+   "bandingShare": 0.091
+  }
+ },
+ {
+  "id": "elf-female-reference/lights/front-left-3q/dusk/final",
+  "share": 0.00798,
+  "meanD": 19.7,
+  "bbox": [
+   168,
+   32,
+   102,
+   364
+  ],
+  "edge": {
+   "boundarySamples": 156,
+   "width10_90": {
+    "p25": 2,
+    "p50": 5,
+    "p75": 7
+   },
+   "hardShare": 0.154,
+   "bandingShare": 0.096
+  }
+ },
+ {
+  "id": "elf-female-reference/channels/front-left-3q/studio/final",
+  "share": 0.00711,
+  "meanD": 18.3,
+  "bbox": [
+   168,
+   32,
+   102,
+   484
+  ],
+  "edge": {
+   "boundarySamples": 155,
+   "width10_90": {
+    "p25": 3,
+    "p50": 5,
+    "p75": 7
+   },
+   "hardShare": 0.206,
+   "bandingShare": 0.077
+  }
+ },
+ {
+  "id": "elf-female-reference/channels/front-left-3q/studio/albedo",
+  "share": 0.00125,
+  "meanD": 22.4,
+  "bbox": [
+   168,
+   92,
+   102,
+   304
+  ],
+  "edge": {
+   "boundarySamples": 26,
+   "width10_90": {
+    "p25": 1,
+    "p50": 3,
+    "p75": 5
+   },
+   "hardShare": 0.269,
+   "bandingShare": 0.115
+  }
+ },
+ {
+  "id": "elf-female-reference/channels/front-left-3q/studio/roughness",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "elf-female-reference/channels/front-left-3q/studio/height",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "elf-female-reference/channels/front-left-3q/studio/normal",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "elf-female-reference/channels/front-left-3q/studio/ao",
+  "share": 0.02342,
+  "meanD": 37.7,
+  "bbox": [
+   167,
+   31,
+   106,
+   375
+  ],
+  "edge": {
+   "boundarySamples": 313,
+   "width10_90": {
+    "p25": 2,
+    "p50": 6,
+    "p75": 7
+   },
+   "hardShare": 0.173,
+   "bandingShare": 0.07
+  }
+ },
+ {
+  "id": "elf-female-reference/channels/front-left-3q/studio/marks",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "elf-female-reference/channels/forearm/studio/final",
+  "share": 0.00045,
+  "meanD": 12.3,
+  "bbox": [
+   123,
+   0,
+   31,
+   127
+  ],
+  "edge": {
+   "boundarySamples": 5,
+   "width10_90": {
+    "p25": 1,
+    "p50": 1,
+    "p75": 5
+   },
+   "hardShare": 0.6,
+   "bandingShare": 0
+  }
+ },
+ {
+  "id": "elf-female-reference/channels/forearm/studio/albedo",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "elf-female-reference/channels/forearm/studio/roughness",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "elf-female-reference/channels/forearm/studio/height",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "elf-female-reference/channels/forearm/studio/normal",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "elf-female-reference/channels/forearm/studio/ao",
+  "share": 0.01483,
+  "meanD": 23.4,
+  "bbox": [
+   73,
+   0,
+   88,
+   520
+  ],
+  "edge": {
+   "boundarySamples": 137,
+   "width10_90": {
+    "p25": 1,
+    "p50": 1,
+    "p75": 8
+   },
+   "hardShare": 0.526,
+   "bandingShare": 0.073
+  }
+ },
+ {
+  "id": "elf-female-reference/channels/forearm/studio/marks",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "elf-female-marked/angles/front/studio/final",
+  "share": 0.00763,
+  "meanD": 21.5,
+  "bbox": [
+   143,
+   36,
+   130,
+   296
+  ],
+  "edge": {
+   "boundarySamples": 211,
+   "width10_90": {
+    "p25": 1,
+    "p50": 3,
+    "p75": 6
+   },
+   "hardShare": 0.313,
+   "bandingShare": 0.095
+  }
+ },
+ {
+  "id": "elf-female-marked/angles/back/studio/final",
+  "share": 0.00365,
+  "meanD": 18,
+  "bbox": [
+   146,
+   30,
+   119,
+   510
+  ],
+  "edge": {
+   "boundarySamples": 124,
+   "width10_90": {
+    "p25": 1,
+    "p50": 3,
+    "p75": 6
+   },
+   "hardShare": 0.435,
+   "bandingShare": 0.065
+  }
+ },
+ {
+  "id": "elf-female-marked/angles/front-left-3q/studio/final",
+  "share": 0.00733,
+  "meanD": 18.6,
+  "bbox": [
+   168,
+   32,
+   102,
+   484
+  ],
+  "edge": {
+   "boundarySamples": 166,
+   "width10_90": {
+    "p25": 2,
+    "p50": 5,
+    "p75": 7
+   },
+   "hardShare": 0.199,
+   "bandingShare": 0.084
+  }
+ },
+ {
+  "id": "elf-female-marked/angles/face/studio/final",
+  "share": 0.04918,
+  "meanD": 21.8,
+  "bbox": [
+   0,
+   240,
+   420,
+   320
+  ],
+  "edge": {
+   "boundarySamples": 397,
+   "width10_90": {
+    "p25": 1,
+    "p50": 3,
+    "p75": 7
+   },
+   "hardShare": 0.388,
+   "bandingShare": 0.068
+  }
+ },
+ {
+  "id": "elf-female-marked/angles/forearm/studio/final",
+  "share": 0.00045,
+  "meanD": 12.3,
+  "bbox": [
+   123,
+   0,
+   31,
+   127
+  ],
+  "edge": {
+   "boundarySamples": 5,
+   "width10_90": {
+    "p25": 1,
+    "p50": 1,
+    "p75": 5
+   },
+   "hardShare": 0.6,
+   "bandingShare": 0
+  }
+ },
+ {
+  "id": "elf-female-marked/angles/back-closeup/studio/final",
+  "share": 0.01504,
+  "meanD": 19.3,
+  "bbox": [
+   77,
+   60,
+   266,
+   495
+  ],
+  "edge": {
+   "boundarySamples": 240,
+   "width10_90": {
+    "p25": 1,
+    "p50": 4,
+    "p75": 8
+   },
+   "hardShare": 0.442,
+   "bandingShare": 0.096
+  }
+ },
+ {
+  "id": "elf-female-marked/lights/front-left-3q/studio/final",
+  "share": 0.00733,
+  "meanD": 18.6,
+  "bbox": [
+   168,
+   32,
+   102,
+   484
+  ],
+  "edge": {
+   "boundarySamples": 166,
+   "width10_90": {
+    "p25": 2,
+    "p50": 5,
+    "p75": 7
+   },
+   "hardShare": 0.199,
+   "bandingShare": 0.084
+  }
+ },
+ {
+  "id": "elf-female-marked/lights/front-left-3q/rim/final",
+  "share": 0.00466,
+  "meanD": 15.9,
+  "bbox": [
+   168,
+   34,
+   102,
+   362
+  ],
+  "edge": {
+   "boundarySamples": 109,
+   "width10_90": {
+    "p25": 1,
+    "p50": 5,
+    "p75": 7
+   },
+   "hardShare": 0.275,
+   "bandingShare": 0.101
+  }
+ },
+ {
+  "id": "elf-female-marked/lights/front-left-3q/flat/final",
+  "share": 0.00892,
+  "meanD": 20.6,
+  "bbox": [
+   168,
+   32,
+   102,
+   364
+  ],
+  "edge": {
+   "boundarySamples": 182,
+   "width10_90": {
+    "p25": 2,
+    "p50": 5,
+    "p75": 7
+   },
+   "hardShare": 0.236,
+   "bandingShare": 0.077
+  }
+ },
+ {
+  "id": "elf-female-marked/lights/front-left-3q/daylight/final",
+  "share": 0.00812,
+  "meanD": 20.4,
+  "bbox": [
+   168,
+   32,
+   102,
+   364
+  ],
+  "edge": {
+   "boundarySamples": 176,
+   "width10_90": {
+    "p25": 2,
+    "p50": 5,
+    "p75": 7
+   },
+   "hardShare": 0.193,
+   "bandingShare": 0.102
+  }
+ },
+ {
+  "id": "elf-female-marked/lights/front-left-3q/dusk/final",
+  "share": 0.00819,
+  "meanD": 19.8,
+  "bbox": [
+   168,
+   32,
+   102,
+   364
+  ],
+  "edge": {
+   "boundarySamples": 170,
+   "width10_90": {
+    "p25": 2,
+    "p50": 5,
+    "p75": 7
+   },
+   "hardShare": 0.165,
+   "bandingShare": 0.112
+  }
+ },
+ {
+  "id": "elf-female-marked/channels/front-left-3q/studio/final",
+  "share": 0.00733,
+  "meanD": 18.6,
+  "bbox": [
+   168,
+   32,
+   102,
+   484
+  ],
+  "edge": {
+   "boundarySamples": 166,
+   "width10_90": {
+    "p25": 2,
+    "p50": 5,
+    "p75": 7
+   },
+   "hardShare": 0.199,
+   "bandingShare": 0.084
+  }
+ },
+ {
+  "id": "elf-female-marked/channels/front-left-3q/studio/albedo",
+  "share": 0.00149,
+  "meanD": 23.4,
+  "bbox": [
+   168,
+   45,
+   102,
+   351
+  ],
+  "edge": {
+   "boundarySamples": 36,
+   "width10_90": {
+    "p25": 2,
+    "p50": 3,
+    "p75": 4
+   },
+   "hardShare": 0.222,
+   "bandingShare": 0.167
+  }
+ },
+ {
+  "id": "elf-female-marked/channels/front-left-3q/studio/roughness",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "elf-female-marked/channels/front-left-3q/studio/height",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "elf-female-marked/channels/front-left-3q/studio/normal",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "elf-female-marked/channels/front-left-3q/studio/ao",
+  "share": 0.02342,
+  "meanD": 37.7,
+  "bbox": [
+   167,
+   31,
+   106,
+   375
+  ],
+  "edge": {
+   "boundarySamples": 313,
+   "width10_90": {
+    "p25": 2,
+    "p50": 6,
+    "p75": 7
+   },
+   "hardShare": 0.173,
+   "bandingShare": 0.07
+  }
+ },
+ {
+  "id": "elf-female-marked/channels/front-left-3q/studio/marks",
+  "share": 0.00023,
+  "meanD": 29.4,
+  "bbox": [
+   194,
+   45,
+   11,
+   23
+  ],
+  "edge": {
+   "boundarySamples": 10,
+   "width10_90": {
+    "p25": 2,
+    "p50": 2,
+    "p75": 3
+   },
+   "hardShare": 0.1,
+   "bandingShare": 0.4
+  }
+ },
+ {
+  "id": "elf-female-marked/channels/forearm/studio/final",
+  "share": 0.00045,
+  "meanD": 12.3,
+  "bbox": [
+   123,
+   0,
+   31,
+   127
+  ],
+  "edge": {
+   "boundarySamples": 5,
+   "width10_90": {
+    "p25": 1,
+    "p50": 1,
+    "p75": 5
+   },
+   "hardShare": 0.6,
+   "bandingShare": 0
+  }
+ },
+ {
+  "id": "elf-female-marked/channels/forearm/studio/albedo",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "elf-female-marked/channels/forearm/studio/roughness",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "elf-female-marked/channels/forearm/studio/height",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "elf-female-marked/channels/forearm/studio/normal",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "elf-female-marked/channels/forearm/studio/ao",
+  "share": 0.01483,
+  "meanD": 23.4,
+  "bbox": [
+   73,
+   0,
+   88,
+   520
+  ],
+  "edge": {
+   "boundarySamples": 137,
+   "width10_90": {
+    "p25": 1,
+    "p50": 1,
+    "p75": 8
+   },
+   "hardShare": 0.526,
+   "bandingShare": 0.073
+  }
+ },
+ {
+  "id": "elf-female-marked/channels/forearm/studio/marks",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "elf-female-marked-bare/angles/front/studio/final",
+  "share": 0.01487,
+  "meanD": 20.6,
+  "bbox": [
+   107,
+   36,
+   215,
+   318
+  ],
+  "edge": {
+   "boundarySamples": 362,
+   "width10_90": {
+    "p25": 1,
+    "p50": 3,
+    "p75": 6
+   },
+   "hardShare": 0.296,
+   "bandingShare": 0.086
+  }
+ },
+ {
+  "id": "elf-female-marked-bare/angles/back/studio/final",
+  "share": 0.00896,
+  "meanD": 18.8,
+  "bbox": [
+   97,
+   30,
+   218,
+   510
+  ],
+  "edge": {
+   "boundarySamples": 231,
+   "width10_90": {
+    "p25": 1,
+    "p50": 2,
+    "p75": 5
+   },
+   "hardShare": 0.446,
+   "bandingShare": 0.061
+  }
+ },
+ {
+  "id": "elf-female-marked-bare/angles/front-left-3q/studio/final",
+  "share": 0.01468,
+  "meanD": 21.4,
+  "bbox": [
+   149,
+   32,
+   158,
+   484
+  ],
+  "edge": {
+   "boundarySamples": 265,
+   "width10_90": {
+    "p25": 1,
+    "p50": 4,
+    "p75": 7
+   },
+   "hardShare": 0.253,
+   "bandingShare": 0.094
+  }
+ },
+ {
+  "id": "elf-female-marked-bare/angles/face/studio/final",
+  "share": 0.05662,
+  "meanD": 24.6,
+  "bbox": [
+   0,
+   240,
+   420,
+   320
+  ],
+  "edge": {
+   "boundarySamples": 412,
+   "width10_90": {
+    "p25": 1,
+    "p50": 3,
+    "p75": 7
+   },
+   "hardShare": 0.386,
+   "bandingShare": 0.08
+  }
+ },
+ {
+  "id": "elf-female-marked-bare/angles/forearm/studio/final",
+  "share": 0.01233,
+  "meanD": 19.1,
+  "bbox": [
+   77,
+   0,
+   156,
+   341
+  ],
+  "edge": {
+   "boundarySamples": 132,
+   "width10_90": {
+    "p25": 1,
+    "p50": 2,
+    "p75": 6
+   },
+   "hardShare": 0.409,
+   "bandingShare": 0.061
+  }
+ },
+ {
+  "id": "elf-female-marked-bare/angles/back-closeup/studio/final",
+  "share": 0.02155,
+  "meanD": 20.7,
+  "bbox": [
+   0,
+   60,
+   383,
+   500
+  ],
+  "edge": {
+   "boundarySamples": 405,
+   "width10_90": {
+    "p25": 1,
+    "p50": 3,
+    "p75": 7
+   },
+   "hardShare": 0.407,
+   "bandingShare": 0.099
+  }
+ },
+ {
+  "id": "elf-female-marked-bare/channels/front-left-3q/studio/final",
+  "share": 0.01468,
+  "meanD": 21.4,
+  "bbox": [
+   149,
+   32,
+   158,
+   484
+  ],
+  "edge": {
+   "boundarySamples": 265,
+   "width10_90": {
+    "p25": 1,
+    "p50": 4,
+    "p75": 7
+   },
+   "hardShare": 0.253,
+   "bandingShare": 0.094
+  }
+ },
+ {
+  "id": "elf-female-marked-bare/channels/front-left-3q/studio/albedo",
+  "share": 0.00518,
+  "meanD": 22.3,
+  "bbox": [
+   149,
+   45,
+   158,
+   354
+  ],
+  "edge": {
+   "boundarySamples": 95,
+   "width10_90": {
+    "p25": 1,
+    "p50": 2,
+    "p75": 4
+   },
+   "hardShare": 0.358,
+   "bandingShare": 0.074
+  }
+ },
+ {
+  "id": "elf-female-marked-bare/channels/front-left-3q/studio/roughness",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "elf-female-marked-bare/channels/front-left-3q/studio/height",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "elf-female-marked-bare/channels/front-left-3q/studio/normal",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "elf-female-marked-bare/channels/front-left-3q/studio/ao",
+  "share": 0.02342,
+  "meanD": 37.7,
+  "bbox": [
+   167,
+   31,
+   106,
+   375
+  ],
+  "edge": {
+   "boundarySamples": 313,
+   "width10_90": {
+    "p25": 2,
+    "p50": 6,
+    "p75": 7
+   },
+   "hardShare": 0.173,
+   "bandingShare": 0.07
+  }
+ },
+ {
+  "id": "elf-female-marked-bare/channels/front-left-3q/studio/marks",
+  "share": 0.00023,
+  "meanD": 29.4,
+  "bbox": [
+   194,
+   45,
+   11,
+   23
+  ],
+  "edge": {
+   "boundarySamples": 10,
+   "width10_90": {
+    "p25": 2,
+    "p50": 2,
+    "p75": 3
+   },
+   "hardShare": 0.1,
+   "bandingShare": 0.4
+  }
+ },
+ {
+  "id": "elf-female-marked-bare/channels/forearm/studio/final",
+  "share": 0.01233,
+  "meanD": 19.1,
+  "bbox": [
+   77,
+   0,
+   156,
+   341
+  ],
+  "edge": {
+   "boundarySamples": 132,
+   "width10_90": {
+    "p25": 1,
+    "p50": 2,
+    "p75": 6
+   },
+   "hardShare": 0.409,
+   "bandingShare": 0.061
+  }
+ },
+ {
+  "id": "elf-female-marked-bare/channels/forearm/studio/albedo",
+  "share": 0.01015,
+  "meanD": 22.6,
+  "bbox": [
+   88,
+   129,
+   145,
+   398
+  ],
+  "edge": {
+   "boundarySamples": 95,
+   "width10_90": {
+    "p25": 1,
+    "p50": 2,
+    "p75": 6
+   },
+   "hardShare": 0.453,
+   "bandingShare": 0.095
+  }
+ },
+ {
+  "id": "elf-female-marked-bare/channels/forearm/studio/roughness",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "elf-female-marked-bare/channels/forearm/studio/height",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "elf-female-marked-bare/channels/forearm/studio/normal",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "elf-female-marked-bare/channels/forearm/studio/ao",
+  "share": 0.01483,
+  "meanD": 23.4,
+  "bbox": [
+   73,
+   0,
+   88,
+   520
+  ],
+  "edge": {
+   "boundarySamples": 137,
+   "width10_90": {
+    "p25": 1,
+    "p50": 1,
+    "p75": 8
+   },
+   "hardShare": 0.526,
+   "bandingShare": 0.073
+  }
+ },
+ {
+  "id": "elf-female-marked-bare/channels/forearm/studio/marks",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "dwarf-male-reference/angles/front/studio/final",
+  "share": 0.00176,
+  "meanD": 36.4,
+  "bbox": [
+   137,
+   101,
+   160,
+   209
+  ],
+  "edge": {
+   "boundarySamples": 39,
+   "width10_90": {
+    "p25": 2,
+    "p50": 3,
+    "p75": 5
+   },
+   "hardShare": 0.205,
+   "bandingShare": 0.103
+  }
+ },
+ {
+  "id": "dwarf-male-reference/angles/back/studio/final",
+  "share": 0.00278,
+  "meanD": 31.6,
+  "bbox": [
+   128,
+   200,
+   166,
+   256
+  ],
+  "edge": {
+   "boundarySamples": 35,
+   "width10_90": {
+    "p25": 2,
+    "p50": 3,
+    "p75": 4
+   },
+   "hardShare": 0.2,
+   "bandingShare": 0.086
+  }
+ },
+ {
+  "id": "dwarf-male-reference/angles/front-left-3q/studio/final",
+  "share": 0.00172,
+  "meanD": 31.6,
+  "bbox": [
+   142,
+   102,
+   131,
+   309
+  ],
+  "edge": {
+   "boundarySamples": 43,
+   "width10_90": {
+    "p25": 1,
+    "p50": 3,
+    "p75": 5
+   },
+   "hardShare": 0.349,
+   "bandingShare": 0.093
+  }
+ },
+ {
+  "id": "dwarf-male-reference/angles/face/studio/final",
+  "share": 0.01269,
+  "meanD": 31.6,
+  "bbox": [
+   144,
+   244,
+   139,
+   110
+  ],
+  "edge": {
+   "boundarySamples": 79,
+   "width10_90": {
+    "p25": 1,
+    "p50": 2,
+    "p75": 7
+   },
+   "hardShare": 0.481,
+   "bandingShare": 0.063
+  }
+ },
+ {
+  "id": "dwarf-male-reference/angles/forearm/studio/final",
+  "share": 0.0003,
+  "meanD": 23.1,
+  "bbox": [
+   23,
+   0,
+   78,
+   523
+  ],
+  "edge": {
+   "boundarySamples": 4,
+   "width10_90": {
+    "p25": 0,
+    "p50": 3,
+    "p75": 3
+   },
+   "hardShare": 0.5,
+   "bandingShare": 0
+  }
+ },
+ {
+  "id": "dwarf-male-reference/angles/back-closeup/studio/final",
+  "share": 0.00007,
+  "meanD": 12.4,
+  "bbox": [
+   134,
+   238,
+   156,
+   190
+  ],
+  "edge": null
+ },
+ {
+  "id": "dwarf-male-reference/lights/front-left-3q/studio/final",
+  "share": 0.00172,
+  "meanD": 31.6,
+  "bbox": [
+   142,
+   102,
+   131,
+   309
+  ],
+  "edge": {
+   "boundarySamples": 43,
+   "width10_90": {
+    "p25": 1,
+    "p50": 3,
+    "p75": 5
+   },
+   "hardShare": 0.349,
+   "bandingShare": 0.093
+  }
+ },
+ {
+  "id": "dwarf-male-reference/lights/front-left-3q/rim/final",
+  "share": 0.00127,
+  "meanD": 24.8,
+  "bbox": [
+   144,
+   103,
+   113,
+   309
+  ],
+  "edge": {
+   "boundarySamples": 27,
+   "width10_90": {
+    "p25": 1,
+    "p50": 2,
+    "p75": 4
+   },
+   "hardShare": 0.37,
+   "bandingShare": 0.074
+  }
+ },
+ {
+  "id": "dwarf-male-reference/lights/front-left-3q/flat/final",
+  "share": 0.00196,
+  "meanD": 31.6,
+  "bbox": [
+   142,
+   102,
+   116,
+   310
+  ],
+  "edge": {
+   "boundarySamples": 48,
+   "width10_90": {
+    "p25": 2,
+    "p50": 4,
+    "p75": 6
+   },
+   "hardShare": 0.25,
+   "bandingShare": 0.104
+  }
+ },
+ {
+  "id": "dwarf-male-reference/lights/front-left-3q/daylight/final",
+  "share": 0.00203,
+  "meanD": 37.1,
+  "bbox": [
+   142,
+   102,
+   116,
+   310
+  ],
+  "edge": {
+   "boundarySamples": 48,
+   "width10_90": {
+    "p25": 2,
+    "p50": 4,
+    "p75": 6
+   },
+   "hardShare": 0.25,
+   "bandingShare": 0.083
+  }
+ },
+ {
+  "id": "dwarf-male-reference/lights/front-left-3q/dusk/final",
+  "share": 0.00187,
+  "meanD": 33.2,
+  "bbox": [
+   142,
+   102,
+   116,
+   310
+  ],
+  "edge": {
+   "boundarySamples": 44,
+   "width10_90": {
+    "p25": 1,
+    "p50": 3,
+    "p75": 5
+   },
+   "hardShare": 0.295,
+   "bandingShare": 0.045
+  }
+ },
+ {
+  "id": "dwarf-male-reference/channels/front-left-3q/studio/final",
+  "share": 0.00172,
+  "meanD": 31.6,
+  "bbox": [
+   142,
+   102,
+   131,
+   309
+  ],
+  "edge": {
+   "boundarySamples": 43,
+   "width10_90": {
+    "p25": 1,
+    "p50": 3,
+    "p75": 5
+   },
+   "hardShare": 0.349,
+   "bandingShare": 0.093
+  }
+ },
+ {
+  "id": "dwarf-male-reference/channels/front-left-3q/studio/albedo",
+  "share": 0.00142,
+  "meanD": 38.1,
+  "bbox": [
+   142,
+   102,
+   116,
+   310
+  ],
+  "edge": {
+   "boundarySamples": 33,
+   "width10_90": {
+    "p25": 1,
+    "p50": 3,
+    "p75": 4
+   },
+   "hardShare": 0.333,
+   "bandingShare": 0.152
+  }
+ },
+ {
+  "id": "dwarf-male-reference/channels/front-left-3q/studio/roughness",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "dwarf-male-reference/channels/front-left-3q/studio/height",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "dwarf-male-reference/channels/front-left-3q/studio/normal",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "dwarf-male-reference/channels/front-left-3q/studio/ao",
+  "share": 0.00629,
+  "meanD": 23.3,
+  "bbox": [
+   145,
+   111,
+   117,
+   234
+  ],
+  "edge": {
+   "boundarySamples": 86,
+   "width10_90": {
+    "p25": 3,
+    "p50": 6,
+    "p75": 8
+   },
+   "hardShare": 0.105,
+   "bandingShare": 0.105
+  }
+ },
+ {
+  "id": "dwarf-male-reference/channels/front-left-3q/studio/marks",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "dwarf-male-reference/channels/forearm/studio/final",
+  "share": 0.0003,
+  "meanD": 23.1,
+  "bbox": [
+   23,
+   0,
+   78,
+   523
+  ],
+  "edge": {
+   "boundarySamples": 4,
+   "width10_90": {
+    "p25": 0,
+    "p50": 3,
+    "p75": 3
+   },
+   "hardShare": 0.5,
+   "bandingShare": 0
+  }
+ },
+ {
+  "id": "dwarf-male-reference/channels/forearm/studio/albedo",
+  "share": 0.00028,
+  "meanD": 28.4,
+  "bbox": [
+   22,
+   0,
+   9,
+   13
+  ],
+  "edge": {
+   "boundarySamples": 3,
+   "width10_90": {
+    "p25": 3,
+    "p50": 3,
+    "p75": 8
+   },
+   "hardShare": 0,
+   "bandingShare": 0
+  }
+ },
+ {
+  "id": "dwarf-male-reference/channels/forearm/studio/roughness",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "dwarf-male-reference/channels/forearm/studio/height",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "dwarf-male-reference/channels/forearm/studio/normal",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "dwarf-male-reference/channels/forearm/studio/ao",
+  "share": 0.00168,
+  "meanD": 12.5,
+  "bbox": [
+   63,
+   174,
+   24,
+   54
+  ],
+  "edge": {
+   "boundarySamples": 26,
+   "width10_90": {
+    "p25": 1,
+    "p50": 1,
+    "p75": 11
+   },
+   "hardShare": 0.538,
+   "bandingShare": 0
+  }
+ },
+ {
+  "id": "dwarf-male-reference/channels/forearm/studio/marks",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "dwarf-male-marked/angles/front/studio/final",
+  "share": 0.00209,
+  "meanD": 35.7,
+  "bbox": [
+   137,
+   101,
+   160,
+   209
+  ],
+  "edge": {
+   "boundarySamples": 48,
+   "width10_90": {
+    "p25": 2,
+    "p50": 3,
+    "p75": 4
+   },
+   "hardShare": 0.208,
+   "bandingShare": 0.083
+  }
+ },
+ {
+  "id": "dwarf-male-marked/angles/back/studio/final",
+  "share": 0.00278,
+  "meanD": 31.6,
+  "bbox": [
+   128,
+   200,
+   166,
+   256
+  ],
+  "edge": {
+   "boundarySamples": 35,
+   "width10_90": {
+    "p25": 2,
+    "p50": 3,
+    "p75": 4
+   },
+   "hardShare": 0.2,
+   "bandingShare": 0.086
+  }
+ },
+ {
+  "id": "dwarf-male-marked/angles/front-left-3q/studio/final",
+  "share": 0.00196,
+  "meanD": 30.7,
+  "bbox": [
+   142,
+   102,
+   131,
+   309
+  ],
+  "edge": {
+   "boundarySamples": 55,
+   "width10_90": {
+    "p25": 0,
+    "p50": 2,
+    "p75": 4
+   },
+   "hardShare": 0.345,
+   "bandingShare": 0.091
+  }
+ },
+ {
+  "id": "dwarf-male-marked/angles/face/studio/final",
+  "share": 0.01774,
+  "meanD": 37.2,
+  "bbox": [
+   113,
+   244,
+   170,
+   186
+  ],
+  "edge": {
+   "boundarySamples": 198,
+   "width10_90": {
+    "p25": 1,
+    "p50": 1,
+    "p75": 3
+   },
+   "hardShare": 0.535,
+   "bandingShare": 0.045
+  }
+ },
+ {
+  "id": "dwarf-male-marked/angles/forearm/studio/final",
+  "share": 0.0003,
+  "meanD": 23.1,
+  "bbox": [
+   23,
+   0,
+   78,
+   523
+  ],
+  "edge": {
+   "boundarySamples": 4,
+   "width10_90": {
+    "p25": 0,
+    "p50": 3,
+    "p75": 3
+   },
+   "hardShare": 0.5,
+   "bandingShare": 0
+  }
+ },
+ {
+  "id": "dwarf-male-marked/angles/back-closeup/studio/final",
+  "share": 0.00007,
+  "meanD": 12.4,
+  "bbox": [
+   134,
+   238,
+   156,
+   190
+  ],
+  "edge": null
+ },
+ {
+  "id": "dwarf-male-marked/lights/front-left-3q/studio/final",
+  "share": 0.00196,
+  "meanD": 30.7,
+  "bbox": [
+   142,
+   102,
+   131,
+   309
+  ],
+  "edge": {
+   "boundarySamples": 55,
+   "width10_90": {
+    "p25": 0,
+    "p50": 2,
+    "p75": 4
+   },
+   "hardShare": 0.345,
+   "bandingShare": 0.091
+  }
+ },
+ {
+  "id": "dwarf-male-marked/lights/front-left-3q/rim/final",
+  "share": 0.00143,
+  "meanD": 24.3,
+  "bbox": [
+   144,
+   103,
+   113,
+   309
+  ],
+  "edge": {
+   "boundarySamples": 38,
+   "width10_90": {
+    "p25": 0,
+    "p50": 2,
+    "p75": 4
+   },
+   "hardShare": 0.342,
+   "bandingShare": 0.105
+  }
+ },
+ {
+  "id": "dwarf-male-marked/lights/front-left-3q/flat/final",
+  "share": 0.00221,
+  "meanD": 30.9,
+  "bbox": [
+   142,
+   102,
+   116,
+   310
+  ],
+  "edge": {
+   "boundarySamples": 61,
+   "width10_90": {
+    "p25": 1,
+    "p50": 3,
+    "p75": 6
+   },
+   "hardShare": 0.279,
+   "bandingShare": 0.082
+  }
+ },
+ {
+  "id": "dwarf-male-marked/lights/front-left-3q/daylight/final",
+  "share": 0.00229,
+  "meanD": 35.9,
+  "bbox": [
+   142,
+   102,
+   116,
+   310
+  ],
+  "edge": {
+   "boundarySamples": 62,
+   "width10_90": {
+    "p25": 1,
+    "p50": 3,
+    "p75": 6
+   },
+   "hardShare": 0.274,
+   "bandingShare": 0.065
+  }
+ },
+ {
+  "id": "dwarf-male-marked/lights/front-left-3q/dusk/final",
+  "share": 0.00212,
+  "meanD": 32,
+  "bbox": [
+   142,
+   102,
+   116,
+   310
+  ],
+  "edge": {
+   "boundarySamples": 57,
+   "width10_90": {
+    "p25": 1,
+    "p50": 2,
+    "p75": 5
+   },
+   "hardShare": 0.298,
+   "bandingShare": 0.035
+  }
+ },
+ {
+  "id": "dwarf-male-marked/channels/front-left-3q/studio/final",
+  "share": 0.00196,
+  "meanD": 30.7,
+  "bbox": [
+   142,
+   102,
+   131,
+   309
+  ],
+  "edge": {
+   "boundarySamples": 55,
+   "width10_90": {
+    "p25": 0,
+    "p50": 2,
+    "p75": 4
+   },
+   "hardShare": 0.345,
+   "bandingShare": 0.091
+  }
+ },
+ {
+  "id": "dwarf-male-marked/channels/front-left-3q/studio/albedo",
+  "share": 0.00167,
+  "meanD": 36.2,
+  "bbox": [
+   142,
+   102,
+   116,
+   310
+  ],
+  "edge": {
+   "boundarySamples": 44,
+   "width10_90": {
+    "p25": 1,
+    "p50": 2,
+    "p75": 4
+   },
+   "hardShare": 0.341,
+   "bandingShare": 0.114
+  }
+ },
+ {
+  "id": "dwarf-male-marked/channels/front-left-3q/studio/roughness",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "dwarf-male-marked/channels/front-left-3q/studio/height",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "dwarf-male-marked/channels/front-left-3q/studio/normal",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "dwarf-male-marked/channels/front-left-3q/studio/ao",
+  "share": 0.00629,
+  "meanD": 23.3,
+  "bbox": [
+   145,
+   111,
+   117,
+   234
+  ],
+  "edge": {
+   "boundarySamples": 86,
+   "width10_90": {
+    "p25": 3,
+    "p50": 6,
+    "p75": 8
+   },
+   "hardShare": 0.105,
+   "bandingShare": 0.105
+  }
+ },
+ {
+  "id": "dwarf-male-marked/channels/front-left-3q/studio/marks",
+  "share": 0.00022,
+  "meanD": 29.5,
+  "bbox": [
+   184,
+   115,
+   10,
+   19
+  ],
+  "edge": {
+   "boundarySamples": 11,
+   "width10_90": {
+    "p25": 0,
+    "p50": 2,
+    "p75": 2
+   },
+   "hardShare": 0.364,
+   "bandingShare": 0
+  }
+ },
+ {
+  "id": "dwarf-male-marked/channels/forearm/studio/final",
+  "share": 0.0003,
+  "meanD": 23.1,
+  "bbox": [
+   23,
+   0,
+   78,
+   523
+  ],
+  "edge": {
+   "boundarySamples": 4,
+   "width10_90": {
+    "p25": 0,
+    "p50": 3,
+    "p75": 3
+   },
+   "hardShare": 0.5,
+   "bandingShare": 0
+  }
+ },
+ {
+  "id": "dwarf-male-marked/channels/forearm/studio/albedo",
+  "share": 0.00028,
+  "meanD": 28.4,
+  "bbox": [
+   22,
+   0,
+   9,
+   13
+  ],
+  "edge": {
+   "boundarySamples": 3,
+   "width10_90": {
+    "p25": 3,
+    "p50": 3,
+    "p75": 8
+   },
+   "hardShare": 0,
+   "bandingShare": 0
+  }
+ },
+ {
+  "id": "dwarf-male-marked/channels/forearm/studio/roughness",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "dwarf-male-marked/channels/forearm/studio/height",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "dwarf-male-marked/channels/forearm/studio/normal",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "dwarf-male-marked/channels/forearm/studio/ao",
+  "share": 0.00168,
+  "meanD": 12.5,
+  "bbox": [
+   63,
+   174,
+   24,
+   54
+  ],
+  "edge": {
+   "boundarySamples": 26,
+   "width10_90": {
+    "p25": 1,
+    "p50": 1,
+    "p75": 11
+   },
+   "hardShare": 0.538,
+   "bandingShare": 0
+  }
+ },
+ {
+  "id": "dwarf-male-marked/channels/forearm/studio/marks",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "dwarf-male-marked-bare/angles/front/studio/final",
+  "share": 0.00993,
+  "meanD": 39.4,
+  "bbox": [
+   63,
+   101,
+   291,
+   320
+  ],
+  "edge": {
+   "boundarySamples": 142,
+   "width10_90": {
+    "p25": 2,
+    "p50": 3,
+    "p75": 4
+   },
+   "hardShare": 0.218,
+   "bandingShare": 0.099
+  }
+ },
+ {
+  "id": "dwarf-male-marked-bare/angles/back/studio/final",
+  "share": 0.00727,
+  "meanD": 36.6,
+  "bbox": [
+   128,
+   181,
+   166,
+   275
+  ],
+  "edge": {
+   "boundarySamples": 100,
+   "width10_90": {
+    "p25": 1,
+    "p50": 3,
+    "p75": 4
+   },
+   "hardShare": 0.28,
+   "bandingShare": 0.04
+  }
+ },
+ {
+  "id": "dwarf-male-marked-bare/angles/front-left-3q/studio/final",
+  "share": 0.00839,
+  "meanD": 37.5,
+  "bbox": [
+   104,
+   102,
+   212,
+   314
+  ],
+  "edge": {
+   "boundarySamples": 149,
+   "width10_90": {
+    "p25": 1,
+    "p50": 2,
+    "p75": 3
+   },
+   "hardShare": 0.383,
+   "bandingShare": 0.107
+  }
+ },
+ {
+  "id": "dwarf-male-marked-bare/angles/face/studio/final",
+  "share": 0.02081,
+  "meanD": 38.4,
+  "bbox": [
+   113,
+   244,
+   179,
+   186
+  ],
+  "edge": {
+   "boundarySamples": 226,
+   "width10_90": {
+    "p25": 1,
+    "p50": 1,
+    "p75": 3
+   },
+   "hardShare": 0.58,
+   "bandingShare": 0.08
+  }
+ },
+ {
+  "id": "dwarf-male-marked-bare/angles/forearm/studio/final",
+  "share": 0.02202,
+  "meanD": 43.6,
+  "bbox": [
+   22,
+   0,
+   168,
+   559
+  ],
+  "edge": {
+   "boundarySamples": 120,
+   "width10_90": {
+    "p25": 1,
+    "p50": 4,
+    "p75": 6
+   },
+   "hardShare": 0.392,
+   "bandingShare": 0.083
+  }
+ },
+ {
+  "id": "dwarf-male-marked-bare/angles/back-closeup/studio/final",
+  "share": 0.0012,
+  "meanD": 17.5,
+  "bbox": [
+   103,
+   288,
+   188,
+   257
+  ],
+  "edge": {
+   "boundarySamples": 47,
+   "width10_90": {
+    "p25": 1,
+    "p50": 3,
+    "p75": 6
+   },
+   "hardShare": 0.362,
+   "bandingShare": 0.149
+  }
+ },
+ {
+  "id": "dwarf-male-marked-bare/channels/front-left-3q/studio/final",
+  "share": 0.00839,
+  "meanD": 37.5,
+  "bbox": [
+   104,
+   102,
+   212,
+   314
+  ],
+  "edge": {
+   "boundarySamples": 149,
+   "width10_90": {
+    "p25": 1,
+    "p50": 2,
+    "p75": 3
+   },
+   "hardShare": 0.383,
+   "bandingShare": 0.107
+  }
+ },
+ {
+  "id": "dwarf-male-marked-bare/channels/front-left-3q/studio/albedo",
+  "share": 0.00839,
+  "meanD": 45.6,
+  "bbox": [
+   104,
+   102,
+   212,
+   314
+  ],
+  "edge": {
+   "boundarySamples": 143,
+   "width10_90": {
+    "p25": 1,
+    "p50": 2,
+    "p75": 4
+   },
+   "hardShare": 0.329,
+   "bandingShare": 0.077
+  }
+ },
+ {
+  "id": "dwarf-male-marked-bare/channels/front-left-3q/studio/roughness",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "dwarf-male-marked-bare/channels/front-left-3q/studio/height",
+  "share": 0.00002,
+  "meanD": 11,
+  "bbox": [
+   297,
+   222,
+   5,
+   5
+  ],
+  "edge": null
+ },
+ {
+  "id": "dwarf-male-marked-bare/channels/front-left-3q/studio/normal",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "dwarf-male-marked-bare/channels/front-left-3q/studio/ao",
+  "share": 0.00629,
+  "meanD": 23.3,
+  "bbox": [
+   145,
+   111,
+   117,
+   234
+  ],
+  "edge": {
+   "boundarySamples": 86,
+   "width10_90": {
+    "p25": 3,
+    "p50": 6,
+    "p75": 8
+   },
+   "hardShare": 0.105,
+   "bandingShare": 0.105
+  }
+ },
+ {
+  "id": "dwarf-male-marked-bare/channels/front-left-3q/studio/marks",
+  "share": 0.00031,
+  "meanD": 25.6,
+  "bbox": [
+   184,
+   115,
+   123,
+   115
+  ],
+  "edge": {
+   "boundarySamples": 17,
+   "width10_90": {
+    "p25": 0,
+    "p50": 1,
+    "p75": 2
+   },
+   "hardShare": 0.588,
+   "bandingShare": 0
+  }
+ },
+ {
+  "id": "dwarf-male-marked-bare/channels/forearm/studio/final",
+  "share": 0.02202,
+  "meanD": 43.6,
+  "bbox": [
+   22,
+   0,
+   168,
+   559
+  ],
+  "edge": {
+   "boundarySamples": 120,
+   "width10_90": {
+    "p25": 1,
+    "p50": 4,
+    "p75": 6
+   },
+   "hardShare": 0.392,
+   "bandingShare": 0.083
+  }
+ },
+ {
+  "id": "dwarf-male-marked-bare/channels/forearm/studio/albedo",
+  "share": 0.0222,
+  "meanD": 50.4,
+  "bbox": [
+   22,
+   0,
+   168,
+   289
+  ],
+  "edge": {
+   "boundarySamples": 99,
+   "width10_90": {
+    "p25": 1,
+    "p50": 4,
+    "p75": 6
+   },
+   "hardShare": 0.263,
+   "bandingShare": 0.141
+  }
+ },
+ {
+  "id": "dwarf-male-marked-bare/channels/forearm/studio/roughness",
+  "share": 0,
+  "meanD": 0,
+  "bbox": null,
+  "edge": null
+ },
+ {
+  "id": "dwarf-male-marked-bare/channels/forearm/studio/height",
+  "share": 0.00034,
+  "meanD": 12.8,
+  "bbox": [
+   112,
+   189,
+   23,
+   33
+  ],
+  "edge": {
+   "boundarySamples": 14,
+   "width10_90": {
+    "p25": 1,
+    "p50": 2,
+    "p75": 2
+   },
+   "hardShare": 0.429,
+   "bandingShare": 0.286
+  }
+ },
+ {
+  "id": "dwarf-male-marked-bare/channels/forearm/studio/normal",
+  "share": 0.0006,
+  "meanD": 16,
+  "bbox": [
+   114,
+   199,
+   25,
+   25
+  ],
+  "edge": {
+   "boundarySamples": 25,
+   "width10_90": {
+    "p25": 1,
+    "p50": 2,
+    "p75": 3
+   },
+   "hardShare": 0.44,
+   "bandingShare": 0.12
+  }
+ },
+ {
+  "id": "dwarf-male-marked-bare/channels/forearm/studio/ao",
+  "share": 0.00168,
+  "meanD": 12.5,
+  "bbox": [
+   63,
+   174,
+   24,
+   54
+  ],
+  "edge": {
+   "boundarySamples": 26,
+   "width10_90": {
+    "p25": 1,
+    "p50": 1,
+    "p75": 11
+   },
+   "hardShare": 0.538,
+   "bandingShare": 0
+  }
+ },
+ {
+  "id": "dwarf-male-marked-bare/channels/forearm/studio/marks",
+  "share": 0.00067,
+  "meanD": 32.6,
+  "bbox": [
+   111,
+   168,
+   27,
+   55
+  ],
+  "edge": {
+   "boundarySamples": 20,
+   "width10_90": {
+    "p25": 1,
+    "p50": 1,
+    "p75": 1
+   },
+   "hardShare": 0.95,
+   "bandingShare": 0
+  }
+ }
+]

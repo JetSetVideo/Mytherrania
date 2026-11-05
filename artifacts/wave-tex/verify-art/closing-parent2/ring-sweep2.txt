@@ -1,0 +1,16 @@
+human-male  r07q-before-F  px 125 scar albL 70.7 | ring1-4 alb  -3.2 fin  -2.9 | ring3-7 alb  -2.8 fin  -2.1 | ring5-10 alb  -2.5 fin  -1.8 | ring8-14 alb  -2.0 fin  -3.1
+human-male  r07q-closing   px  71 scar albL 83.0 | ring1-4 alb  +5.3 fin  +4.2 | ring3-7 alb  +6.4 fin  +5.7 | ring5-10 alb  +7.5 fin  +6.8 | ring8-14 alb  +9.0 fin  +6.6
+human-male  r08q-parent    px  71 scar albL 80.1 | ring1-4 alb  +2.4 fin  +1.9 | ring3-7 alb  +3.5 fin  +3.4 | ring5-10 alb  +4.6 fin  +4.5 | ring8-14 alb  +6.1 fin  +4.3
+human-male  r09q-parent    px  71 scar albL 83.0 | ring1-4 alb  +5.3 fin  +4.2 | ring3-7 alb  +6.4 fin  +5.7 | ring5-10 alb  +7.5 fin  +6.8 | ring8-14 alb  +9.0 fin  +6.6
+ork-female  r07q-before-F  px 118 scar albL 61.3 | ring1-4 alb  -4.5 fin  -4.1 | ring3-7 alb  -4.3 fin  -2.8 | ring5-10 alb  -3.9 fin  -1.8 | ring8-14 alb  -3.1 fin  -0.6
+ork-female  r07q-closing   px  87 scar albL 85.9 | ring1-4 alb  +3.6 fin  +5.3 | ring3-7 alb  +3.7 fin  +6.8 | ring5-10 alb  +4.3 fin  +8.3 | ring8-14 alb  +5.6 fin +10.0
+ork-female  r08q-parent    px  87 scar albL 77.7 | ring1-4 alb  -4.6 fin  -2.5 | ring3-7 alb  -4.5 fin  -1.0 | ring5-10 alb  -3.8 fin  +0.5 | ring8-14 alb  -2.6 fin  +2.2
+ork-female  r09q-parent    px  87 scar albL 85.9 | ring1-4 alb  +3.6 fin  +5.3 | ring3-7 alb  +3.7 fin  +6.8 | ring5-10 alb  +4.3 fin  +8.3 | ring8-14 alb  +5.6 fin +10.0
+elf-female  r07q-before-F  px  49 scar albL 85.2 | ring1-4 alb  +2.8 fin  +3.5 | ring3-7 alb  +2.8 fin  +5.0 | ring5-10 alb  +2.8 fin  +3.2 | ring8-14 alb  +2.8 fin  -0.2
+elf-female  r07q-closing   px  51 scar albL 86.4 | ring1-4 alb  +4.0 fin  +4.4 | ring3-7 alb  +3.9 fin  +5.7 | ring5-10 alb  +3.9 fin  +3.9 | ring8-14 alb  +3.8 fin  +0.5
+elf-female  r08q-parent    px  51 scar albL 86.4 | ring1-4 alb  +4.0 fin  +4.4 | ring3-7 alb  +3.9 fin  +5.7 | ring5-10 alb  +3.9 fin  +3.9 | ring8-14 alb  +3.8 fin  +0.5
+elf-female  r09q-parent    px  51 scar albL 86.4 | ring1-4 alb  +4.0 fin  +4.4 | ring3-7 alb  +3.9 fin  +5.7 | ring5-10 alb  +3.9 fin  +3.9 | ring8-14 alb  +3.8 fin  +0.5
+dwarf-male  r07q-before-F  px 146 scar albL 67.8 | ring1-4 alb  -3.4 fin  -4.8 | ring3-7 alb  -2.6 fin  -2.0 | ring5-10 alb  -1.9 fin  +0.0 | ring8-14 alb  -1.7 fin  -0.3
+dwarf-male  r07q-closing   px  83 scar albL 87.8 | ring1-4 alb  +7.4 fin  +9.2 | ring3-7 alb +10.0 fin +12.5 | ring5-10 alb +11.4 fin +15.7 | ring8-14 alb +11.9 fin +16.5
+dwarf-male  r08q-parent    px  83 scar albL 80.9 | ring1-4 alb  +0.5 fin  +2.9 | ring3-7 alb  +3.1 fin  +6.1 | ring5-10 alb  +4.5 fin  +9.3 | ring8-14 alb  +5.0 fin +10.0
+dwarf-male  r09q-parent    px  83 scar albL 87.8 | ring1-4 alb  +7.4 fin  +9.2 | ring3-7 alb +10.0 fin +12.5 | ring5-10 alb +11.4 fin +15.7 | ring8-14 alb +11.9 fin +16.5

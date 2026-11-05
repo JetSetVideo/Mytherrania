@@ -1,0 +1,4 @@
+human male {"maskPx":105,"ringPx":1411,"scarL":79.04,"ringL":74.7,"scarLnoCrest":78.18,"ringLnoCrest":72.33}
+ork female {"maskPx":102,"ringPx":725,"scarL":78.39,"ringL":82.06,"scarLnoCrest":73.22,"ringLnoCrest":65.65}
+elf female {"maskPx":96,"ringPx":1127,"scarL":84.58,"ringL":80.59,"scarLnoCrest":84.57,"ringLnoCrest":80.54}
+dwarf male {"maskPx":120,"ringPx":1398,"scarL":80.25,"ringL":74.54,"scarLnoCrest":78.58,"ringLnoCrest":69.21}

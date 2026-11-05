@@ -1,0 +1,167 @@
+[
+ {
+  "race": "human",
+  "skin": "#c88858",
+  "palette": "Ember",
+  "body": "#ef7455",
+  "scarOnRealSkin": "#beab9d",
+  "drawnFromBody": "#c7a39a",
+  "dL_right": 9.2,
+  "dL_drawn": 7.7,
+  "dE_drawn_vs_right": 7.6
+ },
+ {
+  "race": "human",
+  "skin": "#c88858",
+  "palette": "Tundra",
+  "body": "#4f8490",
+  "scarOnRealSkin": "#beab9d",
+  "drawnFromBody": "#909fa3",
+  "dL_right": 9.2,
+  "dL_drawn": 2.4,
+  "dE_drawn_vs_right": 17.8
+ },
+ {
+  "race": "human",
+  "skin": "#c88858",
+  "palette": "Verdant",
+  "body": "#82b970",
+  "scarOnRealSkin": "#beab9d",
+  "drawnFromBody": "#b3c4ae",
+  "dL_right": 9.2,
+  "dL_drawn": 15.1,
+  "dE_drawn_vs_right": 15.3
+ },
+ {
+  "race": "human",
+  "skin": "#c88858",
+  "palette": "Shadow",
+  "body": "#2a2f3a",
+  "scarOnRealSkin": "#beab9d",
+  "drawnFromBody": "#454950",
+  "dL_right": 9.2,
+  "dL_drawn": -31.3,
+  "dE_drawn_vs_right": 43.3
+ },
+ {
+  "race": "human",
+  "skin": "#c88858",
+  "palette": "Bone",
+  "body": "#e8dcc8",
+  "scarOnRealSkin": "#beab9d",
+  "drawnFromBody": "#e9e6e0",
+  "dL_right": 9.2,
+  "dL_drawn": 29.1,
+  "dE_drawn_vs_right": 21.4
+ },
+ {
+  "race": "elf",
+  "skin": "#e8c8a0",
+  "palette": "Ember",
+  "body": "#ef7455",
+  "scarOnRealSkin": "#e2d8cc",
+  "drawnFromBody": "#c7a39a",
+  "dL_right": 4.4,
+  "dL_drawn": -12.5,
+  "dE_drawn_vs_right": 20.2
+ },
+ {
+  "race": "elf",
+  "skin": "#e8c8a0",
+  "palette": "Tundra",
+  "body": "#4f8490",
+  "scarOnRealSkin": "#e2d8cc",
+  "drawnFromBody": "#909fa3",
+  "dL_right": 4.4,
+  "dL_drawn": -17.8,
+  "dE_drawn_vs_right": 25.4
+ },
+ {
+  "race": "elf",
+  "skin": "#e8c8a0",
+  "palette": "Verdant",
+  "body": "#82b970",
+  "scarOnRealSkin": "#e2d8cc",
+  "drawnFromBody": "#b3c4ae",
+  "dL_right": 4.4,
+  "dL_drawn": -5.1,
+  "dE_drawn_vs_right": 14.5
+ },
+ {
+  "race": "elf",
+  "skin": "#e8c8a0",
+  "palette": "Shadow",
+  "body": "#2a2f3a",
+  "scarOnRealSkin": "#e2d8cc",
+  "drawnFromBody": "#454950",
+  "dL_right": 4.4,
+  "dL_drawn": -51.6,
+  "dE_drawn_vs_right": 57.2
+ },
+ {
+  "race": "elf",
+  "skin": "#e8c8a0",
+  "palette": "Bone",
+  "body": "#e8dcc8",
+  "scarOnRealSkin": "#e2d8cc",
+  "drawnFromBody": "#e9e6e0",
+  "dL_right": 4.4,
+  "dL_drawn": 8.9,
+  "dE_drawn_vs_right": 5.9
+ },
+ {
+  "race": "ork",
+  "skin": "#78a858",
+  "palette": "Ember",
+  "body": "#ef7455",
+  "scarOnRealSkin": "#a9b8a0",
+  "drawnFromBody": "#c7a39a",
+  "dL_right": 9,
+  "dL_drawn": 6,
+  "dE_drawn_vs_right": 21.5
+ },
+ {
+  "race": "ork",
+  "skin": "#78a858",
+  "palette": "Tundra",
+  "body": "#4f8490",
+  "scarOnRealSkin": "#a9b8a0",
+  "drawnFromBody": "#909fa3",
+  "dL_right": 9,
+  "dL_drawn": 0.6,
+  "dE_drawn_vs_right": 17
+ },
+ {
+  "race": "ork",
+  "skin": "#78a858",
+  "palette": "Verdant",
+  "body": "#82b970",
+  "scarOnRealSkin": "#a9b8a0",
+  "drawnFromBody": "#b3c4ae",
+  "dL_right": 9,
+  "dL_drawn": 13.4,
+  "dE_drawn_vs_right": 4.6
+ },
+ {
+  "race": "ork",
+  "skin": "#78a858",
+  "palette": "Shadow",
+  "body": "#2a2f3a",
+  "scarOnRealSkin": "#a9b8a0",
+  "drawnFromBody": "#454950",
+  "dL_right": 9,
+  "dL_drawn": -33.1,
+  "dE_drawn_vs_right": 45.8
+ },
+ {
+  "race": "ork",
+  "skin": "#78a858",
+  "palette": "Bone",
+  "body": "#e8dcc8",
+  "scarOnRealSkin": "#a9b8a0",
+  "drawnFromBody": "#e9e6e0",
+  "dL_right": 9,
+  "dL_drawn": 27.4,
+  "dE_drawn_vs_right": 21.8
+ }
+]

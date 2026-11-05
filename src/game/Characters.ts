@@ -4,6 +4,7 @@ import { startingStats } from "./Leveling.ts";
 import type { RaceSilhouette, Sex } from "./BodyProfile.ts";
 import type { GeneratorStats } from "../graphics/body/contracts.ts";
 import { generatorStats } from "./StatScale.ts";
+import type { MarkSet } from "../graphics/paint/marks/MarkLibrary.ts";
 
 export interface Appearance {
   body: string;
@@ -32,6 +33,12 @@ export interface Appearance {
    * Left unset, the character reads as a young adult (greyFraction 0).
    */
   age?: number;
+  /**
+   * Wave TEX (lane M): scars and tattoos ({ scars, tattoos }, src/graphics/paint/marks). Optional: unset
+   * (or null) = the GENERATED defaults from race / sub-race / class / birth sign / age / seed
+   * (MarkLibrary.marksForProfile); a stored set overrides them and is sanitized on load.
+   */
+  marks?: MarkSet | null;
 }
 
 export interface CharacterProfile {

@@ -1,0 +1,54 @@
+[
+ {
+  "subject": "human-male",
+  "found": true,
+  "px": 127,
+  "ringPx": 528,
+  "dHeight_median": 9.0,
+  "dHeight_mean": 8.7,
+  "dHeight_absP95": 12.0,
+  "ringHeight_sd": 0.0,
+  "dRough_median": -31.0,
+  "albedo_dL": -2.8,
+  "albedo_dC": -7.3
+ },
+ {
+  "subject": "elf-female",
+  "found": true,
+  "px": 48,
+  "ringPx": 367,
+  "dHeight_median": -2.0,
+  "dHeight_mean": -2.0,
+  "dHeight_absP95": 2.0,
+  "ringHeight_sd": 0.3,
+  "dRough_median": -29.0,
+  "albedo_dL": 2.7,
+  "albedo_dC": -12.7
+ },
+ {
+  "subject": "dwarf-male",
+  "found": true,
+  "px": 148,
+  "ringPx": 298,
+  "dHeight_median": 8.5,
+  "dHeight_mean": 8.2,
+  "dHeight_absP95": 12.0,
+  "ringHeight_sd": 1.1,
+  "dRough_median": -40.0,
+  "albedo_dL": -4.2,
+  "albedo_dC": -8.7
+ },
+ {
+  "subject": "ork-female",
+  "found": true,
+  "px": 118,
+  "ringPx": 404,
+  "dHeight_median": 17.0,
+  "dHeight_mean": 12.1,
+  "dHeight_absP95": 23.0,
+  "ringHeight_sd": 50.0,
+  "dRough_median": -41.5,
+  "albedo_dL": 4.7,
+  "albedo_dC": -9.7
+ }
+]

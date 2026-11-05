@@ -1,0 +1,29 @@
+{
+  "neutralBodies": 4,
+  "packDecals": {
+    "lists": 2000,
+    "maxCount": 14,
+    "badFinite": 0,
+    "badHeight": 0,
+    "badRadius": 0,
+    "badDrop": 0,
+    "worstUnit": 4.596081271124319e-8,
+    "worstOrtho": 7.32545384352079e-8,
+    "valid40": {
+      "count": 16,
+      "dropped": 24
+    }
+  },
+  "boundTilt": {
+    "cases": 20000,
+    "worstAngle": 0.30000000000000765,
+    "bound": 0.3,
+    "worstLen": 1.9984014443252818e-15,
+    "worstLambert": 0.2988730940866684,
+    "chordBound": 0.29887626494719843,
+    "idBreak": 0
+  },
+  "coverageBad": 0,
+  "sdfBad": 0,
+  "fail": []
+}

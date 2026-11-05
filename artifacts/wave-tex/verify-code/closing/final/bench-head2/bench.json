@@ -1,0 +1,36 @@
+{
+ "run": "qc-final-head2",
+ "src": "/Users/macmax/.hermes/cache/scratch/qc-tex-head",
+ "hasTex": false,
+ "commit": "19f5c8c",
+ "when": "2026-11-05T09:15:58.996Z",
+ "frames": 90,
+ "build": {},
+ "preview": {
+  "legacy": {
+   "median": 2.6,
+   "mean": 2.618,
+   "mem": {
+    "geometry": 382192,
+    "textures": 0,
+    "aMaterial": 0,
+    "aEmissive": 0,
+    "decalUniformBytes": 0
+   }
+  }
+ },
+ "arena": {
+  "legacy": {
+   "median": 3,
+   "mean": 3.15,
+   "mem": {
+    "geometry": 798920,
+    "textures": 0,
+    "aMaterial": 0,
+    "aEmissive": 0,
+    "decalUniformBytes": 0
+   }
+  }
+ },
+ "errors": []
+}

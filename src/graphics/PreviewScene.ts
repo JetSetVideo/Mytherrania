@@ -24,6 +24,9 @@ import { DEFAULT_GEN_STAGE, GEN_STAGES_EVENT, type GenStageId, type GenStagesDet
 import { parseWhatIf } from "../ui/StatView.ts";
 import { type AxisId, clampState, cameraPosition, orbit as orbitView, pinchFactor, reset as resetView, snapTo, type Vec3, viewDirection, type ViewLimits, type ViewState, wheelFactor, zoomAt } from "./ViewerControls.ts";
 import { AxisGizmo } from "./AxisGizmo.ts";
+import { DEFAULT_CHANNEL_VIEW, isChannelView, TEX_PICK_EVENT, texKey, type ChannelView as TexChannelView } from "../ui/TexState.ts";
+import { pickAnchor, type PickMesh } from "../ui/TexSources.ts";
+import { REGIONS } from "./body/contracts.ts";
 
 /**
  * PreviewScene — the live 3D portrait the Character Creator shows (wave L).
@@ -577,7 +580,7 @@ export function previewKeyWith(profile: CharacterProfile, statsOverride: Generat
   // what-if) shape the body, so they are part of the key too (an attribute tweak rebuilds the model).
   const a = profile.appearance;
   const s = statsOverride ?? profileBodyStats(profile);
-  return `${profile.name}|${profile.race}|${profile.subrace ?? ""}|${profile.className}|${profile.weaponType ?? ""}|${a.height.toFixed(4)}|${a.weight.toFixed(4)}|${a.hair ?? ""}|${profile.birthsign ?? ""}|${a.sex ?? ""}|${a.age ?? ""}|${a.silhouette ? JSON.stringify(a.silhouette) : ""}|${a.eyes ?? ""}|${a.beard ? 1 : 0}${a.moustache ? 1 : 0}|${statsKey(s)}`;
+  return `${profile.name}|${profile.race}|${profile.subrace ?? ""}|${profile.className}|${profile.weaponType ?? ""}|${a.height.toFixed(4)}|${a.weight.toFixed(4)}|${a.hair ?? ""}|${profile.birthsign ?? ""}|${a.sex ?? ""}|${a.age ?? ""}|${a.silhouette ? JSON.stringify(a.silhouette) : ""}|${a.eyes ?? ""}|${a.beard ? 1 : 0}${a.moustache ? 1 : 0}|${statsKey(s)}${texKey((a as { marks?: unknown }).marks, (a as { layerOverrides?: unknown }).layerOverrides)}`;
 }
 
 /** The stats' part of the key (4 dp: the generator's own resolution is far coarser). */
@@ -810,6 +813,17 @@ function disposeView(o: THREE.Object3D): void {
   });
 }
 
+/** Wave TEX (U): one skin pick — world point (reticle), bind-pose point/normal, region and M's frame anchor. */
+export interface TexPickHit {
+  world: [number, number, number];
+  point: [number, number, number];
+  normal: [number, number, number];
+  regionIndex: number;
+  region: (typeof REGIONS)[number] | null;
+  side: 0 | 1 | null;
+  anchor: [number, number] | null;
+}
+
 /** Quiet time (ms) after the last rebuild before a stage view recomputes the staged body (~1 s of work). */
 export const STAGED_DEBOUNCE_MS = 220;
 
@@ -876,6 +890,19 @@ export class PreviewScene {
   #stageState: "idle" | "pending" | "ready" = "idle";
   /** QA: rig rebuilds (setProfile with a new key) and their wall time, ms. */
   #rebuildLog = { rebuilds: 0, lastMs: 0, maxMs: 0 };
+  // Wave TEX lane U: the channel view (canvas `data-tex-channel`, R's rig.material.setChannelView), the mark
+  // placement mode (`data-tex-placing` = "scar"|"tattoo" while the Marks panel is placing), the drag in progress
+  // and the reticle that shows where the last placement landed.
+  #texView: TexChannelView = DEFAULT_CHANNEL_VIEW;
+  #texViewAttr = "";
+  #texViewApplied = "";
+  #texPlace = "";
+  #placeDrag: number | null = null;
+  #placePending: { x: number; y: number } | null = null;
+  #placeLast: TexPickHit | null = null;
+  #reticle: THREE.Mesh | null = null;
+  #pickMesh: { rig: object; mesh: PickMesh } | null = null;
+  #texStats = { picks: 0, misses: 0, events: 0, lastPickMs: 0, maxPickMs: 0 };
   constructor(canvas: HTMLCanvasElement) {
     this.#canvas = canvas;
     this.#renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
@@ -891,6 +918,12 @@ export class PreviewScene {
     this.#stageRoot.name = "gen-stage-views";
     this.#stageRoot.visible = false;
     this.#scene.add(this.#stageRoot);
+    // Wave TEX lane U: the placement reticle (a gold ring that always faces the camera, drawn over the body).
+    this.#reticle = new THREE.Mesh(new THREE.RingGeometry(0.011, 0.018, 32), new THREE.MeshBasicMaterial({ color: 0xffd774, transparent: true, opacity: 0.95, depthTest: false, depthWrite: false, side: THREE.DoubleSide }));
+    this.#reticle.name = "tex-reticle";
+    this.#reticle.renderOrder = 20;
+    this.#reticle.visible = false;
+    this.#scene.add(this.#reticle);
     this.#camera = new THREE.PerspectiveCamera(CAM_FOV, 1, 0.1, 20);
     this.#placeCamera();
     this.#wireInput();
@@ -1016,6 +1049,19 @@ export class PreviewScene {
     c.style.touchAction = "none";
     c.addEventListener("pointerdown", (e) => {
       if (e.pointerType === "mouse" && e.button !== 0) return;
+      // Wave TEX lane U: while the Marks panel places a mark, a press ON THE SKIN places it (and a drag slides it);
+      // a press off the body still turns the figure.
+      if (this.#texPlace && this.#pointers.size === 0 && this.#placeDrag === null) {
+        const hit = this.#pickSkin(e.clientX, e.clientY);
+        if (hit) {
+          e.stopImmediatePropagation();
+          e.preventDefault();
+          this.#placeDrag = e.pointerId;
+          try { c.setPointerCapture(e.pointerId); } catch { /* synthetic pointer */ }
+          this.#emitPick("down", hit);
+          return;
+        }
+      }
       e.stopImmediatePropagation();
       if (e.pointerType === "mouse") e.preventDefault(); // no text selection while dragging
       this.#pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
@@ -1025,6 +1071,11 @@ export class PreviewScene {
       this.#setCursor();
     }, { signal: sig });
     c.addEventListener("pointermove", (e) => {
+      if (this.#placeDrag === e.pointerId) {
+        e.stopImmediatePropagation();
+        this.#placePending = { x: e.clientX, y: e.clientY }; // one skin pick per frame (#render)
+        return;
+      }
       const p = this.#pointers.get(e.pointerId);
       if (!p) {
         if (e.pointerType !== "touch") { this.#hover.x = e.clientX; this.#hover.y = e.clientY; this.#hover.pending = true; }
@@ -1041,6 +1092,15 @@ export class PreviewScene {
       }
     }, { signal: sig });
     const up = (e: PointerEvent) => {
+      if (this.#placeDrag === e.pointerId) {
+        e.stopImmediatePropagation();
+        this.#placeDrag = null;
+        this.#placePending = null;
+        try { c.releasePointerCapture(e.pointerId); } catch { /* already released */ }
+        const hit = e.type === "pointerup" ? this.#pickSkin(e.clientX, e.clientY) ?? this.#placeLast : this.#placeLast;
+        if (hit) this.#emitPick("up", hit);
+        return;
+      }
       if (!this.#pointers.delete(e.pointerId)) return;
       try { c.releasePointerCapture(e.pointerId); } catch { /* already released */ }
       if (this.#pointers.size === 1) { this.#dragging = true; this.#pinchSpread = 0; } // pinch -> drag: deltas from the remaining finger's last point
@@ -1161,6 +1221,8 @@ export class PreviewScene {
     this.#fighter = fighter;
     this.#rig = rig;
     this.#root.add(rig.group);
+    this.#texViewApplied = "";
+    this.#applyTexView();
   }
 
   // ── Wave GEN lane U: stage views + what-if stats, driven by the canvas's data attributes ─────────────────
@@ -1179,6 +1241,130 @@ export class PreviewScene {
       this.#genStageAttr = stage;
       this.setGenStage(isGenStage(stage) ? stage : DEFAULT_GEN_STAGE);
     }
+    // Wave TEX lane U: the channel view and the placement mode the Marks panel asks for.
+    const view = ds.texChannel ?? "";
+    if (view !== this.#texViewAttr) {
+      this.#texViewAttr = view;
+      this.#texView = isChannelView(view) ? view : DEFAULT_CHANNEL_VIEW;
+      this.#applyTexView();
+    }
+    const place = ds.texPlacing ?? "";
+    if (place !== this.#texPlace) {
+      this.#texPlace = place;
+      if (!place) { this.#placeDrag = null; this.#placePending = null; }
+      if (this.#reticle) this.#reticle.visible = !!place && !!this.#placeLast;
+    }
+  }
+
+  // ── Wave TEX lane U: channel views + mark placement on the model ────────────────────────────────────────
+  /** Show the channel view on the rig (R's uniform switch, no recompile). Records what was applied (QA). */
+  #applyTexView(): void {
+    const api = (this.#rig as { material?: { setChannelView(v: TexChannelView): void } } | null)?.material;
+    if (!api) { this.#texViewApplied = ""; return; }
+    if (this.#texViewApplied === this.#texView) return;
+    api.setChannelView(this.#texView);
+    this.#texViewApplied = this.#texView;
+    const ds = (this.#canvas as { dataset?: DOMStringMap }).dataset;
+    if (ds) ds.texChannelShown = this.#texView;
+    this.#render(0);
+  }
+
+  /** The skin as a pick mesh (bind positions, normals, triangles, region per vertex), cached per rig. */
+  #skinPickMesh(): PickMesh | null {
+    const skin = this.#rig?.skin as THREE.Mesh | undefined;
+    if (!skin || !this.#rig) return null;
+    if (this.#pickMesh?.rig === this.#rig) return this.#pickMesh.mesh;
+    const g = skin.geometry;
+    const pos = g.getAttribute("position"), nor = g.getAttribute("normal"), idx = g.getIndex();
+    if (!pos || !nor || !idx) return null;
+    const mesh: PickMesh = {
+      positions: pos.array as Float32Array, normals: nor.array as Float32Array, indices: idx.array as Uint32Array,
+      region: (g.userData?.region as Uint8Array | undefined) ?? new Uint8Array(pos.count),
+    };
+    this.#pickMesh = { rig: this.#rig, mesh };
+    return mesh;
+  }
+
+  /**
+   * The skin point under a client point: the FIRST visible thing the ray hits must be the body's skin (a
+   * weapon, the hair or a face part in front refuses the pick). Returns the world point (reticle), the
+   * BIND-pose point and normal (barycentric over the hit triangle of the bind geometry), the region (the
+   * region of the triangle's dominant vertex) and M's frame anchor. null = not over the skin.
+   */
+  #pickSkin(clientX: number, clientY: number): TexPickHit | null {
+    const rig = this.#rig;
+    const skin = rig?.skin as THREE.Mesh | undefined;
+    if (!rig || !skin || !rig.group.visible || this.#stageRoot.visible) return null;
+    const t0 = performance.now();
+    const [nx, ny] = this.#ndc(clientX, clientY);
+    if (Math.abs(nx) > 1 || Math.abs(ny) > 1) return null;
+    this.#placeCamera();
+    rig.group.updateMatrixWorld(true);
+    this.#raycaster.setFromCamera(new THREE.Vector2(nx, ny), this.#camera);
+    const shown = (o: THREE.Object3D | null): boolean => { for (let x = o; x; x = x.parent) { if (!x.visible) return false; if (x === rig.group) return true; } return true; };
+    const first = this.#raycaster.intersectObject(rig.group, true).find((h) => (h.object as THREE.Mesh).isMesh && shown(h.object));
+    const ms = performance.now() - t0;
+    this.#texStats.lastPickMs = ms; this.#texStats.maxPickMs = Math.max(this.#texStats.maxPickMs, ms);
+    if (!first || first.object !== skin || !first.face) { this.#texStats.misses++; return null; }
+    const mesh = this.#skinPickMesh();
+    if (!mesh) return null;
+    const { a, b, c } = first.face;
+    const w = (first as { barycoord?: THREE.Vector3 }).barycoord ?? new THREE.Vector3(1 / 3, 1 / 3, 1 / 3);
+    const P = mesh.positions, N = mesh.normals;
+    const point: [number, number, number] = [0, 1, 2].map((k) => P[a * 3 + k] * w.x + P[b * 3 + k] * w.y + P[c * 3 + k] * w.z) as [number, number, number];
+    const n0 = [0, 1, 2].map((k) => N[a * 3 + k] * w.x + N[b * 3 + k] * w.y + N[c * 3 + k] * w.z), nl = Math.hypot(n0[0], n0[1], n0[2]) || 1;
+    const normal: [number, number, number] = [n0[0] / nl, n0[1] / nl, n0[2] / nl];
+    const dom = w.x >= w.y && w.x >= w.z ? a : w.y >= w.z ? b : c;
+    const regionIndex = mesh.region[dom] ?? 0;
+    const framed = pickAnchor(mesh, regionIndex, point);
+    this.#texStats.picks++;
+    return {
+      world: [first.point.x, first.point.y, first.point.z], point, normal, regionIndex,
+      region: framed?.region ?? (REGIONS[regionIndex] ?? null), side: framed?.side ?? null, anchor: framed?.anchor ?? null,
+    };
+  }
+
+  #emitPick(phase: "down" | "move" | "up", hit: TexPickHit): void {
+    this.#placeLast = hit;
+    if (this.#reticle) {
+      this.#reticle.position.set(hit.world[0], hit.world[1], hit.world[2]);
+      this.#reticle.quaternion.copy(this.#camera.quaternion);
+      this.#reticle.visible = !!this.#texPlace;
+    }
+    this.#texStats.events++;
+    const ds = (this.#canvas as { dataset?: DOMStringMap }).dataset;
+    if (ds) ds.texPicks = String(this.#texStats.events);
+    const c = this.#canvas as HTMLCanvasElement & { dispatchEvent?: (e: Event) => boolean };
+    const detail = { phase, region: hit.region, side: hit.side, anchor: hit.anchor, point: hit.point, normal: hit.normal };
+    if (typeof c.dispatchEvent === "function" && typeof CustomEvent === "function") c.dispatchEvent(new CustomEvent(TEX_PICK_EVENT, { detail, bubbles: true }));
+    this.#render(0);
+  }
+
+  /** QA (wave TEX, U): the channel view asked/applied, placement mode, pick counters and the last pick. */
+  debugTex(): { view: string; applied: string; place: string; dragging: boolean; stats: { picks: number; misses: number; events: number; lastPickMs: number; maxPickMs: number }; last: TexPickHit | null; reticle: boolean; hasMaterialApi: boolean } {
+    return { view: this.#texView, applied: this.#texViewApplied, place: this.#texPlace, dragging: this.#placeDrag !== null, stats: { ...this.#texStats }, last: this.#placeLast, reticle: !!this.#reticle?.visible, hasMaterialApi: !!(this.#rig as { material?: unknown } | null)?.material };
+  }
+
+  /** QA (wave TEX, U): the skin pick at a client point (no event). */
+  debugPickSkin(clientX: number, clientY: number): TexPickHit | null {
+    return this.#pickSkin(clientX, clientY);
+  }
+
+  /** QA (wave TEX, U): the client px of a BIND-pose skin point of the current rig, via the rig's posed skin (CPU skinning). */
+  debugProjectBind(point: Vec3): [number, number] | null {
+    const skin = this.#rig?.skin as THREE.SkinnedMesh | undefined;
+    const mesh = this.#skinPickMesh();
+    if (!skin || !mesh) return null;
+    // nearest bind vertex, then its skinned world position
+    let best = -1, bd = Infinity;
+    const P = mesh.positions;
+    for (let i = 0; i < P.length / 3; i++) { const d = (P[i * 3] - point[0]) ** 2 + (P[i * 3 + 1] - point[1]) ** 2 + (P[i * 3 + 2] - point[2]) ** 2; if (d < bd) { bd = d; best = i; } }
+    if (best < 0) return null;
+    const v = new THREE.Vector3();
+    skin.updateMatrixWorld(true);
+    (skin as THREE.SkinnedMesh).getVertexPosition?.(best, v);
+    skin.localToWorld(v);
+    return this.debugProject([v.x, v.y, v.z]);
   }
 
   /** Show one generator stage (Paint = the finished rig). Non-Paint stages compute the staged body on demand. */
@@ -1294,9 +1480,13 @@ export class PreviewScene {
     this.#render(dt);
   }
 
+  /** QA (wave TEX, U): freeze the idle clock so two draws of one state hash equal (measurement only). */
+  #frozen = false;
+  debugFreeze(on: boolean): void { this.#frozen = on; }
+
   #render(dt: number): void {
     if (this.#disposed) return;
-    const step = Math.min(0.1, Math.max(0, dt));
+    const step = this.#frozen ? 0 : Math.min(0.1, Math.max(0, dt));
     this.#clock += step;
     if (this.#rig) {
       // The rig's own rest pose advanced in time: the skeleton's update() is where the
@@ -1309,6 +1499,13 @@ export class PreviewScene {
       const f = this.#pinchPending, m = [...this.#pointers.values()];
       this.#pinchPending = 1;
       if (m.length >= 2) this.zoomAtClient(f, (m[0].x + m[1].x) / 2, (m[0].y + m[1].y) / 2);
+    }
+    // Wave TEX (U): a placement drag picks the skin once per frame at the latest pointer point.
+    if (this.#placePending && this.#placeDrag !== null) {
+      const q = this.#placePending;
+      this.#placePending = null;
+      const hit = this.#pickSkin(q.x, q.y);
+      if (hit) { this.#emitPick("move", hit); return; }
     }
     // Wave THEME (V): one hover raycast per frame at most (pointermove only records the point).
     const now = performance.now();

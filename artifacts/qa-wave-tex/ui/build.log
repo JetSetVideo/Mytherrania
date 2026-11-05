@@ -1,0 +1,39 @@
+[0m[32mTask[0m [0m[36mbuild[0m deno run -A tools/build.ts
+⚠️  [0m[36mdeno bundle[0m is experimental and subject to changes
+[0m[33mbundler warning[0m: Duplicate key "subraces" in object literal[duplicate-object-key] 
+    at [0m[36mfile:///Users/macmax/Desktop/Mytherrania/artifacts/design/race-genes.json[0m:[0m[33m9494[0m:[0m[33m4[0m
+    [0m[35mnote[0m: The original key "subraces" is here:
+        [0m[36mfile:///Users/macmax/Desktop/Mytherrania/artifacts/design/race-genes.json[0m:[0m[33m390[0m:[0m[33m4[0m
+[0m[33mbundler warning[0m: Duplicate key "subraceNotes" in object literal[duplicate-object-key] 
+    at [0m[36mfile:///Users/macmax/Desktop/Mytherrania/artifacts/design/race-genes.json[0m:[0m[33m12204[0m:[0m[33m4[0m
+    [0m[35mnote[0m: The original key "subraceNotes" is here:
+        [0m[36mfile:///Users/macmax/Desktop/Mytherrania/artifacts/design/race-genes.json[0m:[0m[33m3100[0m:[0m[33m4[0m
+[0m[33mbundler warning[0m: Duplicate key "trig" in object literal[duplicate-object-key] 
+    at [0m[36mfile:///Users/macmax/Desktop/Mytherrania/artifacts/design/race-genes.json[0m:[0m[33m12218[0m:[0m[33m4[0m
+    [0m[35mnote[0m: The original key "trig" is here:
+        [0m[36mfile:///Users/macmax/Desktop/Mytherrania/artifacts/design/race-genes.json[0m:[0m[33m3114[0m:[0m[33m4[0m
+[0m[33mbundler warning[0m: Duplicate key "trigNotes" in object literal[duplicate-object-key] 
+    at [0m[36mfile:///Users/macmax/Desktop/Mytherrania/artifacts/design/race-genes.json[0m:[0m[33m18596[0m:[0m[33m4[0m
+    [0m[35mnote[0m: The original key "trigNotes" is here:
+        [0m[36mfile:///Users/macmax/Desktop/Mytherrania/artifacts/design/race-genes.json[0m:[0m[33m9492[0m:[0m[33m4[0m
+[0m[33mbundler warning[0m: Duplicate key "subraces" in object literal[duplicate-object-key] 
+    at [0m[36mfile:///Users/macmax/Desktop/Mytherrania/artifacts/design/race-genes.json[0m:[0m[33m18598[0m:[0m[33m4[0m
+    [0m[35mnote[0m: The original key "subraces" is here:
+        [0m[36mfile:///Users/macmax/Desktop/Mytherrania/artifacts/design/race-genes.json[0m:[0m[33m390[0m:[0m[33m4[0m
+[0m[33mbundler warning[0m: Duplicate key "subraceNotes" in object literal[duplicate-object-key] 
+    at [0m[36mfile:///Users/macmax/Desktop/Mytherrania/artifacts/design/race-genes.json[0m:[0m[33m21308[0m:[0m[33m4[0m
+    [0m[35mnote[0m: The original key "subraceNotes" is here:
+        [0m[36mfile:///Users/macmax/Desktop/Mytherrania/artifacts/design/race-genes.json[0m:[0m[33m3100[0m:[0m[33m4[0m
+[0m[33mbundler warning[0m: Duplicate key "trig" in object literal[duplicate-object-key] 
+    at [0m[36mfile:///Users/macmax/Desktop/Mytherrania/artifacts/design/race-genes.json[0m:[0m[33m21322[0m:[0m[33m4[0m
+    [0m[35mnote[0m: The original key "trig" is here:
+        [0m[36mfile:///Users/macmax/Desktop/Mytherrania/artifacts/design/race-genes.json[0m:[0m[33m3114[0m:[0m[33m4[0m
+[0m[33mbundler warning[0m: Duplicate key "trigNotes" in object literal[duplicate-object-key] 
+    at [0m[36mfile:///Users/macmax/Desktop/Mytherrania/artifacts/design/race-genes.json[0m:[0m[33m27700[0m:[0m[33m4[0m
+    [0m[35mnote[0m: The original key "trigNotes" is here:
+        [0m[36mfile:///Users/macmax/Desktop/Mytherrania/artifacts/design/race-genes.json[0m:[0m[33m9492[0m:[0m[33m4[0m
+[0m[32mBundled[0m 310 modules in 333ms
+  [0m[35mdist-texui/app.js.map[0m [0m[38;5;245m10.79MB[0m
+  [0m[36mdist-texui/app.js    [0m [0m[38;5;245m2.29MB[0m
+
+Built local browser bundle: 2397112 bytes. Static from-URL check passed; runtime network isolation requires browser verification.

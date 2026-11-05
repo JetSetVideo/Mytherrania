@@ -1,0 +1,12 @@
+generated scars 845 (400 characters); 'mature' words 625, of which drawn raised > 0.1 mm: 0
+keloids 108: keloid words 106; raised hypertrophic 27: 'raised' words 26
+examples: young keloid ork claw 13d h 0.76 -> 'healing: pink' | young keloid dwarf claw 6d h 0.72 -> 'healing: pink'
+10d plain 'healing: pink' h0.62 | hyp 'healing: pink' h0.93 | keloid 'healing: pink' h0.82
+60d plain 'maturing: fading' h0.16 | hyp 'maturing: raised, pink (flattens over 1-2 years)' h1.39 | keloid 'keloid: raised, dark pink (does not fade)' h1.16
+200d plain 'maturing: fading' h-0.04 | hyp 'maturing: raised, pink (flattens over 1-2 years)' h1.25 | keloid 'keloid: raised, dark pink (does not fade)' h2.03
+364d plain 'maturing: fading' h-0.05 | hyp 'maturing: raised, pink (flattens over 1-2 years)' h0.55 | keloid 'keloid: raised, dark pink (does not fade)' h2.38
+365d plain 'mature: pale, flat' h-0.05 | hyp 'maturing: raised, pink (flattens over 1-2 years)' h0.54 | keloid 'keloid: raised, dark pink (does not fade)' h2.38
+400d plain 'mature: pale, flat' h-0.05 | hyp 'maturing: raised, pink (flattens over 1-2 years)' h0.44 | keloid 'keloid: raised, dark pink (does not fade)' h2.41
+600d plain 'mature: pale, flat' h-0.05 | hyp 'mature: pale, flat' h0.09 | keloid 'keloid: raised, dark pink (does not fade)' h2.48
+800d plain 'mature: pale, flat' h-0.05 | hyp 'mature: pale, flat' h-0.02 | keloid 'keloid: raised, dark pink (does not fade)' h2.50
+3650d plain 'mature: pale, flat' h-0.05 | hyp 'mature: pale, flat' h-0.05 | keloid 'keloid: raised, dark pink (does not fade)' h2.50

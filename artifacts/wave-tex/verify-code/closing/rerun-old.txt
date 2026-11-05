@@ -1,0 +1,23 @@
+SKIP EXP-L [L] no existing export deleted :: no changed files yet
+PASS EXP-R [R] no existing export deleted (DO NOT DELETE rule) :: 2 changed files (+240/-5 lines), lost exports: none
+PASS EXP-M [M] no existing export deleted (DO NOT DELETE rule) :: 1 changed files (+7/-0 lines), lost exports: none
+PASS EXP-P [P] no existing export deleted (DO NOT DELETE rule) :: 1 changed files (+29/-1 lines), lost exports: none
+PASS EXP-U [U] no existing export deleted (DO NOT DELETE rule) :: 2 changed files (+221/-2 lines), lost exports: none
+SKIP EXP-C [C] no existing export deleted :: no changed files yet
+PASS MRK-1 [M] defaultMarks deterministic per seed; counts ≤ MAX_GENERATED; every field inside MARK_RANGES; solver report clean :: 0 non-deterministic, 0 over cap, 0 out of range, 0 placement issues 
+PASS MRK-2 [M] no overlap beyond the 0.1 threshold between placed marks (QC Monte Carlo of the oriented footprints, wrap-aware) :: max overlap fraction 0.110; 0 pairs > 0.12 
+PASS MRK-3 [M/R] decals finite, extents > 0, |height| ≤ 8 mm; ≤ 16 per body (DECAL_MAX); glyph-kind decals carry no relief (else 1 + 3 relief atlas fetches per decal > the 1-fetch budget) :: 1136 decals, max 10/body, 0 bodies > 16, 0 bad, 0 glyph/dots/band decals with height ≠ 0; mean 0.5 ms/character (defaultMarks x2 + resolve + decals + QC overlap MC)
+PASS MRK-4 [M] monotone ageing: after day 365 maturity ↑, redness ↓, lift ↑, raised height ↓ (non-keloid); roughnessScale < 1 always; ink blur ↑ and opacity ↓ with years :: 0 violations 
+PASS MRK-5 [M] sanitizeMarks/resolveMarks/marksToDecals total on garbage profiles (null, wrong types, NaN/Inf/negative fields, 100 mirrored scars) :: 0 failures 
+PASS PRE-1 [P] presetFor deterministic + presetToV2 validateStack clean over every race x subrace x class; paintPreset channels finite and inside CHANNEL_RANGE :: 0 non-deterministic, 0 v2 validation failures, 0 range failures 
+PASS PRE-2 [P] evaluateFinish(legacyFinish) == applyFormShade bit for bit (the old FormShade+Miniature path wrapped as layers) :: differing channels per body human-male:0 human-female:0 elf-male:0 elf-female:0 dwarf-male:0 dwarf-female:0 ork-male:0 ork-female:0
+PASS PRE-3 [P] Presets.colorBlend == W3C 'color' (QC reference) :: max|Δ| 0.000 (note: duplicates Operators.blendRgb color code instead of importing it)
+PASS PRE-4 [P] applyPresetOverrides([]) and unknown ids are identity on the painted channels :: identity true
+PASS PRE-5 [P] game path presetBuffers == paintPreset; v2 export (inspector) close to the game path :: presetBuffers==paintPreset true; v2 export vs game: albedo mean|Δ| 0.0129 max 0.160 (linear), roughness mean 0.0079 max 0.104, height max 0.096 mm (PASS bar = P's TX69 pins: mean albedo < 0.03, mean rough < 0.02, height < 2 mm)
+PASS PRE-6 [P] perf: paintPreset vs legacy paintSkin (rig build budget +30 ms) :: worst extra 5.8 ms; human-male 14/17; human-female 14/20; elf-male 17/20; elf-female 17/22; dwarf-male 16/18; dwarf-female 16/19; ork-male 16/19; ork-female 16/19
+PASS CAP-1 [C] diffImages: changed count + meanAbs == brute force, symmetric in (a,b), box pixel counts real, minPixels=1 boxes cover every changed pixel :: 0 violations 
+PASS CAP-2 [C] orbitOf inverts orbitDirection; sheetGrid cells inside the sheet, below the title, never overlapping :: orbit max err 6.82e-13, grid violations 0
+PASS CAP-3 [C] layoutHud: no line wider than maxChars, inside the band, height ≤ hudMaxHeight, no 'NaN/undefined/Infinity' printed :: 0 violations 
+
+20 rows, 0 FAIL, 0 WARN
+exit 0

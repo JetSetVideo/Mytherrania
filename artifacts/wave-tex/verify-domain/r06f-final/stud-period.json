@@ -1,0 +1,114 @@
+{
+ "human-male": {
+  "height": {
+   "peakMm": 75,
+   "r": 0.444
+  },
+  "normal": {
+   "peakMm": 75,
+   "r": 0.384
+  },
+  "final": {
+   "peakMm": 85,
+   "r": 0.14
+  }
+ },
+ "human-female": {
+  "height": {
+   "peakMm": 75,
+   "r": 0.657
+  },
+  "normal": {
+   "peakMm": 75,
+   "r": 0.271
+  },
+  "final": {
+   "peakMm": 85,
+   "r": 0.183
+  }
+ },
+ "elf-male": {
+  "height": {
+   "peakMm": 65,
+   "r": 0.483
+  },
+  "normal": {
+   "peakMm": 75,
+   "r": 0.413
+  },
+  "final": {
+   "peakMm": 25,
+   "r": 0.227
+  }
+ },
+ "elf-female": {
+  "height": {
+   "peakMm": 75,
+   "r": 0.288
+  },
+  "normal": {
+   "peakMm": 25,
+   "r": 0.311
+  },
+  "final": {
+   "peakMm": 45,
+   "r": 0.172
+  }
+ },
+ "dwarf-male": {
+  "height": {
+   "peakMm": 75,
+   "r": 0.698
+  },
+  "normal": {
+   "peakMm": 75,
+   "r": 0.437
+  },
+  "final": {
+   "peakMm": 85,
+   "r": 0.139
+  }
+ },
+ "dwarf-female": {
+  "height": {
+   "peakMm": 65,
+   "r": 0.534
+  },
+  "normal": {
+   "peakMm": 75,
+   "r": 0.321
+  },
+  "final": {
+   "peakMm": 25,
+   "r": 0.257
+  }
+ },
+ "ork-male": {
+  "height": {
+   "peakMm": 75,
+   "r": 0.666
+  },
+  "normal": {
+   "peakMm": 75,
+   "r": 0.474
+  },
+  "final": {
+   "peakMm": 65,
+   "r": 0.215
+  }
+ },
+ "ork-female": {
+  "height": {
+   "peakMm": 75,
+   "r": 0.653
+  },
+  "normal": {
+   "peakMm": 75,
+   "r": 0.443
+  },
+  "final": {
+   "peakMm": 75,
+   "r": 0.285
+  }
+ }
+}

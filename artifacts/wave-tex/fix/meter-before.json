@@ -1,0 +1,90 @@
+{
+ "human-male": {
+  "v1": {
+   "convexMean": 176.31,
+   "skinMedian": 166.32,
+   "convexOverMedian": 1.0601,
+   "bright5": 185.01
+  },
+  "preset": {
+   "convexMean": 187.28,
+   "skinMedian": 165.23,
+   "convexOverMedian": 1.1335,
+   "bright5": 197.92
+  },
+  "ao": {
+   "min": 0.949,
+   "p5": 0.987,
+   "p50": 0.999,
+   "p95": 1,
+   "below09": 0
+  },
+  "kappaP90": 0.413
+ },
+ "ork-female": {
+  "v1": {
+   "convexMean": 147.97,
+   "skinMedian": 131.8,
+   "convexOverMedian": 1.1227,
+   "bright5": 168.91
+  },
+  "preset": {
+   "convexMean": 157.48,
+   "skinMedian": 129.5,
+   "convexOverMedian": 1.2161,
+   "bright5": 192.31
+  },
+  "ao": {
+   "min": 0.945,
+   "p5": 0.988,
+   "p50": 0.999,
+   "p95": 1,
+   "below09": 0
+  },
+  "kappaP90": 0.34
+ },
+ "elf-female": {
+  "v1": {
+   "convexMean": 207.42,
+   "skinMedian": 201.19,
+   "convexOverMedian": 1.031,
+   "bright5": 215.64
+  },
+  "preset": {
+   "convexMean": 212.41,
+   "skinMedian": 201.96,
+   "convexOverMedian": 1.0517,
+   "bright5": 221.19
+  },
+  "ao": {
+   "min": 0.914,
+   "p5": 0.984,
+   "p50": 0.998,
+   "p95": 1,
+   "below09": 0
+  },
+  "kappaP90": 0.411
+ },
+ "dwarf-male": {
+  "v1": {
+   "convexMean": 161.69,
+   "skinMedian": 154.33,
+   "convexOverMedian": 1.0477,
+   "bright5": 177.77
+  },
+  "preset": {
+   "convexMean": 168.56,
+   "skinMedian": 154.18,
+   "convexOverMedian": 1.0932,
+   "bright5": 193.9
+  },
+  "ao": {
+   "min": 0.957,
+   "p5": 0.99,
+   "p50": 0.999,
+   "p95": 1,
+   "below09": 0
+  },
+  "kappaP90": 0.34
+ }
+}

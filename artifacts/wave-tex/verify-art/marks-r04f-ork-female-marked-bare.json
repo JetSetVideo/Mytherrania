@@ -1,0 +1,4012 @@
+{
+ "ork-female-marked-bare/channels/front-left-3q/studio": {
+  "maskPx": 1667,
+  "components": [
+   {
+    "comp": 88,
+    "area": 53,
+    "bbox": [
+     313,
+     215,
+     12,
+     11
+    ],
+    "ring": 265,
+    "marksView": 191.1,
+    "albedoIn": [
+     56.5,
+     -23.3,
+     30.6
+    ],
+    "albedoRing": [
+     59.8,
+     -25,
+     33.7
+    ],
+    "dE": 4.9,
+    "dL": -3.3,
+    "chromaIn": 38.5,
+    "chromaRing": 42,
+    "edge": {
+     "boundarySamples": 9,
+     "width10_90": {
+      "p25": 0,
+      "p50": 5,
+      "p75": 6
+     },
+     "hardShare": 0.333,
+     "bandingShare": 0.111
+    },
+    "finalDL": -5.3,
+    "roughIn": 175,
+    "roughRing": 175,
+    "heightIn": 156,
+    "heightRing": 153,
+    "normalDE": 6.8
+   },
+   {
+    "comp": 106,
+    "area": 49,
+    "bbox": [
+     305,
+     229,
+     12,
+     10
+    ],
+    "ring": 255,
+    "marksView": 185.1,
+    "albedoIn": [
+     51.8,
+     -23,
+     29.8
+    ],
+    "albedoRing": [
+     57.1,
+     -25.5,
+     34.1
+    ],
+    "dE": 7.2,
+    "dL": -5.3,
+    "chromaIn": 37.6,
+    "chromaRing": 42.5,
+    "edge": {
+     "boundarySamples": 12,
+     "width10_90": {
+      "p25": 5,
+      "p50": 7,
+      "p75": 7
+     },
+     "hardShare": 0.083,
+     "bandingShare": 0.167
+    },
+    "finalDL": -12.1,
+    "roughIn": 179,
+    "roughRing": 179,
+    "heightIn": 153,
+    "heightRing": 151,
+    "normalDE": 4.2
+   },
+   {
+    "comp": 119,
+    "area": 42,
+    "bbox": [
+     296,
+     240,
+     13,
+     9
+    ],
+    "ring": 240,
+    "marksView": 191,
+    "albedoIn": [
+     52.6,
+     -22.6,
+     29.1
+    ],
+    "albedoRing": [
+     57.2,
+     -24.8,
+     33.1
+    ],
+    "dE": 6.4,
+    "dL": -4.6,
+    "chromaIn": 36.9,
+    "chromaRing": 41.3,
+    "edge": {
+     "boundarySamples": 9,
+     "width10_90": {
+      "p25": 0,
+      "p50": 5,
+      "p75": 6
+     },
+     "hardShare": 0.333,
+     "bandingShare": 0
+    },
+    "finalDL": -12.4,
+    "roughIn": 179,
+    "roughRing": 179,
+    "heightIn": 158,
+    "heightRing": 155,
+    "normalDE": 2.7
+   },
+   {
+    "comp": 84,
+    "area": 41,
+    "bbox": [
+     277,
+     212,
+     13,
+     23
+    ],
+    "ring": 299,
+    "marksView": 120.2,
+    "albedoIn": [
+     29.5,
+     -14.2,
+     13.5
+    ],
+    "albedoRing": [
+     54.2,
+     -23.6,
+     31.5
+    ],
+    "dE": 31.9,
+    "dL": -24.7,
+    "chromaIn": 19.6,
+    "chromaRing": 39.2,
+    "edge": {
+     "boundarySamples": 7,
+     "width10_90": {
+      "p25": 6,
+      "p50": 6,
+      "p75": 7
+     },
+     "hardShare": 0.143,
+     "bandingShare": 0.143
+    },
+    "finalDL": -52,
+    "roughIn": 108.2,
+    "roughRing": 180,
+    "heightIn": 99.2,
+    "heightRing": 161,
+    "normalDE": 35.4
+   },
+   {
+    "comp": 131,
+    "area": 41,
+    "bbox": [
+     285,
+     246,
+     16,
+     9
+    ],
+    "ring": 140,
+    "marksView": 196.1,
+    "albedoIn": [
+     54.1,
+     -21.6,
+     28.8
+    ],
+    "albedoRing": [
+     57.7,
+     -23.8,
+     32.3
+    ],
+    "dE": 5.4,
+    "dL": -3.5,
+    "chromaIn": 36.1,
+    "chromaRing": 40.3,
+    "edge": {
+     "boundarySamples": 11,
+     "width10_90": {
+      "p25": 0,
+      "p50": 1,
+      "p75": 1
+     },
+     "hardShare": 0.818,
+     "bandingShare": 0
+    },
+    "finalDL": -12.4,
+    "roughIn": 174,
+    "roughRing": 176,
+    "heightIn": 150,
+    "heightRing": 154,
+    "normalDE": 10.2
+   },
+   {
+    "comp": 61,
+    "area": 29,
+    "bbox": [
+     158,
+     177,
+     3,
+     18
+    ],
+    "ring": 218,
+    "marksView": 120.2,
+    "albedoIn": [
+     34.9,
+     -15.6,
+     15.8
+    ],
+    "albedoRing": [
+     53.8,
+     -24.9,
+     33.1
+    ],
+    "dE": 27.2,
+    "dL": -18.9,
+    "chromaIn": 22.2,
+    "chromaRing": 41.4,
+    "edge": {
+     "boundarySamples": 9,
+     "width10_90": {
+      "p25": 4,
+      "p50": 6,
+      "p75": 7
+     },
+     "hardShare": 0.111,
+     "bandingShare": 0
+    },
+    "finalDL": -28.3,
+    "roughIn": 105.2,
+    "roughRing": 179,
+    "heightIn": 99.2,
+    "heightRing": 153,
+    "normalDE": 30.7
+   },
+   {
+    "comp": 171,
+    "area": 28,
+    "bbox": [
+     271,
+     315,
+     1,
+     28
+    ],
+    "ring": 145,
+    "marksView": 164.7,
+    "albedoIn": [
+     41.2,
+     -15.7,
+     23.7
+    ],
+    "albedoRing": [
+     56.4,
+     -25.6,
+     34.4
+    ],
+    "dE": 21,
+    "dL": -15.2,
+    "chromaIn": 30.9,
+    "chromaRing": 42.9,
+    "edge": {
+     "boundarySamples": 14,
+     "width10_90": {
+      "p25": 1,
+      "p50": 1,
+      "p75": 1
+     },
+     "hardShare": 1,
+     "bandingShare": 0
+    },
+    "finalDL": -24.8,
+    "roughIn": 141.7,
+    "roughRing": 179,
+    "heightIn": 115.7,
+    "heightRing": 155,
+    "normalDE": 28.7
+   },
+   {
+    "comp": 77,
+    "area": 23,
+    "bbox": [
+     252,
+     205,
+     10,
+     11
+    ],
+    "ring": 179,
+    "marksView": 120.2,
+    "albedoIn": [
+     34.8,
+     -15.6,
+     15.8
+    ],
+    "albedoRing": [
+     52.9,
+     -23.7,
+     31.6
+    ],
+    "dE": 25.4,
+    "dL": -18.1,
+    "chromaIn": 22.2,
+    "chromaRing": 39.7,
+    "edge": {
+     "boundarySamples": 5,
+     "width10_90": {
+      "p25": 6,
+      "p50": 6,
+      "p75": 7
+     },
+     "hardShare": 0,
+     "bandingShare": 0.2
+    },
+    "finalDL": -13.3,
+    "roughIn": 107.2,
+    "roughRing": 179,
+    "heightIn": 96.2,
+    "heightRing": 157,
+    "normalDE": 34.2
+   },
+   {
+    "comp": 185,
+    "area": 22,
+    "bbox": [
+     154,
+     352,
+     1,
+     22
+    ],
+    "ring": 124,
+    "marksView": 164.7,
+    "albedoIn": [
+     39.6,
+     -19.2,
+     22.8
+    ],
+    "albedoRing": [
+     52.2,
+     -23.8,
+     31.8
+    ],
+    "dE": 16.1,
+    "dL": -12.5,
+    "chromaIn": 29.9,
+    "chromaRing": 39.8,
+    "edge": {
+     "boundarySamples": 0,
+     "width10_90": {
+      "p25": null,
+      "p50": null,
+      "p75": null
+     },
+     "hardShare": 0,
+     "bandingShare": 0
+    },
+    "finalDL": -21.8,
+    "roughIn": 142.4,
+    "roughRing": 179,
+    "heightIn": 121.7,
+    "heightRing": 161,
+    "normalDE": 51
+   },
+   {
+    "comp": 248,
+    "area": 22,
+    "bbox": [
+     127,
+     451,
+     12,
+     16
+    ],
+    "ring": 125,
+    "marksView": 75.9,
+    "albedoIn": [
+     27,
+     -9.5,
+     5.8
+    ],
+    "albedoRing": [
+     64,
+     -21.8,
+     30
+    ],
+    "dE": 45.9,
+    "dL": -37,
+    "chromaIn": 11.2,
+    "chromaRing": 37,
+    "edge": {
+     "boundarySamples": 7,
+     "width10_90": {
+      "p25": 1,
+      "p50": 1,
+      "p75": 1
+     },
+     "hardShare": 1,
+     "bandingShare": 0
+    },
+    "finalDL": -80.6,
+    "roughIn": 78.7,
+    "roughRing": 189,
+    "heightIn": 55.7,
+    "heightRing": 128,
+    "normalDE": 59.6
+   },
+   {
+    "comp": 94,
+    "area": 20,
+    "bbox": [
+     294,
+     219,
+     8,
+     11
+    ],
+    "ring": 203,
+    "marksView": 198.5,
+    "albedoIn": [
+     64.6,
+     -15,
+     26.5
+    ],
+    "albedoRing": [
+     62.1,
+     -23.6,
+     31.9
+    ],
+    "dE": 10.5,
+    "dL": 2.5,
+    "chromaIn": 30.9,
+    "chromaRing": 39.7,
+    "edge": {
+     "boundarySamples": 5,
+     "width10_90": {
+      "p25": 0,
+      "p50": 6,
+      "p75": 6
+     },
+     "hardShare": 0.4,
+     "bandingShare": 0.2
+    },
+    "finalDL": 5.6,
+    "roughIn": 156,
+    "roughRing": 173,
+    "heightIn": 171,
+    "heightRing": 161,
+    "normalDE": 3.3
+   },
+   {
+    "comp": 174,
+    "area": 20,
+    "bbox": [
+     197,
+     334,
+     9,
+     20
+    ],
+    "ring": 144,
+    "marksView": 75.9,
+    "albedoIn": [
+     24.5,
+     -9.5,
+     5.3
+    ],
+    "albedoRing": [
+     56.3,
+     -23.7,
+     31.8
+    ],
+    "dE": 43.8,
+    "dL": -31.8,
+    "chromaIn": 10.9,
+    "chromaRing": 39.7,
+    "edge": {
+     "boundarySamples": 5,
+     "width10_90": {
+      "p25": 1,
+      "p50": 1,
+      "p75": 1
+     },
+     "hardShare": 0.8,
+     "bandingShare": 0
+    },
+    "finalDL": -34.3,
+    "roughIn": 68.7,
+    "roughRing": 179,
+    "heightIn": 70.9,
+    "heightRing": 155,
+    "normalDE": 62.2
+   },
+   {
+    "comp": 235,
+    "area": 20,
+    "bbox": [
+     178,
+     430,
+     1,
+     20
+    ],
+    "ring": 114,
+    "marksView": 120.2,
+    "albedoIn": [
+     30.8,
+     -13.9,
+     13.6
+    ],
+    "albedoRing": [
+     51.3,
+     -23.2,
+     31
+    ],
+    "dE": 28.4,
+    "dL": -20.5,
+    "chromaIn": 19.6,
+    "chromaRing": 38.6,
+    "edge": {
+     "boundarySamples": 0,
+     "width10_90": {
+      "p25": null,
+      "p50": null,
+      "p75": null
+     },
+     "hardShare": 0,
+     "bandingShare": 0
+    },
+    "finalDL": -28.3,
+    "roughIn": 105.2,
+    "roughRing": 179,
+    "heightIn": 94.2,
+    "heightRing": 155,
+    "normalDE": 49.3
+   },
+   {
+    "comp": 112,
+    "area": 19,
+    "bbox": [
+     155,
+     235,
+     10,
+     19
+    ],
+    "ring": 146,
+    "marksView": 120.2,
+    "albedoIn": [
+     35.5,
+     -16.3,
+     16.8
+    ],
+    "albedoRing": [
+     54.8,
+     -26,
+     34.6
+    ],
+    "dE": 28,
+    "dL": -19.3,
+    "chromaIn": 23.4,
+    "chromaRing": 43.3,
+    "edge": {
+     "boundarySamples": 5,
+     "width10_90": {
+      "p25": 1,
+      "p50": 1,
+      "p75": 6
+     },
+     "hardShare": 0.6,
+     "bandingShare": 0
+    },
+    "finalDL": -33,
+    "roughIn": 105.2,
+    "roughRing": 179,
+    "heightIn": 80.2,
+    "heightRing": 138,
+    "normalDE": 29.1
+   },
+   {
+    "comp": 169,
+    "area": 19,
+    "bbox": [
+     208,
+     313,
+     1,
+     19
+    ],
+    "ring": 115,
+    "marksView": 120.2,
+    "albedoIn": [
+     35.5,
+     -15.8,
+     16.4
+    ],
+    "albedoRing": [
+     53.8,
+     -25,
+     33.3
+    ],
+    "dE": 26.5,
+    "dL": -18.2,
+    "chromaIn": 22.7,
+    "chromaRing": 41.7,
+    "edge": {
+     "boundarySamples": 0,
+     "width10_90": {
+      "p25": null,
+      "p50": null,
+      "p75": null
+     },
+     "hardShare": 0,
+     "bandingShare": 0
+    },
+    "finalDL": -45.7,
+    "roughIn": 105.2,
+    "roughRing": 179,
+    "heightIn": 97.2,
+    "heightRing": 156,
+    "normalDE": 34.3
+   },
+   {
+    "comp": 99,
+    "area": 18,
+    "bbox": [
+     259,
+     224,
+     5,
+     18
+    ],
+    "ring": 128,
+    "marksView": 120.2,
+    "albedoIn": [
+     34.8,
+     -15.8,
+     16.4
+    ],
+    "albedoRing": [
+     55.2,
+     -25.5,
+     33.9
+    ],
+    "dE": 28.6,
+    "dL": -20.4,
+    "chromaIn": 22.8,
+    "chromaRing": 42.4,
+    "edge": {
+     "boundarySamples": 7,
+     "width10_90": {
+      "p25": 2,
+      "p50": 5,
+      "p75": 7
+     },
+     "hardShare": 0.143,
+     "bandingShare": 0
+    },
+    "finalDL": -25.6,
+    "roughIn": 105.2,
+    "roughRing": 179,
+    "heightIn": 85.2,
+    "heightRing": 156,
+    "normalDE": 42.1
+   },
+   {
+    "comp": 168,
+    "area": 18,
+    "bbox": [
+     204,
+     313,
+     1,
+     18
+    ],
+    "ring": 109,
+    "marksView": 120.2,
+    "albedoIn": [
+     34.5,
+     -14.9,
+     14.9
+    ],
+    "albedoRing": [
+     52.6,
+     -23.8,
+     31.6
+    ],
+    "dE": 26.2,
+    "dL": -18.1,
+    "chromaIn": 21.1,
+    "chromaRing": 39.6,
+    "edge": {
+     "boundarySamples": 0,
+     "width10_90": {
+      "p25": null,
+      "p50": null,
+      "p75": null
+     },
+     "hardShare": 0,
+     "bandingShare": 0
+    },
+    "finalDL": -19.3,
+    "roughIn": 105.2,
+    "roughRing": 179,
+    "heightIn": 99.2,
+    "heightRing": 165,
+    "normalDE": 37
+   },
+   {
+    "comp": 227,
+    "area": 18,
+    "bbox": [
+     271,
+     416,
+     11,
+     18
+    ],
+    "ring": 147,
+    "marksView": 120.2,
+    "albedoIn": [
+     34.1,
+     -13.5,
+     14.3
+    ],
+    "albedoRing": [
+     50.8,
+     -22.6,
+     30.2
+    ],
+    "dE": 24.7,
+    "dL": -16.7,
+    "chromaIn": 20.3,
+    "chromaRing": 37.7,
+    "edge": {
+     "boundarySamples": 6,
+     "width10_90": {
+      "p25": 7,
+      "p50": 7,
+      "p75": 7
+     },
+     "hardShare": 0,
+     "bandingShare": 0
+    },
+    "finalDL": -20.6,
+    "roughIn": 105.2,
+    "roughRing": 179,
+    "heightIn": 90.2,
+    "heightRing": 160,
+    "normalDE": 42.2
+   },
+   {
+    "comp": 189,
+    "area": 17,
+    "bbox": [
+     268,
+     355,
+     1,
+     17
+    ],
+    "ring": 108,
+    "marksView": 120.2,
+    "albedoIn": [
+     33.9,
+     -15.5,
+     15.4
+    ],
+    "albedoRing": [
+     54.5,
+     -25.3,
+     33.6
+    ],
+    "dE": 29.2,
+    "dL": -20.6,
+    "chromaIn": 21.8,
+    "chromaRing": 42,
+    "edge": {
+     "boundarySamples": 0,
+     "width10_90": {
+      "p25": null,
+      "p50": null,
+      "p75": null
+     },
+     "hardShare": 0,
+     "bandingShare": 0
+    },
+    "finalDL": -31.4,
+    "roughIn": 105.2,
+    "roughRing": 179,
+    "heightIn": 97.2,
+    "heightRing": 147,
+    "normalDE": 40
+   },
+   {
+    "comp": 44,
+    "area": 16,
+    "bbox": [
+     125,
+     143,
+     8,
+     16
+    ],
+    "ring": 115,
+    "marksView": 120.2,
+    "albedoIn": [
+     36.9,
+     -15.5,
+     16.2
+    ],
+    "albedoRing": [
+     54.2,
+     -25.4,
+     33.6
+    ],
+    "dE": 26.4,
+    "dL": -17.3,
+    "chromaIn": 22.6,
+    "chromaRing": 42.1,
+    "edge": {
+     "boundarySamples": 4,
+     "width10_90": {
+      "p25": 1,
+      "p50": 1,
+      "p75": 1
+     },
+     "hardShare": 1,
+     "bandingShare": 0
+    },
+    "finalDL": -43.3,
+    "roughIn": 105.2,
+    "roughRing": 177,
+    "heightIn": 94.2,
+    "heightRing": 165,
+    "normalDE": 27.4
+   },
+   {
+    "comp": 75,
+    "area": 15,
+    "bbox": [
+     103,
+     202,
+     1,
+     15
+    ],
+    "ring": 85,
+    "marksView": 120.2,
+    "albedoIn": [
+     38.7,
+     -14.5,
+     15.2
+    ],
+    "albedoRing": [
+     63.1,
+     -23.1,
+     31.5
+    ],
+    "dE": 30.5,
+    "dL": -24.3,
+    "chromaIn": 21,
+    "chromaRing": 39.1,
+    "edge": {
+     "boundarySamples": 7,
+     "width10_90": {
+      "p25": 7,
+      "p50": 7,
+      "p75": 7
+     },
+     "hardShare": 0.286,
+     "bandingShare": 0
+    },
+    "finalDL": -57.6,
+    "roughIn": 102.2,
+    "roughRing": 172,
+    "heightIn": 95.2,
+    "heightRing": 162,
+    "normalDE": 40.4
+   },
+   {
+    "comp": 83,
+    "area": 15,
+    "bbox": [
+     167,
+     211,
+     1,
+     15
+    ],
+    "ring": 100,
+    "marksView": 120.2,
+    "albedoIn": [
+     32.7,
+     -15.6,
+     15.4
+    ],
+    "albedoRing": [
+     54.1,
+     -25.6,
+     34.1
+    ],
+    "dE": 30.1,
+    "dL": -21.4,
+    "chromaIn": 21.9,
+    "chromaRing": 42.8,
+    "edge": {
+     "boundarySamples": 8,
+     "width10_90": {
+      "p25": 1,
+      "p50": 6,
+      "p75": 6
+     },
+     "hardShare": 0.375,
+     "bandingShare": 0
+    },
+    "finalDL": -23.1,
+    "roughIn": 105.2,
+    "roughRing": 179,
+    "heightIn": 92.2,
+    "heightRing": 155,
+    "normalDE": 28.5
+   },
+   {
+    "comp": 12,
+    "area": 14,
+    "bbox": [
+     178,
+     107,
+     5,
+     10
+    ],
+    "ring": 77,
+    "marksView": 157.8,
+    "albedoIn": [
+     46.4,
+     -10.7,
+     17.2
+    ],
+    "albedoRing": [
+     59.2,
+     -27.1,
+     35.9
+    ],
+    "dE": 27.9,
+    "dL": -12.8,
+    "chromaIn": 18.7,
+    "chromaRing": 45,
+    "edge": {
+     "boundarySamples": 3,
+     "width10_90": {
+      "p25": 2,
+      "p50": 2,
+      "p75": 7
+     },
+     "hardShare": 0.333,
+     "bandingShare": 0
+    },
+    "finalDL": -8.5,
+    "roughIn": 127.4,
+    "roughRing": 159,
+    "heightIn": 103.7,
+    "heightRing": 128,
+    "normalDE": 22.4
+   },
+   {
+    "comp": 31,
+    "area": 14,
+    "bbox": [
+     149,
+     135,
+     14,
+     1
+    ],
+    "ring": 82,
+    "marksView": 120.2,
+    "albedoIn": [
+     33.9,
+     -15.7,
+     16.4
+    ],
+    "albedoRing": [
+     52.5,
+     -26,
+     34.2
+    ],
+    "dE": 27.8,
+    "dL": -18.7,
+    "chromaIn": 23.1,
+    "chromaRing": 43,
+    "edge": {
+     "boundarySamples": 7,
+     "width10_90": {
+      "p25": 1,
+      "p50": 7,
+      "p75": 7
+     },
+     "hardShare": 0.429,
+     "bandingShare": 0.143
+    },
+    "finalDL": -49.1,
+    "roughIn": 105.2,
+    "roughRing": 179,
+    "heightIn": 98.2,
+    "heightRing": 161,
+    "normalDE": 38.2
+   },
+   {
+    "comp": 71,
+    "area": 14,
+    "bbox": [
+     158,
+     196,
+     7,
+     11
+    ],
+    "ring": 137,
+    "marksView": 120.2,
+    "albedoIn": [
+     32.5,
+     -13.7,
+     13.9
+    ],
+    "albedoRing": [
+     52.9,
+     -24.1,
+     31.8
+    ],
+    "dE": 29.1,
+    "dL": -20.4,
+    "chromaIn": 19.9,
+    "chromaRing": 39.8,
+    "edge": {
+     "boundarySamples": 3,
+     "width10_90": {
+      "p25": 1,
+      "p50": 1,
+      "p75": 7
+     },
+     "hardShare": 0.667,
+     "bandingShare": 0
+    },
+    "finalDL": -22.8,
+    "roughIn": 105.2,
+    "roughRing": 179,
+    "heightIn": 92.2,
+    "heightRing": 152,
+    "normalDE": 46
+   },
+   {
+    "comp": 47,
+    "area": 13,
+    "bbox": [
+     234,
+     144,
+     10,
+     5
+    ],
+    "ring": 155,
+    "marksView": 120.2,
+    "albedoIn": [
+     32.6,
+     -16.3,
+     16.5
+    ],
+    "albedoRing": [
+     49.9,
+     -25.4,
+     33.5
+    ],
+    "dE": 25.9,
+    "dL": -17.3,
+    "chromaIn": 23.2,
+    "chromaRing": 42,
+    "edge": {
+     "boundarySamples": 4,
+     "width10_90": {
+      "p25": 4,
+      "p50": 4,
+      "p75": 4
+     },
+     "hardShare": 0,
+     "bandingShare": 0
+    },
+    "finalDL": -48,
+    "roughIn": 105.2,
+    "roughRing": 179,
+    "heightIn": 90.2,
+    "heightRing": 160,
+    "normalDE": 36.7
+   },
+   {
+    "comp": 79,
+    "area": 13,
+    "bbox": [
+     259,
+     205,
+     12,
+     12
+    ],
+    "ring": 159,
+    "marksView": 120.2,
+    "albedoIn": [
+     32.4,
+     -14.8,
+     14.4
+    ],
+    "albedoRing": [
+     56.1,
+     -25.4,
+     33.8
+    ],
+    "dE": 32.4,
+    "dL": -23.7,
+    "chromaIn": 20.6,
+    "chromaRing": 42.2,
+    "edge": {
+     "boundarySamples": 2,
+     "width10_90": {
+      "p25": 1,
+      "p50": 7,
+      "p75": 7
+     },
+     "hardShare": 0.5,
+     "bandingShare": 0
+    },
+    "finalDL": -39,
+    "roughIn": 105.2,
+    "roughRing": 179,
+    "heightIn": 89.2,
+    "heightRing": 163,
+    "normalDE": 51.9
+   },
+   {
+    "comp": 221,
+    "area": 13,
+    "bbox": [
+     196,
+     402,
+     8,
+     13
+    ],
+    "ring": 102,
+    "marksView": 120.2,
+    "albedoIn": [
+     34.3,
+     -13.6,
+     13.3
+    ],
+    "albedoRing": [
+     52.2,
+     -22.5,
+     29.9
+    ],
+    "dE": 26,
+    "dL": -17.9,
+    "chromaIn": 19,
+    "chromaRing": 37.4,
+    "edge": {
+     "boundarySamples": 3,
+     "width10_90": {
+      "p25": 1,
+      "p50": 1,
+      "p75": 2
+     },
+     "hardShare": 0.667,
+     "bandingShare": 0
+    },
+    "finalDL": -25.1,
+    "roughIn": 103.2,
+    "roughRing": 176,
+    "heightIn": 95.2,
+    "heightRing": 153,
+    "normalDE": 45.5
+   },
+   {
+    "comp": 38,
+    "area": 12,
+    "bbox": [
+     167,
+     139,
+     11,
+     2
+    ],
+    "ring": 102,
+    "marksView": 164.7,
+    "albedoIn": [
+     40.6,
+     -20.9,
+     24.7
+    ],
+    "albedoRing": [
+     49.1,
+     -25.9,
+     33.6
+    ],
+    "dE": 13.3,
+    "dL": -8.5,
+    "chromaIn": 32.4,
+    "chromaRing": 42.4,
+    "edge": {
+     "boundarySamples": 0,
+     "width10_90": {
+      "p25": null,
+      "p50": null,
+      "p75": null
+     },
+     "hardShare": 0,
+     "bandingShare": 0
+    },
+    "finalDL": -23.9,
+    "roughIn": 141.7,
+    "roughRing": 179,
+    "heightIn": 112.7,
+    "heightRing": 149,
+    "normalDE": 42.3
+   },
+   {
+    "comp": 41,
+    "area": 12,
+    "bbox": [
+     278,
+     140,
+     12,
+     4
+    ],
+    "ring": 92,
+    "marksView": 164.7,
+    "albedoIn": [
+     40.3,
+     -16.3,
+     24.2
+    ],
+    "albedoRing": [
+     53.7,
+     -26,
+     34.2
+    ],
+    "dE": 19.3,
+    "dL": -13.4,
+    "chromaIn": 31.7,
+    "chromaRing": 42.9,
+    "edge": {
+     "boundarySamples": 3,
+     "width10_90": {
+      "p25": 1,
+      "p50": 1,
+      "p75": 1
+     },
+     "hardShare": 1,
+     "bandingShare": 0
+    },
+    "finalDL": -38.3,
+    "roughIn": 141.4,
+    "roughRing": 178,
+    "heightIn": 114.4,
+    "heightRing": 156,
+    "normalDE": 16.9
+   },
+   {
+    "comp": 72,
+    "area": 12,
+    "bbox": [
+     311,
+     196,
+     12,
+     11
+    ],
+    "ring": 105,
+    "marksView": 120.2,
+    "albedoIn": [
+     34.4,
+     -15.7,
+     16
+    ],
+    "albedoRing": [
+     57.1,
+     -25.5,
+     34
+    ],
+    "dE": 30.7,
+    "dL": -22.8,
+    "chromaIn": 22.5,
+    "chromaRing": 42.5,
+    "edge": {
+     "boundarySamples": 5,
+     "width10_90": {
+      "p25": 1,
+      "p50": 1,
+      "p75": 1
+     },
+     "hardShare": 0.8,
+     "bandingShare": 0.2
+    },
+    "finalDL": -67.6,
+    "roughIn": 105.2,
+    "roughRing": 179,
+    "heightIn": 90.2,
+    "heightRing": 162,
+    "normalDE": 39.5
+   },
+   {
+    "comp": 144,
+    "area": 12,
+    "bbox": [
+     318,
+     259,
+     8,
+     5
+    ],
+    "ring": 100,
+    "marksView": 168.9,
+    "albedoIn": [
+     55.4,
+     -24.2,
+     36.4
+    ],
+    "albedoRing": [
+     57.4,
+     -25.6,
+     34.4
+    ],
+    "dE": 3.1,
+    "dL": -2,
+    "chromaIn": 43.8,
+    "chromaRing": 43,
+    "edge": {
+     "boundarySamples": 4,
+     "width10_90": {
+      "p25": 4,
+      "p50": 5,
+      "p75": 5
+     },
+     "hardShare": 0.25,
+     "bandingShare": 0
+    },
+    "finalDL": 21.4,
+    "roughIn": 153,
+    "roughRing": 178,
+    "heightIn": 134.2,
+    "heightRing": 140,
+    "normalDE": 63.6
+   },
+   {
+    "comp": 219,
+    "area": 12,
+    "bbox": [
+     284,
+     398,
+     1,
+     12
+    ],
+    "ring": 74,
+    "marksView": 120.2,
+    "albedoIn": [
+     34.6,
+     -14.3,
+     14.3
+    ],
+    "albedoRing": [
+     55.5,
+     -23.6,
+     31.3
+    ],
+    "dE": 28.5,
+    "dL": -20.9,
+    "chromaIn": 20.2,
+    "chromaRing": 39,
+    "edge": {
+     "boundarySamples": 0,
+     "width10_90": {
+      "p25": null,
+      "p50": null,
+      "p75": null
+     },
+     "hardShare": 0,
+     "bandingShare": 0
+    },
+    "finalDL": -26.8,
+    "roughIn": 102.2,
+    "roughRing": 174,
+    "heightIn": 86.2,
+    "heightRing": 153,
+    "normalDE": 38
+   },
+   {
+    "comp": 267,
+    "area": 12,
+    "bbox": [
+     220,
+     479,
+     6,
+     12
+    ],
+    "ring": 73,
+    "marksView": 120.2,
+    "albedoIn": [
+     37.2,
+     -8.1,
+     12.4
+    ],
+    "albedoRing": [
+     62.2,
+     -21.4,
+     29.4
+    ],
+    "dE": 33,
+    "dL": -25,
+    "chromaIn": 17.7,
+    "chromaRing": 36.4,
+    "edge": {
+     "boundarySamples": 3,
+     "width10_90": {
+      "p25": 1,
+      "p50": 1,
+      "p75": 1
+     },
+     "hardShare": 1,
+     "bandingShare": 0
+    },
+    "finalDL": -87,
+    "roughIn": 109.2,
+    "roughRing": 186,
+    "heightIn": 80.2,
+    "heightRing": 128,
+    "normalDE": 51.4
+   }
+  ]
+ },
+ "ork-female-marked-bare/channels/face/studio": {
+  "maskPx": 1245,
+  "components": [
+   {
+    "comp": 121,
+    "area": 121,
+    "bbox": [
+     103,
+     384,
+     13,
+     23
+    ],
+    "ring": 248,
+    "marksView": 198,
+    "albedoIn": [
+     58.4,
+     -24.9,
+     29.1
+    ],
+    "albedoRing": [
+     60.4,
+     -27.1,
+     36.2
+    ],
+    "dE": 7.7,
+    "dL": -2,
+    "chromaIn": 38.3,
+    "chromaRing": 45.2,
+    "edge": {
+     "boundarySamples": 21,
+     "width10_90": {
+      "p25": 1,
+      "p50": 3,
+      "p75": 6
+     },
+     "hardShare": 0.286,
+     "bandingShare": 0.095
+    },
+    "finalDL": -3.3,
+    "roughIn": 159,
+    "roughRing": 158,
+    "heightIn": 128,
+    "heightRing": 128,
+    "normalDE": 6.2
+   },
+   {
+    "comp": 116,
+    "area": 92,
+    "bbox": [
+     225,
+     380,
+     26,
+     31
+    ],
+    "ring": 510,
+    "marksView": 197.3,
+    "albedoIn": [
+     69.1,
+     -10,
+     17
+    ],
+    "albedoRing": [
+     58.9,
+     -26.6,
+     35.5
+    ],
+    "dE": 26.9,
+    "dL": 10.2,
+    "chromaIn": 20.3,
+    "chromaRing": 44.4,
+    "edge": {
+     "boundarySamples": 20,
+     "width10_90": {
+      "p25": 1,
+      "p50": 6,
+      "p75": 7
+     },
+     "hardShare": 0.4,
+     "bandingShare": 0.05
+    },
+    "finalDL": 35.3,
+    "roughIn": 133,
+    "roughRing": 158,
+    "heightIn": 128,
+    "heightRing": 128,
+    "normalDE": 4.5
+   },
+   {
+    "comp": 173,
+    "area": 29,
+    "bbox": [
+     357,
+     434,
+     29,
+     29
+    ],
+    "ring": 271,
+    "marksView": 164.7,
+    "albedoIn": [
+     43.3,
+     -22.1,
+     26.5
+    ],
+    "albedoRing": [
+     53.2,
+     -27.1,
+     35.4
+    ],
+    "dE": 14.2,
+    "dL": -9.8,
+    "chromaIn": 34.4,
+    "chromaRing": 44.6,
+    "edge": {
+     "boundarySamples": 0,
+     "width10_90": {
+      "p25": null,
+      "p50": null,
+      "p75": null
+     },
+     "hardShare": 0,
+     "bandingShare": 0
+    },
+    "finalDL": -29.7,
+    "roughIn": 141.7,
+    "roughRing": 179,
+    "heightIn": 112.7,
+    "heightRing": 142,
+    "normalDE": 16.6
+   },
+   {
+    "comp": 44,
+    "area": 28,
+    "bbox": [
+     337,
+     275,
+     25,
+     20
+    ],
+    "ring": 218,
+    "marksView": 120.2,
+    "albedoIn": [
+     36.2,
+     -17.1,
+     17.8
+    ],
+    "albedoRing": [
+     56.1,
+     -27.7,
+     36.6
+    ],
+    "dE": 29.4,
+    "dL": -19.9,
+    "chromaIn": 24.7,
+    "chromaRing": 45.9,
+    "edge": {
+     "boundarySamples": 7,
+     "width10_90": {
+      "p25": 1,
+      "p50": 1,
+      "p75": 4
+     },
+     "hardShare": 0.714,
+     "bandingShare": 0
+    },
+    "finalDL": -59.3,
+    "roughIn": 104.2,
+    "roughRing": 176,
+    "heightIn": 80.2,
+    "heightRing": 128,
+    "normalDE": 39
+   },
+   {
+    "comp": 0,
+    "area": 13,
+    "bbox": [
+     160,
+     226,
+     13,
+     1
+    ],
+    "ring": 82,
+    "marksView": 153.2,
+    "albedoIn": [
+     49.5,
+     -23.4,
+     34.4
+    ],
+    "albedoRing": [
+     56.6,
+     -26.6,
+     35.3
+    ],
+    "dE": 7.8,
+    "dL": -7.1,
+    "chromaIn": 41.7,
+    "chromaRing": 44.2,
+    "edge": {
+     "boundarySamples": 0,
+     "width10_90": {
+      "p25": null,
+      "p50": null,
+      "p75": null
+     },
+     "hardShare": 0,
+     "bandingShare": 0
+    },
+    "finalDL": -27.6,
+    "roughIn": 136.2,
+    "roughRing": 175,
+    "heightIn": 114,
+    "heightRing": 128,
+    "normalDE": 32.1
+   },
+   {
+    "comp": 209,
+    "area": 13,
+    "bbox": [
+     387,
+     463,
+     13,
+     12
+    ],
+    "ring": 131,
+    "marksView": 75.9,
+    "albedoIn": [
+     23.5,
+     -10.3,
+     6.5
+    ],
+    "albedoRing": [
+     54.6,
+     -27.2,
+     35.8
+    ],
+    "dE": 46,
+    "dL": -31.1,
+    "chromaIn": 12.2,
+    "chromaRing": 45,
+    "edge": {
+     "boundarySamples": 6,
+     "width10_90": {
+      "p25": 1,
+      "p50": 1,
+      "p75": 1
+     },
+     "hardShare": 1,
+     "bandingShare": 0
+    },
+    "finalDL": -86.1,
+    "roughIn": 68.7,
+    "roughRing": 179,
+    "heightIn": 66.9,
+    "heightRing": 158,
+    "normalDE": 58.8
+   },
+   {
+    "comp": 115,
+    "area": 12,
+    "bbox": [
+     362,
+     378,
+     4,
+     12
+    ],
+    "ring": 94,
+    "marksView": 164.7,
+    "albedoIn": [
+     52.1,
+     -10.2,
+     25.7
+    ],
+    "albedoRing": [
+     64.3,
+     -25.9,
+     34.7
+    ],
+    "dE": 21.8,
+    "dL": -12.2,
+    "chromaIn": 33.2,
+    "chromaRing": 43.3,
+    "edge": {
+     "boundarySamples": 2,
+     "width10_90": {
+      "p25": 1,
+      "p50": 1,
+      "p75": 1
+     },
+     "hardShare": 1,
+     "bandingShare": 0
+    },
+    "finalDL": -14.3,
+    "roughIn": 134.7,
+    "roughRing": 168,
+    "heightIn": 103.7,
+    "heightRing": 128,
+    "normalDE": 57.9
+   }
+  ]
+ },
+ "ork-female-marked-bare/channels/forearm/studio": {
+  "maskPx": 2636,
+  "components": [
+   {
+    "comp": 117,
+    "area": 458,
+    "bbox": [
+     163,
+     165,
+     43,
+     35
+    ],
+    "ring": 965,
+    "marksView": 121.1,
+    "albedoIn": [
+     40.1,
+     -16,
+     16.4
+    ],
+    "albedoRing": [
+     60.3,
+     -25.4,
+     33.9
+    ],
+    "dE": 28.4,
+    "dL": -20.3,
+    "chromaIn": 23,
+    "chromaRing": 42.3,
+    "edge": {
+     "boundarySamples": 62,
+     "width10_90": {
+      "p25": 1,
+      "p50": 2,
+      "p75": 2
+     },
+     "hardShare": 0.435,
+     "bandingShare": 0.016
+    },
+    "finalDL": -52.1,
+    "roughIn": 175,
+    "roughRing": 175,
+    "heightIn": 157,
+    "heightRing": 156,
+    "normalDE": 0.5
+   },
+   {
+    "comp": 143,
+    "area": 347,
+    "bbox": [
+     130,
+     212,
+     40,
+     31
+    ],
+    "ring": 802,
+    "marksView": 120.1,
+    "albedoIn": [
+     38.8,
+     -16.1,
+     16
+    ],
+    "albedoRing": [
+     56.7,
+     -25.5,
+     34.3
+    ],
+    "dE": 27.3,
+    "dL": -18,
+    "chromaIn": 22.9,
+    "chromaRing": 42.8,
+    "edge": {
+     "boundarySamples": 41,
+     "width10_90": {
+      "p25": 1,
+      "p50": 1,
+      "p75": 2
+     },
+     "hardShare": 0.585,
+     "bandingShare": 0
+    },
+    "finalDL": -30.9,
+    "roughIn": 179,
+    "roughRing": 179,
+    "heightIn": 153,
+    "heightRing": 153,
+    "normalDE": 1.4
+   },
+   {
+    "comp": 153,
+    "area": 236,
+    "bbox": [
+     112,
+     245,
+     35,
+     32
+    ],
+    "ring": 648,
+    "marksView": 145,
+    "albedoIn": [
+     43.4,
+     -18.1,
+     20.5
+    ],
+    "albedoRing": [
+     56.5,
+     -24.7,
+     33
+    ],
+    "dE": 19.2,
+    "dL": -13,
+    "chromaIn": 27.5,
+    "chromaRing": 41.2,
+    "edge": {
+     "boundarySamples": 36,
+     "width10_90": {
+      "p25": 1,
+      "p50": 1,
+      "p75": 2
+     },
+     "hardShare": 0.611,
+     "bandingShare": 0
+    },
+    "finalDL": -21.8,
+    "roughIn": 179,
+    "roughRing": 179,
+    "heightIn": 157,
+    "heightRing": 158,
+    "normalDE": 1.1
+   },
+   {
+    "comp": 122,
+    "area": 122,
+    "bbox": [
+     101,
+     170,
+     20,
+     43
+    ],
+    "ring": 460,
+    "marksView": 188.8,
+    "albedoIn": [
+     65.6,
+     -9.8,
+     22.7
+    ],
+    "albedoRing": [
+     62.8,
+     -23.6,
+     31.7
+    ],
+    "dE": 16.7,
+    "dL": 2.8,
+    "chromaIn": 24.7,
+    "chromaRing": 39.5,
+    "edge": {
+     "boundarySamples": 32,
+     "width10_90": {
+      "p25": 2,
+      "p50": 5,
+      "p75": 7
+     },
+     "hardShare": 0.156,
+     "bandingShare": 0
+    },
+    "finalDL": 9.6,
+    "roughIn": 142,
+    "roughRing": 173,
+    "heightIn": 168,
+    "heightRing": 158,
+    "normalDE": 22.2
+   },
+   {
+    "comp": 161,
+    "area": 115,
+    "bbox": [
+     101,
+     262,
+     46,
+     35
+    ],
+    "ring": 331,
+    "marksView": 179.9,
+    "albedoIn": [
+     50.4,
+     -21,
+     26.5
+    ],
+    "albedoRing": [
+     56.6,
+     -24.2,
+     32.5
+    ],
+    "dE": 9.2,
+    "dL": -6.2,
+    "chromaIn": 33.9,
+    "chromaRing": 40.5,
+    "edge": {
+     "boundarySamples": 22,
+     "width10_90": {
+      "p25": 1,
+      "p50": 1,
+      "p75": 2
+     },
+     "hardShare": 0.727,
+     "bandingShare": 0.091
+    },
+    "finalDL": -12,
+    "roughIn": 174,
+    "roughRing": 178,
+    "heightIn": 150,
+    "heightRing": 152,
+    "normalDE": 10.8
+   },
+   {
+    "comp": 82,
+    "area": 76,
+    "bbox": [
+     204,
+     137,
+     14,
+     11
+    ],
+    "ring": 261,
+    "marksView": 147.3,
+    "albedoIn": [
+     45.5,
+     -18.1,
+     21.3
+    ],
+    "albedoRing": [
+     59.4,
+     -24.9,
+     33.6
+    ],
+    "dE": 19.8,
+    "dL": -13.9,
+    "chromaIn": 28.1,
+    "chromaRing": 41.9,
+    "edge": {
+     "boundarySamples": 13,
+     "width10_90": {
+      "p25": 1,
+      "p50": 2,
+      "p75": 2
+     },
+     "hardShare": 0.308,
+     "bandingShare": 0
+    },
+    "finalDL": -36.1,
+    "roughIn": 174,
+    "roughRing": 175,
+    "heightIn": 147,
+    "heightRing": 149,
+    "normalDE": 2.9
+   },
+   {
+    "comp": 154,
+    "area": 35,
+    "bbox": [
+     266,
+     246,
+     1,
+     35
+    ],
+    "ring": 176,
+    "marksView": 120.2,
+    "albedoIn": [
+     36.3,
+     -16.3,
+     16.7
+    ],
+    "albedoRing": [
+     56,
+     -25.6,
+     34.4
+    ],
+    "dE": 28,
+    "dL": -19.6,
+    "chromaIn": 23.3,
+    "chromaRing": 43,
+    "edge": {
+     "boundarySamples": 0,
+     "width10_90": {
+      "p25": null,
+      "p50": null,
+      "p75": null
+     },
+     "hardShare": 0,
+     "bandingShare": 0
+    },
+    "finalDL": -55.7,
+    "roughIn": 105.2,
+    "roughRing": 178,
+    "heightIn": 96.2,
+    "heightRing": 154,
+    "normalDE": 33.6
+   },
+   {
+    "comp": 62,
+    "area": 24,
+    "bbox": [
+     49,
+     99,
+     24,
+     20
+    ],
+    "ring": 200,
+    "marksView": 120.2,
+    "albedoIn": [
+     33.2,
+     -14.8,
+     14.5
+    ],
+    "albedoRing": [
+     51.7,
+     -23.6,
+     31.2
+    ],
+    "dE": 26.5,
+    "dL": -18.5,
+    "chromaIn": 20.6,
+    "chromaRing": 39.2,
+    "edge": {
+     "boundarySamples": 8,
+     "width10_90": {
+      "p25": 1,
+      "p50": 1,
+      "p75": 1
+     },
+     "hardShare": 0.75,
+     "bandingShare": 0
+    },
+    "finalDL": -17.9,
+    "roughIn": 106.2,
+    "roughRing": 179,
+    "heightIn": 98.2,
+    "heightRing": 155,
+    "normalDE": 38.7
+   },
+   {
+    "comp": 8,
+    "area": 23,
+    "bbox": [
+     251,
+     11,
+     1,
+     23
+    ],
+    "ring": 124,
+    "marksView": 120.2,
+    "albedoIn": [
+     36,
+     -15.9,
+     16.3
+    ],
+    "albedoRing": [
+     57.9,
+     -25.6,
+     34.4
+    ],
+    "dE": 30,
+    "dL": -21.9,
+    "chromaIn": 22.9,
+    "chromaRing": 42.9,
+    "edge": {
+     "boundarySamples": 12,
+     "width10_90": {
+      "p25": 1,
+      "p50": 1,
+      "p75": 1
+     },
+     "hardShare": 1,
+     "bandingShare": 0
+    },
+    "finalDL": -30.8,
+    "roughIn": 104.2,
+    "roughRing": 177,
+    "heightIn": 94.2,
+    "heightRing": 161,
+    "normalDE": 37.7
+   },
+   {
+    "comp": 89,
+    "area": 21,
+    "bbox": [
+     104,
+     143,
+     6,
+     13
+    ],
+    "ring": 173,
+    "marksView": 120.2,
+    "albedoIn": [
+     33.2,
+     -15,
+     14.9
+    ],
+    "albedoRing": [
+     52.8,
+     -24.8,
+     32.9
+    ],
+    "dE": 28.3,
+    "dL": -19.6,
+    "chromaIn": 21.2,
+    "chromaRing": 41.2,
+    "edge": {
+     "boundarySamples": 4,
+     "width10_90": {
+      "p25": 1,
+      "p50": 5,
+      "p75": 5
+     },
+     "hardShare": 0.5,
+     "bandingShare": 0.25
+    },
+    "finalDL": -25.5,
+    "roughIn": 107.2,
+    "roughRing": 181,
+    "heightIn": 97.2,
+    "heightRing": 161,
+    "normalDE": 27.5
+   },
+   {
+    "comp": 267,
+    "area": 20,
+    "bbox": [
+     4,
+     426,
+     1,
+     20
+    ],
+    "ring": 110,
+    "marksView": 75.9,
+    "albedoIn": [
+     24,
+     -10.1,
+     5.9
+    ],
+    "albedoRing": [
+     56.1,
+     -25.5,
+     34
+    ],
+    "dE": 45.3,
+    "dL": -32,
+    "chromaIn": 11.6,
+    "chromaRing": 42.5,
+    "edge": {
+     "boundarySamples": 0,
+     "width10_90": {
+      "p25": null,
+      "p50": null,
+      "p75": null
+     },
+     "hardShare": 0,
+     "bandingShare": 0
+    },
+    "finalDL": -46.8,
+    "roughIn": 68.7,
+    "roughRing": 179,
+    "heightIn": 64.9,
+    "heightRing": 165,
+    "normalDE": 58.6
+   },
+   {
+    "comp": 215,
+    "area": 19,
+    "bbox": [
+     182,
+     319,
+     12,
+     10
+    ],
+    "ring": 109,
+    "marksView": 174.6,
+    "albedoIn": [
+     54,
+     -24.4,
+     35.5
+    ],
+    "albedoRing": [
+     56.1,
+     -25.6,
+     34.4
+    ],
+    "dE": 2.6,
+    "dL": -2.1,
+    "chromaIn": 42.6,
+    "chromaRing": 43,
+    "edge": {
+     "boundarySamples": 7,
+     "width10_90": {
+      "p25": 1,
+      "p50": 1,
+      "p75": 9
+     },
+     "hardShare": 0.571,
+     "bandingShare": 0.143
+    },
+    "finalDL": 4.3,
+    "roughIn": 159.3,
+    "roughRing": 178,
+    "heightIn": 137.2,
+    "heightRing": 145,
+    "normalDE": 53.9
+   },
+   {
+    "comp": 9,
+    "area": 18,
+    "bbox": [
+     26,
+     17,
+     1,
+     18
+    ],
+    "ring": 101,
+    "marksView": 120.2,
+    "albedoIn": [
+     35,
+     -13.6,
+     13.8
+    ],
+    "albedoRing": [
+     56.6,
+     -23,
+     30.8
+    ],
+    "dE": 29.1,
+    "dL": -21.6,
+    "chromaIn": 19.4,
+    "chromaRing": 38.4,
+    "edge": {
+     "boundarySamples": 0,
+     "width10_90": {
+      "p25": null,
+      "p50": null,
+      "p75": null
+     },
+     "hardShare": 0,
+     "bandingShare": 0
+    },
+    "finalDL": -36.1,
+    "roughIn": 102.2,
+    "roughRing": 174,
+    "heightIn": 90.2,
+    "heightRing": 149,
+    "normalDE": 29.1
+   },
+   {
+    "comp": 139,
+    "area": 17,
+    "bbox": [
+     266,
+     208,
+     1,
+     17
+    ],
+    "ring": 104,
+    "marksView": 120.2,
+    "albedoIn": [
+     36,
+     -16.3,
+     16.9
+    ],
+    "albedoRing": [
+     56.4,
+     -26,
+     34.6
+    ],
+    "dE": 28.7,
+    "dL": -20.4,
+    "chromaIn": 23.4,
+    "chromaRing": 43.1,
+    "edge": {
+     "boundarySamples": 0,
+     "width10_90": {
+      "p25": null,
+      "p50": null,
+      "p75": null
+     },
+     "hardShare": 0,
+     "bandingShare": 0
+    },
+    "finalDL": -29.3,
+    "roughIn": 105.2,
+    "roughRing": 179,
+    "heightIn": 87.2,
+    "heightRing": 145,
+    "normalDE": 36
+   },
+   {
+    "comp": 164,
+    "area": 17,
+    "bbox": [
+     91,
+     273,
+     17,
+     17
+    ],
+    "ring": 174,
+    "marksView": 120.2,
+    "albedoIn": [
+     35.4,
+     -16.9,
+     17.3
+    ],
+    "albedoRing": [
+     56.2,
+     -27.1,
+     35.7
+    ],
+    "dE": 29.6,
+    "dL": -20.8,
+    "chromaIn": 24.2,
+    "chromaRing": 44.8,
+    "edge": {
+     "boundarySamples": 9,
+     "width10_90": {
+      "p25": 1,
+      "p50": 1,
+      "p75": 1
+     },
+     "hardShare": 1,
+     "bandingShare": 0
+    },
+    "finalDL": -34.8,
+    "roughIn": 105.2,
+    "roughRing": 178,
+    "heightIn": 80.2,
+    "heightRing": 128,
+    "normalDE": 30.9
+   },
+   {
+    "comp": 278,
+    "area": 17,
+    "bbox": [
+     1,
+     468,
+     1,
+     17
+    ],
+    "ring": 29,
+    "marksView": 120.2,
+    "albedoIn": [
+     35.7,
+     -15,
+     15.3
+    ],
+    "albedoRing": [
+     56.6,
+     -24.2,
+     32.2
+    ],
+    "dE": 28.4,
+    "dL": -20.9,
+    "chromaIn": 21.4,
+    "chromaRing": 40.2,
+    "edge": {
+     "boundarySamples": 0,
+     "width10_90": {
+      "p25": null,
+      "p50": null,
+      "p75": null
+     },
+     "hardShare": 0,
+     "bandingShare": 0
+    },
+    "finalDL": -29.3,
+    "roughIn": 105.2,
+    "roughRing": 178,
+    "heightIn": 94.2,
+    "heightRing": 150,
+    "normalDE": 41.7
+   },
+   {
+    "comp": 279,
+    "area": 16,
+    "bbox": [
+     191,
+     473,
+     1,
+     16
+    ],
+    "ring": 100,
+    "marksView": 120.2,
+    "albedoIn": [
+     36,
+     -15.7,
+     16.3
+    ],
+    "albedoRing": [
+     53.5,
+     -24.8,
+     32.8
+    ],
+    "dE": 25.7,
+    "dL": -17.5,
+    "chromaIn": 22.7,
+    "chromaRing": 41.2,
+    "edge": {
+     "boundarySamples": 8,
+     "width10_90": {
+      "p25": 1,
+      "p50": 1,
+      "p75": 1
+     },
+     "hardShare": 1,
+     "bandingShare": 0
+    },
+    "finalDL": -21.3,
+    "roughIn": 105.2,
+    "roughRing": 179,
+    "heightIn": 96.2,
+    "heightRing": 166,
+    "normalDE": 37
+   },
+   {
+    "comp": 64,
+    "area": 15,
+    "bbox": [
+     43,
+     103,
+     14,
+     15
+    ],
+    "ring": 145,
+    "marksView": 120.2,
+    "albedoIn": [
+     36.5,
+     -15.7,
+     16.2
+    ],
+    "albedoRing": [
+     58.4,
+     -25.5,
+     34.2
+    ],
+    "dE": 30,
+    "dL": -21.9,
+    "chromaIn": 22.5,
+    "chromaRing": 42.6,
+    "edge": {
+     "boundarySamples": 6,
+     "width10_90": {
+      "p25": 1,
+      "p50": 1,
+      "p75": 1
+     },
+     "hardShare": 1,
+     "bandingShare": 0
+    },
+    "finalDL": -33.1,
+    "roughIn": 105.2,
+    "roughRing": 179,
+    "heightIn": 98.2,
+    "heightRing": 165,
+    "normalDE": 42.7
+   },
+   {
+    "comp": 264,
+    "area": 15,
+    "bbox": [
+     190,
+     413,
+     1,
+     15
+    ],
+    "ring": 96,
+    "marksView": 75.9,
+    "albedoIn": [
+     24.9,
+     -9.4,
+     5.3
+    ],
+    "albedoRing": [
+     58.8,
+     -24.7,
+     32.9
+    ],
+    "dE": 46.3,
+    "dL": -33.9,
+    "chromaIn": 10.8,
+    "chromaRing": 41.1,
+    "edge": {
+     "boundarySamples": 0,
+     "width10_90": {
+      "p25": null,
+      "p50": null,
+      "p75": null
+     },
+     "hardShare": 0,
+     "bandingShare": 0
+    },
+    "finalDL": -43.8,
+    "roughIn": 68.7,
+    "roughRing": 179,
+    "heightIn": 55.7,
+    "heightRing": 128,
+    "normalDE": 64.4
+   },
+   {
+    "comp": 185,
+    "area": 14,
+    "bbox": [
+     129,
+     301,
+     14,
+     11
+    ],
+    "ring": 128,
+    "marksView": 120.2,
+    "albedoIn": [
+     35.5,
+     -16.3,
+     16.8
+    ],
+    "albedoRing": [
+     56.7,
+     -26.6,
+     35.3
+    ],
+    "dE": 29.9,
+    "dL": -21.2,
+    "chromaIn": 23.4,
+    "chromaRing": 44.2,
+    "edge": {
+     "boundarySamples": 3,
+     "width10_90": {
+      "p25": 1,
+      "p50": 1,
+      "p75": 1
+     },
+     "hardShare": 1,
+     "bandingShare": 0
+    },
+    "finalDL": -33.5,
+    "roughIn": 105.2,
+    "roughRing": 178,
+    "heightIn": 80.2,
+    "heightRing": 128,
+    "normalDE": 32
+   },
+   {
+    "comp": 266,
+    "area": 14,
+    "bbox": [
+     15,
+     417,
+     1,
+     14
+    ],
+    "ring": 92,
+    "marksView": 75.9,
+    "albedoIn": [
+     24,
+     -10.1,
+     5.8
+    ],
+    "albedoRing": [
+     57.1,
+     -26.1,
+     34.8
+    ],
+    "dE": 46.9,
+    "dL": -33.2,
+    "chromaIn": 11.6,
+    "chromaRing": 43.5,
+    "edge": {
+     "boundarySamples": 7,
+     "width10_90": {
+      "p25": 1,
+      "p50": 1,
+      "p75": 1
+     },
+     "hardShare": 1,
+     "bandingShare": 0
+    },
+    "finalDL": -63.3,
+    "roughIn": 68.7,
+    "roughRing": 179,
+    "heightIn": 61.9,
+    "heightRing": 162,
+    "normalDE": 37.5
+   },
+   {
+    "comp": 277,
+    "area": 14,
+    "bbox": [
+     13,
+     465,
+     1,
+     14
+    ],
+    "ring": 90,
+    "marksView": 164.7,
+    "albedoIn": [
+     45.8,
+     -15.8,
+     25.8
+    ],
+    "albedoRing": [
+     55.7,
+     -26,
+     34.5
+    ],
+    "dE": 16.7,
+    "dL": -9.9,
+    "chromaIn": 33.3,
+    "chromaRing": 43.1,
+    "edge": {
+     "boundarySamples": 7,
+     "width10_90": {
+      "p25": 1,
+      "p50": 1,
+      "p75": 1
+     },
+     "hardShare": 1,
+     "bandingShare": 0
+    },
+    "finalDL": -19.7,
+    "roughIn": 142.4,
+    "roughRing": 179,
+    "heightIn": 115.7,
+    "heightRing": 142,
+    "normalDE": 17.8
+   },
+   {
+    "comp": 283,
+    "area": 13,
+    "bbox": [
+     190,
+     493,
+     1,
+     13
+    ],
+    "ring": 85,
+    "marksView": 120.2,
+    "albedoIn": [
+     34,
+     -15.5,
+     15.4
+    ],
+    "albedoRing": [
+     50.1,
+     -24.2,
+     31.8
+    ],
+    "dE": 24.5,
+    "dL": -16.1,
+    "chromaIn": 21.8,
+    "chromaRing": 39.9,
+    "edge": {
+     "boundarySamples": 0,
+     "width10_90": {
+      "p25": null,
+      "p50": null,
+      "p75": null
+     },
+     "hardShare": 0,
+     "bandingShare": 0
+    },
+    "finalDL": -21.4,
+    "roughIn": 105.2,
+    "roughRing": 179,
+    "heightIn": 98.2,
+    "heightRing": 165,
+    "normalDE": 36.8
+   }
+  ]
+ },
+ "ork-female-marked-bare/channels/back-closeup/studio": {
+  "maskPx": 3118,
+  "components": [
+   {
+    "comp": 102,
+    "area": 1509,
+    "bbox": [
+     177,
+     306,
+     70,
+     54
+    ],
+    "ring": 1394,
+    "marksView": 37.2,
+    "albedoIn": [
+     27.8,
+     -11.3,
+     9.9
+    ],
+    "albedoRing": [
+     52,
+     -24.8,
+     32.6
+    ],
+    "dE": 35.8,
+    "dL": -24.2,
+    "chromaIn": 15,
+    "chromaRing": 41,
+    "edge": {
+     "boundarySamples": 107,
+     "width10_90": {
+      "p25": 1,
+      "p50": 2,
+      "p75": 7
+     },
+     "hardShare": 0.29,
+     "bandingShare": 0.047
+    },
+    "finalDL": -43,
+    "roughIn": 179,
+    "roughRing": 179,
+    "heightIn": 162,
+    "heightRing": 162,
+    "normalDE": 1.6
+   },
+   {
+    "comp": 88,
+    "area": 113,
+    "bbox": [
+     161,
+     286,
+     44,
+     7
+    ],
+    "ring": 428,
+    "marksView": 175.4,
+    "albedoIn": [
+     52.7,
+     -3.1,
+     32.1
+    ],
+    "albedoRing": [
+     51.8,
+     -25.5,
+     33.8
+    ],
+    "dE": 22.5,
+    "dL": 0.9,
+    "chromaIn": 33,
+    "chromaRing": 42.3,
+    "edge": {
+     "boundarySamples": 3,
+     "width10_90": {
+      "p25": 11,
+      "p50": 11,
+      "p75": 12
+     },
+     "hardShare": 0,
+     "bandingShare": 1
+    },
+    "finalDL": -1.9,
+    "roughIn": 155,
+    "roughRing": 179,
+    "heightIn": 168,
+    "heightRing": 152,
+    "normalDE": 2
+   },
+   {
+    "comp": 86,
+    "area": 99,
+    "bbox": [
+     165,
+     280,
+     38,
+     6
+    ],
+    "ring": 393,
+    "marksView": 174.5,
+    "albedoIn": [
+     52.7,
+     -2.3,
+     32
+    ],
+    "albedoRing": [
+     51.8,
+     -25.9,
+     33.9
+    ],
+    "dE": 23.7,
+    "dL": 0.9,
+    "chromaIn": 33.2,
+    "chromaRing": 42.6,
+    "edge": {
+     "boundarySamples": 4,
+     "width10_90": {
+      "p25": 5,
+      "p50": 8,
+      "p75": 8
+     },
+     "hardShare": 0,
+     "bandingShare": 0.25
+    },
+    "finalDL": -3,
+    "roughIn": 154,
+    "roughRing": 179,
+    "heightIn": 175,
+    "heightRing": 155,
+    "normalDE": 7.5
+   },
+   {
+    "comp": 91,
+    "area": 97,
+    "bbox": [
+     162,
+     293,
+     39,
+     7
+    ],
+    "ring": 404,
+    "marksView": 174.5,
+    "albedoIn": [
+     52,
+     -1.3,
+     31.7
+    ],
+    "albedoRing": [
+     51.1,
+     -25.4,
+     33.5
+    ],
+    "dE": 24.2,
+    "dL": 0.9,
+    "chromaIn": 32.8,
+    "chromaRing": 42,
+    "edge": {
+     "boundarySamples": 15,
+     "width10_90": {
+      "p25": 0,
+      "p50": 8,
+      "p75": 9
+     },
+     "hardShare": 0.4,
+     "bandingShare": 0.2
+    },
+    "finalDL": 0.4,
+    "roughIn": 154,
+    "roughRing": 179,
+    "heightIn": 168,
+    "heightRing": 150,
+    "normalDE": 4.3
+   },
+   {
+    "comp": 15,
+    "area": 41,
+    "bbox": [
+     188,
+     188,
+     39,
+     8
+    ],
+    "ring": 221,
+    "marksView": 137.9,
+    "albedoIn": [
+     45.5,
+     -21.2,
+     31.2
+    ],
+    "albedoRing": [
+     61.1,
+     -27.1,
+     36.2
+    ],
+    "dE": 17.4,
+    "dL": -15.6,
+    "chromaIn": 37.8,
+    "chromaRing": 45.3,
+    "edge": {
+     "boundarySamples": 5,
+     "width10_90": {
+      "p25": 1,
+      "p50": 2,
+      "p75": 2
+     },
+     "hardShare": 0.4,
+     "bandingShare": 0.2
+    },
+    "finalDL": -17.2,
+    "roughIn": 123.6,
+    "roughRing": 179,
+    "heightIn": 97.9,
+    "heightRing": 128,
+    "normalDE": 55
+   },
+   {
+    "comp": 126,
+    "area": 33,
+    "bbox": [
+     281,
+     325,
+     13,
+     16
+    ],
+    "ring": 155,
+    "marksView": 120.2,
+    "albedoIn": [
+     33.7,
+     -14.4,
+     14.4
+    ],
+    "albedoRing": [
+     47.5,
+     -21.8,
+     28.3
+    ],
+    "dE": 20.9,
+    "dL": -13.8,
+    "chromaIn": 20.3,
+    "chromaRing": 35.6,
+    "edge": {
+     "boundarySamples": 9,
+     "width10_90": {
+      "p25": 4,
+      "p50": 7,
+      "p75": 7
+     },
+     "hardShare": 0.111,
+     "bandingShare": 0
+    },
+    "finalDL": -15.7,
+    "roughIn": 106.2,
+    "roughRing": 184,
+    "heightIn": 97.2,
+    "heightRing": 159,
+    "normalDE": 47.1
+   },
+   {
+    "comp": 140,
+    "area": 24,
+    "bbox": [
+     51,
+     348,
+     20,
+     23
+    ],
+    "ring": 192,
+    "marksView": 120.2,
+    "albedoIn": [
+     35.7,
+     -15,
+     15.3
+    ],
+    "albedoRing": [
+     57.5,
+     -24.4,
+     33
+    ],
+    "dE": 29.6,
+    "dL": -21.8,
+    "chromaIn": 21.4,
+    "chromaRing": 41.2,
+    "edge": {
+     "boundarySamples": 8,
+     "width10_90": {
+      "p25": 1,
+      "p50": 1,
+      "p75": 1
+     },
+     "hardShare": 1,
+     "bandingShare": 0
+    },
+    "finalDL": -30.9,
+    "roughIn": 104.2,
+    "roughRing": 178,
+    "heightIn": 88.2,
+    "heightRing": 154,
+    "normalDE": 47
+   },
+   {
+    "comp": 31,
+    "area": 23,
+    "bbox": [
+     250,
+     205,
+     12,
+     22
+    ],
+    "ring": 190,
+    "marksView": 120.2,
+    "albedoIn": [
+     37.6,
+     -16.4,
+     17.2
+    ],
+    "albedoRing": [
+     52.8,
+     -26.6,
+     35.1
+    ],
+    "dE": 25.7,
+    "dL": -15.3,
+    "chromaIn": 23.8,
+    "chromaRing": 44.1,
+    "edge": {
+     "boundarySamples": 6,
+     "width10_90": {
+      "p25": 1,
+      "p50": 1,
+      "p75": 7
+     },
+     "hardShare": 0.667,
+     "bandingShare": 0
+    },
+    "finalDL": -59.6,
+    "roughIn": 105.2,
+    "roughRing": 179,
+    "heightIn": 95.2,
+    "heightRing": 143,
+    "normalDE": 31.9
+   },
+   {
+    "comp": 69,
+    "area": 22,
+    "bbox": [
+     43,
+     234,
+     16,
+     22
+    ],
+    "ring": 170,
+    "marksView": 120.2,
+    "albedoIn": [
+     35.2,
+     -16.2,
+     16.9
+    ],
+    "albedoRing": [
+     53.4,
+     -25.5,
+     33.8
+    ],
+    "dE": 26.5,
+    "dL": -18.2,
+    "chromaIn": 23.5,
+    "chromaRing": 42.3,
+    "edge": {
+     "boundarySamples": 8,
+     "width10_90": {
+      "p25": 1,
+      "p50": 1,
+      "p75": 1
+     },
+     "hardShare": 0.875,
+     "bandingShare": 0
+    },
+    "finalDL": -44,
+    "roughIn": 105.2,
+    "roughRing": 178,
+    "heightIn": 99.2,
+    "heightRing": 157,
+    "normalDE": 29.1
+   },
+   {
+    "comp": 234,
+    "area": 22,
+    "bbox": [
+     102,
+     499,
+     1,
+     22
+    ],
+    "ring": 116,
+    "marksView": 120.2,
+    "albedoIn": [
+     33.9,
+     -15.6,
+     15.9
+    ],
+    "albedoRing": [
+     55.6,
+     -25.5,
+     34.1
+    ],
+    "dE": 30,
+    "dL": -21.7,
+    "chromaIn": 22.3,
+    "chromaRing": 42.6,
+    "edge": {
+     "boundarySamples": 0,
+     "width10_90": {
+      "p25": null,
+      "p50": null,
+      "p75": null
+     },
+     "hardShare": 0,
+     "bandingShare": 0
+    },
+    "finalDL": -28.8,
+    "roughIn": 105.2,
+    "roughRing": 179,
+    "heightIn": 99.2,
+    "heightRing": 156,
+    "normalDE": 26.1
+   },
+   {
+    "comp": 146,
+    "area": 20,
+    "bbox": [
+     354,
+     357,
+     20,
+     18
+    ],
+    "ring": 174,
+    "marksView": 120.2,
+    "albedoIn": [
+     35.3,
+     -15,
+     15.3
+    ],
+    "albedoRing": [
+     56.5,
+     -23.7,
+     31.9
+    ],
+    "dE": 28.4,
+    "dL": -21.2,
+    "chromaIn": 21.4,
+    "chromaRing": 39.8,
+    "edge": {
+     "boundarySamples": 3,
+     "width10_90": {
+      "p25": 1,
+      "p50": 1,
+      "p75": 1
+     },
+     "hardShare": 1,
+     "bandingShare": 0
+    },
+    "finalDL": -28.1,
+    "roughIn": 104.2,
+    "roughRing": 178,
+    "heightIn": 94.2,
+    "heightRing": 163,
+    "normalDE": 58.1
+   },
+   {
+    "comp": 92,
+    "area": 19,
+    "bbox": [
+     382,
+     294,
+     19,
+     11
+    ],
+    "ring": 161,
+    "marksView": 120.2,
+    "albedoIn": [
+     35.2,
+     -15.8,
+     16.4
+    ],
+    "albedoRing": [
+     57.1,
+     -26.2,
+     35.2
+    ],
+    "dE": 30.7,
+    "dL": -21.9,
+    "chromaIn": 22.7,
+    "chromaRing": 44,
+    "edge": {
+     "boundarySamples": 3,
+     "width10_90": {
+      "p25": 1,
+      "p50": 1,
+      "p75": 1
+     },
+     "hardShare": 1,
+     "bandingShare": 0
+    },
+    "finalDL": -59.8,
+    "roughIn": 105.2,
+    "roughRing": 179,
+    "heightIn": 89.2,
+    "heightRing": 149,
+    "normalDE": 34.6
+   },
+   {
+    "comp": 254,
+    "area": 19,
+    "bbox": [
+     104,
+     533,
+     1,
+     19
+    ],
+    "ring": 116,
+    "marksView": 75.9,
+    "albedoIn": [
+     24,
+     -10.1,
+     5.9
+    ],
+    "albedoRing": [
+     55.8,
+     -25,
+     33.6
+    ],
+    "dE": 44.7,
+    "dL": -31.8,
+    "chromaIn": 11.6,
+    "chromaRing": 42,
+    "edge": {
+     "boundarySamples": 0,
+     "width10_90": {
+      "p25": null,
+      "p50": null,
+      "p75": null
+     },
+     "hardShare": 0,
+     "bandingShare": 0
+    },
+    "finalDL": -35.4,
+    "roughIn": 68.7,
+    "roughRing": 179,
+    "heightIn": 61.7,
+    "heightRing": 149,
+    "normalDE": 35.8
+   },
+   {
+    "comp": 34,
+    "area": 17,
+    "bbox": [
+     327,
+     225,
+     17,
+     1
+    ],
+    "ring": 94,
+    "marksView": 164.7,
+    "albedoIn": [
+     40.7,
+     -20.4,
+     24.2
+    ],
+    "albedoRing": [
+     54,
+     -26.1,
+     34.6
+    ],
+    "dE": 17.9,
+    "dL": -13.3,
+    "chromaIn": 31.6,
+    "chromaRing": 43.4,
+    "edge": {
+     "boundarySamples": 9,
+     "width10_90": {
+      "p25": 1,
+      "p50": 1,
+      "p75": 1
+     },
+     "hardShare": 0.778,
+     "bandingShare": 0
+    },
+    "finalDL": -38.9,
+    "roughIn": 141.7,
+    "roughRing": 179,
+    "heightIn": 129.7,
+    "heightRing": 157,
+    "normalDE": 18.9
+   },
+   {
+    "comp": 124,
+    "area": 17,
+    "bbox": [
+     76,
+     324,
+     16,
+     13
+    ],
+    "ring": 156,
+    "marksView": 120.2,
+    "albedoIn": [
+     34.5,
+     -15,
+     14.9
+    ],
+    "albedoRing": [
+     54.1,
+     -23.8,
+     31.9
+    ],
+    "dE": 27.4,
+    "dL": -19.6,
+    "chromaIn": 21.1,
+    "chromaRing": 39.8,
+    "edge": {
+     "boundarySamples": 3,
+     "width10_90": {
+      "p25": 1,
+      "p50": 1,
+      "p75": 7
+     },
+     "hardShare": 0.667,
+     "bandingShare": 0
+    },
+    "finalDL": -21.7,
+    "roughIn": 105.2,
+    "roughRing": 179,
+    "heightIn": 95.2,
+    "heightRing": 149,
+    "normalDE": 34.8
+   },
+   {
+    "comp": 177,
+    "area": 17,
+    "bbox": [
+     106,
+     386,
+     14,
+     17
+    ],
+    "ring": 152,
+    "marksView": 120.2,
+    "albedoIn": [
+     35.4,
+     -16.9,
+     17.3
+    ],
+    "albedoRing": [
+     56.2,
+     -27.1,
+     35.7
+    ],
+    "dE": 29.6,
+    "dL": -20.8,
+    "chromaIn": 24.2,
+    "chromaRing": 44.8,
+    "edge": {
+     "boundarySamples": 2,
+     "width10_90": {
+      "p25": 1,
+      "p50": 1,
+      "p75": 1
+     },
+     "hardShare": 1,
+     "bandingShare": 0
+    },
+    "finalDL": -27.6,
+    "roughIn": 105.2,
+    "roughRing": 179,
+    "heightIn": 80.2,
+    "heightRing": 128,
+    "normalDE": 29.6
+   },
+   {
+    "comp": 262,
+    "area": 17,
+    "bbox": [
+     168,
+     541,
+     8,
+     17
+    ],
+    "ring": 125,
+    "marksView": 75.9,
+    "albedoIn": [
+     24.2,
+     -9.4,
+     5.3
+    ],
+    "albedoRing": [
+     56,
+     -23.6,
+     31.5
+    ],
+    "dE": 43.6,
+    "dL": -31.9,
+    "chromaIn": 10.8,
+    "chromaRing": 39.3,
+    "edge": {
+     "boundarySamples": 3,
+     "width10_90": {
+      "p25": 1,
+      "p50": 1,
+      "p75": 1
+     },
+     "hardShare": 1,
+     "bandingShare": 0
+    },
+    "finalDL": -34.5,
+    "roughIn": 68.7,
+    "roughRing": 179,
+    "heightIn": 65.7,
+    "heightRing": 161,
+    "normalDE": 63.2
+   },
+   {
+    "comp": 32,
+    "area": 16,
+    "bbox": [
+     162,
+     208,
+     8,
+     16
+    ],
+    "ring": 143,
+    "marksView": 120.2,
+    "albedoIn": [
+     37.1,
+     -16.9,
+     17.7
+    ],
+    "albedoRing": [
+     53.5,
+     -27.1,
+     35.5
+    ],
+    "dE": 26.3,
+    "dL": -16.5,
+    "chromaIn": 24.5,
+    "chromaRing": 44.6,
+    "edge": {
+     "boundarySamples": 4,
+     "width10_90": {
+      "p25": 1,
+      "p50": 1,
+      "p75": 1
+     },
+     "hardShare": 1,
+     "bandingShare": 0
+    },
+    "finalDL": -50.1,
+    "roughIn": 105.2,
+    "roughRing": 179,
+    "heightIn": 86.2,
+    "heightRing": 136,
+    "normalDE": 31.5
+   },
+   {
+    "comp": 35,
+    "area": 16,
+    "bbox": [
+     78,
+     226,
+     16,
+     1
+    ],
+    "ring": 91,
+    "marksView": 120.2,
+    "albedoIn": [
+     33.1,
+     -15.7,
+     15.9
+    ],
+    "albedoRing": [
+     50.7,
+     -25.4,
+     33.4
+    ],
+    "dE": 26.7,
+    "dL": -17.6,
+    "chromaIn": 22.4,
+    "chromaRing": 42,
+    "edge": {
+     "boundarySamples": 0,
+     "width10_90": {
+      "p25": null,
+      "p50": null,
+      "p75": null
+     },
+     "hardShare": 0,
+     "bandingShare": 0
+    },
+    "finalDL": -51.9,
+    "roughIn": 105.2,
+    "roughRing": 179,
+    "heightIn": 93.2,
+    "heightRing": 151,
+    "normalDE": 40.7
+   },
+   {
+    "comp": 37,
+    "area": 16,
+    "bbox": [
+     345,
+     226,
+     16,
+     7
+    ],
+    "ring": 119,
+    "marksView": 164.7,
+    "albedoIn": [
+     43.8,
+     -20.5,
+     25.4
+    ],
+    "albedoRing": [
+     54.5,
+     -26.1,
+     34.6
+    ],
+    "dE": 15.1,
+    "dL": -10.6,
+    "chromaIn": 33,
+    "chromaRing": 43.3,
+    "edge": {
+     "boundarySamples": 4,
+     "width10_90": {
+      "p25": 1,
+      "p50": 1,
+      "p75": 1
+     },
+     "hardShare": 1,
+     "bandingShare": 0
+    },
+    "finalDL": -32.8,
+    "roughIn": 141.4,
+    "roughRing": 178,
+    "heightIn": 122.7,
+    "heightRing": 158,
+    "normalDE": 25
+   },
+   {
+    "comp": 167,
+    "area": 16,
+    "bbox": [
+     293,
+     378,
+     15,
+     16
+    ],
+    "ring": 154,
+    "marksView": 120.2,
+    "albedoIn": [
+     35.5,
+     -16.3,
+     16.8
+    ],
+    "albedoRing": [
+     56.2,
+     -26.7,
+     35.3
+    ],
+    "dE": 29.7,
+    "dL": -20.7,
+    "chromaIn": 23.4,
+    "chromaRing": 44.4,
+    "edge": {
+     "boundarySamples": 5,
+     "width10_90": {
+      "p25": 1,
+      "p50": 1,
+      "p75": 1
+     },
+     "hardShare": 1,
+     "bandingShare": 0
+    },
+    "finalDL": -29.1,
+    "roughIn": 105.2,
+    "roughRing": 179,
+    "heightIn": 80.2,
+    "heightRing": 128,
+    "normalDE": 32.8
+   },
+   {
+    "comp": 217,
+    "area": 16,
+    "bbox": [
+     210,
+     475,
+     16,
+     11
+    ],
+    "ring": 156,
+    "marksView": 120.2,
+    "albedoIn": [
+     36.1,
+     -14.4,
+     14.7
+    ],
+    "albedoRing": [
+     55.3,
+     -23.1,
+     31
+    ],
+    "dE": 26.6,
+    "dL": -19.1,
+    "chromaIn": 20.7,
+    "chromaRing": 38.6,
+    "edge": {
+     "boundarySamples": 5,
+     "width10_90": {
+      "p25": 1,
+      "p50": 1,
+      "p75": 1
+     },
+     "hardShare": 0.8,
+     "bandingShare": 0
+    },
+    "finalDL": -22.8,
+    "roughIn": 105.2,
+    "roughRing": 181,
+    "heightIn": 89.2,
+    "heightRing": 128,
+    "normalDE": 48.9
+   },
+   {
+    "comp": 100,
+    "area": 15,
+    "bbox": [
+     402,
+     305,
+     15,
+     9
+    ],
+    "ring": 123,
+    "marksView": 120.2,
+    "albedoIn": [
+     35.5,
+     -15,
+     15.2
+    ],
+    "albedoRing": [
+     57.1,
+     -25.5,
+     34.2
+    ],
+    "dE": 30.6,
+    "dL": -21.6,
+    "chromaIn": 21.3,
+    "chromaRing": 42.7,
+    "edge": {
+     "boundarySamples": 4,
+     "width10_90": {
+      "p25": 1,
+      "p50": 1,
+      "p75": 1
+     },
+     "hardShare": 0.75,
+     "bandingShare": 0
+    },
+    "finalDL": -59.4,
+    "roughIn": 105.2,
+    "roughRing": 179,
+    "heightIn": 95.2,
+    "heightRing": 157,
+    "normalDE": 33.3
+   },
+   {
+    "comp": 171,
+    "area": 15,
+    "bbox": [
+     384,
+     381,
+     15,
+     8
+    ],
+    "ring": 121,
+    "marksView": 120.2,
+    "albedoIn": [
+     35.3,
+     -15,
+     15.3
+    ],
+    "albedoRing": [
+     55.6,
+     -24.2,
+     32.3
+    ],
+    "dE": 28,
+    "dL": -20.3,
+    "chromaIn": 21.5,
+    "chromaRing": 40.3,
+    "edge": {
+     "boundarySamples": 3,
+     "width10_90": {
+      "p25": 1,
+      "p50": 1,
+      "p75": 1
+     },
+     "hardShare": 1,
+     "bandingShare": 0
+    },
+    "finalDL": -26.5,
+    "roughIn": 105.2,
+    "roughRing": 179,
+    "heightIn": 85.2,
+    "heightRing": 157,
+    "normalDE": 53.6
+   },
+   {
+    "comp": 198,
+    "area": 15,
+    "bbox": [
+     100,
+     414,
+     2,
+     15
+    ],
+    "ring": 96,
+    "marksView": 164.7,
+    "albedoIn": [
+     46.5,
+     -21.7,
+     26.5
+    ],
+    "albedoRing": [
+     56.3,
+     -26.6,
+     35.3
+    ],
+    "dE": 14.1,
+    "dL": -9.8,
+    "chromaIn": 34.2,
+    "chromaRing": 44.2,
+    "edge": {
+     "boundarySamples": 1,
+     "width10_90": {
+      "p25": 1,
+      "p50": 1,
+      "p75": 1
+     },
+     "hardShare": 1,
+     "bandingShare": 0
+    },
+    "finalDL": -23.1,
+    "roughIn": 140.7,
+    "roughRing": 178,
+    "heightIn": 103.7,
+    "heightRing": 128,
+    "normalDE": 27.1
+   },
+   {
+    "comp": 68,
+    "area": 14,
+    "bbox": [
+     362,
+     233,
+     12,
+     12
+    ],
+    "ring": 116,
+    "marksView": 120.2,
+    "albedoIn": [
+     34.8,
+     -15.8,
+     16.4
+    ],
+    "albedoRing": [
+     53,
+     -25.5,
+     33.9
+    ],
+    "dE": 27,
+    "dL": -18.2,
+    "chromaIn": 22.8,
+    "chromaRing": 42.5,
+    "edge": {
+     "boundarySamples": 4,
+     "width10_90": {
+      "p25": 1,
+      "p50": 1,
+      "p75": 1
+     },
+     "hardShare": 1,
+     "bandingShare": 0
+    },
+    "finalDL": -48.5,
+    "roughIn": 105.2,
+    "roughRing": 178,
+    "heightIn": 92.2,
+    "heightRing": 156,
+    "normalDE": 32.3
+   },
+   {
+    "comp": 119,
+    "area": 13,
+    "bbox": [
+     134,
+     322,
+     3,
+     10
+    ],
+    "ring": 140,
+    "marksView": 120.2,
+    "albedoIn": [
+     29.5,
+     -14.2,
+     13.5
+    ],
+    "albedoRing": [
+     45.9,
+     -22.6,
+     29.8
+    ],
+    "dE": 24.6,
+    "dL": -16.4,
+    "chromaIn": 19.6,
+    "chromaRing": 37.6,
+    "edge": {
+     "boundarySamples": 5,
+     "width10_90": {
+      "p25": 0,
+      "p50": 0,
+      "p75": 0
+     },
+     "hardShare": 0.8,
+     "bandingShare": 0
+    },
+    "finalDL": -13.8,
+    "roughIn": 108.2,
+    "roughRing": 183,
+    "heightIn": 92.2,
+    "heightRing": 159,
+    "normalDE": 27
+   },
+   {
+    "comp": 153,
+    "area": 13,
+    "bbox": [
+     137,
+     366,
+     2,
+     11
+    ],
+    "ring": 146,
+    "marksView": 164.7,
+    "albedoIn": [
+     41.4,
+     -21,
+     25.1
+    ],
+    "albedoRing": [
+     51.8,
+     -25.5,
+     33.9
+    ],
+    "dE": 14.4,
+    "dL": -10.4,
+    "chromaIn": 32.7,
+    "chromaRing": 42.5,
+    "edge": {
+     "boundarySamples": 3,
+     "width10_90": {
+      "p25": 6,
+      "p50": 6,
+      "p75": 6
+     },
+     "hardShare": 0,
+     "bandingShare": 0.667
+    },
+    "finalDL": -10.6,
+    "roughIn": 142.7,
+    "roughRing": 179,
+    "heightIn": 126.4,
+    "heightRing": 158,
+    "normalDE": 14.7
+   },
+   {
+    "comp": 199,
+    "area": 13,
+    "bbox": [
+     319,
+     417,
+     1,
+     13
+    ],
+    "ring": 84,
+    "marksView": 120.2,
+    "albedoIn": [
+     37.6,
+     -15.7,
+     16.2
+    ],
+    "albedoRing": [
+     56.3,
+     -26.6,
+     35.3
+    ],
+    "dE": 28.9,
+    "dL": -18.7,
+    "chromaIn": 22.5,
+    "chromaRing": 44.2,
+    "edge": {
+     "boundarySamples": 7,
+     "width10_90": {
+      "p25": 1,
+      "p50": 1,
+      "p75": 1
+     },
+     "hardShare": 1,
+     "bandingShare": 0
+    },
+    "finalDL": -30.8,
+    "roughIn": 103.2,
+    "roughRing": 178,
+    "heightIn": 80.2,
+    "heightRing": 128,
+    "normalDE": 34.6
+   },
+   {
+    "comp": 208,
+    "area": 13,
+    "bbox": [
+     316,
+     456,
+     5,
+     13
+    ],
+    "ring": 102,
+    "marksView": 164.7,
+    "albedoIn": [
+     47.9,
+     -19.8,
+     24.2
+    ],
+    "albedoRing": [
+     59.5,
+     -24.9,
+     33.7
+    ],
+    "dE": 15.8,
+    "dL": -11.5,
+    "chromaIn": 31.2,
+    "chromaRing": 42,
+    "edge": {
+     "boundarySamples": 2,
+     "width10_90": {
+      "p25": 1,
+      "p50": 1,
+      "p75": 1
+     },
+     "hardShare": 1,
+     "bandingShare": 0
+    },
+    "finalDL": -25,
+    "roughIn": 141.4,
+    "roughRing": 177,
+    "heightIn": 103.7,
+    "heightRing": 128,
+    "normalDE": 31.6
+   },
+   {
+    "comp": 221,
+    "area": 13,
+    "bbox": [
+     191,
+     479,
+     10,
+     12
+    ],
+    "ring": 129,
+    "marksView": 164.7,
+    "albedoIn": [
+     41.3,
+     -18.1,
+     22.2
+    ],
+    "albedoRing": [
+     57.1,
+     -23.6,
+     31.6
+    ],
+    "dE": 19.2,
+    "dL": -15.8,
+    "chromaIn": 28.6,
+    "chromaRing": 39.4,
+    "edge": {
+     "boundarySamples": 4,
+     "width10_90": {
+      "p25": 1,
+      "p50": 1,
+      "p75": 1
+     },
+     "hardShare": 0.75,
+     "bandingShare": 0
+    },
+    "finalDL": -25.8,
+    "roughIn": 141.7,
+    "roughRing": 179,
+    "heightIn": 102.7,
+    "heightRing": 128,
+    "normalDE": 32.7
+   }
+  ]
+ }
+}

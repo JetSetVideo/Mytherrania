@@ -1,0 +1,20 @@
+cmp-r08q-parent-vs-r09q-parent: 280 tiles, changed 19, max share 0.00076
+  human-male-marked-bare/angles/forearm/studio/final share 0.00001 meanD 11 bbox 171,210,1,2 
+  human-male-marked-bare/channels/front-left-3q/studio/albedo share 0.00001 meanD 11.5 bbox 286,251,1,2 
+  human-male-marked-bare/channels/forearm/studio/final share 0.00001 meanD 11 bbox 171,210,1,2 
+  human-male-marked-bare/channels/forearm/studio/albedo share 0.00017 meanD 13.1 bbox 170,202,7,30 edge w50 1 hard 0.889 band 0
+  ork-female-marked-bare/angles/front/studio/final share 0.00003 meanD 13.2 bbox 340,209,8,7 
+  ork-female-marked-bare/angles/front-left-3q/studio/final share 0.00005 meanD 12.5 bbox 294,219,7,10 
+  ork-female-marked-bare/angles/forearm/studio/final share 0.00048 meanD 23.1 bbox 107,167,66,45 edge w50 1 hard 0.667 band 0
+  ork-female-marked-bare/channels/front-left-3q/studio/final share 0.00005 meanD 12.5 bbox 294,219,7,10 
+  ork-female-marked-bare/channels/front-left-3q/studio/albedo share 0.00005 meanD 13.7 bbox 294,219,8,11 
+  ork-female-marked-bare/channels/forearm/studio/final share 0.00048 meanD 23.1 bbox 107,167,66,45 edge w50 1 hard 0.667 band 0
+  ork-female-marked-bare/channels/forearm/studio/albedo share 0.0005 meanD 26 bbox 107,173,14,39 edge w50 1 hard 0.679 band 0
+  elf-female-marked-bare/angles/back/studio/final share 0.00001 meanD 11 bbox 108,271,2,1 
+  dwarf-male-marked-bare/angles/front/studio/final share 0.00005 meanD 13.7 bbox 340,208,11,9 
+  dwarf-male-marked-bare/angles/front-left-3q/studio/final share 0.00005 meanD 13 bbox 296,221,8,7 
+  dwarf-male-marked-bare/angles/forearm/studio/final share 0.00048 meanD 19.8 bbox 111,186,19,67 edge w50 1 hard 0.786 band 0
+  dwarf-male-marked-bare/channels/front-left-3q/studio/final share 0.00005 meanD 13 bbox 296,221,8,7 
+  dwarf-male-marked-bare/channels/front-left-3q/studio/albedo share 0.00005 meanD 14.3 bbox 297,221,7,18 
+  dwarf-male-marked-bare/channels/forearm/studio/final share 0.00048 meanD 19.8 bbox 111,186,19,67 edge w50 1 hard 0.786 band 0
+  dwarf-male-marked-bare/channels/forearm/studio/albedo share 0.00076 meanD 19 bbox 111,187,20,82 edge w50 1 hard 0.68 band 0.04

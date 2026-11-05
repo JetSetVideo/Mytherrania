@@ -11,6 +11,7 @@ import { formGainsFor } from "../body/Improvise.ts";
 import { applyFormShade, FORM_SKIP, vertexRings } from "./FormShade.ts";
 import { paintVertices } from "./Layers.ts";
 import { miniatureMetrics, miniatureTerms } from "./Miniature.ts";
+import { type FinishResult, paintPreset, presetFor, type PresetOptions, subjectOfSpec } from "./Presets.ts";
 import { GARMENT_REGIONS, stackFor } from "./Recipes.ts";
 
 /** The colours the stage paints with (Appearance.hair / accent / body-as-garment). */
@@ -38,11 +39,18 @@ export interface PaintStageOptions {
   miniature?: number;
   /** Compute the contrast metrics (default true; ~1 extra curvature pass, timed separately as metricsMs). */
   metrics?: boolean;
+  /**
+   * Wave TEX lane P: paint with a material preset (Presets.presetFor: skin by race x sub-race, garments by class
+   * outfit, the miniature workflow as layers) and return the extra channels. Absent = the wave-GEN paint, unchanged.
+   * `true` = the default preset of the spec.
+   */
+  preset?: PresetOptions | true;
 }
 
 /** Paint a polygonised body and record the stage. Same output as SkinnedHumanoid.paintSkin for the same colours. */
-export function paintStage(mesh: MeshData, spec: BodySpec, cell: number, look: PaintLook = {}, opts: PaintStageOptions = {}): { paint: Float32Array; record: PaintStageRecord } {
+export function paintStage(mesh: MeshData, spec: BodySpec, cell: number, look: PaintLook = {}, opts: PaintStageOptions = {}): { paint: Float32Array; record: PaintStageRecord; channels?: FinishResult } {
   const L = { ...DEFAULT_LOOK, ...look };
+  if (opts.preset) return paintStagePreset(mesh, spec, cell, L, opts);
   const t0 = performance.now();
   const base = paintVertices(mesh, stackFor({
     race: spec.race, subrace: spec.subrace, className: spec.className, birthsign: spec.birthsign ?? null,
@@ -71,4 +79,24 @@ export function paintStage(mesh: MeshData, spec: BodySpec, cell: number, look: P
   for (let i = 0; i < paint.length; i++) if (!(paint[i] >= 0 && paint[i] <= 1)) bad++;
   if (bad > 0) warnings.push(`${bad} paint channels outside 0..1`);
   return { paint, record: { id: "paint", label: "Paint", ms: t2 - t0, metrics, warnings } };
+}
+
+/** The preset path of paintStage (wave TEX lane P): same record shape, plus the roughness/height/ao/subsurface channels. */
+function paintStagePreset(mesh: MeshData, spec: BodySpec, cell: number, L: Required<PaintLook>, opts: PaintStageOptions): { paint: Float32Array; record: PaintStageRecord; channels: FinishResult } {
+  const t0 = performance.now();
+  const preset = presetFor(subjectOfSpec(spec, L, cell), opts.preset === true ? {} : opts.preset);
+  const rec: { formMs?: number; miniatureMs?: number; vertices?: number } = {};
+  const channels = paintPreset(mesh, preset, { cell, regionGain: formGainsFor(spec.seed), miniature: opts.miniature, record: rec });
+  const t2 = performance.now();
+  const paint = channels.albedo;
+  const n = mesh.positions.length / 3;
+  const metrics: Record<string, number> = {
+    vertices: n, formMs: rec.formMs ?? 0, miniatureMs: rec.miniatureMs ?? 0, presetLayers: preset.finish.layers.filter((l) => l.enabled).length,
+    presetMaterials: preset.finish.materials.length, fragmentDetails: preset.details.length,
+  };
+  const warnings: string[] = [];
+  let bad = 0;
+  for (let i = 0; i < paint.length; i++) if (!(paint[i] >= 0 && paint[i] <= 1)) bad++;
+  if (bad > 0) warnings.push(`${bad} paint channels outside 0..1`);
+  return { paint, record: { id: "paint", label: `Paint (${preset.id})`, ms: t2 - t0, metrics, warnings }, channels };
 }

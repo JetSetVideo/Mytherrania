@@ -1,0 +1,33 @@
+{
+ "a": "/Users/macmax/Desktop/Mytherrania/artifacts/wave-tex/verify-code/closing/shots-head",
+ "b": "/Users/macmax/Desktop/Mytherrania/artifacts/wave-tex/verify-code/closing/shots-head",
+ "shots": 24,
+ "changedTotal": 0,
+ "rows": [
+  "dwarf-female-0: 0/1024000 max 0",
+  "dwarf-female-135: 0/1024000 max 0",
+  "dwarf-female-270: 0/1024000 max 0",
+  "dwarf-male-0: 0/1024000 max 0",
+  "dwarf-male-135: 0/1024000 max 0",
+  "dwarf-male-270: 0/1024000 max 0",
+  "elf-female-0: 0/1024000 max 0",
+  "elf-female-135: 0/1024000 max 0",
+  "elf-female-270: 0/1024000 max 0",
+  "elf-male-0: 0/1024000 max 0",
+  "elf-male-135: 0/1024000 max 0",
+  "elf-male-270: 0/1024000 max 0",
+  "human-female-0: 0/1024000 max 0",
+  "human-female-135: 0/1024000 max 0",
+  "human-female-270: 0/1024000 max 0",
+  "human-male-0: 0/1024000 max 0",
+  "human-male-135: 0/1024000 max 0",
+  "human-male-270: 0/1024000 max 0",
+  "ork-female-0: 0/1024000 max 0",
+  "ork-female-135: 0/1024000 max 0",
+  "ork-female-270: 0/1024000 max 0",
+  "ork-male-0: 0/1024000 max 0",
+  "ork-male-135: 0/1024000 max 0",
+  "ork-male-270: 0/1024000 max 0"
+ ]
+}
+exit 0

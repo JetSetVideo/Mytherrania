@@ -1,0 +1,28 @@
+run r07q-before-F: src /Users/macmax/Desktop/Mytherrania commit 19f5c8c+4966d3 quick features {"channels":true,"marks":true,"presets":true,"layers":true}
+human-male-reference: build 828.9 ms, tris 10748, layers 58, marks 0 req / 0 decals / 0 covered, views final/albedo/roughness/height/normal/ao/marks
+human-male-marked: build 88.2 ms, tris 10748, layers 58, marks 6 req / 2 decals / 4 covered ISSUES [{"id":"tattoo.2","ok":false,"issues":["faceFeature"],"covered":false}], views final/albedo/roughness/height/normal/ao/marks
+human-male-marked-bare: build 84.9 ms, tris 10748, layers 25, marks 6 req / 6 decals / 0 covered ISSUES [{"id":"tattoo.2","ok":false,"issues":["faceFeature"],"covered":false}], views final/albedo/roughness/height/normal/ao/marks
+ork-female-reference: build 1255.6 ms, tris 10302, layers 58, marks 0 req / 0 decals / 0 covered, views final/albedo/roughness/height/normal/ao/marks
+ork-female-marked: build 52.8 ms, tris 10302, layers 58, marks 6 req / 2 decals / 4 covered ISSUES [{"id":"tattoo.2","ok":false,"issues":["faceFeature"],"covered":false}], views final/albedo/roughness/height/normal/ao/marks
+ork-female-marked-bare: build 43.7 ms, tris 10302, layers 25, marks 6 req / 6 decals / 0 covered ISSUES [{"id":"tattoo.2","ok":false,"issues":["faceFeature"],"covered":false}], views final/albedo/roughness/height/normal/ao/marks
+elf-female-reference: build 1121 ms, tris 11091, layers 58, marks 0 req / 0 decals / 0 covered, views final/albedo/roughness/height/normal/ao/marks
+elf-female-marked: build 64 ms, tris 11091, layers 58, marks 6 req / 2 decals / 4 covered ISSUES [{"id":"scar.2","ok":false,"issues":["faceFeature"],"covered":false},{"id":"tattoo.2","ok":false,"issues":["faceFeature"],"covered":false}], views final/albedo/roughness/height/normal/ao/marks
+elf-female-marked-bare: build 68.9 ms, tris 11091, layers 25, marks 6 req / 6 decals / 0 covered ISSUES [{"id":"scar.2","ok":false,"issues":["faceFeature"],"covered":false},{"id":"tattoo.2","ok":false,"issues":["faceFeature"],"covered":false}], views final/albedo/roughness/height/normal/ao/marks
+dwarf-male-reference: build 988.4 ms, tris 11264, layers 58, marks 0 req / 0 decals / 0 covered, views final/albedo/roughness/height/normal/ao/marks
+dwarf-male-marked: build 63.3 ms, tris 11264, layers 58, marks 6 req / 2 decals / 4 covered ISSUES [{"id":"scar.2","ok":false,"issues":["faceFeature"],"covered":false},{"id":"tattoo.2","ok":false,"issues":["faceFeature"],"covered":false}], views final/albedo/roughness/height/normal/ao/marks
+dwarf-male-marked-bare: build 55.3 ms, tris 11264, layers 25, marks 6 req / 6 decals / 0 covered ISSUES [{"id":"scar.2","ok":false,"issues":["faceFeature"],"covered":false},{"id":"tattoo.2","ok":false,"issues":["faceFeature"],"covered":false}], views final/albedo/roughness/height/normal/ao/marks
+marks effect (marked vs reference, same run):
+  human-male-marked-angles               0.0158 %  front:0.0102 back:0 front-left-3q:0.0009 face:0.0838 forearm:0 back-closeup:0
+  human-male-marked-lights               0.0016 %  front-left-3q:0.0009 front-left-3q:0.0004 front-left-3q:0.0026 front-left-3q:0.0017 front-left-3q:0.0026
+  human-male-marked-channels             0.0005 %  front-left-3q:0.0009 front-left-3q:0.003 front-left-3q:0 front-left-3q:0 front-left-3q:0 front-left-3q:0 front-left-3q:0.0038 forearm:0 forearm:0 forearm:0 forearm:0 forearm:0 forearm:0 forearm:0
+  ork-female-marked-angles               0.0188 %  front:0.0051 back:0 front-left-3q:0 face:0.108 forearm:0 back-closeup:0
+  ork-female-marked-lights               0.0004 %  front-left-3q:0 front-left-3q:0 front-left-3q:0.0009 front-left-3q:0.0009 front-left-3q:0.0004
+  ork-female-marked-channels             0.0002 %  front-left-3q:0 front-left-3q:0.0009 front-left-3q:0 front-left-3q:0 front-left-3q:0 front-left-3q:0 front-left-3q:0.0026 forearm:0 forearm:0 forearm:0 forearm:0 forearm:0 forearm:0 forearm:0
+  elf-female-marked-angles               0.0373 %  front:0.0149 back:0 front-left-3q:0.0047 face:0.2041 forearm:0 back-closeup:0
+  elf-female-marked-lights               0.0039 %  front-left-3q:0.0047 front-left-3q:0.0038 front-left-3q:0.0034 front-left-3q:0.0047 front-left-3q:0.003
+  elf-female-marked-channels              0.001 %  front-left-3q:0.0047 front-left-3q:0.0047 front-left-3q:0 front-left-3q:0 front-left-3q:0 front-left-3q:0 front-left-3q:0.0051 forearm:0 forearm:0 forearm:0 forearm:0 forearm:0 forearm:0 forearm:0
+  dwarf-male-marked-angles               0.0429 %  front:0.0111 back:0 front-left-3q:0.0038 face:0.2428 forearm:0 back-closeup:0
+  dwarf-male-marked-lights               0.0031 %  front-left-3q:0.0038 front-left-3q:0.0009 front-left-3q:0.0038 front-left-3q:0.0038 front-left-3q:0.0034
+  dwarf-male-marked-channels              0.001 %  front-left-3q:0.0038 front-left-3q:0.0038 front-left-3q:0 front-left-3q:0 front-left-3q:0 front-left-3q:0 front-left-3q:0.006 forearm:0 forearm:0 forearm:0 forearm:0 forearm:0 forearm:0 forearm:0
+sheets 32, images 280, 34.4 MB, errors 0
+wrote artifacts/wave-tex/captures/r07q-before-F/index.json

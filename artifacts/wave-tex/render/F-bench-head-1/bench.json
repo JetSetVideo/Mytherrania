@@ -1,0 +1,36 @@
+{
+ "run": "F-bench-head-1",
+ "src": "/Users/macmax/.hermes/cache/scratch/F/head",
+ "hasTex": false,
+ "commit": "19f5c8c",
+ "when": "2026-11-05T05:50:20.701Z",
+ "frames": 150,
+ "build": {},
+ "preview": {
+  "legacy": {
+   "median": 2.5,
+   "mean": 2.396,
+   "mem": {
+    "geometry": 382192,
+    "textures": 0,
+    "aMaterial": 0,
+    "aEmissive": 0,
+    "decalUniformBytes": 0
+   }
+  }
+ },
+ "arena": {
+  "legacy": {
+   "median": 3.5,
+   "mean": 3.396,
+   "mem": {
+    "geometry": 798920,
+    "textures": 0,
+    "aMaterial": 0,
+    "aEmissive": 0,
+    "decalUniformBytes": 0
+   }
+  }
+ },
+ "errors": []
+}

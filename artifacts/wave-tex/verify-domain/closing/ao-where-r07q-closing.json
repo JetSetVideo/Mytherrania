@@ -1,0 +1,345 @@
+[
+ {
+  "subject": "human-male",
+  "angle": "forearm",
+  "greyPx": 77368,
+  "darkShare": 0.0197,
+  "comps": [
+   {
+    "px": 1174,
+    "yFrac": 0.12,
+    "dx": -16,
+    "enclosed": 1.0,
+    "aoMin": 182,
+    "finalLumaInMinusRing": -8.3
+   },
+   {
+    "px": 167,
+    "yFrac": 0.54,
+    "dx": -76,
+    "enclosed": 1.0,
+    "aoMin": 161,
+    "finalLumaInMinusRing": -27.8
+   },
+   {
+    "px": 91,
+    "yFrac": 0.29,
+    "dx": -81,
+    "enclosed": 1.0,
+    "aoMin": 211,
+    "finalLumaInMinusRing": -32.4
+   },
+   {
+    "px": 64,
+    "yFrac": 0.52,
+    "dx": -64,
+    "enclosed": 1.0,
+    "aoMin": 175,
+    "finalLumaInMinusRing": 2.2
+   }
+  ]
+ },
+ {
+  "subject": "human-male",
+  "angle": "front-left-3q",
+  "greyPx": 42234,
+  "darkShare": 0.0803,
+  "comps": [
+   {
+    "px": 1210,
+    "yFrac": 0.32,
+    "dx": 21,
+    "enclosed": 1.0,
+    "aoMin": 139,
+    "finalLumaInMinusRing": -26.8
+   },
+   {
+    "px": 718,
+    "yFrac": 0.57,
+    "dx": -17,
+    "enclosed": 1.0,
+    "aoMin": 137,
+    "finalLumaInMinusRing": -22.0
+   },
+   {
+    "px": 635,
+    "yFrac": 0.35,
+    "dx": -54,
+    "enclosed": 1.0,
+    "aoMin": 166,
+    "finalLumaInMinusRing": -19.5
+   },
+   {
+    "px": 137,
+    "yFrac": 0.06,
+    "dx": 19,
+    "enclosed": 0.86,
+    "aoMin": 6,
+    "finalLumaInMinusRing": -146.2
+   },
+   {
+    "px": 134,
+    "yFrac": 0.07,
+    "dx": -12,
+    "enclosed": 1.0,
+    "aoMin": 17,
+    "finalLumaInMinusRing": -66.0
+   },
+   {
+    "px": 118,
+    "yFrac": 0.01,
+    "dx": 0,
+    "enclosed": 0.74,
+    "aoMin": 15,
+    "finalLumaInMinusRing": null
+   },
+   {
+    "px": 111,
+    "yFrac": 0.4,
+    "dx": -25,
+    "enclosed": 1.0,
+    "aoMin": 202,
+    "finalLumaInMinusRing": -35.7
+   },
+   {
+    "px": 57,
+    "yFrac": 0.51,
+    "dx": -19,
+    "enclosed": 1.0,
+    "aoMin": 138,
+    "finalLumaInMinusRing": -50.3
+   }
+  ]
+ },
+ {
+  "subject": "elf-female",
+  "angle": "forearm",
+  "greyPx": 59651,
+  "darkShare": 0.0146,
+  "comps": [
+   {
+    "px": 514,
+    "yFrac": 0.03,
+    "dx": -22,
+    "enclosed": 1.0,
+    "aoMin": 151,
+    "finalLumaInMinusRing": -12.6
+   },
+   {
+    "px": 204,
+    "yFrac": 0.27,
+    "dx": -67,
+    "enclosed": 1.0,
+    "aoMin": 182,
+    "finalLumaInMinusRing": -40.0
+   },
+   {
+    "px": 23,
+    "yFrac": 0.53,
+    "dx": -44,
+    "enclosed": 1.0,
+    "aoMin": 203,
+    "finalLumaInMinusRing": -17.2
+   },
+   {
+    "px": 22,
+    "yFrac": 0.27,
+    "dx": -73,
+    "enclosed": 1.0,
+    "aoMin": 213,
+    "finalLumaInMinusRing": -21.1
+   }
+  ]
+ },
+ {
+  "subject": "elf-female",
+  "angle": "front-left-3q",
+  "greyPx": 33622,
+  "darkShare": 0.0736,
+  "comps": [
+   {
+    "px": 846,
+    "yFrac": 0.27,
+    "dx": 17,
+    "enclosed": 1.0,
+    "aoMin": 134,
+    "finalLumaInMinusRing": -37.1
+   },
+   {
+    "px": 713,
+    "yFrac": 0.56,
+    "dx": -14,
+    "enclosed": 1.0,
+    "aoMin": 139,
+    "finalLumaInMinusRing": -26.6
+   },
+   {
+    "px": 195,
+    "yFrac": 0.31,
+    "dx": -43,
+    "enclosed": 1.0,
+    "aoMin": 174,
+    "finalLumaInMinusRing": -24.2
+   },
+   {
+    "px": 180,
+    "yFrac": 0.39,
+    "dx": -20,
+    "enclosed": 1.0,
+    "aoMin": 171,
+    "finalLumaInMinusRing": -55.5
+   },
+   {
+    "px": 159,
+    "yFrac": 0.06,
+    "dx": 15,
+    "enclosed": 1.0,
+    "aoMin": 144,
+    "finalLumaInMinusRing": -14.2
+   },
+   {
+    "px": 149,
+    "yFrac": 0.07,
+    "dx": -11,
+    "enclosed": 1.0,
+    "aoMin": 187,
+    "finalLumaInMinusRing": -8.2
+   },
+   {
+    "px": 85,
+    "yFrac": 0.17,
+    "dx": -35,
+    "enclosed": 0.91,
+    "aoMin": 146,
+    "finalLumaInMinusRing": -27.5
+   },
+   {
+    "px": 48,
+    "yFrac": 0.21,
+    "dx": -37,
+    "enclosed": 1.0,
+    "aoMin": 155,
+    "finalLumaInMinusRing": -58.0
+   }
+  ]
+ },
+ {
+  "subject": "dwarf-male",
+  "angle": "forearm",
+  "greyPx": 4501,
+  "darkShare": 0.0011,
+  "comps": []
+ },
+ {
+  "subject": "dwarf-male",
+  "angle": "front-left-3q",
+  "greyPx": 41788,
+  "darkShare": 0.007,
+  "comps": [
+   {
+    "px": 137,
+    "yFrac": 0.59,
+    "dx": -22,
+    "enclosed": 1.0,
+    "aoMin": 208,
+    "finalLumaInMinusRing": -5.3
+   },
+   {
+    "px": 121,
+    "yFrac": 0.55,
+    "dx": -31,
+    "enclosed": 1.0,
+    "aoMin": 162,
+    "finalLumaInMinusRing": 14.3
+   },
+   {
+    "px": 18,
+    "yFrac": 0.08,
+    "dx": -12,
+    "enclosed": 1.0,
+    "aoMin": 221,
+    "finalLumaInMinusRing": 5.5
+   }
+  ]
+ },
+ {
+  "subject": "ork-female",
+  "angle": "forearm",
+  "greyPx": 1813,
+  "darkShare": 0.0524,
+  "comps": [
+   {
+    "px": 86,
+    "yFrac": 0.28,
+    "dx": -204,
+    "enclosed": 0.76,
+    "aoMin": 186,
+    "finalLumaInMinusRing": -47.7
+   }
+  ]
+ },
+ {
+  "subject": "ork-female",
+  "angle": "front-left-3q",
+  "greyPx": 44990,
+  "darkShare": 0.0156,
+  "comps": [
+   {
+    "px": 176,
+    "yFrac": 0.31,
+    "dx": -101,
+    "enclosed": 1.0,
+    "aoMin": 175,
+    "finalLumaInMinusRing": -57.5
+   },
+   {
+    "px": 140,
+    "yFrac": 0.07,
+    "dx": -25,
+    "enclosed": 1.0,
+    "aoMin": 208,
+    "finalLumaInMinusRing": -24.3
+   },
+   {
+    "px": 123,
+    "yFrac": 0.56,
+    "dx": -21,
+    "enclosed": 1.0,
+    "aoMin": 212,
+    "finalLumaInMinusRing": -4.4
+   },
+   {
+    "px": 106,
+    "yFrac": 0.34,
+    "dx": 63,
+    "enclosed": 0.99,
+    "aoMin": 172,
+    "finalLumaInMinusRing": -37.4
+   },
+   {
+    "px": 98,
+    "yFrac": 0.33,
+    "dx": 37,
+    "enclosed": 0.99,
+    "aoMin": 183,
+    "finalLumaInMinusRing": -8.4
+   },
+   {
+    "px": 17,
+    "yFrac": 0.34,
+    "dx": 70,
+    "enclosed": 1.0,
+    "aoMin": 185,
+    "finalLumaInMinusRing": -128.5
+   },
+   {
+    "px": 15,
+    "yFrac": 0.36,
+    "dx": 65,
+    "enclosed": 0.96,
+    "aoMin": 186,
+    "finalLumaInMinusRing": -72.1
+   }
+  ]
+ }
+]

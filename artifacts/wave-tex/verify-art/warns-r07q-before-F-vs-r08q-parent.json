@@ -1,0 +1,546 @@
+{
+ "r07q-before-F": {
+  "human-male": {
+   "W1": {
+    "albedoHi5": 183.4,
+    "albedoP50": 113.6,
+    "ridge": 1.614,
+    "faceHi5": 180.3,
+    "faceP50": 162.7,
+    "faceRidge": 1.108,
+    "finalP95": 167.7
+   },
+   "P": {
+    "skinGarmentDE": 33.8,
+    "skinMinusGarmentL": 26.9
+   },
+   "W2": {
+    "front-left-3q": {
+     "p5": 247,
+     "p50": 255,
+     "lt250": 0.0595,
+     "lt230": 0.0425
+    },
+    "forearm": {
+     "p5": 254,
+     "p50": 255,
+     "lt250": 0.0092,
+     "lt230": 0.0076
+    }
+   },
+   "studsStd": {},
+   "ink-forearm": [
+    {
+     "area": 360,
+     "dE": 22.4,
+     "dL": -19.1,
+     "edgeW50": 2,
+     "banding": 0.05,
+     "normalDE": 5.4
+    },
+    {
+     "area": 152,
+     "dE": 19.3,
+     "dL": -17.1,
+     "edgeW50": 1,
+     "banding": 0.053,
+     "normalDE": 3.5
+    }
+   ],
+   "scars": [
+    {
+     "row": "forearm",
+     "area": 51,
+     "bbox": [
+      171,
+      217,
+      13,
+      27
+     ],
+     "marksLab": [
+      76.6,
+      5.9,
+      5.6
+     ],
+     "dE": 5.6,
+     "dL": -2.1,
+     "dHeight": 7,
+     "heightIn": 135,
+     "normalDE": 0.5,
+     "rough": [
+      99,
+      121
+     ]
+    },
+    {
+     "row": "forearm",
+     "area": 36,
+     "bbox": [
+      168,
+      188,
+      4,
+      20
+     ],
+     "marksLab": [
+      78.4,
+      4.8,
+      4.6
+     ],
+     "dE": 5.1,
+     "dL": -1.5,
+     "dHeight": 6,
+     "heightIn": 134,
+     "normalDE": 1.5,
+     "rough": [
+      104,
+      121
+     ]
+    }
+   ]
+  },
+  "ork-female": {
+   "W1": {
+    "albedoHi5": 165.7,
+    "albedoP50": 111.6,
+    "ridge": 1.485,
+    "faceHi5": 184.9,
+    "faceP50": 137.2,
+    "faceRidge": 1.348,
+    "finalP95": 148.3
+   },
+   "P": {
+    "skinGarmentDE": 30.5,
+    "skinMinusGarmentL": 10
+   },
+   "W2": {
+    "front-left-3q": {
+     "p5": 252,
+     "p50": 255,
+     "lt250": 0.024,
+     "lt230": 0.0099
+    },
+    "forearm": {
+     "p5": 253,
+     "p50": 255,
+     "lt250": 0.0038,
+     "lt230": 0.0028
+    }
+   },
+   "studsStd": {},
+   "ink-forearm": [
+    {
+     "area": 458,
+     "dE": 28.3,
+     "dL": -20.8,
+     "edgeW50": 2,
+     "banding": 0.032,
+     "normalDE": 0.8
+    },
+    {
+     "area": 346,
+     "dE": 27.3,
+     "dL": -17.9,
+     "edgeW50": 2,
+     "banding": 0,
+     "normalDE": 1.7
+    }
+   ],
+   "scars": [
+    {
+     "row": "forearm",
+     "area": 133,
+     "bbox": [
+      101,
+      170,
+      20,
+      43
+     ],
+     "marksLab": [
+      73.3,
+      -2,
+      4.4
+     ],
+     "dE": 11.5,
+     "dL": -2.9,
+     "dHeight": 11,
+     "heightIn": 168,
+     "normalDE": 23.4,
+     "rough": [
+      142,
+      173
+     ]
+    }
+   ]
+  },
+  "elf-female": {
+   "W1": {
+    "albedoHi5": 216.6,
+    "albedoP50": 116.2,
+    "ridge": 1.864,
+    "faceHi5": 209.3,
+    "faceP50": 203.6,
+    "faceRidge": 1.028,
+    "finalP95": 205.4
+   },
+   "P": {
+    "skinGarmentDE": 36.1,
+    "skinMinusGarmentL": 34.4
+   },
+   "W2": {
+    "front-left-3q": {
+     "p5": 250,
+     "p50": 255,
+     "lt250": 0.0459,
+     "lt230": 0.0189
+    },
+    "forearm": {
+     "p5": 253,
+     "p50": 255,
+     "lt250": 0.015,
+     "lt230": 0.0099
+    }
+   },
+   "studsStd": {},
+   "ink-forearm": [
+    {
+     "area": 129,
+     "dE": 22.6,
+     "dL": -21.9,
+     "edgeW50": 2,
+     "banding": 0,
+     "normalDE": 5.5
+    },
+    {
+     "area": 47,
+     "dE": 25,
+     "dL": -23.8,
+     "edgeW50": 1,
+     "banding": 0,
+     "normalDE": 5.6
+    }
+   ],
+   "scars": []
+  },
+  "dwarf-male": {
+   "W1": {
+    "albedoHi5": 176,
+    "albedoP50": 110.6,
+    "ridge": 1.591,
+    "faceHi5": 166,
+    "faceP50": 153.5,
+    "faceRidge": 1.081,
+    "finalP95": 172.2
+   },
+   "P": {
+    "skinGarmentDE": 31.8,
+    "skinMinusGarmentL": 17.1
+   },
+   "W2": {
+    "front-left-3q": {
+     "p5": 252,
+     "p50": 255,
+     "lt250": 0.0216,
+     "lt230": 0.0092
+    },
+    "forearm": {
+     "p5": 253,
+     "p50": 255,
+     "lt250": 0.0052,
+     "lt230": 0.0028
+    }
+   },
+   "studsStd": {},
+   "ink-forearm": [
+    {
+     "area": 600,
+     "dE": 33.8,
+     "dL": -27.1,
+     "edgeW50": 1,
+     "banding": 0,
+     "normalDE": 1
+    },
+    {
+     "area": 531,
+     "dE": 37.2,
+     "dL": -29.7,
+     "edgeW50": 1,
+     "banding": 0.018,
+     "normalDE": 3.6
+    }
+   ],
+   "scars": [
+    {
+     "row": "forearm",
+     "area": 115,
+     "bbox": [
+      111,
+      185,
+      27,
+      39
+     ],
+     "marksLab": [
+      75.8,
+      5.4,
+      4.9
+     ],
+     "dE": 7.3,
+     "dL": -3.1,
+     "dHeight": 6,
+     "heightIn": 134,
+     "normalDE": 6.7,
+     "rough": [
+      122,
+      148
+     ]
+    },
+    {
+     "row": "forearm",
+     "area": 20,
+     "bbox": [
+      203,
+      301,
+      17,
+      11
+     ],
+     "marksLab": [
+      77.3,
+      12.2,
+      17.6
+     ],
+     "dE": 6.6,
+     "dL": 2.8,
+     "dHeight": 20.5,
+     "heightIn": 148.5,
+     "normalDE": 38.9,
+     "rough": [
+      160.4,
+      151
+     ]
+    }
+   ]
+  }
+ },
+ "r08q-parent": {
+  "human-male": {
+   "W1": {
+    "albedoHi5": 187.8,
+    "albedoP50": 113.6,
+    "ridge": 1.653,
+    "faceHi5": 180.3,
+    "faceP50": 162.7,
+    "faceRidge": 1.108,
+    "finalP95": 167.9
+   },
+   "P": {
+    "skinGarmentDE": 33.7,
+    "skinMinusGarmentL": 26.9
+   },
+   "W2": {
+    "front-left-3q": {
+     "p5": 188,
+     "p50": 254,
+     "lt250": 0.2268,
+     "lt230": 0.1231
+    },
+    "forearm": {
+     "p5": 238,
+     "p50": 255,
+     "lt250": 0.1008,
+     "lt230": 0.0362
+    }
+   },
+   "studsStd": {},
+   "ink-forearm": [
+    {
+     "area": 360,
+     "dE": 22.4,
+     "dL": -19.1,
+     "edgeW50": 2,
+     "banding": 0.05,
+     "normalDE": 5.4
+    },
+    {
+     "area": 152,
+     "dE": 19.3,
+     "dL": -17.1,
+     "edgeW50": 1,
+     "banding": 0.053,
+     "normalDE": 3.5
+    }
+   ],
+   "scars": []
+  },
+  "ork-female": {
+   "W1": {
+    "albedoHi5": 167.7,
+    "albedoP50": 111.6,
+    "ridge": 1.503,
+    "faceHi5": 190.7,
+    "faceP50": 137.4,
+    "faceRidge": 1.388,
+    "finalP95": 148.3
+   },
+   "P": {
+    "skinGarmentDE": 30.5,
+    "skinMinusGarmentL": 10
+   },
+   "W2": {
+    "front-left-3q": {
+     "p5": 243,
+     "p50": 255,
+     "lt250": 0.0789,
+     "lt230": 0.0307
+    },
+    "forearm": {
+     "p5": 253,
+     "p50": 255,
+     "lt250": 0.007,
+     "lt230": 0.0038
+    }
+   },
+   "studsStd": {},
+   "ink-forearm": [
+    {
+     "area": 406,
+     "dE": 30.4,
+     "dL": -29.3,
+     "edgeW50": 6,
+     "banding": 0.025,
+     "normalDE": 1.4
+    },
+    {
+     "area": 336,
+     "dE": 31,
+     "dL": -16.9,
+     "edgeW50": 2,
+     "banding": 0.044,
+     "normalDE": 1.7
+    }
+   ],
+   "scars": []
+  },
+  "elf-female": {
+   "W1": {
+    "albedoHi5": 218.1,
+    "albedoP50": 116.2,
+    "ridge": 1.877,
+    "faceHi5": 209.3,
+    "faceP50": 203.6,
+    "faceRidge": 1.028,
+    "finalP95": 205
+   },
+   "P": {
+    "skinGarmentDE": 36.2,
+    "skinMinusGarmentL": 34.4
+   },
+   "W2": {
+    "front-left-3q": {
+     "p5": 198.7,
+     "p50": 254,
+     "lt250": 0.2464,
+     "lt230": 0.1047
+    },
+    "forearm": {
+     "p5": 241,
+     "p50": 255,
+     "lt250": 0.1044,
+     "lt230": 0.028
+    }
+   },
+   "studsStd": {},
+   "ink-forearm": [
+    {
+     "area": 126,
+     "dE": 22.7,
+     "dL": -22.2,
+     "edgeW50": 2,
+     "banding": 0,
+     "normalDE": 6.3
+    },
+    {
+     "area": 47,
+     "dE": 25,
+     "dL": -23.8,
+     "edgeW50": 1,
+     "banding": 0,
+     "normalDE": 5.4
+    }
+   ],
+   "scars": []
+  },
+  "dwarf-male": {
+   "W1": {
+    "albedoHi5": 179.2,
+    "albedoP50": 110.6,
+    "ridge": 1.62,
+    "faceHi5": 174,
+    "faceP50": 153.9,
+    "faceRidge": 1.131,
+    "finalP95": 172.3
+   },
+   "P": {
+    "skinGarmentDE": 31.8,
+    "skinMinusGarmentL": 17.1
+   },
+   "W2": {
+    "front-left-3q": {
+     "p5": 245,
+     "p50": 255,
+     "lt250": 0.0787,
+     "lt230": 0.0218
+    },
+    "forearm": {
+     "p5": 253,
+     "p50": 255,
+     "lt250": 0.0145,
+     "lt230": 0.0028
+    }
+   },
+   "studsStd": {},
+   "ink-forearm": [
+    {
+     "area": 600,
+     "dE": 33.8,
+     "dL": -27.1,
+     "edgeW50": 1,
+     "banding": 0,
+     "normalDE": 1
+    },
+    {
+     "area": 531,
+     "dE": 37,
+     "dL": -29.1,
+     "edgeW50": 1,
+     "banding": 0.035,
+     "normalDE": 3.5
+    }
+   ],
+   "scars": [
+    {
+     "row": "forearm",
+     "area": 20,
+     "bbox": [
+      203,
+      301,
+      17,
+      11
+     ],
+     "marksLab": [
+      77.3,
+      12.2,
+      17.6
+     ],
+     "dE": 6.6,
+     "dL": 2.8,
+     "dHeight": 20.5,
+     "heightIn": 148.5,
+     "normalDE": 38.9,
+     "rough": [
+      160.4,
+      151
+     ]
+    }
+   ]
+  }
+ }
+}

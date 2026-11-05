@@ -1,0 +1,4179 @@
+{
+ "run": "r00q-baseline-head",
+ "mode": "quick",
+ "src": "/Users/macmax/.hermes/cache/scratch/wave-tex-head-19f5c8c9cc",
+ "commit": "19f5c8c9cc",
+ "dirty": false,
+ "dirtyFiles": [],
+ "buildTime": "2026-11-04T21:07:50Z",
+ "bundleMs": 217,
+ "captureMs": 5854,
+ "features": {
+  "channels": false,
+  "marks": false,
+  "presets": false,
+  "layers": false
+ },
+ "tile": [
+  420,
+  560
+ ],
+ "hudHeight": 220,
+ "markedSet": null,
+ "subjects": [
+  {
+   "id": "human-male-reference",
+   "race": "human",
+   "sex": "male",
+   "variant": "reference",
+   "buildMs": 838.4,
+   "bodyTiming": {
+    "anatomyMs": 439.09999990463257,
+    "polygonizeMs": 270.69999980926514,
+    "sampleMs": 180.5,
+    "meshBrushMs": 5.900000095367432,
+    "statsMs": 2.5,
+    "totalMs": 719.2999999523163,
+    "corners": 112000
+   },
+   "triangles": 10748,
+   "layers": [
+    {
+     "name": "skin",
+     "ops": "v1:normal/solid",
+     "opacity": 1
+    },
+    {
+     "name": "mottling",
+     "ops": "v1:normal/noise",
+     "opacity": 0.1610514693558216
+    },
+    {
+     "name": "countershade",
+     "ops": "v1:softLight/gradient",
+     "opacity": 0.6250329745700582
+    },
+    {
+     "name": "flush",
+     "ops": "v1:normal/gradient",
+     "opacity": 0.17679264329373834
+    },
+    {
+     "name": "freckles",
+     "ops": "v1:multiply/freckles",
+     "opacity": 0.46738622583448886
+    },
+    {
+     "name": "soles",
+     "ops": "v1:normal/solid",
+     "opacity": 0.7
+    },
+    {
+     "name": "nail-bed",
+     "ops": "v1:normal/solid",
+     "opacity": 0.9
+    },
+    {
+     "name": "nail-gloss",
+     "ops": "v1:screen/stripes",
+     "opacity": 0.3
+    },
+    {
+     "name": "hair",
+     "ops": "v1:normal/solid",
+     "opacity": 1
+    },
+    {
+     "name": "hair-strands",
+     "ops": "v1:normal/stripes",
+     "opacity": 0.35
+    },
+    {
+     "name": "class-veins",
+     "ops": "v1:normal/veins",
+     "opacity": 0.5
+    },
+    {
+     "name": "garment",
+     "ops": "v1:normal/solid",
+     "opacity": 1
+    },
+    {
+     "name": "garment-weave",
+     "ops": "v1:overlay/noise",
+     "opacity": 0.35
+    }
+   ],
+   "marks": [],
+   "views": [
+    "final"
+   ],
+   "bbox": {
+    "min": [
+     -0.496,
+     0,
+     -0.1267
+    ],
+    "max": [
+     0.4679,
+     1.776,
+     0.1932
+    ]
+   },
+   "marksApplied": false,
+   "appearanceHasMarks": false
+  },
+  {
+   "id": "ork-female-reference",
+   "race": "ork",
+   "sex": "female",
+   "variant": "reference",
+   "buildMs": 1261.3,
+   "bodyTiming": {
+    "anatomyMs": 956.4000000953674,
+    "polygonizeMs": 252.89999985694885,
+    "sampleMs": 173.40000009536743,
+    "meshBrushMs": 1.2000000476837158,
+    "statsMs": 1.2999999523162842,
+    "totalMs": 1212.2000000476837,
+    "corners": 107136
+   },
+   "triangles": 10302,
+   "layers": [
+    {
+     "name": "skin",
+     "ops": "v1:normal/solid",
+     "opacity": 1
+    },
+    {
+     "name": "mottling",
+     "ops": "v1:normal/noise",
+     "opacity": 0.3050514693558216
+    },
+    {
+     "name": "countershade",
+     "ops": "v1:softLight/gradient",
+     "opacity": 0.7250329745700583
+    },
+    {
+     "name": "flush",
+     "ops": "v1:normal/gradient",
+     "opacity": 0.056792643293738364
+    },
+    {
+     "name": "hide",
+     "ops": "v1:normal/scales",
+     "opacity": 0.6045049082720653
+    },
+    {
+     "name": "markings",
+     "ops": "v1:normal/stripes",
+     "opacity": 0.3709086841857061
+    },
+    {
+     "name": "soles",
+     "ops": "v1:normal/solid",
+     "opacity": 0.7
+    },
+    {
+     "name": "nail-bed",
+     "ops": "v1:normal/solid",
+     "opacity": 0.9
+    },
+    {
+     "name": "nail-gloss",
+     "ops": "v1:screen/stripes",
+     "opacity": 0.3
+    },
+    {
+     "name": "def-abs",
+     "ops": "v1:multiply/stripes",
+     "opacity": 0.08879136690647485
+    },
+    {
+     "name": "def-linea",
+     "ops": "v1:multiply/stripes",
+     "opacity": 0.08071942446043168
+    },
+    {
+     "name": "def-pec",
+     "ops": "v1:multiply/stripes",
+     "opacity": 0.07264748201438852
+    },
+    {
+     "name": "def-arm",
+     "ops": "v1:multiply/veins",
+     "opacity": 0.08071942446043168
+    },
+    {
+     "name": "def-leg",
+     "ops": "v1:multiply/veins",
+     "opacity": 0.08071942446043168
+    },
+    {
+     "name": "hair",
+     "ops": "v1:normal/solid",
+     "opacity": 1
+    },
+    {
+     "name": "hair-strands",
+     "ops": "v1:normal/stripes",
+     "opacity": 0.35
+    },
+    {
+     "name": "class-veins",
+     "ops": "v1:normal/veins",
+     "opacity": 0.5
+    },
+    {
+     "name": "garment",
+     "ops": "v1:normal/solid",
+     "opacity": 1
+    },
+    {
+     "name": "garment-weave",
+     "ops": "v1:overlay/noise",
+     "opacity": 0.35
+    }
+   ],
+   "marks": [],
+   "views": [
+    "final"
+   ],
+   "bbox": {
+    "min": [
+     -0.9113,
+     0,
+     -0.2037
+    ],
+    "max": [
+     0.9237,
+     1.8496,
+     0.2186
+    ]
+   },
+   "marksApplied": false,
+   "appearanceHasMarks": false
+  },
+  {
+   "id": "elf-female-reference",
+   "race": "elf",
+   "sex": "female",
+   "variant": "reference",
+   "buildMs": 1140.5,
+   "bodyTiming": {
+    "anatomyMs": 748.2000000476837,
+    "polygonizeMs": 302.2999999523163,
+    "sampleMs": 212.79999995231628,
+    "meshBrushMs": 4.800000190734863,
+    "statsMs": 2.299999952316284,
+    "totalMs": 1057.7000000476837,
+    "corners": 140940
+   },
+   "triangles": 11091,
+   "layers": [
+    {
+     "name": "skin",
+     "ops": "v1:normal/solid",
+     "opacity": 1
+    },
+    {
+     "name": "mottling",
+     "ops": "v1:normal/noise",
+     "opacity": 0.11305146935582161
+    },
+    {
+     "name": "countershade",
+     "ops": "v1:softLight/gradient",
+     "opacity": 0.5750329745700583
+    },
+    {
+     "name": "freckles",
+     "ops": "v1:multiply/freckles",
+     "opacity": 0.38738622583448884
+    },
+    {
+     "name": "veins",
+     "ops": "v1:multiply/veins",
+     "opacity": 0.2646202147938311
+    },
+    {
+     "name": "sheen",
+     "ops": "v1:screen/noise",
+     "opacity": 0.13231010739691554
+    },
+    {
+     "name": "markings",
+     "ops": "v1:normal/spots",
+     "opacity": 0.2584086841857061
+    },
+    {
+     "name": "soles",
+     "ops": "v1:normal/solid",
+     "opacity": 0.7
+    },
+    {
+     "name": "nail-bed",
+     "ops": "v1:normal/solid",
+     "opacity": 0.9
+    },
+    {
+     "name": "nail-gloss",
+     "ops": "v1:screen/stripes",
+     "opacity": 0.3
+    },
+    {
+     "name": "hair",
+     "ops": "v1:normal/solid",
+     "opacity": 1
+    },
+    {
+     "name": "hair-strands",
+     "ops": "v1:normal/stripes",
+     "opacity": 0.35
+    },
+    {
+     "name": "class-veins",
+     "ops": "v1:normal/veins",
+     "opacity": 0.5
+    },
+    {
+     "name": "garment",
+     "ops": "v1:normal/solid",
+     "opacity": 1
+    },
+    {
+     "name": "garment-weave",
+     "ops": "v1:overlay/noise",
+     "opacity": 0.35
+    }
+   ],
+   "marks": [],
+   "views": [
+    "final"
+   ],
+   "bbox": {
+    "min": [
+     -0.4683,
+     0,
+     -0.1174
+    ],
+    "max": [
+     0.4402,
+     1.7173,
+     0.197
+    ]
+   },
+   "marksApplied": false,
+   "appearanceHasMarks": false
+  },
+  {
+   "id": "dwarf-male-reference",
+   "race": "dwarf",
+   "sex": "male",
+   "variant": "reference",
+   "buildMs": 979.4,
+   "bodyTiming": {
+    "anatomyMs": 664.6000001430511,
+    "polygonizeMs": 246.29999995231628,
+    "sampleMs": 173.09999990463257,
+    "meshBrushMs": 0.5,
+    "statsMs": 1.2000000476837158,
+    "totalMs": 912.7000000476837,
+    "corners": 121856
+   },
+   "triangles": 11264,
+   "layers": [
+    {
+     "name": "skin",
+     "ops": "v1:normal/solid",
+     "opacity": 1
+    },
+    {
+     "name": "mottling",
+     "ops": "v1:normal/noise",
+     "opacity": 0.20905146935582164
+    },
+    {
+     "name": "countershade",
+     "ops": "v1:softLight/gradient",
+     "opacity": 0.6000329745700583
+    },
+    {
+     "name": "flush",
+     "ops": "v1:normal/gradient",
+     "opacity": 0.44679264329373836
+    },
+    {
+     "name": "freckles",
+     "ops": "v1:multiply/freckles",
+     "opacity": 0.6073862258344889
+    },
+    {
+     "name": "soles",
+     "ops": "v1:normal/solid",
+     "opacity": 0.7
+    },
+    {
+     "name": "nail-bed",
+     "ops": "v1:normal/solid",
+     "opacity": 0.9
+    },
+    {
+     "name": "nail-gloss",
+     "ops": "v1:screen/stripes",
+     "opacity": 0.3
+    },
+    {
+     "name": "def-abs",
+     "ops": "v1:multiply/stripes",
+     "opacity": 0.03960000000000004
+    },
+    {
+     "name": "def-linea",
+     "ops": "v1:multiply/stripes",
+     "opacity": 0.03600000000000003
+    },
+    {
+     "name": "def-pec",
+     "ops": "v1:multiply/stripes",
+     "opacity": 0.03240000000000003
+    },
+    {
+     "name": "def-arm",
+     "ops": "v1:multiply/veins",
+     "opacity": 0.03600000000000003
+    },
+    {
+     "name": "def-leg",
+     "ops": "v1:multiply/veins",
+     "opacity": 0.03600000000000003
+    },
+    {
+     "name": "hair",
+     "ops": "v1:normal/solid",
+     "opacity": 1
+    },
+    {
+     "name": "hair-strands",
+     "ops": "v1:normal/stripes",
+     "opacity": 0.35
+    },
+    {
+     "name": "class-veins",
+     "ops": "v1:normal/veins",
+     "opacity": 0.5
+    },
+    {
+     "name": "garment",
+     "ops": "v1:normal/solid",
+     "opacity": 1
+    },
+    {
+     "name": "garment-weave",
+     "ops": "v1:overlay/noise",
+     "opacity": 0.35
+    }
+   ],
+   "marks": [],
+   "views": [
+    "final"
+   ],
+   "bbox": {
+    "min": [
+     -0.7362,
+     0.0001,
+     -0.1583
+    ],
+    "max": [
+     0.7457,
+     1.4462,
+     0.1525
+    ]
+   },
+   "marksApplied": false,
+   "appearanceHasMarks": false
+  }
+ ],
+ "sheets": [
+  {
+   "id": "human-male-reference-angles",
+   "path": "artifacts/wave-tex/captures/r00q-baseline-head/human-male-reference-angles.png",
+   "subject": "human-male-reference",
+   "kind": "angles",
+   "width": 2548,
+   "height": 816,
+   "tiles": 6
+  },
+  {
+   "id": "human-male-reference-lights",
+   "path": "artifacts/wave-tex/captures/r00q-baseline-head/human-male-reference-lights.png",
+   "subject": "human-male-reference",
+   "kind": "lights",
+   "width": 2124,
+   "height": 816,
+   "tiles": 5
+  },
+  {
+   "id": "ork-female-reference-angles",
+   "path": "artifacts/wave-tex/captures/r00q-baseline-head/ork-female-reference-angles.png",
+   "subject": "ork-female-reference",
+   "kind": "angles",
+   "width": 2548,
+   "height": 816,
+   "tiles": 6
+  },
+  {
+   "id": "ork-female-reference-lights",
+   "path": "artifacts/wave-tex/captures/r00q-baseline-head/ork-female-reference-lights.png",
+   "subject": "ork-female-reference",
+   "kind": "lights",
+   "width": 2124,
+   "height": 816,
+   "tiles": 5
+  },
+  {
+   "id": "elf-female-reference-angles",
+   "path": "artifacts/wave-tex/captures/r00q-baseline-head/elf-female-reference-angles.png",
+   "subject": "elf-female-reference",
+   "kind": "angles",
+   "width": 2548,
+   "height": 816,
+   "tiles": 6
+  },
+  {
+   "id": "elf-female-reference-lights",
+   "path": "artifacts/wave-tex/captures/r00q-baseline-head/elf-female-reference-lights.png",
+   "subject": "elf-female-reference",
+   "kind": "lights",
+   "width": 2124,
+   "height": 816,
+   "tiles": 5
+  },
+  {
+   "id": "dwarf-male-reference-angles",
+   "path": "artifacts/wave-tex/captures/r00q-baseline-head/dwarf-male-reference-angles.png",
+   "subject": "dwarf-male-reference",
+   "kind": "angles",
+   "width": 2548,
+   "height": 816,
+   "tiles": 6
+  },
+  {
+   "id": "dwarf-male-reference-lights",
+   "path": "artifacts/wave-tex/captures/r00q-baseline-head/dwarf-male-reference-lights.png",
+   "subject": "dwarf-male-reference",
+   "kind": "lights",
+   "width": 2124,
+   "height": 816,
+   "tiles": 5
+  }
+ ],
+ "images": [
+  {
+   "id": "human-male-reference/angles/front/studio/final",
+   "path": "artifacts/wave-tex/captures/r00q-baseline-head/human-male-reference-angles.png",
+   "sheet": "human-male-reference-angles",
+   "subject": "human-male-reference",
+   "race": "human",
+   "sex": "male",
+   "variant": "reference",
+   "light": "studio",
+   "angle": "front",
+   "view": "final",
+   "channelOk": true,
+   "rect": [
+    4,
+    32,
+    420,
+    780
+   ],
+   "render": [
+    4,
+    32,
+    420,
+    560
+   ],
+   "hudRect": [
+    4,
+    592,
+    420,
+    220
+   ],
+   "camera": {
+    "angle": "front",
+    "yawDeg": 0,
+    "pitchDeg": 4,
+    "distanceM": 4.441781829739031,
+    "fovDeg": 24
+   },
+   "lightDetail": "PreviewStage key [0.03,0.99,0.16] +fill, shadow",
+   "frameMs": 3.6,
+   "regions": {
+    "face": [
+     167,
+     0,
+     261,
+     93
+    ],
+    "forearm": [
+     243,
+     196,
+     383,
+     336
+    ],
+    "back": [
+     111,
+     35,
+     317,
+     241
+    ]
+   },
+   "stats": {
+    "coverage": 0.2594,
+    "lumaMean": 93.8,
+    "lumaP5": 31.4,
+    "lumaP50": 98.6,
+    "lumaP95": 163.2
+   },
+   "hud": {
+    "run": "run r00q-baseline-head",
+    "commit": "commit 19f5c8c9cc",
+    "build": "build 2026-11-04T21:07:50Z",
+    "subject": "human male Warrior",
+    "variant": "variant reference",
+    "layers": "layers(13) skin v1:normal/solid; mottling v1:normal/noise @0.16 |            countershade v1:softLight/gradient @0.63 |            flush v1:normal/gradient @0.18 +9 more",
+    "marks": "marks(0) none",
+    "channel": "view final",
+    "light": "light studio PreviewStage key [0.03,0.99,0.16] +fill, shadow",
+    "camera": "cam front yaw 0.0 pitch 4.0 dist 4.44m fov 24.0",
+    "triangles": "tris 10748",
+    "timing": "build 838.4ms frame 3.60ms"
+   },
+   "triangles": 10748,
+   "buildMs": 838.4
+  },
+  {
+   "id": "human-male-reference/angles/back/studio/final",
+   "path": "artifacts/wave-tex/captures/r00q-baseline-head/human-male-reference-angles.png",
+   "sheet": "human-male-reference-angles",
+   "subject": "human-male-reference",
+   "race": "human",
+   "sex": "male",
+   "variant": "reference",
+   "light": "studio",
+   "angle": "back",
+   "view": "final",
+   "channelOk": true,
+   "rect": [
+    428,
+    32,
+    420,
+    780
+   ],
+   "render": [
+    428,
+    32,
+    420,
+    560
+   ],
+   "hudRect": [
+    428,
+    592,
+    420,
+    220
+   ],
+   "camera": {
+    "angle": "back",
+    "yawDeg": 180,
+    "pitchDeg": 4,
+    "distanceM": 4.441781829739031,
+    "fovDeg": 24
+   },
+   "lightDetail": "PreviewStage key [0.03,0.99,0.16] +fill, shadow",
+   "frameMs": 2.9,
+   "regions": {
+    "face": [
+     159,
+     0,
+     253,
+     93
+    ],
+    "forearm": [
+     34,
+     197,
+     176,
+     339
+    ],
+    "back": [
+     100,
+     31,
+     312,
+     243
+    ]
+   },
+   "stats": {
+    "coverage": 0.2658,
+    "lumaMean": 80.2,
+    "lumaP5": 31.4,
+    "lumaP50": 81,
+    "lumaP95": 125.4
+   },
+   "hud": {
+    "run": "run r00q-baseline-head",
+    "commit": "commit 19f5c8c9cc",
+    "build": "build 2026-11-04T21:07:50Z",
+    "subject": "human male Warrior",
+    "variant": "variant reference",
+    "layers": "layers(13) skin v1:normal/solid; mottling v1:normal/noise @0.16 |            countershade v1:softLight/gradient @0.63 |            flush v1:normal/gradient @0.18 +9 more",
+    "marks": "marks(0) none",
+    "channel": "view final",
+    "light": "light studio PreviewStage key [0.03,0.99,0.16] +fill, shadow",
+    "camera": "cam back yaw 180.0 pitch 4.0 dist 4.44m fov 24.0",
+    "triangles": "tris 10748",
+    "timing": "build 838.4ms frame 2.90ms"
+   },
+   "triangles": 10748,
+   "buildMs": 838.4
+  },
+  {
+   "id": "human-male-reference/angles/front-left-3q/studio/final",
+   "path": "artifacts/wave-tex/captures/r00q-baseline-head/human-male-reference-angles.png",
+   "sheet": "human-male-reference-angles",
+   "subject": "human-male-reference",
+   "race": "human",
+   "sex": "male",
+   "variant": "reference",
+   "light": "studio",
+   "angle": "front-left-3q",
+   "view": "final",
+   "channelOk": true,
+   "rect": [
+    852,
+    32,
+    420,
+    780
+   ],
+   "render": [
+    852,
+    32,
+    420,
+    560
+   ],
+   "hudRect": [
+    852,
+    592,
+    420,
+    220
+   ],
+   "camera": {
+    "angle": "front-left-3q",
+    "yawDeg": 45,
+    "pitchDeg": 8,
+    "distanceM": 4.441781829739033,
+    "fovDeg": 24
+   },
+   "lightDetail": "PreviewStage key [0.03,0.99,0.16] +fill, shadow",
+   "frameMs": 5,
+   "regions": {
+    "face": [
+     168,
+     0,
+     263,
+     92
+    ],
+    "forearm": [
+     223,
+     202,
+     371,
+     350
+    ],
+    "back": [
+     121,
+     32,
+     330,
+     242
+    ]
+   },
+   "stats": {
+    "coverage": 0.2494,
+    "lumaMean": 93.3,
+    "lumaP5": 31.4,
+    "lumaP50": 97,
+    "lumaP95": 163.3
+   },
+   "hud": {
+    "run": "run r00q-baseline-head",
+    "commit": "commit 19f5c8c9cc",
+    "build": "build 2026-11-04T21:07:50Z",
+    "subject": "human male Warrior",
+    "variant": "variant reference",
+    "layers": "layers(13) skin v1:normal/solid; mottling v1:normal/noise @0.16 |            countershade v1:softLight/gradient @0.63 |            flush v1:normal/gradient @0.18 +9 more",
+    "marks": "marks(0) none",
+    "channel": "view final",
+    "light": "light studio PreviewStage key [0.03,0.99,0.16] +fill, shadow",
+    "camera": "cam front-left-3q yaw 45.0 pitch 8.0 dist 4.44m fov 24.0",
+    "triangles": "tris 10748",
+    "timing": "build 838.4ms frame 5.00ms"
+   },
+   "triangles": 10748,
+   "buildMs": 838.4
+  },
+  {
+   "id": "human-male-reference/angles/face/studio/final",
+   "path": "artifacts/wave-tex/captures/r00q-baseline-head/human-male-reference-angles.png",
+   "sheet": "human-male-reference-angles",
+   "subject": "human-male-reference",
+   "race": "human",
+   "sex": "male",
+   "variant": "reference",
+   "light": "studio",
+   "angle": "face",
+   "view": "final",
+   "channelOk": true,
+   "rect": [
+    1276,
+    32,
+    420,
+    780
+   ],
+   "render": [
+    1276,
+    32,
+    420,
+    560
+   ],
+   "hudRect": [
+    1276,
+    592,
+    420,
+    220
+   ],
+   "camera": {
+    "angle": "face",
+    "yawDeg": 20.000000000000004,
+    "pitchDeg": 4.000000000000002,
+    "distanceM": 1.1009486163734001,
+    "fovDeg": 24
+   },
+   "lightDetail": "PreviewStage key [0.03,0.99,0.16] +fill, shadow",
+   "frameMs": 2.4,
+   "regions": {
+    "face": [
+     19,
+     89,
+     401,
+     471
+    ],
+    "back": [
+     0,
+     233,
+     420,
+     560
+    ]
+   },
+   "stats": {
+    "coverage": 0.4417,
+    "lumaMean": 100.5,
+    "lumaP5": 15.4,
+    "lumaP50": 112.5,
+    "lumaP95": 185.6
+   },
+   "hud": {
+    "run": "run r00q-baseline-head",
+    "commit": "commit 19f5c8c9cc",
+    "build": "build 2026-11-04T21:07:50Z",
+    "subject": "human male Warrior",
+    "variant": "variant reference",
+    "layers": "layers(13) skin v1:normal/solid; mottling v1:normal/noise @0.16 |            countershade v1:softLight/gradient @0.63 |            flush v1:normal/gradient @0.18 +9 more",
+    "marks": "marks(0) none",
+    "channel": "view final",
+    "light": "light studio PreviewStage key [0.03,0.99,0.16] +fill, shadow",
+    "camera": "cam face yaw 20.0 pitch 4.0 dist 1.10m fov 24.0",
+    "triangles": "tris 10748",
+    "timing": "build 838.4ms frame 2.40ms"
+   },
+   "triangles": 10748,
+   "buildMs": 838.4
+  },
+  {
+   "id": "human-male-reference/angles/forearm/studio/final",
+   "path": "artifacts/wave-tex/captures/r00q-baseline-head/human-male-reference-angles.png",
+   "sheet": "human-male-reference-angles",
+   "subject": "human-male-reference",
+   "race": "human",
+   "sex": "male",
+   "variant": "reference",
+   "light": "studio",
+   "angle": "forearm",
+   "view": "final",
+   "channelOk": true,
+   "rect": [
+    1700,
+    32,
+    420,
+    780
+   ],
+   "render": [
+    1700,
+    32,
+    420,
+    560
+   ],
+   "hudRect": [
+    1700,
+    592,
+    420,
+    220
+   ],
+   "camera": {
+    "angle": "forearm",
+    "yawDeg": 70,
+    "pitchDeg": 10.000000000000005,
+    "distanceM": 1.6428745413225,
+    "fovDeg": 24
+   },
+   "lightDetail": "PreviewStage key [0.03,0.99,0.16] +fill, shadow",
+   "frameMs": 2.7,
+   "regions": {
+    "forearm": [
+     19,
+     89,
+     401,
+     471
+    ],
+    "back": [
+     0,
+     0,
+     378,
+     180
+    ]
+   },
+   "stats": {
+    "coverage": 0.4744,
+    "lumaMean": 93.6,
+    "lumaP5": 31.4,
+    "lumaP50": 90.3,
+    "lumaP95": 160.8
+   },
+   "hud": {
+    "run": "run r00q-baseline-head",
+    "commit": "commit 19f5c8c9cc",
+    "build": "build 2026-11-04T21:07:50Z",
+    "subject": "human male Warrior",
+    "variant": "variant reference",
+    "layers": "layers(13) skin v1:normal/solid; mottling v1:normal/noise @0.16 |            countershade v1:softLight/gradient @0.63 |            flush v1:normal/gradient @0.18 +9 more",
+    "marks": "marks(0) none",
+    "channel": "view final",
+    "light": "light studio PreviewStage key [0.03,0.99,0.16] +fill, shadow",
+    "camera": "cam forearm yaw 70.0 pitch 10.0 dist 1.64m fov 24.0",
+    "triangles": "tris 10748",
+    "timing": "build 838.4ms frame 2.70ms"
+   },
+   "triangles": 10748,
+   "buildMs": 838.4
+  },
+  {
+   "id": "human-male-reference/angles/back-closeup/studio/final",
+   "path": "artifacts/wave-tex/captures/r00q-baseline-head/human-male-reference-angles.png",
+   "sheet": "human-male-reference-angles",
+   "subject": "human-male-reference",
+   "race": "human",
+   "sex": "male",
+   "variant": "reference",
+   "light": "studio",
+   "angle": "back-closeup",
+   "view": "final",
+   "channelOk": true,
+   "rect": [
+    2124,
+    32,
+    420,
+    780
+   ],
+   "render": [
+    2124,
+    32,
+    420,
+    560
+   ],
+   "hudRect": [
+    2124,
+    592,
+    420,
+    220
+   ],
+   "camera": {
+    "angle": "back-closeup",
+    "yawDeg": 180,
+    "pitchDeg": 10.000000000000002,
+    "distanceM": 2.430388702976452,
+    "fovDeg": 24
+   },
+   "lightDetail": "PreviewStage key [0.03,0.99,0.16] +fill, shadow",
+   "frameMs": 2.7,
+   "regions": {
+    "face": [
+     124,
+     27,
+     296,
+     199
+    ],
+    "forearm": [
+     0,
+     381,
+     156,
+     560
+    ],
+    "back": [
+     19,
+     89,
+     401,
+     471
+    ]
+   },
+   "stats": {
+    "coverage": 0.5296,
+    "lumaMean": 83.1,
+    "lumaP5": 18.2,
+    "lumaP50": 83.3,
+    "lumaP95": 132.2
+   },
+   "hud": {
+    "run": "run r00q-baseline-head",
+    "commit": "commit 19f5c8c9cc",
+    "build": "build 2026-11-04T21:07:50Z",
+    "subject": "human male Warrior",
+    "variant": "variant reference",
+    "layers": "layers(13) skin v1:normal/solid; mottling v1:normal/noise @0.16 |            countershade v1:softLight/gradient @0.63 |            flush v1:normal/gradient @0.18 +9 more",
+    "marks": "marks(0) none",
+    "channel": "view final",
+    "light": "light studio PreviewStage key [0.03,0.99,0.16] +fill, shadow",
+    "camera": "cam back-closeup yaw 180.0 pitch 10.0 dist 2.43m fov 24.0",
+    "triangles": "tris 10748",
+    "timing": "build 838.4ms frame 2.70ms"
+   },
+   "triangles": 10748,
+   "buildMs": 838.4
+  },
+  {
+   "id": "human-male-reference/lights/front-left-3q/studio/final",
+   "path": "artifacts/wave-tex/captures/r00q-baseline-head/human-male-reference-lights.png",
+   "sheet": "human-male-reference-lights",
+   "subject": "human-male-reference",
+   "race": "human",
+   "sex": "male",
+   "variant": "reference",
+   "light": "studio",
+   "angle": "front-left-3q",
+   "view": "final",
+   "channelOk": true,
+   "rect": [
+    4,
+    32,
+    420,
+    780
+   ],
+   "render": [
+    4,
+    32,
+    420,
+    560
+   ],
+   "hudRect": [
+    4,
+    592,
+    420,
+    220
+   ],
+   "camera": {
+    "angle": "front-left-3q",
+    "yawDeg": 45,
+    "pitchDeg": 8,
+    "distanceM": 4.441781829739033,
+    "fovDeg": 24
+   },
+   "lightDetail": "PreviewStage key [0.03,0.99,0.16] +fill, shadow",
+   "frameMs": 2.9,
+   "regions": {
+    "face": [
+     168,
+     0,
+     263,
+     92
+    ],
+    "forearm": [
+     223,
+     202,
+     371,
+     350
+    ],
+    "back": [
+     121,
+     32,
+     330,
+     242
+    ]
+   },
+   "stats": {
+    "coverage": 0.2494,
+    "lumaMean": 93.3,
+    "lumaP5": 31.4,
+    "lumaP50": 97,
+    "lumaP95": 163.3
+   },
+   "hud": {
+    "run": "run r00q-baseline-head",
+    "commit": "commit 19f5c8c9cc",
+    "build": "build 2026-11-04T21:07:50Z",
+    "subject": "human male Warrior",
+    "variant": "variant reference",
+    "layers": "layers(13) skin v1:normal/solid; mottling v1:normal/noise @0.16 |            countershade v1:softLight/gradient @0.63 |            flush v1:normal/gradient @0.18 +9 more",
+    "marks": "marks(0) none",
+    "channel": "view final",
+    "light": "light studio PreviewStage key [0.03,0.99,0.16] +fill, shadow",
+    "camera": "cam front-left-3q yaw 45.0 pitch 8.0 dist 4.44m fov 24.0",
+    "triangles": "tris 10748",
+    "timing": "build 838.4ms frame 2.90ms"
+   },
+   "triangles": 10748,
+   "buildMs": 838.4
+  },
+  {
+   "id": "human-male-reference/lights/front-left-3q/rim/final",
+   "path": "artifacts/wave-tex/captures/r00q-baseline-head/human-male-reference-lights.png",
+   "sheet": "human-male-reference-lights",
+   "subject": "human-male-reference",
+   "race": "human",
+   "sex": "male",
+   "variant": "reference",
+   "light": "rim",
+   "angle": "front-left-3q",
+   "view": "final",
+   "channelOk": true,
+   "rect": [
+    428,
+    32,
+    420,
+    780
+   ],
+   "render": [
+    428,
+    32,
+    420,
+    560
+   ],
+   "hudRect": [
+    428,
+    592,
+    420,
+    220
+   ],
+   "camera": {
+    "angle": "front-left-3q",
+    "yawDeg": 45,
+    "pitchDeg": 8,
+    "distanceM": 4.441781829739033,
+    "fovDeg": 24
+   },
+   "lightDetail": "camera-relative back key, ambient 0.27, no shadow",
+   "frameMs": 2.5,
+   "regions": {
+    "face": [
+     168,
+     0,
+     263,
+     92
+    ],
+    "forearm": [
+     223,
+     202,
+     371,
+     350
+    ],
+    "back": [
+     121,
+     32,
+     330,
+     242
+    ]
+   },
+   "stats": {
+    "coverage": 0.2496,
+    "lumaMean": 61.2,
+    "lumaP5": 31.4,
+    "lumaP50": 55.8,
+    "lumaP95": 92.2
+   },
+   "hud": {
+    "run": "run r00q-baseline-head",
+    "commit": "commit 19f5c8c9cc",
+    "build": "build 2026-11-04T21:07:50Z",
+    "subject": "human male Warrior",
+    "variant": "variant reference",
+    "layers": "layers(13) skin v1:normal/solid; mottling v1:normal/noise @0.16 |            countershade v1:softLight/gradient @0.63 |            flush v1:normal/gradient @0.18 +9 more",
+    "marks": "marks(0) none",
+    "channel": "view final",
+    "light": "light rim camera-relative back key, ambient 0.27, no shadow",
+    "camera": "cam front-left-3q yaw 45.0 pitch 8.0 dist 4.44m fov 24.0",
+    "triangles": "tris 10748",
+    "timing": "build 838.4ms frame 2.50ms"
+   },
+   "triangles": 10748,
+   "buildMs": 838.4
+  },
+  {
+   "id": "human-male-reference/lights/front-left-3q/flat/final",
+   "path": "artifacts/wave-tex/captures/r00q-baseline-head/human-male-reference-lights.png",
+   "sheet": "human-male-reference-lights",
+   "subject": "human-male-reference",
+   "race": "human",
+   "sex": "male",
+   "variant": "reference",
+   "light": "flat",
+   "angle": "front-left-3q",
+   "view": "final",
+   "channelOk": true,
+   "rect": [
+    852,
+    32,
+    420,
+    780
+   ],
+   "render": [
+    852,
+    32,
+    420,
+    560
+   ],
+   "hudRect": [
+    852,
+    592,
+    420,
+    220
+   ],
+   "camera": {
+    "angle": "front-left-3q",
+    "yawDeg": 45,
+    "pitchDeg": 8,
+    "distanceM": 4.441781829739033,
+    "fovDeg": 24
+   },
+   "lightDetail": "headlight band, key 0, ambient 1 (albedo x paint)",
+   "frameMs": 6,
+   "regions": {
+    "face": [
+     168,
+     0,
+     263,
+     92
+    ],
+    "forearm": [
+     223,
+     202,
+     371,
+     350
+    ],
+    "back": [
+     121,
+     32,
+     330,
+     242
+    ]
+   },
+   "stats": {
+    "coverage": 0.2494,
+    "lumaMean": 113.3,
+    "lumaP5": 31.4,
+    "lumaP50": 115.4,
+    "lumaP95": 171.7
+   },
+   "hud": {
+    "run": "run r00q-baseline-head",
+    "commit": "commit 19f5c8c9cc",
+    "build": "build 2026-11-04T21:07:50Z",
+    "subject": "human male Warrior",
+    "variant": "variant reference",
+    "layers": "layers(13) skin v1:normal/solid; mottling v1:normal/noise @0.16 |            countershade v1:softLight/gradient @0.63 |            flush v1:normal/gradient @0.18 +9 more",
+    "marks": "marks(0) none",
+    "channel": "view final",
+    "light": "light flat headlight band, key 0, ambient 1 (albedo x paint)",
+    "camera": "cam front-left-3q yaw 45.0 pitch 8.0 dist 4.44m fov 24.0",
+    "triangles": "tris 10748",
+    "timing": "build 838.4ms frame 6.00ms"
+   },
+   "triangles": 10748,
+   "buildMs": 838.4
+  },
+  {
+   "id": "human-male-reference/lights/front-left-3q/daylight/final",
+   "path": "artifacts/wave-tex/captures/r00q-baseline-head/human-male-reference-lights.png",
+   "sheet": "human-male-reference-lights",
+   "subject": "human-male-reference",
+   "race": "human",
+   "sex": "male",
+   "variant": "reference",
+   "light": "daylight",
+   "angle": "front-left-3q",
+   "view": "final",
+   "channelOk": true,
+   "rect": [
+    1276,
+    32,
+    420,
+    780
+   ],
+   "render": [
+    1276,
+    32,
+    420,
+    560
+   ],
+   "hudRect": [
+    1276,
+    592,
+    420,
+    220
+   ],
+   "camera": {
+    "angle": "front-left-3q",
+    "yawDeg": 45,
+    "pitchDeg": 8,
+    "distanceM": 4.441781829739033,
+    "fovDeg": 24
+   },
+   "lightDetail": "env sunspire h13 elev 71.7deg, no shadow",
+   "frameMs": 2,
+   "regions": {
+    "face": [
+     168,
+     0,
+     263,
+     92
+    ],
+    "forearm": [
+     223,
+     202,
+     371,
+     350
+    ],
+    "back": [
+     121,
+     32,
+     330,
+     242
+    ]
+   },
+   "stats": {
+    "coverage": 0.2494,
+    "lumaMean": 119.7,
+    "lumaP5": 31.4,
+    "lumaP50": 125.1,
+    "lumaP95": 199.9
+   },
+   "hud": {
+    "run": "run r00q-baseline-head",
+    "commit": "commit 19f5c8c9cc",
+    "build": "build 2026-11-04T21:07:50Z",
+    "subject": "human male Warrior",
+    "variant": "variant reference",
+    "layers": "layers(13) skin v1:normal/solid; mottling v1:normal/noise @0.16 |            countershade v1:softLight/gradient @0.63 |            flush v1:normal/gradient @0.18 +9 more",
+    "marks": "marks(0) none",
+    "channel": "view final",
+    "light": "light daylight env sunspire h13 elev 71.7deg, no shadow",
+    "camera": "cam front-left-3q yaw 45.0 pitch 8.0 dist 4.44m fov 24.0",
+    "triangles": "tris 10748",
+    "timing": "build 838.4ms frame 2.00ms"
+   },
+   "triangles": 10748,
+   "buildMs": 838.4
+  },
+  {
+   "id": "human-male-reference/lights/front-left-3q/dusk/final",
+   "path": "artifacts/wave-tex/captures/r00q-baseline-head/human-male-reference-lights.png",
+   "sheet": "human-male-reference-lights",
+   "subject": "human-male-reference",
+   "race": "human",
+   "sex": "male",
+   "variant": "reference",
+   "light": "dusk",
+   "angle": "front-left-3q",
+   "view": "final",
+   "channelOk": true,
+   "rect": [
+    1700,
+    32,
+    420,
+    780
+   ],
+   "render": [
+    1700,
+    32,
+    420,
+    560
+   ],
+   "hudRect": [
+    1700,
+    592,
+    420,
+    220
+   ],
+   "camera": {
+    "angle": "front-left-3q",
+    "yawDeg": 45,
+    "pitchDeg": 8,
+    "distanceM": 4.441781829739033,
+    "fovDeg": 24
+   },
+   "lightDetail": "env sunspire h18 elev 4.7deg, no shadow",
+   "frameMs": 2.3,
+   "regions": {
+    "face": [
+     168,
+     0,
+     263,
+     92
+    ],
+    "forearm": [
+     223,
+     202,
+     371,
+     350
+    ],
+    "back": [
+     121,
+     32,
+     330,
+     242
+    ]
+   },
+   "stats": {
+    "coverage": 0.2493,
+    "lumaMean": 99.2,
+    "lumaP5": 31.4,
+    "lumaP50": 100.6,
+    "lumaP95": 150.6
+   },
+   "hud": {
+    "run": "run r00q-baseline-head",
+    "commit": "commit 19f5c8c9cc",
+    "build": "build 2026-11-04T21:07:50Z",
+    "subject": "human male Warrior",
+    "variant": "variant reference",
+    "layers": "layers(13) skin v1:normal/solid; mottling v1:normal/noise @0.16 |            countershade v1:softLight/gradient @0.63 |            flush v1:normal/gradient @0.18 +9 more",
+    "marks": "marks(0) none",
+    "channel": "view final",
+    "light": "light dusk env sunspire h18 elev 4.7deg, no shadow",
+    "camera": "cam front-left-3q yaw 45.0 pitch 8.0 dist 4.44m fov 24.0",
+    "triangles": "tris 10748",
+    "timing": "build 838.4ms frame 2.30ms"
+   },
+   "triangles": 10748,
+   "buildMs": 838.4
+  },
+  {
+   "id": "ork-female-reference/angles/front/studio/final",
+   "path": "artifacts/wave-tex/captures/r00q-baseline-head/ork-female-reference-angles.png",
+   "sheet": "ork-female-reference-angles",
+   "subject": "ork-female-reference",
+   "race": "ork",
+   "sex": "female",
+   "variant": "reference",
+   "light": "studio",
+   "angle": "front",
+   "view": "final",
+   "channelOk": true,
+   "rect": [
+    4,
+    32,
+    420,
+    780
+   ],
+   "render": [
+    4,
+    32,
+    420,
+    560
+   ],
+   "hudRect": [
+    4,
+    592,
+    420,
+    220
+   ],
+   "camera": {
+    "angle": "front",
+    "yawDeg": 0,
+    "pitchDeg": 4.000000000000001,
+    "distanceM": 6.119120085050646,
+    "fovDeg": 24
+   },
+   "lightDetail": "PreviewStage key [0.03,0.99,0.16] +fill, shadow",
+   "frameMs": 2.8,
+   "regions": {
+    "face": [
+     174,
+     68,
+     243,
+     137
+    ],
+    "forearm": [
+     299,
+     186,
+     401,
+     288
+    ],
+    "back": [
+     86,
+     50,
+     331,
+     295
+    ]
+   },
+   "stats": {
+    "coverage": 0.2529,
+    "lumaMean": 91.4,
+    "lumaP5": 31.4,
+    "lumaP50": 89.3,
+    "lumaP95": 147.3
+   },
+   "hud": {
+    "run": "run r00q-baseline-head",
+    "commit": "commit 19f5c8c9cc",
+    "build": "build 2026-11-04T21:07:50Z",
+    "subject": "ork female Warrior",
+    "variant": "variant reference",
+    "layers": "layers(19) skin v1:normal/solid; mottling v1:normal/noise @0.31 |            countershade v1:softLight/gradient @0.73 |            flush v1:normal/gradient @0.06 +15 more",
+    "marks": "marks(0) none",
+    "channel": "view final",
+    "light": "light studio PreviewStage key [0.03,0.99,0.16] +fill, shadow",
+    "camera": "cam front yaw 0.0 pitch 4.0 dist 6.12m fov 24.0",
+    "triangles": "tris 10302",
+    "timing": "build 1261.3ms frame 2.80ms"
+   },
+   "triangles": 10302,
+   "buildMs": 1261.3
+  },
+  {
+   "id": "ork-female-reference/angles/back/studio/final",
+   "path": "artifacts/wave-tex/captures/r00q-baseline-head/ork-female-reference-angles.png",
+   "sheet": "ork-female-reference-angles",
+   "subject": "ork-female-reference",
+   "race": "ork",
+   "sex": "female",
+   "variant": "reference",
+   "light": "studio",
+   "angle": "back",
+   "view": "final",
+   "channelOk": true,
+   "rect": [
+    428,
+    32,
+    420,
+    780
+   ],
+   "render": [
+    428,
+    32,
+    420,
+    560
+   ],
+   "hudRect": [
+    428,
+    592,
+    420,
+    220
+   ],
+   "camera": {
+    "angle": "back",
+    "yawDeg": 180,
+    "pitchDeg": 4.000000000000001,
+    "distanceM": 6.119120085050646,
+    "fovDeg": 24
+   },
+   "lightDetail": "PreviewStage key [0.03,0.99,0.16] +fill, shadow",
+   "frameMs": 2.9,
+   "regions": {
+    "face": [
+     177,
+     68,
+     246,
+     138
+    ],
+    "forearm": [
+     17,
+     186,
+     120,
+     289
+    ],
+    "back": [
+     87,
+     47,
+     336,
+     296
+    ]
+   },
+   "stats": {
+    "coverage": 0.2532,
+    "lumaMean": 81.5,
+    "lumaP5": 31.4,
+    "lumaP50": 81.6,
+    "lumaP95": 126.1
+   },
+   "hud": {
+    "run": "run r00q-baseline-head",
+    "commit": "commit 19f5c8c9cc",
+    "build": "build 2026-11-04T21:07:50Z",
+    "subject": "ork female Warrior",
+    "variant": "variant reference",
+    "layers": "layers(19) skin v1:normal/solid; mottling v1:normal/noise @0.31 |            countershade v1:softLight/gradient @0.73 |            flush v1:normal/gradient @0.06 +15 more",
+    "marks": "marks(0) none",
+    "channel": "view final",
+    "light": "light studio PreviewStage key [0.03,0.99,0.16] +fill, shadow",
+    "camera": "cam back yaw 180.0 pitch 4.0 dist 6.12m fov 24.0",
+    "triangles": "tris 10302",
+    "timing": "build 1261.3ms frame 2.90ms"
+   },
+   "triangles": 10302,
+   "buildMs": 1261.3
+  },
+  {
+   "id": "ork-female-reference/angles/front-left-3q/studio/final",
+   "path": "artifacts/wave-tex/captures/r00q-baseline-head/ork-female-reference-angles.png",
+   "sheet": "ork-female-reference-angles",
+   "subject": "ork-female-reference",
+   "race": "ork",
+   "sex": "female",
+   "variant": "reference",
+   "light": "studio",
+   "angle": "front-left-3q",
+   "view": "final",
+   "channelOk": true,
+   "rect": [
+    852,
+    32,
+    420,
+    780
+   ],
+   "render": [
+    852,
+    32,
+    420,
+    560
+   ],
+   "hudRect": [
+    852,
+    592,
+    420,
+    220
+   ],
+   "camera": {
+    "angle": "front-left-3q",
+    "yawDeg": 44.999999999999986,
+    "pitchDeg": 8,
+    "distanceM": 6.119120085050647,
+    "fovDeg": 24
+   },
+   "lightDetail": "PreviewStage key [0.03,0.99,0.16] +fill, shadow",
+   "frameMs": 4.4,
+   "regions": {
+    "face": [
+     172,
+     67,
+     242,
+     137
+    ],
+    "forearm": [
+     266,
+     193,
+     377,
+     304
+    ],
+    "back": [
+     93,
+     48,
+     340,
+     295
+    ]
+   },
+   "stats": {
+    "coverage": 0.2346,
+    "lumaMean": 91.2,
+    "lumaP5": 31.4,
+    "lumaP50": 86.5,
+    "lumaP95": 148.4
+   },
+   "hud": {
+    "run": "run r00q-baseline-head",
+    "commit": "commit 19f5c8c9cc",
+    "build": "build 2026-11-04T21:07:50Z",
+    "subject": "ork female Warrior",
+    "variant": "variant reference",
+    "layers": "layers(19) skin v1:normal/solid; mottling v1:normal/noise @0.31 |            countershade v1:softLight/gradient @0.73 |            flush v1:normal/gradient @0.06 +15 more",
+    "marks": "marks(0) none",
+    "channel": "view final",
+    "light": "light studio PreviewStage key [0.03,0.99,0.16] +fill, shadow",
+    "camera": "cam front-left-3q yaw 45.0 pitch 8.0 dist 6.12m fov 24.0",
+    "triangles": "tris 10302",
+    "timing": "build 1261.3ms frame 4.40ms"
+   },
+   "triangles": 10302,
+   "buildMs": 1261.3
+  },
+  {
+   "id": "ork-female-reference/angles/face/studio/final",
+   "path": "artifacts/wave-tex/captures/r00q-baseline-head/ork-female-reference-angles.png",
+   "sheet": "ork-female-reference-angles",
+   "subject": "ork-female-reference",
+   "race": "ork",
+   "sex": "female",
+   "variant": "reference",
+   "light": "studio",
+   "angle": "face",
+   "view": "final",
+   "channelOk": true,
+   "rect": [
+    1276,
+    32,
+    420,
+    780
+   ],
+   "render": [
+    1276,
+    32,
+    420,
+    560
+   ],
+   "hudRect": [
+    1276,
+    592,
+    420,
+    220
+   ],
+   "camera": {
+    "angle": "face",
+    "yawDeg": 20,
+    "pitchDeg": 4.0000000000000036,
+    "distanceM": 1.1105856984975622,
+    "fovDeg": 24
+   },
+   "lightDetail": "PreviewStage key [0.03,0.99,0.16] +fill, shadow",
+   "frameMs": 2.5,
+   "regions": {
+    "face": [
+     19,
+     89,
+     401,
+     471
+    ],
+    "back": [
+     0,
+     14,
+     420,
+     560
+    ]
+   },
+   "stats": {
+    "coverage": 0.5796,
+    "lumaMean": 111.4,
+    "lumaP5": 31.4,
+    "lumaP50": 114.8,
+    "lumaP95": 156.1
+   },
+   "hud": {
+    "run": "run r00q-baseline-head",
+    "commit": "commit 19f5c8c9cc",
+    "build": "build 2026-11-04T21:07:50Z",
+    "subject": "ork female Warrior",
+    "variant": "variant reference",
+    "layers": "layers(19) skin v1:normal/solid; mottling v1:normal/noise @0.31 |            countershade v1:softLight/gradient @0.73 |            flush v1:normal/gradient @0.06 +15 more",
+    "marks": "marks(0) none",
+    "channel": "view final",
+    "light": "light studio PreviewStage key [0.03,0.99,0.16] +fill, shadow",
+    "camera": "cam face yaw 20.0 pitch 4.0 dist 1.11m fov 24.0",
+    "triangles": "tris 10302",
+    "timing": "build 1261.3ms frame 2.50ms"
+   },
+   "triangles": 10302,
+   "buildMs": 1261.3
+  },
+  {
+   "id": "ork-female-reference/angles/forearm/studio/final",
+   "path": "artifacts/wave-tex/captures/r00q-baseline-head/ork-female-reference-angles.png",
+   "sheet": "ork-female-reference-angles",
+   "subject": "ork-female-reference",
+   "race": "ork",
+   "sex": "female",
+   "variant": "reference",
+   "light": "studio",
+   "angle": "forearm",
+   "view": "final",
+   "channelOk": true,
+   "rect": [
+    1700,
+    32,
+    420,
+    780
+   ],
+   "render": [
+    1700,
+    32,
+    420,
+    560
+   ],
+   "hudRect": [
+    1700,
+    592,
+    420,
+    220
+   ],
+   "camera": {
+    "angle": "forearm",
+    "yawDeg": 70,
+    "pitchDeg": 10.000000000000004,
+    "distanceM": 1.6476779116935067,
+    "fovDeg": 24
+   },
+   "lightDetail": "PreviewStage key [0.03,0.99,0.16] +fill, shadow",
+   "frameMs": 3.5,
+   "regions": {
+    "forearm": [
+     19,
+     89,
+     401,
+     471
+    ],
+    "back": [
+     0,
+     0,
+     420,
+     371
+    ]
+   },
+   "stats": {
+    "coverage": 0.6401,
+    "lumaMean": 100,
+    "lumaP5": 31.4,
+    "lumaP50": 96.9,
+    "lumaP95": 151.3
+   },
+   "hud": {
+    "run": "run r00q-baseline-head",
+    "commit": "commit 19f5c8c9cc",
+    "build": "build 2026-11-04T21:07:50Z",
+    "subject": "ork female Warrior",
+    "variant": "variant reference",
+    "layers": "layers(19) skin v1:normal/solid; mottling v1:normal/noise @0.31 |            countershade v1:softLight/gradient @0.73 |            flush v1:normal/gradient @0.06 +15 more",
+    "marks": "marks(0) none",
+    "channel": "view final",
+    "light": "light studio PreviewStage key [0.03,0.99,0.16] +fill, shadow",
+    "camera": "cam forearm yaw 70.0 pitch 10.0 dist 1.65m fov 24.0",
+    "triangles": "tris 10302",
+    "timing": "build 1261.3ms frame 3.50ms"
+   },
+   "triangles": 10302,
+   "buildMs": 1261.3
+  },
+  {
+   "id": "ork-female-reference/angles/back-closeup/studio/final",
+   "path": "artifacts/wave-tex/captures/r00q-baseline-head/ork-female-reference-angles.png",
+   "sheet": "ork-female-reference-angles",
+   "subject": "ork-female-reference",
+   "race": "ork",
+   "sex": "female",
+   "variant": "reference",
+   "light": "studio",
+   "angle": "back-closeup",
+   "view": "final",
+   "channelOk": true,
+   "rect": [
+    2124,
+    32,
+    420,
+    780
+   ],
+   "render": [
+    2124,
+    32,
+    420,
+    560
+   ],
+   "hudRect": [
+    2124,
+    592,
+    420,
+    220
+   ],
+   "camera": {
+    "angle": "back-closeup",
+    "yawDeg": 180,
+    "pitchDeg": 10,
+    "distanceM": 3.947756547074985,
+    "fovDeg": 24
+   },
+   "lightDetail": "PreviewStage key [0.03,0.99,0.16] +fill, shadow",
+   "frameMs": 2.7,
+   "regions": {
+    "face": [
+     157,
+     119,
+     263,
+     226
+    ],
+    "forearm": [
+     0,
+     299,
+     71,
+     453
+    ],
+    "back": [
+     19,
+     89,
+     401,
+     471
+    ]
+   },
+   "stats": {
+    "coverage": 0.4266,
+    "lumaMean": 84.5,
+    "lumaP5": 31.4,
+    "lumaP50": 82.3,
+    "lumaP95": 131.9
+   },
+   "hud": {
+    "run": "run r00q-baseline-head",
+    "commit": "commit 19f5c8c9cc",
+    "build": "build 2026-11-04T21:07:50Z",
+    "subject": "ork female Warrior",
+    "variant": "variant reference",
+    "layers": "layers(19) skin v1:normal/solid; mottling v1:normal/noise @0.31 |            countershade v1:softLight/gradient @0.73 |            flush v1:normal/gradient @0.06 +15 more",
+    "marks": "marks(0) none",
+    "channel": "view final",
+    "light": "light studio PreviewStage key [0.03,0.99,0.16] +fill, shadow",
+    "camera": "cam back-closeup yaw 180.0 pitch 10.0 dist 3.95m fov 24.0",
+    "triangles": "tris 10302",
+    "timing": "build 1261.3ms frame 2.70ms"
+   },
+   "triangles": 10302,
+   "buildMs": 1261.3
+  },
+  {
+   "id": "ork-female-reference/lights/front-left-3q/studio/final",
+   "path": "artifacts/wave-tex/captures/r00q-baseline-head/ork-female-reference-lights.png",
+   "sheet": "ork-female-reference-lights",
+   "subject": "ork-female-reference",
+   "race": "ork",
+   "sex": "female",
+   "variant": "reference",
+   "light": "studio",
+   "angle": "front-left-3q",
+   "view": "final",
+   "channelOk": true,
+   "rect": [
+    4,
+    32,
+    420,
+    780
+   ],
+   "render": [
+    4,
+    32,
+    420,
+    560
+   ],
+   "hudRect": [
+    4,
+    592,
+    420,
+    220
+   ],
+   "camera": {
+    "angle": "front-left-3q",
+    "yawDeg": 44.999999999999986,
+    "pitchDeg": 8,
+    "distanceM": 6.119120085050647,
+    "fovDeg": 24
+   },
+   "lightDetail": "PreviewStage key [0.03,0.99,0.16] +fill, shadow",
+   "frameMs": 2.5,
+   "regions": {
+    "face": [
+     172,
+     67,
+     242,
+     137
+    ],
+    "forearm": [
+     266,
+     193,
+     377,
+     304
+    ],
+    "back": [
+     93,
+     48,
+     340,
+     295
+    ]
+   },
+   "stats": {
+    "coverage": 0.2346,
+    "lumaMean": 91.2,
+    "lumaP5": 31.4,
+    "lumaP50": 86.5,
+    "lumaP95": 148.4
+   },
+   "hud": {
+    "run": "run r00q-baseline-head",
+    "commit": "commit 19f5c8c9cc",
+    "build": "build 2026-11-04T21:07:50Z",
+    "subject": "ork female Warrior",
+    "variant": "variant reference",
+    "layers": "layers(19) skin v1:normal/solid; mottling v1:normal/noise @0.31 |            countershade v1:softLight/gradient @0.73 |            flush v1:normal/gradient @0.06 +15 more",
+    "marks": "marks(0) none",
+    "channel": "view final",
+    "light": "light studio PreviewStage key [0.03,0.99,0.16] +fill, shadow",
+    "camera": "cam front-left-3q yaw 45.0 pitch 8.0 dist 6.12m fov 24.0",
+    "triangles": "tris 10302",
+    "timing": "build 1261.3ms frame 2.50ms"
+   },
+   "triangles": 10302,
+   "buildMs": 1261.3
+  },
+  {
+   "id": "ork-female-reference/lights/front-left-3q/rim/final",
+   "path": "artifacts/wave-tex/captures/r00q-baseline-head/ork-female-reference-lights.png",
+   "sheet": "ork-female-reference-lights",
+   "subject": "ork-female-reference",
+   "race": "ork",
+   "sex": "female",
+   "variant": "reference",
+   "light": "rim",
+   "angle": "front-left-3q",
+   "view": "final",
+   "channelOk": true,
+   "rect": [
+    428,
+    32,
+    420,
+    780
+   ],
+   "render": [
+    428,
+    32,
+    420,
+    560
+   ],
+   "hudRect": [
+    428,
+    592,
+    420,
+    220
+   ],
+   "camera": {
+    "angle": "front-left-3q",
+    "yawDeg": 44.999999999999986,
+    "pitchDeg": 8,
+    "distanceM": 6.119120085050647,
+    "fovDeg": 24
+   },
+   "lightDetail": "camera-relative back key, ambient 0.27, no shadow",
+   "frameMs": 2.2,
+   "regions": {
+    "face": [
+     172,
+     67,
+     242,
+     137
+    ],
+    "forearm": [
+     266,
+     193,
+     377,
+     304
+    ],
+    "back": [
+     93,
+     48,
+     340,
+     295
+    ]
+   },
+   "stats": {
+    "coverage": 0.2347,
+    "lumaMean": 58.8,
+    "lumaP5": 31.4,
+    "lumaP50": 55.9,
+    "lumaP95": 87.6
+   },
+   "hud": {
+    "run": "run r00q-baseline-head",
+    "commit": "commit 19f5c8c9cc",
+    "build": "build 2026-11-04T21:07:50Z",
+    "subject": "ork female Warrior",
+    "variant": "variant reference",
+    "layers": "layers(19) skin v1:normal/solid; mottling v1:normal/noise @0.31 |            countershade v1:softLight/gradient @0.73 |            flush v1:normal/gradient @0.06 +15 more",
+    "marks": "marks(0) none",
+    "channel": "view final",
+    "light": "light rim camera-relative back key, ambient 0.27, no shadow",
+    "camera": "cam front-left-3q yaw 45.0 pitch 8.0 dist 6.12m fov 24.0",
+    "triangles": "tris 10302",
+    "timing": "build 1261.3ms frame 2.20ms"
+   },
+   "triangles": 10302,
+   "buildMs": 1261.3
+  },
+  {
+   "id": "ork-female-reference/lights/front-left-3q/flat/final",
+   "path": "artifacts/wave-tex/captures/r00q-baseline-head/ork-female-reference-lights.png",
+   "sheet": "ork-female-reference-lights",
+   "subject": "ork-female-reference",
+   "race": "ork",
+   "sex": "female",
+   "variant": "reference",
+   "light": "flat",
+   "angle": "front-left-3q",
+   "view": "final",
+   "channelOk": true,
+   "rect": [
+    852,
+    32,
+    420,
+    780
+   ],
+   "render": [
+    852,
+    32,
+    420,
+    560
+   ],
+   "hudRect": [
+    852,
+    592,
+    420,
+    220
+   ],
+   "camera": {
+    "angle": "front-left-3q",
+    "yawDeg": 44.999999999999986,
+    "pitchDeg": 8,
+    "distanceM": 6.119120085050647,
+    "fovDeg": 24
+   },
+   "lightDetail": "headlight band, key 0, ambient 1 (albedo x paint)",
+   "frameMs": 2.2,
+   "regions": {
+    "face": [
+     172,
+     67,
+     242,
+     137
+    ],
+    "forearm": [
+     266,
+     193,
+     377,
+     304
+    ],
+    "back": [
+     93,
+     48,
+     340,
+     295
+    ]
+   },
+   "stats": {
+    "coverage": 0.2345,
+    "lumaMean": 110.5,
+    "lumaP5": 31.4,
+    "lumaP50": 115.6,
+    "lumaP95": 143.4
+   },
+   "hud": {
+    "run": "run r00q-baseline-head",
+    "commit": "commit 19f5c8c9cc",
+    "build": "build 2026-11-04T21:07:50Z",
+    "subject": "ork female Warrior",
+    "variant": "variant reference",
+    "layers": "layers(19) skin v1:normal/solid; mottling v1:normal/noise @0.31 |            countershade v1:softLight/gradient @0.73 |            flush v1:normal/gradient @0.06 +15 more",
+    "marks": "marks(0) none",
+    "channel": "view final",
+    "light": "light flat headlight band, key 0, ambient 1 (albedo x paint)",
+    "camera": "cam front-left-3q yaw 45.0 pitch 8.0 dist 6.12m fov 24.0",
+    "triangles": "tris 10302",
+    "timing": "build 1261.3ms frame 2.20ms"
+   },
+   "triangles": 10302,
+   "buildMs": 1261.3
+  },
+  {
+   "id": "ork-female-reference/lights/front-left-3q/daylight/final",
+   "path": "artifacts/wave-tex/captures/r00q-baseline-head/ork-female-reference-lights.png",
+   "sheet": "ork-female-reference-lights",
+   "subject": "ork-female-reference",
+   "race": "ork",
+   "sex": "female",
+   "variant": "reference",
+   "light": "daylight",
+   "angle": "front-left-3q",
+   "view": "final",
+   "channelOk": true,
+   "rect": [
+    1276,
+    32,
+    420,
+    780
+   ],
+   "render": [
+    1276,
+    32,
+    420,
+    560
+   ],
+   "hudRect": [
+    1276,
+    592,
+    420,
+    220
+   ],
+   "camera": {
+    "angle": "front-left-3q",
+    "yawDeg": 44.999999999999986,
+    "pitchDeg": 8,
+    "distanceM": 6.119120085050647,
+    "fovDeg": 24
+   },
+   "lightDetail": "env sunspire h13 elev 71.7deg, no shadow",
+   "frameMs": 2.3,
+   "regions": {
+    "face": [
+     172,
+     67,
+     242,
+     137
+    ],
+    "forearm": [
+     266,
+     193,
+     377,
+     304
+    ],
+    "back": [
+     93,
+     48,
+     340,
+     295
+    ]
+   },
+   "stats": {
+    "coverage": 0.2346,
+    "lumaMean": 117.1,
+    "lumaP5": 31.4,
+    "lumaP50": 122.5,
+    "lumaP95": 170.3
+   },
+   "hud": {
+    "run": "run r00q-baseline-head",
+    "commit": "commit 19f5c8c9cc",
+    "build": "build 2026-11-04T21:07:50Z",
+    "subject": "ork female Warrior",
+    "variant": "variant reference",
+    "layers": "layers(19) skin v1:normal/solid; mottling v1:normal/noise @0.31 |            countershade v1:softLight/gradient @0.73 |            flush v1:normal/gradient @0.06 +15 more",
+    "marks": "marks(0) none",
+    "channel": "view final",
+    "light": "light daylight env sunspire h13 elev 71.7deg, no shadow",
+    "camera": "cam front-left-3q yaw 45.0 pitch 8.0 dist 6.12m fov 24.0",
+    "triangles": "tris 10302",
+    "timing": "build 1261.3ms frame 2.30ms"
+   },
+   "triangles": 10302,
+   "buildMs": 1261.3
+  },
+  {
+   "id": "ork-female-reference/lights/front-left-3q/dusk/final",
+   "path": "artifacts/wave-tex/captures/r00q-baseline-head/ork-female-reference-lights.png",
+   "sheet": "ork-female-reference-lights",
+   "subject": "ork-female-reference",
+   "race": "ork",
+   "sex": "female",
+   "variant": "reference",
+   "light": "dusk",
+   "angle": "front-left-3q",
+   "view": "final",
+   "channelOk": true,
+   "rect": [
+    1700,
+    32,
+    420,
+    780
+   ],
+   "render": [
+    1700,
+    32,
+    420,
+    560
+   ],
+   "hudRect": [
+    1700,
+    592,
+    420,
+    220
+   ],
+   "camera": {
+    "angle": "front-left-3q",
+    "yawDeg": 44.999999999999986,
+    "pitchDeg": 8,
+    "distanceM": 6.119120085050647,
+    "fovDeg": 24
+   },
+   "lightDetail": "env sunspire h18 elev 4.7deg, no shadow",
+   "frameMs": 2,
+   "regions": {
+    "face": [
+     172,
+     67,
+     242,
+     137
+    ],
+    "forearm": [
+     266,
+     193,
+     377,
+     304
+    ],
+    "back": [
+     93,
+     48,
+     340,
+     295
+    ]
+   },
+   "stats": {
+    "coverage": 0.2345,
+    "lumaMean": 96.1,
+    "lumaP5": 31.4,
+    "lumaP50": 100.2,
+    "lumaP95": 124.5
+   },
+   "hud": {
+    "run": "run r00q-baseline-head",
+    "commit": "commit 19f5c8c9cc",
+    "build": "build 2026-11-04T21:07:50Z",
+    "subject": "ork female Warrior",
+    "variant": "variant reference",
+    "layers": "layers(19) skin v1:normal/solid; mottling v1:normal/noise @0.31 |            countershade v1:softLight/gradient @0.73 |            flush v1:normal/gradient @0.06 +15 more",
+    "marks": "marks(0) none",
+    "channel": "view final",
+    "light": "light dusk env sunspire h18 elev 4.7deg, no shadow",
+    "camera": "cam front-left-3q yaw 45.0 pitch 8.0 dist 6.12m fov 24.0",
+    "triangles": "tris 10302",
+    "timing": "build 1261.3ms frame 2.00ms"
+   },
+   "triangles": 10302,
+   "buildMs": 1261.3
+  },
+  {
+   "id": "elf-female-reference/angles/front/studio/final",
+   "path": "artifacts/wave-tex/captures/r00q-baseline-head/elf-female-reference-angles.png",
+   "sheet": "elf-female-reference-angles",
+   "subject": "elf-female-reference",
+   "race": "elf",
+   "sex": "female",
+   "variant": "reference",
+   "light": "studio",
+   "angle": "front",
+   "view": "final",
+   "channelOk": true,
+   "rect": [
+    4,
+    32,
+    420,
+    780
+   ],
+   "render": [
+    4,
+    32,
+    420,
+    560
+   ],
+   "hudRect": [
+    4,
+    592,
+    420,
+    220
+   ],
+   "camera": {
+    "angle": "front",
+    "yawDeg": 0,
+    "pitchDeg": 4.000000000000002,
+    "distanceM": 4.295186944853747,
+    "fovDeg": 24
+   },
+   "lightDetail": "PreviewStage key [0.03,0.99,0.16] +fill, shadow",
+   "frameMs": 2.8,
+   "regions": {
+    "face": [
+     173,
+     1,
+     256,
+     84
+    ],
+    "forearm": [
+     235,
+     191,
+     380,
+     336
+    ],
+    "back": [
+     131,
+     47,
+     297,
+     214
+    ]
+   },
+   "stats": {
+    "coverage": 0.2177,
+    "lumaMean": 101.4,
+    "lumaP5": 31.4,
+    "lumaP50": 98.6,
+    "lumaP95": 200.3
+   },
+   "hud": {
+    "run": "run r00q-baseline-head",
+    "commit": "commit 19f5c8c9cc",
+    "build": "build 2026-11-04T21:07:50Z",
+    "subject": "elf female Warrior",
+    "variant": "variant reference",
+    "layers": "layers(15) skin v1:normal/solid; mottling v1:normal/noise @0.11 |            countershade v1:softLight/gradient @0.58 |            freckles v1:multiply/freckles @0.39 +11 more",
+    "marks": "marks(0) none",
+    "channel": "view final",
+    "light": "light studio PreviewStage key [0.03,0.99,0.16] +fill, shadow",
+    "camera": "cam front yaw 0.0 pitch 4.0 dist 4.30m fov 24.0",
+    "triangles": "tris 11091",
+    "timing": "build 1140.5ms frame 2.80ms"
+   },
+   "triangles": 11091,
+   "buildMs": 1140.5
+  },
+  {
+   "id": "elf-female-reference/angles/back/studio/final",
+   "path": "artifacts/wave-tex/captures/r00q-baseline-head/elf-female-reference-angles.png",
+   "sheet": "elf-female-reference-angles",
+   "subject": "elf-female-reference",
+   "race": "elf",
+   "sex": "female",
+   "variant": "reference",
+   "light": "studio",
+   "angle": "back",
+   "view": "final",
+   "channelOk": true,
+   "rect": [
+    428,
+    32,
+    420,
+    780
+   ],
+   "render": [
+    428,
+    32,
+    420,
+    560
+   ],
+   "hudRect": [
+    428,
+    592,
+    420,
+    220
+   ],
+   "camera": {
+    "angle": "back",
+    "yawDeg": 180,
+    "pitchDeg": 4.000000000000002,
+    "distanceM": 4.295186944853747,
+    "fovDeg": 24
+   },
+   "lightDetail": "PreviewStage key [0.03,0.99,0.16] +fill, shadow",
+   "frameMs": 2.6,
+   "regions": {
+    "face": [
+     164,
+     0,
+     247,
+     83
+    ],
+    "forearm": [
+     36,
+     191,
+     184,
+     339
+    ],
+    "back": [
+     120,
+     43,
+     291,
+     214
+    ]
+   },
+   "stats": {
+    "coverage": 0.2256,
+    "lumaMean": 88,
+    "lumaP5": 31.4,
+    "lumaP50": 81.3,
+    "lumaP95": 153.1
+   },
+   "hud": {
+    "run": "run r00q-baseline-head",
+    "commit": "commit 19f5c8c9cc",
+    "build": "build 2026-11-04T21:07:50Z",
+    "subject": "elf female Warrior",
+    "variant": "variant reference",
+    "layers": "layers(15) skin v1:normal/solid; mottling v1:normal/noise @0.11 |            countershade v1:softLight/gradient @0.58 |            freckles v1:multiply/freckles @0.39 +11 more",
+    "marks": "marks(0) none",
+    "channel": "view final",
+    "light": "light studio PreviewStage key [0.03,0.99,0.16] +fill, shadow",
+    "camera": "cam back yaw 180.0 pitch 4.0 dist 4.30m fov 24.0",
+    "triangles": "tris 11091",
+    "timing": "build 1140.5ms frame 2.60ms"
+   },
+   "triangles": 11091,
+   "buildMs": 1140.5
+  },
+  {
+   "id": "elf-female-reference/angles/front-left-3q/studio/final",
+   "path": "artifacts/wave-tex/captures/r00q-baseline-head/elf-female-reference-angles.png",
+   "sheet": "elf-female-reference-angles",
+   "subject": "elf-female-reference",
+   "race": "elf",
+   "sex": "female",
+   "variant": "reference",
+   "light": "studio",
+   "angle": "front-left-3q",
+   "view": "final",
+   "channelOk": true,
+   "rect": [
+    852,
+    32,
+    420,
+    780
+   ],
+   "render": [
+    852,
+    32,
+    420,
+    560
+   ],
+   "hudRect": [
+    852,
+    592,
+    420,
+    220
+   ],
+   "camera": {
+    "angle": "front-left-3q",
+    "yawDeg": 45,
+    "pitchDeg": 7.999999999999999,
+    "distanceM": 4.295186944853749,
+    "fovDeg": 24
+   },
+   "lightDetail": "PreviewStage key [0.03,0.99,0.16] +fill, shadow",
+   "frameMs": 2.5,
+   "regions": {
+    "face": [
+     175,
+     0,
+     259,
+     83
+    ],
+    "forearm": [
+     218,
+     195,
+     372,
+     349
+    ],
+    "back": [
+     143,
+     45,
+     311,
+     214
+    ]
+   },
+   "stats": {
+    "coverage": 0.2155,
+    "lumaMean": 101.1,
+    "lumaP5": 31.4,
+    "lumaP50": 94.1,
+    "lumaP95": 199.2
+   },
+   "hud": {
+    "run": "run r00q-baseline-head",
+    "commit": "commit 19f5c8c9cc",
+    "build": "build 2026-11-04T21:07:50Z",
+    "subject": "elf female Warrior",
+    "variant": "variant reference",
+    "layers": "layers(15) skin v1:normal/solid; mottling v1:normal/noise @0.11 |            countershade v1:softLight/gradient @0.58 |            freckles v1:multiply/freckles @0.39 +11 more",
+    "marks": "marks(0) none",
+    "channel": "view final",
+    "light": "light studio PreviewStage key [0.03,0.99,0.16] +fill, shadow",
+    "camera": "cam front-left-3q yaw 45.0 pitch 8.0 dist 4.30m fov 24.0",
+    "triangles": "tris 11091",
+    "timing": "build 1140.5ms frame 2.50ms"
+   },
+   "triangles": 11091,
+   "buildMs": 1140.5
+  },
+  {
+   "id": "elf-female-reference/angles/face/studio/final",
+   "path": "artifacts/wave-tex/captures/r00q-baseline-head/elf-female-reference-angles.png",
+   "sheet": "elf-female-reference-angles",
+   "subject": "elf-female-reference",
+   "race": "elf",
+   "sex": "female",
+   "variant": "reference",
+   "light": "studio",
+   "angle": "face",
+   "view": "final",
+   "channelOk": true,
+   "rect": [
+    1276,
+    32,
+    420,
+    780
+   ],
+   "render": [
+    1276,
+    32,
+    420,
+    560
+   ],
+   "hudRect": [
+    1276,
+    592,
+    420,
+    220
+   ],
+   "camera": {
+    "angle": "face",
+    "yawDeg": 20,
+    "pitchDeg": 4.000000000000005,
+    "distanceM": 0.9357712987103873,
+    "fovDeg": 24
+   },
+   "lightDetail": "PreviewStage key [0.03,0.99,0.16] +fill, shadow",
+   "frameMs": 2.7,
+   "regions": {
+    "face": [
+     19,
+     89,
+     401,
+     471
+    ],
+    "back": [
+     0,
+     296,
+     420,
+     560
+    ]
+   },
+   "stats": {
+    "coverage": 0.511,
+    "lumaMean": 129,
+    "lumaP5": 31.4,
+    "lumaP50": 130.9,
+    "lumaP95": 225.6
+   },
+   "hud": {
+    "run": "run r00q-baseline-head",
+    "commit": "commit 19f5c8c9cc",
+    "build": "build 2026-11-04T21:07:50Z",
+    "subject": "elf female Warrior",
+    "variant": "variant reference",
+    "layers": "layers(15) skin v1:normal/solid; mottling v1:normal/noise @0.11 |            countershade v1:softLight/gradient @0.58 |            freckles v1:multiply/freckles @0.39 +11 more",
+    "marks": "marks(0) none",
+    "channel": "view final",
+    "light": "light studio PreviewStage key [0.03,0.99,0.16] +fill, shadow",
+    "camera": "cam face yaw 20.0 pitch 4.0 dist 0.94m fov 24.0",
+    "triangles": "tris 11091",
+    "timing": "build 1140.5ms frame 2.70ms"
+   },
+   "triangles": 11091,
+   "buildMs": 1140.5
+  },
+  {
+   "id": "elf-female-reference/angles/forearm/studio/final",
+   "path": "artifacts/wave-tex/captures/r00q-baseline-head/elf-female-reference-angles.png",
+   "sheet": "elf-female-reference-angles",
+   "subject": "elf-female-reference",
+   "race": "elf",
+   "sex": "female",
+   "variant": "reference",
+   "light": "studio",
+   "angle": "forearm",
+   "view": "final",
+   "channelOk": true,
+   "rect": [
+    1700,
+    32,
+    420,
+    780
+   ],
+   "render": [
+    1700,
+    32,
+    420,
+    560
+   ],
+   "hudRect": [
+    1700,
+    592,
+    420,
+    220
+   ],
+   "camera": {
+    "angle": "forearm",
+    "yawDeg": 70,
+    "pitchDeg": 9.999999999999998,
+    "distanceM": 1.6533468923976,
+    "fovDeg": 24
+   },
+   "lightDetail": "PreviewStage key [0.03,0.99,0.16] +fill, shadow",
+   "frameMs": 4.2,
+   "regions": {
+    "forearm": [
+     19,
+     89,
+     401,
+     471
+    ],
+    "back": [
+     0,
+     0,
+     332,
+     129
+    ]
+   },
+   "stats": {
+    "coverage": 0.3925,
+    "lumaMean": 96.8,
+    "lumaP5": 31.4,
+    "lumaP50": 78.6,
+    "lumaP95": 197.2
+   },
+   "hud": {
+    "run": "run r00q-baseline-head",
+    "commit": "commit 19f5c8c9cc",
+    "build": "build 2026-11-04T21:07:50Z",
+    "subject": "elf female Warrior",
+    "variant": "variant reference",
+    "layers": "layers(15) skin v1:normal/solid; mottling v1:normal/noise @0.11 |            countershade v1:softLight/gradient @0.58 |            freckles v1:multiply/freckles @0.39 +11 more",
+    "marks": "marks(0) none",
+    "channel": "view final",
+    "light": "light studio PreviewStage key [0.03,0.99,0.16] +fill, shadow",
+    "camera": "cam forearm yaw 70.0 pitch 10.0 dist 1.65m fov 24.0",
+    "triangles": "tris 11091",
+    "timing": "build 1140.5ms frame 4.20ms"
+   },
+   "triangles": 11091,
+   "buildMs": 1140.5
+  },
+  {
+   "id": "elf-female-reference/angles/back-closeup/studio/final",
+   "path": "artifacts/wave-tex/captures/r00q-baseline-head/elf-female-reference-angles.png",
+   "sheet": "elf-female-reference-angles",
+   "subject": "elf-female-reference",
+   "race": "elf",
+   "sex": "female",
+   "variant": "reference",
+   "light": "studio",
+   "angle": "back-closeup",
+   "view": "final",
+   "channelOk": true,
+   "rect": [
+    2124,
+    32,
+    420,
+    780
+   ],
+   "render": [
+    2124,
+    32,
+    420,
+    560
+   ],
+   "hudRect": [
+    2124,
+    592,
+    420,
+    220
+   ],
+   "camera": {
+    "angle": "back-closeup",
+    "yawDeg": 180,
+    "pitchDeg": 10.000000000000004,
+    "distanceM": 1.8978808648397405,
+    "fovDeg": 24
+   },
+   "lightDetail": "PreviewStage key [0.03,0.99,0.16] +fill, shadow",
+   "frameMs": 2.4,
+   "regions": {
+    "face": [
+     117,
+     0,
+     303,
+     176
+    ],
+    "forearm": [
+     0,
+     409,
+     159,
+     560
+    ],
+    "back": [
+     19,
+     89,
+     401,
+     471
+    ]
+   },
+   "stats": {
+    "coverage": 0.5951,
+    "lumaMean": 92.2,
+    "lumaP5": 31.4,
+    "lumaP50": 84.6,
+    "lumaP95": 154.9
+   },
+   "hud": {
+    "run": "run r00q-baseline-head",
+    "commit": "commit 19f5c8c9cc",
+    "build": "build 2026-11-04T21:07:50Z",
+    "subject": "elf female Warrior",
+    "variant": "variant reference",
+    "layers": "layers(15) skin v1:normal/solid; mottling v1:normal/noise @0.11 |            countershade v1:softLight/gradient @0.58 |            freckles v1:multiply/freckles @0.39 +11 more",
+    "marks": "marks(0) none",
+    "channel": "view final",
+    "light": "light studio PreviewStage key [0.03,0.99,0.16] +fill, shadow",
+    "camera": "cam back-closeup yaw 180.0 pitch 10.0 dist 1.90m fov 24.0",
+    "triangles": "tris 11091",
+    "timing": "build 1140.5ms frame 2.40ms"
+   },
+   "triangles": 11091,
+   "buildMs": 1140.5
+  },
+  {
+   "id": "elf-female-reference/lights/front-left-3q/studio/final",
+   "path": "artifacts/wave-tex/captures/r00q-baseline-head/elf-female-reference-lights.png",
+   "sheet": "elf-female-reference-lights",
+   "subject": "elf-female-reference",
+   "race": "elf",
+   "sex": "female",
+   "variant": "reference",
+   "light": "studio",
+   "angle": "front-left-3q",
+   "view": "final",
+   "channelOk": true,
+   "rect": [
+    4,
+    32,
+    420,
+    780
+   ],
+   "render": [
+    4,
+    32,
+    420,
+    560
+   ],
+   "hudRect": [
+    4,
+    592,
+    420,
+    220
+   ],
+   "camera": {
+    "angle": "front-left-3q",
+    "yawDeg": 45,
+    "pitchDeg": 7.999999999999999,
+    "distanceM": 4.295186944853749,
+    "fovDeg": 24
+   },
+   "lightDetail": "PreviewStage key [0.03,0.99,0.16] +fill, shadow",
+   "frameMs": 2.7,
+   "regions": {
+    "face": [
+     175,
+     0,
+     259,
+     83
+    ],
+    "forearm": [
+     218,
+     195,
+     372,
+     349
+    ],
+    "back": [
+     143,
+     45,
+     311,
+     214
+    ]
+   },
+   "stats": {
+    "coverage": 0.2155,
+    "lumaMean": 101.1,
+    "lumaP5": 31.4,
+    "lumaP50": 94.1,
+    "lumaP95": 199.2
+   },
+   "hud": {
+    "run": "run r00q-baseline-head",
+    "commit": "commit 19f5c8c9cc",
+    "build": "build 2026-11-04T21:07:50Z",
+    "subject": "elf female Warrior",
+    "variant": "variant reference",
+    "layers": "layers(15) skin v1:normal/solid; mottling v1:normal/noise @0.11 |            countershade v1:softLight/gradient @0.58 |            freckles v1:multiply/freckles @0.39 +11 more",
+    "marks": "marks(0) none",
+    "channel": "view final",
+    "light": "light studio PreviewStage key [0.03,0.99,0.16] +fill, shadow",
+    "camera": "cam front-left-3q yaw 45.0 pitch 8.0 dist 4.30m fov 24.0",
+    "triangles": "tris 11091",
+    "timing": "build 1140.5ms frame 2.70ms"
+   },
+   "triangles": 11091,
+   "buildMs": 1140.5
+  },
+  {
+   "id": "elf-female-reference/lights/front-left-3q/rim/final",
+   "path": "artifacts/wave-tex/captures/r00q-baseline-head/elf-female-reference-lights.png",
+   "sheet": "elf-female-reference-lights",
+   "subject": "elf-female-reference",
+   "race": "elf",
+   "sex": "female",
+   "variant": "reference",
+   "light": "rim",
+   "angle": "front-left-3q",
+   "view": "final",
+   "channelOk": true,
+   "rect": [
+    428,
+    32,
+    420,
+    780
+   ],
+   "render": [
+    428,
+    32,
+    420,
+    560
+   ],
+   "hudRect": [
+    428,
+    592,
+    420,
+    220
+   ],
+   "camera": {
+    "angle": "front-left-3q",
+    "yawDeg": 45,
+    "pitchDeg": 7.999999999999999,
+    "distanceM": 4.295186944853749,
+    "fovDeg": 24
+   },
+   "lightDetail": "camera-relative back key, ambient 0.27, no shadow",
+   "frameMs": 2.3,
+   "regions": {
+    "face": [
+     175,
+     0,
+     259,
+     83
+    ],
+    "forearm": [
+     218,
+     195,
+     372,
+     349
+    ],
+    "back": [
+     143,
+     45,
+     311,
+     214
+    ]
+   },
+   "stats": {
+    "coverage": 0.2157,
+    "lumaMean": 68.6,
+    "lumaP5": 31.4,
+    "lumaP50": 55.6,
+    "lumaP95": 112.6
+   },
+   "hud": {
+    "run": "run r00q-baseline-head",
+    "commit": "commit 19f5c8c9cc",
+    "build": "build 2026-11-04T21:07:50Z",
+    "subject": "elf female Warrior",
+    "variant": "variant reference",
+    "layers": "layers(15) skin v1:normal/solid; mottling v1:normal/noise @0.11 |            countershade v1:softLight/gradient @0.58 |            freckles v1:multiply/freckles @0.39 +11 more",
+    "marks": "marks(0) none",
+    "channel": "view final",
+    "light": "light rim camera-relative back key, ambient 0.27, no shadow",
+    "camera": "cam front-left-3q yaw 45.0 pitch 8.0 dist 4.30m fov 24.0",
+    "triangles": "tris 11091",
+    "timing": "build 1140.5ms frame 2.30ms"
+   },
+   "triangles": 11091,
+   "buildMs": 1140.5
+  },
+  {
+   "id": "elf-female-reference/lights/front-left-3q/flat/final",
+   "path": "artifacts/wave-tex/captures/r00q-baseline-head/elf-female-reference-lights.png",
+   "sheet": "elf-female-reference-lights",
+   "subject": "elf-female-reference",
+   "race": "elf",
+   "sex": "female",
+   "variant": "reference",
+   "light": "flat",
+   "angle": "front-left-3q",
+   "view": "final",
+   "channelOk": true,
+   "rect": [
+    852,
+    32,
+    420,
+    780
+   ],
+   "render": [
+    852,
+    32,
+    420,
+    560
+   ],
+   "hudRect": [
+    852,
+    592,
+    420,
+    220
+   ],
+   "camera": {
+    "angle": "front-left-3q",
+    "yawDeg": 45,
+    "pitchDeg": 7.999999999999999,
+    "distanceM": 4.295186944853749,
+    "fovDeg": 24
+   },
+   "lightDetail": "headlight band, key 0, ambient 1 (albedo x paint)",
+   "frameMs": 2.1,
+   "regions": {
+    "face": [
+     175,
+     0,
+     259,
+     83
+    ],
+    "forearm": [
+     218,
+     195,
+     372,
+     349
+    ],
+    "back": [
+     143,
+     45,
+     311,
+     214
+    ]
+   },
+   "stats": {
+    "coverage": 0.2153,
+    "lumaMean": 123,
+    "lumaP5": 31.4,
+    "lumaP50": 114.5,
+    "lumaP95": 207.8
+   },
+   "hud": {
+    "run": "run r00q-baseline-head",
+    "commit": "commit 19f5c8c9cc",
+    "build": "build 2026-11-04T21:07:50Z",
+    "subject": "elf female Warrior",
+    "variant": "variant reference",
+    "layers": "layers(15) skin v1:normal/solid; mottling v1:normal/noise @0.11 |            countershade v1:softLight/gradient @0.58 |            freckles v1:multiply/freckles @0.39 +11 more",
+    "marks": "marks(0) none",
+    "channel": "view final",
+    "light": "light flat headlight band, key 0, ambient 1 (albedo x paint)",
+    "camera": "cam front-left-3q yaw 45.0 pitch 8.0 dist 4.30m fov 24.0",
+    "triangles": "tris 11091",
+    "timing": "build 1140.5ms frame 2.10ms"
+   },
+   "triangles": 11091,
+   "buildMs": 1140.5
+  },
+  {
+   "id": "elf-female-reference/lights/front-left-3q/daylight/final",
+   "path": "artifacts/wave-tex/captures/r00q-baseline-head/elf-female-reference-lights.png",
+   "sheet": "elf-female-reference-lights",
+   "subject": "elf-female-reference",
+   "race": "elf",
+   "sex": "female",
+   "variant": "reference",
+   "light": "daylight",
+   "angle": "front-left-3q",
+   "view": "final",
+   "channelOk": true,
+   "rect": [
+    1276,
+    32,
+    420,
+    780
+   ],
+   "render": [
+    1276,
+    32,
+    420,
+    560
+   ],
+   "hudRect": [
+    1276,
+    592,
+    420,
+    220
+   ],
+   "camera": {
+    "angle": "front-left-3q",
+    "yawDeg": 45,
+    "pitchDeg": 7.999999999999999,
+    "distanceM": 4.295186944853749,
+    "fovDeg": 24
+   },
+   "lightDetail": "env sunspire h13 elev 71.7deg, no shadow",
+   "frameMs": 2.3,
+   "regions": {
+    "face": [
+     175,
+     0,
+     259,
+     83
+    ],
+    "forearm": [
+     218,
+     195,
+     372,
+     349
+    ],
+    "back": [
+     143,
+     45,
+     311,
+     214
+    ]
+   },
+   "stats": {
+    "coverage": 0.2155,
+    "lumaMean": 129.9,
+    "lumaP5": 31.4,
+    "lumaP50": 124.8,
+    "lumaP95": 241.1
+   },
+   "hud": {
+    "run": "run r00q-baseline-head",
+    "commit": "commit 19f5c8c9cc",
+    "build": "build 2026-11-04T21:07:50Z",
+    "subject": "elf female Warrior",
+    "variant": "variant reference",
+    "layers": "layers(15) skin v1:normal/solid; mottling v1:normal/noise @0.11 |            countershade v1:softLight/gradient @0.58 |            freckles v1:multiply/freckles @0.39 +11 more",
+    "marks": "marks(0) none",
+    "channel": "view final",
+    "light": "light daylight env sunspire h13 elev 71.7deg, no shadow",
+    "camera": "cam front-left-3q yaw 45.0 pitch 8.0 dist 4.30m fov 24.0",
+    "triangles": "tris 11091",
+    "timing": "build 1140.5ms frame 2.30ms"
+   },
+   "triangles": 11091,
+   "buildMs": 1140.5
+  },
+  {
+   "id": "elf-female-reference/lights/front-left-3q/dusk/final",
+   "path": "artifacts/wave-tex/captures/r00q-baseline-head/elf-female-reference-lights.png",
+   "sheet": "elf-female-reference-lights",
+   "subject": "elf-female-reference",
+   "race": "elf",
+   "sex": "female",
+   "variant": "reference",
+   "light": "dusk",
+   "angle": "front-left-3q",
+   "view": "final",
+   "channelOk": true,
+   "rect": [
+    1700,
+    32,
+    420,
+    780
+   ],
+   "render": [
+    1700,
+    32,
+    420,
+    560
+   ],
+   "hudRect": [
+    1700,
+    592,
+    420,
+    220
+   ],
+   "camera": {
+    "angle": "front-left-3q",
+    "yawDeg": 45,
+    "pitchDeg": 7.999999999999999,
+    "distanceM": 4.295186944853749,
+    "fovDeg": 24
+   },
+   "lightDetail": "env sunspire h18 elev 4.7deg, no shadow",
+   "frameMs": 2.4,
+   "regions": {
+    "face": [
+     175,
+     0,
+     259,
+     83
+    ],
+    "forearm": [
+     218,
+     195,
+     372,
+     349
+    ],
+    "back": [
+     143,
+     45,
+     311,
+     214
+    ]
+   },
+   "stats": {
+    "coverage": 0.2153,
+    "lumaMean": 107.9,
+    "lumaP5": 31.4,
+    "lumaP50": 99.7,
+    "lumaP95": 182.7
+   },
+   "hud": {
+    "run": "run r00q-baseline-head",
+    "commit": "commit 19f5c8c9cc",
+    "build": "build 2026-11-04T21:07:50Z",
+    "subject": "elf female Warrior",
+    "variant": "variant reference",
+    "layers": "layers(15) skin v1:normal/solid; mottling v1:normal/noise @0.11 |            countershade v1:softLight/gradient @0.58 |            freckles v1:multiply/freckles @0.39 +11 more",
+    "marks": "marks(0) none",
+    "channel": "view final",
+    "light": "light dusk env sunspire h18 elev 4.7deg, no shadow",
+    "camera": "cam front-left-3q yaw 45.0 pitch 8.0 dist 4.30m fov 24.0",
+    "triangles": "tris 11091",
+    "timing": "build 1140.5ms frame 2.40ms"
+   },
+   "triangles": 11091,
+   "buildMs": 1140.5
+  },
+  {
+   "id": "dwarf-male-reference/angles/front/studio/final",
+   "path": "artifacts/wave-tex/captures/r00q-baseline-head/dwarf-male-reference-angles.png",
+   "sheet": "dwarf-male-reference-angles",
+   "subject": "dwarf-male-reference",
+   "race": "dwarf",
+   "sex": "male",
+   "variant": "reference",
+   "light": "studio",
+   "angle": "front",
+   "view": "final",
+   "channelOk": true,
+   "rect": [
+    4,
+    32,
+    420,
+    780
+   ],
+   "render": [
+    4,
+    32,
+    420,
+    560
+   ],
+   "hudRect": [
+    4,
+    592,
+    420,
+    220
+   ],
+   "camera": {
+    "angle": "front",
+    "yawDeg": 0,
+    "pitchDeg": 3.9999999999999996,
+    "distanceM": 4.9415371116015665,
+    "fovDeg": 24
+   },
+   "lightDetail": "PreviewStage key [0.03,0.99,0.16] +fill, shadow",
+   "frameMs": 2.4,
+   "regions": {
+    "face": [
+     172,
+     73,
+     245,
+     147
+    ],
+    "forearm": [
+     306,
+     186,
+     400,
+     280
+    ],
+    "back": [
+     80,
+     52,
+     338,
+     309
+    ]
+   },
+   "stats": {
+    "coverage": 0.2454,
+    "lumaMean": 97.5,
+    "lumaP5": 31.4,
+    "lumaP50": 100.9,
+    "lumaP95": 170.5
+   },
+   "hud": {
+    "run": "run r00q-baseline-head",
+    "commit": "commit 19f5c8c9cc",
+    "build": "build 2026-11-04T21:07:50Z",
+    "subject": "dwarf male Warrior",
+    "variant": "variant reference",
+    "layers": "layers(18) skin v1:normal/solid; mottling v1:normal/noise @0.21 |            countershade v1:softLight/gradient @0.60 |            flush v1:normal/gradient @0.45 +14 more",
+    "marks": "marks(0) none",
+    "channel": "view final",
+    "light": "light studio PreviewStage key [0.03,0.99,0.16] +fill, shadow",
+    "camera": "cam front yaw 0.0 pitch 4.0 dist 4.94m fov 24.0",
+    "triangles": "tris 11264",
+    "timing": "build 979.4ms frame 2.40ms"
+   },
+   "triangles": 11264,
+   "buildMs": 979.4
+  },
+  {
+   "id": "dwarf-male-reference/angles/back/studio/final",
+   "path": "artifacts/wave-tex/captures/r00q-baseline-head/dwarf-male-reference-angles.png",
+   "sheet": "dwarf-male-reference-angles",
+   "subject": "dwarf-male-reference",
+   "race": "dwarf",
+   "sex": "male",
+   "variant": "reference",
+   "light": "studio",
+   "angle": "back",
+   "view": "final",
+   "channelOk": true,
+   "rect": [
+    428,
+    32,
+    420,
+    780
+   ],
+   "render": [
+    428,
+    32,
+    420,
+    560
+   ],
+   "hudRect": [
+    428,
+    592,
+    420,
+    220
+   ],
+   "camera": {
+    "angle": "back",
+    "yawDeg": 180,
+    "pitchDeg": 4.000000000000001,
+    "distanceM": 4.941537111601565,
+    "fovDeg": 24
+   },
+   "lightDetail": "PreviewStage key [0.03,0.99,0.16] +fill, shadow",
+   "frameMs": 2.5,
+   "regions": {
+    "face": [
+     175,
+     75,
+     248,
+     147
+    ],
+    "forearm": [
+     20,
+     186,
+     113,
+     280
+    ],
+    "back": [
+     81,
+     50,
+     342,
+     311
+    ]
+   },
+   "stats": {
+    "coverage": 0.2442,
+    "lumaMean": 85.1,
+    "lumaP5": 31.4,
+    "lumaP50": 82.4,
+    "lumaP95": 144.4
+   },
+   "hud": {
+    "run": "run r00q-baseline-head",
+    "commit": "commit 19f5c8c9cc",
+    "build": "build 2026-11-04T21:07:50Z",
+    "subject": "dwarf male Warrior",
+    "variant": "variant reference",
+    "layers": "layers(18) skin v1:normal/solid; mottling v1:normal/noise @0.21 |            countershade v1:softLight/gradient @0.60 |            flush v1:normal/gradient @0.45 +14 more",
+    "marks": "marks(0) none",
+    "channel": "view final",
+    "light": "light studio PreviewStage key [0.03,0.99,0.16] +fill, shadow",
+    "camera": "cam back yaw 180.0 pitch 4.0 dist 4.94m fov 24.0",
+    "triangles": "tris 11264",
+    "timing": "build 979.4ms frame 2.50ms"
+   },
+   "triangles": 11264,
+   "buildMs": 979.4
+  },
+  {
+   "id": "dwarf-male-reference/angles/front-left-3q/studio/final",
+   "path": "artifacts/wave-tex/captures/r00q-baseline-head/dwarf-male-reference-angles.png",
+   "sheet": "dwarf-male-reference-angles",
+   "subject": "dwarf-male-reference",
+   "race": "dwarf",
+   "sex": "male",
+   "variant": "reference",
+   "light": "studio",
+   "angle": "front-left-3q",
+   "view": "final",
+   "channelOk": true,
+   "rect": [
+    852,
+    32,
+    420,
+    780
+   ],
+   "render": [
+    852,
+    32,
+    420,
+    560
+   ],
+   "hudRect": [
+    852,
+    592,
+    420,
+    220
+   ],
+   "camera": {
+    "angle": "front-left-3q",
+    "yawDeg": 45,
+    "pitchDeg": 7.999999999999999,
+    "distanceM": 4.9415371116015665,
+    "fovDeg": 24
+   },
+   "lightDetail": "PreviewStage key [0.03,0.99,0.16] +fill, shadow",
+   "frameMs": 5,
+   "regions": {
+    "face": [
+     167,
+     73,
+     241,
+     147
+    ],
+    "forearm": [
+     270,
+     194,
+     372,
+     295
+    ],
+    "back": [
+     85,
+     51,
+     344,
+     310
+    ]
+   },
+   "stats": {
+    "coverage": 0.2238,
+    "lumaMean": 96.9,
+    "lumaP5": 31.4,
+    "lumaP50": 96.7,
+    "lumaP95": 173.4
+   },
+   "hud": {
+    "run": "run r00q-baseline-head",
+    "commit": "commit 19f5c8c9cc",
+    "build": "build 2026-11-04T21:07:50Z",
+    "subject": "dwarf male Warrior",
+    "variant": "variant reference",
+    "layers": "layers(18) skin v1:normal/solid; mottling v1:normal/noise @0.21 |            countershade v1:softLight/gradient @0.60 |            flush v1:normal/gradient @0.45 +14 more",
+    "marks": "marks(0) none",
+    "channel": "view final",
+    "light": "light studio PreviewStage key [0.03,0.99,0.16] +fill, shadow",
+    "camera": "cam front-left-3q yaw 45.0 pitch 8.0 dist 4.94m fov 24.0",
+    "triangles": "tris 11264",
+    "timing": "build 979.4ms frame 5.00ms"
+   },
+   "triangles": 11264,
+   "buildMs": 979.4
+  },
+  {
+   "id": "dwarf-male-reference/angles/face/studio/final",
+   "path": "artifacts/wave-tex/captures/r00q-baseline-head/dwarf-male-reference-angles.png",
+   "sheet": "dwarf-male-reference-angles",
+   "subject": "dwarf-male-reference",
+   "race": "dwarf",
+   "sex": "male",
+   "variant": "reference",
+   "light": "studio",
+   "angle": "face",
+   "view": "final",
+   "channelOk": true,
+   "rect": [
+    1276,
+    32,
+    420,
+    780
+   ],
+   "render": [
+    1276,
+    32,
+    420,
+    560
+   ],
+   "hudRect": [
+    1276,
+    592,
+    420,
+    220
+   ],
+   "camera": {
+    "angle": "face",
+    "yawDeg": 20.000000000000004,
+    "pitchDeg": 3.9999999999999956,
+    "distanceM": 0.9455011229841636,
+    "fovDeg": 24
+   },
+   "lightDetail": "PreviewStage key [0.03,0.99,0.16] +fill, shadow",
+   "frameMs": 2.4,
+   "regions": {
+    "face": [
+     19,
+     89,
+     401,
+     471
+    ],
+    "back": [
+     0,
+     1,
+     420,
+     560
+    ]
+   },
+   "stats": {
+    "coverage": 0.5416,
+    "lumaMean": 120.2,
+    "lumaP5": 31.4,
+    "lumaP50": 128.5,
+    "lumaP95": 174.9
+   },
+   "hud": {
+    "run": "run r00q-baseline-head",
+    "commit": "commit 19f5c8c9cc",
+    "build": "build 2026-11-04T21:07:50Z",
+    "subject": "dwarf male Warrior",
+    "variant": "variant reference",
+    "layers": "layers(18) skin v1:normal/solid; mottling v1:normal/noise @0.21 |            countershade v1:softLight/gradient @0.60 |            flush v1:normal/gradient @0.45 +14 more",
+    "marks": "marks(0) none",
+    "channel": "view final",
+    "light": "light studio PreviewStage key [0.03,0.99,0.16] +fill, shadow",
+    "camera": "cam face yaw 20.0 pitch 4.0 dist 0.95m fov 24.0",
+    "triangles": "tris 11264",
+    "timing": "build 979.4ms frame 2.40ms"
+   },
+   "triangles": 11264,
+   "buildMs": 979.4
+  },
+  {
+   "id": "dwarf-male-reference/angles/forearm/studio/final",
+   "path": "artifacts/wave-tex/captures/r00q-baseline-head/dwarf-male-reference-angles.png",
+   "sheet": "dwarf-male-reference-angles",
+   "subject": "dwarf-male-reference",
+   "race": "dwarf",
+   "sex": "male",
+   "variant": "reference",
+   "light": "studio",
+   "angle": "forearm",
+   "view": "final",
+   "channelOk": true,
+   "rect": [
+    1700,
+    32,
+    420,
+    780
+   ],
+   "render": [
+    1700,
+    32,
+    420,
+    560
+   ],
+   "hudRect": [
+    1700,
+    592,
+    420,
+    220
+   ],
+   "camera": {
+    "angle": "forearm",
+    "yawDeg": 70,
+    "pitchDeg": 9.999999999999998,
+    "distanceM": 1.2155548825998432,
+    "fovDeg": 24
+   },
+   "lightDetail": "PreviewStage key [0.03,0.99,0.16] +fill, shadow",
+   "frameMs": 2.6,
+   "regions": {
+    "forearm": [
+     19,
+     89,
+     401,
+     471
+    ],
+    "back": [
+     0,
+     0,
+     420,
+     431
+    ]
+   },
+   "stats": {
+    "coverage": 0.6495,
+    "lumaMean": 114.4,
+    "lumaP5": 31.4,
+    "lumaP50": 108.5,
+    "lumaP95": 176.8
+   },
+   "hud": {
+    "run": "run r00q-baseline-head",
+    "commit": "commit 19f5c8c9cc",
+    "build": "build 2026-11-04T21:07:50Z",
+    "subject": "dwarf male Warrior",
+    "variant": "variant reference",
+    "layers": "layers(18) skin v1:normal/solid; mottling v1:normal/noise @0.21 |            countershade v1:softLight/gradient @0.60 |            flush v1:normal/gradient @0.45 +14 more",
+    "marks": "marks(0) none",
+    "channel": "view final",
+    "light": "light studio PreviewStage key [0.03,0.99,0.16] +fill, shadow",
+    "camera": "cam forearm yaw 70.0 pitch 10.0 dist 1.22m fov 24.0",
+    "triangles": "tris 11264",
+    "timing": "build 979.4ms frame 2.60ms"
+   },
+   "triangles": 11264,
+   "buildMs": 979.4
+  },
+  {
+   "id": "dwarf-male-reference/angles/back-closeup/studio/final",
+   "path": "artifacts/wave-tex/captures/r00q-baseline-head/dwarf-male-reference-angles.png",
+   "sheet": "dwarf-male-reference-angles",
+   "subject": "dwarf-male-reference",
+   "race": "dwarf",
+   "sex": "male",
+   "variant": "reference",
+   "light": "studio",
+   "angle": "back-closeup",
+   "view": "final",
+   "channelOk": true,
+   "rect": [
+    2124,
+    32,
+    420,
+    780
+   ],
+   "render": [
+    2124,
+    32,
+    420,
+    560
+   ],
+   "hudRect": [
+    2124,
+    592,
+    420,
+    220
+   ],
+   "camera": {
+    "angle": "back-closeup",
+    "yawDeg": 180,
+    "pitchDeg": 10.000000000000004,
+    "distanceM": 3.347325358876644,
+    "fovDeg": 24
+   },
+   "lightDetail": "PreviewStage key [0.03,0.99,0.16] +fill, shadow",
+   "frameMs": 2.7,
+   "regions": {
+    "face": [
+     156,
+     122,
+     264,
+     230
+    ],
+    "forearm": [
+     0,
+     286,
+     68,
+     420
+    ],
+    "back": [
+     19,
+     89,
+     401,
+     471
+    ]
+   },
+   "stats": {
+    "coverage": 0.4044,
+    "lumaMean": 86.9,
+    "lumaP5": 31.4,
+    "lumaP50": 82.2,
+    "lumaP95": 149.3
+   },
+   "hud": {
+    "run": "run r00q-baseline-head",
+    "commit": "commit 19f5c8c9cc",
+    "build": "build 2026-11-04T21:07:50Z",
+    "subject": "dwarf male Warrior",
+    "variant": "variant reference",
+    "layers": "layers(18) skin v1:normal/solid; mottling v1:normal/noise @0.21 |            countershade v1:softLight/gradient @0.60 |            flush v1:normal/gradient @0.45 +14 more",
+    "marks": "marks(0) none",
+    "channel": "view final",
+    "light": "light studio PreviewStage key [0.03,0.99,0.16] +fill, shadow",
+    "camera": "cam back-closeup yaw 180.0 pitch 10.0 dist 3.35m fov 24.0",
+    "triangles": "tris 11264",
+    "timing": "build 979.4ms frame 2.70ms"
+   },
+   "triangles": 11264,
+   "buildMs": 979.4
+  },
+  {
+   "id": "dwarf-male-reference/lights/front-left-3q/studio/final",
+   "path": "artifacts/wave-tex/captures/r00q-baseline-head/dwarf-male-reference-lights.png",
+   "sheet": "dwarf-male-reference-lights",
+   "subject": "dwarf-male-reference",
+   "race": "dwarf",
+   "sex": "male",
+   "variant": "reference",
+   "light": "studio",
+   "angle": "front-left-3q",
+   "view": "final",
+   "channelOk": true,
+   "rect": [
+    4,
+    32,
+    420,
+    780
+   ],
+   "render": [
+    4,
+    32,
+    420,
+    560
+   ],
+   "hudRect": [
+    4,
+    592,
+    420,
+    220
+   ],
+   "camera": {
+    "angle": "front-left-3q",
+    "yawDeg": 45,
+    "pitchDeg": 7.999999999999999,
+    "distanceM": 4.9415371116015665,
+    "fovDeg": 24
+   },
+   "lightDetail": "PreviewStage key [0.03,0.99,0.16] +fill, shadow",
+   "frameMs": 3.4,
+   "regions": {
+    "face": [
+     167,
+     73,
+     241,
+     147
+    ],
+    "forearm": [
+     270,
+     194,
+     372,
+     295
+    ],
+    "back": [
+     85,
+     51,
+     344,
+     310
+    ]
+   },
+   "stats": {
+    "coverage": 0.2238,
+    "lumaMean": 96.9,
+    "lumaP5": 31.4,
+    "lumaP50": 96.7,
+    "lumaP95": 173.4
+   },
+   "hud": {
+    "run": "run r00q-baseline-head",
+    "commit": "commit 19f5c8c9cc",
+    "build": "build 2026-11-04T21:07:50Z",
+    "subject": "dwarf male Warrior",
+    "variant": "variant reference",
+    "layers": "layers(18) skin v1:normal/solid; mottling v1:normal/noise @0.21 |            countershade v1:softLight/gradient @0.60 |            flush v1:normal/gradient @0.45 +14 more",
+    "marks": "marks(0) none",
+    "channel": "view final",
+    "light": "light studio PreviewStage key [0.03,0.99,0.16] +fill, shadow",
+    "camera": "cam front-left-3q yaw 45.0 pitch 8.0 dist 4.94m fov 24.0",
+    "triangles": "tris 11264",
+    "timing": "build 979.4ms frame 3.40ms"
+   },
+   "triangles": 11264,
+   "buildMs": 979.4
+  },
+  {
+   "id": "dwarf-male-reference/lights/front-left-3q/rim/final",
+   "path": "artifacts/wave-tex/captures/r00q-baseline-head/dwarf-male-reference-lights.png",
+   "sheet": "dwarf-male-reference-lights",
+   "subject": "dwarf-male-reference",
+   "race": "dwarf",
+   "sex": "male",
+   "variant": "reference",
+   "light": "rim",
+   "angle": "front-left-3q",
+   "view": "final",
+   "channelOk": true,
+   "rect": [
+    428,
+    32,
+    420,
+    780
+   ],
+   "render": [
+    428,
+    32,
+    420,
+    560
+   ],
+   "hudRect": [
+    428,
+    592,
+    420,
+    220
+   ],
+   "camera": {
+    "angle": "front-left-3q",
+    "yawDeg": 45,
+    "pitchDeg": 7.999999999999999,
+    "distanceM": 4.9415371116015665,
+    "fovDeg": 24
+   },
+   "lightDetail": "camera-relative back key, ambient 0.27, no shadow",
+   "frameMs": 2,
+   "regions": {
+    "face": [
+     167,
+     73,
+     241,
+     147
+    ],
+    "forearm": [
+     270,
+     194,
+     372,
+     295
+    ],
+    "back": [
+     85,
+     51,
+     344,
+     310
+    ]
+   },
+   "stats": {
+    "coverage": 0.2239,
+    "lumaMean": 61.3,
+    "lumaP5": 31.4,
+    "lumaP50": 55.8,
+    "lumaP95": 93.5
+   },
+   "hud": {
+    "run": "run r00q-baseline-head",
+    "commit": "commit 19f5c8c9cc",
+    "build": "build 2026-11-04T21:07:50Z",
+    "subject": "dwarf male Warrior",
+    "variant": "variant reference",
+    "layers": "layers(18) skin v1:normal/solid; mottling v1:normal/noise @0.21 |            countershade v1:softLight/gradient @0.60 |            flush v1:normal/gradient @0.45 +14 more",
+    "marks": "marks(0) none",
+    "channel": "view final",
+    "light": "light rim camera-relative back key, ambient 0.27, no shadow",
+    "camera": "cam front-left-3q yaw 45.0 pitch 8.0 dist 4.94m fov 24.0",
+    "triangles": "tris 11264",
+    "timing": "build 979.4ms frame 2.00ms"
+   },
+   "triangles": 11264,
+   "buildMs": 979.4
+  },
+  {
+   "id": "dwarf-male-reference/lights/front-left-3q/flat/final",
+   "path": "artifacts/wave-tex/captures/r00q-baseline-head/dwarf-male-reference-lights.png",
+   "sheet": "dwarf-male-reference-lights",
+   "subject": "dwarf-male-reference",
+   "race": "dwarf",
+   "sex": "male",
+   "variant": "reference",
+   "light": "flat",
+   "angle": "front-left-3q",
+   "view": "final",
+   "channelOk": true,
+   "rect": [
+    852,
+    32,
+    420,
+    780
+   ],
+   "render": [
+    852,
+    32,
+    420,
+    560
+   ],
+   "hudRect": [
+    852,
+    592,
+    420,
+    220
+   ],
+   "camera": {
+    "angle": "front-left-3q",
+    "yawDeg": 45,
+    "pitchDeg": 7.999999999999999,
+    "distanceM": 4.9415371116015665,
+    "fovDeg": 24
+   },
+   "lightDetail": "headlight band, key 0, ambient 1 (albedo x paint)",
+   "frameMs": 2.5,
+   "regions": {
+    "face": [
+     167,
+     73,
+     241,
+     147
+    ],
+    "forearm": [
+     270,
+     194,
+     372,
+     295
+    ],
+    "back": [
+     85,
+     51,
+     344,
+     310
+    ]
+   },
+   "stats": {
+    "coverage": 0.2236,
+    "lumaMean": 114.7,
+    "lumaP5": 31.4,
+    "lumaP50": 116,
+    "lumaP95": 158.7
+   },
+   "hud": {
+    "run": "run r00q-baseline-head",
+    "commit": "commit 19f5c8c9cc",
+    "build": "build 2026-11-04T21:07:50Z",
+    "subject": "dwarf male Warrior",
+    "variant": "variant reference",
+    "layers": "layers(18) skin v1:normal/solid; mottling v1:normal/noise @0.21 |            countershade v1:softLight/gradient @0.60 |            flush v1:normal/gradient @0.45 +14 more",
+    "marks": "marks(0) none",
+    "channel": "view final",
+    "light": "light flat headlight band, key 0, ambient 1 (albedo x paint)",
+    "camera": "cam front-left-3q yaw 45.0 pitch 8.0 dist 4.94m fov 24.0",
+    "triangles": "tris 11264",
+    "timing": "build 979.4ms frame 2.50ms"
+   },
+   "triangles": 11264,
+   "buildMs": 979.4
+  },
+  {
+   "id": "dwarf-male-reference/lights/front-left-3q/daylight/final",
+   "path": "artifacts/wave-tex/captures/r00q-baseline-head/dwarf-male-reference-lights.png",
+   "sheet": "dwarf-male-reference-lights",
+   "subject": "dwarf-male-reference",
+   "race": "dwarf",
+   "sex": "male",
+   "variant": "reference",
+   "light": "daylight",
+   "angle": "front-left-3q",
+   "view": "final",
+   "channelOk": true,
+   "rect": [
+    1276,
+    32,
+    420,
+    780
+   ],
+   "render": [
+    1276,
+    32,
+    420,
+    560
+   ],
+   "hudRect": [
+    1276,
+    592,
+    420,
+    220
+   ],
+   "camera": {
+    "angle": "front-left-3q",
+    "yawDeg": 45,
+    "pitchDeg": 7.999999999999999,
+    "distanceM": 4.9415371116015665,
+    "fovDeg": 24
+   },
+   "lightDetail": "env sunspire h13 elev 71.7deg, no shadow",
+   "frameMs": 2.1,
+   "regions": {
+    "face": [
+     167,
+     73,
+     241,
+     147
+    ],
+    "forearm": [
+     270,
+     194,
+     372,
+     295
+    ],
+    "back": [
+     85,
+     51,
+     344,
+     310
+    ]
+   },
+   "stats": {
+    "coverage": 0.2238,
+    "lumaMean": 123,
+    "lumaP5": 31.4,
+    "lumaP50": 126.3,
+    "lumaP95": 196.1
+   },
+   "hud": {
+    "run": "run r00q-baseline-head",
+    "commit": "commit 19f5c8c9cc",
+    "build": "build 2026-11-04T21:07:50Z",
+    "subject": "dwarf male Warrior",
+    "variant": "variant reference",
+    "layers": "layers(18) skin v1:normal/solid; mottling v1:normal/noise @0.21 |            countershade v1:softLight/gradient @0.60 |            flush v1:normal/gradient @0.45 +14 more",
+    "marks": "marks(0) none",
+    "channel": "view final",
+    "light": "light daylight env sunspire h13 elev 71.7deg, no shadow",
+    "camera": "cam front-left-3q yaw 45.0 pitch 8.0 dist 4.94m fov 24.0",
+    "triangles": "tris 11264",
+    "timing": "build 979.4ms frame 2.10ms"
+   },
+   "triangles": 11264,
+   "buildMs": 979.4
+  },
+  {
+   "id": "dwarf-male-reference/lights/front-left-3q/dusk/final",
+   "path": "artifacts/wave-tex/captures/r00q-baseline-head/dwarf-male-reference-lights.png",
+   "sheet": "dwarf-male-reference-lights",
+   "subject": "dwarf-male-reference",
+   "race": "dwarf",
+   "sex": "male",
+   "variant": "reference",
+   "light": "dusk",
+   "angle": "front-left-3q",
+   "view": "final",
+   "channelOk": true,
+   "rect": [
+    1700,
+    32,
+    420,
+    780
+   ],
+   "render": [
+    1700,
+    32,
+    420,
+    560
+   ],
+   "hudRect": [
+    1700,
+    592,
+    420,
+    220
+   ],
+   "camera": {
+    "angle": "front-left-3q",
+    "yawDeg": 45,
+    "pitchDeg": 7.999999999999999,
+    "distanceM": 4.9415371116015665,
+    "fovDeg": 24
+   },
+   "lightDetail": "env sunspire h18 elev 4.7deg, no shadow",
+   "frameMs": 2.3,
+   "regions": {
+    "face": [
+     167,
+     73,
+     241,
+     147
+    ],
+    "forearm": [
+     270,
+     194,
+     372,
+     295
+    ],
+    "back": [
+     85,
+     51,
+     344,
+     310
+    ]
+   },
+   "stats": {
+    "coverage": 0.2237,
+    "lumaMean": 100,
+    "lumaP5": 31.4,
+    "lumaP50": 101.1,
+    "lumaP95": 139.2
+   },
+   "hud": {
+    "run": "run r00q-baseline-head",
+    "commit": "commit 19f5c8c9cc",
+    "build": "build 2026-11-04T21:07:50Z",
+    "subject": "dwarf male Warrior",
+    "variant": "variant reference",
+    "layers": "layers(18) skin v1:normal/solid; mottling v1:normal/noise @0.21 |            countershade v1:softLight/gradient @0.60 |            flush v1:normal/gradient @0.45 +14 more",
+    "marks": "marks(0) none",
+    "channel": "view final",
+    "light": "light dusk env sunspire h18 elev 4.7deg, no shadow",
+    "camera": "cam front-left-3q yaw 45.0 pitch 8.0 dist 4.94m fov 24.0",
+    "triangles": "tris 11264",
+    "timing": "build 979.4ms frame 2.30ms"
+   },
+   "triangles": 11264,
+   "buildMs": 979.4
+  }
+ ],
+ "errors": []
+}

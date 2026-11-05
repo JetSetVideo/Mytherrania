@@ -1,0 +1,16 @@
+Check tests/wave_tex_ui_test.ts
+running 11 tests from ./tests/wave_tex_ui_test.ts
+SPEC TX70: the channel view list is R's (same ids, same order) and the radio row's arrow law wraps ... ok (448µs)
+SPEC TX71: parseLayerOverrides is TOTAL on hostile saves (never throws, clamps, dedupes, drops junk) ... ok (5ms)
+SPEC TX72: the inspector's view of the overrides == L's applyLayerOverrides (enabled, opacity, op per channel, order) on 400 random edit sets ... ok (92ms)
+SPEC TX72b: any sequence of inspector drags (reorderOverride) renders in the SAME order under L's applyLayerOverrides (300 sequences x 1-6 drags) ... ok (127ms)
+SPEC TX73: setOverride/reorder/reset — a value back at the preset drops the override; a drag moves exactly one row; Reset clears ... ok (17ms)
+SPEC TX74: marks editing — lists equal M's, add/remove/update stay inside the ranges, caps hold, a hostile save sanitises ... ok (6ms)
+SPEC TX75: the placement raycast's frame anchor on a REAL rig skin — every sampled skin vertex of a mark region maps to its own region, side by x, anchor in [-1,1]², and back onto the region cylinder near the point ... ok (1s)
+SPEC TX76: previewKey is byte-identical without marks/overrides and changes with them (the model rebuilds on a mark edit) ... ok (236µs)
+SPEC TX77: the studio markup is CSP-clean (no style attribute, no script), ids unique, every control named, 44 px classes ... ok (4ms)
+SPEC TX78: placement notes come from M's validator — overlap flagged, a tidy pair on bare skin is clean, a mark under the outfit says so (QD Z-37) ... ok (947µs)
+SPEC TX79: save/load round trip — appearance.marks and appearance.layerOverrides survive the profile library (JSON) and re-parse unchanged ... ok (1ms)
+
+ok | 11 passed | 0 failed (1s)
+

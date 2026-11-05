@@ -1,0 +1,4 @@
+[0m[32mTask[0m [0m[36mcheck[0m deno check main.ts src/**/*.ts tests/*.ts tools/*.ts
+CHECK EXIT 0
+docs/wave-tex/UI.md: 118 lines
+ALLDONE

@@ -1,0 +1,224 @@
+human-male-marked-bare/channels/front-left-3q/studio: mask 2149 px, 33 comps
+   area 72 bbox 284,266,14,17 marksV 181.1 albedo in 64.3,13.3,21.5 ring 72,14.8,25.2 dE 8.7 dL -7.7 C 25.2/29.3 finalDL -15.9 rough 121/122 height 128/128 nDE 6.6 edge w50 1 hard 0.857 band 0 n 14
+   area 45 bbox 301,248,6,22 marksV 185.1 albedo in 62.9,15.8,24.1 ring 69.8,17.1,27.6 dE 7.8 dL -6.9 C 28.7/32.3 finalDL -20.3 rough 123/123 height 128/128 nDE 34.3 edge w50 2 hard 0.5 band 0 n 14
+   area 45 bbox 262,312,1,45 marksV 120.2 albedo in 40.2,7.5,12.4 ring 66.1,17.4,28.1 dE 31.9 dL -25.9 C 14.5/33.1 finalDL -50 rough 80.2/128 height 80.2/128 nDE 42.3 edge w50 null hard 0 band 0 n 0
+   area 45 bbox 181,446,1,45 marksV 120.2 albedo in 38.1,6.8,11.2 ring 62.4,16.3,26.4 dE 30.1 dL -24.2 C 13.4/31 finalDL -52.1 rough 79.2/127 height 80.2/128 nDE 52.4 edge w50 1 hard 1 band 0 n 22
+   area 40 bbox 192,71,21,12 marksV 120.2 albedo in 43.5,9.3,16.6 ring 71.3,17.3,28.3 dE 31.2 dL -27.8 C 19.2/33.1 finalDL -48.8 rough 70.2/108 height 80.2/128 nDE 50.5 edge w50 1 hard 0.667 band 0.25 n 12
+   area 40 bbox 284,240,7,22 marksV 193.8 albedo in 72.2,13.5,19.9 ring 73.7,14.5,24.7 dE 5.1 dL -1.5 C 24/28.5 finalDL -2.1 rough 104/121 height 135/128 nDE 3.6 edge w50 6 hard 0.2 band 0 n 10
+human-male-marked-bare/channels/face/studio: mask 1809 px, 25 comps
+   area 226 bbox 119,378,26,24 marksV 154.2 albedo in 54.9,15.5,5.5 ring 68.4,18.6,29.1 dE 27.3 dL -13.5 C 17.2/34.5 finalDL -13.8 rough 108/108 height 128/128 nDE 6.9 edge w50 7 hard 0.227 band 0.045 n 22
+   area 97 bbox 136,388,16,16 marksV 165.3 albedo in 59.6,14.8,11.9 ring 69.8,17.9,28.5 dE 19.8 dL -10.2 C 18.4/33.8 finalDL -20.8 rough 108/108 height 128/128 nDE 22.5 edge w50 6 hard 0 band 0 n 7
+   area 86 bbox 139,416,40,24 marksV 120.2 albedo in 43.2,9.3,16.9 ring 71.3,17.2,28.3 dE 31.3 dL -28.1 C 19.3/33.1 finalDL -41.7 rough 70.2/108 height 80.2/128 nDE 32 edge w50 1 hard 0.577 band 0.269 n 26
+   area 55 bbox 243,378,19,25 marksV 198.4 albedo in 74.2,9.9,16.2 ring 72.2,16.4,27.4 dE 13.1 dL 2 C 18.9/31.9 finalDL 4.9 rough 93/108 height 128/128 nDE 3.2 edge w50 1 hard 0.778 band 0 n 9
+   area 35 bbox 321,479,35,30 marksV 120.2 albedo in 41.1,9.1,13.6 ring 67.3,20.3,30.8 dE 33.3 dL -26.3 C 16.4/36.7 finalDL -76.8 rough 80.2/128 height 80.2/128 nDE 38.4 edge w50 1 hard 1 band 0 n 10
+   area 29 bbox 352,341,4,28 marksV 164.7 albedo in 56.2,12.6,20.9 ring 70.2,18.4,29.3 dE 17.3 dL -14 C 24.4/34.4 finalDL -34.1 rough 95.7/118 height 103.7/128 nDE 35.4 edge w50 1 hard 1 band 0 n 14
+human-male-marked-bare/channels/forearm/studio: mask 2509 px, 43 comps
+   area 360 bbox 210,235,29,58 marksV 137 albedo in 49.7,13,17 ring 68.8,17.3,27.9 dE 22.4 dL -19.1 C 21.6/32.8 finalDL -52.9 rough 124/124 height 128/128 nDE 5.4 edge w50 2 hard 0.5 band 0.05 n 40
+   area 152 bbox 180,272,17,28 marksV 146 albedo in 55.1,11.5,16.7 ring 72.1,14.8,25.1 dE 19.3 dL -17.1 C 20.4/29.2 finalDL -54.4 rough 121/121 height 128/128 nDE 3.5 edge w50 1 hard 0.579 band 0.053 n 19
+   area 51 bbox 171,217,13,27 marksV 188.8 albedo in 71,13.5,19 ring 73.1,14,24.1 dE 5.6 dL -2.1 C 23.3/27.9 finalDL -4.2 rough 99/121 height 135/128 nDE 0.5 edge w50 5 hard 0.273 band 0.182 n 11
+   area 49 bbox 170,251,12,12 marksV 120.2 albedo in 48.1,9.5,12 ring 72.6,14.3,24.6 dE 28 dL -24.6 C 15.4/28.6 finalDL -46.6 rough 121/121 height 128/128 nDE 7.2 edge w50 4 hard 0.5 band 0 n 6
+   area 38 bbox 49,155,1,38 marksV 75.9 albedo in 27.6,2,4.1 ring 67.9,18.1,28.9 dE 49.9 dL -40.2 C 4.6/34.1 finalDL -55.7 rough 55.7/128 height 55.7/128 nDE 34.6 edge w50 0 hard 0.632 band 0 n 19
+   area 36 bbox 168,188,4,20 marksV 193.8 albedo in 72.8,13.4,19.7 ring 74.2,14.2,24.5 dE 5.1 dL -1.5 C 23.6/28.4 finalDL -3.3 rough 104/121 height 134/128 nDE 1.5 edge w50 7 hard 0 band 0.1 n 10
+human-male-marked-bare/channels/back-closeup/studio: mask 6755 px, 30 comps
+   area 4447 bbox 146,323,128,87 marksV 33.3 albedo in 30.8,7.9,9.7 ring 69.6,18.1,28.7 dE 44.4 dL -38.8 C 12.5/34 finalDL -71.6 rough 128/128 height 128/128 nDE 2.1 edge w50 7 hard 0.282 band 0.037 n 188
+   area 184 bbox 147,295,72,10 marksV 176.9 albedo in 63.7,26.2,28.9 ring 68.9,19.3,30.1 dE 8.7 dL -5.2 C 39/35.7 finalDL -10.7 rough 110/128 height 132/128 nDE 1.5 edge w50 1 hard 0.69 band 0 n 42
+   area 161 bbox 150,307,63,10 marksV 176.9 albedo in 63.6,26.2,28.9 ring 68.9,19.3,30.3 dE 8.8 dL -5.3 C 39/35.7 finalDL -13.9 rough 110/128 height 132/128 nDE 1.7 edge w50 1 hard 0.718 band 0 n 39
+   area 156 bbox 153,286,61,7 marksV 177.6 albedo in 63.8,26.2,28.9 ring 68.8,19,30 dE 8.9 dL -5 C 39/35.7 finalDL -5.8 rough 110/128 height 132/128 nDE 1.5 edge w50 1 hard 0.833 band 0 n 36
+   area 124 bbox 18,472,12,33 marksV 174.1 albedo in 59.2,15.6,22.7 ring 68.8,17.5,28 dE 11.1 dL -9.6 C 27.6/33.1 finalDL -13.1 rough 124/124 height 128/128 nDE 11.1 edge w50 1 hard 0.789 band 0.053 n 19
+   area 27 bbox 252,155,20,26 marksV 120.2 albedo in 43.9,7.3,12.6 ring 71.3,17.2,28.3 dE 33.1 dL -27.4 C 14.3/33.1 finalDL -38.4 rough 74.2/113 height 80.2/128 nDE 45 edge w50 1 hard 1 band 0 n 6
+human-female-marked-bare/channels/front-left-3q/studio: mask 2062 px, 34 comps
+   area 64 bbox 280,263,13,18 marksV 179.1 albedo in 65.2,12,19.4 ring 71.8,13.9,23.2 dE 7.8 dL -6.6 C 22.9/27.1 finalDL -21.1 rough 122/122 height 128/128 nDE 9.1 edge w50 1 hard 0.538 band 0.077 n 13
+   area 61 bbox 297,258,9,20 marksV 180.1 albedo in 60.2,13.6,20.9 ring 68.5,15.2,24.5 dE 9.2 dL -8.3 C 25.1/29.1 finalDL -23.7 rough 124/124 height 128/128 nDE 27.3 edge w50 1 hard 0.583 band 0 n 12
+   area 48 bbox 260,460,1,48 marksV 120.2 albedo in 39.5,6.2,10 ring 64,15.3,24.3 dE 29.8 dL -24.5 C 11.8/28.9 finalDL -42 rough 78.2/126 height 80.2/128 nDE 49 edge w50 null hard 0 band 0 n 0
+   area 46 bbox 283,238,6,24 marksV 193.8 albedo in 70.6,13.7,18.5 ring 71.9,14.6,24 dE 5.8 dL -1.3 C 22.7/28.2 finalDL 3.3 rough 103/122 height 135/128 nDE 2.3 edge w50 4 hard 0.286 band 0.286 n 7
+   area 41 bbox 262,319,1,41 marksV 164.7 albedo in 54.4,11.8,18.5 ring 67.7,16.4,26 dE 15.9 dL -13.2 C 22/30.7 finalDL -34.9 rough 103.7/128 height 103.7/128 nDE 31.8 edge w50 null hard 0 band 0 n 0
+   area 39 bbox 189,63,6,13 marksV 169.4 albedo in 62.3,14.5,13.1 ring 71.5,17.8,27.5 dE 17.3 dL -9.2 C 19.7/32.7 finalDL -50.2 rough 108/107 height 128/128 nDE 17 edge w50 2 hard 0.5 band 0 n 6
+human-female-marked-bare/channels/face/studio: mask 1738 px, 24 comps
+   area 482 bbox 119,371,33,28 marksV 146.2 albedo in 56.2,13.4,4.3 ring 73,16.5,26.3 dE 27.9 dL -16.8 C 14.4/31.1 finalDL -29.9 rough 108/108 height 128/128 nDE 16 edge w50 2 hard 0.391 band 0.13 n 46
+   area 69 bbox 107,319,17,59 marksV 120.2 albedo in 43.6,7.4,11.8 ring 71.1,17.8,27.7 dE 33.4 dL -27.5 C 14.2/33.2 finalDL -65.4 rough 74.2/110 height 80.2/128 nDE 34.3 edge w50 1 hard 0.909 band 0 n 22
+   area 56 bbox 250,374,10,28 marksV 198.6 albedo in 75,9.4,14.3 ring 72.4,16.9,26.8 dE 14.9 dL 2.7 C 17.1/31.5 finalDL 5.9 rough 91/108 height 128/128 nDE 7 edge w50 2 hard 0.308 band 0.077 n 13
+   area 31 bbox 137,470,20,19 marksV 164.7 albedo in 56.4,12.7,19.9 ring 70.7,17.9,28 dE 17.3 dL -14.3 C 23.7/33.2 finalDL -34.4 rough 103.7/128 height 103.4/128 nDE 15.4 edge w50 0 hard 1 band 0 n 6
+   area 27 bbox 131,345,4,19 marksV 164.7 albedo in 56.7,13.1,20.6 ring 70.1,18.3,28.3 dE 16.3 dL -13.4 C 24.4/33.7 finalDL -41.7 rough 88.7/108 height 103.7/128 nDE 26.2 edge w50 0 hard 1 band 0 n 7
+   area 26 bbox 112,341,15,14 marksV 164.7 albedo in 56.7,12,19.4 ring 70.2,18.3,28.3 dE 17.3 dL -13.5 C 22.8/33.7 finalDL -60.7 rough 88.4/108 height 103.7/128 nDE 29.8 edge w50 0 hard 0.6 band 0.2 n 10
+human-female-marked-bare/channels/forearm/studio: mask 2420 px, 46 comps
+   area 333 bbox 203,236,29,48 marksV 122.1 albedo in 46.2,10.9,12.6 ring 68.4,15.3,24.7 dE 25.6 dL -22.2 C 17/29.2 finalDL -53.8 rough 124/124 height 128/128 nDE 1.5 edge w50 1 hard 0.649 band 0.027 n 37
+   area 120 bbox 179,263,14,31 marksV 147.2 albedo in 54.5,11.4,16.2 ring 71.2,14.3,23.8 dE 18.6 dL -16.7 C 19.8/27.7 finalDL -58.4 rough 122/122 height 128/128 nDE 8.9 edge w50 1 hard 0.545 band 0 n 22
+   area 63 bbox 48,169,15,45 marksV 120.2 albedo in 43,6.9,12.1 ring 69.2,17.6,27.2 dE 32.1 dL -26.2 C 13.9/32.3 finalDL -58.5 rough 80.2/128 height 80.2/128 nDE 29.3 edge w50 1 hard 0.818 band 0 n 11
+   area 44 bbox 54,69,1,44 marksV 120.2 albedo in 43.5,7.9,12.2 ring 70.5,17.1,27.1 dE 32.2 dL -27 C 14.2/32.1 finalDL -58.2 rough 80.2/128 height 80.2/128 nDE 20 edge w50 null hard 0 band 0 n 0
+   area 40 bbox 175,217,7,25 marksV 192.3 albedo in 70.2,13.7,18.5 ring 70.2,15,24.4 dE 6.1 dL 0 C 23/28.5 finalDL -0.9 rough 103/123 height 135/128 nDE 1.2 edge w50 0 hard 1 band 0 n 1
+   area 38 bbox 171,244,7,15 marksV 166.9 albedo in 62.9,10.4,16.8 ring 72.2,13.9,23 dE 11.7 dL -9.3 C 19.7/26.8 finalDL -23.6 rough 121/122 height 128/128 nDE 7.9 edge w50 1 hard 0.571 band 0 n 7
+human-female-marked-bare/channels/back-closeup/studio: mask 7543 px, 33 comps
+   area 5261 bbox 147,304,141,101 marksV 33.3 albedo in 30.8,7.6,9.1 ring 69.8,17.5,27.1 dE 44.1 dL -39 C 11.8/32.2 finalDL -73.4 rough 128/128 height 128/128 nDE 6 edge w50 2 hard 0.438 band 0.021 n 192
+   area 192 bbox 143,292,77,12 marksV 176.3 albedo in 64.6,26,27 ring 70.6,17.9,27.6 dE 10 dL -6 C 37.3/32.9 finalDL -21.1 rough 109/128 height 132/128 nDE 1.5 edge w50 1 hard 0.545 band 0 n 44
+   area 166 bbox 150,282,66,9 marksV 177.1 albedo in 64.5,25.6,27.1 ring 69.8,18,27.6 dE 9.2 dL -5.2 C 37.1/33 finalDL -16 rough 109/128 height 132/128 nDE 0.9 edge w50 1 hard 0.622 band 0 n 37
+   area 90 bbox 50,488,14,34 marksV 166.9 albedo in 58,12,18.1 ring 69.6,13.6,22.6 dE 12.6 dL -11.6 C 21.6/26.4 finalDL -27.5 rough 123/123 height 128/128 nDE 25.8 edge w50 2 hard 0.389 band 0.056 n 18
+   area 42 bbox 120,292,18,27 marksV 120.2 albedo in 38.1,7.4,11.2 ring 65.1,18.1,26.6 dE 32.9 dL -27 C 13.4/32.3 finalDL -52.8 rough 82.2/131 height 80.2/128 nDE 34.1 edge w50 1 hard 0.667 band 0 n 9
+   area 38 bbox 252,143,22,36 marksV 120.2 albedo in 44.6,7,11.4 ring 72.9,16.2,26.3 dE 33.2 dL -28.2 C 13.4/31.1 finalDL -40.7 rough 74.2/114 height 80.2/128 nDE 45.4 edge w50 1 hard 1 band 0 n 11
+elf-male-marked-bare/channels/front-left-3q/studio: mask 1523 px, 17 comps
+   area 58 bbox 285,262,11,18 marksV 184.1 albedo in 76.7,3.1,14 ring 85.9,3.3,16.1 dE 9.5 dL -9.3 C 14.3/16.5 finalDL -40.1 rough 82/82 height 128/128 nDE 8.4 edge w50 1 hard 0.875 band 0 n 8
+   area 42 bbox 192,402,1,42 marksV 164.7 albedo in 60.9,2.7,14.2 ring 75.5,4.6,19.7 dE 15.7 dL -14.6 C 14.5/20.2 finalDL -35.5 rough 73.4/86 height 103.7/128 nDE 68.9 edge w50 null hard 0 band 0 n 0
+   area 38 bbox 189,277,1,38 marksV 120.2 albedo in 48.2,1.5,9.2 ring 79.4,5.1,21.5 dE 33.8 dL -31.2 C 9.3/22.1 finalDL -74.9 rough 60.2/89 height 80.2/128 nDE 47.6 edge w50 1 hard 0.947 band 0 n 19
+   area 37 bbox 191,55,8,13 marksV 172.4 albedo in 71.4,5,13 ring 82.3,5.5,22.6 dE 14.5 dL -10.9 C 13.4/23.2 finalDL -71.7 rough 70/69 height 128/128 nDE 27.8 edge w50 7 hard 0.5 band 0 n 6
+   area 26 bbox 251,483,1,26 marksV 75.9 albedo in 29.1,-1.1,1.7 ring 74,4.6,19.3 dE 48.5 dL -44.9 C 2/19.9 finalDL -82 rough 45.7/87 height 55.7/128 nDE 62.1 edge w50 1 hard 1 band 0 n 13
+   area 25 bbox 252,424,1,25 marksV 164.7 albedo in 61.1,2.7,13.4 ring 75.3,4.7,19.9 dE 15.7 dL -14.2 C 13.7/20.5 finalDL -27.8 rough 72.5/88 height 103.7/128 nDE 31.3 edge w50 null hard 0 band 0 n 0
+elf-male-marked-bare/channels/face/studio: mask 1726 px, 8 comps
+   area 512 bbox 104,364,37,29 marksV 143.2 albedo in 61.8,5.6,2 ring 83.4,5.2,21.9 dE 29.3 dL -21.5 C 7.4/22.5 finalDL -31.3 rough 70/70 height 128/128 nDE 10.5 edge w50 1 hard 0.571 band 0.029 n 35
+   area 36 bbox 130,383,14,8 marksV 176.1 albedo in 73.2,5,12.6 ring 83.6,5,21.3 dE 13.6 dL -10.4 C 13.5/22 finalDL -20.3 rough 70/70 height 128/128 nDE 5.8 edge w50 3 hard 0.167 band 0 n 6
+   area 21 bbox 115,404,17,17 marksV 120.2 albedo in 50.5,0.9,9.1 ring 84,5,21.2 dE 35.9 dL -33.5 C 9.2/21.8 finalDL -45.7 rough 50.2/69 height 80.2/128 nDE 40.7 edge w50 0 hard 1 band 0 n 1
+   area 18 bbox 316,284,14,16 marksV 120.2 albedo in 48.3,2.2,10 ring 79.3,6.6,22.7 dE 33.8 dL -31 C 10.2/23.8 finalDL -89.1 rough 59.2/81 height 80.2/128 nDE 41.3 edge w50 1 hard 1 band 0 n 7
+   area 17 bbox 398,232,5,13 marksV 164.7 albedo in 66.7,3.6,16.4 ring 82.7,5.5,22.5 dE 17.3 dL -16 C 16.8/23.2 finalDL -64.3 rough 67.4/79 height 103.7/128 nDE 22 edge w50 1 hard 1 band 0 n 1
+   area 17 bbox 217,386,2,12 marksV 120.2 albedo in 50.4,1.4,9.5 ring 83.4,5.1,21.9 dE 35.4 dL -32.9 C 9.5/22.5 finalDL -67.1 rough 51.2/70 height 80.2/128 nDE 36.9 edge w50 1 hard 1 band 0 n 5
+elf-male-marked-bare/channels/forearm/studio: mask 1463 px, 20 comps
+   area 124 bbox 189,271,15,29 marksV 148 albedo in 66,2.8,10.8 ring 86.4,3.2,15.5 dE 21 dL -20.4 C 11.1/15.8 finalDL -57.5 rough 82/82 height 128/128 nDE 4.3 edge w50 1 hard 0.55 band 0 n 20
+   area 58 bbox 222,259,7,16 marksV 138 albedo in 61.7,2.9,10 ring 86.3,3.4,16.1 dE 25.3 dL -24.6 C 10.4/16.5 finalDL -63.1 rough 82/82 height 128/128 nDE 18.9 edge w50 6 hard 0.375 band 0 n 8
+   area 35 bbox 210,0,1,35 marksV 120.2 albedo in 50.1,1.6,9.7 ring 82.7,5.3,22.1 dE 35.1 dL -32.6 C 9.7/22.8 finalDL -63.6 rough 60.2/89 height 80.2/128 nDE 37.6 edge w50 null hard 0 band 0 n 0
+   area 25 bbox 187,255,5,8 marksV 140.1 albedo in 61.9,3.1,10.6 ring 84.3,3.9,18 dE 23.6 dL -22.4 C 11.1/18.4 finalDL -83.1 rough 82/82 height 128/128 nDE 8.8 edge w50 3 hard 0.2 band 0 n 5
+   area 22 bbox 83,307,5,18 marksV 120.2 albedo in 48.2,1.4,9.2 ring 79.3,5.1,21.6 dE 33.7 dL -31.2 C 9.3/22.3 finalDL -69.5 rough 60.2/89 height 80.2/128 nDE 38.1 edge w50 1 hard 1 band 0 n 11
+   area 20 bbox 111,345,1,20 marksV 120.2 albedo in 48.1,1,9 ring 79.4,5.1,21.4 dE 33.9 dL -31.3 C 9.1/22 finalDL -75.7 rough 60.2/89 height 80.2/128 nDE 33.9 edge w50 1 hard 1 band 0 n 10
+elf-male-marked-bare/channels/back-closeup/studio: mask 8246 px, 18 comps
+   area 6361 bbox 141,331,150,102 marksV 22.4 albedo in 29.5,2.6,7.5 ring 81.7,5.4,21.3 dE 54.1 dL -52.2 C 7.7/21.9 finalDL -92.3 rough 89/89 height 128/128 nDE 3.9 edge w50 1 hard 0.559 band 0.018 n 170
+   area 153 bbox 139,310,76,12 marksV 190 albedo in 75.4,14,22.8 ring 81.7,5.8,22.7 dE 10.4 dL -6.4 C 26.5/23.5 finalDL -14 rough 79/89 height 132/128 nDE 3.7 edge w50 1 hard 0.564 band 0.026 n 39
+   area 105 bbox 135,296,64,8 marksV 190 albedo in 75.2,14,22.5 ring 81.4,5.5,22 dE 10.6 dL -6.2 C 26.6/22.8 finalDL -12 rough 79/89 height 132/128 nDE 4.5 edge w50 1 hard 0.793 band 0 n 29
+   area 81 bbox 0,547,17,8 marksV 142 albedo in 63.3,3,10.4 ring 85.8,3.4,16.1 dE 23.2 dL -22.4 C 10.8/16.5 finalDL -48.3 rough 82/82 height 128/128 nDE 8.9 edge w50 2 hard 0 band 0.2 n 5
+   area 77 bbox 142,285,40,7 marksV 190 albedo in 76,13.6,22.9 ring 81.7,5.8,22.6 dE 9.7 dL -5.7 C 26.5/23.3 finalDL -29.5 rough 79/89 height 132/128 nDE 2.2 edge w50 1 hard 0.739 band 0 n 23
+   area 72 bbox 176,304,48,4 marksV 187 albedo in 74.8,15.4,22.9 ring 81.7,5.9,22.6 dE 11.7 dL -6.9 C 27.6/23.4 finalDL -17.9 rough 78/90 height 132/128 nDE 6.5 edge w50 1 hard 0.818 band 0 n 22
+elf-female-marked-bare/channels/front-left-3q/studio: mask 1512 px, 21 comps
+   area 76 bbox 283,261,14,18 marksV 179.1 albedo in 74.6,2.7,13 ring 84.8,3.1,15.9 dE 10.6 dL -10.2 C 13.4/16.1 finalDL -47.4 rough 82/82 height 128/128 nDE 8.4 edge w50 1 hard 0.714 band 0 n 14
+   area 64 bbox 190,279,1,64 marksV 120.2 albedo in 48.2,1.4,9.2 ring 79.2,4.7,21.3 dE 33.5 dL -31.1 C 9.3/21.8 finalDL -69.9 rough 61.2/89 height 80.2/128 nDE 43.2 edge w50 null hard 0 band 0 n 0
+   area 61 bbox 192,431,1,61 marksV 164.7 albedo in 59.6,2.3,13.9 ring 74.8,4.2,19.3 dE 16.2 dL -15.2 C 14.1/19.9 finalDL -36.5 rough 73.4/86 height 103.7/128 nDE 55.9 edge w50 null hard 0 band 0 n 0
+   area 32 bbox 212,401,1,32 marksV 120.2 albedo in 46.4,0.7,8.2 ring 75.6,4.3,19.6 dE 31.5 dL -29.2 C 8.2/20 finalDL -59.3 rough 59.2/87 height 80.2/128 nDE 57.5 edge w50 null hard 0 band 0 n 0
+   area 31 bbox 193,53,5,15 marksV 166.3 albedo in 69.1,4.6,13.1 ring 82.6,5.1,22.9 dE 16.7 dL -13.5 C 13.9/23.4 finalDL -60.1 rough 69/69 height 128/128 nDE 16.9 edge w50 1 hard 0.571 band 0 n 7
+   area 16 bbox 217,312,1,16 marksV 164.7 albedo in 63.1,2.6,15.2 ring 78.5,4.7,21.2 dE 16.6 dL -15.4 C 15.6/21.6 finalDL -32.3 rough 74.7/89 height 103.7/128 nDE 26.6 edge w50 1 hard 1 band 0 n 8
+elf-female-marked-bare/channels/face/studio: mask 1822 px, 10 comps
+   area 443 bbox 127,362,20,31 marksV 142.3 albedo in 60.5,5,0.7 ring 82.3,4.5,20.7 dE 29.6 dL -21.8 C 7.6/21.3 finalDL -26 rough 70/70 height 128/128 nDE 28.4 edge w50 2 hard 0.25 band 0 n 28
+   area 113 bbox 111,364,12,21 marksV 140.4 albedo in 60.7,5.3,1.5 ring 83.6,4.9,21.9 dE 30.7 dL -22.9 C 7.2/22.5 finalDL -21 rough 70/70 height 128/128 nDE 4.7 edge w50 2 hard 0.308 band 0.077 n 13
+   area 36 bbox 338,519,36,34 marksV 120.2 albedo in 48.1,1.6,9.7 ring 79.7,5.9,23.3 dE 34.7 dL -31.6 C 9.8/24.1 finalDL -95.3 rough 61.2/90 height 80.2/128 nDE 32.9 edge w50 null hard 0 band 0 n 0
+   area 27 bbox 214,374,1,27 marksV 120.2 albedo in 50.7,0.9,9.5 ring 83.4,4.9,22.2 dE 35.2 dL -32.6 C 9.5/22.7 finalDL -88.1 rough 51.2/70 height 80.2/128 nDE 35.9 edge w50 null hard 0 band 0 n 0
+   area 17 bbox 260,281,7,11 marksV 152.6 albedo in 62.4,1.2,11.7 ring 83.6,4.9,21.7 dE 23.7 dL -21.2 C 12.9/22.2 finalDL -29.4 rough 60.5/71 height 103.7/128 nDE 40.9 edge w50 0 hard 1 band 0 n 4
+   area 17 bbox 160,426,12,6 marksV 164.7 albedo in 66,2.5,14.3 ring 82.4,4.4,20.5 dE 17.6 dL -16.4 C 14.5/21 finalDL -30.3 rough 60.5/70 height 103.7/128 nDE 20.9 edge w50 0 hard 0.8 band 0 n 5
+elf-female-marked-bare/channels/forearm/studio: mask 1427 px, 19 comps
+   area 129 bbox 190,272,15,25 marksV 141.3 albedo in 63.3,2.5,9.6 ring 85.1,3,15.5 dE 22.6 dL -21.9 C 9.9/15.8 finalDL -59.8 rough 82/82 height 128/128 nDE 5.5 edge w50 2 hard 0.462 band 0 n 13
+   area 47 bbox 183,251,8,12 marksV 134.3 albedo in 58.3,2.6,8.5 ring 82,3.1,16.2 dE 25 dL -23.8 C 8.8/16.5 finalDL -52.4 rough 82/82 height 128/128 nDE 5.6 edge w50 1 hard 0.6 band 0 n 5
+   area 35 bbox 182,370,1,35 marksV 120.2 albedo in 47.7,1,9 ring 78.5,4.8,21.4 dE 33.4 dL -30.9 C 9.1/21.9 finalDL -57 rough 60.2/89 height 80.2/128 nDE 36.8 edge w50 null hard 0 band 0 n 0
+   area 26 bbox 85,345,1,26 marksV 164.7 albedo in 63.5,3,15.2 ring 78.9,4.7,21.3 dE 16.7 dL -15.4 C 15.5/21.9 finalDL -35.5 rough 74.7/89 height 103.7/128 nDE 26.1 edge w50 1 hard 1 band 0 n 13
+   area 19 bbox 219,151,1,19 marksV 120.2 albedo in 50.8,0.9,8.2 ring 83.8,4.4,19.8 dE 35.1 dL -33 C 8.3/20.2 finalDL -95.2 rough 57.2/84 height 80.2/128 nDE 35.5 edge w50 1 hard 1 band 0 n 10
+   area 19 bbox 111,346,1,19 marksV 120.2 albedo in 48.1,1.1,9 ring 79.3,4.7,21.3 dE 33.8 dL -31.2 C 9.1/21.8 finalDL -74.7 rough 60.2/89 height 80.2/128 nDE 32.2 edge w50 1 hard 1 band 0 n 9
+elf-female-marked-bare/channels/back-closeup/studio: mask 9132 px, 12 comps
+   area 7335 bbox 128,313,162,112 marksV 22.4 albedo in 29.5,2.4,7.5 ring 81.9,5,21.8 dE 54.4 dL -52.4 C 7.7/22.4 finalDL -98.1 rough 89/89 height 128/128 nDE 3.6 edge w50 1 hard 0.533 band 0.015 n 195
+   area 198 bbox 134,288,94,15 marksV 188.7 albedo in 75.1,14.4,22.8 ring 81.9,5.2,22.6 dE 11.5 dL -6.8 C 26.8/23.3 finalDL -10.4 rough 78/89 height 132/128 nDE 2.2 edge w50 1 hard 0.535 band 0 n 43
+   area 124 bbox 0,550,25,8 marksV 143.3 albedo in 64,2.7,10.3 ring 86,3.1,16 dE 22.7 dL -22 C 10.5/16.3 finalDL -51.2 rough 82/82 height 128/128 nDE 0.7 edge w50 1 hard 0.6 band 0 n 5
+   area 96 bbox 144,276,50,9 marksV 188.7 albedo in 75.4,14.1,22.9 ring 81.6,5.4,22.6 dE 10.7 dL -6.2 C 26.9/23.3 finalDL -21.1 rough 78/89 height 132/128 nDE 3.4 edge w50 1 hard 0.667 band 0 n 21
+   area 74 bbox 139,302,43,11 marksV 187.8 albedo in 75.5,14.6,22.8 ring 82.2,5.2,22.6 dE 11.6 dL -6.8 C 27.2/23.4 finalDL -20.8 rough 78/89 height 132/128 nDE 4.7 edge w50 1 hard 0.65 band 0 n 20
+   area 36 bbox 168,306,35,8 marksV 189.4 albedo in 75.9,14,22.9 ring 82,5.1,22.7 dE 10.9 dL -6.1 C 26.8/23.4 finalDL -3.7 rough 78/89 height 132/128 nDE 5.6 edge w50 1 hard 0.75 band 0 n 8
+dwarf-male-marked-bare/channels/front-left-3q/studio: mask 1540 px, 23 comps
+   area 93 bbox 294,215,27,19 marksV 186.1 albedo in 60.1,16.7,23.2 ring 65.9,19.5,29.4 dE 9 dL -5.8 C 28.7/35.4 finalDL -15.6 rough 152/153 height 128/128 nDE 14.9 edge w50 3 hard 0.478 band 0.087 n 23
+   area 59 bbox 298,237,15,10 marksV 182.1 albedo in 59.7,16.5,23.2 ring 65.3,18.8,28.7 dE 8.1 dL -5.5 C 28.5/34.4 finalDL -16.6 rough 153/153 height 128/128 nDE 11.3 edge w50 1 hard 0.636 band 0.091 n 11
+   area 54 bbox 316,210,12,16 marksV 193.1 albedo in 62,18.7,26.9 ring 66,19.9,29.6 dE 4.9 dL -4 C 32.9/35.6 finalDL -26.6 rough 152/152 height 128/128 nDE 6.7 edge w50 3 hard 0.444 band 0 n 9
+   area 39 bbox 179,300,16,16 marksV 120.2 albedo in 40.8,8,12.7 ring 62.1,18.5,26.1 dE 27.2 dL -21.3 C 15/31.9 finalDL -32.1 rough 95.2/154 height 80.2/128 nDE 25 edge w50 7 hard 0 band 0 n 6
+   area 34 bbox 182,118,6,17 marksV 178 albedo in 58.7,17.7,20 ring 65.8,19.9,29.9 dE 12.4 dL -7.1 C 26.5/35.9 finalDL -22.6 rough 133/133 height 128/128 nDE 30.2 edge w50 2 hard 0.5 band 0.25 n 8
+   area 28 bbox 162,145,20,5 marksV 120.2 albedo in 39.2,9.6,13.4 ring 63.3,21.1,30.3 dE 31.6 dL -24.1 C 16.6/36.9 finalDL -65.2 rough 92.2/154 height 80.2/128 nDE 41.9 edge w50 3 hard 0.4 band 0 n 10
+dwarf-male-marked-bare/channels/face/studio: mask 1578 px, 16 comps
+   area 576 bbox 113,362,31,30 marksV 141.3 albedo in 50.1,15.3,-0.9 ring 66.4,19.6,29.5 dE 34.7 dL -16.3 C 16.5/35.3 finalDL -37.5 rough 133/133 height 128/128 nDE 10.5 edge w50 1 hard 0.59 band 0.051 n 39
+   area 92 bbox 248,356,18,43 marksV 192.6 albedo in 70,10.8,15.2 ring 65.8,20.1,29.8 dE 17.9 dL 4.3 C 18.5/35.8 finalDL 14.6 rough 112/133 height 128/128 nDE 7.3 edge w50 1 hard 0.571 band 0 n 21
+   area 85 bbox 97,313,28,36 marksV 120.2 albedo in 40.3,9.3,13.7 ring 65.1,20.3,30.1 dE 31.8 dL -24.9 C 16.5/36.3 finalDL -66.7 rough 85.2/135 height 80.2/128 nDE 33.5 edge w50 4 hard 0.478 band 0.13 n 23
+   area 35 bbox 92,383,2,35 marksV 75.9 albedo in 27,3.1,3.9 ring 65.7,19.9,29.4 dE 49.3 dL -38.7 C 5/35.5 finalDL -51.4 rough 60.7/144 height 55.7/128 nDE 30.5 edge w50 1 hard 1 band 0 n 16
+   area 30 bbox 252,288,3,21 marksV 164.7 albedo in 54.3,13.6,21.2 ring 67,19.3,29.5 dE 16.2 dL -12.7 C 25.5/35.2 finalDL -31.5 rough 107.7/134 height 95.7/128 nDE 24.5 edge w50 0 hard 1 band 0 n 7
+   area 26 bbox 80,419,12,26 marksV 164.7 albedo in 51.4,14.3,21.6 ring 61.7,21,29.5 dE 14.6 dL -10.3 C 26.2/36.1 finalDL -24.4 rough 122.7/155 height 103.7/128 nDE 21.4 edge w50 1 hard 1 band 0 n 7
+dwarf-male-marked-bare/channels/forearm/studio: mask 2796 px, 25 comps
+   area 600 bbox 182,152,50,57 marksV 103.1 albedo in 39,12.6,10.7 ring 66,19.9,29.5 dE 33.8 dL -27.1 C 16.4/35.8 finalDL -57.5 rough 152/152 height 128/128 nDE 1 edge w50 1 hard 0.52 band 0 n 50
+   area 531 bbox 136,198,51,45 marksV 92.2 albedo in 35.9,12,8.7 ring 65.5,19.9,29.8 dE 37.2 dL -29.7 C 15/35.8 finalDL -70.8 rough 153/153 height 128/128 nDE 3.6 edge w50 1 hard 0.702 band 0.018 n 57
+   area 392 bbox 113,249,43,40 marksV 130.1 albedo in 46.2,12.5,14.9 ring 65.2,18.8,28.5 dE 24.2 dL -19 C 19.9/34.1 finalDL -36.1 rough 153/153 height 128/128 nDE 6.6 edge w50 2 hard 0.429 band 0.167 n 42
+   area 115 bbox 111,185,27,39 marksV 186.5 albedo in 68.6,13.8,20 ring 71.7,15.9,26.3 dE 7.3 dL -3.1 C 24.3/30.9 finalDL -6.3 rough 122/148 height 134/128 nDE 6.7 edge w50 5 hard 0.385 band 0.038 n 26
+   area 35 bbox 106,264,35,29 marksV 118.9 albedo in 42.6,6.7,10.8 ring 65.7,17.3,26.8 dE 30 dL -23 C 12.8/31.8 finalDL -29.1 rough 90.2/150 height 80.2/128 nDE 40.6 edge w50 1 hard 0.556 band 0.111 n 9
+   area 27 bbox 96,281,27,24 marksV 120.2 albedo in 40,8.4,13 ring 64.9,19.6,29.4 dE 31.9 dL -24.9 C 15.7/35.5 finalDL -42.3 rough 92.2/153 height 80.2/128 nDE 34.3 edge w50 1 hard 1 band 0 n 6
+dwarf-male-marked-bare/channels/back-closeup/studio: mask 3636 px, 29 comps
+   area 1982 bbox 172,313,81,63 marksV 24.2 albedo in 23.7,8,8.6 ring 64.1,19.5,29 dE 46.7 dL -40.3 C 11.7/34.8 finalDL -73.1 rough 153/153 height 128/128 nDE 3.4 edge w50 1 hard 0.55 band 0.013 n 80
+   area 128 bbox 157,296,52,7 marksV 166.3 albedo in 58.1,29.7,29.9 ring 64.3,20.1,29.7 dE 11.4 dL -6.2 C 42.1/36 finalDL -15.8 rough 128/153 height 147/128 nDE 6.4 edge w50 6 hard 0.364 band 0 n 33
+   area 120 bbox 161,289,44,5 marksV 181.1 albedo in 60.4,26.5,29.8 ring 64.9,20,29.8 dE 7.9 dL -4.5 C 39.9/35.9 finalDL -25 rough 136/153 height 143/128 nDE 4.7 edge w50 7 hard 0.407 band 0 n 27
+   area 111 bbox 159,304,45,7 marksV 177.7 albedo in 59.8,27.1,29.9 ring 64.7,20,29.8 dE 8.6 dL -4.9 C 40.1/35.9 finalDL -18 rough 134/153 height 144/128 nDE 7.5 edge w50 3 hard 0.5 band 0 n 20
+   area 33 bbox 107,419,1,33 marksV 120.2 albedo in 39.3,8,12.6 ring 64,19.3,29 dE 31.7 dL -24.7 C 14.9/34.9 finalDL -38.9 rough 92.2/153 height 80.2/128 nDE 27.4 edge w50 1 hard 1 band 0 n 17
+   area 30 bbox 313,497,1,30 marksV 120.2 albedo in 38.2,7.7,12 ring 61.8,18.5,27.8 dE 30.4 dL -23.6 C 14.3/33.4 finalDL -33.2 rough 92.2/153 height 80.2/128 nDE 39.7 edge w50 1 hard 1 band 0 n 15
+dwarf-female-marked-bare/channels/front-left-3q/studio: mask 1582 px, 28 comps
+   area 102 bbox 294,215,25,18 marksV 183.1 albedo in 58,16.3,21.8 ring 63.3,19.8,28.9 dE 9.5 dL -5.3 C 27.2/35 finalDL -12.8 rough 149/152 height 128/128 nDE 12.3 edge w50 7 hard 0.111 band 0.167 n 18
+   area 72 bbox 309,207,19,11 marksV 190.1 albedo in 61.1,16.7,24.9 ring 64.6,18.8,28.7 dE 5.6 dL -3.5 C 30.1/34.3 finalDL -8.8 rough 149/150 height 128/128 nDE 10.7 edge w50 3 hard 0.4 band 0.067 n 15
+   area 69 bbox 295,237,17,12 marksV 178.1 albedo in 55,16.3,23.6 ring 62.2,18.9,28.7 dE 9.2 dL -7.2 C 28.6/34.5 finalDL -19.5 rough 152/153 height 128/128 nDE 8.2 edge w50 1 hard 0.692 band 0.077 n 13
+   area 43 bbox 182,111,5,16 marksV 179.2 albedo in 56.4,18.1,21.2 ring 63.4,20.1,30.1 dE 11.5 dL -7.1 C 26.7/36.2 finalDL -26.9 rough 133/133 height 128/128 nDE 20.7 edge w50 1 hard 0.714 band 0.143 n 7
+   area 25 bbox 253,209,14,16 marksV 120.2 albedo in 36.2,8.3,11.8 ring 59,19.2,28.2 dE 30.2 dL -22.8 C 14.8/34.4 finalDL -25.2 rough 92.2/153 height 80.2/128 nDE 42.5 edge w50 7 hard 0.167 band 0 n 6
+   area 19 bbox 151,191,8,13 marksV 120.2 albedo in 37.8,7.8,12 ring 61,18.7,28.1 dE 30.4 dL -23.2 C 14.3/33.7 finalDL -28.9 rough 92.2/153 height 80.2/128 nDE 25.7 edge w50 1 hard 1 band 0 n 4
+dwarf-female-marked-bare/channels/face/studio: mask 1406 px, 12 comps
+   area 579 bbox 115,345,34,32 marksV 141.3 albedo in 48.2,15.6,-1.6 ring 63.4,20.1,30.1 dE 35.4 dL -15.2 C 16.8/36.2 finalDL -38.1 rough 133/133 height 128/128 nDE 5.5 edge w50 1 hard 0.529 band 0.118 n 34
+   area 111 bbox 239,341,27,41 marksV 191.3 albedo in 67.3,11.6,16 ring 62.8,20.2,30.2 dE 17.3 dL 4.5 C 19.8/36.4 finalDL 11.3 rough 113/133 height 128/128 nDE 0.6 edge w50 1 hard 0.679 band 0 n 28
+   area 25 bbox 115,303,10,15 marksV 120.2 albedo in 38.6,9.4,13.6 ring 62.4,20.7,30.4 dE 31.2 dL -23.8 C 16.2/36.8 finalDL -65.7 rough 85.2/136 height 80.2/128 nDE 28.4 edge w50 1 hard 1 band 0 n 7
+   area 25 bbox 94,330,1,25 marksV 120.2 albedo in 39.6,8.3,13 ring 63.4,20.1,30.1 dE 31.7 dL -23.8 C 15.7/36.3 finalDL -68.3 rough 87.2/136 height 80.2/128 nDE 44.8 edge w50 null hard 0 band 0 n 0
+   area 24 bbox 331,266,21,21 marksV 120.2 albedo in 37.8,9.4,13.3 ring 61.7,20.7,30.5 dE 31.5 dL -23.9 C 16.3/36.9 finalDL -79 rough 93.2/147 height 80.2/128 nDE 45.2 edge w50 1 hard 1 band 0 n 6
+   area 21 bbox 126,229,10,21 marksV 120.2 albedo in 38.2,9.4,13.3 ring 62.4,20.7,30.6 dE 31.8 dL -24.2 C 16.3/37.1 finalDL -83.9 rough 93.2/152 height 80.2/128 nDE 33.8 edge w50 1 hard 1 band 0 n 5
+dwarf-female-marked-bare/channels/forearm/studio: mask 2990 px, 21 comps
+   area 724 bbox 114,159,66,67 marksV 122.1 albedo in 41.2,12.7,12.8 ring 63.4,19.3,28.5 dE 27.9 dL -22.1 C 18/34.5 finalDL -59.1 rough 151/152 height 128/128 nDE 3.6 edge w50 1 hard 0.542 band 0.069 n 72
+   area 647 bbox 160,132,59,38 marksV 105.3 albedo in 39.4,11.9,10.5 ring 65.9,18.3,28.1 dE 32.3 dL -26.4 C 16/33.5 finalDL -71.5 rough 149/149 height 128/128 nDE 0.7 edge w50 2 hard 0.347 band 0.02 n 49
+   area 439 bbox 109,239,46,44 marksV 122.1 albedo in 41.9,12.9,13.6 ring 62.2,18.8,28.6 dE 25.9 dL -20.4 C 18.9/34.2 finalDL -39.3 rough 153/153 height 128/128 nDE 5.1 edge w50 1 hard 0.595 band 0.024 n 42
+   area 37 bbox 147,317,27,13 marksV 146.4 albedo in 50,13.7,21.2 ring 61.8,20,29.4 dE 15.7 dL -11.9 C 25.3/35.4 finalDL -28.7 rough 119.2/153 height 103.7/128 nDE 44.6 edge w50 1 hard 0.692 band 0 n 13
+   area 34 bbox 265,228,1,34 marksV 120.2 albedo in 38.8,8.4,12.9 ring 62.7,19.8,29.7 dE 31.3 dL -23.9 C 15.4/35.9 finalDL -63.8 rough 92.2/153 height 80.2/128 nDE 33.4 edge w50 1 hard 1 band 0 n 17
+   area 27 bbox 264,190,1,27 marksV 120.2 albedo in 38.9,8.8,13.6 ring 62.9,19.7,30 dE 31.1 dL -24 C 16.2/35.9 finalDL -37.6 rough 92.2/153 height 80.2/128 nDE 35.1 edge w50 null hard 0 band 0 n 0
+dwarf-female-marked-bare/channels/back-closeup/studio: mask 3779 px, 32 comps
+   area 2147 bbox 169,306,83,67 marksV 24.2 albedo in 22.3,8,8.1 ring 59.7,19.8,29 dE 44.4 dL -37.4 C 11.3/35 finalDL -67.2 rough 153/153 height 128/128 nDE 3.2 edge w50 6 hard 0.318 band 0.034 n 88
+   area 149 bbox 154,293,55,7 marksV 172.1 albedo in 55.1,27.9,29.7 ring 60,20.4,29.5 dE 8.9 dL -4.9 C 40.7/36 finalDL -24.2 rough 132/153 height 145/128 nDE 2.2 edge w50 4 hard 0.156 band 0 n 32
+   area 131 bbox 159,286,47,5 marksV 173.9 albedo in 56.5,27.4,29.9 ring 61.1,20.5,29.8 dE 8.3 dL -4.6 C 40.6/36.1 finalDL -26.2 rough 133/153 height 144/128 nDE 4.3 edge w50 6 hard 0.143 band 0 n 21
+   area 122 bbox 157,302,47,7 marksV 170.5 albedo in 56,28.2,29.8 ring 60.3,20.3,29.7 dE 9 dL -4.4 C 41/35.9 finalDL -12.8 rough 131/153 height 146/128 nDE 5.3 edge w50 6 hard 0.375 band 0 n 24
+   area 34 bbox 107,366,27,34 marksV 120.2 albedo in 38.1,8.9,13.1 ring 61.8,20,29.5 dE 30.9 dL -23.7 C 15.9/35.7 finalDL -33.2 rough 92.2/153 height 80.2/128 nDE 30.6 edge w50 1 hard 1 band 0 n 10
+   area 26 bbox 166,516,13,26 marksV 164.7 albedo in 46.2,12.2,19 ring 57.6,17.7,26.6 dE 14.8 dL -11.4 C 22.5/32.1 finalDL -20.4 rough 122.7/153 height 103.7/128 nDE 29 edge w50 1 hard 1 band 0 n 6
+ork-male-marked-bare/channels/front-left-3q/studio: mask 1562 px, 31 comps
+   area 46 bbox 312,215,10,10 marksV 193.1 albedo in 58.1,-26.4,34.6 ring 61.3,-28.3,37.5 dE 4.7 dL -3.2 C 43.5/47 finalDL -8.7 rough 178/178 height 165/162 nDE 8.1 edge w50 6 hard 0.154 band 0.077 n 13
+   area 41 bbox 305,228,11,8 marksV 188.1 albedo in 54.2,-25.2,32.6 ring 60.3,-27.7,36.9 dE 7.9 dL -6.1 C 41.3/46.2 finalDL -14.5 rough 179/179 height 149/152 nDE 5.3 edge w50 6 hard 0.364 band 0 n 11
+   area 36 bbox 297,238,12,8 marksV 191.1 albedo in 55.5,-25,32.4 ring 58.9,-26.6,35.6 dE 4.9 dL -3.4 C 40.7/44.4 finalDL -11.5 rough 180/179 height 152/157 nDE 5.1 edge w50 6 hard 0.111 band 0.222 n 9
+   area 32 bbox 267,147,32,12 marksV 120.2 albedo in 37.8,-17.7,18.7 ring 58.3,-28.3,37.3 dE 29.7 dL -20.5 C 25.7/46.8 finalDL -54.9 rough 105.2/178 height 99.2/162 nDE 31.6 edge w50 1 hard 1 band 0 n 13
+   area 28 bbox 315,205,12,8 marksV 199.1 albedo in 57,-26.3,34.4 ring 61.6,-27.8,37 dE 5.5 dL -4.6 C 43.3/46.4 finalDL -11 rough 176/177 height 163/157 nDE 17.5 edge w50 2 hard 0.5 band 0 n 6
+   area 27 bbox 255,210,16,12 marksV 120.2 albedo in 39.4,-16.4,16.5 ring 54.5,-26,34.1 dE 25.1 dL -15.1 C 23.2/42.9 finalDL -25.3 rough 108.2/179 height 99.2/157 nDE 48.3 edge w50 3 hard 0.167 band 0 n 6
+ork-male-marked-bare/channels/face/studio: mask 1250 px, 13 comps
+   area 178 bbox 108,389,12,31 marksV 165.1 albedo in 55.2,-17.7,11.6 ring 63.9,-28.8,38.1 dE 30.1 dL -8.7 C 21.7/47.8 finalDL -15.7 rough 159/159 height 128/128 nDE 7.8 edge w50 3 hard 0.238 band 0.048 n 21
+   area 82 bbox 231,390,13,32 marksV 189.3 albedo in 67.5,-16.2,20.6 ring 65.4,-28.1,37.2 dE 20.5 dL 2.1 C 26.2/46.5 finalDL 5.3 rough 134/159 height 128/127 nDE 1.7 edge w50 7 hard 0.227 band 0 n 22
+   area 30 bbox 96,399,6,10 marksV 173.2 albedo in 59.1,-20.2,15.7 ring 66.3,-27.7,37.1 dE 23.8 dL -7.1 C 25.6/46.3 finalDL -6.9 rough 159/159 height 128/128 nDE 3.7 edge w50 3 hard 0.167 band 0.167 n 6
+   area 25 bbox 323,282,4,15 marksV 108.2 albedo in 33.5,-16.4,18.6 ring 59.7,-29.4,38.9 dE 35.5 dL -26.2 C 26/48.7 finalDL -93.3 rough 93.2/177 height 67.9/128 nDE 41.2 edge w50 2 hard 0.333 band 0.167 n 6
+   area 22 bbox 122,266,20,5 marksV 117.1 albedo in 36.9,-15,21.1 ring 62,-28.2,37.5 dE 32.8 dL -25.1 C 25.9/46.9 finalDL -45.8 rough 92.1/162 height 79.2/128 nDE 34.5 edge w50 1 hard 1 band 0 n 2
+   area 21 bbox 356,436,21,20 marksV 164.7 albedo in 46.2,-23.3,27.9 ring 56.7,-29.1,37.8 dE 15.5 dL -10.5 C 36.3/47.6 finalDL -31.7 rough 141.7/179 height 120.5/157 nDE 17.6 edge w50 1 hard 0.889 band 0.111 n 9
+ork-male-marked-bare/channels/forearm/studio: mask 2715 px, 30 comps
+   area 417 bbox 157,170,41,33 marksV 126.1 albedo in 42.5,-18.8,20.2 ring 61.7,-28.3,37.9 dE 27.7 dL -19.2 C 27.6/47.3 finalDL -45.9 rough 178/178 height 164/163 nDE 0.5 edge w50 2 hard 0.468 band 0 n 47
+   area 320 bbox 128,216,38,29 marksV 124.1 albedo in 41,-18.2,18.8 ring 59.5,-27.7,36.9 dE 27.6 dL -18.6 C 26.3/46.2 finalDL -29.4 rough 179/179 height 149/151 nDE 0.9 edge w50 1 hard 0.75 band 0 n 36
+   area 314 bbox 191,135,40,27 marksV 157.9 albedo in 47.4,-21.4,25.4 ring 60,-27.7,36.7 dE 18 dL -12.6 C 33.4/46 finalDL -33.3 rough 177/177 height 163/160 nDE 0.9 edge w50 2 hard 0.333 band 0 n 30
+   area 232 bbox 110,249,33,30 marksV 146 albedo in 45.1,-19.9,22.7 ring 58.9,-27.1,36 dE 20.6 dL -13.9 C 30.2/45.1 finalDL -24.4 rough 180/179 height 152/154 nDE 2.4 edge w50 1 hard 0.519 band 0 n 27
+   area 115 bbox 102,270,36,25 marksV 192 albedo in 55.1,-22.8,29.7 ring 59.2,-25.5,34.4 dE 6.8 dL -4.1 C 37.6/42.9 finalDL -7.4 rough 177/179 height 155/156 nDE 3 edge w50 1 hard 0.619 band 0 n 21
+   area 84 bbox 99,176,14,30 marksV 179.7 albedo in 65.1,-15.7,23.8 ring 68.7,-24.2,33 dE 13 dL -3.6 C 29.6/40.9 finalDL -7.2 rough 139/172 height 172/166 nDE 16.2 edge w50 1 hard 0.526 band 0 n 19
+ork-male-marked-bare/channels/back-closeup/studio: mask 2827 px, 24 comps
+   area 1246 bbox 180,317,64,49 marksV 37.2 albedo in 28.9,-12.1,11 ring 57.4,-27.1,35.7 dE 40.6 dL -28.4 C 16.3/44.9 finalDL -49.8 rough 179/179 height 161/158 nDE 1.4 edge w50 2 hard 0.41 band 0.051 n 78
+   area 109 bbox 161,292,42,6 marksV 171.2 albedo in 51.4,-16.6,33 ring 55.7,-28.1,36.6 dE 12.8 dL -4.3 C 37.1/46.1 finalDL -20.7 rough 156/179 height 176/165 nDE 5.2 edge w50 6 hard 0.4 band 0.04 n 25
+   area 91 bbox 163,299,36,6 marksV 170.2 albedo in 50.8,-16.1,32.5 ring 55.3,-28,36.6 dE 13.4 dL -4.5 C 36.4/46 finalDL -11.9 rough 155/179 height 180/160 nDE 5.3 edge w50 6 hard 0.118 band 0 n 17
+   area 90 bbox 165,287,35,5 marksV 173.2 albedo in 52.1,-17.2,33.3 ring 56.7,-28.4,36.9 dE 12.7 dL -4.7 C 37.4/46.7 finalDL -30.9 rough 157/179 height 173/164 nDE 9.3 edge w50 7 hard 0.214 band 0.071 n 14
+   area 35 bbox 312,414,1,35 marksV 120.2 albedo in 38.2,-17.7,18.6 ring 60.6,-28.4,38 dE 31.5 dL -22.4 C 25.7/47.5 finalDL -30.6 rough 105.2/179 height 84.2/128 nDE 33.3 edge w50 null hard 0 band 0 n 0
+   area 28 bbox 361,353,28,19 marksV 120.2 albedo in 37.2,-16.2,16.8 ring 59.8,-26,35 dE 30.6 dL -22.6 C 23.3/43.6 finalDL -29.8 rough 105.2/178 height 92.2/163 nDE 52.7 edge w50 1 hard 1 band 0 n 7
+ork-female-marked-bare/channels/front-left-3q/studio: mask 1690 px, 35 comps
+   area 53 bbox 313,215,12,11 marksV 191.1 albedo in 58,-22.6,29.9 ring 61,-24.4,33 dE 4.7 dL -3 C 37.5/41.1 finalDL -5 rough 175/175 height 156/153 nDE 6.8 edge w50 3 hard 0.444 band 0.111 n 9
+   area 49 bbox 305,229,12,10 marksV 185.1 albedo in 52,-22.7,29.8 ring 57.1,-25.5,34 dE 7.2 dL -5.2 C 37.5/42.5 finalDL -13.4 rough 179/179 height 153/151 nDE 4.2 edge w50 7 hard 0.167 band 0.167 n 12
+   area 42 bbox 296,240,13,9 marksV 191 albedo in 52.8,-22.2,29.1 ring 57.3,-24.6,33 dE 6.3 dL -4.5 C 36.7/41.2 finalDL -12.1 rough 179/179 height 158/155 nDE 2.7 edge w50 7 hard 0.111 band 0.111 n 9
+   area 41 bbox 277,212,13,23 marksV 120.2 albedo in 29.5,-14.2,13.5 ring 54.5,-22.9,30.5 dE 31.5 dL -25 C 19.6/38.2 finalDL -52.3 rough 108.2/180 height 99.2/161 nDE 35.4 edge w50 6 hard 0 band 0.143 n 7
+   area 41 bbox 285,246,16,9 marksV 196.1 albedo in 54.7,-20.4,27.4 ring 58.2,-23.7,31.9 dE 6.5 dL -3.4 C 34.2/39.7 finalDL -13 rough 174/176 height 150/154 nDE 10.2 edge w50 1 hard 0.545 band 0 n 11
+   area 29 bbox 158,177,3,18 marksV 120.2 albedo in 34.9,-15.6,15.8 ring 53.8,-24.8,33.1 dE 27.2 dL -18.9 C 22.2/41.4 finalDL -28.3 rough 105.2/179 height 99.2/153 nDE 30.7 edge w50 6 hard 0.222 band 0 n 9
+ork-female-marked-bare/channels/face/studio: mask 1374 px, 8 comps
+   area 235 bbox 103,376,14,33 marksV 155.1 albedo in 50.1,-15.1,6.5 ring 60.4,-27.1,36.2 dE 33.7 dL -10.2 C 16.5/45.2 finalDL -24.6 rough 158/158 height 128/127 nDE 9.2 edge w50 2 hard 0.333 band 0.143 n 21
+   area 101 bbox 231,376,16,39 marksV 187.6 albedo in 63.8,-15.2,18.3 ring 58.9,-26.6,35.5 dE 21.2 dL 5 C 23.8/44.4 finalDL 18.8 rough 134/158 height 128/126 nDE 3.2 edge w50 6 hard 0.5 band 0 n 24
+   area 29 bbox 357,434,29,29 marksV 164.7 albedo in 43.3,-22.1,26.5 ring 53.2,-27.1,35.4 dE 14.2 dL -9.8 C 34.4/44.6 finalDL -29.7 rough 141.7/179 height 112.7/142 nDE 16.7 edge w50 null hard 0 band 0 n 0
+   area 28 bbox 337,275,25,20 marksV 120.2 albedo in 36.2,-17.1,17.8 ring 56.1,-27.7,36.6 dE 29.4 dL -19.9 C 24.7/45.9 finalDL -58.5 rough 104.2/176 height 80.2/128 nDE 38.9 edge w50 1 hard 0.714 band 0 n 7
+   area 14 bbox 93,389,4,6 marksV 188.9 albedo in 58.4,-16.7,18 ring 60.8,-26.7,35.7 dE 20.4 dL -2.4 C 27.4/44.7 finalDL -5.9 rough 159/159 height 132/129 nDE 2.9 edge w50 2 hard 0 band 0 n 4
+   area 13 bbox 160,226,13,1 marksV 153.2 albedo in 49.9,-23.3,34 ring 57.1,-26.6,35.2 dE 8 dL -7.3 C 41.1/44.1 finalDL -29.6 rough 136.2/175 height 114.3/127 nDE 33.3 edge w50 null hard 0 band 0 n 0
+ork-female-marked-bare/channels/forearm/studio: mask 2646 px, 23 comps
+   area 458 bbox 163,165,43,35 marksV 121.1 albedo in 41,-15.6,16.4 ring 61.8,-24.8,33.3 dE 28.3 dL -20.8 C 22.7/41.5 finalDL -54.6 rough 175/175 height 157/156 nDE 0.8 edge w50 2 hard 0.435 band 0.032 n 62
+   area 346 bbox 130,212,40,31 marksV 122.1 albedo in 38.8,-16.2,16 ring 56.7,-25.5,34.3 dE 27.3 dL -17.9 C 22.9/42.8 finalDL -31.7 rough 179/179 height 155/153 nDE 1.7 edge w50 2 hard 0.488 band 0 n 41
+   area 236 bbox 112,245,35,32 marksV 145 albedo in 43.4,-18.1,20.5 ring 56.6,-24.4,32.8 dE 19.1 dL -13.2 C 27.5/40.9 finalDL -21.8 rough 179/179 height 157/157 nDE 1.3 edge w50 1 hard 0.583 band 0 n 36
+   area 133 bbox 101,170,20,43 marksV 180.1 albedo in 62.6,-14.5,22.6 ring 65.6,-22.3,30.5 dE 11.5 dL -2.9 C 26.9/37.8 finalDL -5.7 rough 142/173 height 168/157 nDE 23.4 edge w50 5 hard 0.387 band 0 n 31
+   area 115 bbox 101,262,46,35 marksV 179.9 albedo in 50.8,-19.9,25.6 ring 56.7,-24.2,32.3 dE 9.9 dL -5.9 C 32.8/40.3 finalDL -11.8 rough 174/178 height 150/152 nDE 10.8 edge w50 1 hard 0.545 band 0.091 n 22
+   area 76 bbox 204,137,14,11 marksV 147.3 albedo in 48,-17.4,21.2 ring 61.1,-24.2,32.6 dE 18.7 dL -13.1 C 27.6/40.6 finalDL -35.5 rough 174/175 height 148/149 nDE 3.1 edge w50 2 hard 0.077 band 0 n 13
+ork-female-marked-bare/channels/back-closeup/studio: mask 3140 px, 31 comps
+   area 1510 bbox 177,306,70,54 marksV 37.2 albedo in 27.8,-11.3,9.9 ring 52,-24.8,32.6 dE 35.8 dL -24.2 C 15/41 finalDL -43.5 rough 179/179 height 162/162 nDE 1.5 edge w50 2 hard 0.283 band 0.057 n 106
+   area 121 bbox 161,286,44,7 marksV 169.3 albedo in 48.3,-14.6,30.3 ring 51.8,-25.5,33.8 dE 11.9 dL -3.5 C 33.5/42.4 finalDL -15 rough 155/179 height 168/151 nDE 2 edge w50 6 hard 0.444 band 0.111 n 18
+   area 105 bbox 162,292,39,8 marksV 169.3 albedo in 47.3,-13.7,29.9 ring 51.1,-25.4,33.4 dE 12.9 dL -3.8 C 32.9/42 finalDL -12.8 rough 155/179 height 168/150 nDE 4.6 edge w50 4 hard 0.333 band 0.095 n 21
+   area 104 bbox 165,280,38,6 marksV 170.3 albedo in 47.9,-14.2,30.3 ring 52.1,-25.9,33.8 dE 12.9 dL -4.2 C 33.6/42.6 finalDL -12.9 rough 155/179 height 175/155 nDE 6.8 edge w50 5 hard 0.471 band 0.059 n 17
+   area 41 bbox 188,188,39,8 marksV 137.9 albedo in 45.5,-21.2,31.2 ring 61.1,-27.1,36.2 dE 17.4 dL -15.6 C 37.8/45.3 finalDL -17 rough 123.6/179 height 97.9/128 nDE 54.7 edge w50 2 hard 0.4 band 0.2 n 5
+   area 33 bbox 281,325,13,16 marksV 120.2 albedo in 33.7,-14.4,14.4 ring 47.5,-21.8,28.3 dE 20.9 dL -13.8 C 20.3/35.6 finalDL -15.7 rough 106.2/184 height 97.2/159 nDE 47.1 edge w50 7 hard 0.111 band 0 n 9

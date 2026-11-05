@@ -1,0 +1,52 @@
+### 1. capture ink (same mask law as closing-F/ink.py): albedo/final ink-vs-ring dL
+ork-female  forearm        r07q-before-F  inkPx  1156 albedo ink 39.9 ring 59.5 dL -19.7 | final dL -16.5
+ork-female  forearm        r07q-closing   inkPx  1068 albedo ink 51.8 ring 64.9 dL -13.1 | final dL -10.2
+ork-female  forearm        r08q-parent    inkPx  1062 albedo ink 42.7 ring 64.6 dL -21.9 | final dL -18.3
+   r08q vs before-F on common ink px: IoU 0.919 albedo dL mean +4.51 p95 13.2 share|dL|>5 0.435
+ork-female  front-left-3q  r07q-before-F  inkPx   152 albedo ink 40.5 ring 57.0 dL -16.5 | final dL -14.4
+ork-female  front-left-3q  r07q-closing   inkPx   159 albedo ink 43.3 ring 59.8 dL -16.6 | final dL -14.3
+ork-female  front-left-3q  r08q-parent    inkPx   159 albedo ink 42.6 ring 59.8 dL -17.3 | final dL -14.9
+   r08q vs before-F on common ink px: IoU 0.944 albedo dL mean +1.75 p95 14.3 share|dL|>5 0.139
+human-male  forearm        r07q-before-F  inkPx   863 albedo ink 44.7 ring 68.7 dL -24.0 | final dL -20.2
+human-male  forearm        r07q-closing   inkPx   842 albedo ink 44.2 ring 68.5 dL -24.2 | final dL -20.3
+human-male  forearm        r08q-parent    inkPx   842 albedo ink 44.2 ring 68.5 dL -24.2 | final dL -20.3
+   r08q vs before-F on common ink px: IoU 0.976 albedo dL mean +0.16 p95 0.0 share|dL|>5 0.024
+human-male  front-left-3q  r07q-before-F  inkPx   385 albedo ink 43.4 ring 66.8 dL -23.4 | final dL -20.1
+human-male  front-left-3q  r07q-closing   inkPx   405 albedo ink 43.6 ring 66.9 dL -23.3 | final dL -19.8
+human-male  front-left-3q  r08q-parent    inkPx   405 albedo ink 43.6 ring 66.9 dL -23.3 | final dL -19.8
+   r08q vs before-F on common ink px: IoU 0.936 albedo dL mean +0.01 p95 0.0 share|dL|>5 0.000
+elf-female  forearm        r07q-before-F  inkPx   322 albedo ink 49.8 ring 80.1 dL -30.3 | final dL -22.6
+elf-female  forearm        r07q-closing   inkPx   322 albedo ink 52.5 ring 80.6 dL -28.1 | final dL -20.6
+elf-female  forearm        r08q-parent    inkPx   322 albedo ink 50.2 ring 80.6 dL -30.3 | final dL -22.7
+   r08q vs before-F on common ink px: IoU 1.000 albedo dL mean +0.40 p95 2.3 share|dL|>5 0.000
+elf-female  front-left-3q  r07q-before-F  inkPx   413 albedo ink 48.3 ring 77.4 dL -29.0 | final dL -24.0
+elf-female  front-left-3q  r07q-closing   inkPx   417 albedo ink 48.9 ring 77.6 dL -28.7 | final dL -23.0
+elf-female  front-left-3q  r08q-parent    inkPx   417 albedo ink 48.7 ring 77.6 dL -28.9 | final dL -23.2
+   r08q vs before-F on common ink px: IoU 0.912 albedo dL mean +0.11 p95 0.5 share|dL|>5 0.000
+dwarf-male  forearm        r07q-before-F  inkPx  1409 albedo ink 38.8 ring 66.8 dL -28.1 | final dL -26.3
+dwarf-male  forearm        r07q-closing   inkPx  1352 albedo ink 40.8 ring 67.9 dL -27.1 | final dL -25.8
+dwarf-male  forearm        r08q-parent    inkPx  1352 albedo ink 38.4 ring 67.9 dL -29.5 | final dL -27.6
+   r08q vs before-F on common ink px: IoU 0.960 albedo dL mean +0.82 p95 7.1 share|dL|>5 0.081
+dwarf-male  front-left-3q  r07q-before-F  inkPx   116 albedo ink 52.3 ring 66.5 dL -14.2 | final dL -13.8
+dwarf-male  front-left-3q  r07q-closing   inkPx   118 albedo ink 54.0 ring 68.4 dL -14.5 | final dL -13.7
+dwarf-male  front-left-3q  r08q-parent    inkPx   118 albedo ink 53.1 ring 68.4 dL -15.3 | final dL -14.3
+   r08q vs before-F on common ink px: IoU 0.814 albedo dL mean +1.36 p95 10.8 share|dL|>5 0.105
+
+### 2. ork forearm BAND tattoo component x163-205 y165-199 (Z-147 region), albedo L* and ink-vs-ring dE76
+r07q-before-F  px 394 albedo L* ink 39.1 ring 61.7 dE 31.7 | final L* ink 36.5 dE 30.4
+r07q-closing   px 394 albedo L* ink 63.7 ring 72.6 dE 18.1 | final L* ink 60.5 dE 16.5
+r08q-parent    px 394 albedo L* ink 46.8 ring 72.6 dE 29.4 | final L* ink 44.1 dE 28.9
+
+### 3. own GPU on/off probe (aEdge zeroed, same rig+camera, forearm, capture MARKED_SET): before=F snapshot, after=F closing, parent=work tree now
+ork-female  before  inkPx  240 albedo contrast -31.2 (edge off -31.2) final -27.3 (off -27.3) | edge lift on ink +0.00 share>5 0.000 ring +0.00 | edge on bare skin: share>5L 0.0000 p99 0.0 max 0.0
+ork-female  after   inkPx  240 albedo contrast -15.6 (edge off -31.2) final -12.4 (off -27.3) | edge lift on ink +23.12 share>5 0.688 ring +7.51 | edge on bare skin: share>5L 0.0645 p99 18.0 max 20.9
+ork-female  parent  inkPx  240 albedo contrast -34.3 (edge off -31.2) final -30.1 (off -27.3) | edge lift on ink +4.43 share>5 0.550 ring +7.51 | edge on bare skin: share>5L 0.0645 p99 18.0 max 20.9
+human-male  before  inkPx  104 albedo contrast -36.9 (edge off -36.9) final -32.6 (off -32.6) | edge lift on ink +0.00 share>5 0.000 ring +0.00 | edge on bare skin: share>5L 0.0000 p99 0.0 max 0.0
+human-male  after   inkPx  104 albedo contrast -36.9 (edge off -36.9) final -32.6 (off -32.6) | edge lift on ink +0.06 share>5 0.000 ring +0.08 | edge on bare skin: share>5L 0.0211 p99 8.4 max 12.8
+human-male  parent  inkPx  104 albedo contrast -37.0 (edge off -36.9) final -32.7 (off -32.6) | edge lift on ink +0.01 share>5 0.000 ring +0.08 | edge on bare skin: share>5L 0.0210 p99 8.4 max 12.8
+elf-female  before  inkPx   30 albedo contrast -46.3 (edge off -46.3) final -42.4 (off -42.4) | edge lift on ink +0.00 share>5 0.000 ring +0.00 | edge on bare skin: share>5L 0.0000 p99 0.0 max 0.0
+elf-female  after   inkPx   30 albedo contrast -37.4 (edge off -46.3) final -33.9 (off -42.4) | edge lift on ink +10.59 share>5 0.633 ring +1.66 | edge on bare skin: share>5L 0.0100 p99 5.0 max 6.5
+elf-female  parent  inkPx   30 albedo contrast -47.4 (edge off -46.3) final -43.4 (off -42.4) | edge lift on ink +0.57 share>5 0.000 ring +1.66 | edge on bare skin: share>5L 0.0100 p99 5.0 max 6.5
+dwarf-male  before  inkPx  521 albedo contrast -39.7 (edge off -39.7) final -36.7 (off -36.7) | edge lift on ink +0.00 share>5 0.000 ring +0.00 | edge on bare skin: share>5L 0.0000 p99 0.0 max 0.0
+dwarf-male  after   inkPx  521 albedo contrast -37.9 (edge off -39.7) final -35.4 (off -36.7) | edge lift on ink +3.53 share>5 0.113 ring +1.78 | edge on bare skin: share>5L 0.0314 p99 12.7 max 15.8
+dwarf-male  parent  inkPx  521 albedo contrast -41.0 (edge off -39.7) final -37.7 (off -36.7) | edge lift on ink +0.43 share>5 0.044 ring +1.78 | edge on bare skin: share>5L 0.0314 p99 12.7 max 15.8

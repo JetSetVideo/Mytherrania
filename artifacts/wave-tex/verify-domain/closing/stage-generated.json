@@ -1,0 +1,24 @@
+{
+ "scars": 3023,
+ "keloid": 417,
+ "hypertrophicActive": 64,
+ "wrongText": {},
+ "wrongTotal": 0,
+ "examples": [],
+ "raisedWords": 463,
+ "overClaim": {
+  "hypertrophic 'maturing: raised, pink (flattens over 1-2 years)'": 1
+ },
+ "overClaimTotal": 1,
+ "overClaimExamples": [
+  {
+   "race": "ork",
+   "kind": "puncture",
+   "ageDays": 533,
+   "keloid": false,
+   "hypertrophic": true,
+   "heightMm": -0.184,
+   "text": "maturing: raised, pink (flattens over 1-2 years)"
+  }
+ ]
+}

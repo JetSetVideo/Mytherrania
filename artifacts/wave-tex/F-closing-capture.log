@@ -1,0 +1,28 @@
+run r07q-closing: src /Users/macmax/Desktop/Mytherrania commit 19f5c8c+966d6c quick features {"channels":true,"marks":true,"presets":true,"layers":true}
+human-male-reference: build 848.2 ms, tris 10748, layers 58, marks 0 req / 0 decals / 0 covered, views final/albedo/roughness/height/normal/ao/marks
+human-male-marked: build 85.3 ms, tris 10748, layers 58, marks 6 req / 2 decals / 4 covered, views final/albedo/roughness/height/normal/ao/marks
+human-male-marked-bare: build 80.8 ms, tris 10748, layers 25, marks 6 req / 6 decals / 0 covered, views final/albedo/roughness/height/normal/ao/marks
+ork-female-reference: build 1286.3 ms, tris 10302, layers 58, marks 0 req / 0 decals / 0 covered, views final/albedo/roughness/height/normal/ao/marks
+ork-female-marked: build 54.6 ms, tris 10302, layers 58, marks 6 req / 2 decals / 4 covered, views final/albedo/roughness/height/normal/ao/marks
+ork-female-marked-bare: build 41.8 ms, tris 10302, layers 25, marks 6 req / 6 decals / 0 covered, views final/albedo/roughness/height/normal/ao/marks
+elf-female-reference: build 1127.5 ms, tris 11091, layers 58, marks 0 req / 0 decals / 0 covered, views final/albedo/roughness/height/normal/ao/marks
+elf-female-marked: build 64.6 ms, tris 11091, layers 58, marks 6 req / 2 decals / 4 covered, views final/albedo/roughness/height/normal/ao/marks
+elf-female-marked-bare: build 72.8 ms, tris 11091, layers 25, marks 6 req / 6 decals / 0 covered, views final/albedo/roughness/height/normal/ao/marks
+dwarf-male-reference: build 994.1 ms, tris 11264, layers 58, marks 0 req / 0 decals / 0 covered, views final/albedo/roughness/height/normal/ao/marks
+dwarf-male-marked: build 55.8 ms, tris 11264, layers 58, marks 6 req / 2 decals / 4 covered, views final/albedo/roughness/height/normal/ao/marks
+dwarf-male-marked-bare: build 52.8 ms, tris 11264, layers 25, marks 6 req / 6 decals / 0 covered, views final/albedo/roughness/height/normal/ao/marks
+marks effect (marked vs reference, same run):
+  human-male-marked-angles               0.0191 %  front:0.0072 back:0 front-left-3q:0.0047 face:0.1025 forearm:0 back-closeup:0
+  human-male-marked-lights               0.0043 %  front-left-3q:0.0047 front-left-3q:0.0013 front-left-3q:0.0047 front-left-3q:0.0064 front-left-3q:0.0047
+  human-male-marked-channels             0.0013 %  front-left-3q:0.0047 front-left-3q:0.0047 front-left-3q:0 front-left-3q:0 front-left-3q:0 front-left-3q:0 front-left-3q:0.0085 forearm:0 forearm:0 forearm:0 forearm:0 forearm:0 forearm:0 forearm:0
+  ork-female-marked-angles               0.0221 %  front:0.0038 back:0 front-left-3q:0.0021 face:0.1267 forearm:0 back-closeup:0
+  ork-female-marked-lights               0.0022 %  front-left-3q:0.0021 front-left-3q:0 front-left-3q:0.003 front-left-3q:0.0034 front-left-3q:0.0026
+  ork-female-marked-channels             0.0008 %  front-left-3q:0.0021 front-left-3q:0.003 front-left-3q:0 front-left-3q:0 front-left-3q:0 front-left-3q:0 front-left-3q:0.0064 forearm:0 forearm:0 forearm:0 forearm:0 forearm:0 forearm:0 forearm:0
+  elf-female-marked-angles               0.0213 %  front:0.0089 back:0 front-left-3q:0.0064 face:0.1122 forearm:0 back-closeup:0
+  elf-female-marked-lights               0.0059 %  front-left-3q:0.0064 front-left-3q:0.0038 front-left-3q:0.0064 front-left-3q:0.0068 front-left-3q:0.006
+  elf-female-marked-channels             0.0016 %  front-left-3q:0.0064 front-left-3q:0.0064 front-left-3q:0 front-left-3q:0 front-left-3q:0 front-left-3q:0 front-left-3q:0.0098 forearm:0 forearm:0 forearm:0 forearm:0 forearm:0 forearm:0 forearm:0
+  dwarf-male-marked-angles               0.0257 %  front:0.006 back:0 front-left-3q:0.0043 face:0.1437 forearm:0 back-closeup:0
+  dwarf-male-marked-lights                0.004 %  front-left-3q:0.0043 front-left-3q:0.0017 front-left-3q:0.0043 front-left-3q:0.0055 front-left-3q:0.0043
+  dwarf-male-marked-channels             0.0011 %  front-left-3q:0.0043 front-left-3q:0.0043 front-left-3q:0 front-left-3q:0 front-left-3q:0 front-left-3q:0 front-left-3q:0.0072 forearm:0 forearm:0 forearm:0 forearm:0 forearm:0 forearm:0 forearm:0
+sheets 32, images 280, 34.7 MB, errors 0
+wrote artifacts/wave-tex/captures/r07q-closing/index.json

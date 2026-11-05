@@ -1,0 +1,138 @@
+[
+ {
+  "at": "2026-11-04T21:33:10.420Z",
+  "sheet": "r02q-after-L-P/human-male-reference-angles (forearm tile)",
+  "region": "forearm close-up framing",
+  "verdict": "PASS",
+  "measurement": "camera 1.64 m fov 24 = 1.25 mm/px; index regions.forearm box; CONTROL: same question on the face tile -> 'No, a whole forearm is not visible'",
+  "answer": "The arm fills the center. Yes, a whole forearm is visible."
+ },
+ {
+  "at": "2026-11-04T21:33:10.447Z",
+  "sheet": "r02q-after-L-P/human-male-reference-angles (face tile)",
+  "region": "face close-up framing",
+  "verdict": "PASS",
+  "measurement": "camera 1.10 m = 0.84 mm/px (a 2 mm scar = 2.4 px); control as above",
+  "answer": "The nose and goatee fill the center. Both eyes and the mouth are inside the frame."
+ },
+ {
+  "at": "2026-11-04T21:33:10.464Z",
+  "sheet": "r02q-after-L-P/human-male-reference-angles (back-closeup tile)",
+  "region": "back close-up framing + clothing",
+  "verdict": "PASS (framing) / NOTE",
+  "measurement": "camera 2.43 m = 1.85 mm/px; the torso is covered by the teal garment",
+  "answer": "The back (torso) fills the center; both shoulder blades visible; torso covered by a teal form-fitting garment."
+ },
+ {
+  "at": "2026-11-04T21:33:10.480Z",
+  "sheet": "r02q-after-L-P all subjects",
+  "region": "marked vs reference (all tiles)",
+  "verdict": "n/a",
+  "measurement": "pixels.py: 0.000 % changed, dE95 0 on all 40 marked/reference tile pairs (marks not wired yet: R)",
+  "answer": "-"
+ },
+ {
+  "at": "2026-11-04T21:56:48.846Z",
+  "sheet": "r03q-c-fix1/human-male-marked-bare-angles (back-closeup tile)",
+  "region": "bare back for torso marks",
+  "verdict": "PASS",
+  "measurement": "centre crop 120x120 mean sRGB bare (179,117,77) vs marked/clothed (74,100,95); CONTROL: same question on the clothed tile -> 'covered by a garment, teal'",
+  "answer": "Bare skin. The back is a tan or peach colour."
+ },
+ {
+  "at": "2026-11-04T23:22:12.766Z",
+  "sheet": "r04f-ork-female/ork-female-marked-angles (face tile)",
+  "region": "face marks location",
+  "verdict": "FAIL",
+  "measurement": "changed px (dE>24) clusters x 95-128 and 215-251, y 380-410 (269 px); CONTROL reference face: 'no marks'",
+  "answer": "Left box: tusk; right box: mouth corner. Marked tile: 'one thin white line on the right cheek/jaw near the right tusk'"
+ },
+ {
+  "at": "2026-11-04T23:25:30.598Z",
+  "sheet": "r04f-ork-female/ork-female-marked-bare-channels (back-closeup final)",
+  "region": "back: tribal sun + claw 30 d",
+  "verdict": "PASS",
+  "measurement": "marks_meter: tribal part 1428 px albedo dL* -21.8 (ink darker), claw = 3 parts (3 rakes) albedo da* +25..+26, dL* +0.5..+1.6 (fresh pink-red, not pale yet at 30 d); 3.0 mm/px",
+  "answer": "Black spiky 8-point star mid-back; three parallel red-orange scratch lines on the upper back; fresh red wounds."
+ },
+ {
+  "at": "2026-11-04T23:25:30.623Z",
+  "sheet": "r04f-ork-female/ork-female-marked-bare-channels (forearm final)",
+  "region": "forearm: band 4 y + laceration 400 d",
+  "verdict": "PASS (colour) / judgement (segment)",
+  "measurement": "marks_meter: band parts albedo dL* -17..-21, db* -16..-19 (blue-black ink); laceration part dL* +12.3, dC* -12 (mature: paler, desaturated); vision named the segment 'upper arm' (bind anchor v=-0.35 is distal forearm; tile region boxes too coarse to arbitrate)",
+  "answer": "Dark squiggles, S shape and dots; thin pink line (scar). Second ask on the outlined crop: 'they line up across the arm, like a bracelet'."
+ },
+ {
+  "at": "2026-11-04T23:25:30.645Z",
+  "sheet": "r04f-ork-female/ork-female-marked-angles (face tile, 4x zoom)",
+  "region": "facial dotwork 'eye' (woad, 28 mm)",
+  "verdict": "FAIL",
+  "measurement": "126 px dE>3 but only 4 px dE>10, max dE 11.9, mean dL*/da*/db* -1.9/+1.3/-5.0 (0.84 mm/px: 0.38 mm dots @1.4 mm pitch area-averaged); incision beside it: 120 px dE>10, max 41, dL* +9.9; CONTROL: same question on the reference zoom gives the same answer",
+  "answer": "Marked: 'painted pattern: white/cream straight stripes, no dots or symbols' (= the tusk). Reference: 'no tattoo'."
+ },
+ {
+  "at": "2026-11-05T00:11:26.219Z",
+  "sheet": "artifacts/qa-wave-tex/ui/marks-390.png (lower half)",
+  "region": "Marks panel controls (phone)",
+  "verdict": "PASS (judgement)",
+  "measurement": "U report.json 390: 0 overflow/clipped/<44 px targets, pixel contrast min 6.18; controls labelled with units (mm, years, deg)",
+  "answer": "Size 60 mm; Age 3.0 years; Motif Ring; Ink Woad; Accent None; Angle 0 deg; Upright; Mirror; 'Woad' and 'Motif vs Style' may confuse a new player."
+ },
+ {
+  "at": "2026-11-05T00:11:26.238Z",
+  "sheet": "artifacts/qa-wave-tex/ui/view-marks-1280.png (top)",
+  "region": "marks channel view",
+  "verdict": "NOTE",
+  "measurement": "the views pass runs BEFORE any mark is placed; Sir Aldric's generated marks sit under the Warrior outfit -> nothing to highlight",
+  "answer": "Untextured grey clay preview; no highlighted scars or tattoos visible."
+ },
+ {
+  "at": "2026-11-05T00:14:41.346Z",
+  "sheet": "identity/r05q-after-P3-front-9.3mmpx-unlabeled.png (4 reference fronts downsampled to the opponent's 9.3 mm/px, unlabeled, order dwarf-m ork-f human-m elf-f)",
+  "region": "race identity at fight distance",
+  "verdict": "PASS",
+  "measurement": "forced choice 4 races x 4 tiles: 4/4 correct (chance 1/24); face-box skin Lab median pair dE76: dwarf-ork 39.4, human-ork 32.4, elf-ork 25.2, dwarf-elf 20.8, elf-human 14.9, dwarf-human 13.4 (human/dwarf separate by silhouette, not by skin)",
+  "answer": "1 dwarf (stocky/beard), 2 orc (green skin), 3 human (tall/lanky), 4 elf (pointed ears)"
+ },
+ {
+  "at": "2026-11-05T00:19:17.394Z",
+  "sheet": "render/r6-work/closeup-marked-elf-female-head.png (front final + marks view)",
+  "region": "elf facial dotwork between the brows (14 mm woad)",
+  "verdict": "PASS",
+  "measurement": "marks-view saturated px 105 at bbox x169-190 y72-85 (glabella); final view dE76 vs 3-8 px skin ring median 49.4, 100 % >= 10, dL* -34; box-downsampled to the Creator face scale 0.84 mm/px: 28 px, median dE 46.9, 100 % >= 10 (target was >= 60 %)",
+  "answer": "Final: 'blue dot cluster between brows... nothing drawn over eyes or lips' (it also called ink outlines 'scars'); marks view: 'between the brows: a small oval/diamond grid of blue dots; not on eye, cheek, mouth or chin'"
+ },
+ {
+  "at": "2026-11-05T05:37:07.350Z",
+  "sheet": "r06f-final/<8 subjects>-marked-bare-face-zones.png (face tile)",
+  "region": "face decals vs real eyes/lips",
+  "verdict": "PASS",
+  "measurement": "face_hits.py: 0 decal px inside eye (1.3 globe r) or drawn-lip zones on 16/16 tiles; dotwork 4.3-10.9 mm from the lips; CONTROL: projected globe centres within ~6 px of the visible iris clusters (human/elf)",
+  "answer": "Neutral: 'None of the decals sit on the eyes, lips, temples, or brows' (cyan zones on eyes/mouth: human yes; dwarf/ork eyes lidded, not judged by vision)"
+ },
+ {
+  "at": "2026-11-05T05:37:07.370Z",
+  "sheet": "r06f-final/human-male-back-torso-final.png zoom (reference back-closeup)",
+  "region": "studded leather torso (P r4-5)",
+  "verdict": "PASS",
+  "measurement": "height-view autocorr peak 65-75 mm 8/8 (spec 70); CONTROL r00-baseline-head same crop: 'smooth teal fabric'",
+  "answer": "Regular grid of small round dome-shaped studs with banded shading, 4 columns x 3 rows"
+ },
+ {
+  "at": "2026-11-05T05:37:07.389Z",
+  "sheet": "identity/r06f-final-front-9.3mmpx-unlabeled.png (8 reference fronts at the opponent's 9.3 mm/px, order dwarf-f ork-m elf-f human-m dwarf-m elf-m human-f ork-f)",
+  "region": "race + sex identity at fight distance",
+  "verdict": "PASS",
+  "measurement": "forced choice 8/8 race AND sex (chance 1/24 per race set)",
+  "answer": "1 dwarf female, 2 ork male, 3 elf female, 4 human male, 5 dwarf male, 6 elf male, 7 human female, 8 ork female"
+ },
+ {
+  "at": "2026-11-05T05:37:07.407Z",
+  "sheet": "artifacts/qa-wave-tex/ui/view-marks-after-390.png",
+  "region": "marks view after placement (U FIX Z-104)",
+  "verdict": "PASS",
+  "measurement": "U report: hash differs from the pre-marks view 7/7",
+  "answer": "3D preview in Marks mode; small marks on the head/face; torso/limbs plain"
+ }
+]

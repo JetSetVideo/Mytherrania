@@ -1,0 +1,32 @@
+== ork-female-marked-bare forearm
+r07q-before-F inkPx 1156 albedo L ink 39.9 ring 59.5 dL -19.7 | final L ink 32.6 ring 49.1 dL -16.5 | marksview L ink 46.6
+r07q-closing inkPx 1068 albedo L ink 51.8 ring 64.9 dL -13.1 | final L ink 43.5 ring 53.7 dL -10.2 | marksview L ink 44.9
+ mask IoU 0.922; albedo L change on common ink px: mean 13.61 p5 0.0 p95 39.1 ; share |dL|>5 0.532
+== ork-female-marked-bare front-left-3q
+r07q-before-F inkPx 152 albedo L ink 40.5 ring 57.0 dL -16.5 | final L ink 28.7 ring 43.0 dL -14.4 | marksview L ink 60.2
+r07q-closing inkPx 159 albedo L ink 43.3 ring 59.8 dL -16.6 | final L ink 31.4 ring 45.7 dL -14.3 | marksview L ink 60.7
+ mask IoU 0.944; albedo L change on common ink px: mean 2.46 p5 0.0 p95 19.6 ; share |dL|>5 0.139
+== human-male-marked-bare forearm
+r07q-before-F inkPx 863 albedo L ink 44.7 ring 68.7 dL -24.0 | final L ink 38.0 ring 58.2 dL -20.2 | marksview L ink 49.8
+r07q-closing inkPx 842 albedo L ink 44.2 ring 68.5 dL -24.2 | final L ink 37.6 ring 57.8 dL -20.3 | marksview L ink 49.2
+ mask IoU 0.976; albedo L change on common ink px: mean 0.18 p5 0.0 p95 0.0 ; share |dL|>5 0.024
+== human-male-marked-bare front-left-3q
+r07q-before-F inkPx 385 albedo L ink 43.4 ring 66.8 dL -23.4 | final L ink 36.7 ring 56.8 dL -20.1 | marksview L ink 53.7
+r07q-closing inkPx 405 albedo L ink 43.6 ring 66.9 dL -23.3 | final L ink 37.0 ring 56.7 dL -19.8 | marksview L ink 53.9
+ mask IoU 0.936; albedo L change on common ink px: mean 0.01 p5 0.0 p95 0.0 ; share |dL|>5 0.000
+== elf-female-marked-bare forearm
+r07q-before-F inkPx 322 albedo L ink 49.8 ring 80.1 dL -30.3 | final L ink 41.2 ring 63.8 dL -22.6 | marksview L ink 48.6
+r07q-closing inkPx 322 albedo L ink 52.5 ring 80.6 dL -28.1 | final L ink 43.6 ring 64.2 dL -20.6 | marksview L ink 48.6
+ mask IoU 1.000; albedo L change on common ink px: mean 2.65 p5 0.0 p95 16.8 ; share |dL|>5 0.177
+== elf-female-marked-bare front-left-3q
+r07q-before-F inkPx 413 albedo L ink 48.3 ring 77.4 dL -29.0 | final L ink 40.6 ring 64.6 dL -24.0 | marksview L ink 51.5
+r07q-closing inkPx 417 albedo L ink 48.9 ring 77.6 dL -28.7 | final L ink 41.1 ring 64.1 dL -23.0 | marksview L ink 51.8
+ mask IoU 0.912; albedo L change on common ink px: mean 0.30 p5 0.0 p95 1.5 ; share |dL|>5 0.030
+== dwarf-male-marked-bare forearm
+r07q-before-F inkPx 1409 albedo L ink 38.8 ring 66.8 dL -28.1 | final L ink 35.0 ring 61.3 dL -26.3 | marksview L ink 39.1
+r07q-closing inkPx 1352 albedo L ink 40.8 ring 67.9 dL -27.1 | final L ink 36.3 ring 62.1 dL -25.8 | marksview L ink 37.7
+ mask IoU 0.960; albedo L change on common ink px: mean 3.28 p5 0.0 p95 28.0 ; share |dL|>5 0.132
+== dwarf-male-marked-bare front-left-3q
+r07q-before-F inkPx 116 albedo L ink 52.3 ring 66.5 dL -14.2 | final L ink 44.5 ring 58.3 dL -13.8 | marksview L ink 65.2
+r07q-closing inkPx 118 albedo L ink 54.0 ring 68.4 dL -14.5 | final L ink 46.2 ring 59.9 dL -13.7 | marksview L ink 65.0
+ mask IoU 0.814; albedo L change on common ink px: mean 2.31 p5 0.0 p95 19.5 ; share |dL|>5 0.133

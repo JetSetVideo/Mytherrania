@@ -1,0 +1,940 @@
+{
+ "at": "2026-11-05T09:14:20.317Z",
+ "seeds": 2000,
+ "checks": [
+  {
+   "id": "S1",
+   "name": "stage order",
+   "pass": true,
+   "detail": "0 order violations over 616 ages; boundaries inflammatory/proliferative/proliferative/remodelling/remodelling/mature"
+  },
+  {
+   "id": "S2",
+   "name": "healing curves monotone",
+   "pass": true,
+   "detail": "{\"redness\":0,\"maturity\":0,\"lift\":0,\"height\":0,\"keloidHeight\":0,\"rough\":0}"
+  },
+  {
+   "id": "S4",
+   "name": "scar sheen (roughness scale < 1)",
+   "pass": true,
+   "detail": "roughnessScale range 0.55..0.75 over 7392 samples"
+  },
+  {
+   "id": "S5",
+   "name": "relief by kind and age",
+   "pass": true,
+   "detail": "{\"incision\":{\"day2\":0.476,\"y10\":0,\"keloidY10\":2.5},\"laceration\":{\"day2\":0.76,\"y10\":-0.05,\"keloidY10\":2.5},\"claw\":{\"day2\":0.663,\"y10\":-0.15,\"keloidY10\":2.5},\"puncture\":{\"day2\":0.373,\"y10\":-0.4,\"keloidY10\":2.5},\"burn\":{\"day2\":0.855,\"y10\":-0.05,\"keloidY10\":2.5},\"stitched\":{\"day2\":0.571,\"y10\":0,\"keloidY10\":2.5}}",
+   "data": {
+    "incision": {
+     "day2": 0.476,
+     "y10": 0,
+     "keloidY10": 2.5
+    },
+    "laceration": {
+     "day2": 0.76,
+     "y10": -0.05,
+     "keloidY10": 2.5
+    },
+    "claw": {
+     "day2": 0.663,
+     "y10": -0.15,
+     "keloidY10": 2.5
+    },
+    "puncture": {
+     "day2": 0.373,
+     "y10": -0.4,
+     "keloidY10": 2.5
+    },
+    "burn": {
+     "day2": 0.855,
+     "y10": -0.05,
+     "keloidY10": 2.5
+    },
+    "stitched": {
+     "day2": 0.571,
+     "y10": 0,
+     "keloidY10": 2.5
+    }
+   }
+  },
+  {
+   "id": "S5b",
+   "name": "hypertrophic healing (burn)",
+   "pass": true,
+   "detail": "burn hypertrophic height mm at 30/90/120/180/365/730 d = 1.207/1.511/1.512/1.334/0.544/0.007, redness 0.67/0.674/0.7/0.637/0.276/0.026, spread 1/1/1/1/1/1 (stays inside the border); chance human torso burn 0.66 > forearm incision 0.055 > puncture 0.026 (literature: 30-70 % of deep burns)"
+  },
+  {
+   "id": "S3",
+   "name": "stage colour on every skin tone",
+   "pass": true,
+   "detail": "0/10 tones fail (inflammatory a*+2, mature L*+1 & C* down); keloids paler than skin on 0",
+   "data": [
+    {
+     "tone": "#e0a884",
+     "skinLab": [
+      73.232,
+      16.046,
+      26.608
+     ],
+     "da_inflam": 36.712,
+     "da_prolif": 29.752,
+     "dL_mature": 6.542,
+     "dC_mature": -22.602,
+     "dL_keloid": -7.765,
+     "dE_mature": 23.541
+    },
+    {
+     "tone": "#d89870",
+     "skinLab": [
+      68.186,
+      19.387,
+      30.578
+     ],
+     "da_inflam": 33.678,
+     "da_prolif": 27.056,
+     "dL_mature": 7.687,
+     "dC_mature": -26.495,
+     "dL_keloid": -7.055,
+     "dE_mature": 27.604
+    },
+    {
+     "tone": "#c88858",
+     "skinLab": [
+      62.162,
+      19.366,
+      35.465
+     ],
+     "da_inflam": 31.205,
+     "da_prolif": 24.951,
+     "dL_mature": 9.211,
+     "dC_mature": -29.64,
+     "dL_keloid": -6.402,
+     "dE_mature": 31.073
+    },
+    {
+     "tone": "#b87a50",
+     "skinLab": [
+      56.771,
+      19.716,
+      32.688
+     ],
+     "da_inflam": 28.196,
+     "da_prolif": 22.391,
+     "dL_mature": 10.742,
+     "dC_mature": -28.144,
+     "dL_keloid": -5.843,
+     "dE_mature": 30.151
+    },
+    {
+     "tone": "#e8c8a0",
+     "skinLab": [
+      82.38,
+      5.528,
+      24.2
+     ],
+     "da_inflam": 43.437,
+     "da_prolif": 35.854,
+     "dL_mature": 4.415,
+     "dC_mature": -17.735,
+     "dL_keloid": -9.272,
+     "dE_mature": 18.288
+    },
+    {
+     "tone": "#f0d0a8",
+     "skinLab": [
+      85.233,
+      5.427,
+      24.014
+     ],
+     "da_inflam": 44.72,
+     "da_prolif": 36.94,
+     "dL_mature": 3.662,
+     "dC_mature": -17.569,
+     "dL_keloid": -9.588,
+     "dE_mature": 17.957
+    },
+    {
+     "tone": "#88b060",
+     "skinLab": [
+      67.374,
+      -27.512,
+      36.545
+     ],
+     "da_inflam": 42.419,
+     "da_prolif": 36.626,
+     "dL_mature": 8.197,
+     "dC_mature": -32.236,
+     "dL_keloid": -9.318,
+     "dE_mature": 33.269
+    },
+    {
+     "tone": "#98b868",
+     "skinLab": [
+      70.84,
+      -24.359,
+      37.035
+     ],
+     "da_inflam": 44.305,
+     "da_prolif": 38.003,
+     "dL_mature": 7.338,
+     "dC_mature": -31.195,
+     "dL_keloid": -9.492,
+     "dE_mature": 32.054
+    },
+    {
+     "tone": "#78a858",
+     "skinLab": [
+      63.92,
+      -30.618,
+      36.118
+     ],
+     "da_inflam": 40.295,
+     "da_prolif": 35.074,
+     "dL_mature": 9.029,
+     "dC_mature": -33.407,
+     "dL_keloid": -9.151,
+     "dE_mature": 34.613
+    },
+    {
+     "tone": "#a89890",
+     "skinLab": [
+      63.995,
+      4.513,
+      6.339
+     ],
+     "da_inflam": 32.212,
+     "da_prolif": 26.418,
+     "dL_mature": 9.644,
+     "dC_mature": -5.602,
+     "dL_keloid": -7.606,
+     "dE_mature": 11.153
+    }
+   ]
+  },
+  {
+   "id": "S6",
+   "name": "scar contrast <= fresh ink contrast",
+   "pass": true,
+   "detail": "0 violations over tones x kinds x ages x keloid"
+  },
+  {
+   "id": "T2",
+   "name": "fresh black tattoo out-contrasts every scar",
+   "pass": true,
+   "detail": "0 violations"
+  },
+  {
+   "id": "S7",
+   "name": "Langer's lines table",
+   "pass": true,
+   "detail": "0/11 sites off by > 15 deg; gape along/across = 1/1.6; lateral canthus angle -3.651 deg (crow's feet ~horizontal)",
+   "data": [
+    {
+     "region": "torso",
+     "u": 0,
+     "v": 0.2,
+     "angle": 0,
+     "expected": 0,
+     "deltaDeg": 0,
+     "why": "chest/abdomen front transverse"
+    },
+    {
+     "region": "neck",
+     "u": 0,
+     "v": 0,
+     "angle": 0,
+     "expected": 0,
+     "deltaDeg": 0,
+     "why": "neck transverse (thyroid collar)"
+    },
+    {
+     "region": "pelvis",
+     "u": 0,
+     "v": 0,
+     "angle": 0,
+     "expected": 0,
+     "deltaDeg": 0,
+     "why": "Pfannenstiel transverse"
+    },
+    {
+     "region": "foreArm",
+     "u": 0,
+     "v": 0,
+     "angle": 1.571,
+     "expected": 1.571,
+     "deltaDeg": 0,
+     "why": "forearm mid longitudinal"
+    },
+    {
+     "region": "upperArm",
+     "u": 0.5,
+     "v": 0,
+     "angle": 1.571,
+     "expected": 1.571,
+     "deltaDeg": 0,
+     "why": "upper arm mid longitudinal"
+    },
+    {
+     "region": "thigh",
+     "u": 0,
+     "v": 0,
+     "angle": 1.571,
+     "expected": 1.571,
+     "deltaDeg": 0,
+     "why": "thigh longitudinal"
+    },
+    {
+     "region": "shin",
+     "u": 0,
+     "v": -0.1,
+     "angle": 1.571,
+     "expected": 1.571,
+     "deltaDeg": 0,
+     "why": "shin longitudinal"
+    },
+    {
+     "region": "foreArm",
+     "u": 0,
+     "v": 0.9,
+     "angle": 0,
+     "expected": 0,
+     "deltaDeg": 0,
+     "why": "elbow end transverse (flexion crease)"
+    },
+    {
+     "region": "shin",
+     "u": 0,
+     "v": 0.9,
+     "angle": 0,
+     "expected": 0,
+     "deltaDeg": 0,
+     "why": "knee end transverse"
+    },
+    {
+     "region": "hand",
+     "u": 0,
+     "v": 0,
+     "angle": 0,
+     "expected": 0,
+     "deltaDeg": 0,
+     "why": "dorsum of hand transverse"
+    },
+    {
+     "region": "face",
+     "u": 0,
+     "v": 0.8,
+     "angle": 0,
+     "expected": 0,
+     "deltaDeg": 0,
+     "why": "forehead horizontal"
+    }
+   ]
+  },
+  {
+   "id": "S8",
+   "name": "keloid propensity by ancestry and site",
+   "pass": true,
+   "detail": "order violations 0; human ear-lobe puncture 0.25 vs max other site 0.08; torso incision rolled vs expected {\"ork\":{\"rolled\":0.282,\"expected\":0.3},\"dwarf\":{\"rolled\":0.145,\"expected\":0.16},\"human\":{\"rolled\":0.09,\"expected\":0.1},\"elf\":{\"rolled\":0.023,\"expected\":0.02}}",
+   "data": {
+    "tab": {
+     "torso": [
+      0.3,
+      0.16,
+      0.1,
+      0.02
+     ],
+     "pelvis": [
+      0.075,
+      0.04,
+      0.025,
+      0.005
+     ],
+     "neck": [
+      0.18,
+      0.096,
+      0.06,
+      0.012
+     ],
+     "head": [
+      0.045,
+      0.024,
+      0.015,
+      0.003
+     ],
+     "face": [
+      0.12,
+      0.064,
+      0.04,
+      0.008
+     ],
+     "ear": [
+      0.375,
+      0.2,
+      0.125,
+      0.025
+     ],
+     "upperArm": [
+      0.27,
+      0.144,
+      0.09,
+      0.018
+     ],
+     "foreArm": [
+      0.09,
+      0.048,
+      0.03,
+      0.006
+     ],
+     "hand": [
+      0.045,
+      0.024,
+      0.015,
+      0.003
+     ],
+     "thigh": [
+      0.075,
+      0.04,
+      0.025,
+      0.005
+     ],
+     "shin": [
+      0.06,
+      0.032,
+      0.02,
+      0.004
+     ],
+     "foot": [
+      0.03,
+      0.016,
+      0.01,
+      0.002
+     ],
+     "sole": [
+      0.008,
+      0.004,
+      0.003,
+      0.001
+     ],
+     "hair": [
+      0.045,
+      0.024,
+      0.015,
+      0.003
+     ],
+     "nail": [
+      0.045,
+      0.024,
+      0.015,
+      0.003
+     ]
+    },
+    "freq": {
+     "ork": {
+      "rolled": 0.282,
+      "expected": 0.3
+     },
+     "dwarf": {
+      "rolled": 0.145,
+      "expected": 0.16
+     },
+     "human": {
+      "rolled": 0.09,
+      "expected": 0.1
+     },
+     "elf": {
+      "rolled": 0.023,
+      "expected": 0.02
+     }
+    }
+   }
+  },
+  {
+   "id": "S9",
+   "name": "shape facts (sutures, claw rakes, hairless)",
+   "pass": true,
+   "detail": "63 mm stitched -> 9 suture marks (expect 9 at 7 mm pitch, 'railroad track'); claw rake counts 3/4; tissue samples without hairless 0/3902"
+  },
+  {
+   "id": "T1",
+   "name": "ink ageing (migration, fade, colour drift)",
+   "pass": true,
+   "detail": "monotone violations 0; blur 0/10/40/80 y = 0.08/0.372/0.638/0.677 mm; black Lab 0 y 6.683,1.297,-3.493 -> 40 y 23.949,-3.794,-6.3; 20 y retention black 0.882 red 0.631 ochre 0.652 woad 0.725"
+  },
+  {
+   "id": "T3",
+   "name": "motif sets and race inks",
+   "pass": true,
+   "detail": "ork/Barbarian/storm -> bolt,fang,claw; leading ink per race {\"ork\":\"woad\",\"dwarf\":\"black\",\"elf\":\"blueBlack\",\"human\":\"black\"}"
+  },
+  {
+   "id": "G1",
+   "name": "generator runs and is deterministic",
+   "pass": true,
+   "detail": "errors 0 ; non-deterministic 0/40 re-runs"
+  },
+  {
+   "id": "G2",
+   "name": "anchors inside region frames",
+   "pass": true,
+   "detail": "0/5125 anchors outside [-1,1]^2"
+  },
+  {
+   "id": "G3",
+   "name": "ancestry identities (orks most scars + woad, humans rarely tattooed)",
+   "pass": true,
+   "detail": "scars/profile ork 2.668 dwarf 1.69 human 1.108 elf 0.58; tattooed share ork 0.874 dwarf 0.712 elf 0.45 human 0.282; top ink ork woad"
+  },
+  {
+   "id": "G4",
+   "name": "style identities (dwarf bands, elf dotwork, ork tribal)",
+   "pass": true,
+   "detail": "top style dwarf band elf dotwork ork tribal human script"
+  },
+  {
+   "id": "G5",
+   "name": "face rules (facial flag, eyes/mouth never inked)",
+   "pass": true,
+   "detail": "face tattoos 202 (non-facial 0); report faceFeature 0; QD's own zone test on resolved face tattoos 0"
+  },
+  {
+   "id": "G6",
+   "name": "overlap: none reported, no tattoo over a scar",
+   "pass": true,
+   "detail": "overlap issues 0, other issues 0, tattoo footprints covering >20 % of a scar footprint (QD 15x15 grid) 0, >10 % 2 (M's limit is 10 % on a 9x9 grid: the >10 % cases are grid resolution) (over 5125 marks)"
+  },
+  {
+   "id": "G7",
+   "name": "surgical scars follow Langer's lines",
+   "pass": true,
+   "detail": "incision/stitched deviation deg p50 0 p90 0 max 0 (n 869)"
+  },
+  {
+   "id": "G8",
+   "name": "mirror pairs reflect through the midline",
+   "pass": true,
+   "detail": "0/427 mirror copies off by > 10 mm"
+  },
+  {
+   "id": "G9",
+   "name": "decal budget (<= 16 per body)",
+   "pass": true,
+   "detail": "0/2000 generated bodies drop a decal (fall back to vertex tint)"
+  },
+  {
+   "id": "G10",
+   "name": "marks under clothing are hidden (covered)",
+   "pass": true,
+   "detail": "resolved torso:true,foreArm:false; decals drawn scar.1; validate covered true,false"
+  },
+  {
+   "id": "R1",
+   "name": "game-distance readability (tattoos carry identity)",
+   "pass": true,
+   "detail": "narrow extent >= 2 px: tattoos 1 @6.4 mm/px (player 5.5 m) / 0.972 @9.3 mm/px (opponent 8 m); scars 0.421 / 0.356 (scar lines are sub-pixel at game distance by design: they read in the Creator close-up)"
+  },
+  {
+   "id": "G11",
+   "name": "face zones on the body's real eyes/mouth (M API with plan.face); generated face marks avoid them",
+   "pass": true,
+   "detail": "human-male: 0/17; human-female: 0/16; elf-female: 0/19; dwarf-male: 0/23; ork-female: 0/121; ork-male: 0/121 generated face marks touching QD's anatomical zones (eye 1.3 globe radii, lips 2.2 x 1.0) on the real centres"
+  },
+  {
+   "id": "G11b",
+   "name": "game path (TexWiring regionFrames(mesh, {face, race})) keeps face marks off the real features",
+   "pass": true,
+   "detail": "game hits 0; human-male: real eyeL/eyeR/mouth to nearest game-path zone 2/2/0 mm, face marks on real features 0/17 (game path regionFrames(mesh)) vs 0/17 (regionFrames(mesh, {face, race})); human-female: real eyeL/eyeR/mouth to nearest game-path zone 3/3/1 mm, face marks on real features 0/16 (game path regionFrames(mesh)) vs 0/16 (regionFrames(mesh, {face, race})); elf-female: real eyeL/eyeR/mouth to nearest game-path zone 4/4/1 mm, face marks on real features 0/19 (game path regionFrames(mesh)) vs 0/19 (regionFrames(mesh, {face, race})); dwarf-male: real eyeL/eyeR/mouth to nearest game-path zone 6/6/7 mm, face marks on real features 1/20 (game path regionFrames(mesh)) vs 0/23 (regionFrames(mesh, {face, race})); ork-female: real eyeL/eyeR/mouth to nearest game-path zone 3/3/7 mm, face marks on real features 1/120 (game path regionFrames(mesh)) vs 0/121 (regionFrames(mesh, {face, race})); ork-male: real eyeL/eyeR/mouth to nearest game-path zone 11/11/12 mm, face marks on real features 1/120 (game path regionFrames(mesh)) vs 0/121 (regionFrames(mesh, {face, race}))",
+   "data": [
+    {
+     "subject": "human-male",
+     "real": {
+      "eyeL": [
+       66,
+       39
+      ],
+      "eyeR": [
+       -66,
+       39
+      ],
+      "mouth": [
+       0,
+       -16
+      ]
+     },
+     "zoneOffsetMm": [
+      2,
+      2,
+      0
+     ],
+     "faceMarks": 17,
+     "onRealFeature": 0,
+     "withAnchors": "0/17",
+     "anchorHits": 0
+    },
+    {
+     "subject": "human-female",
+     "real": {
+      "eyeL": [
+       60,
+       35
+      ],
+      "eyeR": [
+       -60,
+       35
+      ],
+      "mouth": [
+       0,
+       -16
+      ]
+     },
+     "zoneOffsetMm": [
+      3,
+      3,
+      1
+     ],
+     "faceMarks": 16,
+     "onRealFeature": 0,
+     "withAnchors": "0/16",
+     "anchorHits": 0
+    },
+    {
+     "subject": "elf-female",
+     "real": {
+      "eyeL": [
+       59,
+       35
+      ],
+      "eyeR": [
+       -59,
+       35
+      ],
+      "mouth": [
+       0,
+       -18
+      ]
+     },
+     "zoneOffsetMm": [
+      4,
+      4,
+      1
+     ],
+     "faceMarks": 19,
+     "onRealFeature": 0,
+     "withAnchors": "0/19",
+     "anchorHits": 0
+    },
+    {
+     "subject": "dwarf-male",
+     "real": {
+      "eyeL": [
+       63,
+       25
+      ],
+      "eyeR": [
+       -63,
+       25
+      ],
+      "mouth": [
+       0,
+       -21
+      ]
+     },
+     "zoneOffsetMm": [
+      6,
+      6,
+      7
+     ],
+     "faceMarks": 20,
+     "onRealFeature": 1,
+     "withAnchors": "0/23",
+     "anchorHits": 0
+    },
+    {
+     "subject": "ork-female",
+     "real": {
+      "eyeL": [
+       84,
+       49
+      ],
+      "eyeR": [
+       -84,
+       49
+      ],
+      "mouth": [
+       0,
+       -14
+      ]
+     },
+     "zoneOffsetMm": [
+      3,
+      3,
+      7
+     ],
+     "faceMarks": 120,
+     "onRealFeature": 1,
+     "withAnchors": "0/121",
+     "anchorHits": 0
+    },
+    {
+     "subject": "ork-male",
+     "real": {
+      "eyeL": [
+       89,
+       58
+      ],
+      "eyeR": [
+       -89,
+       58
+      ],
+      "mouth": [
+       0,
+       -9
+      ]
+     },
+     "zoneOffsetMm": [
+      11,
+      11,
+      12
+     ],
+     "faceMarks": 120,
+     "onRealFeature": 1,
+     "withAnchors": "0/121",
+     "anchorHits": 0
+    }
+   ]
+  }
+ ],
+ "generated": {
+  "summary": {
+   "profiles": 2000,
+   "marks": 5125,
+   "errors": 0,
+   "firstErr": "",
+   "nondet": 0,
+   "perRace": {
+    "human": {
+     "profiles": 500,
+     "scars": 554,
+     "tattoos": 184,
+     "keloids": 46,
+     "withScar": 318,
+     "withTattoo": 141,
+     "maxMarks": 9,
+     "fresh": 13,
+     "scarsPer": 1.108,
+     "tattoosPer": 0.368,
+     "scarredShare": 0.636,
+     "tattooedShare": 0.282,
+     "keloidShare": 0.083,
+     "freshShare": 0.023
+    },
+    "elf": {
+     "profiles": 500,
+     "scars": 290,
+     "tattoos": 359,
+     "keloids": 3,
+     "withScar": 196,
+     "withTattoo": 225,
+     "maxMarks": 6,
+     "fresh": 4,
+     "scarsPer": 0.58,
+     "tattoosPer": 0.718,
+     "scarredShare": 0.392,
+     "tattooedShare": 0.45,
+     "keloidShare": 0.01,
+     "freshShare": 0.014
+    },
+    "dwarf": {
+     "profiles": 500,
+     "scars": 845,
+     "tattoos": 640,
+     "keloids": 82,
+     "withScar": 386,
+     "withTattoo": 356,
+     "maxMarks": 8,
+     "fresh": 19,
+     "scarsPer": 1.69,
+     "tattoosPer": 1.28,
+     "scarredShare": 0.772,
+     "tattooedShare": 0.712,
+     "keloidShare": 0.097,
+     "freshShare": 0.022
+    },
+    "ork": {
+     "profiles": 500,
+     "scars": 1334,
+     "tattoos": 919,
+     "keloids": 286,
+     "withScar": 434,
+     "withTattoo": 437,
+     "maxMarks": 10,
+     "fresh": 24,
+     "scarsPer": 2.668,
+     "tattoosPer": 1.838,
+     "scarredShare": 0.868,
+     "tattooedShare": 0.874,
+     "keloidShare": 0.214,
+     "freshShare": 0.018
+    }
+   },
+   "regionCount": {
+    "foreArm": 1360,
+    "upperArm": 1205,
+    "pelvis": 97,
+    "ear": 18,
+    "hand": 323,
+    "shin": 177,
+    "torso": 1060,
+    "thigh": 416,
+    "face": 321,
+    "neck": 148
+   },
+   "stageCount": {
+    "mature": 2726,
+    "inflammatory": 4,
+    "proliferative": 56,
+    "remodelling": 237
+   },
+   "kindByClass": {
+    "Warrior": {
+     "stitched": 155,
+     "claw": 44,
+     "laceration": 189,
+     "puncture": 73,
+     "burn": 54,
+     "incision": 30
+    },
+    "Barbarian": {
+     "laceration": 190,
+     "claw": 192,
+     "burn": 85,
+     "puncture": 55,
+     "stitched": 57,
+     "incision": 14
+    },
+    "Rogue": {
+     "burn": 24,
+     "laceration": 151,
+     "claw": 56,
+     "puncture": 111,
+     "incision": 61,
+     "stitched": 60
+    },
+    "Assassin": {
+     "stitched": 38,
+     "puncture": 116,
+     "incision": 87,
+     "burn": 38,
+     "laceration": 62,
+     "claw": 18
+    },
+    "Mage": {
+     "stitched": 28,
+     "burn": 98,
+     "laceration": 33,
+     "incision": 19,
+     "puncture": 8,
+     "claw": 13
+    },
+    "Necromancer": {
+     "incision": 123,
+     "burn": 50,
+     "puncture": 38,
+     "claw": 16,
+     "stitched": 53,
+     "laceration": 7
+    },
+    "Archer": {
+     "laceration": 128,
+     "burn": 34,
+     "claw": 62,
+     "puncture": 65,
+     "stitched": 23,
+     "incision": 3
+    },
+    "Priest": {
+     "burn": 63,
+     "claw": 26,
+     "incision": 33,
+     "laceration": 55,
+     "stitched": 85
+    }
+   },
+   "styleByRace": {
+    "human": {
+     "band": 31,
+     "sigil": 45,
+     "runic": 16,
+     "tribal": 22,
+     "script": 59,
+     "dotwork": 11
+    },
+    "elf": {
+     "dotwork": 178,
+     "script": 62,
+     "sigil": 119
+    },
+    "dwarf": {
+     "runic": 199,
+     "band": 391,
+     "sigil": 50
+    },
+    "ork": {
+     "sigil": 135,
+     "tribal": 666,
+     "band": 118
+    }
+   },
+   "inkByRace": {
+    "human": {
+     "black": 105,
+     "red": 40,
+     "blueBlack": 39
+    },
+    "elf": {
+     "blueBlack": 178,
+     "woad": 123,
+     "black": 47,
+     "red": 11
+    },
+    "dwarf": {
+     "black": 349,
+     "blueBlack": 163,
+     "ochre": 128
+    },
+    "ork": {
+     "black": 202,
+     "ochre": 103,
+     "woad": 506,
+     "red": 108
+    }
+   },
+   "anchorsOut": 0,
+   "faceTattooNotFacial": 0,
+   "faceTat": 202,
+   "faceTatInZone": 0,
+   "overlapIssues": 0,
+   "faceFeature": 0,
+   "otherIssues": 0,
+   "tatOverScar": 0,
+   "mirrorPairs": 427,
+   "mirrorBad": 0,
+   "decalSets": 2000,
+   "decalOver16": 0,
+   "readability": {
+    "tattoosAt6_4": 1,
+    "tattoosAt9_3": 0.972,
+    "scarsAt6_4": 0.421,
+    "scarsAt9_3": 0.356,
+    "nT": 2529,
+    "nS": 3023
+   },
+   "langerDevDeg": {
+    "n": 869,
+    "p50": 0,
+    "p90": 0,
+    "max": 0
+   }
+  }
+ }
+}

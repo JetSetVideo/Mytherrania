@@ -1,0 +1,16 @@
+{
+ "run": "qc-work",
+ "src": "/Users/macmax/Desktop/Mytherrania",
+ "hasTex": true,
+ "commit": "19f5c8c",
+ "when": "2026-11-05T03:35:12.858Z",
+ "frames": 90,
+ "build": {},
+ "shots": {
+  "dir": "/Users/macmax/Desktop/Mytherrania/artifacts/wave-tex/verify-code/closing/shots-work",
+  "n": 24
+ },
+ "errors": []
+}
+report: /Users/macmax/Desktop/Mytherrania/artifacts/wave-tex/verify-code/closing/bench-work/bench.json
+exit 0

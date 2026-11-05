@@ -1,0 +1,8 @@
+human-male before inkPx 104 albedo ink 33.5 ring 70.4 contrast -36.9 | crest-off contrast -36.9 | final contrast -32.6 crest-off -32.6 | crest lift on ink 0.00 (share>5 0.000) on ring 0.00
+human-male after inkPx 104 albedo ink 33.5 ring 70.5 contrast -36.9 | crest-off contrast -36.9 | final contrast -32.6 crest-off -32.6 | crest lift on ink 0.06 (share>5 0.000) on ring 0.08
+ork-female before inkPx 240 albedo ink 28.3 ring 59.5 contrast -31.2 | crest-off contrast -31.2 | final contrast -27.3 crest-off -27.3 | crest lift on ink 0.00 (share>5 0.000) on ring 0.00
+ork-female after inkPx 240 albedo ink 51.4 ring 67.0 contrast -15.6 | crest-off contrast -31.2 | final contrast -12.4 crest-off -27.3 | crest lift on ink 23.12 (share>5 0.688) on ring 7.51
+elf-female before inkPx 30 albedo ink 37.7 ring 84.0 contrast -46.3 | crest-off contrast -46.3 | final contrast -42.4 crest-off -42.4 | crest lift on ink 0.00 (share>5 0.000) on ring 0.00
+elf-female after inkPx 30 albedo ink 48.3 ring 85.7 contrast -37.4 | crest-off contrast -46.3 | final contrast -33.9 crest-off -42.4 | crest lift on ink 10.59 (share>5 0.633) on ring 1.66
+dwarf-male before inkPx 521 albedo ink 26.7 ring 66.4 contrast -39.7 | crest-off contrast -39.7 | final contrast -36.7 crest-off -36.7 | crest lift on ink 0.00 (share>5 0.000) on ring 0.00
+dwarf-male after inkPx 521 albedo ink 30.2 ring 68.1 contrast -37.9 | crest-off contrast -39.7 | final contrast -35.4 crest-off -36.7 | crest lift on ink 3.53 (share>5 0.113) on ring 1.78

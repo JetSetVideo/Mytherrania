@@ -1,0 +1,72 @@
+{
+ "separableMaxErr": {
+  "normal": 0,
+  "multiply": 0,
+  "screen": 1.1102230246251565e-16,
+  "hardLight": 1.1102230246251565e-16,
+  "overlay": 1.1102230246251565e-16,
+  "darken": 0,
+  "lighten": 0,
+  "colorDodge": 0,
+  "colorBurn": 0,
+  "softLightW3C": 0,
+  "difference": 0,
+  "exclusion": 0,
+  "linearBurn": 0,
+  "add": 0,
+  "subtract": 0,
+  "linearLight": 0,
+  "pinLight": 0
+ },
+ "boundary05": {
+  "hardLight": [
+   0,
+   5.55e-17,
+   0,
+   0
+  ],
+  "pinLight": [
+   0,
+   0,
+   0,
+   0
+  ],
+  "overlay": [
+   0,
+   5.55e-17,
+   0,
+   0
+  ]
+ },
+ "nonSeparableMaxErr": {
+  "hue": 2.220446049250313e-16,
+  "saturation": 2.220446049250313e-16,
+  "color": 1.1102230246251565e-16,
+  "luminosity": 2.220446049250313e-16
+ },
+ "separableModesCount": 21,
+ "heightBlendViolations": 0,
+ "v1Identity": {
+  "bodies": [
+   "human-female-null",
+   "elf-male-dark",
+   "dwarf-female-mountain",
+   "ork-male-null"
+  ],
+  "stacks": 40,
+  "verticesCompared": 182410,
+  "floatMismatches": 0,
+  "maxUlp": 0
+ },
+ "maskLaws": {
+  "vertices": 4242,
+  "deMorganMaxErr": 0,
+  "xorSymMaxErr": 0,
+  "invertInvolutionMaxErr": 2.9802322387695312e-8,
+  "featherOutOfRange": 0,
+  "featherMeanVsHardMean": [
+   0.14541,
+   0.14545
+  ]
+ }
+}

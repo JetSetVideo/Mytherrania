@@ -1,0 +1,974 @@
+Check tests/body_brushes_test.ts
+Check tests/body_detail_test.ts
+Check tests/body_mass_test.ts
+Check tests/body_mesh_test.ts
+Check tests/body_sdf_test.ts
+Check tests/body_skin_test.ts
+Check tests/bodybuilds_test.ts
+Check tests/creatorsync_test.ts
+Check tests/face_parts_test.ts
+Check tests/hair_eyes_nails_test.ts
+Check tests/paint_blend_test.ts
+Check tests/paint_layers_test.ts
+Check tests/paint_recipes_test.ts
+Check tests/sexbuild_test.ts
+Check tests/wave_gen_anatomy_test.ts
+Check tests/wave_gen_kinematics_test.ts
+Check tests/wave_gen_paint_test.ts
+Check tests/wave_gen_pipeline_test.ts
+Check tests/wave_tex_layers_test.ts
+Check tests/wave_tex_operators_test.ts
+Check tests/wave_tex_presets_test.ts
+Check tests/wave_tex_render_test.ts
+Check tests/wave_v_body_forms_test.ts
+Check tests/wave_v_body_paint_test.ts
+Check tests/wave_v_pose_symmetry_test.ts
+Check tests/wave_w_hand_creases_test.ts
+Check tests/wave_w_hand_fingers_test.ts
+Check tests/wave_x_body_test.ts
+Check tests/wave_x_hair_test.ts
+Check tests/world_readability_test.ts
+running 10 tests from ./tests/body_brushes_test.ts
+brush kinds are partitioned into field and mesh domains and cover every BrushKind ... ok (731µs)
+falloff: 1 at the centre, 0 at and beyond the radius, monotone between ... ok (105µs)
+inflate / deflate move the surface by exactly the strength at the centre ... ok (5ms)
+dig carves a cavity at the centre, pushPull translates the surface along its axis ... ok (5ms)
+pinch pulls the surface toward its centre ... ok (1ms)
+crease cuts a narrow groove along its axis ... ok (1ms)
+flatten presses material on the +axis side onto the plane, at most |s| deep ... ok (1ms)
+twist and bend rotate the domain inside the radius (bend only on its lever side) ... ok (11ms)
+smooth relaxes mesh vertices inside its radius only, within its displacement cap ... ok (22ms)
+applyFieldBrushes chains in order and skips mesh strokes ... ok (97µs)
+running 6 tests from ./tests/body_detail_test.ts
+shoulder seam bands: trunk skin stays put and nothing folds when stocky arms turn (the old rule fails) ... ok (2s)
+seam-band weights stay a region-aware partition of unity ... ok (381ms)
+hands: palm, knuckles and a thumb that clears the fingers, mirror-identical on both sides ... ok (2s)
+the skin is mirror-symmetric (left and right limbs are built and sampled alike) ...
+------- post-test output -------
+mirror distance: physics 0.063 mm, skin 0.676 mm (cell 27.3 mm)
+----- post-test output end -----
+the skin is mirror-symmetric (left and right limbs are built and sampled alike) ... ok (525ms)
+ears survive the grid on every race; elf ears are pointed and stand outside the hair cap ... ok (1s)
+feet: sole pads give a flat, wide contact and an edge; the medial arch lifts ... ok (1s)
+running 5 tests from ./tests/body_mass_test.ts
+slouch: the shoulder girdle squares FORWARD over the hips (the upper spine reads straighter) ...
+------- post-test output -------
+slouch: SLOUCH_FWD_PER_HEAD 0.03 (girdle z = (-0.05 + fwd) · h)
+race   y.shoulder (m)  girdle-back z BEFORE (m)  AFTER (m)   forward (mm)
+human  1.3600       -0.05708                 -0.05052    6.6
+elf    1.4211       -0.05782                 -0.05088    6.9
+dwarf  1.0907       -0.05895                 -0.05347    5.5
+ork    1.5420       -0.08426                 -0.07708    7.2
+----- post-test output end -----
+slouch: the shoulder girdle squares FORWARD over the hips (the upper spine reads straighter) ... ok (3ms)
+trapezius: the traps rise over the shoulder line (redistribution, no radius gain) ...
+------- post-test output -------
+trapezius: tip x frac 0.62 of the shoulder half-width; rise root 0.15 -> 0.22 h, tip -> 0.17 h
+race   trap-top y BEFORE (m)  AFTER (m)   rise (mm)
+human  1.45151              1.46416    12.6
+elf    1.51840              1.53318    14.8
+dwarf  1.17515              1.18418    9.0
+ork    1.65804              1.66964    11.6
+----- post-test output end -----
+trapezius: the traps rise over the shoulder line (redistribution, no radius gain) ... ok (1ms)
+sex hierarchy: the shoulder-to-hip ratio is larger for boys, by a stated amount, across all races ...
+------- post-test output -------
+sex hip gain: SEX_HIP_GAIN female 1.06 on top of SEX_CURVE.female.hip 1.09 (male 1)
+rank  ancestry  sex     shoulder (m)  hip (m)   shoulder/hip  vs male
+   1  high      male    0.1429       0.1193   1.1975       (ref)
+   2  elf       male    0.1517       0.1273   1.1915       (ref)
+   3  imperial  male    0.1710       0.1533   1.1160       (ref)
+   4  human     male    0.1826       0.1650   1.1064       (ref)
+   5  islander  male    0.2062       0.1894   1.0891       (ref)
+   6  high      female  0.1429       0.1379   1.0365       13.4% lower
+   7  elf       female  0.1517       0.1471   1.0312       13.4% lower
+   8  mountain  male    0.2610       0.2567   1.0169       (ref)
+   9  ork       male    0.3369       0.3313   1.0169       (ref)
+  10  ironhide  male    0.3457       0.3399   1.0169       (ref)
+  11  dwarf     male    0.2284       0.2282   1.0007       (ref)
+  12  imperial  female  0.1710       0.1771   0.9659       13.4% lower
+  13  human     female  0.1826       0.1907   0.9576       13.4% lower
+  14  islander  female  0.2062       0.2188   0.9426       13.4% lower
+  15  mountain  female  0.2610       0.2966   0.8801       13.4% lower
+  16  ironhide  female  0.3457       0.3928   0.8801       13.4% lower
+  17  ork       female  0.3369       0.3828   0.8801       13.4% lower
+  18  dwarf     female  0.2284       0.2637   0.8661       13.4% lower
+----- post-test output end -----
+sex hierarchy: the shoulder-to-hip ratio is larger for boys, by a stated amount, across all races ... ok (1ms)
+invariants: bulky neutral, the sex leaves the ground contact + hip joint, and the triangle budget holds ...
+------- post-test output -------
+ancestry   triangles  (< 12000)
+human        8360
+imperial     9004
+nomad        8360
+islander     9616
+elf          8984
+high         8952
+wood         8532
+dark         8532
+dwarf        9252
+mountain     8900
+forge        8880
+deep         8860
+ork          8840
+greenhide    8628
+ironhide     8920
+bloodfang    8912
+----- post-test output end -----
+invariants: bulky neutral, the sex leaves the ground contact + hip joint, and the triangle budget holds ... ok (9s)
+DROPPED asks, with numbers: the hip-joint stance, the crotch pack, the neck straighten, the deltoid ...
+------- post-test output -------
+DROPPED hip-joint stance: HIP_JOINT_STANCE 1 (1 = pre-wave). Measured slide dwarf/mountain slash fresh: pre 5.54 mm, stance 0.98 -> 6.21 mm, 0.9 -> 9.19 mm (band 5.6).
+DROPPED crotch pack: designed male 50 x 77 mm, female 59 x 45 mm; mid-size broke RAGDOLL GROUND (settle within 3 s), a <=8 % copy (~2 mm) stayed green — not a pack.
+DROPPED neck straighten: moving the neck top back by 0.02·h moved elbowL 2.034 % -> 1.992 % of the body (2 % weld floor) -> 'welded light leaves: ...elbowL...'; even a 0.1·h move flips it. The slouch rides the shoulder girdle instead.
+DROPPED deltoid mass: the ork half-guard trunk-skin travel is 54 mm against a 56.2 mm bound; any deltoid growth (lateral/along-arm/depth, or a bigger radius.deltoid) measured 56-61 mm, or split the elf mesh into 3 components. The shoulder mass rides the TRAPEZIUS redistribution instead.
+----- post-test output end -----
+DROPPED asks, with numbers: the hip-joint stance, the crotch pack, the neck straighten, the deltoid ... ok (322µs)
+running 16 tests from ./tests/body_mesh_test.ts
+meshStats can FAIL: open, two-piece and non-manifold meshes are reported ... ok (515µs)
+a polygonised sphere is closed, outward-wound, and has the right volume ... ok (19ms)
+ambiguous faces: two spheres kissing diagonally are non-manifold raw, manifold resolved ... ok (8ms)
+narrow-band sampling produces the SAME mesh as sampling every corner ... ok (835ms)
+human light (1.7 m, 49 kg): one closed skin, soles flat on y = 0, within budget ... ok (680ms)
+human heavy (1.7 m, 98 kg): one closed skin, soles flat on y = 0, within budget ... ok (677ms)
+elf light (1.77 m, 53 kg): one closed skin, soles flat on y = 0, within budget ... ok (759ms)
+elf heavy (1.77 m, 107 kg): one closed skin, soles flat on y = 0, within budget ... ok (654ms)
+dwarf light (1.39 m, 33 kg): one closed skin, soles flat on y = 0, within budget ... ok (686ms)
+dwarf heavy (1.39 m, 66 kg): one closed skin, soles flat on y = 0, within budget ... ok (625ms)
+ork light (1.9 m, 61 kg): one closed skin, soles flat on y = 0, within budget ... ok (831ms)
+ork heavy (1.9 m, 123 kg): one closed skin, soles flat on y = 0, within budget ... ok (814ms)
+every sub-race builds a whole skin at a mid weight ... ok (7s)
+anatomy uses the volume operators and EVERY brush kind, each with a purpose ... ok (544ms)
+bones: root + one per Skeleton joint, Humanoid's tree, Skeleton axes, heads inside the bounds ... ok (434ms)
+proportions are derived: 7.5 heads for a human, races ordered by their genes ... ok (2s)
+running 11 tests from ./tests/body_sdf_test.ts
+sphere is exact: inside negative, surface zero, outside the true distance ... ok (339µs)
+ellipsoid bound: zero on the surface along every axis, sign correct, sphere case exact ... ok (90µs)
+capsule is exact on the axis, on the side and past the caps ... ok (281µs)
+round cone: matches its end spheres at the caps and the tangent line in between ... ok (129µs)
+round box: outer half-extents are the surface, corners rounded by r ... ok (251µs)
+torus: zero on the tube, minus the minor radius on the core circle ... ok (61µs)
+rotation turns a primitive about its anchor (XYZ Euler, three.js convention) ... ok (437µs)
+smooth min/max: equal to min/max outside the blend, deeper by k/4 at a tie ... ok (139µs)
+every volume operator obeys its definition ... ok (11ms)
+region and bone: union picks the nearer child, a cutter keeps the left bone ... ok (263µs)
+culling in a union never changes the value (bounding spheres are conservative) ... ok (1ms)
+running 6 tests from ./tests/body_skin_test.ts
+skin weights: every vertex has ≥ 1 influence, weights sum to 1, root never used ... ok (569ms)
+skin weights are region-aware and side-aware (a hand never takes torso weight) ... ok (416ms)
+skinned cel shaders run three's skinning chunks and read paint without redeclaring it ... ok (2ms)
+skinned humanoid: HumanoidRig contract, one clean skin, painted, bones named like the pivots ... ok (473ms)
+skinned humanoid follows Humanoid's joint convention and keeps the legs exactly bound ... ok (36ms)
+soleOffset tracks the lowest sole point of the current pose ... ok (45ms)
+running 7 tests from ./tests/bodybuilds_test.ts
+builds: three explicit rows, each ordered fit < bulky < heavy on every measured term ...
+------- post-test output -------
+build      shoulder  chest   waist   hip     limb    muscle  fat
+fit        0.950  0.930  0.880  0.950  0.950  0.960  1.000
+bulky      1.000  1.000  1.000  1.000  1.000  1.000  1.000
+heavy      1.100  1.120  1.220  1.100  1.100  1.160  1.280
+----- post-test output end -----
+builds: three explicit rows, each ordered fit < bulky < heavy on every measured term ... ok (456µs)
+builds: every one of the 16 ancestry nodes maps onto a build, and the brief's pairings hold ...
+------- post-test output -------
+ancestry -> build:
+human=bulky  elf=bulky  dwarf=bulky  ork=heavy  imperial=fit  nomad=bulky  islander=heavy  high=fit  wood=bulky  dark=bulky  mountain=heavy  forge=bulky  deep=bulky  greenhide=bulky  ironhide=heavy  bloodfang=heavy
+----- post-test output end -----
+builds: every one of the 16 ancestry nodes maps onto a build, and the brief's pairings hold ... ok (149µs)
+builds: the muscle term scales with the build (SDF mass), and a heavy body beats a fit one ...
+------- post-test output -------
+human muscle term: fit 0.9600  bulky 1.0000  heavy 1.1600
+----- post-test output end -----
+builds: the muscle term scales with the build (SDF mass), and a heavy body beats a fit one ... ok (73µs)
+silhouette delta fit vs heavy (human): a named half-width at a named height, in metres ...
+------- post-test output -------
+human fit vs heavy (height 1.7 m); nipple y 1.247 m, waist y 1.065 m:
+  chest half-width @ nipple    fit 0.1364  heavy 0.1643  x1.204
+  chest half-depth @ nipple    fit 0.1002  heavy 0.1207  x1.204
+  waist half-width @ waist     fit 0.1133  heavy 0.1571  x1.386
+  belly half-depth (fat)       fit 0.1017  heavy 0.1302  x1.280
+  shoulder half-width          fit 0.1735  heavy 0.2009  x1.158
+  deltoid radius               fit 0.0564  heavy 0.0790  x1.399
+  thigh-top radius             fit 0.0806  heavy 0.0933  x1.158
+DELTA: chest half-width @ y=1.247 m  fit 0.1364 m -> heavy 0.1643 m  (+27.9 mm, +20.4%)
+----- post-test output end -----
+silhouette delta fit vs heavy (human): a named half-width at a named height, in metres ... ok (821µs)
+torso geometry carries the anatomy: the pectoral bulge at the nipple is deeper on a heavy body ...
+------- post-test output -------
+torso front surface (+z), fit vs heavy:
+  centre-line @ nipple       y 1.247 m  fit 0.1012 m  heavy 0.1246 m  (+23.5 mm)
+  pectoral @ nipple+0.12h    y 1.274 m  fit 0.1066 m  heavy 0.1286 m  (+22.0 mm)
+----- post-test output end -----
+torso geometry carries the anatomy: the pectoral bulge at the nipple is deeper on a heavy body ... ok (2ms)
+paint definition pass follows the muscle term: a heavy body's stack carries creases, a fit one's does not ...
+------- post-test output -------
+definition layers: fit 0, heavy 5 (def-abs, def-linea, def-pec, def-arm, def-leg)
+ork stack crease layers: def-abs, def-linea, def-pec, def-arm, def-leg
+----- post-test output end -----
+paint definition pass follows the muscle term: a heavy body's stack carries creases, a fit one's does not ... ok (1ms)
+builds: the definition gain is what turns the muscle term into crease strength ... ok (51µs)
+running 13 tests from ./tests/creatorsync_test.ts
+CREATOR_GROUP_IDS is exactly the Creator screen's groups, in tree order ... ok (268µs)
+every Creator group id resolves to a NON-EMPTY summary, for a rolled elf and a dwarf ...
+------- post-test output -------
+
+── group summaries for Ilmirëndithas of House Silverbough (elf/high) ──
+  race       Elf — 3 sub-species
+  subrace    High Elf · Star-touched scholars of Elun-Dar
+  hero       VIT 7 · RES 9 · FOC 9 · REF 11 · STR 8 · INT 13
+  lore       Star-touched scholars of Elun-Dar, taller even than their kin, with a haughtier brow.
+  class      Mage — Warped Staff
+  weapon     Warped Staff (staff)
+  skills     Blink · Arcane Nova · Mana Shield
+  birthsign  The Moon
+  secondary  Critical Strike — · Haste — · Mastery +5% · Physical Resistance — · Magic Resistance +4% · Versatility —
+  rival      AI opponent — its calling is rolled per match
+  terms      Match terms — length and win condition rolled per match
+  spectate   Spectator card — generated when an AI-vs-AI match runs
+  inspect    Inspect overlay — click a fighter or prop in spectate
+  field      Arena field — shape and size rolled per match
+  walls      Walls — present on ~90% of arenas, with their own resistance
+  pickups    Pickups — coins and power-ups spawn in the field
+
+── group summaries for Durdogrim Stonebeard (dwarf/mountain) ──
+  race       Dwarf — 3 sub-species
+  subrace    Mountain · Stone-boned clans of the Iron Reach
+  hero       VIT 9 · RES 13 · FOC 8 · REF 7 · STR 11 · INT 9
+  lore       Stone-boned clans of the Iron Reach, the tallest and longest-legged of dwarf-kind.
+  class      Necromancer — Bone Scythe
+  weapon     Bone Scythe (scythe)
+  skills     Grave Step · Soul Rend · Bone Armor
+  birthsign  The Flame
+  secondary  Critical Strike — · Haste +2% · Mastery +1% · Physical Resistance +4% · Magic Resistance — · Versatility +1%
+  rival      AI opponent — its calling is rolled per match
+  terms      Match terms — length and win condition rolled per match
+  spectate   Spectator card — generated when an AI-vs-AI match runs
+  inspect    Inspect overlay — click a fighter or prop in spectate
+  field      Arena field — shape and size rolled per match
+  walls      Walls — present on ~90% of arenas, with their own resistance
+  pickups    Pickups — coins and power-ups spawn in the field
+----- post-test output end -----
+every Creator group id resolves to a NON-EMPTY summary, for a rolled elf and a dwarf ... ok (1ms)
+groupSummary also answers when the caller passes race/subrace as null (falls back to p.race) ... ok (76µs)
+an unknown group id still yields a non-empty line (total) ... ok (28µs)
+the tone relation is the paint stacks' own shadeHex/tintHex ... ok (124µs)
+editing the skin tone drags its crease/paint and eye tones with it ... ok (211µs)
+height/weight edits clamp into the race's own band ... ok (86µs)
+a race edit synchronises subrace: a foreign sub-species is cleared ... ok (48µs)
+applyEdit is TOTAL: no field, good or bad, throws ... ok (146µs)
+applyEdit is DETERMINISTIC and never mutates its input ... ok (58µs)
+applying the same edit twice IS idempotent ... ok (117µs)
+no edit can produce NaN or an out-of-range number ... ok (206µs)
+the rule table states which field moves which, and by what relation ...
+------- post-test output -------
+
+── sync rule table ──
+  race -> subrace
+      a new race clears a sub-species that does not belong to it (a dwarf cannot hold an elf's nation)
+  appearance.body -> appearance.accent, appearance.eyes
+      accent = shadeHex(body, 0.58) (creasing/paint); eyes = tintHex(body, 0.22) (eye tone); both keep the hue and scale chroma, the paint stacks' crease/ink relation
+----- post-test output end -----
+the rule table states which field moves which, and by what relation ... ok (103µs)
+running 7 tests from ./tests/face_parts_test.ts
+every node carries a lid block (upper, lower, aperture) and a brow pointedness, validated ... ok (646µs)
+the validator REFUSES a node missing a lid field or its pointedness ... ok (221µs)
+pointed brows: every ancestry tapers inner→outer to a point, elf sharpest, ork bluntest ...
+------- post-test output -------
+pointed brows (radius in head heights):
+  human/-          point=0.45  rootR=0.077h  tipR=0.0144h  tipX=0.245h  innerX=0.100h
+  elf/-            point=0.90  rootR=0.069h  tipR=0.0052h  tipX=0.290h  innerX=0.100h
+  dwarf/-          point=0.22  rootR=0.088h  tipR=0.0216h  tipX=0.222h  innerX=0.100h
+  ork/-            point=0.12  rootR=0.062h  tipR=0.0167h  tipX=0.212h  innerX=0.100h
+  human/imperial   point=0.42  rootR=0.077h  tipR=0.0150h  tipX=0.242h  innerX=0.100h
+  human/nomad      point=0.50  rootR=0.075h  tipR=0.0131h  tipX=0.250h  innerX=0.100h
+  human/islander   point=0.45  rootR=0.077h  tipR=0.0144h  tipX=0.245h  innerX=0.100h
+  elf/high         point=0.95  rootR=0.071h  tipR=0.0045h  tipX=0.295h  innerX=0.100h
+  elf/wood         point=0.85  rootR=0.069h  tipR=0.0061h  tipX=0.285h  innerX=0.100h
+  elf/dark         point=0.90  rootR=0.069h  tipR=0.0052h  tipX=0.290h  innerX=0.100h
+  dwarf/mountain   point=0.20  rootR=0.088h  tipR=0.0220h  tipX=0.220h  innerX=0.100h
+  dwarf/forge      point=0.28  rootR=0.087h  tipR=0.0200h  tipX=0.228h  innerX=0.100h
+  dwarf/deep       point=0.22  rootR=0.088h  tipR=0.0216h  tipX=0.222h  innerX=0.100h
+  ork/greenhide    point=0.12  rootR=0.062h  tipR=0.0167h  tipX=0.212h  innerX=0.100h
+  ork/ironhide     point=0.18  rootR=0.066h  tipR=0.0167h  tipX=0.218h  innerX=0.100h
+  ork/bloodfang    point=0.10  rootR=0.062h  tipR=0.0170h  tipX=0.210h  innerX=0.100h
+----- post-test output end -----
+pointed brows: every ancestry tapers inner→outer to a point, elf sharpest, ork bluntest ... ok (388µs)
+upper AND lower lids on every ancestry: stated thickness and aperture, aperture < globe ...
+------- post-test output -------
+eyelid bands (head heights):
+  human/-          upper=0.028h  lower=0.022h  aperture=0.055h
+  elf/-            upper=0.020h  lower=0.016h  aperture=0.062h
+  dwarf/-          upper=0.038h  lower=0.030h  aperture=0.046h
+  ork/-            upper=0.034h  lower=0.028h  aperture=0.048h
+  human/imperial   upper=0.026h  lower=0.021h  aperture=0.057h
+  human/nomad      upper=0.029h  lower=0.023h  aperture=0.054h
+  human/islander   upper=0.028h  lower=0.022h  aperture=0.055h
+  elf/high         upper=0.018h  lower=0.014h  aperture=0.064h
+  elf/wood         upper=0.021h  lower=0.017h  aperture=0.061h
+  elf/dark         upper=0.020h  lower=0.016h  aperture=0.062h
+  dwarf/mountain   upper=0.039h  lower=0.031h  aperture=0.045h
+  dwarf/forge      upper=0.036h  lower=0.029h  aperture=0.048h
+  dwarf/deep       upper=0.038h  lower=0.030h  aperture=0.046h
+  ork/greenhide    upper=0.035h  lower=0.029h  aperture=0.047h
+  ork/ironhide     upper=0.036h  lower=0.030h  aperture=0.046h
+  ork/bloodfang    upper=0.033h  lower=0.027h  aperture=0.049h
+----- post-test output end -----
+upper AND lower lids on every ancestry: stated thickness and aperture, aperture < globe ... ok (466µs)
+the eyeball is recessed: centre behind the opening plane, front behind the socket rim ...
+------- post-test output -------
+recessed eyeball (head heights):
+  human/-          eyeZ=0.160h  eyeFront=0.235h  rim=0.420h  inset=0.140h  frontVsRim=0.185h
+  elf/-            eyeZ=0.160h  eyeFront=0.235h  rim=0.420h  inset=0.140h  frontVsRim=0.185h
+  dwarf/-          eyeZ=0.160h  eyeFront=0.235h  rim=0.420h  inset=0.140h  frontVsRim=0.185h
+  ork/-            eyeZ=0.160h  eyeFront=0.235h  rim=0.420h  inset=0.140h  frontVsRim=0.185h
+  human/imperial   eyeZ=0.160h  eyeFront=0.235h  rim=0.420h  inset=0.140h  frontVsRim=0.185h
+  human/nomad      eyeZ=0.160h  eyeFront=0.235h  rim=0.420h  inset=0.140h  frontVsRim=0.185h
+  human/islander   eyeZ=0.160h  eyeFront=0.235h  rim=0.420h  inset=0.140h  frontVsRim=0.185h
+  elf/high         eyeZ=0.160h  eyeFront=0.235h  rim=0.420h  inset=0.140h  frontVsRim=0.185h
+  elf/wood         eyeZ=0.160h  eyeFront=0.235h  rim=0.420h  inset=0.140h  frontVsRim=0.185h
+  elf/dark         eyeZ=0.160h  eyeFront=0.235h  rim=0.420h  inset=0.140h  frontVsRim=0.185h
+  dwarf/mountain   eyeZ=0.160h  eyeFront=0.235h  rim=0.420h  inset=0.140h  frontVsRim=0.185h
+  dwarf/forge      eyeZ=0.160h  eyeFront=0.235h  rim=0.420h  inset=0.140h  frontVsRim=0.185h
+  dwarf/deep       eyeZ=0.160h  eyeFront=0.235h  rim=0.420h  inset=0.140h  frontVsRim=0.185h
+  ork/greenhide    eyeZ=0.160h  eyeFront=0.235h  rim=0.420h  inset=0.140h  frontVsRim=0.185h
+  ork/ironhide     eyeZ=0.160h  eyeFront=0.235h  rim=0.420h  inset=0.140h  frontVsRim=0.185h
+  ork/bloodfang    eyeZ=0.160h  eyeFront=0.235h  rim=0.420h  inset=0.140h  frontVsRim=0.185h
+----- post-test output end -----
+the eyeball is recessed: centre behind the opening plane, front behind the socket rim ... ok (6s)
+the real head field: the eye sits IN the socket, recessed behind its opening plane ...
+------- post-test output -------
+head at the eye line (x=0.2h): socket floor z=0.180h  eye front z=0.235h  opening plane 0.3h  rim 0.42h  brow 0.310h  (was: eye front 0.405h, floor 0.265h)
+----- post-test output end -----
+the real head field: the eye sits IN the socket, recessed behind its opening plane ... ok (155ms)
+buildFaceParts gives every ancestry 2 uppers, 2 lowers, 2 pointed brows, finite triangles ... ok (544ms)
+running 6 tests from ./tests/hair_eyes_nails_test.ts
+hair fits the head: the fall sits ON the skull in a stated clearance band, for 3 ancestries x 3 seeds ...
+------- post-test output -------
+hair fall clearance band (0.008..0.1h, 3 ancestries x 3 seeds):
+  human/-        seed= 3  verts=1157  nearGap=0.0400..0.0925h  inside=0  hairline=7.161h  brow=7.130h
+  human/-        seed= 8  verts=1157  nearGap=0.0400..0.0925h  inside=0  hairline=7.161h  brow=7.130h
+  human/-        seed=15  verts=1157  nearGap=0.0400..0.0925h  inside=0  hairline=7.161h  brow=7.130h
+  elf/-          seed= 3  verts= 598  nearGap=0.0400..0.0915h  inside=0  hairline=7.327h  brow=7.283h
+  elf/-          seed= 8  verts= 598  nearGap=0.0400..0.0915h  inside=0  hairline=7.327h  brow=7.283h
+  elf/-          seed=15  verts= 598  nearGap=0.0400..0.0915h  inside=0  hairline=7.327h  brow=7.283h
+  dwarf/-        seed= 3  verts= 733  nearGap=0.0400..0.0692h  inside=0  hairline=6.358h  brow=6.326h
+  dwarf/-        seed= 8  verts= 733  nearGap=0.0400..0.0692h  inside=0  hairline=6.358h  brow=6.326h
+  dwarf/-        seed=15  verts= 733  nearGap=0.0400..0.0692h  inside=0  hairline=6.358h  brow=6.326h
+  (the band is normalised in head heights; the fit is scale-invariant, so the 3 seeds — different statures/masses/look draws — give the same band per ancestry: it holds for every body size)
+----- post-test output end -----
+hair fits the head: the fall sits ON the skull in a stated clearance band, for 3 ancestries x 3 seeds ... ok (4s)
+hair: the fall's segments ride the skull's back surface at the stated shell gap ... ok (270ms)
+eyes: the globe and iris are ROUND (roundness measure), not faceted squares ...
+------- post-test output -------
+roundness  iris: 16 edges -> 0.9745, 32 edges -> 0.9936 | globe (sphere 14x10): 0.9668
+----- post-test output end -----
+eyes: the globe and iris are ROUND (roundness measure), not faceted squares ... ok (190µs)
+eyes: a WET GLINT sits on the globe at a stated size and position ...
+------- post-test output -------
+wet glint: radius 5.22 mm at +0.3r,+0.34r (squash 0.7); secondary 1.74 mm; globe r = 17.40 mm (h=0.2320 m)
+----- post-test output end -----
+eyes: a WET GLINT sits on the globe at a stated size and position ... ok (170ms)
+eyes: the iris is PAINTED with fine flecks of a stated density and size ...
+------- post-test output -------
+iris flecks: 8 per iris, size 1.53 mm (r=0.088r), density 0.028 per mm^2, iris radius 9.57 mm (iris #2a64a4, h=0.2320 m)
+----- post-test output end -----
+eyes: the iris is PAINTED with fine flecks of a stated density and size ... ok (171ms)
+nails: their own painted pass — a stated colour relation, a gloss, and a measured coverage share ...
+------- post-test output -------
+nail coverage (share of 264 nail vertices): before(flat plate) 1.000 -> after bed 1.000 + gloss 0.894 (width 0.5); plate=tintHex(skin,0.24) gloss=tintHex(skin,0.42)
+----- post-test output end -----
+nails: their own painted pass — a stated colour relation, a gloss, and a measured coverage share ... ok (64ms)
+running 6 tests from ./tests/paint_blend_test.ts
+blend: every mode at hand-computed values (base, top -> result) ... ok (328µs)
+blend: soft light with a 0.5 top and normal at alpha 0 leave the base unchanged ... ok (101µs)
+blend: every mode stays inside 0..1 for inputs inside 0..1 ... ok (832µs)
+colour: sRGB transfer matches IEC 61966-2-1 and three.js ... ok (357µs)
+colour: hex, HSL, luminance and contrast helpers ... ok (256µs)
+relevance: boundColour pulls neon and blown-out colours inside a box, keeps the hue ... ok (369µs)
+running 8 tests from ./tests/paint_layers_test.ts
+layers: output is 3 floats per vertex, finite, inside 0..1 ... ok (45ms)
+layers: deterministic per seed; a different layer seed changes a noise layer ... ok (5ms)
+layers: a region-masked layer leaves every other region untouched ... ok (3ms)
+layers: every PatternKind changes some vertices on the mannequin ... ok (39ms)
+layers: opacity 0 is a no-op; multiply by white and soft light by mid-grey are identities ... ok (1ms)
+layers: linear output = sRGB output decoded, and matches THREE.Color for a solid coat ... ok (578µs)
+layers: options.out is reused and options.env gives the same result ... ok (3ms)
+layers: paint works on a region-less terrain grid (reuse beyond bodies) ... ok (630µs)
+running 8 tests from ./tests/paint_recipes_test.ts
+recipes: deterministic per seed; a new seed gives a new individual ... ok (1ms)
+recipes: every layer is well-formed and no pattern is finer than the mesh can show ... ok (5ms)
+recipes: the base skin tone of every race/subrace/seed sits in SKIN_BOUNDS ... ok (2ms)
+recipes: each race reads as itself ... ok (3ms)
+recipes: the birth sign picks the mark; the class adds its accent ... ok (549µs)
+recipes: every PatternKind is used by some recipe and visibly paints the mannequin ... ok (135ms)
+recipes: race x subrace x birth sign x class stay relevant: vertex C <= 0.55, Y 0.008..0.8; skin median C 0.08..0.46, Y 0.12..0.7; spread 1.02..3 ... ok (1s)
+recipes: saved characters paint, with the palette as an optional garment ... ok (32ms)
+running 7 tests from ./tests/sexbuild_test.ts
+sex: male is the neutral curve (1.0 on every term), female is the stated curve ... ok (229µs)
+sex: a spec without a sex is EXACTLY an explicit male (the pre-wave body is held) ... ok (1ms)
+sex: the ground-contact radii (ankle, foot, heel) take NO sex curve ... ok (646µs)
+shoulder: scoped out — the sex curve moves NO shoulder half-width (the swing slide guards it) ... ok (189µs)
+sex: the male-vs-female silhouette table (metres) — fuller bust/hips, narrower waist ...
+------- post-test output -------
+male vs female half-widths (metres) + the bust depth; waist/hip is the curve ratio:
+race   sex      shoulder    waist      hip   chestW   chestD  waist/hip
+human  male       0.1826   0.1287   0.1650   0.1467   0.1077   0.7800
+human  female     0.1826   0.1030   0.1907   0.1467   0.1207   0.5401
+elf    male       0.1517   0.0967   0.1273   0.1132   0.0871   0.7597
+elf    female     0.1517   0.0774   0.1471   0.1132   0.0975   0.5260
+dwarf  male       0.2284   0.1848   0.2282   0.2029   0.1330   0.8097
+dwarf  female     0.2284   0.1479   0.2637   0.2029   0.1489   0.5607
+ork    male       0.3369   0.2934   0.3313   0.2998   0.1807   0.8858
+ork    female     0.3369   0.2347   0.3828   0.2998   0.2024   0.6133
+----- post-test output end -----
+sex: the male-vs-female silhouette table (metres) — fuller bust/hips, narrower waist ... ok (409µs)
+dwarf: muscle term UP (fit, not wide); the shoulder narrowing is DROPPED, not faked ...
+------- post-test output -------
+dwarf muscle term: before 1.0900 -> after 1.1200
+dwarf deltoid radius: before 0.0933 m -> after 0.0959 m  (+2.6 mm)
+----- post-test output end -----
+dwarf: muscle term UP (fit, not wide); the shoulder narrowing is DROPPED, not faked ... ok (131µs)
+pectorals: DROPPED this wave — the gain is neutral, because any depth breaks the ragdoll ...
+------- post-test output -------
+human pectoral front surface @ x=0.068 y=1.274 m: neutral 0.1133 m (the dropped gain would have moved it forward)
+dwarf pectoral front surface @ x=0.062 y=1.011 m: neutral 0.1334 m (the dropped gain would have moved it forward)
+----- post-test output end -----
+pectorals: DROPPED this wave — the gain is neutral, because any depth breaks the ragdoll ... ok (2ms)
+running 20 tests from ./tests/wave_gen_anatomy_test.ts
+SPEC G20: the morph is the identity at STAT_REFERENCE and for absent stats ... ok (782µs)
+SPEC G21: every term is monotone non-decreasing in its own stat and blind to the others ... ok (2ms)
+SPEC G22: every term stays inside its bound for any input (out of range, NaN, Infinity) ... ok (12ms)
+SPEC G23: the sculpted skin stays mirror-symmetric under the morph (no side term) ... ok (3s)
+SPEC G24: stats at STAT_REFERENCE build the very same body as absent stats (every race) ... ok (3s)
+SPEC G25: the physics body (root, bones, bounds, abductions) is byte-identical for every stat ... ok (11s)
+SPEC G26: hitRoot carries the stat terms and the race posture; its box grows by whole cells on the physics grid ... ok (1s)
+SPEC G27: muscle girths, chest, back (lats), trapezius and shoulder breadth grow with strength ... ok (8s)
+SPEC G28: carved landmarks stay readable on the inflated body (max strength >= reference) ... ok (6s)
+SPEC G29: intelligence recesses the brow ridge by the stated millimetres (measured on the field) ... ok (4s)
+SPEC G30: level's maturity term is small and bounded; the height term is fixed at 1 ... ok (5s)
+SPEC G31: posture curves — ork head forward on a heavier trapezius, dwarf lumbar hollow, human/elf erect ... ok (2s)
+SPEC G32: the race spine columns scale the canonical curves (human/elf = the canon) ... ok (815µs)
+SPEC G33: the face anchors follow the rendered head (ork forward neck); bones do not move ... ok (317ms)
+SPEC G34: race digit distribution — elf slender/long ... ork thickest knuckles, broadest palm ... ok (504µs)
+SPEC G35: absent digits = the neutral (pre-wave) hand exactly; the rig passes the plan's digits ... ok (160ms)
+SPEC G36: the morphed skin is one closed manifold within the triangle budget (4 races, min/max strength) ... ok (16s)
+SPEC G37: body volume (mass at constant density) rises with strength, bounded ... ok (5s)
+SPEC G38: the morph reaches the physics only through hitRoot (absent for an identity morph) ... ok (6s)
+SPEC G39: docs/wave-gen/ANATOMY.md tables are generated from artifacts/wave-gen/anatomy/measure.json ... ok (1ms)
+running 20 tests from ./tests/wave_gen_kinematics_test.ts
+SPEC G40: agilityLimits is the identity (same numbers) at the reference 500 and for an absent agility ... ok (771µs)
+SPEC G41: windows are nested and monotone in agility (0 ⊂ 250 ⊂ 500 ⊂ 750 ⊂ 1000), total travel rising ... ok (371µs)
+SPEC G42: the widening is bounded (≤ AGILITY_WIDEN per side, inside ANATOMICAL_CAP); the narrowing ≤ AGILITY_NARROW ... ok (197µs)
+SPEC G43: hard stops never move (elbow / knee hyperextension), rest always stays inside ... ok (439µs)
+SPEC G44: Skeleton.setAgility / defaultHumanoid(agility) carry the table; defaultHumanoid(500) == defaultHumanoid() ... ok (263µs)
+SPEC G45: an agile fighter's Animator + Skeleton REACH further (shoulder flexion asked -2.75 rad) ...
+------- post-test output -------
+shoulderR reached: agility 0 -2.160, 500 -2.400, 1000 -2.751 rad
+----- post-test output end -----
+SPEC G45: an agile fighter's Animator + Skeleton REACH further (shoulder flexion asked -2.75 rad) ... ok (620ms)
+SPEC G46: at the reference agility the Animator's output is bit-identical (absent vs 500) ... ok (453ms)
+SPEC G47: skeletonDisks — one disk per bone + skull/wrists/palms/balls, unit normals, plan radii, symmetric ... ok (1s)
+SPEC G48: tPose — arms straight and horizontal at shoulder height, lengths kept, trunk and legs untouched ... ok (737ms)
+SPEC G49: BalanceDisk maths — hull, signed margin, capsule centre of mass, lateral XCoM ... ok (486µs)
+SPEC G50: the balance disk holds — idle and guard keep the centre of mass inside both feet (4 races, real rigs) ...
+------- post-test output -------
+human idle 56 mm (double support 100 %)
+human guard 60 mm (double support 99 %)
+elfF idle 56 mm (double support 100 %)
+elfF guard 47 mm (double support 99 %)
+dwarf idle 41 mm (double support 100 %)
+dwarf guard 69 mm (double support 100 %)
+orkF idle 63 mm (double support 100 %)
+orkF guard 96 mm (double support 100 %)
+----- post-test output end -----
+SPEC G50: the balance disk holds — idle and guard keep the centre of mass inside both feet (4 races, real rigs) ... ok (4s)
+SPEC G51: the self guard counts a hand-and-a-half weapon as two-handed (its off hand holds the haft) ... ok (301µs)
+SPEC G52: no render pops — off arm, fall start and get-up stay under the pop bound (human + ork, two-handed carry) ... ok (2s)
+SPEC G53: a latched foot stays put through a fall's buckle while the body travels (≤ 60 mm; HEAD 104 mm) ... ok (1s)
+SPEC G54: the two-handed carry keeps the blade out of the holder (walk / guard / idle, every race) ... ok (2s)
+SPEC G55: the audit drives every clip the game plays — every archetype's swing, every skill, falls and reactions ... ok (270µs)
+SPEC G56: the audit JSONs cover 8 bodies x every clip; after the fixes pops / blade-in-body / fall slides drop ...
+------- post-test output -------
+offending runs: before 391 -> after 391; pops 331 -> 78; weapon 90 -> 16
+----- post-test output end -----
+SPEC G56: the audit JSONs cover 8 bodies x every clip; after the fixes pops / blade-in-body / fall slides drop ... ok (6ms)
+SPEC G57: docs/wave-gen/KINEMATICS.md carries the tables generated from the audit JSONs ... ok (8ms)
+SPEC G58: the balance margins in the audit are all positive for standing stances (8 bodies) ... ok (1ms)
+SPEC G59: the agility reach meter — agility 1000 widens the audited reach envelope, the reference does not move it ... ok (210µs)
+running 10 tests from ./tests/wave_gen_paint_test.ts
+SPEC G60: miniature identity — gain 0 is the wave-V form paint exactly, strength 0 the base, skipped regions untouched ...
+------- post-test output -------
+  vertices changed by the miniature pass: 3990 of 4196
+----- post-test output end -----
+SPEC G60: miniature identity — gain 0 is the wave-V form paint exactly, strength 0 the base, skipped regions untouched ... ok (614ms)
+SPEC G61: bounds — every channel in 0..1 and no channel below (1 - PAINT_MAX_DARK) x the unpainted base (4 races x 2 sexes) ... ok (5s)
+SPEC G62: determinism — the paint, the terms and the stage paint are bit-identical across runs ... ok (55ms)
+SPEC G63: the curvature terms are geometric — a sphere has no cavity (Taubin smoothing does not shrink), body cavities sit in concave creases ...
+------- post-test output -------
+  sphere r=0.2 m: |cavity depth| on the equator <= 0.0479 cells
+  human: body mean H 8.23 /m, wash-weighted 4.29 /m, edge-weighted 23.97 /m
+  elf: body mean H 9.82 /m, wash-weighted 3.86 /m, edge-weighted 26.69 /m
+  dwarf: body mean H 5.52 /m, wash-weighted 2.62 /m, edge-weighted 18.75 /m
+  ork: body mean H 5.34 /m, wash-weighted 2.57 /m, edge-weighted 19.70 /m
+----- post-test output end -----
+SPEC G63: the curvature terms are geometric — a sphere has no cavity (Taubin smoothing does not shrink), body cavities sit in concave creases ... ok (36ms)
+SPEC G64: contrast — the miniature pass separates ridges from cavities more than wave V did, and the feet sit darker than the shoulders ...
+------- post-test output -------
+  human/male: contrast V 1.082 -> GEN 1.168, ridge 1.057 cavity 0.905, top 1.009 bottom 0.907
+  human/female: contrast V 1.081 -> GEN 1.157, ridge 1.057 cavity 0.914, top 1.010 bottom 0.908
+  elf/male: contrast V 1.065 -> GEN 1.132, ridge 1.030 cavity 0.910, top 1.002 bottom 0.891
+  elf/female: contrast V 1.069 -> GEN 1.136, ridge 1.035 cavity 0.912, top 1.009 bottom 0.897
+  dwarf/male: contrast V 1.104 -> GEN 1.209, ridge 1.089 cavity 0.901, top 1.009 bottom 0.913
+  dwarf/female: contrast V 1.086 -> GEN 1.172, ridge 1.085 cavity 0.926, top 1.007 bottom 0.920
+  ork/male: contrast V 1.092 -> GEN 1.183, ridge 1.085 cavity 0.917, top 1.009 bottom 0.918
+  ork/female: contrast V 1.074 -> GEN 1.166, ridge 1.082 cavity 0.928, top 1.007 bottom 0.907
+----- post-test output end -----
+SPEC G64: contrast — the miniature pass separates ridges from cavities more than wave V did, and the feet sit darker than the shoulders ... ok (410ms)
+SPEC G65: weathering is cloth-only and bounded; a bare body (no garment) is not weathered ...
+------- post-test output -------
+  mean weathering on cloth 0.132 (x WEATHER_MAX 0.12 grime + 0.18 fade)
+----- post-test output end -----
+SPEC G65: weathering is cloth-only and bounded; a bare body (no garment) is not weathered ... ok (41ms)
+SPEC G66: the paint stage record — id 'paint', timings, finite metrics, the same paint as the live rig's paintSkin ...
+------- post-test output -------
+  human: 4296 vertices, stage 16.7 ms (layers 7.0, form 4.5, miniature 5.2)
+  elf: 4398 vertices, stage 14.8 ms (layers 6.2, form 3.5, miniature 5.0)
+  dwarf: 4500 vertices, stage 20.0 ms (layers 10.5, form 4.3, miniature 5.2)
+  ork: 4480 vertices, stage 17.7 ms (layers 10.2, form 3.1, miniature 4.4)
+----- post-test output end -----
+SPEC G66: the paint stage record — id 'paint', timings, finite metrics, the same paint as the live rig's paintSkin ... ok (187ms)
+SPEC G67: intelligence identity — absent == 500, every law the identity at the reference, hair byte-identical ... ok (8s)
+SPEC G68: intelligence is monotone and bounded — length tier, follicles, grey share up; never darker than age alone ...
+------- post-test output -------
+  human/-: I0 crop/short L=0.102 fol=432 grey=0.00 lum=0.009 | I250 crop/short L=0.102 fol=504 grey=0.00 lum=0.009 | I500 crop/short L=0.102 fol=576 grey=0.00 lum=0.009 | I750 crop/short L=0.102 fol=663 grey=0.15 lum=0.026 | I1000 crop/short L=0.102 fol=749 grey=0.30 lum=0.043
+  human/imperial: I0 crop/short L=0.102 fol=432 grey=0.00 lum=0.005 | I250 crop/short L=0.102 fol=504 grey=0.00 lum=0.005 | I500 crop/short L=0.102 fol=576 grey=0.00 lum=0.005 | I750 crop/short L=0.102 fol=663 grey=0.15 lum=0.023 | I1000 crop/short L=0.102 fol=749 grey=0.30 lum=0.040
+  human/nomad: I0 flowing/long L=0.417 fol=396 grey=0.00 lum=0.010 | I250 flowing/long L=0.458 fol=462 grey=0.00 lum=0.010 | I500 flowing/long L=0.499 fol=528 grey=0.00 lum=0.010 | I750 flowing/long L=0.560 fol=607 grey=0.15 lum=0.024 | I1000 flowing/long L=0.621 fol=687 grey=0.30 lum=0.038
+  human/islander: I0 crop/short L=0.102 fol=468 grey=0.00 lum=0.009 | I250 crop/short L=0.102 fol=546 grey=0.00 lum=0.009 | I500 crop/short L=0.102 fol=624 grey=0.00 lum=0.009 | I750 crop/short L=0.102 fol=718 grey=0.15 lum=0.026 | I1000 crop/short L=0.102 fol=811 grey=0.30 lum=0.042
+  elf/-: I0 flowing/long L=0.502 fol=238 grey=0.00 lum=0.055 | I250 flowing/long L=0.562 fol=278 grey=0.00 lum=0.055 | I500 flowing/long L=0.622 fol=317 grey=0.00 lum=0.055 | I750 flowing/long L=0.712 fol=365 grey=0.15 lum=0.067 | I1000 flowing/long L=0.802 fol=412 grey=0.30 lum=0.078
+  elf/high: I0 flowing/long L=0.502 fol=238 grey=0.00 lum=0.082 | I250 flowing/long L=0.562 fol=278 grey=0.00 lum=0.082 | I500 flowing/long L=0.622 fol=317 grey=0.00 lum=0.082 | I750 flowing/long L=0.712 fol=365 grey=0.15 lum=0.094 | I1000 flowing/long L=0.802 fol=412 grey=0.30 lum=0.104
+  elf/wood: I0 braided/long L=0.409 fol=262 grey=0.00 lum=0.088 | I250 braided/long L=0.449 fol=305 grey=0.00 lum=0.088 | I500 braided/long L=0.489 fol=349 grey=0.00 lum=0.088 | I750 braided/long L=0.549 fol=401 grey=0.15 lum=0.104 | I1000 braided/long L=0.609 fol=454 grey=0.30 lum=0.120
+  elf/dark: I0 flowing/long L=0.409 fol=244 grey=0.00 lum=0.021 | I250 flowing/long L=0.449 fol=284 grey=0.00 lum=0.021 | I500 flowing/long L=0.489 fol=325 grey=0.00 lum=0.021 | I750 flowing/long L=0.549 fol=374 grey=0.15 lum=0.034 | I1000 flowing/long L=0.609 fol=422 grey=0.30 lum=0.048
+  dwarf/-: I0 crop/short L=0.079 fol=689 grey=0.00 lum=0.011 | I250 crop/short L=0.096 fol=804 grey=0.00 lum=0.011 | I500 crop/short L=0.113 fol=919 grey=0.00 lum=0.011 | I750 crop/short L=0.114 fol=1056 grey=0.15 lum=0.028 | I1000 crop/short L=0.114 fol=1081 grey=0.30 lum=0.045
+  dwarf/mountain: I0 braided/shoulder L=0.355 fol=689 grey=0.00 lum=0.028 | I250 braided/shoulder L=0.355 fol=804 grey=0.00 lum=0.028 | I500 braided/shoulder L=0.355 fol=919 grey=0.00 lum=0.029 | I750 braided/shoulder L=0.355 fol=1056 grey=0.15 lum=0.046 | I1000 braided/shoulder L=0.355 fol=1081 grey=0.30 lum=0.063
+  dwarf/forge: I0 crop/short L=0.079 fol=689 grey=0.00 lum=0.006 | I250 crop/short L=0.096 fol=804 grey=0.00 lum=0.006 | I500 crop/short L=0.113 fol=919 grey=0.00 lum=0.006 | I750 crop/short L=0.114 fol=1056 grey=0.15 lum=0.023 | I1000 crop/short L=0.114 fol=1081 grey=0.30 lum=0.040
+  dwarf/deep: I0 braided/shoulder L=0.355 fol=648 grey=0.00 lum=0.057 | I250 braided/shoulder L=0.355 fol=757 grey=0.00 lum=0.056 | I500 braided/shoulder L=0.355 fol=865 grey=0.00 lum=0.056 | I750 braided/shoulder L=0.355 fol=994 grey=0.15 lum=0.073 | I1000 braided/shoulder L=0.355 fol=1081 grey=0.30 lum=0.089
+  ork/-: I0 mohawk/short L=0.076 fol=419 grey=0.00 lum=0.019 | I250 mohawk/short L=0.092 fol=489 grey=0.00 lum=0.020 | I500 mohawk/short L=0.103 fol=559 grey=0.00 lum=0.020 | I750 mohawk/short L=0.103 fol=643 grey=0.15 lum=0.038 | I1000 mohawk/short L=0.103 fol=726 grey=0.30 lum=0.057
+  ork/greenhide: I0 mohawk/short L=0.076 fol=419 grey=0.00 lum=0.021 | I250 mohawk/short L=0.092 fol=489 grey=0.00 lum=0.022 | I500 mohawk/short L=0.103 fol=559 grey=0.00 lum=0.022 | I750 mohawk/short L=0.103 fol=643 grey=0.15 lum=0.041 | I1000 mohawk/short L=0.103 fol=726 grey=0.30 lum=0.059
+  ork/ironhide: I0 shaved/buzz L=0.005 fol=461 grey=0.00 lum=0.083 | I250 shaved/buzz L=0.005 fol=538 grey=0.00 lum=0.083 | I500 shaved/buzz L=0.005 fol=615 grey=0.00 lum=0.083 | I750 shaved/buzz L=0.005 fol=707 grey=0.15 lum=0.083 | I1000 shaved/buzz L=0.005 fol=799 grey=0.30 lum=0.083
+  ork/bloodfang: I0 mohawk/short L=0.076 fol=377 grey=0.00 lum=0.020 | I250 mohawk/short L=0.092 fol=440 grey=0.00 lum=0.020 | I500 mohawk/short L=0.103 fol=503 grey=0.00 lum=0.021 | I750 mohawk/short L=0.103 fol=578 grey=0.15 lum=0.038 | I1000 mohawk/short L=0.103 fol=654 grey=0.30 lum=0.055
+----- post-test output end -----
+SPEC G68: intelligence is monotone and bounded — length tier, follicles, grey share up; never darker than age alone ... ok (3s)
+SPEC G69: the hair triangle budget holds at every intelligence (16 ancestries x 3 seeds x I 0/500/1000) ...
+------- post-test output -------
+  max hair triangles over 144 builds: 1100 (budget 1100)
+----- post-test output end -----
+SPEC G69: the hair triangle budget holds at every intelligence (16 ancestries x 3 seeds x I 0/500/1000) ... ok (3s)
+running 19 tests from ./tests/wave_gen_pipeline_test.ts
+SPEC G1: generateStaged returns one record per stage, in pipeline order, with timings and metrics ... ok (965ms)
+SPEC G2: generateBody keeps its signature and returns the carved stage ... ok (412ms)
+SPEC G3: with no stats generateBody == the pre-wave composition, byte for byte (8 race/sex specs) ... ok (8s)
+SPEC G4: with no stats the physics plan of every race and the human/elf meshes equal HEAD 6a5f588 ... ok (2ms)
+SPEC G5: stats null and stats at STAT_REFERENCE build the absent-stats body (identity morph) ... ok (2s)
+SPEC G6: the cage has 16 parts with 6 positive extents and contains the reference body (16 ancestries x 2 sexes) ... ok (13s)
+SPEC G7: the cage is identity at the reference and monotone: strength widens X/Z, level grows Y ... ok (267ms)
+SPEC G8: the clamp shrinks girth (never moves a segment), slides only centred volumes, keeps fitting nodes ... ok (153ms)
+SPEC G9: after the inflate clamp cageViolationMm = 0 at min and max stats for every race ... ok (8s)
+SPEC G10: cageFill is a share in (0, 1] and the reference body fills 40-70 % of its cage on average ... ok (148µs)
+SPEC G11: StatScale maps the reference fighter to 500, is monotone and clamped; level 1 -> 500, cap -> 1000 ... ok (1ms)
+SPEC G12: every class x ancestry starting sheet maps inside 0..1000 and orders the classes as the sheet does ... ok (458µs)
+SPEC G13: SHEET_TWEAK_SPAN is the creator's tweak window (DerivedSheet.ATTR_DELTA_SPAN) ... ok (18µs)
+SPEC G14: profiles and the engine carry stats into the body spec (and agility into the skeleton) ... ok (1ms)
+SPEC G15: the body cache key includes the stats (different stats = different body, same stats = cache hit) ... ok (1s)
+SPEC G16: the hitboxes stage wraps the skin (coverage >= 95 %, overshoot p95 <= 40 mm) at min / reference / max ... ok (5s)
+SPEC G17: Hitboxes fit hitRoot ?? root — the stat tree moves the capsules, no hit tree = today's fit ... ok (1s)
+SPEC G18: the pipeline is deterministic (same spec = same mesh, cage and metrics) ... ok (2s)
+SPEC G19: the skeleton stage = the bind bones + disks + a T-pose with horizontal arms (bind pose untouched) ... ok (648ms)
+running 13 tests from ./tests/wave_tex_layers_test.ts
+TX11 channels: every channel declares range/default/neutral/storage; aMaterial layout; mask ids ... ok (378µs)
+TX12 v1 adapter: evaluateStack(stackFromV1(s)).albedo is BYTE-identical to paintVertices(s) for every recipe (mannequin) + 4 real bodies, linear and sRGB, custom background ...
+------- post-test output -------
+v1 byte identity: 125 stacks, 714702 vertices x 2 spaces
+----- post-test output end -----
+TX12 v1 adapter: evaluateStack(stackFromV1(s)).albedo is BYTE-identical to paintVertices(s) for every recipe (mannequin) + 4 real bodies, linear and sRGB, custom background ... ok (3s)
+TX13 evaluate: an albedo-only stack leaves aMaterial at R's neutral (0.5, 0, 1, 0), no emissive, no masks ... ok (7ms)
+TX14 evaluate: one layer writes albedo + roughness + height + a named mask at once, only inside its mask ... ok (17ms)
+TX15 groups: normal-over is associative (group of normal layers == flat stack), opacity 0 / disabled are no-ops, isolation changes a multiply group ... ok (151ms)
+TX16 stack: order sort, enable/opacity, applyLayerOverrides (U's shape: id, enabled, opacity, blend per channel, order) is total and pure ... ok (1ms)
+TX17 masks: every source and combinator is closed on [0,1], never NaN, deterministic (2000 random trees on a real body) ... ok (3s)
+TX18 masks: algebra laws hold pointwise (2000 random pairs): and/or identities, De Morgan, invert involution, xor/subtract, commutativity ... ok (3s)
+TX19 masks: feather is a Gaussian of sigma = radius/2 in mm on the surface; grow/shrink move a boundary by the asked mm (grid 1 mm) ...
+------- post-test output -------
+feather 20 mm -> 10-90 % 24.94 mm (Gaussian 25.63); grow 15 -> 15.07 mm; shrink 15 -> 15.07 mm
+----- post-test output end -----
+TX19 masks: feather is a Gaussian of sigma = radius/2 in mm on the surface; grow/shrink move a boundary by the asked mm (grid 1 mm) ... ok (137ms)
+TX20 masks: sources mean what they say on a real body (up-facing = +y normals, region side, mark field, distance anchor, body height) ... ok (7ms)
+TX21 evaluate: stage 'fragment' layers skip the vertex pass and reach the fragment list with their group opacity; mark sources read M's field ... ok (4ms)
+TX22 perf: 12-layer stack on a ~10 k-vertex body (median of 5, fields cached and cold) + v1 vs v2 overhead ...
+------- post-test output -------
+perf {"vertices":10132,"layers":12,"vertexLayers":10,"coldMs":83.84,"medianMs":44.05,"v1Layers":12,"v1PaintMs":26.75,"v2SameStackMs":62.42}
+----- post-test output end -----
+TX22 perf: 12-layer stack on a ~10 k-vertex body (median of 5, fields cached and cold) + v1 vs v2 overhead ... ok (5s)
+TX23 docs: docs/wave-tex/LAYERS.md carries the generated operator/channel/mask tables of this code (WAVE_TEX_WRITE_DOC=1 rewrites them) ... ok (8ms)
+running 10 tests from ./tests/wave_tex_operators_test.ts
+TX1 operators: 25 colour modes (21 separable incl. softLightW3C, 4 non-separable) + linearDodge alias; 19 scalar ops; every op documented ... ok (351µs)
+TX2 operators: v1 codes 0..5 bit-identical to Blend.blendChannelCode on [0,1] (24000 cases) ... ok (41ms)
+TX3 operators: range closure + no NaN for every colour mode on out-of-range/NaN/Inf inputs (4000 x 25 triples) ... ok (215ms)
+TX4 operators: identities (normal at alpha 0, multiply by white, screen by black, add 0, ... ) on 4000 bases ... ok (28ms)
+TX5 operators: commutativity where documented, a counterexample where not (4000 pairs) ... ok (56ms)
+TX6 operators: normal-over is associative; multiply/screen/add/darken/lighten/linearBurn are associative (4000 triples) ... ok (3ms)
+TX7 operators: W3C non-separable reference values (Lum preserved, hue/sat transferred) ... ok (204µs)
+TX8 operators: scalar ops total and closed on every channel range, alpha 0 identity, documented identities (4000 x 19 x 3 ranges) ... ok (79ms)
+TX9 operators: heightBlend — soft "taller wins": monotone in s and a, identity at a = 0, between b and s (4000 cases) ... ok (1ms)
+TX10 operators: deterministic (same inputs -> same bits across 4000 replays) ... ok (4ms)
+running 10 tests from ./tests/wave_tex_presets_test.ts
+SPEC TX60: the wave-V FormShade + wave-GEN Miniature pass AS LAYERS (legacyFinish) is byte-identical to applyFormShade ... ok (6s)
+SPEC TX61: paintStage without a preset is unchanged (old law re-stated); with one it returns the channels ... ok (144ms)
+SPEC TX62: preset completeness — every race x sub-race skin, every garment kind, every class outfit, the six miniature steps ... ok (20ms)
+SPEC TX63: channel ranges — albedo 0..1, roughness/height/ao/subsurface inside the C-MAT ranges on painted bodies, no NaN ... ok (337ms)
+SPEC TX64: skin roughness by ancestry — elf satin < human < dwarf weathered < ork leathery, in the tables AND on painted skin ... ok (69ms)
+SPEC TX65: operators — glaze = W3C color keeps the base luminosity; heightBlend soft max; wash multiply only darkens; edge lift only lightens ... ok (39ms)
+SPEC TX66: legibility at game distance — skin vs garment contrast ratio inside LEGIBLE on every race x sub-race x class (colours) and on painted bodies ... ok (249ms)
+SPEC TX67: the miniature workflow reads — ridge/cavity separation >= legacy, metal edges glossier than metal flats, recesses matter, studs raised ... ok (150ms)
+SPEC TX68: skin presets stay skin and match the THEME — painted skin median inside SKIN_MEDIAN_BOUNDS, glaze <= 15 %, plaque-cited glazes come from the sub-race swatch ... ok (236ms)
+SPEC TX69: determinism, overrides and the v2 export — same subject = same bytes; opacity 1 override = identity; v2 stack evaluates through L ... ok (127ms)
+running 10 tests from ./tests/wave_tex_render_test.ts
+SPEC TX30: packDecals writes the posted layout (7 vec4 per decal, unit frame, tangent orthogonal to the normal) ...
+------- post-test output -------
+TX30: block 448 floats; scar radius 70.6 mm, band radius 86.5 mm
+----- post-test output end -----
+SPEC TX30: packDecals writes the posted layout (7 vec4 per decal, unit frame, tangent orthogonal to the normal) ... ok (925µs)
+SPEC TX31: packing is total — budget, degenerate frames, NaN, relief clamp ... ok (298µs)
+SPEC TX32: the height-perturbed normal is bounded — tilt <= MAX_TILT, so a relief crosses at most ONE cel band ...
+------- post-test output -------
+TX32: worst tilt 0.3000 rad (MAX 0.3), worst |dLambert| 0.2989 <= 0.2989 < band gap 0.38
+----- post-test output end -----
+SPEC TX32: the height-perturbed normal is bounded — tilt <= MAX_TILT, so a relief crosses at most ONE cel band ... ok (11ms)
+SPEC TX33: uniform budget — the material fragment fits WebGL2's guaranteed 224 vec4 and 16 samplers ...
+------- post-test output -------
+TX33: fragment uniform rows 150 / 224 (decals 112), samplers 2, 31 uniforms
+----- post-test output end -----
+SPEC TX33: uniform budget — the material fragment fits WebGL2's guaranteed 224 vec4 and 16 samplers ... ok (2ms)
+SPEC TX34: neutral channels take the pre-TEX path — celShade's expression verbatim, neutral inside every dead zone ... ok (2ms)
+SPEC TX35: decal profiles — spindle lines, stitches, discs; anti-aliased coverage is monotone with 0.5 on the edge ... ok (2ms)
+SPEC TX36: the glyph atlas reproduces Symbols' distances within one texel, 64 KB, deterministic ...
+------- post-test output -------
+TX36: 13 glyphs, bake 9.2 ms, worst |d - ref| 0.0165 glyph units (texel 0.0344)
+----- post-test output end -----
+SPEC TX36: the glyph atlas reproduces Symbols' distances within one texel, 64 KB, deterministic ... ok (18ms)
+SPEC TX37: the rig carries neutral channels, the region per vertex, and live decal / view controls ... ok (855ms)
+SPEC TX38: per-body GPU memory and CPU build cost of the channels stay inside the budget ...
+------- post-test output -------
+TX38: neutral aMaterial 0.32 ms / 12000 vertices, pack 16 decals 0.024 ms; per body 189 KB (+64 KB atlas once)
+----- post-test output end -----
+SPEC TX38: per-body GPU memory and CPU build cost of the channels stay inside the budget ... ok (11ms)
+SPEC TX39: shader structure — bounded loops, ONE glyph fetch per decal, no derivatives in the decal loop, view codes ... FAILED (2ms)
+running 4 tests from ./tests/wave_v_body_forms_test.ts
+forms: mass neutral per segment, measured the way the ragdoll measures it (positive-primitive solid) ...
+------- post-test output -------
+  human/male: upper arm 0.18 %, forearm 6.03 % (bias 1.06), thigh 0.02 %, shin -0.18 %; gains {"upper":1.025,"fore":1.4214424552429918,"residual":[0.001835985312117483,0.0003253090435904049]} {"thigh":0.9933333333333334,"calf":1.0792000000000002,"residual":[0.00022507314877340256,-0.0017683465959327238]}
+  elf/female: upper arm 0.10 %, forearm 6.11 % (bias 1.06), thigh 0.00 %, shin 0.00 %; gains {"upper":1.163186813186813,"fore":1.5163451884700794,"residual":[0.0009514747859180606,0.0010082097076187235]} {"thigh":1,"calf":1.1405714285714288,"residual":[0,0]}
+  dwarf/male: upper arm 0.06 %, forearm 5.95 % (bias 1.06), thigh 0.16 %, shin -0.11 %; gains {"upper":1.028125,"fore":1.1663392857142607,"residual":[0.0005747126436781436,-0.0004351093706699283]} {"thigh":0.9756756756756757,"calf":1.124044943820225,"residual":[0.0015716680637050118,-0.0010520778537612685]}
+  ork/male: upper arm -0.02 %, forearm 5.79 % (bias 1.06), thigh -0.01 %, shin 0.02 %; gains {"upper":0.9851851851851852,"fore":1.0406646341463095,"residual":[-0.0001599232368463266,-0.001977143764429923]} {"thigh":0.9715531335149863,"calf":1.1489825553623632,"residual":[-0.00013698630136971257,0.00021459227467812703]}
+----- post-test output end -----
+forms: mass neutral per segment, measured the way the ragdoll measures it (positive-primitive solid) ... ok (926ms)
+forms: the elbow and the knee WAIST between muscle masses (side silhouette), the pre-wave tube barely did ...
+------- post-test output -------
+  human/male: elbow waist 0.000 -> 0.332, knee waist 0.029 -> 0.042
+  elf/female: elbow waist 0.005 -> 0.295, knee waist 0.009 -> 0.024
+  dwarf/male: elbow waist 0.000 -> 0.335, knee waist 0.030 -> 0.188
+  ork/male: elbow waist 0.052 -> 0.454, knee waist 0.171 -> 0.376
+----- post-test output end -----
+forms: the elbow and the knee WAIST between muscle masses (side silhouette), the pre-wave tube barely did ... ok (27ms)
+forms: grooves are cutters (no mass), blend widths are varied, the thigh's frontal outline is the pre-wave one ...
+------- post-test output -------
+  leg-gap probes: min distance 28.913 -> 28.913 mm; largest probe change 0.249 mm (the vastus medialis, front)
+----- post-test output end -----
+forms: grooves are cutters (no mass), blend widths are varied, the thigh's frontal outline is the pre-wave one ... ok (903µs)
+forms: referenceForms rebuilds the exact pre-wave parts (the anatomy's cell refinement can count on them) ... ok (1ms)
+running 3 tests from ./tests/wave_v_body_paint_test.ts
+form paint: a sphere is all convex (no cavity); a body has grooves, and the cavity follows negative curvature ... ok (808ms)
+form paint: bounded, deterministic, strength 0 is the identity, skipped regions untouched ... ok (1s)
+form paint: more painted detail on the limbs (gradient energy up), no noise mush (band-sized jumps stay rare) ...
+------- post-test output -------
+  upperArm+foreArm: rms gradient 0.58 -> 2.00 /m, band jumps 0.59 % -> 1.50 %
+  thigh+shin: rms gradient 0.32 -> 0.47 /m, band jumps 0.00 % -> 0.04 %
+  torso+pelvis: rms gradient 0.41 -> 1.06 /m, band jumps 0.00 % -> 0.87 %
+----- post-test output end -----
+form paint: more painted detail on the limbs (gradient energy up), no noise mush (band-sized jumps stay rare) ... ok (254ms)
+running 4 tests from ./tests/wave_v_pose_symmetry_test.ts
+symmetry step: the raw body is already a mirror; the PHYSICS tree is untouched; the bones never move ...
+------- post-test output -------
+human male: 50 left/right pairs, mirror deviation before 2.22e-16, scaled 40, dominant R
+elf female: 52 left/right pairs, mirror deviation before 3.33e-16, scaled 40, dominant R
+dwarf female: 50 left/right pairs, mirror deviation before 2.22e-16, scaled 40, dominant R
+ork male: 50 left/right pairs, mirror deviation before 2.22e-16, scaled 40, dominant R
+----- post-test output end -----
+symmetry step: the raw body is already a mirror; the PHYSICS tree is untouched; the bones never move ... ok (2s)
+symmetry step: seeded natural asymmetry — bounded, deterministic, a dominant (weapon) arm, area-preserving pairs ...
+------- post-test output -------
+right-handed share 0.879 (target 0.88)
+----- post-test output end -----
+symmetry step: seeded natural asymmetry — bounded, deterministic, a dominant (weapon) arm, area-preserving pairs ... ok (7ms)
+symmetry step: the skin's dominant upper arm is fuller by exactly 1+|δ|; hands, feet and soles stay exact mirrors ...
+------- post-test output -------
+seed 11: dominant L, arm δ 1.49 %, upper-arm radius ×1.0149 / ×0.9849
+----- post-test output end -----
+symmetry step: the skin's dominant upper arm is fuller by exactly 1+|δ|; hands, feet and soles stay exact mirrors ... ok (301ms)
+symmetry step: a non-mirrored pair is made a mirror before the asymmetry (the enforcement works) ...
+------- post-test output -------
+broken pair: deviation before 0.0476, after 2.22e-16
+----- post-test output end -----
+symmetry step: a non-mirrored pair is made a mirror before the asymmetry (the enforcement works) ... ok (181ms)
+running 1 test from ./tests/wave_w_hand_creases_test.ts
+creases: the guard's bent elbow keeps its inner flesh off the bone (helper bones), the rest pose is unchanged ...
+------- post-test output -------
+human/male/7 elbow -1.45: inner 0.622, folds 0, selfX 0
+human/male/7 elbow -1.7: inner 0.545, folds 0, selfX 0
+elf/female/7 elbow -1.45: inner 0.642, folds 0, selfX 0
+elf/female/7 elbow -1.7: inner 0.562, folds 0, selfX 0
+dwarf/male/7 elbow -1.45: inner 0.508, folds 0, selfX 0
+dwarf/male/7 elbow -1.7: inner 0.428, folds 0, selfX 34
+ork/male/7 elbow -1.45: inner 0.503, folds 0, selfX 0
+ork/male/7 elbow -1.7: inner 0.423, folds 0, selfX 81
+control ork plain weights elbow -1.45: inner 0.347, folds 34
+ork/female/42 elbow -1.45: inner 0.6, folds 0, selfX 0
+ork/female/42 elbow -1.7: inner 0.523, folds 1, selfX 56
+----- post-test output end -----
+creases: the guard's bent elbow keeps its inner flesh off the bone (helper bones), the rest pose is unchanged ... ok (4s)
+running 4 tests from ./tests/wave_w_hand_fingers_test.ts
+hands: four fingers of three phalanges and a thumb, a fixed topology, a stated triangle cost ...
+------- post-test output -------
+hand: 158 vertices, 266 triangles per hand
+----- post-test output end -----
+hands: four fingers of three phalanges and a thumb, a fixed topology, a stated triangle cost ... ok (1ms)
+hands: the weapon hand closes on the handle at the guard — every finger touches and wraps it ...
+------- post-test output -------
+human/axe: gaps 0/0/0/0/3.64 mm, wrap 167.4°, palm -3.24 mm, tilt 0.531, dev -0.65
+human/dagger: gaps 0/0/0/0/6.07 mm, wrap 175.2°, palm -3.05 mm, tilt 0.507, dev -0.65
+human/longsword: gaps 0/0/0/0/0.88 mm, wrap 163°, palm -3.36 mm, tilt 0.546, dev -0.65
+human/spear: gaps 0/0/0/0/-0.34 mm, wrap 153.6°, palm -3.63 mm, tilt 0.579, dev -0.65
+elf/axe: gaps 0/0/0/0/11.96 mm, wrap 229.8°, palm -2.94 mm, tilt 0.41, dev -0.65
+elf/dagger: gaps 0/0/0/0/13.78 mm, wrap 241.6°, palm -3.91 mm, tilt 0.367, dev -0.65
+elf/longsword: gaps 0/0/0/0/10.79 mm, wrap 223.3°, palm -3.02 mm, tilt 0.424, dev -0.65
+elf/spear: gaps 0/0/0/0/8.01 mm, wrap 209.1°, palm -3.2 mm, tilt 0.457, dev -0.65
+dwarf/axe: gaps 0/0/0/0/-13.32 mm, wrap 119.1°, palm -9.85 mm, tilt 0.8, dev -0.634
+dwarf/dagger: gaps 0/0/0/0/-11.93 mm, wrap 122.3°, palm -8.46 mm, tilt 0.8, dev -0.634
+dwarf/longsword: gaps 0/0/0/0/-14.16 mm, wrap 117.2°, palm -10.69 mm, tilt 0.8, dev -0.634
+dwarf/spear: gaps 0/0/0/0/-16.1 mm, wrap 113.1°, palm -12.63 mm, tilt 0.8, dev -0.634
+ork/axe: gaps 0/0/0/0/-7.58 mm, wrap 131.7°, palm -3.12 mm, tilt 0.799, dev -0.594
+ork/dagger: gaps 0/0/0/0/-5.16 mm, wrap 136.6°, palm -3.06 mm, tilt 0.779, dev -0.594
+ork/longsword: gaps 0/0/0/0/-8.46 mm, wrap 130.1°, palm -3.9 mm, tilt 0.8, dev -0.594
+ork/spear: gaps 0/0/0/0/-10.41 mm, wrap 126.8°, palm -5.84 mm, tilt 0.8, dev -0.594
+----- post-test output end -----
+hands: the weapon hand closes on the handle at the guard — every finger touches and wraps it ... ok (3s)
+hands: the grip follows the handle — a square handle sits in a channel the fingers close round ... ok (688µs)
+hands: the mitten leaves the RENDER only — the physics body keeps it, the render skin is closed at the wrist ... ok (426ms)
+running 10 tests from ./tests/wave_x_body_test.ts
+SPEC X50: a fat belly is RARE, dwarves > orks > humans > elves (2000 seeded rolls per race), elves never ...
+------- post-test output -------
+fat belly frequency over 2000 seeds: dwarf 12.45 %, ork 7.05 %, human 4.30 %, elf 0.00 %
+----- post-test output end -----
+SPEC X50: a fat belly is RARE, dwarves > orks > humans > elves (2000 seeded rolls per race), elves never ... ok (1ms)
+SPEC X51: the belly roll is its own stream — two draws, deterministic, and randomSilhouette is untouched ... ok (272µs)
+SPEC X52: the viewer frames by the PEDESTAL — one radius, one distance for every model under the frame top ...
+------- post-test output -------
+pedestal R 0.6 m, frame top 2.52 m, distance 3.964 m, target y 1.155 m
+----- post-test output end -----
+SPEC X52: the viewer frames by the PEDESTAL — one radius, one distance for every model under the frame top ... ok (198µs)
+SPEC X53: the key light is overhead (slightly front), the contact shadow is a real darkening, the stone is mid-dark ...
+------- post-test output -------
+key elevation 80.8 deg (front component 0.158)
+----- post-test output end -----
+SPEC X53: the key light is overhead (slightly front), the contact shadow is a real darkening, the stone is mid-dark ... ok (5ms)
+SPEC X54: deltoid caps stand ABOVE the clavicle line with a valley between (skin field and built mesh), every race ...
+------- post-test output -------
+human: field apex - clavicle -6.0 -> 16.0 mm, valley 4.0 -> 26.0 mm; mesh apex - clavicle 22.4 mm, mesh valley 5.6 mm
+elf: field apex - clavicle -8.0 -> 16.0 mm, valley 0.0 -> 30.0 mm; mesh apex - clavicle 22.7 mm, mesh valley 12.6 mm
+dwarf: field apex - clavicle 4.0 -> 12.0 mm, valley 0.0 -> 12.0 mm; mesh apex - clavicle 15.0 mm, mesh valley 4.1 mm
+ork: field apex - clavicle 6.0 -> 12.0 mm, valley 0.0 -> 22.0 mm; mesh apex - clavicle 8.7 mm, mesh valley 14.9 mm
+----- post-test output end -----
+SPEC X54: deltoid caps stand ABOVE the clavicle line with a valley between (skin field and built mesh), every race ... ok (4s)
+SPEC X55: slimmer — the waist tape drops >= 8 % on every race and sex, the race order of the waists survives ...
+------- post-test output -------
+human/male: waist 895.4 -> 782.8 mm (-12.6 %), shoulder 571.0 -> 571.0 mm
+human/female: waist 822.9 -> 730.8 mm (-11.2 %), shoulder 569.4 -> 569.4 mm
+elf/male: waist 714.9 -> 624.7 mm (-12.6 %), shoulder 480.5 -> 480.5 mm
+elf/female: waist 650.0 -> 579.1 mm (-10.9 %), shoulder 482.7 -> 482.7 mm
+dwarf/male: waist 1430.7 -> 1235.2 mm (-13.7 %), shoulder 869.7 -> 869.7 mm
+dwarf/female: waist 1330.8 -> 1170.3 mm (-12.1 %), shoulder 846.5 -> 846.3 mm
+ork/male: waist 1830.0 -> 1603.8 mm (-12.4 %), shoulder 1192.8 -> 1192.8 mm
+ork/female: waist 1703.5 -> 1525.9 mm (-10.4 %), shoulder 1151.9 -> 1151.7 mm
+----- post-test output end -----
+SPEC X55: slimmer — the waist tape drops >= 8 % on every race and sex, the race order of the waists survives ... ok (10s)
+SPEC X56: the male crotch bulge stands clearly proud of its neighbours; the female has none ...
+------- post-test output -------
+human: bulge +35.1 mm over the same body without it; 16.0 mm ahead of the lower belly, 26.2 mm ahead of the inner thighs
+elf: bulge +34.7 mm over the same body without it; 19.5 mm ahead of the lower belly, 30.1 mm ahead of the inner thighs
+dwarf: bulge +32.2 mm over the same body without it; 5.6 mm ahead of the lower belly, 15.6 mm ahead of the inner thighs
+ork: bulge +42.4 mm over the same body without it; 12.7 mm ahead of the lower belly, 16.8 mm ahead of the inner thighs
+----- post-test output end -----
+SPEC X56: the male crotch bulge stands clearly proud of its neighbours; the female has none ... ok (3s)
+SPEC X57: the physique is RENDER-ONLY — the physics tree and its box are byte-identical with and without it ... ok (4s)
+SPEC X58: a rolled fat belly stands well in front of the flat belly and keeps the skin one closed piece ...
+------- post-test output -------
+human: belly front 96.8 -> fat 164.1 mm (+67.2); abs band off on the fat belly: true
+elf: belly front 82.5 -> fat 150.9 mm (+68.4); abs band off on the fat belly: true
+dwarf: belly front 141.1 -> fat 204.0 mm (+62.9); abs band off on the fat belly: true
+ork: belly front 175.1 -> fat 260.7 mm (+85.5); abs band off on the fat belly: true
+ork default belly front 218.4 -> 175.1 mm
+----- post-test output end -----
+SPEC X58: a rolled fat belly stands well in front of the flat belly and keeps the skin one closed piece ... ok (3s)
+SPEC X59: the sub-grid surface detail is wired — abs band from the plan, garment/trunk attribute, AA fades ...
+------- post-test output -------
+aSurface: 1928 garment vertices, 1174 trunk vertices of 4180; gains {"abs":0.0075,"skin":0.0005,"cloth":0.00035,"albedo":1.1}
+----- post-test output end -----
+SPEC X59: the sub-grid surface detail is wired — abs band from the plan, garment/trunk attribute, AA fades ... ok (454ms)
+running 16 tests from ./tests/wave_x_hair_test.ts
+SPEC X70: every follicle sits ON the skull ellipsoid (radial error < 1 mm), every ancestry ...
+------- post-test output -------
+follicles per ancestry (seed 17, young):
+  human/-          density=0.60 follicles= 576/576 area=548.2cm² spacing=6.8mm maxRadialErr=0.000nm
+  human/imperial   density=0.60 follicles= 576/576 area=548.2cm² spacing=6.8mm maxRadialErr=0.000nm
+  human/nomad      density=0.55 follicles= 528/528 area=548.2cm² spacing=7.1mm maxRadialErr=0.000nm
+  human/islander   density=0.65 follicles= 624/624 area=548.2cm² spacing=6.6mm maxRadialErr=0.000nm
+  elf/-            density=0.50 follicles= 317/317 area=347.8cm² spacing=7.3mm maxRadialErr=0.000nm
+  elf/high         density=0.50 follicles= 317/317 area=347.8cm² spacing=7.3mm maxRadialErr=0.000nm
+  elf/wood         density=0.55 follicles= 349/349 area=347.8cm² spacing=7.0mm maxRadialErr=0.000nm
+  elf/dark         density=0.50 follicles= 325/325 area=356.2cm² spacing=7.3mm maxRadialErr=0.000nm
+  dwarf/-          density=0.85 follicles= 919/919 area=774.0cm² spacing=6.4mm maxRadialErr=0.000nm
+  dwarf/mountain   density=0.85 follicles= 919/919 area=774.0cm² spacing=6.4mm maxRadialErr=0.000nm
+  dwarf/forge      density=0.85 follicles= 919/919 area=774.0cm² spacing=6.4mm maxRadialErr=0.000nm
+  dwarf/deep       density=0.80 follicles= 865/865 area=774.0cm² spacing=6.6mm maxRadialErr=0.000nm
+  ork/-            density=0.50 follicles= 559/559 area=744.1cm² spacing=8.1mm maxRadialErr=0.000nm
+  ork/greenhide    density=0.50 follicles= 559/559 area=744.1cm² spacing=8.1mm maxRadialErr=0.000nm
+  ork/ironhide     density=0.55 follicles= 615/615 area=744.1cm² spacing=7.7mm maxRadialErr=0.000nm
+  ork/bloodfang    density=0.45 follicles= 503/503 area=744.1cm² spacing=8.5mm maxRadialErr=0.000nm
+----- post-test output end -----
+SPEC X70: every follicle sits ON the skull ellipsoid (radial error < 1 mm), every ancestry ... ok (8s)
+SPEC X71: no follicle on the face or in an ear zone; the forehead line stays above the brow ... ok (364ms)
+SPEC X72: the follicle count scales with the ancestry's hair density (and with the region's area) ...
+------- post-test output -------
+human follicles at density 0.3/0.6/0.9: 288 / 576 / 864
+----- post-test output end -----
+SPEC X72: the follicle count scales with the ancestry's hair density (and with the region's area) ... ok (31ms)
+SPEC X73: follicles and growth are deterministic per seed, and differ across seeds ... ok (86ms)
+SPEC X74: male elders recede (temples first, then the crown), women and elves never ...
+------- post-test output -------
+hair region area: young 548.2 cm² -> male elder (recession 0.68) 499.9 cm²
+----- post-test output end -----
+SPEC X74: male elders recede (temples first, then the crown), women and elves never ... ok (847µs)
+SPEC X75: clearance >= 0 everywhere — every strand point and every drawn vertex is outside the cranium ...
+------- post-test output -------
+clearance: min over 178332 strand points 0.889 mm, over 73602 drawn vertices 0.222 mm (16 ancestries x 4 seeds)
+----- post-test output end -----
+SPEC X75: clearance >= 0 everywhere — every strand point and every drawn vertex is outside the cranium ... ok (1s)
+SPEC X76: free strands are CUT to the style length (within one growth step) ...
+------- post-test output -------
+strands stopped early by a guard (ear zone / face plane): 46 of 3580
+cut-length error by style/tier (head heights):
+  crop/short         strands=457 worst=0.0000h
+  flowing/long       strands=150 worst=0.0000h
+  wild/shoulder      strands=129 worst=0.0000h
+  bob/shoulder       strands=8 worst=0.0000h
+  wild/long          strands=31 worst=0.0000h
+  wild/short         strands=283 worst=0.0000h
+  mohawk/short       strands=489 worst=0.0000h
+----- post-test output end -----
+SPEC X76: free strands are CUT to the style length (within one growth step) ... ok (1ms)
+SPEC X77: braids are true 3-strand interleaves — each bundle crosses the centre line, 120° apart, ending in a tie ...
+------- post-test output -------
+braids checked: 35
+----- post-test output end -----
+SPEC X77: braids are true 3-strand interleaves — each bundle crosses the centre line, 120° apart, ending in a tie ... ok (2ms)
+SPEC X78: the fringe never comes below the brow line and no hair sits on the face or in an ear zone ...
+------- post-test output -------
+fringe strands: 742; lowest fringe point 0.030 h above the brow (line at +0.03 h)
+----- post-test output end -----
+SPEC X78: the fringe never comes below the brow line and no hair sits on the face or in an ear zone ... ok (16ms)
+SPEC X79: ponytails and topknots gather their strands at a tie point ... ok (159ms)
+SPEC X80: the hair stays inside its triangle budget on every ancestry (the whole rig is pinned < 12 000) ...
+------- post-test output -------
+hair per ancestry (seeds 3,11,29,101; budget 1100):
+  human/-          follicles=576,576,576,576 clumps=72,68,72,61 tris=1092,1080,1092,1100 styles=topknot/shoulder crop/short bob/shoulder
+  human/imperial   follicles=576,576,576,576 clumps=72,81,70,71 tris=1092,1096,1070,1100 styles=topknot/shoulder crop/short bob/shoulder
+  human/nomad      follicles=528,528,528,528 clumps=72,35,50,50 tris=1092,1088,1054,1054 styles=topknot/long flowing/long+1br bob/shoulder
+  human/islander   follicles=624,624,624,624 clumps=37,62,55,55 tris=1074,1098,1050,1038 styles=wild/shoulder crop/short bob/shoulder
+  elf/-            follicles=317,317,317,317 clumps=70,38,40,62 tris=1091,1079,1089,1099 styles=bob/shoulder flowing/long braided/long+3br braided/long+2br
+  elf/high         follicles=317,317,317,317 clumps=61,38,40,38 tris=1093,1079,1089,1087 styles=braided/long+2br flowing/long braided/long+3br
+  elf/wood         follicles=349,349,349,349 clumps=40,62,67,68 tris=1079,1097,1093,1091 styles=wild/long braided/long+2br bob/shoulder
+  elf/dark         follicles=325,325,325,325 clumps=69,38,40,61 tris=1077,1095,1083,1095 styles=bob/shoulder flowing/long braided/long+3br braided/long+2br
+  dwarf/-          follicles=919,919,919,919 clumps=66,76,52,68 tris=1090,1084,1094,1096 styles=wild/short crop/short braided/shoulder+3br braided/shoulder+2br
+  dwarf/mountain   follicles=919,919,919,919 clumps=76,68,79,68 tris=1090,1090,1100,1094 styles=crop/short braided/shoulder+2br
+  dwarf/forge      follicles=919,919,919,919 clumps=60,71,43,71 tris=1096,1096,1056,1098 styles=wild/short crop/short wild/shoulder+1br
+  dwarf/deep       follicles=865,865,865,865 clumps=75,69,49,69 tris=1096,1092,1066,1100 styles=wild/short braided/shoulder+2br wild/shoulder+1br
+  ork/-            follicles=559,559,559,559 clumps=46,73,0,0 tris=1086,1094,214,214 styles=wild/short mohawk/short shaved/buzz
+  ork/greenhide    follicles=559,559,559,559 clumps=49,75,39,74 tris=1098,1100,1074,1092 styles=wild/short mohawk/short wild/shoulder+1br
+  ork/ironhide     follicles=615,615,615,615 clumps=72,0,72,0 tris=1094,214,1096,214 styles=mohawk/short shaved/buzz
+  ork/bloodfang    follicles=503,503,503,503 clumps=45,61,37,62 tris=1088,1092,1090,1094 styles=wild/short mohawk/short wild/shoulder+1br
+----- post-test output end -----
+SPEC X80: the hair stays inside its triangle budget on every ancestry (the whole rig is pinned < 12 000) ... ok (449µs)
+SPEC X81: grey — greyFraction(race, age) of the hair turns grey; elders grey, elves silver and less ...
+------- post-test output -------
+greyFraction examples (years = share of grey strands):
+  human  24y=0.00  48y=0.17  64y=0.64  80y=0.92
+  elf    210y=0.00  420y=0.00  560y=0.16  700y=0.60
+  dwarf  90y=0.00  180y=0.17  240y=0.64  300y=0.92
+  ork    17y=0.00  33y=0.17  44y=0.64  55y=0.92
+human seed 11: mean vertex luminance young(25y) 0.009 -> elder(80y) 0.413; grey clumps 0 -> 42/68
+----- post-test output end -----
+SPEC X81: grey — greyFraction(race, age) of the hair turns grey; elders grey, elves silver and less ... ok (31ms)
+SPEC X82: shading — root darker than tip, shades of the base colour per clump ...
+------- post-test output -------
+rootTip: root x0.58 -> tip x1.12; clump tone range 0.82..1.16
+----- post-test output end -----
+SPEC X82: shading — root darker than tip, shades of the base colour per clump ... ok (15ms)
+SPEC X83: FaceParts wiring — grown hair in hairParts + secondary, bald stays bald, every ancestry builds ...
+------- post-test output -------
+FaceParts with grown hair:
+  human/-          bob/shoulder hairTris=1084 faceTris=2172 secondary=6
+  human/imperial   topknot/shoulder hairTris=1092 faceTris=2180 secondary=1
+  human/nomad      ponytail/long hairTris=1090 faceTris=2178 secondary=2
+  human/islander   crop/short hairTris=1094 faceTris=2182 secondary=6
+  elf/-            bob/shoulder hairTris=1091 faceTris=2127 secondary=5
+  elf/high         braided/long hairTris=1079 faceTris=2115 secondary=2
+  elf/wood         bob/shoulder hairTris=1061 faceTris=2097 secondary=5
+  elf/dark         braided/long hairTris=1073 faceTris=2109 secondary=2
+  dwarf/-          braided/shoulder hairTris=1096 faceTris=2184 secondary=4
+  dwarf/mountain   braided/shoulder hairTris=1086 faceTris=2174 secondary=3
+  dwarf/forge      crop/short hairTris=1096 faceTris=2184 secondary=6
+  dwarf/deep       wild/shoulder hairTris=1086 faceTris=2174 secondary=7
+  ork/-            mohawk/short hairTris=1096 faceTris=2156 secondary=5
+  ork/greenhide    wild/short hairTris=1072 faceTris=2132 secondary=5
+  ork/ironhide     mohawk/short hairTris=1098 faceTris=2158 secondary=5
+  ork/bloodfang    wild/short hairTris=1054 faceTris=2114 secondary=5
+----- post-test output end -----
+SPEC X83: FaceParts wiring — grown hair in hairParts + secondary, bald stays bald, every ancestry builds ... ok (3s)
+SPEC X84: style plans — fringe-cut styles exist, braiding ancestries braid, tiers follow the ancestry length ... ok (2ms)
+SPEC X85: no stray spikes — at head level the hair stands off the skull by a stated band per style ...
+------- post-test output -------
+largest stand-off at head level by style (h): topknot=0.150 crop=0.076 bob=0.103 flowing=0.106 wild=0.132 braided=0.102 mohawk=0.438 shaved=0.006
+----- post-test output end -----
+SPEC X85: no stray spikes — at head level the hair stands off the skull by a stated band per style ... ok (4ms)
+running 5 tests from ./tests/world_readability_test.ts
+metrics: Lab, Delta E, weighted spread and area weights are right on known values ... ok (415µs)
+(a) relief reads under the noon sun: per-area N.L spread >= 0.15 (median) at every place, >= 3x lane E ... ok (880ms)
+(b) adjacent material zones differ by Delta E76 >= 12 on every seed; (c) ring + outside <= 6k triangles ... ok (513ms)
+paint: >= 4 pattern kinds, >= 3 blend modes, every pattern above the vertex Nyquist scale, opacities from gameplay ... ok (4ms)
+paint: every vertex is relevant (no neon, no black, no white); zones follow gameplay; features are highlighted ... ok (345ms)
+
+ ERRORS 
+
+SPEC TX39: shader structure — bounded loops, ONE glyph fetch per decal, no derivatives in the decal loop, view codes => ./tests/wave_tex_render_test.ts:251:6
+error: Error: every derivative of the wave-TEX main precedes its first branch
+function assert(ok: boolean, msg = "assertion failed"): void { if (!ok) throw new Error(msg); }
+                                                                              ^
+    at assert (file:///Users/macmax/Desktop/Mytherrania/tests/wave_tex_render_test.ts:24:79)
+    at file:///Users/macmax/Desktop/Mytherrania/tests/wave_tex_render_test.ts:263:3
+
+ FAILURES 
+
+SPEC TX39: shader structure — bounded loops, ONE glyph fetch per decal, no derivatives in the decal loop, view codes => ./tests/wave_tex_render_test.ts:251:6
+
+FAILED | 274 passed | 1 failed (5m1s)
+
+error: Test failed

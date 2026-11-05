@@ -1,0 +1,568 @@
+{
+ "capture": {
+  "ork-female/forearm/r07q-before-F": {
+   "inkPx": 1156.0,
+   "albInk": 39.86,
+   "albRing": 59.54,
+   "finInk": 32.56,
+   "finRing": 49.1,
+   "albDL": -19.68,
+   "finDL": -16.55
+  },
+  "ork-female/forearm/r07q-closing": {
+   "inkPx": 1068.0,
+   "albInk": 51.8,
+   "albRing": 64.87,
+   "finInk": 43.47,
+   "finRing": 53.65,
+   "albDL": -13.07,
+   "finDL": -10.19
+  },
+  "ork-female/forearm/r08q-parent": {
+   "inkPx": 1062.0,
+   "albInk": 42.69,
+   "albRing": 64.62,
+   "finInk": 34.86,
+   "finRing": 53.18,
+   "albDL": -21.93,
+   "finDL": -18.32
+  },
+  "ork-female/forearm/r09q-parent": {
+   "inkPx": 1069.0,
+   "albInk": 43.69,
+   "albRing": 64.87,
+   "finInk": 35.82,
+   "finRing": 53.65,
+   "albDL": -21.18,
+   "finDL": -17.83
+  },
+  "ork-female/front-left-3q/r07q-before-F": {
+   "inkPx": 152.0,
+   "albInk": 40.5,
+   "albRing": 56.96,
+   "finInk": 28.65,
+   "finRing": 43.04,
+   "albDL": -16.46,
+   "finDL": -14.39
+  },
+  "ork-female/front-left-3q/r07q-closing": {
+   "inkPx": 159.0,
+   "albInk": 43.25,
+   "albRing": 59.84,
+   "finInk": 31.42,
+   "finRing": 45.74,
+   "albDL": -16.59,
+   "finDL": -14.32
+  },
+  "ork-female/front-left-3q/r08q-parent": {
+   "inkPx": 159.0,
+   "albInk": 42.57,
+   "albRing": 59.84,
+   "finInk": 30.82,
+   "finRing": 45.74,
+   "albDL": -17.26,
+   "finDL": -14.92
+  },
+  "ork-female/front-left-3q/r09q-parent": {
+   "inkPx": 159.0,
+   "albInk": 42.72,
+   "albRing": 59.84,
+   "finInk": 30.94,
+   "finRing": 45.74,
+   "albDL": -17.12,
+   "finDL": -14.8
+  },
+  "human-male/forearm/r07q-before-F": {
+   "inkPx": 863.0,
+   "albInk": 44.72,
+   "albRing": 68.73,
+   "finInk": 38.04,
+   "finRing": 58.24,
+   "albDL": -24.02,
+   "finDL": -20.2
+  },
+  "human-male/forearm/r07q-closing": {
+   "inkPx": 842.0,
+   "albInk": 44.25,
+   "albRing": 68.46,
+   "finInk": 37.55,
+   "finRing": 57.84,
+   "albDL": -24.22,
+   "finDL": -20.29
+  },
+  "human-male/forearm/r08q-parent": {
+   "inkPx": 842.0,
+   "albInk": 44.23,
+   "albRing": 68.46,
+   "finInk": 37.54,
+   "finRing": 57.84,
+   "albDL": -24.23,
+   "finDL": -20.3
+  },
+  "human-male/forearm/r09q-parent": {
+   "inkPx": 842.0,
+   "albInk": 44.23,
+   "albRing": 68.46,
+   "finInk": 37.54,
+   "finRing": 57.84,
+   "albDL": -24.23,
+   "finDL": -20.3
+  },
+  "human-male/front-left-3q/r07q-before-F": {
+   "inkPx": 385.0,
+   "albInk": 43.4,
+   "albRing": 66.79,
+   "finInk": 36.75,
+   "finRing": 56.83,
+   "albDL": -23.39,
+   "finDL": -20.08
+  },
+  "human-male/front-left-3q/r07q-closing": {
+   "inkPx": 405.0,
+   "albInk": 43.62,
+   "albRing": 66.9,
+   "finInk": 36.97,
+   "finRing": 56.74,
+   "albDL": -23.28,
+   "finDL": -19.77
+  },
+  "human-male/front-left-3q/r08q-parent": {
+   "inkPx": 405.0,
+   "albInk": 43.61,
+   "albRing": 66.9,
+   "finInk": 36.97,
+   "finRing": 56.74,
+   "albDL": -23.29,
+   "finDL": -19.77
+  },
+  "human-male/front-left-3q/r09q-parent": {
+   "inkPx": 405.0,
+   "albInk": 43.61,
+   "albRing": 66.9,
+   "finInk": 36.97,
+   "finRing": 56.74,
+   "albDL": -23.29,
+   "finDL": -19.77
+  },
+  "elf-female/forearm/r07q-before-F": {
+   "inkPx": 322.0,
+   "albInk": 49.81,
+   "albRing": 80.14,
+   "finInk": 41.18,
+   "finRing": 63.81,
+   "albDL": -30.32,
+   "finDL": -22.64
+  },
+  "elf-female/forearm/r07q-closing": {
+   "inkPx": 322.0,
+   "albInk": 52.46,
+   "albRing": 80.56,
+   "finInk": 43.56,
+   "finRing": 64.15,
+   "albDL": -28.1,
+   "finDL": -20.59
+  },
+  "elf-female/forearm/r08q-parent": {
+   "inkPx": 322.0,
+   "albInk": 50.21,
+   "albRing": 80.56,
+   "finInk": 41.47,
+   "finRing": 64.15,
+   "albDL": -30.35,
+   "finDL": -22.69
+  },
+  "elf-female/forearm/r09q-parent": {
+   "inkPx": 322.0,
+   "albInk": 50.63,
+   "albRing": 80.56,
+   "finInk": 41.84,
+   "finRing": 64.15,
+   "albDL": -29.94,
+   "finDL": -22.31
+  },
+  "elf-female/front-left-3q/r07q-before-F": {
+   "inkPx": 413.0,
+   "albInk": 48.33,
+   "albRing": 77.36,
+   "finInk": 40.62,
+   "finRing": 64.63,
+   "albDL": -29.03,
+   "finDL": -24.01
+  },
+  "elf-female/front-left-3q/r07q-closing": {
+   "inkPx": 417.0,
+   "albInk": 48.91,
+   "albRing": 77.61,
+   "finInk": 41.1,
+   "finRing": 64.14,
+   "albDL": -28.71,
+   "finDL": -23.04
+  },
+  "elf-female/front-left-3q/r08q-parent": {
+   "inkPx": 417.0,
+   "albInk": 48.73,
+   "albRing": 77.61,
+   "finInk": 40.93,
+   "finRing": 64.14,
+   "albDL": -28.89,
+   "finDL": -23.21
+  },
+  "elf-female/front-left-3q/r09q-parent": {
+   "inkPx": 417.0,
+   "albInk": 48.8,
+   "albRing": 77.61,
+   "finInk": 41.0,
+   "finRing": 64.14,
+   "albDL": -28.81,
+   "finDL": -23.14
+  },
+  "dwarf-male/forearm/r07q-before-F": {
+   "inkPx": 1409.0,
+   "albInk": 38.77,
+   "albRing": 66.84,
+   "finInk": 34.96,
+   "finRing": 61.25,
+   "albDL": -28.07,
+   "finDL": -26.29
+  },
+  "dwarf-male/forearm/r07q-closing": {
+   "inkPx": 1352.0,
+   "albInk": 40.82,
+   "albRing": 67.9,
+   "finInk": 36.3,
+   "finRing": 62.09,
+   "albDL": -27.09,
+   "finDL": -25.79
+  },
+  "dwarf-male/forearm/r08q-parent": {
+   "inkPx": 1352.0,
+   "albInk": 38.37,
+   "albRing": 67.9,
+   "finInk": 34.48,
+   "finRing": 62.09,
+   "albDL": -29.54,
+   "finDL": -27.61
+  },
+  "dwarf-male/forearm/r09q-parent": {
+   "inkPx": 1352.0,
+   "albInk": 38.65,
+   "albRing": 67.9,
+   "finInk": 34.7,
+   "finRing": 62.09,
+   "albDL": -29.25,
+   "finDL": -27.39
+  },
+  "dwarf-male/front-left-3q/r07q-before-F": {
+   "inkPx": 116.0,
+   "albInk": 52.3,
+   "albRing": 66.5,
+   "finInk": 44.47,
+   "finRing": 58.26,
+   "albDL": -14.2,
+   "finDL": -13.79
+  },
+  "dwarf-male/front-left-3q/r07q-closing": {
+   "inkPx": 118.0,
+   "albInk": 53.99,
+   "albRing": 68.44,
+   "finInk": 46.17,
+   "finRing": 59.87,
+   "albDL": -14.45,
+   "finDL": -13.7
+  },
+  "dwarf-male/front-left-3q/r08q-parent": {
+   "inkPx": 118.0,
+   "albInk": 53.15,
+   "albRing": 68.44,
+   "finInk": 45.52,
+   "finRing": 59.86,
+   "albDL": -15.29,
+   "finDL": -14.35
+  },
+  "dwarf-male/front-left-3q/r09q-parent": {
+   "inkPx": 118.0,
+   "albInk": 53.39,
+   "albRing": 68.44,
+   "finInk": 45.71,
+   "finRing": 59.87,
+   "albDL": -15.06,
+   "finDL": -14.16
+  }
+ },
+ "band": {
+  "r07q-before-F": {
+   "px": 394.0,
+   "albL": 39.07,
+   "ringL": 61.65,
+   "albDE": 31.68,
+   "finL": 36.51,
+   "finDE": 30.36
+  },
+  "r07q-closing": {
+   "px": 394.0,
+   "albL": 63.7,
+   "ringL": 72.64,
+   "albDE": 18.08,
+   "finL": 60.46,
+   "finDE": 16.52
+  },
+  "r08q-parent": {
+   "px": 394.0,
+   "albL": 46.84,
+   "ringL": 72.64,
+   "albDE": 29.44,
+   "finL": 44.07,
+   "finDE": 28.88
+  },
+  "r09q-parent": {
+   "px": 394.0,
+   "albL": 48.57,
+   "ringL": 72.64,
+   "albDE": 26.87,
+   "finL": 45.75,
+   "finDE": 26.4
+  }
+ },
+ "probe": {
+  "ork-female/before": {
+   "inkPx": 240.0,
+   "albInk": 28.294,
+   "albRing": 59.469,
+   "contrast": -31.175,
+   "contrastOff": -31.175,
+   "finContrast": -27.268,
+   "finContrastOff": -27.268,
+   "liftInk": 0.0,
+   "liftInkShare5": 0.0,
+   "liftRing": 0.0,
+   "skinLiftShare5": 0.0,
+   "skinLiftP99": 0.0,
+   "skinLiftMax": 0.0
+  },
+  "ork-female/after": {
+   "inkPx": 240.0,
+   "albInk": 51.418,
+   "albRing": 66.977,
+   "contrast": -15.559,
+   "contrastOff": -31.175,
+   "finContrast": -12.448,
+   "finContrastOff": -27.268,
+   "liftInk": 23.124,
+   "liftInkShare5": 0.688,
+   "liftRing": 7.508,
+   "skinLiftShare5": 0.064,
+   "skinLiftP99": 17.978,
+   "skinLiftMax": 20.918
+  },
+  "ork-female/parent": {
+   "inkPx": 240.0,
+   "albInk": 32.726,
+   "albRing": 66.976,
+   "contrast": -34.25,
+   "contrastOff": -31.175,
+   "finContrast": -30.14,
+   "finContrastOff": -27.268,
+   "liftInk": 4.432,
+   "liftInkShare5": 0.55,
+   "liftRing": 7.507,
+   "skinLiftShare5": 0.064,
+   "skinLiftP99": 17.977,
+   "skinLiftMax": 20.918
+  },
+  "ork-female/parent2": {
+   "inkPx": 240.0,
+   "albInk": 34.049,
+   "albRing": 66.976,
+   "contrast": -32.927,
+   "contrastOff": -31.175,
+   "finContrast": -28.884,
+   "finContrastOff": -27.268,
+   "liftInk": 5.755,
+   "liftInkShare5": 0.588,
+   "liftRing": 7.507,
+   "skinLiftShare5": 0.064,
+   "skinLiftP99": 17.978,
+   "skinLiftMax": 20.918
+  },
+  "human-male/before": {
+   "inkPx": 104.0,
+   "albInk": 33.485,
+   "albRing": 70.393,
+   "contrast": -36.908,
+   "contrastOff": -36.908,
+   "finContrast": -32.616,
+   "finContrastOff": -32.616,
+   "liftInk": 0.0,
+   "liftInkShare5": 0.0,
+   "liftRing": 0.0,
+   "skinLiftShare5": 0.0,
+   "skinLiftP99": 0.0,
+   "skinLiftMax": 0.0
+  },
+  "human-male/after": {
+   "inkPx": 104.0,
+   "albInk": 33.545,
+   "albRing": 70.474,
+   "contrast": -36.929,
+   "contrastOff": -36.908,
+   "finContrast": -32.621,
+   "finContrastOff": -32.616,
+   "liftInk": 0.06,
+   "liftInkShare5": 0.0,
+   "liftRing": 0.081,
+   "skinLiftShare5": 0.021,
+   "skinLiftP99": 8.438,
+   "skinLiftMax": 12.827
+  },
+  "human-male/parent": {
+   "inkPx": 104.0,
+   "albInk": 33.494,
+   "albRing": 70.474,
+   "contrast": -36.98,
+   "contrastOff": -36.908,
+   "finContrast": -32.661,
+   "finContrastOff": -32.616,
+   "liftInk": 0.01,
+   "liftInkShare5": 0.0,
+   "liftRing": 0.081,
+   "skinLiftShare5": 0.021,
+   "skinLiftP99": 8.438,
+   "skinLiftMax": 12.827
+  },
+  "human-male/parent2": {
+   "inkPx": 104.0,
+   "albInk": 33.505,
+   "albRing": 70.474,
+   "contrast": -36.968,
+   "contrastOff": -36.908,
+   "finContrast": -32.655,
+   "finContrastOff": -32.616,
+   "liftInk": 0.021,
+   "liftInkShare5": 0.0,
+   "liftRing": 0.081,
+   "skinLiftShare5": 0.021,
+   "skinLiftP99": 8.438,
+   "skinLiftMax": 12.827
+  },
+  "elf-female/before": {
+   "inkPx": 30.0,
+   "albInk": 37.748,
+   "albRing": 84.039,
+   "contrast": -46.29,
+   "contrastOff": -46.29,
+   "finContrast": -42.409,
+   "finContrastOff": -42.409,
+   "liftInk": 0.0,
+   "liftInkShare5": 0.0,
+   "liftRing": 0.0,
+   "skinLiftShare5": 0.0,
+   "skinLiftP99": 0.0,
+   "skinLiftMax": 0.0
+  },
+  "elf-female/after": {
+   "inkPx": 30.0,
+   "albInk": 48.334,
+   "albRing": 85.701,
+   "contrast": -37.367,
+   "contrastOff": -46.292,
+   "finContrast": -33.945,
+   "finContrastOff": -42.41,
+   "liftInk": 10.586,
+   "liftInkShare5": 0.633,
+   "liftRing": 1.661,
+   "skinLiftShare5": 0.01,
+   "skinLiftP99": 5.0,
+   "skinLiftMax": 6.543
+  },
+  "elf-female/parent": {
+   "inkPx": 30.0,
+   "albInk": 38.32,
+   "albRing": 85.701,
+   "contrast": -47.38,
+   "contrastOff": -46.292,
+   "finContrast": -43.414,
+   "finContrastOff": -42.41,
+   "liftInk": 0.572,
+   "liftInkShare5": 0.0,
+   "liftRing": 1.66,
+   "skinLiftShare5": 0.01,
+   "skinLiftP99": 5.0,
+   "skinLiftMax": 6.543
+  },
+  "elf-female/parent2": {
+   "inkPx": 30.0,
+   "albInk": 39.275,
+   "albRing": 85.701,
+   "contrast": -46.426,
+   "contrastOff": -46.292,
+   "finContrast": -42.493,
+   "finContrastOff": -42.41,
+   "liftInk": 1.526,
+   "liftInkShare5": 0.0,
+   "liftRing": 1.66,
+   "skinLiftShare5": 0.01,
+   "skinLiftP99": 5.0,
+   "skinLiftMax": 6.543
+  },
+  "dwarf-male/before": {
+   "inkPx": 521.0,
+   "albInk": 26.688,
+   "albRing": 66.353,
+   "contrast": -39.665,
+   "contrastOff": -39.665,
+   "finContrast": -36.747,
+   "finContrastOff": -36.747,
+   "liftInk": 0.0,
+   "liftInkShare5": 0.0,
+   "liftRing": 0.0,
+   "skinLiftShare5": 0.0,
+   "skinLiftP99": 0.0,
+   "skinLiftMax": 0.0
+  },
+  "dwarf-male/after": {
+   "inkPx": 521.0,
+   "albInk": 30.217,
+   "albRing": 68.138,
+   "contrast": -37.921,
+   "contrastOff": -39.668,
+   "finContrast": -35.428,
+   "finContrastOff": -36.748,
+   "liftInk": 3.529,
+   "liftInkShare5": 0.113,
+   "liftRing": 1.783,
+   "skinLiftShare5": 0.031,
+   "skinLiftP99": 12.685,
+   "skinLiftMax": 15.847
+  },
+  "dwarf-male/parent": {
+   "inkPx": 521.0,
+   "albInk": 27.12,
+   "albRing": 68.138,
+   "contrast": -41.018,
+   "contrastOff": -39.668,
+   "finContrast": -37.746,
+   "finContrastOff": -36.748,
+   "liftInk": 0.432,
+   "liftInkShare5": 0.044,
+   "liftRing": 1.782,
+   "skinLiftShare5": 0.031,
+   "skinLiftP99": 12.685,
+   "skinLiftMax": 15.847
+  },
+  "dwarf-male/parent2": {
+   "inkPx": 521.0,
+   "albInk": 27.341,
+   "albRing": 68.138,
+   "contrast": -40.797,
+   "contrastOff": -39.668,
+   "finContrast": -37.574,
+   "finContrastOff": -36.748,
+   "liftInk": 0.653,
+   "liftInkShare5": 0.071,
+   "liftRing": 1.783,
+   "skinLiftShare5": 0.031,
+   "skinLiftP99": 12.685,
+   "skinLiftMax": 15.847
+  }
+ }
+}

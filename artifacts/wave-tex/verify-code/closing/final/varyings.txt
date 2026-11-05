@@ -1,0 +1,5 @@
+defines USE_BODY_DETAIL,USE_WAVE_TEX,USE_WAVE_TEX_EMISSIVE,USE_WAVE_TEX_LIT,USE_WAVE_TEX_DETAILS,USE_WAVE_TEX_EDGE,USE_COLOR,USE_SKINNING
+attributes (custom) 5: vec2 aSurface, vec4 aMaterial, vec3 aEmissive, vec4 aDetailW, float aEdge
+attributes total incl. three built-ins (position, normal, skinIndex, skinWeight, color) = 10 / 16
+varyings 13: vec3 viewNormal, vec3 viewLight, vec3 viewPos, vec3 vPaint, vec3 vWorld, vec3 vWorldN, vec3 vBind, vec3 vBindN, vec2 vSurf, vec4 vMat, vec3 vEmis, vec4 vDetailW, float vEdge
+varying components 38 (unpacked, each float own slot rounds: 13 vec4 slots worst) / WebGL2 min 60 components (15 vec4)

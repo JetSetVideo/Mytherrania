@@ -1,0 +1,380 @@
+Check tests/bodybuilds_test.ts
+Check tests/hair_eyes_nails_test.ts
+Check tests/noise_spread_test.ts
+Check tests/paint_blend_test.ts
+Check tests/paint_layers_test.ts
+Check tests/paint_recipes_test.ts
+Check tests/wave_gen_paint_test.ts
+Check tests/wave_tex_layers_test.ts
+Check tests/wave_tex_marks_test.ts
+Check tests/wave_tex_presets_test.ts
+Check tests/wave_tex_render_test.ts
+Check tests/wave_v_body_paint_test.ts
+Check tests/world_readability_test.ts
+running 7 tests from ./tests/bodybuilds_test.ts
+builds: three explicit rows, each ordered fit < bulky < heavy on every measured term ...
+------- output -------
+build      shoulder  chest   waist   hip     limb    muscle  fat
+fit        0.950  0.930  0.880  0.950  0.950  0.960  1.000
+bulky      1.000  1.000  1.000  1.000  1.000  1.000  1.000
+heavy      1.100  1.120  1.220  1.100  1.100  1.160  1.280
+----- output end -----
+builds: three explicit rows, each ordered fit < bulky < heavy on every measured term ... ok (543µs)
+builds: every one of the 16 ancestry nodes maps onto a build, and the brief's pairings hold ...
+------- output -------
+ancestry -> build:
+human=bulky  elf=bulky  dwarf=bulky  ork=heavy  imperial=fit  nomad=bulky  islander=heavy  high=fit  wood=bulky  dark=bulky  mountain=heavy  forge=bulky  deep=bulky  greenhide=bulky  ironhide=heavy  bloodfang=heavy
+----- output end -----
+builds: every one of the 16 ancestry nodes maps onto a build, and the brief's pairings hold ... ok (210µs)
+builds: the muscle term scales with the build (SDF mass), and a heavy body beats a fit one ...
+------- output -------
+human muscle term: fit 0.9600  bulky 1.0000  heavy 1.1600
+----- output end -----
+builds: the muscle term scales with the build (SDF mass), and a heavy body beats a fit one ... ok (91µs)
+silhouette delta fit vs heavy (human): a named half-width at a named height, in metres ...
+------- output -------
+human fit vs heavy (height 1.7 m); nipple y 1.247 m, waist y 1.065 m:
+  chest half-width @ nipple    fit 0.1364  heavy 0.1643  x1.204
+  chest half-depth @ nipple    fit 0.1002  heavy 0.1207  x1.204
+  waist half-width @ waist     fit 0.1133  heavy 0.1571  x1.386
+  belly half-depth (fat)       fit 0.1017  heavy 0.1302  x1.280
+  shoulder half-width          fit 0.1735  heavy 0.2009  x1.158
+  deltoid radius               fit 0.0564  heavy 0.0790  x1.399
+  thigh-top radius             fit 0.0806  heavy 0.0933  x1.158
+DELTA: chest half-width @ y=1.247 m  fit 0.1364 m -> heavy 0.1643 m  (+27.9 mm, +20.4%)
+----- output end -----
+silhouette delta fit vs heavy (human): a named half-width at a named height, in metres ... ok (959µs)
+torso geometry carries the anatomy: the pectoral bulge at the nipple is deeper on a heavy body ...
+------- output -------
+torso front surface (+z), fit vs heavy:
+  centre-line @ nipple       y 1.247 m  fit 0.1012 m  heavy 0.1246 m  (+23.5 mm)
+  pectoral @ nipple+0.12h    y 1.274 m  fit 0.1066 m  heavy 0.1286 m  (+22.0 mm)
+----- output end -----
+torso geometry carries the anatomy: the pectoral bulge at the nipple is deeper on a heavy body ... ok (2ms)
+paint definition pass follows the muscle term: a heavy body's stack carries creases, a fit one's does not ...
+------- output -------
+definition layers: fit 0, heavy 5 (def-abs, def-linea, def-pec, def-arm, def-leg)
+ork stack crease layers: def-abs, def-linea, def-pec, def-arm, def-leg
+----- output end -----
+paint definition pass follows the muscle term: a heavy body's stack carries creases, a fit one's does not ... ok (1ms)
+builds: the definition gain is what turns the muscle term into crease strength ... ok (93µs)
+running 6 tests from ./tests/hair_eyes_nails_test.ts
+hair fits the head: the fall sits ON the skull in a stated clearance band, for 3 ancestries x 3 seeds ...
+------- post-test output -------
+hair fall clearance band (0.008..0.1h, 3 ancestries x 3 seeds):
+  human/-        seed= 3  verts=1157  nearGap=0.0400..0.0925h  inside=0  hairline=7.161h  brow=7.130h
+  human/-        seed= 8  verts=1157  nearGap=0.0400..0.0925h  inside=0  hairline=7.161h  brow=7.130h
+  human/-        seed=15  verts=1157  nearGap=0.0400..0.0925h  inside=0  hairline=7.161h  brow=7.130h
+  elf/-          seed= 3  verts= 598  nearGap=0.0400..0.0915h  inside=0  hairline=7.327h  brow=7.283h
+  elf/-          seed= 8  verts= 598  nearGap=0.0400..0.0915h  inside=0  hairline=7.327h  brow=7.283h
+  elf/-          seed=15  verts= 598  nearGap=0.0400..0.0915h  inside=0  hairline=7.327h  brow=7.283h
+  dwarf/-        seed= 3  verts= 733  nearGap=0.0400..0.0692h  inside=0  hairline=6.358h  brow=6.326h
+  dwarf/-        seed= 8  verts= 733  nearGap=0.0400..0.0692h  inside=0  hairline=6.358h  brow=6.326h
+  dwarf/-        seed=15  verts= 733  nearGap=0.0400..0.0692h  inside=0  hairline=6.358h  brow=6.326h
+  (the band is normalised in head heights; the fit is scale-invariant, so the 3 seeds — different statures/masses/look draws — give the same band per ancestry: it holds for every body size)
+----- post-test output end -----
+hair fits the head: the fall sits ON the skull in a stated clearance band, for 3 ancestries x 3 seeds ... ok (4s)
+hair: the fall's segments ride the skull's back surface at the stated shell gap ... ok (287ms)
+eyes: the globe and iris are ROUND (roundness measure), not faceted squares ...
+------- post-test output -------
+roundness  iris: 16 edges -> 0.9745, 32 edges -> 0.9936 | globe (sphere 14x10): 0.9668
+----- post-test output end -----
+eyes: the globe and iris are ROUND (roundness measure), not faceted squares ... ok (163µs)
+eyes: a WET GLINT sits on the globe at a stated size and position ...
+------- post-test output -------
+wet glint: radius 5.22 mm at +0.3r,+0.34r (squash 0.7); secondary 1.74 mm; globe r = 17.40 mm (h=0.2320 m)
+----- post-test output end -----
+eyes: a WET GLINT sits on the globe at a stated size and position ... ok (202ms)
+eyes: the iris is PAINTED with fine flecks of a stated density and size ...
+------- post-test output -------
+iris flecks: 8 per iris, size 1.53 mm (r=0.088r), density 0.028 per mm^2, iris radius 9.57 mm (iris #2a64a4, h=0.2320 m)
+----- post-test output end -----
+eyes: the iris is PAINTED with fine flecks of a stated density and size ... ok (182ms)
+nails: their own painted pass — a stated colour relation, a gloss, and a measured coverage share ...
+------- post-test output -------
+nail coverage (share of 264 nail vertices): before(flat plate) 1.000 -> after bed 1.000 + gloss 0.894 (width 0.5); plate=tintHex(skin,0.24) gloss=tintHex(skin,0.42)
+----- post-test output end -----
+nails: their own painted pass — a stated colour relation, a gloss, and a measured coverage share ... ok (71ms)
+running 9 tests from ./tests/noise_spread_test.ts
+spread: measureSpread reports p20/p80 and spread = p80 - p20 ... ok (337µs)
+spread: spreadTo lands an fbm sample on target p20/p80 within 0.02 ...
+------- post-test output -------
+  fbm p20..p80 0.438..0.597 (spread 0.160) -> 0.250..0.750 (target 0.25..0.75), range 0.000..1.000
+  fbm p20..p80 0.438..0.597 (spread 0.160) -> 0.300..0.700 (target 0.3..0.7), range 0.000..1.000
+  fbm p20..p80 0.438..0.597 (spread 0.160) -> 0.550..0.850 (target 0.55..0.85), range 0.258..1.000
+----- post-test output end -----
+spread: spreadTo lands an fbm sample on target p20/p80 within 0.02 ... ok (31ms)
+spread: {lo, hi} min/max stretch and custom clamp ... ok (270µs)
+spread: equalize gives a uniform histogram (CDF), and hits p20/p80 targets ...
+------- post-test output -------
+  equalised decile shares: 0.100 0.100 0.100 0.100 0.100 0.100 0.100 0.100 0.100 0.100
+----- post-test output end -----
+spread: equalize gives a uniform histogram (CDF), and hits p20/p80 targets ... ok (5ms)
+spread: degenerate samples fall back safely ... ok (207µs)
+spread: poissonDisc keeps the min-distance invariant and covers the domain ...
+------- post-test output -------
+  poisson wrap=false: 420 points, min pair distance 3.000 (r=3), largest gap 3.290 (< 2r), density n r^2 / A = 0.630
+  poisson wrap=true: 403 points, min pair distance 3.001 (r=3), largest gap 3.113 (< 2r), density n r^2 / A = 0.605
+----- post-test output end -----
+spread: poissonDisc keeps the min-distance invariant and covers the domain ... ok (123ms)
+spread: Pareto sizes at PARETO_80_20_ALPHA — top 20% hold ~80% (large sample) ...
+------- post-test output -------
+  uncapped top-20% share over 5 x 200k draws: 0.763 0.771 0.774 0.781 0.835 (median 0.774, theory 0.8)
+  capped at 100 x min: sampled 0.662, predicted 0.661
+  cap 400: alpha 0.923 keeps 80/20; cap 20: unreachable, peak share 0.612 at alpha 0.806
+----- post-test output end -----
+spread: Pareto sizes at PARETO_80_20_ALPHA — top 20% hold ~80% (large sample) ... ok (166ms)
+spread: scatter — non-overlapping discs, 80/20 sizes, deterministic, clusterable ...
+------- post-test output -------
+  scatter wrap=false: placed 800/800, alpha_r 1.846, top-20% AREA share 0.799, radius share 0.450 (predicted 0.455), overlaps 0
+  scatter wrap=true: placed 800/800, alpha_r 1.846, top-20% AREA share 0.799, radius share 0.450 (predicted 0.455), overlaps 0
+  scatter default alpha (cap 10x): placed 1500/1500, radius share 0.504, predicted 0.507
+----- post-test output end -----
+spread: scatter — non-overlapping discs, 80/20 sizes, deterministic, clusterable ... ok (31ms)
+spread: cluster > 0 concentrates items where the density noise is high ...
+------- post-test output -------
+  mean density at placed items: cluster 0 -> 0.515, cluster 1 -> 0.768
+----- post-test output end -----
+spread: cluster > 0 concentrates items where the density noise is high ... ok (7ms)
+running 6 tests from ./tests/paint_blend_test.ts
+blend: every mode at hand-computed values (base, top -> result) ... ok (316µs)
+blend: soft light with a 0.5 top and normal at alpha 0 leave the base unchanged ... ok (94µs)
+blend: every mode stays inside 0..1 for inputs inside 0..1 ... ok (1ms)
+colour: sRGB transfer matches IEC 61966-2-1 and three.js ... ok (418µs)
+colour: hex, HSL, luminance and contrast helpers ... ok (248µs)
+relevance: boundColour pulls neon and blown-out colours inside a box, keeps the hue ... ok (276µs)
+running 8 tests from ./tests/paint_layers_test.ts
+layers: output is 3 floats per vertex, finite, inside 0..1 ... ok (64ms)
+layers: deterministic per seed; a different layer seed changes a noise layer ... ok (6ms)
+layers: a region-masked layer leaves every other region untouched ... ok (4ms)
+layers: every PatternKind changes some vertices on the mannequin ... ok (73ms)
+layers: opacity 0 is a no-op; multiply by white and soft light by mid-grey are identities ... ok (3ms)
+layers: linear output = sRGB output decoded, and matches THREE.Color for a solid coat ... ok (2ms)
+layers: options.out is reused and options.env gives the same result ... ok (5ms)
+layers: paint works on a region-less terrain grid (reuse beyond bodies) ... ok (1ms)
+running 8 tests from ./tests/paint_recipes_test.ts
+recipes: deterministic per seed; a new seed gives a new individual ... ok (2ms)
+recipes: every layer is well-formed and no pattern is finer than the mesh can show ... ok (6ms)
+recipes: the base skin tone of every race/subrace/seed sits in SKIN_BOUNDS ... ok (3ms)
+recipes: each race reads as itself ... ok (3ms)
+recipes: the birth sign picks the mark; the class adds its accent ... ok (671µs)
+recipes: every PatternKind is used by some recipe and visibly paints the mannequin ... ok (162ms)
+recipes: race x subrace x birth sign x class stay relevant: vertex C <= 0.55, Y 0.008..0.8; skin median C 0.08..0.46, Y 0.12..0.7; spread 1.02..3 ... ok (2s)
+recipes: saved characters paint, with the palette as an optional garment ... ok (34ms)
+running 10 tests from ./tests/wave_gen_paint_test.ts
+SPEC G60: miniature identity — gain 0 is the wave-V form paint exactly, strength 0 the base, skipped regions untouched ...
+------- post-test output -------
+  vertices changed by the miniature pass: 3990 of 4196
+----- post-test output end -----
+SPEC G60: miniature identity — gain 0 is the wave-V form paint exactly, strength 0 the base, skipped regions untouched ... ok (807ms)
+SPEC G61: bounds — every channel in 0..1 and no channel below (1 - PAINT_MAX_DARK) x the unpainted base (4 races x 2 sexes) ... ok (5s)
+SPEC G62: determinism — the paint, the terms and the stage paint are bit-identical across runs ... ok (82ms)
+SPEC G63: the curvature terms are geometric — a sphere has no cavity (Taubin smoothing does not shrink), body cavities sit in concave creases ...
+------- post-test output -------
+  sphere r=0.2 m: |cavity depth| on the equator <= 0.0479 cells
+  human: body mean H 8.23 /m, wash-weighted 4.29 /m, edge-weighted 23.97 /m
+  elf: body mean H 9.82 /m, wash-weighted 3.86 /m, edge-weighted 26.69 /m
+  dwarf: body mean H 5.52 /m, wash-weighted 2.62 /m, edge-weighted 18.75 /m
+  ork: body mean H 5.34 /m, wash-weighted 2.57 /m, edge-weighted 19.70 /m
+----- post-test output end -----
+SPEC G63: the curvature terms are geometric — a sphere has no cavity (Taubin smoothing does not shrink), body cavities sit in concave creases ... ok (78ms)
+SPEC G64: contrast — the miniature pass separates ridges from cavities more than wave V did, and the feet sit darker than the shoulders ...
+------- post-test output -------
+  human/male: contrast V 1.082 -> GEN 1.168, ridge 1.057 cavity 0.905, top 1.009 bottom 0.907
+  human/female: contrast V 1.081 -> GEN 1.157, ridge 1.057 cavity 0.914, top 1.010 bottom 0.908
+  elf/male: contrast V 1.065 -> GEN 1.132, ridge 1.030 cavity 0.910, top 1.002 bottom 0.891
+  elf/female: contrast V 1.069 -> GEN 1.136, ridge 1.035 cavity 0.912, top 1.009 bottom 0.897
+  dwarf/male: contrast V 1.104 -> GEN 1.209, ridge 1.089 cavity 0.901, top 1.009 bottom 0.913
+  dwarf/female: contrast V 1.086 -> GEN 1.172, ridge 1.085 cavity 0.926, top 1.007 bottom 0.920
+  ork/male: contrast V 1.092 -> GEN 1.183, ridge 1.085 cavity 0.917, top 1.009 bottom 0.918
+  ork/female: contrast V 1.074 -> GEN 1.166, ridge 1.082 cavity 0.928, top 1.007 bottom 0.907
+----- post-test output end -----
+SPEC G64: contrast — the miniature pass separates ridges from cavities more than wave V did, and the feet sit darker than the shoulders ... ok (451ms)
+SPEC G65: weathering is cloth-only and bounded; a bare body (no garment) is not weathered ...
+------- post-test output -------
+  mean weathering on cloth 0.132 (x WEATHER_MAX 0.12 grime + 0.18 fade)
+----- post-test output end -----
+SPEC G65: weathering is cloth-only and bounded; a bare body (no garment) is not weathered ... ok (37ms)
+SPEC G66: the paint stage record — id 'paint', timings, finite metrics, the same paint as the live rig's paintSkin ...
+------- post-test output -------
+  human: 4296 vertices, stage 15.9 ms (layers 7.9, form 3.2, miniature 4.8)
+  elf: 4398 vertices, stage 14.7 ms (layers 7.0, form 3.1, miniature 4.7)
+  dwarf: 4500 vertices, stage 20.4 ms (layers 10.7, form 4.9, miniature 4.8)
+  ork: 4480 vertices, stage 18.7 ms (layers 10.8, form 3.2, miniature 4.7)
+----- post-test output end -----
+SPEC G66: the paint stage record — id 'paint', timings, finite metrics, the same paint as the live rig's paintSkin ... ok (176ms)
+SPEC G67: intelligence identity — absent == 500, every law the identity at the reference, hair byte-identical ... ok (10s)
+SPEC G68: intelligence is monotone and bounded — length tier, follicles, grey share up; never darker than age alone ...
+------- post-test output -------
+  human/-: I0 crop/short L=0.102 fol=432 grey=0.00 lum=0.009 | I250 crop/short L=0.102 fol=504 grey=0.00 lum=0.009 | I500 crop/short L=0.102 fol=576 grey=0.00 lum=0.009 | I750 crop/short L=0.102 fol=663 grey=0.15 lum=0.026 | I1000 crop/short L=0.102 fol=749 grey=0.30 lum=0.043
+  human/imperial: I0 crop/short L=0.102 fol=432 grey=0.00 lum=0.005 | I250 crop/short L=0.102 fol=504 grey=0.00 lum=0.005 | I500 crop/short L=0.102 fol=576 grey=0.00 lum=0.005 | I750 crop/short L=0.102 fol=663 grey=0.15 lum=0.023 | I1000 crop/short L=0.102 fol=749 grey=0.30 lum=0.040
+  human/nomad: I0 flowing/long L=0.417 fol=396 grey=0.00 lum=0.010 | I250 flowing/long L=0.458 fol=462 grey=0.00 lum=0.010 | I500 flowing/long L=0.499 fol=528 grey=0.00 lum=0.010 | I750 flowing/long L=0.560 fol=607 grey=0.15 lum=0.024 | I1000 flowing/long L=0.621 fol=687 grey=0.30 lum=0.038
+  human/islander: I0 crop/short L=0.102 fol=468 grey=0.00 lum=0.009 | I250 crop/short L=0.102 fol=546 grey=0.00 lum=0.009 | I500 crop/short L=0.102 fol=624 grey=0.00 lum=0.009 | I750 crop/short L=0.102 fol=718 grey=0.15 lum=0.026 | I1000 crop/short L=0.102 fol=811 grey=0.30 lum=0.042
+  elf/-: I0 flowing/long L=0.502 fol=238 grey=0.00 lum=0.055 | I250 flowing/long L=0.562 fol=278 grey=0.00 lum=0.055 | I500 flowing/long L=0.622 fol=317 grey=0.00 lum=0.055 | I750 flowing/long L=0.712 fol=365 grey=0.15 lum=0.067 | I1000 flowing/long L=0.802 fol=412 grey=0.30 lum=0.078
+  elf/high: I0 flowing/long L=0.502 fol=238 grey=0.00 lum=0.082 | I250 flowing/long L=0.562 fol=278 grey=0.00 lum=0.082 | I500 flowing/long L=0.622 fol=317 grey=0.00 lum=0.082 | I750 flowing/long L=0.712 fol=365 grey=0.15 lum=0.094 | I1000 flowing/long L=0.802 fol=412 grey=0.30 lum=0.104
+  elf/wood: I0 braided/long L=0.409 fol=262 grey=0.00 lum=0.088 | I250 braided/long L=0.449 fol=305 grey=0.00 lum=0.088 | I500 braided/long L=0.489 fol=349 grey=0.00 lum=0.088 | I750 braided/long L=0.549 fol=401 grey=0.15 lum=0.104 | I1000 braided/long L=0.609 fol=454 grey=0.30 lum=0.120
+  elf/dark: I0 flowing/long L=0.409 fol=244 grey=0.00 lum=0.021 | I250 flowing/long L=0.449 fol=284 grey=0.00 lum=0.021 | I500 flowing/long L=0.489 fol=325 grey=0.00 lum=0.021 | I750 flowing/long L=0.549 fol=374 grey=0.15 lum=0.034 | I1000 flowing/long L=0.609 fol=422 grey=0.30 lum=0.048
+  dwarf/-: I0 crop/short L=0.079 fol=689 grey=0.00 lum=0.011 | I250 crop/short L=0.096 fol=804 grey=0.00 lum=0.011 | I500 crop/short L=0.113 fol=919 grey=0.00 lum=0.011 | I750 crop/short L=0.114 fol=1056 grey=0.15 lum=0.028 | I1000 crop/short L=0.114 fol=1081 grey=0.30 lum=0.045
+  dwarf/mountain: I0 braided/shoulder L=0.355 fol=689 grey=0.00 lum=0.028 | I250 braided/shoulder L=0.355 fol=804 grey=0.00 lum=0.028 | I500 braided/shoulder L=0.355 fol=919 grey=0.00 lum=0.029 | I750 braided/shoulder L=0.355 fol=1056 grey=0.15 lum=0.046 | I1000 braided/shoulder L=0.355 fol=1081 grey=0.30 lum=0.063
+  dwarf/forge: I0 crop/short L=0.079 fol=689 grey=0.00 lum=0.006 | I250 crop/short L=0.096 fol=804 grey=0.00 lum=0.006 | I500 crop/short L=0.113 fol=919 grey=0.00 lum=0.006 | I750 crop/short L=0.114 fol=1056 grey=0.15 lum=0.023 | I1000 crop/short L=0.114 fol=1081 grey=0.30 lum=0.040
+  dwarf/deep: I0 braided/shoulder L=0.355 fol=648 grey=0.00 lum=0.057 | I250 braided/shoulder L=0.355 fol=757 grey=0.00 lum=0.056 | I500 braided/shoulder L=0.355 fol=865 grey=0.00 lum=0.056 | I750 braided/shoulder L=0.355 fol=994 grey=0.15 lum=0.073 | I1000 braided/shoulder L=0.355 fol=1081 grey=0.30 lum=0.089
+  ork/-: I0 mohawk/short L=0.076 fol=419 grey=0.00 lum=0.019 | I250 mohawk/short L=0.092 fol=489 grey=0.00 lum=0.020 | I500 mohawk/short L=0.103 fol=559 grey=0.00 lum=0.020 | I750 mohawk/short L=0.103 fol=643 grey=0.15 lum=0.038 | I1000 mohawk/short L=0.103 fol=726 grey=0.30 lum=0.057
+  ork/greenhide: I0 mohawk/short L=0.076 fol=419 grey=0.00 lum=0.021 | I250 mohawk/short L=0.092 fol=489 grey=0.00 lum=0.022 | I500 mohawk/short L=0.103 fol=559 grey=0.00 lum=0.022 | I750 mohawk/short L=0.103 fol=643 grey=0.15 lum=0.041 | I1000 mohawk/short L=0.103 fol=726 grey=0.30 lum=0.059
+  ork/ironhide: I0 shaved/buzz L=0.005 fol=461 grey=0.00 lum=0.083 | I250 shaved/buzz L=0.005 fol=538 grey=0.00 lum=0.083 | I500 shaved/buzz L=0.005 fol=615 grey=0.00 lum=0.083 | I750 shaved/buzz L=0.005 fol=707 grey=0.15 lum=0.083 | I1000 shaved/buzz L=0.005 fol=799 grey=0.30 lum=0.083
+  ork/bloodfang: I0 mohawk/short L=0.076 fol=377 grey=0.00 lum=0.020 | I250 mohawk/short L=0.092 fol=440 grey=0.00 lum=0.020 | I500 mohawk/short L=0.103 fol=503 grey=0.00 lum=0.021 | I750 mohawk/short L=0.103 fol=578 grey=0.15 lum=0.038 | I1000 mohawk/short L=0.103 fol=654 grey=0.30 lum=0.055
+----- post-test output end -----
+SPEC G68: intelligence is monotone and bounded — length tier, follicles, grey share up; never darker than age alone ... ok (3s)
+SPEC G69: the hair triangle budget holds at every intelligence (16 ancestries x 3 seeds x I 0/500/1000) ...
+------- post-test output -------
+  max hair triangles over 144 builds: 1100 (budget 1100)
+----- post-test output end -----
+SPEC G69: the hair triangle budget holds at every intelligence (16 ancestries x 3 seeds x I 0/500/1000) ... ok (3s)
+running 14 tests from ./tests/wave_tex_layers_test.ts
+TX11 channels: every channel declares range/default/neutral/storage; aMaterial layout; mask ids ... ok (474µs)
+TX12 v1 adapter: evaluateStack(stackFromV1(s)).albedo is BYTE-identical to paintVertices(s) for every recipe (mannequin) + 4 real bodies, linear and sRGB, custom background ...
+------- post-test output -------
+v1 byte identity: 125 stacks, 714702 vertices x 2 spaces
+----- post-test output end -----
+TX12 v1 adapter: evaluateStack(stackFromV1(s)).albedo is BYTE-identical to paintVertices(s) for every recipe (mannequin) + 4 real bodies, linear and sRGB, custom background ... ok (3s)
+TX13 evaluate: an albedo-only stack leaves aMaterial at R's neutral (0.5, 0, 1, 0), no emissive, no masks ... ok (8ms)
+TX14 evaluate: one layer writes albedo + roughness + height + a named mask at once, only inside its mask ... ok (17ms)
+TX15 groups: normal-over is associative (group of normal layers == flat stack), opacity 0 / disabled are no-ops, isolation changes a multiply group ... ok (145ms)
+TX16 stack: order sort, enable/opacity, applyLayerOverrides (U's shape: id, enabled, opacity, blend per channel, order) is total and pure ... ok (1ms)
+TX17 masks: every source and combinator is closed on [0,1], never NaN, deterministic (2000 random trees on a real body) ... ok (4s)
+TX18 masks: algebra laws hold pointwise (2000 random pairs): and/or identities, De Morgan, invert involution, xor/subtract, commutativity ... ok (2s)
+TX19 masks: feather is a Gaussian of sigma = radius/2 in mm on the surface; grow/shrink move a boundary by the asked mm (grid 1 mm) ...
+------- post-test output -------
+feather 20 mm -> 10-90 % 24.94 mm (Gaussian 25.63); grow 15 -> 15.07 mm; shrink 15 -> 15.07 mm
+----- post-test output end -----
+TX19 masks: feather is a Gaussian of sigma = radius/2 in mm on the surface; grow/shrink move a boundary by the asked mm (grid 1 mm) ... ok (344ms)
+TX20 masks: sources mean what they say on a real body (up-facing = +y normals, region side, mark field, distance anchor, body height) ... ok (6ms)
+TX24 evaluate: total on hostile JSON (unknown mask channel, unknown write channel/op/source/pattern, NaN opacity, bad colours) — QC STK-2 ... ok (1ms)
+TX21 evaluate: stage 'fragment' layers skip the vertex pass and reach the fragment list with their group opacity; mark sources read M's field ... ok (2ms)
+TX22 perf: 12-layer stack on a ~10 k-vertex body (median of 5, fields cached and cold) + v1 vs v2 overhead ...
+------- post-test output -------
+perf {"vertices":10132,"layers":12,"vertexLayers":10,"coldMs":63.59,"medianMs":30.34,"v1Layers":12,"v1PaintMs":10.47,"v2SameStackMs":11.45}
+----- post-test output end -----
+TX22 perf: 12-layer stack on a ~10 k-vertex body (median of 5, fields cached and cold) + v1 vs v2 overhead ... ok (1s)
+TX23 docs: docs/wave-tex/LAYERS.md carries the generated operator/channel/mask tables of this code (WAVE_TEX_WRITE_DOC=1 rewrites them) ... ok (1ms)
+running 20 tests from ./tests/wave_tex_marks_test.ts
+TX40 marks: the C-MARK enums are exactly the brief's ... ok (320µs)
+TX41 marks: generation, resolution and decals are deterministic from the seed ...
+------- post-test output -------
+  200 seeds deterministic; 186/200 differ from seed+1000
+----- post-test output end -----
+TX41 marks: generation, resolution and decals are deterministic from the seed ... ok (46ms)
+TX42 marks: stage boundaries follow wound healing (inflammation < 4 d, proliferation < 21 d, remodelling < 1 y) ... ok (123µs)
+TX43 marks: older scars are paler and flatter (monotone over age, every kind, every skin) ...
+------- post-test output -------
+  450 luma checks; incision day 1 redness 0.987 h 0.49 mm -> 2 y redness 0.000 h 0.000 mm
+----- post-test output end -----
+TX43 marks: older scars are paler and flatter (monotone over age, every kind, every skin) ... ok (1ms)
+TX44 marks: inflammatory red > proliferative pink > mature pale; punctures heal atrophic ... ok (95µs)
+TX45 marks: keloids stay raised and spread; propensity by ancestry and site ...
+------- post-test output -------
+  hypertrophic burn peak 1.52 mm at day 105, 0.007 mm at 2 y
+----- post-test output end -----
+TX45 marks: keloids stay raised and spread; propensity by ancestry and site ... ok (730µs)
+TX46 marks: the default angle follows Langer's lines per region ... ok (152µs)
+TX47 marks: a wound across Langer's lines gapes and heals wider ... ok (255µs)
+TX48 marks: scar albedo contrast never exceeds fresh-ink contrast on the same skin ...
+------- post-test output -------
+  worst scar/ink contrast ratio 1.000
+----- post-test output end -----
+TX48 marks: scar albedo contrast never exceeds fresh-ink contrast on the same skin ... ok (795µs)
+TX49 marks: shapes are bounded, finite and drawn per kind (stitches, claw rakes) ... ok (41ms)
+TX50 marks: hair follicles are absent along the scar line (mask for the hair pass) ...
+------- post-test output -------
+  burn on the forearm: 9 hairless vertices of 4246
+----- post-test output end -----
+TX50 marks: hair follicles are absent along the scar line (mask for the hair pass) ... ok (576ms)
+TX51 marks: ink ages (blur grows, opacity fades, black fades least and turns blue-green); bands wrap ... ok (14ms)
+TX52 marks: motifs come from the sign / class / race symbol sets ... ok (11ms)
+TX53 marks: every generated mark lies inside its region bounds, clear of eyes and mouth, without overlap ...
+------- post-test output -------
+  1000 characters, 2317 marks placed with 0 issues
+----- post-test output end -----
+TX53 marks: every generated mark lies inside its region bounds, clear of eyes and mouth, without overlap ... ok (53ms)
+TX54 marks: the solver moves a colliding movable mark and reports a fixed one ... ok (339µs)
+TX55 marks: face rule — no tattoo on the face unless facial, nothing over the eyes or mouth ... ok (454µs)
+TX56 marks: mirror swaps the side (paired) or negates u (midline); decals land mirrored on the mesh ... ok (5ms)
+TX57 marks: appearance.marks round-trips through JSON and the profile library; saves are sanitized ... ok (1ms)
+TX58 marks: generated frequencies by ancestry (orks most scars + woad tribal, dwarves clan bands, elves dotwork, humans rare) ...
+------- post-test output -------
+  human scars 1.04 tattooed 18.2 % keloid 6.3 % top script/black
+  elf   scars 0.53 tattooed 48.9 % keloid 1.2 % top dotwork/blueBlack
+  dwarf scars 1.60 tattooed 74.1 % keloid 10.2 % top band/black
+  ork   scars 2.42 tattooed 86.6 % keloid 18.0 % top tribal/woad
+----- post-test output end -----
+TX58 marks: generated frequencies by ancestry (orks most scars + woad tribal, dwarves clan bands, elves dotwork, humans rare) ... ok (297ms)
+TX59 marks: decals fit R's layout and the skin; layers validate and evaluate in L's API; MARKS.md tables in sync ...
+------- post-test output -------
+  67 decals on a human mesh, worst centre-to-skin (nearest triangle) 0.00 mm
+----- post-test output end -----
+TX59 marks: decals fit R's layout and the skin; layers validate and evaluate in L's API; MARKS.md tables in sync ... ok (397ms)
+running 10 tests from ./tests/wave_tex_presets_test.ts
+SPEC TX60: the wave-V FormShade + wave-GEN Miniature pass AS LAYERS (legacyFinish) is byte-identical to applyFormShade ... ok (6s)
+SPEC TX61: paintStage without a preset is unchanged (old law re-stated); with one it returns the channels ... ok (81ms)
+SPEC TX62: preset completeness — every race x sub-race skin, every garment kind, every class outfit, the six miniature steps ... ok (15ms)
+SPEC TX63: channel ranges — albedo 0..1, roughness/height/ao/subsurface inside the C-MAT ranges on painted bodies, no NaN ... ok (344ms)
+SPEC TX64: skin roughness by ancestry — elf satin < human < dwarf weathered < ork leathery, in the tables AND on painted skin ... ok (85ms)
+SPEC TX65: operators — glaze = W3C color keeps the base luminosity; relief heightBlend bounded; the finish touches the body; all finish layers off = basecoat ... ok (54ms)
+SPEC TX66: legibility at game distance — skin vs garment contrast ratio inside LEGIBLE on every race x sub-race x class (colours) and on painted bodies ... ok (191ms)
+SPEC TX67: the miniature workflow reads — ridge/cavity separation >= legacy, metal edges glossier than metal flats, recesses matter, studs raised ... ok (167ms)
+SPEC TX68: skin presets stay skin and match the THEME — painted skin median inside SKIN_MEDIAN_BOUNDS, glaze <= 15 %, plaque-cited glazes come from the sub-race swatch ... ok (248ms)
+SPEC TX69: determinism, overrides and the v2 export — same subject = same bytes; opacity 1 override = identity; v2 stack evaluates through L ... ok (184ms)
+running 11 tests from ./tests/wave_tex_render_test.ts
+SPEC TX30: packDecals writes the posted layout (7 vec4 per decal, unit frame, tangent orthogonal to the normal) ...
+------- post-test output -------
+TX30: block 448 floats; scar radius 70.6 mm, band radius 86.5 mm
+----- post-test output end -----
+SPEC TX30: packDecals writes the posted layout (7 vec4 per decal, unit frame, tangent orthogonal to the normal) ... ok (965µs)
+SPEC TX31: packing is total — budget, degenerate frames, NaN, relief clamp ... ok (282µs)
+SPEC TX32: the height-perturbed normal is bounded — tilt <= MAX_TILT, so a relief crosses at most ONE cel band ...
+------- post-test output -------
+TX32: worst tilt 0.3000 rad (MAX 0.3), worst |dLambert| 0.2989 <= 0.2989 < band gap 0.38
+----- post-test output end -----
+SPEC TX32: the height-perturbed normal is bounded — tilt <= MAX_TILT, so a relief crosses at most ONE cel band ... ok (11ms)
+SPEC TX33: uniform budget — the material fragment fits WebGL2's guaranteed 224 vec4 and 16 samplers ...
+------- post-test output -------
+TX33: fragment uniform rows 150 / 224 (decals 112), samplers 2, 31 uniforms
+----- post-test output end -----
+SPEC TX33: uniform budget — the material fragment fits WebGL2's guaranteed 224 vec4 and 16 samplers ... ok (865µs)
+SPEC TX34: neutral channels take the pre-TEX path — celShade's expression verbatim, neutral inside every dead zone ... ok (551µs)
+SPEC TX35: decal profiles — spindle lines, stitches, discs; anti-aliased coverage is monotone with 0.5 on the edge ... ok (731µs)
+SPEC TX36: the glyph atlas reproduces Symbols' distances within one texel, 64 KB, deterministic ...
+------- post-test output -------
+TX36: 13 glyphs, bake 11.3 ms, worst |d - ref| 0.0165 glyph units (texel 0.0344)
+----- post-test output end -----
+SPEC TX36: the glyph atlas reproduces Symbols' distances within one texel, 64 KB, deterministic ... ok (20ms)
+SPEC TX37: the rig carries neutral channels, the region per vertex, and live decal / view controls ... ok (719ms)
+SPEC TX37b (wiring): the default body takes P's preset + M's marks; explicit empty marks + no overrides + switches off = neutral ...
+------- post-test output -------
+TX37b: ork rig 991 ms (preset 58.3 ms, marks 17.3 ms), 58 finish layers, marks generated 10 drawn / 0 dropped, mean roughness 0.674
+----- post-test output end -----
+SPEC TX37b (wiring): the default body takes P's preset + M's marks; explicit empty marks + no overrides + switches off = neutral ... ok (1s)
+SPEC TX38: per-body GPU memory and CPU build cost of the channels stay inside the budget ...
+------- post-test output -------
+TX38: neutral aMaterial 0.47 ms / 12000 vertices, pack 16 decals 0.020 ms; per body 189 KB (+64 KB atlas once)
+----- post-test output end -----
+SPEC TX38: per-body GPU memory and CPU build cost of the channels stay inside the budget ... ok (13ms)
+SPEC TX39: shader structure — bounded loops, ONE glyph fetch per decal, no derivatives in the decal loop, view codes ... ok (363µs)
+running 3 tests from ./tests/wave_v_body_paint_test.ts
+form paint: a sphere is all convex (no cavity); a body has grooves, and the cavity follows negative curvature ... ok (21ms)
+form paint: bounded, deterministic, strength 0 is the identity, skipped regions untouched ... ok (81ms)
+form paint: more painted detail on the limbs (gradient energy up), no noise mush (band-sized jumps stay rare) ...
+------- post-test output -------
+  upperArm+foreArm: rms gradient 0.58 -> 2.00 /m, band jumps 0.59 % -> 1.50 %
+  thigh+shin: rms gradient 0.32 -> 0.47 /m, band jumps 0.00 % -> 0.04 %
+  torso+pelvis: rms gradient 0.41 -> 1.06 /m, band jumps 0.00 % -> 0.87 %
+----- post-test output end -----
+form paint: more painted detail on the limbs (gradient energy up), no noise mush (band-sized jumps stay rare) ... ok (53ms)
+running 5 tests from ./tests/world_readability_test.ts
+metrics: Lab, Delta E, weighted spread and area weights are right on known values ... ok (478µs)
+(a) relief reads under the noon sun: per-area N.L spread >= 0.15 (median) at every place, >= 3x lane E ... ok (1s)
+(b) adjacent material zones differ by Delta E76 >= 12 on every seed; (c) ring + outside <= 6k triangles ... ok (559ms)
+paint: >= 4 pattern kinds, >= 3 blend modes, every pattern above the vertex Nyquist scale, opacities from gameplay ... ok (5ms)
+paint: every vertex is relevant (no neon, no black, no white); zones follow gameplay; features are highlighted ... ok (364ms)
+
+ok | 117 passed | 0 failed (1m2s)
+

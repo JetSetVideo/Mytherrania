@@ -1,0 +1,14 @@
+{
+ "run": "F-id-head",
+ "src": "/Users/macmax/.hermes/cache/scratch/F/head",
+ "hasTex": false,
+ "commit": "19f5c8c",
+ "when": "2026-11-05T05:49:20.248Z",
+ "frames": 90,
+ "build": {},
+ "shots": {
+  "dir": "/Users/macmax/.hermes/cache/scratch/F/shots/head",
+  "n": 24
+ },
+ "errors": []
+}
