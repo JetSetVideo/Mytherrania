@@ -1,0 +1,50 @@
+
+### BASELINE grid  (n=60)
+  reasons       {"time":20,"ringout":32,"ko":8}
+  duration med  118.88 s  mean 115.98 s  min 17.23 max 186.03
+  timeout share 0.333   ko 0.133   ringout 0.533
+  mean damage   A 12338.0  B 11163.1
+  engagement    both seats landed damage in 95.0 % of matches
+  winA mean     0.567
+
+### BASELINE corner  (n=60)
+  reasons       {"ringout":19,"ko":40,"time":1}
+  duration med  19.80 s  mean 41.33 s  min 6.47 max 186.03
+  timeout share 0.017   ko 0.667   ringout 0.317
+  mean damage   A 15333.0  B 16511.0
+  engagement    both seats landed damage in 83.3 % of matches
+  winA mean     0.517
+
+### BASELINE extreme  (n=60)
+  reasons       {"ko":42,"ringout":18}
+  duration med  39.85 s  mean 44.74 s  min 6.57 max 109.40
+  timeout share 0.000   ko 0.700   ringout 0.300
+  mean damage   A 12363.1  B 17365.2
+  engagement    both seats landed damage in 80.0 % of matches
+  winA mean     0.333
+
+# mutated SKILL_RESOURCE_COST -> {"dash":{"mana":0,"stamina":12},"power":{"mana":8,"stamina":8},"defense":{"mana":2,"stamina":12}}
+
+### CHEAP grid  (n=60)
+  reasons       {"time":20,"ringout":33,"ko":7}
+  duration med  118.88 s  mean 115.45 s  min 17.23 max 186.03
+  timeout share 0.333   ko 0.117   ringout 0.550
+  mean damage   A 12268.7  B 11163.1
+  engagement    both seats landed damage in 95.0 % of matches
+  winA mean     0.567
+
+### CHEAP corner  (n=60)
+  reasons       {"ringout":19,"ko":40,"time":1}
+  duration med  19.80 s  mean 41.33 s  min 6.47 max 186.03
+  timeout share 0.017   ko 0.667   ringout 0.317
+  mean damage   A 15333.0  B 16511.0
+  engagement    both seats landed damage in 83.3 % of matches
+  winA mean     0.517
+
+### CHEAP extreme  (n=60)
+  reasons       {"ko":41,"ringout":18,"time":1}
+  duration med  39.19 s  mean 45.02 s  min 6.57 max 186.03
+  timeout share 0.017   ko 0.683   ringout 0.300
+  mean damage   A 12435.8  B 17313.9
+  engagement    both seats landed damage in 80.0 % of matches
+  winA mean     0.333

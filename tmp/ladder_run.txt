@@ -1,0 +1,39 @@
+LADDER  steps=6 cases=4 matches/case=10 keep=3 seed=20261031
+criteria: decisiveness (w 0.35) · engagement (w 0.3) · closeness (w 0.2) · mix (w 0.15)
+
+step case  design     seed        decis  engage  close  mix   score  kept
+0    all       160458887   0.90   0.70    0.60   1.00  0.7950 
+0    all       1133862057  1.00   0.80    0.80   0.67  0.8500   *
+0    corner    2917042930  1.00   0.80    0.80   0.67  0.8500   *
+0    extreme   3525807456  0.90   0.70    1.00   1.00  0.8750   *
+     -> step 0: 3 kept · type not yet · leading cluster cell 2 · ringout (1/3 agree)
+1    grid      683286823   0.80   0.90    0.70   1.00  0.8400   *
+1    invariant 3317668584  1.00   0.70    0.00   0.67  0.6600 
+1    extreme   3978272977  0.90   1.00    0.80   1.00  0.9250   *
+1    all       564904388   0.80   0.90    1.00   1.00  0.9000   *
+     -> step 1: 3 kept · type not yet · leading cluster cell 2 · ko (1/3 agree)
+2    grid      3793069456  0.90   0.90    0.80   1.00  0.8950   *
+2    invariant 4226171857  1.00   0.80    0.00   0.67  0.6900 
+2    random    1832734802  1.00   0.90    1.00   0.67  0.9200   *
+2    all       3719923792  1.00   0.80    1.00   0.67  0.8900   *
+     -> step 2: 3 kept · type not yet · leading cluster cell 4 · ringout (1/3 agree)
+3    invariant 3489761987  1.00   0.60    0.00   0.67  0.6300 
+3    extreme   2566325875  0.90   0.90    1.00   1.00  0.9350   *
+3    corner    1153457144  1.00   0.70    0.80   0.67  0.8200   *
+3    extreme   1395147523  0.90   1.00    0.80   0.67  0.8750   *
+     -> step 3: 3 kept · type cell 2 · ko · leading cluster cell 2 · ko (2/3 agree)
+4    grid      1641908738  0.70   0.90    0.30   1.00  0.7250 
+4    corner    363268560   1.00   0.90    0.80   0.67  0.8800   *
+4    extreme   993287460   1.00   0.80    0.20   0.67  0.7300   *
+4    all       3663764074  0.80   0.90    0.60   1.00  0.8200   *
+     -> step 4: 3 kept · type not yet · leading cluster cell 1 · ringout (1/3 agree)
+5    extreme   621757774   1.00   1.00    0.80   0.67  0.9100   *
+5    all       2479406860  0.80   1.00    1.00   1.00  0.9300   *
+5    grid      992941298   0.60   0.90    0.60   1.00  0.7500 
+5    all       3204871247  0.80   0.70    0.60   1.00  0.7600   *
+     -> step 5: 3 kept · type cell 0 · ringout · leading cluster cell 0 · ringout (2/3 agree)
+pruned cells (never a type of game): 5=invariant
+
+first AGREED archetype: step 3 cell 2 · ko
+leading cluster per step: cell 2 · ringout (1/3 agree) | cell 2 · ko (1/3 agree) | cell 4 · ringout (1/3 agree) | cell 2 · ko (2/3 agree) | cell 1 · ringout (1/3 agree) | cell 0 · ringout (2/3 agree)
+wall 1080 ms

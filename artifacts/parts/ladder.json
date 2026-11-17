@@ -1,9 +1,9 @@
 {
  "options": {
-  "STEPS": 2,
-  "CASES": 2,
-  "MATCHES": 4,
-  "KEEP": 1,
+  "STEPS": 6,
+  "CASES": 4,
+  "MATCHES": 10,
+  "KEEP": 2,
   "SEED": 20261031
  },
  "criteria": [
@@ -37,14 +37,14 @@
      "kind": "all",
      "seed": 160458887,
      "m": {
-      "decisiveness": 1,
-      "closeness": 0.5,
-      "engagement": 0.75,
-      "mix": 0.3333333333333333,
-      "medianSeconds": 8.615,
+      "decisiveness": 0.9,
+      "closeness": 0.6000000000000001,
+      "engagement": 0.7,
+      "mix": 1,
+      "medianSeconds": 10.25,
       "dominantEnding": "ringout"
      },
-     "score": 0.725,
+     "score": 0.795,
      "survived": false
     },
     {
@@ -53,59 +53,395 @@
      "seed": 1133862057,
      "m": {
       "decisiveness": 1,
-      "closeness": 0.5,
-      "engagement": 0.75,
+      "closeness": 0.8,
+      "engagement": 0.8,
       "mix": 0.6666666666666666,
-      "medianSeconds": 85.265,
+      "medianSeconds": 51.115,
       "dominantEnding": "ringout"
      },
-     "score": 0.775,
+     "score": 0.85,
+     "survived": true
+    },
+    {
+     "cell": 1,
+     "kind": "corner",
+     "seed": 2917042930,
+     "m": {
+      "decisiveness": 1,
+      "closeness": 0.8,
+      "engagement": 0.8,
+      "mix": 0.6666666666666666,
+      "medianSeconds": 12.785,
+      "dominantEnding": "ko"
+     },
+     "score": 0.85,
+     "survived": false
+    },
+    {
+     "cell": 2,
+     "kind": "extreme",
+     "seed": 3525807456,
+     "m": {
+      "decisiveness": 0.9,
+      "closeness": 1,
+      "engagement": 0.7,
+      "mix": 1,
+      "medianSeconds": 17.735,
+      "dominantEnding": "ringout"
+     },
+     "score": 0.875,
      "survived": true
     }
    ],
-   "kept": 1,
+   "kept": 2,
    "archetype": null,
-   "cluster": "cell 0 · ringout (1/1 agree)"
+   "cluster": "cell 2 · ringout (1/2 agree)"
   },
   {
    "step": 1,
    "cases": [
     {
-     "cell": 1,
-     "kind": "corner",
-     "seed": 1854129813,
+     "cell": 3,
+     "kind": "grid",
+     "seed": 683286823,
      "m": {
-      "decisiveness": 1,
-      "closeness": 1,
-      "engagement": 0.25,
-      "mix": 0.3333333333333333,
-      "medianSeconds": 7.130000000000001,
+      "decisiveness": 0.8,
+      "closeness": 0.7,
+      "engagement": 0.9,
+      "mix": 1,
+      "medianSeconds": 57.97,
       "dominantEnding": "ringout"
      },
-     "score": 0.675,
+     "score": 0.84,
+     "survived": true
+    },
+    {
+     "cell": 5,
+     "kind": "invariant",
+     "seed": 3317668584,
+     "m": {
+      "decisiveness": 1,
+      "closeness": 0,
+      "engagement": 0.7,
+      "mix": 0.6666666666666666,
+      "medianSeconds": 12.835,
+      "dominantEnding": "ringout"
+     },
+     "score": 0.66,
      "survived": false
     },
     {
      "cell": 4,
      "kind": "random",
-     "seed": 3317668584,
+     "seed": 3315646211,
+     "m": {
+      "decisiveness": 0.9,
+      "closeness": 0.5,
+      "engagement": 0.8,
+      "mix": 1,
+      "medianSeconds": 100.55,
+      "dominantEnding": "ringout"
+     },
+     "score": 0.805,
+     "survived": true
+    },
+    {
+     "cell": 4,
+     "kind": "random",
+     "seed": 4200667272,
      "m": {
       "decisiveness": 1,
-      "closeness": 0.5,
-      "engagement": 0.5,
+      "closeness": 0.3999999999999999,
+      "engagement": 0.7,
       "mix": 0.6666666666666666,
-      "medianSeconds": 55.95,
+      "medianSeconds": 32.28,
       "dominantEnding": "ko"
      },
-     "score": 0.7,
+     "score": 0.74,
+     "survived": false
+    }
+   ],
+   "kept": 2,
+   "archetype": null,
+   "cluster": "cell 3 · ringout (1/2 agree)"
+  },
+  {
+   "step": 2,
+   "cases": [
+    {
+     "cell": 4,
+     "kind": "random",
+     "seed": 3714485515,
+     "m": {
+      "decisiveness": 1,
+      "closeness": 1,
+      "engagement": 0.7,
+      "mix": 0.6666666666666666,
+      "medianSeconds": 64.52,
+      "dominantEnding": "ringout"
+     },
+     "score": 0.86,
+     "survived": true
+    },
+    {
+     "cell": 3,
+     "kind": "grid",
+     "seed": 3096053602,
+     "m": {
+      "decisiveness": 0.7,
+      "closeness": 0.7,
+      "engagement": 0.8,
+      "mix": 1,
+      "medianSeconds": 104.05,
+      "dominantEnding": "ringout"
+     },
+     "score": 0.775,
+     "survived": false
+    },
+    {
+     "cell": 5,
+     "kind": "invariant",
+     "seed": 1832734802,
+     "m": {
+      "decisiveness": 1,
+      "closeness": 0,
+      "engagement": 0.8,
+      "mix": 0.6666666666666666,
+      "medianSeconds": 11.1,
+      "dominantEnding": "ringout"
+     },
+     "score": 0.69,
+     "survived": false
+    },
+    {
+     "cell": 2,
+     "kind": "extreme",
+     "seed": 990132200,
+     "m": {
+      "decisiveness": 0.9,
+      "closeness": 0.8,
+      "engagement": 0.9,
+      "mix": 1,
+      "medianSeconds": 65.65,
+      "dominantEnding": "ko"
+     },
+     "score": 0.895,
      "survived": true
     }
    ],
-   "kept": 1,
+   "kept": 2,
    "archetype": null,
-   "cluster": "cell 4 · ko (1/1 agree)"
+   "cluster": "cell 2 · ko (1/2 agree)"
+  },
+  {
+   "step": 3,
+   "cases": [
+    {
+     "cell": 3,
+     "kind": "grid",
+     "seed": 2448616192,
+     "m": {
+      "decisiveness": 0.7,
+      "closeness": 0.3999999999999999,
+      "engagement": 0.9,
+      "mix": 1,
+      "medianSeconds": 92.68,
+      "dominantEnding": "ringout"
+     },
+     "score": 0.745,
+     "survived": false
+    },
+    {
+     "cell": 3,
+     "kind": "grid",
+     "seed": 3618499770,
+     "m": {
+      "decisiveness": 0.8,
+      "closeness": 0.6,
+      "engagement": 0.9,
+      "mix": 1,
+      "medianSeconds": 60.47,
+      "dominantEnding": "ringout"
+     },
+     "score": 0.82,
+     "survived": true
+    },
+    {
+     "cell": 4,
+     "kind": "random",
+     "seed": 2955996243,
+     "m": {
+      "decisiveness": 1,
+      "closeness": 1,
+      "engagement": 0.9,
+      "mix": 0.6666666666666666,
+      "medianSeconds": 56.629999999999995,
+      "dominantEnding": "ringout"
+     },
+     "score": 0.92,
+     "survived": true
+    },
+    {
+     "cell": 2,
+     "kind": "extreme",
+     "seed": 3630792166,
+     "m": {
+      "decisiveness": 1,
+      "closeness": 0.8,
+      "engagement": 0.7,
+      "mix": 0.6666666666666666,
+      "medianSeconds": 21.8,
+      "dominantEnding": "ko"
+     },
+     "score": 0.82,
+     "survived": false
+    }
+   ],
+   "kept": 2,
+   "archetype": null,
+   "cluster": "cell 4 · ringout (1/2 agree)"
+  },
+  {
+   "step": 4,
+   "cases": [
+    {
+     "cell": 0,
+     "kind": "all",
+     "seed": 756961200,
+     "m": {
+      "decisiveness": 0.9,
+      "closeness": 0.8,
+      "engagement": 0.9,
+      "mix": 1,
+      "medianSeconds": 46.97,
+      "dominantEnding": "ringout"
+     },
+     "score": 0.895,
+     "survived": true
+    },
+    {
+     "cell": 2,
+     "kind": "extreme",
+     "seed": 3066815213,
+     "m": {
+      "decisiveness": 1,
+      "closeness": 1,
+      "engagement": 0.4,
+      "mix": 0.6666666666666666,
+      "medianSeconds": 8.5,
+      "dominantEnding": "ringout"
+     },
+     "score": 0.77,
+     "survived": false
+    },
+    {
+     "cell": 0,
+     "kind": "all",
+     "seed": 3621000695,
+     "m": {
+      "decisiveness": 0.9,
+      "closeness": 0.8,
+      "engagement": 1,
+      "mix": 1,
+      "medianSeconds": 46.05,
+      "dominantEnding": "ringout"
+     },
+     "score": 0.925,
+     "survived": true
+    },
+    {
+     "cell": 1,
+     "kind": "corner",
+     "seed": 2915928483,
+     "m": {
+      "decisiveness": 1,
+      "closeness": 0.8,
+      "engagement": 0.7,
+      "mix": 0.6666666666666666,
+      "medianSeconds": 13.385,
+      "dominantEnding": "ko"
+     },
+     "score": 0.82,
+     "survived": false
+    }
+   ],
+   "kept": 2,
+   "archetype": "cell 0 · ringout",
+   "cluster": "cell 0 · ringout (2/2 agree)"
+  },
+  {
+   "step": 5,
+   "cases": [
+    {
+     "cell": 1,
+     "kind": "corner",
+     "seed": 2692876244,
+     "m": {
+      "decisiveness": 1,
+      "closeness": 0.6000000000000001,
+      "engagement": 0.9,
+      "mix": 0.6666666666666666,
+      "medianSeconds": 17.715,
+      "dominantEnding": "ringout"
+     },
+     "score": 0.84,
+     "survived": false
+    },
+    {
+     "cell": 0,
+     "kind": "all",
+     "seed": 837509517,
+     "m": {
+      "decisiveness": 0.8,
+      "closeness": 0.6,
+      "engagement": 0.7,
+      "mix": 1,
+      "medianSeconds": 14.38,
+      "dominantEnding": "ringout"
+     },
+     "score": 0.76,
+     "survived": false
+    },
+    {
+     "cell": 2,
+     "kind": "extreme",
+     "seed": 2273233040,
+     "m": {
+      "decisiveness": 1,
+      "closeness": 0.8,
+      "engagement": 0.9,
+      "mix": 0.6666666666666666,
+      "medianSeconds": 38.25,
+      "dominantEnding": "ko"
+     },
+     "score": 0.88,
+     "survived": true
+    },
+    {
+     "cell": 4,
+     "kind": "random",
+     "seed": 231867858,
+     "m": {
+      "decisiveness": 0.9,
+      "closeness": 0.8,
+      "engagement": 0.9,
+      "mix": 1,
+      "medianSeconds": 54.4,
+      "dominantEnding": "ringout"
+     },
+     "score": 0.895,
+     "survived": true
+    }
+   ],
+   "kept": 2,
+   "archetype": null,
+   "cluster": "cell 4 · ringout (1/2 agree)"
   }
  ],
- "archetypeFirstSeen": null,
- "wallMs": 85
+ "archetypeFirstSeen": {
+  "step": 4,
+  "label": "cell 0 · ringout",
+  "persisted": 1
+ },
+ "wallMs": 1060
 }

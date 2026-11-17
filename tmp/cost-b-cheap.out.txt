@@ -1,0 +1,9 @@
+# BASELINE
+baseline corner            n=60  med 21.3s  timeout 0.000  ko 0.683  ringout 0.317  dmgA 15814 dmgB 16361  winA 0.500
+baseline extreme           n=60  med 46.3s  timeout 0.017  ko 0.667  ringout 0.317  dmgA 16331 dmgB 14818  winA 0.517
+baseline corner: 662 skill casts over 60 matches (11.0/match)
+
+# CHEAP+SHORT  (skill cooldown x0.4, cast x0.6, power mana 20->6, defence 5->2)
+cheap corner               n=60  med 16.1s  timeout 0.000  ko 0.700  ringout 0.300  dmgA 15590 dmgB 15814  winA 0.483
+cheap extreme              n=60  med 36.7s  timeout 0.000  ko 0.733  ringout 0.267  dmgA 17282 dmgB 15702  winA 0.533
+cheap corner: 830 skill casts over 60 matches (13.8/match)

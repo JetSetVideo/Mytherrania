@@ -21,13 +21,13 @@
     "rowsBefore": 1,
     "rowsAfter": 2,
     "grew": true,
-    "selected": "Dusk",
+    "selected": "Fenn",
     "portraitsNow": 2,
-    "biggestPortraitBytes": 55842
+    "biggestPortraitBytes": 28786
   },
   "stats": {
     "sheetRows": 16,
-    "sheetSample": "DuskHuman · Nomad · Assassin · Hidden Blade · The SerpentAttributesVitality4Resilience3Willpower4Reflex14Strength5Intelligence5DerivedMax Health21 150Attack Power468Attack Interval0.78 sArmour3.6Modif",
+    "sheetSample": "FennDwarf · Forge · Priest · War Mace · The MountainAttributesVitality6Resilience10Willpower6Reflex2Strength7Intelligence8DerivedMax Health24 596Attack Power624Attack Interval1.22 sArmour8.0ModifiersC",
     "studio": {
       "renders": 2,
       "cacheHits": 1,
@@ -36,7 +36,7 @@
     "debug": {
       "rows": 2,
       "withPortrait": 2,
-      "active": "PL-6AFEB6",
+      "active": "PL-209946",
       "studio": {
         "renders": 2,
         "cacheHits": 1,

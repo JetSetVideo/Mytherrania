@@ -78,74 +78,591 @@
         "primary": [
           {
             "label": "Vitality",
-            "value": "4"
+            "value": "9",
+            "tone": {
+              "value": 9,
+              "neutral": 10.75,
+              "span": 4
+            }
           },
           {
             "label": "Resilience",
-            "value": "6"
+            "value": "10",
+            "tone": {
+              "value": 10,
+              "neutral": 10.25,
+              "span": 4
+            }
           },
           {
-            "label": "Willpower",
-            "value": "5"
+            "label": "Focus",
+            "value": "11",
+            "tone": {
+              "value": 11,
+              "neutral": 10.875,
+              "span": 4
+            }
           },
           {
             "label": "Reflex",
-            "value": "10"
+            "value": "17.38",
+            "tone": {
+              "value": 17.375,
+              "neutral": 12.125,
+              "span": 4
+            }
           },
           {
             "label": "Strength",
-            "value": "4"
+            "value": "9",
+            "tone": {
+              "value": 9,
+              "neutral": 10.75,
+              "span": 4
+            }
           },
           {
             "label": "Intelligence",
-            "value": "6"
+            "value": "12",
+            "tone": {
+              "value": 12,
+              "neutral": 11.375,
+              "span": 4
+            }
+          },
+          {
+            "label": "Agility",
+            "value": "17",
+            "tone": {
+              "value": 17,
+              "neutral": 11.5,
+              "span": 4
+            }
           }
         ],
         "derived": [
           {
             "label": "Max Health",
-            "value": "21 031"
+            "value": "21 031",
+            "tone": {
+              "value": 21031.3125,
+              "neutral": 23509.953125,
+              "span": 5877.48828125
+            }
           },
           {
             "label": "Attack Power",
-            "value": "364",
-            "hint": "≈ 320 a blow vs. an even foe"
+            "value": "341",
+            "tone": {
+              "value": 340.7674912623697,
+              "neutral": 477.1691993395405,
+              "span": 119.29229983488513
+            },
+            "hint": "≈ 288 a blow vs. an even foe"
           },
           {
             "label": "Attack Interval",
-            "value": "0.92 s"
+            "value": "0.89 s",
+            "tone": {
+              "value": 0.8913453457870608,
+              "neutral": 1.0711422837898854,
+              "span": 0.2,
+              "invert": true
+            }
           },
           {
             "label": "Armour",
-            "value": "4.9"
+            "value": "4.9",
+            "tone": {
+              "value": 4.880000000000001,
+              "neutral": 3.97,
+              "span": 2
+            }
           }
         ],
         "secondary": [
           {
             "label": "Critical Strike",
-            "value": "+3%"
+            "value": "+3%",
+            "tone": {
+              "value": 0.03,
+              "neutral": 0,
+              "span": 0.05
+            }
           },
           {
             "label": "Haste",
-            "value": "—"
+            "value": "—",
+            "tone": {
+              "value": 0,
+              "neutral": 0,
+              "span": 0.05
+            }
           },
           {
             "label": "Mastery",
-            "value": "—"
+            "value": "—",
+            "tone": {
+              "value": 0,
+              "neutral": 0,
+              "span": 0.05
+            }
           },
           {
             "label": "Physical Resistance",
-            "value": "+3%"
+            "value": "+3%",
+            "tone": {
+              "value": 0.03,
+              "neutral": 0,
+              "span": 0.05
+            }
           },
           {
             "label": "Magic Resistance",
-            "value": "+1%"
+            "value": "+1%",
+            "tone": {
+              "value": 0.01,
+              "neutral": 0,
+              "span": 0.05
+            }
           },
           {
             "label": "Versatility",
-            "value": "-1%"
+            "value": "-1%",
+            "tone": {
+              "value": -0.01,
+              "neutral": 0,
+              "span": 0.05
+            }
           }
-        ]
+        ],
+        "full": {
+          "attributes": [
+            {
+              "key": "vitality",
+              "label": "Vitality",
+              "value": 9,
+              "display": "9",
+              "delta": -1,
+              "deltaDisplay": "(−1)",
+              "group": "pools",
+              "span": 4
+            },
+            {
+              "key": "resilience",
+              "label": "Resilience",
+              "value": 10,
+              "display": "10",
+              "delta": 2,
+              "deltaDisplay": "(+2)",
+              "group": "defence",
+              "span": 4
+            },
+            {
+              "key": "focus",
+              "label": "Focus",
+              "value": 11,
+              "display": "11",
+              "delta": 2,
+              "deltaDisplay": "(+2)",
+              "group": "magic",
+              "span": 4
+            },
+            {
+              "key": "reflex",
+              "label": "Reflex",
+              "value": 17.375,
+              "display": "17.38",
+              "delta": 2.375,
+              "deltaDisplay": "(+2.38)",
+              "group": "offence",
+              "span": 4
+            },
+            {
+              "key": "strength",
+              "label": "Strength",
+              "value": 9,
+              "display": "9",
+              "delta": -1,
+              "deltaDisplay": "(−1)",
+              "group": "offence",
+              "span": 4
+            },
+            {
+              "key": "intelligence",
+              "label": "Intelligence",
+              "value": 12,
+              "display": "12",
+              "delta": 2,
+              "deltaDisplay": "(+2)",
+              "group": "magic",
+              "span": 4
+            },
+            {
+              "key": "agility",
+              "label": "Agility",
+              "value": 17,
+              "display": "17",
+              "delta": 2,
+              "deltaDisplay": "(+2)",
+              "group": "mobility",
+              "span": 4
+            }
+          ],
+          "derived": [
+            {
+              "key": "maxHealth",
+              "label": "Max health",
+              "value": 21031.3125,
+              "display": "21 031",
+              "delta": -2478.640625,
+              "deltaDisplay": "(−2 479)",
+              "group": "pools",
+              "span": 6636.706094749558
+            },
+            {
+              "key": "maxMana",
+              "label": "Max mana",
+              "value": 88,
+              "display": "88",
+              "delta": 5.75,
+              "deltaDisplay": "(+6)",
+              "group": "pools",
+              "span": 50.15725271583363
+            },
+            {
+              "key": "maxStamina",
+              "label": "Max stamina",
+              "value": 74,
+              "display": "74",
+              "delta": -11.25,
+              "deltaDisplay": "(−11)",
+              "group": "pools",
+              "span": 29.508473359359
+            },
+            {
+              "key": "manaRegen",
+              "label": "Mana regen",
+              "value": 1.56,
+              "display": "1.56/s",
+              "delta": 0.4549799999999997,
+              "deltaDisplay": "(+0.45)",
+              "group": "pools",
+              "span": 0.673115748738655,
+              "unit": "/s"
+            },
+            {
+              "key": "staminaRegen",
+              "label": "Stamina regen",
+              "value": 4.3775,
+              "display": "4.38/s",
+              "delta": -0.989187499999999,
+              "deltaDisplay": "(−0.99)",
+              "group": "pools",
+              "span": 1.7855011507627208,
+              "unit": "/s"
+            },
+            {
+              "key": "attackPower",
+              "label": "Attack power",
+              "value": 340.7674912623697,
+              "display": "341",
+              "delta": -136.40170807717084,
+              "deltaDisplay": "(−136)",
+              "group": "offence",
+              "span": 237.5110592023735
+            },
+            {
+              "key": "attackInterval",
+              "label": "Attack interval",
+              "value": 0.8913453457870608,
+              "display": "0.89 s",
+              "delta": -0.1797969380028246,
+              "deltaDisplay": "(−0.18)",
+              "group": "offence",
+              "span": 0.2791077128431371,
+              "unit": "s",
+              "invert": true
+            },
+            {
+              "key": "swingInterval",
+              "label": "Swing interval",
+              "value": 0.8913453457870608,
+              "display": "0.89 s",
+              "delta": -0.11605670805487844,
+              "deltaDisplay": "(−0.12)",
+              "group": "offence",
+              "span": 0.7736335332399557,
+              "unit": "s",
+              "invert": true
+            },
+            {
+              "key": "attacksPerSecond",
+              "label": "Attacks",
+              "value": 1.1218996146964753,
+              "display": "1.12/s",
+              "delta": -0.07915110817046944,
+              "deltaDisplay": "(−0.08)",
+              "group": "offence",
+              "span": 1.1492099984438033,
+              "unit": "/s"
+            },
+            {
+              "key": "hit",
+              "label": "Hit",
+              "value": 290.3438142168552,
+              "display": "290",
+              "delta": -116.21822270108413,
+              "deltaDisplay": "(−116)",
+              "group": "offence",
+              "span": 202.36633075544063
+            },
+            {
+              "key": "critChance",
+              "label": "Crit chance",
+              "value": 15,
+              "display": "15.0%",
+              "delta": 0.745967741935484,
+              "deltaDisplay": "(+0.7)",
+              "group": "offence",
+              "span": 4.2518818139051415,
+              "unit": "%"
+            },
+            {
+              "key": "woundDealt",
+              "label": "Wounding",
+              "value": 96,
+              "display": "96%",
+              "delta": -7.5,
+              "deltaDisplay": "(−7)",
+              "group": "offence",
+              "span": 21.79449471770337,
+              "unit": "%"
+            },
+            {
+              "key": "armor",
+              "label": "Armour",
+              "value": 4.880000000000001,
+              "display": "4.9",
+              "delta": 0.9100000000000006,
+              "deltaDisplay": "(+0.9)",
+              "group": "defence",
+              "span": 1.3975693184955083
+            },
+            {
+              "key": "hitTaken",
+              "label": "Hit taken",
+              "value": 376.3200596235608,
+              "display": "376",
+              "delta": -30.622833399685987,
+              "deltaDisplay": "(−31)",
+              "group": "defence",
+              "span": 18.9594811923474,
+              "invert": true
+            },
+            {
+              "key": "critTaken",
+              "label": "Crit taken",
+              "value": 15,
+              "display": "15.0%",
+              "delta": 0,
+              "deltaDisplay": "(0)",
+              "group": "defence",
+              "span": 1.5,
+              "unit": "%",
+              "invert": true
+            },
+            {
+              "key": "dodge",
+              "label": "Graze",
+              "value": 5.740409086624565,
+              "display": "5.7%",
+              "delta": 4.548038977656812,
+              "deltaDisplay": "(+4.5)",
+              "group": "defence",
+              "span": 5.395646408554343,
+              "unit": "%"
+            },
+            {
+              "key": "woundTaken",
+              "label": "Wounds taken",
+              "value": 100,
+              "display": "100%",
+              "delta": 2.0625,
+              "deltaDisplay": "(+2)",
+              "group": "defence",
+              "span": 11.564357958831954,
+              "unit": "%",
+              "invert": true
+            },
+            {
+              "key": "staminaFatigue",
+              "label": "Stamina fatigue res.",
+              "value": 81.6,
+              "display": "82%",
+              "delta": -27.937500000000014,
+              "deltaDisplay": "(−28)",
+              "group": "defence",
+              "span": 39.90543290079686,
+              "unit": "%"
+            },
+            {
+              "key": "effectiveAgility",
+              "label": "Effective agility",
+              "value": 16.09,
+              "display": "16.1",
+              "delta": 4.806874999999996,
+              "deltaDisplay": "(+4.8)",
+              "group": "mobility",
+              "span": 5.595825313347442
+            },
+            {
+              "key": "moveSpeed",
+              "label": "Move speed",
+              "value": 107.308,
+              "display": "107.3%",
+              "delta": 5.768250000000009,
+              "deltaDisplay": "(+5.8)",
+              "group": "mobility",
+              "span": 6.714990376016932,
+              "unit": "%"
+            },
+            {
+              "key": "turnRate",
+              "label": "Turn rate",
+              "value": 118.27000000000001,
+              "display": "118.3%",
+              "delta": 14.420625000000001,
+              "deltaDisplay": "(+14.4)",
+              "group": "mobility",
+              "span": 16.787475940042324,
+              "unit": "%"
+            },
+            {
+              "key": "dash",
+              "label": "Dash",
+              "value": 112.17999999999999,
+              "display": "112.2%",
+              "delta": 9.613749999999996,
+              "deltaDisplay": "(+9.6)",
+              "group": "mobility",
+              "span": 11.191650626694887,
+              "unit": "%"
+            },
+            {
+              "key": "animSpeed",
+              "label": "Motion tempo",
+              "value": 112.17999999999999,
+              "display": "112.2%",
+              "delta": 9.613749999999996,
+              "deltaDisplay": "(+9.6)",
+              "group": "mobility",
+              "span": 11.191650626694887,
+              "unit": "%"
+            },
+            {
+              "key": "recovery",
+              "label": "Recovery",
+              "value": 115.225,
+              "display": "115.2%",
+              "delta": 12.017187499999991,
+              "deltaDisplay": "(+12.0)",
+              "group": "mobility",
+              "span": 13.989563283368602,
+              "unit": "%"
+            },
+            {
+              "key": "castTime",
+              "label": "Power channel",
+              "value": 1.7573221757322175,
+              "display": "1.76 s",
+              "delta": -0.2580121347913993,
+              "deltaDisplay": "(−0.26)",
+              "group": "magic",
+              "span": 0.288073980245263,
+              "unit": "s",
+              "invert": true
+            },
+            {
+              "key": "powerTail",
+              "label": "Power recovery",
+              "value": 0.2603601648947711,
+              "display": "0.26 s",
+              "delta": -0.03162116236069762,
+              "deltaDisplay": "(−0.03)",
+              "group": "magic",
+              "span": 0.03861137246021155,
+              "unit": "s",
+              "invert": true
+            },
+            {
+              "key": "manaFatigue",
+              "label": "Mana fatigue res.",
+              "value": 100,
+              "display": "100%",
+              "delta": 2.5,
+              "deltaDisplay": "(+3)",
+              "group": "magic",
+              "span": 31.224989991991986,
+              "unit": "%"
+            },
+            {
+              "key": "cooldown",
+              "label": "Technique cooldown",
+              "value": 6.5,
+              "display": "6.50 s",
+              "delta": -0.9583333333333339,
+              "deltaDisplay": "(−0.96)",
+              "group": "magic",
+              "span": 1.1755613316388236,
+              "unit": "s",
+              "invert": true
+            },
+            {
+              "key": "mass",
+              "label": "Mass",
+              "value": 68.2,
+              "display": "68.2 kg",
+              "delta": -8.637499999999974,
+              "deltaDisplay": "(−8.6)",
+              "group": "body",
+              "span": 27.90258724563011,
+              "unit": "kg"
+            },
+            {
+              "key": "density",
+              "label": "Density",
+              "value": 1110.7491856677523,
+              "display": "1 111 kg/m³",
+              "delta": -73.56982649696238,
+              "deltaDisplay": "(−74)",
+              "group": "body",
+              "span": 272.0869387987946,
+              "unit": "kg/m³"
+            },
+            {
+              "key": "toughness",
+              "label": "Toughness",
+              "value": 561.4858974946,
+              "display": "561",
+              "delta": 16.698576589666573,
+              "deltaDisplay": "(+17)",
+              "group": "body",
+              "span": 204.6110240136212
+            },
+            {
+              "key": "reach",
+              "label": "Reach",
+              "value": 1.034,
+              "display": "1.03 m",
+              "delta": -1.780674999999999,
+              "deltaDisplay": "(−1.78)",
+              "group": "body",
+              "span": 8.492728115717588,
+              "unit": "m"
+            }
+          ]
+        }
       },
       "actions": [
         {
@@ -274,74 +791,591 @@
         "primary": [
           {
             "label": "Vitality",
-            "value": "7"
+            "value": "13",
+            "tone": {
+              "value": 13,
+              "neutral": 10.75,
+              "span": 4
+            }
           },
           {
             "label": "Resilience",
-            "value": "12"
+            "value": "18",
+            "tone": {
+              "value": 18,
+              "neutral": 10.25,
+              "span": 4
+            }
           },
           {
-            "label": "Willpower",
-            "value": "5"
+            "label": "Focus",
+            "value": "10",
+            "tone": {
+              "value": 10,
+              "neutral": 10.875,
+              "span": 4
+            }
           },
           {
             "label": "Reflex",
-            "value": "5"
+            "value": "10",
+            "tone": {
+              "value": 10,
+              "neutral": 12.125,
+              "span": 4
+            }
           },
           {
             "label": "Strength",
-            "value": "8"
+            "value": "14",
+            "tone": {
+              "value": 14,
+              "neutral": 10.75,
+              "span": 4
+            }
           },
           {
             "label": "Intelligence",
-            "value": "6"
+            "value": "10",
+            "tone": {
+              "value": 10,
+              "neutral": 11.375,
+              "span": 4
+            }
+          },
+          {
+            "label": "Agility",
+            "value": "10",
+            "tone": {
+              "value": 10,
+              "neutral": 11.5,
+              "span": 4
+            }
           }
         ],
         "derived": [
           {
             "label": "Max Health",
-            "value": "26 569"
+            "value": "26 569",
+            "tone": {
+              "value": 26568.750000000004,
+              "neutral": 23509.953125,
+              "span": 5877.48828125
+            }
           },
           {
             "label": "Attack Power",
-            "value": "408",
-            "hint": "≈ 342 a blow vs. an even foe"
+            "value": "415",
+            "tone": {
+              "value": 415.48621886317835,
+              "neutral": 477.1691993395405,
+              "span": 119.29229983488513
+            },
+            "hint": "≈ 352 a blow vs. an even foe"
           },
           {
             "label": "Attack Interval",
-            "value": "1.13 s"
+            "value": "1.12 s",
+            "tone": {
+              "value": 1.1243425431002034,
+              "neutral": 1.0711422837898854,
+              "span": 0.2,
+              "invert": true
+            }
           },
           {
             "label": "Armour",
-            "value": "7.2"
+            "value": "7.2",
+            "tone": {
+              "value": 7.16,
+              "neutral": 3.97,
+              "span": 2
+            }
           }
         ],
         "secondary": [
           {
             "label": "Critical Strike",
-            "value": "—"
+            "value": "—",
+            "tone": {
+              "value": 0,
+              "neutral": 0,
+              "span": 0.05
+            }
           },
           {
             "label": "Haste",
-            "value": "—"
+            "value": "—",
+            "tone": {
+              "value": 0,
+              "neutral": 0,
+              "span": 0.05
+            }
           },
           {
             "label": "Mastery",
-            "value": "+2%"
+            "value": "+2%",
+            "tone": {
+              "value": 0.02,
+              "neutral": 0,
+              "span": 0.05
+            }
           },
           {
             "label": "Physical Resistance",
-            "value": "+3%"
+            "value": "+3%",
+            "tone": {
+              "value": 0.03,
+              "neutral": 0,
+              "span": 0.05
+            }
           },
           {
             "label": "Magic Resistance",
-            "value": "+1%"
+            "value": "+1%",
+            "tone": {
+              "value": 0.01,
+              "neutral": 0,
+              "span": 0.05
+            }
           },
           {
             "label": "Versatility",
-            "value": "+2%"
+            "value": "+2%",
+            "tone": {
+              "value": 0.02,
+              "neutral": 0,
+              "span": 0.05
+            }
           }
-        ]
+        ],
+        "full": {
+          "attributes": [
+            {
+              "key": "vitality",
+              "label": "Vitality",
+              "value": 13,
+              "display": "13",
+              "delta": 0,
+              "deltaDisplay": "(0)",
+              "group": "pools",
+              "span": 4
+            },
+            {
+              "key": "resilience",
+              "label": "Resilience",
+              "value": 18,
+              "display": "18",
+              "delta": 4,
+              "deltaDisplay": "(+4)",
+              "group": "defence",
+              "span": 4
+            },
+            {
+              "key": "focus",
+              "label": "Focus",
+              "value": 10,
+              "display": "10",
+              "delta": 1,
+              "deltaDisplay": "(+1)",
+              "group": "magic",
+              "span": 4
+            },
+            {
+              "key": "reflex",
+              "label": "Reflex",
+              "value": 10,
+              "display": "10",
+              "delta": 1,
+              "deltaDisplay": "(+1)",
+              "group": "offence",
+              "span": 4
+            },
+            {
+              "key": "strength",
+              "label": "Strength",
+              "value": 14,
+              "display": "14",
+              "delta": 1,
+              "deltaDisplay": "(+1)",
+              "group": "offence",
+              "span": 4
+            },
+            {
+              "key": "intelligence",
+              "label": "Intelligence",
+              "value": 10,
+              "display": "10",
+              "delta": 3,
+              "deltaDisplay": "(+3)",
+              "group": "magic",
+              "span": 4
+            },
+            {
+              "key": "agility",
+              "label": "Agility",
+              "value": 10,
+              "display": "10",
+              "delta": 1,
+              "deltaDisplay": "(+1)",
+              "group": "mobility",
+              "span": 4
+            }
+          ],
+          "derived": [
+            {
+              "key": "maxHealth",
+              "label": "Max health",
+              "value": 26568.750000000004,
+              "display": "26 569",
+              "delta": 3058.7968750000036,
+              "deltaDisplay": "(+3 059)",
+              "group": "pools",
+              "span": 6636.706094749558
+            },
+            {
+              "key": "maxMana",
+              "label": "Max mana",
+              "value": 88,
+              "display": "88",
+              "delta": 5.75,
+              "deltaDisplay": "(+6)",
+              "group": "pools",
+              "span": 50.15725271583363
+            },
+            {
+              "key": "maxStamina",
+              "label": "Max stamina",
+              "value": 92,
+              "display": "92",
+              "delta": 6.75,
+              "deltaDisplay": "(+7)",
+              "group": "pools",
+              "span": 29.508473359359
+            },
+            {
+              "key": "manaRegen",
+              "label": "Mana regen",
+              "value": 1.26,
+              "display": "1.26/s",
+              "delta": 0.15497999999999967,
+              "deltaDisplay": "(+0.15)",
+              "group": "pools",
+              "span": 0.673115748738655,
+              "unit": "/s"
+            },
+            {
+              "key": "staminaRegen",
+              "label": "Stamina regen",
+              "value": 6.05,
+              "display": "6.05/s",
+              "delta": 0.6833125000000004,
+              "deltaDisplay": "(+0.68)",
+              "group": "pools",
+              "span": 1.7855011507627208,
+              "unit": "/s"
+            },
+            {
+              "key": "attackPower",
+              "label": "Attack power",
+              "value": 415.48621886317835,
+              "display": "415",
+              "delta": -61.68298047636216,
+              "deltaDisplay": "(−62)",
+              "group": "offence",
+              "span": 237.5110592023735
+            },
+            {
+              "key": "attackInterval",
+              "label": "Attack interval",
+              "value": 1.1243425431002034,
+              "display": "1.12 s",
+              "delta": 0.05320025931031802,
+              "deltaDisplay": "(+0.05)",
+              "group": "offence",
+              "span": 0.2791077128431371,
+              "unit": "s",
+              "invert": true
+            },
+            {
+              "key": "swingInterval",
+              "label": "Swing interval",
+              "value": 1.1243425431002034,
+              "display": "1.12 s",
+              "delta": 0.11694048925826417,
+              "deltaDisplay": "(+0.12)",
+              "group": "offence",
+              "span": 0.7736335332399557,
+              "unit": "s",
+              "invert": true
+            },
+            {
+              "key": "attacksPerSecond",
+              "label": "Attacks",
+              "value": 0.889408664767458,
+              "display": "0.89/s",
+              "delta": -0.31164205809948675,
+              "deltaDisplay": "(−0.31)",
+              "group": "offence",
+              "span": 1.1492099984438033,
+              "unit": "/s"
+            },
+            {
+              "key": "hit",
+              "label": "Hit",
+              "value": 354.0063434231576,
+              "display": "354",
+              "delta": -52.555693494781735,
+              "deltaDisplay": "(−53)",
+              "group": "offence",
+              "span": 202.36633075544063
+            },
+            {
+              "key": "critChance",
+              "label": "Crit chance",
+              "value": 15,
+              "display": "15.0%",
+              "delta": 0.745967741935484,
+              "deltaDisplay": "(+0.7)",
+              "group": "offence",
+              "span": 4.2518818139051415,
+              "unit": "%"
+            },
+            {
+              "key": "woundDealt",
+              "label": "Wounding",
+              "value": 112.00000000000001,
+              "display": "112%",
+              "delta": 8.500000000000014,
+              "deltaDisplay": "(+9)",
+              "group": "offence",
+              "span": 21.79449471770337,
+              "unit": "%"
+            },
+            {
+              "key": "armor",
+              "label": "Armour",
+              "value": 7.16,
+              "display": "7.2",
+              "delta": 3.19,
+              "deltaDisplay": "(+3.2)",
+              "group": "defence",
+              "span": 1.3975693184955083
+            },
+            {
+              "key": "hitTaken",
+              "label": "Hit taken",
+              "value": 371.49100465027493,
+              "display": "371",
+              "delta": -35.45188837297184,
+              "deltaDisplay": "(−35)",
+              "group": "defence",
+              "span": 18.9594811923474,
+              "invert": true
+            },
+            {
+              "key": "critTaken",
+              "label": "Crit taken",
+              "value": 15,
+              "display": "15.0%",
+              "delta": 0,
+              "deltaDisplay": "(0)",
+              "group": "defence",
+              "span": 1.5,
+              "unit": "%",
+              "invert": true
+            },
+            {
+              "key": "dodge",
+              "label": "Graze",
+              "value": -0.1502253380070151,
+              "display": "−0.2%",
+              "delta": -1.3425954469747676,
+              "deltaDisplay": "(−1.3)",
+              "group": "defence",
+              "span": 5.395646408554343,
+              "unit": "%"
+            },
+            {
+              "key": "woundTaken",
+              "label": "Wounds taken",
+              "value": 86.5,
+              "display": "87%",
+              "delta": -11.4375,
+              "deltaDisplay": "(−11)",
+              "group": "defence",
+              "span": 11.564357958831954,
+              "unit": "%",
+              "invert": true
+            },
+            {
+              "key": "staminaFatigue",
+              "label": "Stamina fatigue res.",
+              "value": 108,
+              "display": "108%",
+              "delta": -1.5375000000000085,
+              "deltaDisplay": "(−2)",
+              "group": "defence",
+              "span": 39.90543290079686,
+              "unit": "%"
+            },
+            {
+              "key": "effectiveAgility",
+              "label": "Effective agility",
+              "value": 9.85,
+              "display": "9.9",
+              "delta": -1.433125000000004,
+              "deltaDisplay": "(−1.4)",
+              "group": "mobility",
+              "span": 5.595825313347442
+            },
+            {
+              "key": "moveSpeed",
+              "label": "Move speed",
+              "value": 99.82,
+              "display": "99.8%",
+              "delta": -1.7197500000000048,
+              "deltaDisplay": "(−1.7)",
+              "group": "mobility",
+              "span": 6.714990376016932,
+              "unit": "%"
+            },
+            {
+              "key": "turnRate",
+              "label": "Turn rate",
+              "value": 99.55,
+              "display": "99.6%",
+              "delta": -4.299375000000012,
+              "deltaDisplay": "(−4.3)",
+              "group": "mobility",
+              "span": 16.787475940042324,
+              "unit": "%"
+            },
+            {
+              "key": "dash",
+              "label": "Dash",
+              "value": 99.7,
+              "display": "99.7%",
+              "delta": -2.8662499999999937,
+              "deltaDisplay": "(−2.9)",
+              "group": "mobility",
+              "span": 11.191650626694887,
+              "unit": "%"
+            },
+            {
+              "key": "animSpeed",
+              "label": "Motion tempo",
+              "value": 99.7,
+              "display": "99.7%",
+              "delta": -2.8662499999999937,
+              "deltaDisplay": "(−2.9)",
+              "group": "mobility",
+              "span": 11.191650626694887,
+              "unit": "%"
+            },
+            {
+              "key": "recovery",
+              "label": "Recovery",
+              "value": 99.625,
+              "display": "99.6%",
+              "delta": -3.582812500000003,
+              "deltaDisplay": "(−3.6)",
+              "group": "mobility",
+              "span": 13.989563283368602,
+              "unit": "%"
+            },
+            {
+              "key": "castTime",
+              "label": "Power channel",
+              "value": 1.7573221757322175,
+              "display": "1.76 s",
+              "delta": -0.2580121347913993,
+              "deltaDisplay": "(−0.26)",
+              "group": "magic",
+              "span": 0.288073980245263,
+              "unit": "s",
+              "invert": true
+            },
+            {
+              "key": "powerTail",
+              "label": "Power recovery",
+              "value": 0.30112923462986196,
+              "display": "0.30 s",
+              "delta": 0.00914790737439325,
+              "deltaDisplay": "(+0.01)",
+              "group": "magic",
+              "span": 0.03861137246021155,
+              "unit": "s",
+              "invert": true
+            },
+            {
+              "key": "manaFatigue",
+              "label": "Mana fatigue res.",
+              "value": 100,
+              "display": "100%",
+              "delta": 2.5,
+              "deltaDisplay": "(+3)",
+              "group": "magic",
+              "span": 31.224989991991986,
+              "unit": "%"
+            },
+            {
+              "key": "cooldown",
+              "label": "Technique cooldown",
+              "value": 7.5,
+              "display": "7.50 s",
+              "delta": 0.041666666666666075,
+              "deltaDisplay": "(+0.04)",
+              "group": "magic",
+              "span": 1.1755613316388236,
+              "unit": "s",
+              "invert": true
+            },
+            {
+              "key": "mass",
+              "label": "Mass",
+              "value": 93,
+              "display": "93.0 kg",
+              "delta": 16.162500000000023,
+              "deltaDisplay": "(+16.2)",
+              "group": "body",
+              "span": 27.90258724563011,
+              "unit": "kg"
+            },
+            {
+              "key": "density",
+              "label": "Density",
+              "value": 1371.6814159292035,
+              "display": "1 372 kg/m³",
+              "delta": 187.36240376448882,
+              "deltaDisplay": "(+187)",
+              "group": "body",
+              "span": 272.0869387987946,
+              "unit": "kg/m³"
+            },
+            {
+              "key": "toughness",
+              "label": "Toughness",
+              "value": 850.6088576186196,
+              "display": "851",
+              "delta": 305.8215367136862,
+              "deltaDisplay": "(+306)",
+              "group": "body",
+              "span": 204.6110240136212
+            },
+            {
+              "key": "reach",
+              "label": "Reach",
+              "value": 1.734,
+              "display": "1.73 m",
+              "delta": -1.080674999999999,
+              "deltaDisplay": "(−1.08)",
+              "group": "body",
+              "span": 8.492728115717588,
+              "unit": "m"
+            }
+          ]
+        }
       },
       "actions": [
         {

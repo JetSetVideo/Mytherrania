@@ -1,0 +1,4 @@
+baseline corner          n=60 med 21.3s  ko 0.683 ringout 0.317 timeout 0.000 dmgA 15814 winA 0.500
+# cooldown x0.4, cast x0.6 — mana untouched
+short corner             n=60 med 16.1s  ko 0.717 ringout 0.283 timeout 0.000 dmgA 16037 winA 0.483
+short extreme            n=60 med 39.4s  ko 0.700 ringout 0.300 timeout 0.000 dmgA 16571 winA 0.483

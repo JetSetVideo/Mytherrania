@@ -2,7 +2,7 @@
  "page1": {
   "flat": true,
   "tabNavs": 0,
-  "panels": 6,
+  "panels": 7,
   "hiddenPanels": 0,
   "groups": 16,
   "summariesPresent": 16,
@@ -14,14 +14,14 @@
   ]
  },
  "shortOne": {
-  "heightM": 2.339,
-  "distanceM": 4.035,
+  "heightM": 2.333,
+  "distanceM": 4.027,
   "yaw": 0.55,
   "pitch": 0.18
  },
  "tallOne": {
-  "heightM": 2.39,
-  "distanceM": 4.11,
+  "heightM": 2.361,
+  "distanceM": 4.067,
   "yaw": 0.55,
   "pitch": 0.18
  },
@@ -30,21 +30,21 @@
   0.55
  ],
  "afterDrag": {
-  "heightM": 2.39,
-  "distanceM": 4.11,
+  "heightM": 2.361,
+  "distanceM": 4.067,
   "yaw": 1.27,
   "pitch": -0.06
  },
  "clamped": {
-  "heightM": 2.39,
-  "distanceM": 4.11,
+  "heightM": 2.361,
+  "distanceM": 4.067,
   "yaw": 1.27,
   "pitch": 1.15
  },
  "seed": {
   "seed": 20261031,
   "recorded": [
-   10398851
+   1173669
   ],
   "text": "Generation seed 20261031 · 0x13528a7 — the idea this fighter came from. Saving keeps it."
  },
@@ -86,8 +86,8 @@
   },
   "shadowMap": 2048,
   "shadowOnCel": 1,
-  "drawCalls": 121,
-  "triangles": 68756,
+  "drawCalls": 229,
+  "triangles": 69268,
   "programs": 17,
   "brokenPrograms": []
  },
